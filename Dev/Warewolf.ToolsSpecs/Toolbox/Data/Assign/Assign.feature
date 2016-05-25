@@ -317,9 +317,9 @@ Scenario: Assign a scalar equal to a calculation with a blank variable
 
 #Bug 11499
 Scenario Outline: Assign to a invalid variable
-   Given I assign the value 10 to a variable '<var>'
+   Given I assign the value 10 to a variable "<var>"
    When the assign tool is executed
-   Then the execution has '<error>' error
+   Then the execution has "<error>" error
    And the debug inputs as
 	| # | Variable | New Value |	
    And the debug output as
@@ -327,7 +327,7 @@ Scenario Outline: Assign to a invalid variable
    Examples:
 	| no | var                                       | error |
 	| 1  | [rec").a]]                                | AN    |
-	| 2  | [[rec'()'.a]]                             | AN    |
+	| 2  | [[rec"()".a]]                             | AN    |
 	| 3  | [[rec"()".a]]                             | AN    |
 	| 4  | [[rec".a]]                                | AN    |
 	| 5  | [[rec.a]]                                 | AN    |
@@ -441,7 +441,7 @@ Scenario: Evaluating recursive variable in a group calculation
 	| # | Variable     | New Value                   |
 	| 1 | [[a]]    =   | 1                           |
 	| 2 | [[b]]    =   | a                           |
-	| 3 | [[Result]] = | SUM([[[[b]]]],1) = SUM(1,1) |
+	| 3 | [[Result]] = | SUM([[a]],1) = SUM(1,1) |
 	And the debug output as
 	| # |                      |
 	| 1 | [[a]]     =        1 |
@@ -456,10 +456,10 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable         | New Value                               |
-	| 1 | [[rec(1).a]]   = | 1                                       |
-	| 2 | [[rec(1).b]]   = | rec(1).a                                |
-	| 3 | [[Result]] =     | [[[[rec(1).b]]]]+1 = 1+1 |
+	| # | Variable         | New Value            |
+	| 1 | [[rec(1).a]]   = | 1                    |
+	| 2 | [[rec(1).b]]   = | rec(1).a             |
+	| 3 | [[Result]] =     | [[rec(1).a]]+1 = 1+1 |
 	And the debug output as
 	| # |                         |
 	| 1 | [[rec(1).a]] = 1        |
@@ -612,75 +612,6 @@ Scenario: Assign addition of all variables to scalar2
 	| 12 | [[new(1).a]]      = 12345678910Warewolf |
 	| 13 | [[var]]      = 10                       |
 
-Scenario Outline: Assign multiple variables to the end of a recordset1
-    Given I have a variable "[[a]]" with a value '<Val1>'
-   Given I have a variable "[[b]]" with a value '<Val2>'
-   Given I have a variable "[[z]]" with a value "1"
-   Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-   Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
-   Given I have a variable "[[index]]" with a value "1"
-	And I assign the value '<Value>' to a variable '<Variable>'	
-	When validating the tool
-	Then validation is '<Validation>'
-	And validation message is '<DesignValidation>'
-	When the assign tool is executed
-	And the execution has "<errorOccured>" error
-	And execution error message will be '<ExecutionError>'	
-Examples:
-      | No | Variable             | Value                               | Val1      | Val2     | Validation | DesignValidation                                                                                  | errorOccured | ExecutionError                                                                                       |
-      | 1  | [[a]]                | ""                                  | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 2  | [[rec().a]]          | ""                                  | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 3  | [[rec([[index]]).a]] | Test                                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 4  | [[rec().[[z]]]]      | Test                                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 5  | [[[[Mr().a]]]]       | Test                                | ""        | ""       | False      | ""                                                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                                                      |
-      | 6  | [[a]][[b]]           | Test                                | Te        | st       | False      | ""                                                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                                                      |
-      | 7  | [[mr().[[z]]]]       | Test                                | Test      | a        | True       | 'Variable'-[[mr()]] does not exist in your variable list                                          | AN           | 1.'Variable'-[[mr()]] does not exist in your variable list                                           |
-      | 8  | ""                   | Test                                | ""        | ""       | True       | 'Variable' cannot be empty                                                                        | AN           | 1.'Variable' cannot be empty                                                                         |
-      | 9  | [[rec().a b]]        | Test                                | ""        | ""       | True       | 'Variable'-Recordset field name a b contains invalid character(s)                                 | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s)                                  |
-      | 10 | [[rec(**).a]]        | Test                                | ""        | ""       | True       | 'Variable'-Recordset field name (**) contains invalid character(s)                                | AN           | 1.'Variable'-Recordset field name (**) contains invalid character(s)                                 |
-      | 11 | [[=[[a]]+[[b]]]]     | Test                                | Tes       | t        | True       | 'Variable'-Recordset field name [[=+]] contains invalid character(s)                              | AN           | 1.'Variable'-Recordset field name [[=+]] contains invalid character(s)                               |
-      | 12 | [[[[a]]]]            | Test                                | rec(10).a | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 13 | [[[[rec(1).a]]]]     | Test                                | rec(10).a | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 14 | [[[[rec(1).a]]]]]    | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-      | 15 | [[[[a]]]]]           | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-      | 16 | [[[[[a]]]]           | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-      | 17 | [[[[[rec(1).a]]]]    | Test                                | rec(10).a | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable' - Invalid expression: opening and closing brackets don't match                          |
-      | 18 | [[a[[b]]]]           | Test                                | rec(      | ).a      | False      | ""                                                                                                | AN           | 1.Invalid Region [[a[[b]]]]                                                                          |
-      | 19 | [[[[a]][[b]]]]       | Test                                | rec()     | .a       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 20 | [[[[c]][[d]]]]       | Test                                | ""        | ""       | False      | ""                                                                                                | AN           | 1.No Value assigned for:[[d]]                                                                        |
-      | 21 | [[]]                 | Test                                | ""        | ""       | True       | 'Variable'-Variable [[]] is missing name                                                          | AN           | 1.[[]]-Variable [[]] is missing a name                                                               |
-      | 22 | [[a1]]               | Test                                | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 23 | [[a@]]               | Test                                | ""        | ""       | True       | 'Variable'-Variable name [[a@]] contains invalid character(s)                                     | AN           | 1.'Variable'-Variable name [[a@]] contains invalid character(s)                                      |
-      | 24 | [[a b]]              | Test                                | ""        | ""       | True       | 'Variable'-Variable name [[a b]] contains invalid character(s)                                    | AN           | 1.'Variable'-Variable name [[a b]] contains invalid character(s)                                     |
-      | 25 | [[rec().a1]]         | Test                                | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 26 | [[rec().a!]]         | Test                                | ""        | ""       | False      | 'Variable'-Recordset field name a! contains invalid character(s)                                  | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s)                                  |
-      | 27 | [[rec().a]]]]        | Test                                | ""        | ""       | True       | 'Variable'-Invalid expression: opening and closing brackets don't match                           | AN           | 1.'Variable'-Invalid expression: opening and closing brackets don't match                            |
-      | 28 | [[a]][[b]]]          | Test                                | ""        | ""       | True       | Invalid Region [[a]][[b]]]                                                                        | AN           | 1.Invalid Region [[a]][[b]]]                                                                         |
-      | 29 | [[a]]                | [[rec(1).a]]                        | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 30 | [[a]]                | [[rec(1).a]]Warewolf                | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 31 | [[a]]                | [[rec(1).a]]Warewolf.#$%#%6         | Test      | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 32 | [[a]]                | [[a]][[b]]                          | Test      | Warewolf | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 33 | [[a]]                | [[a]]&[[b]]                         | Test      | Warewolf | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 34 | [[a]]                | [[rec(1).a]]#$                      | Test      |          | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 35 | [[a]]                | [[mr().a]]                          | Test      |          | False      | ""                                                                                                | AN           | 1.No Value assigned for: [[mr(1).a]]                                                                 |
-      | 36 | [[a]]                | =[[a]]+[[b]]*1                      | 1         | 2        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 37 | [[a]]                | =[[a]]+[[b]]*                       | 1         | 2        | True       | Syntax Error An error occured while parsing { [[a]]+[[b]]*} it appears to be malformed            | AN           | 1.Syntax Error An error occured while parsing { [[a]]+[[b]]*} it appears to be malformed             |
-      | 38 | [[a]]                | =cos(30)+sin(60)                    | ""        | ""       | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 39 | [[d]]                | =cos([[a]])+sin([[b]])              | 0         | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 40 | [[d]]                | =cos([[a]]])+sin([[b]])             | 0         | 0        | True       | Syntax Error An error occured while parsing { cos([[a]]])+sin([[b]]) } it appears to be malformed | AN           | 1. Syntax Error An error occured while parsing { cos([[a]]])+sin([[b]]) } it appears to be malformed |
-      | 41 | [[d]]                | =cos([[a]])+sin([[b%]])             | 0         | 0        | True       | The-Variable name [[b%]] contains invalid character(s)                                            | AN           | 1. The-Variable name [[b%]] contains invalid character(s)                                            |
-      | 42 | [[New().a]]]]        | =cos([[a]])+sin([[rec().a])         | 45        | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 43 | [[New().a]]]]        | =cos([[a]])+sin([[rec().a.]])       | 45        | 0        | True       | The-Recordset name [[rec().a]] contains invalid character(s)                                      | AN           | 1.The-Recordset name [[rec().a]] contains invalid character(s)                                       |
-      | 44 | [[a]]                | =cos([[a]])+sin([[rec().[[a]]]]])   | 45        | 0        | True       | Synat Error An error occured while parsing { cos([[a]])+sin([[rec().[[a]]]]])                     | AN           | 1.Synat Error An error occured while parsing { cos([[a]])+sin([[rec().[[a]]]]])                      |
-      | 45 | [[a]]                | =cos([[a]])+sin([[rec().[[a]]])     | 45        | 0        | True       | The-Recordset field name ])!~~calculation~! contains invalid character(s)                         | AN           | 1.The-Recordset field name ])!~~calculation~! contains invalid character(s)                          |
-      | 46 | [[a]]                | =[[rec().a]]++[[a]]                 | 45        | 0        | True       | Syntax Error An error occured while parsing { [[rec().a]]++[[a]] it appears to be malformed       | AN           | 1.Syntax Error An error occured while parsing { [[rec().a]]++[[a]] it appears to be malformed        |
-      | 47 | [[a]]                | =[[rec().a]]+[[a]]                  | 45        | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 48 | [[rec().a]]+[[a]]    | 10                                  | 0         | 0        | True       | 'Variable'-Invalid Region [[rec().a]]+[[a]]                                                       | AN           | 1.'Variable'-Invalid Region [[rec().a]]+[[a]]                                                        |
-      | 49 | [[rec().a]]          | =(2+3)&                             | 0         | 0        | True       | Syntax Error An error occured while parsing(2+3)& it appears to be malformed                      | AN           | 1. Syntax Error An error occured while parsing (2+3)& it appears to be malformed                     |
-      | 50 | [[z]]                | =[[a]]+[[b]]/([[rec().[[a]]]]+123)  | 0         | 0        | False      | ""                                                                                                | NO           | ""                                                                                                   |
-      | 51 | [[z]]                | =[[a]]+[[b]]/([[[rec().[[a]]]]+123) | 0         | 0        | True       | The-Recordset name [[[rec]] contains invalid character(s)                                         | AN           | 1.The-Recordset name [[[rec]] contains invalid character(s)                                          |
-
-
 Scenario: Assign a variable to another variable
 	Given I assign the value "a" to a variable "[[x]]"	
 	And I assign the value "x" to a variable "[[b]]"
@@ -729,25 +660,9 @@ Scenario: Assign a Variable That Does Not Exist
 	Then the execution has "AN" error
 	And the execution has "Scalar value { var } is NULL" error
 
-Scenario: Assigning variables with space after closing brace
-	Given I assign the value "10" to a variable "[[x]]"
-	And I add " " after the closing bracket 
-	Then additional closing brackets are added to the variable "[[x]] ]]"
-	When the assign tool is executed
-	Then the execution has "AN" error
-	And the execution has "Variable - Invalid expression: opening and closing brackets don't match" error
 
 @ignore
-Scenario: Removing variable and value from assign 
-	Given I assign the value "10" to a variable "[[x]]"
-	And I assign the value "20" to a variable "[[var]]" 
-	And I assign the value "30" to a variable "[[variable]]"
-	When I remove "[[var]]" equals "20"
-	Then the assign tool row index is update
-
-
 #Complex types WOLF-1042
-@ignore
 Scenario Outline:  Assigning value to a complex type
 	Given I assign the value "<value>" to a variable "<object>"	
 	When the assign tool is executed
@@ -772,7 +687,6 @@ Scenario: Assign a Variable That is Null to another variable
 	Then the execution has "No" error
 
 
-@ignore
 Scenario Outline:  Assigning value to a complex type that is incorrectly formatted
 	Given I assign the value "<value>" to a variable "<object>"	
 	When the assign tool is executed
@@ -787,25 +701,278 @@ Scenario Outline:  Assigning value to a complex type that is incorrectly formatt
 	| [[granparent(Test).parent(*).NumberOfChildren]]               | 10    | [[granparent(Test).parent(1).NumberOfChildren]] = Error |
 	
 
-	#| [[granparent().parent([[int]]).NumberOfChildren]]| 4     | [[granparent().parent(2).NumberOfChildren]] = 4  |
-	#| [[granparent(*).parent(1).NumberOfChildren]]                  | 7     | [[granparent(*).parent(1).NumberOfChildren]] = 7 |
-	#| [[granparent(*).parent(*).NumberOfChildren]]                  | 14    | [[granparent().parent(1).NumberOfChildren]] = 14 |
+
+Scenario: Assign a variable equal to a complex expression with scalar and recordset with star
+	Given I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[a]] to a variable "[[rec().a]]"
+	And I assign the value [[b]] to a variable "[[rec().a]]"
+	And I assign the value "Test[[rec(*).a]]EndTest" to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "Test2EndTest"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value                              |
+	| 1 | [[a]]          = | 1                                      |
+	| 2 | [[b]]          = | 2                                      |
+	| 3 | [[rec().a]]   =  | [[a]] = 1                              |
+	| 4 | [[rec().a]]   =  | [[b]] = 2                              |
+	| 5 | [[Result]] =     | Test[[rec(1).a]]EndTest = Test1EndTest |
+	|   |                  | Test[[rec(2).a]]EndTest = Test2EndTest |
+	And the debug output as
+	| # |                           |
+	| 1 | [[a]] = 1                 |
+	| 2 | [[b]] = 2                 |
+	| 3 | [[rec(1).a]] = 1          |
+	| 4 | [[rec(2).a]] = 2          |
+	| 5 | [[Result]] = Test2EndTest |
+
+Scenario: Assign all recordset values to all recordset complex
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value Hello to a variable "[[rs().val]]"
+	And I assign the value "Bye[[rec(*).set]]" to a variable "[[rs(*).val]]"
+	When the assign tool is executed
+	Then the value of "[[rs(1).val]]" equals "Bye10"
+	And the value of "[[rs(2).val]]" equals "Bye20"
+	And the value of "[[rs(3).val]]" equals "Bye30"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable              | New Value                 |
+	| 1 | [[rec(1).set]] =      | 10                        |
+	| 2 | [[rec(2).set]] =      | 20                        |
+	| 3 | [[rec(3).set]] =      | 30                        |
+	| 4 | [[rs().val]] =        | Hello                     |
+	| 5 | [[rs(1).val]] = Hello | Bye[[rec(1).set]] = Bye10 |
+	|   |                       | Bye[[rec(2).set]] = Bye20 |
+	|   |                       | Bye[[rec(3).set]] = Bye30 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(1).val]] = Hello |
+    | 5 | [[rs(1).val]] = Bye10 |
+    |   | [[rs(2).val]] = Bye20 |
+    |   | [[rs(3).val]] = Bye30 |
+
+Scenario: Assign all recordset values to all recordset complex new recordset does not exist
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value "Bye[[rec(*).set]]" to a variable "[[rs().val]]"
+	When the assign tool is executed
+	Then the value of "[[rs(1).val]]" equals "Bye10"
+	And the value of "[[rs(2).val]]" equals "Bye20"
+	And the value of "[[rs(3).val]]" equals "Bye30"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value                 |
+	| 1 | [[rec(1).set]] = | 10                        |
+	| 2 | [[rec(2).set]] = | 20                        |
+	| 3 | [[rec(3).set]] = | 30                        |
+	| 4 | [[rs().val]] =   | Bye[[rec(1).set]] = Bye10 |
+	|   |                  | Bye[[rec(2).set]] = Bye20 |
+	|   |                  | Bye[[rec(3).set]] = Bye30 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(3).val]] = Bye30 |
+
+Scenario: Assign a variable equal to a complex expression with scalar and recordset with star with calculate
+	Given I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[a]] to a variable "[[rec().a]]"
+	And I assign the value [[b]] to a variable "[[rec().a]]"
+	And I assign the value "=[[rec(*).a]]+10" to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "12"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value              |
+	| 1 | [[a]]          = | 1                      |
+	| 2 | [[b]]          = | 2                      |
+	| 3 | [[rec().a]]   =  | [[a]] = 1              |
+	| 4 | [[rec().a]]   =  | [[b]] = 2              |
+	| 5 | [[Result]] =     | [[rec(1).a]]+10 = 1+10 |
+	|   |                  | [[rec(2).a]]+10 = 2+10  |
+	And the debug output as
+	| # |                  |
+	| 1 | [[a]] = 1        |
+	| 2 | [[b]] = 2        |
+	| 3 | [[rec(1).a]] = 1 |
+	| 4 | [[rec(2).a]] = 2 |
+	| 5 | [[Result]] = 12  |
 
 
+Scenario: Assign all recordset values to all recordset complex with calculation
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value Hello to a variable "[[rs().val]]"
+	And I assign the value "=[[rec(*).set]]*10" to a variable "[[rs(*).val]]"
+	When the assign tool is executed
+	Then the value of "[[rs(1).val]]" equals "100"
+	And the value of "[[rs(2).val]]" equals "200"
+	And the value of "[[rs(3).val]]" equals "300"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable              | New Value                 |
+	| 1 | [[rec(1).set]] =      | 10                        |
+	| 2 | [[rec(2).set]] =      | 20                        |
+	| 3 | [[rec(3).set]] =      | 30                        |
+	| 4 | [[rs().val]] =        | Hello                     |
+	| 5 | [[rs(1).val]] = Hello | [[rec(1).set]]*10 = 10*10 |
+	|   |                       | [[rec(2).set]]*10 = 20*10 |
+	|   |                       | [[rec(3).set]]*10 = 30*10 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(1).val]] = Hello |
+    | 5 | [[rs(1).val]] = 100   |
+    |   | [[rs(2).val]] = 200   |
+    |   | [[rs(3).val]] = 300   |
 
 
+Scenario: Assign all recordset values to all recordset complex with calculation multiple recordset star
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value 10 to a variable "[[rec(1).val]]"	
+	And I assign the value 20 to a variable "[[rec(2).val]]"
+	And I assign the value 30 to a variable "[[rec(3).val]]"
+	And I assign the value "=[[rec(*).set]]*[[rec(*).val]]" to a variable "[[rec(*).total]]"
+	When the assign tool is executed
+	Then the value of "[[rec(1).total]]" equals "100"
+	And the value of "[[rec(2).total]]" equals "200"
+	And the value of "[[rec(3).total]]" equals "300"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable           | New Value                             |
+	| 1 | [[rec(1).set]] =   | 10                                    |
+	| 2 | [[rec(2).set]] =   | 20                                    |
+	| 3 | [[rec(3).set]] =   | 30                                    |
+	| 4 | [[rec(1).val]] =   | 10                                    |
+	| 5 | [[rec(2).val]] =   | 20                                    |
+	| 6 | [[rec(3).val]] =   | 30                                    |
+	| 7 | [[rec(*).total]] = | [[rec(*).set]]*[[rec(1).val]] = 10*10 |
+	|   |                    | [[rec(*).set]]*[[rec(2).val]] = 10*20 |
+	|   |                    | [[rec(*).set]]*[[rec(3).val]] = 10*30 |
+	|   |                    | [[rec(*).set]]*[[rec(4).val]] = 20*10 |
+	|   |                    | [[rec(*).set]]*[[rec(5).val]] = 20*20 |
+	|   |                    | [[rec(*).set]]*[[rec(6).val]] = 20*30 |
+	|   |                    | [[rec(*).set]]*[[rec(7).val]] = 30*10 |
+	|   |                    | [[rec(*).set]]*[[rec(8).val]] = 30*20 |
+	|   |                    | [[rec(*).set]]*[[rec(9).val]] = 30*30 |
+	And the debug output as
+    | # |                        |
+    | 1 | [[rec(1).set]] = 10    |
+    | 2 | [[rec(2).set]] = 20    |
+    | 3 | [[rec(3).set]] = 30    |
+    | 4 | [[rec(1).val]] = 10    |
+    | 5 | [[rec(2).val]] = 20    |
+    | 6 | [[rec(3).val]] = 30    |
+    | 7 | [[rec(1).total]] = 100 |
+    |   | [[rec(2).total]] = 200 |
+    |   | [[rec(3).total]] = 300 |
+    |   | [[rec(4).total]] = 200 |
+    |   | [[rec(5).total]] = 400 |
+    |   | [[rec(6).total]] = 600 |
+    |   | [[rec(7).total]] = 300 |
+    |   | [[rec(8).total]] = 600 |
+    |   | [[rec(9).total]] = 900 |
 
+Scenario: Assign all recordset values to all recordset complex with calculation multiple recordset star addition
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value 10 to a variable "[[rec(1).val]]"	
+	And I assign the value 20 to a variable "[[rec(2).val]]"
+	And I assign the value 30 to a variable "[[rec(3).val]]"
+	And I assign the value "=[[rec(*).set]]+[[rec(*).val]]" to a variable "[[rec(*).total]]"
+	When the assign tool is executed
+	Then the value of "[[rec(1).total]]" equals "20"
+	And the value of "[[rec(2).total]]" equals "30"
+	And the value of "[[rec(3).total]]" equals "40"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable           | New Value                             |
+	| 1 | [[rec(1).set]] =   | 10                                    |
+	| 2 | [[rec(2).set]] =   | 20                                    |
+	| 3 | [[rec(3).set]] =   | 30                                    |
+	| 4 | [[rec(1).val]] =   | 10                                    |
+	| 5 | [[rec(2).val]] =   | 20                                    |
+	| 6 | [[rec(3).val]] =   | 30                                    |
+	| 7 | [[rec(*).total]] = | [[rec(*).set]]+[[rec(1).val]] = 10+10 |
+	|   |                    | [[rec(*).set]]+[[rec(2).val]] = 10+20 |
+	|   |                    | [[rec(*).set]]+[[rec(3).val]] = 10+30 |
+	|   |                    | [[rec(*).set]]+[[rec(4).val]] = 20+10 |
+	|   |                    | [[rec(*).set]]+[[rec(5).val]] = 20+20 |
+	|   |                    | [[rec(*).set]]+[[rec(6).val]] = 20+30 |
+	|   |                    | [[rec(*).set]]+[[rec(7).val]] = 30+10 |
+	|   |                    | [[rec(*).set]]+[[rec(8).val]] = 30+20 |
+	|   |                    | [[rec(*).set]]+[[rec(9).val]] = 30+30 |
+	And the debug output as
+    | # |                        |
+    | 1 | [[rec(1).set]] = 10    |
+    | 2 | [[rec(2).set]] = 20    |
+    | 3 | [[rec(3).set]] = 30    |
+    | 4 | [[rec(1).val]] = 10    |
+    | 5 | [[rec(2).val]] = 20    |
+    | 6 | [[rec(3).val]] = 30    |
+    | 7 | [[rec(1).total]] = 20 |
+    |   | [[rec(2).total]] = 30 |
+    |   | [[rec(3).total]] = 40 |
+    |   | [[rec(4).total]] = 30 |
+    |   | [[rec(5).total]] = 40 |
+    |   | [[rec(6).total]] = 50 |
+    |   | [[rec(7).total]] = 40 |
+    |   | [[rec(8).total]] = 50 |
+    |   | [[rec(9).total]] = 60 |
 
-
-
-
-
-
-
-
-
-
-
+Scenario: Assign all recordset values to all recordset complex with calculation multiple recordset star addition to scalar
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value 10 to a variable "[[rec(1).val]]"	
+	And I assign the value 20 to a variable "[[rec(2).val]]"
+	And I assign the value 30 to a variable "[[rec(3).val]]"
+	And I assign the value "=[[rec(*).set]]+[[rec(*).val]]" to a variable "[[total]]"
+	When the assign tool is executed
+	Then the value of "[[total]]" equals "60"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value                             |
+	| 1 | [[rec(1).set]] = | 10                                    |
+	| 2 | [[rec(2).set]] = | 20                                    |
+	| 3 | [[rec(3).set]] = | 30                                    |
+	| 4 | [[rec(1).val]] = | 10                                    |
+	| 5 | [[rec(2).val]] = | 20                                    |
+	| 6 | [[rec(3).val]] = | 30                                    |
+	| 7 | [[total]] =      | [[rec(*).set]]+[[rec(1).val]] = 10+10 |
+	|   |                  | [[rec(*).set]]+[[rec(2).val]] = 10+20 |
+	|   |                  | [[rec(*).set]]+[[rec(3).val]] = 10+30 |
+	|   |                  | [[rec(*).set]]+[[rec(4).val]] = 20+10 |
+	|   |                  | [[rec(*).set]]+[[rec(5).val]] = 20+20 |
+	|   |                  | [[rec(*).set]]+[[rec(6).val]] = 20+30 |
+	|   |                  | [[rec(*).set]]+[[rec(7).val]] = 30+10 |
+	|   |                  | [[rec(*).set]]+[[rec(8).val]] = 30+20 |
+	|   |                  | [[rec(*).set]]+[[rec(9).val]] = 30+30 |
+	And the debug output as
+    | # |                     |
+    | 1 | [[rec(1).set]] = 10 |
+    | 2 | [[rec(2).set]] = 20 |
+    | 3 | [[rec(3).set]] = 30 |
+    | 4 | [[rec(1).val]] = 10 |
+    | 5 | [[rec(2).val]] = 20 |
+    | 6 | [[rec(3).val]] = 30 |
+    | 7 | [[total]] = 60      |
+    
 
 
 

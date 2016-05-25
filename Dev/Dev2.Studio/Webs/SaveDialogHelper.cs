@@ -39,76 +39,69 @@ namespace Dev2.Webs
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager));
         }
 
-        public static void ShowNewOAuthsourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model, string token, string key,IServer server)
-        {
-            ShowSaveDialog(resourceModel, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance, token ?? "", key ?? "", server));
-        }
-
         static async void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, Action loaded = null)
         {
             try
             {
+                if (resourceModel == null)
+                {
+                    throw new ArgumentNullException("resourceModel");
+                }
+                IEnvironmentModel environment = resourceModel.Environment;
 
-       
-            if (resourceModel == null)
-            {
-                throw new ArgumentNullException("resourceModel");
-            }
-            IEnvironmentModel environment = resourceModel.Environment;
+                if (environment == null)
+                {
+                    // ReSharper disable NotResolvedInText
+                    throw new ArgumentNullException("environment");
+                }
 
-            if (environment == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("environment");
-            }
+                EnvironmentRepository.Instance.ActiveEnvironment = environment;
 
-            EnvironmentRepository.Instance.ActiveEnvironment = environment;
+                IServer server = new Server(environment);
+                if (server.Permissions == null)
+                {
+                    server.Permissions = new List<IWindowsGroupPermission>();
+                    server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                }
+                if (resourceModel.Category == null)
+                {
+                    resourceModel.Category = "";
+                }
 
-            IServer server = new Server(environment);
-            if (server.Permissions == null)
-            {
-                server.Permissions = new List<IWindowsGroupPermission>();
-                server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
-            }
-            if (resourceModel.Category == null)
-            {
-                resourceModel.Category = "";
-            }
-            
-            var selectedPath = resourceModel.Category.Contains("Unassigned") || string.IsNullOrEmpty(resourceModel.Category) ? "" : resourceModel.Category;
-            var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
-            if (lastIndexOf != -1)
-            {
-                selectedPath = selectedPath.Substring(0, lastIndexOf);
-            }
-            selectedPath = selectedPath.Replace("\\", "\\\\");
-            var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(),true);
+                var selectedPath = resourceModel.Category.Contains("Unassigned") || string.IsNullOrEmpty(resourceModel.Category) ? "" : resourceModel.Category;
+                var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
+                if (lastIndexOf != -1)
+                {
+                    selectedPath = selectedPath.Substring(0, lastIndexOf);
+                }
+                selectedPath = selectedPath.Replace("\\", "\\\\");
+                var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
 
-            var header = string.IsNullOrEmpty(resourceModel.Category) ? "Unsaved Item" : resourceModel.Category;
-            var lastHeaderIndexOf = header.LastIndexOf("\\", StringComparison.Ordinal);
-            if (lastHeaderIndexOf != -1)
-            {
-                header = header.Substring(lastHeaderIndexOf, header.Length - lastHeaderIndexOf);
-                header = header.Replace("\\", "");
-            }
+                var header = string.IsNullOrEmpty(resourceModel.Category) ? "Unsaved Item" : resourceModel.Category;
+                var lastHeaderIndexOf = header.LastIndexOf("\\", StringComparison.Ordinal);
+                if (lastHeaderIndexOf != -1)
+                {
+                    header = header.Substring(lastHeaderIndexOf, header.Length - lastHeaderIndexOf);
+                    header = header.Replace("\\", "");
+                }
 
-            var requestViewModel = await RequestServiceNameViewModel.CreateAsync(env, selectedPath, header);
-         
-            if (loaded != null)
-            {
-                loaded();
-            }
-            var messageBoxResult = requestViewModel.ShowSaveDialog();
-            if (messageBoxResult == MessageBoxResult.OK)
-            {
-                var value = new { resourceName = requestViewModel.ResourceName.Name, resourcePath = requestViewModel.ResourceName.Path };
-                var serializeObject = JsonConvert.SerializeObject(value);
-                callbackHandler.Save(serializeObject, environment);
-            }
+                var requestViewModel = await RequestServiceNameViewModel.CreateAsync(env, selectedPath, header);
+
+                if (loaded != null)
+                {
+                    loaded();
+                }
+                var messageBoxResult = requestViewModel.ShowSaveDialog();
+                if (messageBoxResult == MessageBoxResult.OK)
+                {
+                    var value = new { resourceName = requestViewModel.ResourceName.Name, resourcePath = requestViewModel.ResourceName.Path };
+                    var serializeObject = JsonConvert.SerializeObject(value);
+                    callbackHandler.Save(serializeObject, environment);
+                }
             }
             catch (Exception)
             {
-                if(loaded != null)
+                if (loaded != null)
                 {
                     loaded();
                 }
@@ -121,8 +114,7 @@ namespace Dev2.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager, Action action)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager),action);
-
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), action);
+        }
     }
-}
 }

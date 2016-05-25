@@ -41,7 +41,9 @@ namespace Dev2.Activities
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, string.Empty);
-            PushXmlIntoEnvironment(webRequestResult, update, dataObject);
+            IWebXmlConvert webXmlConvert = new WebXmlConvert(OutputDescription, Outputs);
+            webXmlConvert.PushXmlIntoEnvironment(webRequestResult, update, dataObject);
+            
         }
 
         #endregion

@@ -50,7 +50,7 @@ Scenario Outline: Execute a foreach over a tool using a recordset with invalid
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed	
 	Then the foreach executes 0 times
-	And the execution has 'AN' error
+	And the execution has "AN" error
 	Examples: 
 	| type        | input        | error   |
 	| InRecordset | [[rs()]]+1   | Failure |
@@ -412,7 +412,7 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	|                 | Number |
 	| No. of Executes | 8      |
 
-Scenario Outline: Execute a foreach over a tool
+Scenario Outline: Execute a foreach over a tool 
 	Given There is a recordset in the datalist with this shape
 	| rs             | value |
 	| [[rs().field]] | 1     |
@@ -456,7 +456,6 @@ Examples:
 	
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Execute a foreach over a tool using complex types
 	Given There is a recordset in the datalist with this shape
 	| rs                     | value |

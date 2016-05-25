@@ -9,6 +9,7 @@ using Dev2;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Interfaces;
@@ -332,7 +333,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void TestConnection()
+        public void TestConnection()
         {
             _token = new CancellationTokenSource();
 
@@ -395,7 +396,7 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        IExchangeSource ToSource()
+        public IExchangeSource ToSource()
         {
             if (_emailServiceSource == null)
                 return new ExchangeSourceDefinition()
@@ -464,7 +465,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _testing;
             }
-            private set
+            set
             {
                 _testing = value;
                 OnPropertyChanged(() => Testing);
@@ -476,7 +477,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get { return _testMessage; }
             // ReSharper disable UnusedMember.Local
-            private set
+            set
             // ReSharper restore UnusedMember.Local
             {
                 _testMessage = value;
@@ -564,6 +565,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         protected override void OnDispose()
         {
             if (RequestServiceNameViewModel != null)
@@ -574,6 +576,8 @@ namespace Warewolf.Studio.ViewModels
             Dispose(true);
         }
 
+
+        [ExcludeFromCodeCoverage]
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
         // or indirectly by a user's code. Managed and unmanaged resources

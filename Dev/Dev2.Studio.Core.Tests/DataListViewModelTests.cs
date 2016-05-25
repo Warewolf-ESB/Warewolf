@@ -1774,11 +1774,11 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
         }
-         [Ignore]
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_NoMatchingScalars_ShouldSetScalarNotVisible()
+        public void DataListViewModel_SearchText_NoMatchingScalars_ShouldFilterOutScalar()
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
@@ -1788,14 +1788,13 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "test";
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListViewModel.ScalarCollection[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 0, "Scalar was not filtered out");
         }
 
-        [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_MatchingScalars_ShouldSetScalarVisible()
+        public void DataListViewModel_SearchText_MatchingScalars_ShouldNotRemoveScalar()
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
@@ -1805,14 +1804,13 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "sca";
             //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 1, "Matching scalar was filtered out");
         }
 
-         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_WithMatchingRecset_ShouldSetRecsetVisible()
+        public void DataListViewModel_SearchText_WithMatchingRecset_ShouldNotFilterOutRecset()
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
@@ -1820,19 +1818,18 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = false;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "rec";
             //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.RecsetCollection[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.RecsetCollection.Count == 1, "Matching recordset was filtered out");
         }
-         [Ignore]
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_WithNoMatchingRecset_ShouldSetRecsetNotVisible()
+        public void DataListViewModel_SearchText_WithNoMatchingRecset_ShouldFilterOutRecset()
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
@@ -1840,19 +1837,18 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = true;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "bob";
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListViewModel.RecsetCollection[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.RecsetCollection.Count == 0, "Recordset field was not filtered out");
         }
-         [Ignore]
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_WithMatchingRecsetField_ShouldSetRecsetFieldVisible()
+        public void DataListViewModel_SearchText_WithNoMatchingRecsetField_ShouldFilterOutRecsetField()
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
@@ -1860,35 +1856,12 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = false;
-            firstFieldDataListItemModel.IsVisable = false;
-            recSetDataModel.Children.Add(firstFieldDataListItemModel);
-            dataListViewModel.RecsetCollection.Add(recSetDataModel);
-            //------------Execute Test---------------------------
-            dataListViewModel.SearchText = "f";
-            //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
-        }
-         [Ignore]
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_WithNoMatchingRecsetField_ShouldSetRecsetFieldNotVisible()
-        {
-            //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
-            const string recsetName = "recset";
-            const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = true;
-            firstFieldDataListItemModel.IsVisable = true;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "jim";
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.RecsetCollection.Count == 0, "Recordset was not filtered out");
         }
 
         [TestMethod]

@@ -83,6 +83,19 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
+        public void Save(IOAuthSource source)
+        {
+            UpdateManagerProxy.SaveOAuthSource(source, GlobalConstants.ServerWorkspaceID);
+            if (OAuthSourceSaved != null)
+            {
+                OAuthSourceSaved(source);
+            }
+            if (ItemSaved != null)
+            {
+                ItemSaved();
+            }
+        }
+
         public void Save(IEmailServiceSource emailServiceSource)
         {
             UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
@@ -246,12 +259,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event Action<IPluginSource> PluginServiceSourceSaved;
 
+        public event Action<IOAuthSource> OAuthSourceSaved;
         public event Action<IEmailServiceSource> EmailServiceSourceSaved;
         public event Action<IExchangeSource> ExchangedServiceSourceSaved;
 
         public event Action<IRabbitMQServiceSourceDefinition> RabbitMQServiceSourceSaved;
 
         public event Action<ISharepointServerSource> SharePointServiceSourceSaved;
+
+        public event Action<IWcfServerSource> WcfSourceSaved;
 
         public string TestPluginService(IPluginService inputValues)
         {
@@ -265,6 +281,34 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 ItemSaved();
             }
+        }
+
+        public void Save(IWcfService toSource)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save(IWcfServerSource wcfSource)
+        {
+            UpdateManagerProxy.SaveWcfSource(wcfSource, GlobalConstants.ServerWorkspaceID);
+            if (WcfSourceSaved != null)
+            {
+                WcfSourceSaved(wcfSource);
+            }
+            if (ItemSaved != null)
+            {
+                ItemSaved();
+            }
+        }
+
+        public string TestWcfService(IWcfService inputValues)
+        {
+            return UpdateManagerProxy.TestWcfService(inputValues);
+        }
+
+        public string TestConnection(IWcfServerSource wcfServerSource)
+        {
+            return UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
         }
     }
 }

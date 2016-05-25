@@ -111,9 +111,11 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="AggregateCalculate\AggregateCalculateDesignerViewModelTests.cs" />
+    <Compile Include="Calculate\CalculateDesignerViewModelTest.cs" />
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
-    <Compile Include="Core.cs" />
+    <Compile Include="Core\ActivityDesignerViewModelExentionTests.cs" />
     <Compile Include="Core\Database\DatabaseSourceRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
+    <Compile Include="Core\DropboxSourceManagerTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
@@ -133,11 +136,14 @@
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
     <Compile Include="DropBox2016\DropboxFiles\DropboxFileListViewModelTest.cs" />
+    <Compile Include="DropBox2016\TestResourceCatalog.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
+    <Compile Include="ODBC\TestODBCServerViewModel.cs" />
+    <Compile Include="OracleServer\TestOracleServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
@@ -206,6 +212,11 @@
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileDownLoadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileMoveViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileUploadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointReadFolderViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointReadListTests.cs" />
     <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
@@ -218,6 +229,7 @@
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />

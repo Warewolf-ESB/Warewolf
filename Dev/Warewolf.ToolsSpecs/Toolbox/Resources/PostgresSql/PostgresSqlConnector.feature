@@ -1,5 +1,4 @@
-﻿@ignore
-Feature: PostgresSqlConnector
+﻿Feature: PostgresSqlConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
@@ -7,7 +6,7 @@ Feature: PostgresSqlConnector
 Scenario: Creating PostgresSql Server Connector
 	Given I drag a PostgresSql Server database connector
 	When I select "DemoPostgres" as the source
-	And I select "getemployees" as the action
+	When I select "getemployees" as the action
 	Then Test Inputs appear
 	| Input     | Value | Empty is Null |
 	| fname		|       | false         |

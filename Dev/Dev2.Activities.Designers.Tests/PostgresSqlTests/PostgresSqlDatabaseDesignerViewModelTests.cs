@@ -15,7 +15,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
 {
@@ -69,7 +68,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             model.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(model.Errors.Count, 1);
+            Assert.AreEqual(model.Errors.Count, 2);
             Assert.AreEqual(model.DesignValidationErrors.Count, 2);
         }
 

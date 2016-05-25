@@ -1222,7 +1222,6 @@ namespace Dev2.UI
                                 {
                                     hasError = true;
                                     ttErrorBuilder.AppendLine("Scalar is not allowed");
-                                    _toolTip.IsOpen = true;
                                 }
                             }
                             else if(FilterType == enIntellisensePartType.ScalarsOnly)
@@ -1231,7 +1230,6 @@ namespace Dev2.UI
                                 {
                                     hasError = true;
                                     ttErrorBuilder.AppendLine("Recordset is not allowed");
-                                    _toolTip.IsOpen = true;
                                 }
                             }
                         }
@@ -1241,9 +1239,10 @@ namespace Dev2.UI
 
                         string errorText = ttErrorBuilder.ToString();
                         _toolTip.Content = string.IsNullOrEmpty(errorText) ? _defaultToolTip : errorText;
-
-                        ToolTip = _toolTip;
-
+                        if (_defaultToolTip != null)
+                        {
+                            ToolTip = _toolTip;
+                        }
                         if(_forcedOpen)
                         {
                             _toolTip.IsOpen = _forcedOpen = false;

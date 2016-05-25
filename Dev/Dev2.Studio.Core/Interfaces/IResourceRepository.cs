@@ -56,6 +56,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
+        IList<T> GetResourceList<T>(IEnvironmentModel targetEnvironment, Guid workspaceId) where T : new();
         Settings ReadSettings(IEnvironmentModel currentEnv);
         ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Settings settings);
         string GetServerLogTempPath(IEnvironmentModel environmentModel);
@@ -99,5 +100,7 @@ namespace Dev2.Studio.Core.Interfaces
         Task<ExecuteMessage> GetDependenciesXmlAsync(IContextualResourceModel resourceModel, bool getDependsOnMe);
 
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceID);
+
+
     }
 }

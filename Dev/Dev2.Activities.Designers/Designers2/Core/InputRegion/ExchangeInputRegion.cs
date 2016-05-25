@@ -7,6 +7,7 @@ using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 // ReSharper disable UnassignedGetOnlyAutoProperty

@@ -4,18 +4,15 @@
 	I want to be to backup/move files to a dropbox account
 
 
-Scenario: Open new Dropbox Tool
-	Given I open New Workflow
+Scenario: Open new Dropbox Upload Tool
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
 	And Local File is Enabled
 	And Dropbox File is Enabled
 	When I Click New
-	Then the New Dropbox Source window is opened
 
-Scenario: Editing Dropbox Tool
-	Given I open New Workflow
+Scenario: Editing Dropbox Upload Tool
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
@@ -26,8 +23,7 @@ Scenario: Editing Dropbox Tool
 	And I Click Edit
 	Then the "Drop" Dropbox Source window is opened
 
-Scenario: Change Dropbox Source
-	Given I open New Workflow
+Scenario: Change Dropbox Upload Source
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled

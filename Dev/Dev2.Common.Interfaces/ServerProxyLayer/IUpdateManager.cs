@@ -75,6 +75,8 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         void SavePluginSource(IPluginSource source, Guid serverWorkspaceID);
 
+        void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID);
+
         string TestPluginService(IPluginService inputValues);
 
         void SavePluginService(IPluginService toDbSource);
@@ -91,5 +93,12 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMQServiceSource);
 
         // ReSharper enable InconsistentNaming
+
+        void SaveWcfSource(IWcfServerSource wcfSource, Guid serverWorkspaceID);
+
+        string TestWcfServiceSource(IWcfServerSource wcfServerSource);
+
+        string TestWcfService(IWcfService service);
+
     }
 }

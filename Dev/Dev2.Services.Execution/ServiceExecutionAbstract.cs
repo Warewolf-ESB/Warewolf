@@ -27,8 +27,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-using Dev2.Services.Sql;
-using System.Security.Cryptography;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Services.Execution
 {
@@ -104,33 +103,33 @@ namespace Dev2.Services.Execution
         public void GetSource(Guid sourceId)
         {
             var catalog = ResourceCatalog.Instance;
-            ODBCServer Odbc = new ODBCServer();
-            List<TSource> list = new List<TSource>();
-            var Dsns = Odbc.GetDSN();
-            for (int i = 0; i < Dsns.Count; i++)
-            {
-                string input = Dsns[i];
-                using (MD5 md5 = MD5.Create())
-                {
-                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
-                    Guid result = new Guid(hash);
-
-                    list.Add(
-
-                            new TSource
-                            {
-                                ResourceName = Dsns[i],
-                                ResourceType = "DbSource",
-                                ResourceID = result
-
-                            }
-
-                  );
-                }
-
-            }
-
-            Source = list.Find(S => S.ResourceID == sourceId);
+//            ODBCServer Odbc = new ODBCServer();
+//            List<TSource> list = new List<TSource>();
+//            var Dsns = Odbc.GetDSN();
+//            for (int i = 0; i < Dsns.Count; i++)
+//            {
+//                string input = Dsns[i];
+//                using (MD5 md5 = MD5.Create())
+//                {
+//                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
+//                    Guid result = new Guid(hash);
+//
+//                    list.Add(
+//
+//                            new TSource
+//                            {
+//                                ResourceName = Dsns[i],
+//                                ResourceType = "DbSource",
+//                                ResourceID = result
+//
+//                            }
+//
+//                  );
+//                }
+//
+//            }
+//
+//            Source = list.Find(S => S.ResourceID == sourceId);
             if(Source == null)
             {
                 Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
@@ -500,7 +499,45 @@ namespace Dev2.Services.Execution
                 }
             }
         }
+        internal string ODBCParameterIterators(int update, string command)
+        {
+            var itrs = new List<IWarewolfIterator>(5);
+            IWarewolfListIterator itrCollection = new WarewolfListIterator();
 
+            if (string.IsNullOrEmpty(InstanceInputDefinitions))
+            {
+                List<string> okay = new List<string>();
+                int startindex = 0;
+                while (command.IndexOf("[[", startindex, StringComparison.Ordinal) != -1)
+                {
+                    int first = command.IndexOf("[[", startindex, StringComparison.Ordinal);
+                    int second = command.IndexOf("]]", first, StringComparison.Ordinal);
+                    if (second != -1)
+                    {
+                        string val = command.Substring(first, (second - first) + 2);
+                        okay.Add(val);
+
+                        var toInject = val;
+                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
+
+                        itrCollection.AddVariableToIterateOn(paramIterator);
+                        itrs.Add(paramIterator);
+                        startindex = second;
+                    }
+                    else
+                    {
+                        startindex = command.Length - 1;
+                    }
+                }
+                for (int i = 0; i < itrs.Count; i++)
+                {
+                    var vari = itrCollection.FetchNextValue(itrs[i]);
+                    command = command.Replace(okay[i], vari);
+                }
+            }
+            
+            return command;
+        }
         string UnescapeRawXml(string innerXml)
         {
             if(innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))

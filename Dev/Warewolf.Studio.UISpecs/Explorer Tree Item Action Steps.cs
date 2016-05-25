@@ -16,37 +16,37 @@ using TechTalk.SpecFlow;
 namespace Warewolf.Studio.UISpecs
 {
     [Binding]
-    public sealed class Explorer_Tree_Item_Action_Steps
+    public class Explorer_Tree_Item_Action_Steps
     {
-        [When(@"I click '(.*)' in the explorer tree")]
+        [When(@"I click ""(.*)"" in the explorer tree")]
         public void WhenIClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
             Mouse.Click(getTreeItem, new Point(40, 12));
         }
 
-        [When(@"I double click '(.*)' in the explorer tree")]
+        [When(@"I double click ""(.*)"" in the explorer tree")]
         public void WhenIDoubleClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
             Mouse.DoubleClick(getTreeItem, new Point(40, 12));
         }
 
-        [When(@"I right click '(.*)' in the explorer tree")]
+        [When(@"I right click ""(.*)"" in the explorer tree")]
         public void WhenIRightClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
             Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
         }
 
-        [When(@"I expand '(.*)' in the explorer tree")]
+        [When(@"I expand ""(.*)"" in the explorer tree")]
         public void WhenIExpandTheItemInTheExplorerTree(string path)
         {
             var getExpander = GetExpansionIndicator(path);
             Mouse.Click(getExpander, new Point(18, 3));
         }
 
-        [When(@"I drag '(.*)' from the explorer tree onto the design surface")]
+        [When(@"I drag ""(.*)"" from the explorer tree onto the design surface")]
         public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
@@ -55,7 +55,7 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(getWorkflowdesigner, new Point(305, 137));
         }
 
-        [When(@"I drag '(.*)' from the explorer tree onto '(.*)' also in the explorer tree")]
+        [When(@"I drag ""(.*)"" from the explorer tree onto ""(.*)"" also in the explorer tree")]
         public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string pathFrom, string pathTo)
         {
             UITestControl getFromTreeItem = GetTreeItemFromPath(pathFrom);
@@ -64,23 +64,23 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(getToTreeItem, new Point(140, 3));
         }
 
-        [Given("'(.*)' exists in the explorer tree")]
-        [Then("'(.*)' exists in the explorer tree")]
-        public void AssertExistsInTheDropdownList(string ListItem)
-        {
-            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
-            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
-        }
+        //[Given("""(.*)"" exists in the explorer tree")]
+        //[Then("""(.*)"" exists in the explorer tree")]
+        //public void AssertExistsInTheDropdownList(string ListItem)
+        //{
+        //    UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+        //    Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
+        //}
 
-        [Given(@"The View permission icon for '(.*)' exists in the explorer tree")]
-        [Then(@"The View permission icon for '(.*)' exists in the explorer tree")]
+        [Given(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
+        [Then(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
         public void AssertTheViewPermissionIconForTreeItemExistsInTheExplorerTree(string path)
         {
             Assert.IsTrue(GetEditButton(path).Exists, "Edit button does not exist for " + path);
         }
 
-        [Given(@"The Execute permission icon for '(.*)' exists in the explorer tree")]
-        [Then(@"The Execute permission icon for '(.*)' exists in the explorer tree")]
+        [Given(@"The Execute permission icon for ""(.*)"" exists in the explorer tree")]
+        [Then(@"The Execute permission icon for ""(.*)"" exists in the explorer tree")]
         public void AssertTheExecutePermissionIconForTreeItemExistsInTheExplorerTree(string path)
         {
             Assert.IsTrue(GetExecuteButton(path).Exists, "Execute button does not exist for " + path);

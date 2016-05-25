@@ -247,7 +247,6 @@ Scenario Outline: Ensure delete variables of different types produce desired res
 	| [[result]] = Failure |
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Delete a complex types 
 	Given I have the following recordset
 	| rs             | val |

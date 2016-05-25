@@ -9,7 +9,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -25,13 +25,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
     {
         private DropBoxDownloadViewModel CreateMockViewModel()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var mockResourceRepo = new Mock<IResourceRepository>();
-            var oauthSources = new List<OauthSource> { new OauthSource { ResourceName = "Dropbox Source" } };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<OauthSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
-            env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var agg = new Mock<IEventAggregator>();
-            var dropBoxDownloadViewModel = new DropBoxDownloadViewModel(CreateModelItem(), env.Object, agg.Object);
+            var dropBoxDownloadViewModel = new DropBoxDownloadViewModel(CreateModelItem(), agg.Object, dropBoxSourceManager.Object);
             return dropBoxDownloadViewModel;
         }
 
@@ -128,20 +124,13 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestCategory("SelectedOperation_EditSource")]
         public void downloadViewModel_EditSourcePublishesMessage()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
-            var downloadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
-            downloadViewModel.SelectedSource = downloadViewModel.Sources.First();
+            var downloadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             downloadViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -154,20 +143,12 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestCategory("SelectedOperation_EditSource")]
         public void downloadViewModel_EditSourceOnlyAvailableIfSourceSelected()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource))
-                .Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
-                .Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var downloadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var downloadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             Assert.IsFalse(downloadViewModel.IsDropboxSourceSelected);
-            downloadViewModel.SelectedSource = sources[1];
+            downloadViewModel.SelectedSource = new DropBoxSource();
             Assert.IsTrue(downloadViewModel.IsDropboxSourceSelected);
 
         }
@@ -178,18 +159,12 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestCategory("SelectedOperation_EditSource")]
         public void downloadViewModel_EditSourceAvailableIfSourceSelected()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
-            boxUploadViewModel.SelectedSource = boxUploadViewModel.Sources[0];
+            boxUploadViewModel.SelectedSource = new DropBoxSource();
             Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
         }
 
@@ -198,17 +173,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [Owner("Nkosinathi Sangweni")]
         public void ToPath_GivenIsSet_ShouldSetModelItemProperty()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
@@ -226,17 +195,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [Owner("Nkosinathi Sangweni")]
         public void Frompath_GivenIsSet_ShouldSetModelItemProperty()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.FromPath = "A";
@@ -254,17 +217,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [Owner("Nkosinathi Sangweni")]
         public void Result_GivenIsSet_ShouldSetModelItemProperty()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
@@ -276,6 +233,28 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             }
             var modelPropertyValue = property.ComputedValue;
             Assert.AreEqual("A", modelPropertyValue);
+        }  
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OverwriteFile_GivenIsSet_ShouldSetModelItemProperty()
+        {
+            var agg = new Mock<IEventAggregator>();
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+
+            //------------Execute Test---------------------------
+            boxUploadViewModel.OverwriteFile = true;
+            //------------Assert Results-------------------------
+            ModelProperty property = model.Properties["OverwriteFile"];
+            if (property == null)
+            {
+                Assert.Fail("Property Does not exist");
+            }
+            var modelPropertyValue = property.ComputedValue;
+            Assert.AreEqual(true, modelPropertyValue);
         }
 
 
@@ -283,18 +262,17 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [Owner("Nkosinathi Sangweni")]
         public void CreateOAuthSource_GivenCanPublish_ShouldResfreshSources()
         {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
 
             var model = CreateModelItem();
             //------------Setup for test--------------------------
+            var mock = new Mock<IDropboxSourceManager>();
+            mock.Setup(catalog => catalog.FetchSources<DropBoxSource>()).Returns(new List<DropBoxSource>()
+            {
+                new DropBoxSource(), new DropBoxSource()
+            });
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var mockVM = new DropBoxDownloadViewModel(model, agg.Object, mock.Object);
             //---------------Assert Precondition----------------
             mockVM.Sources.Clear();
             var count = mockVM.Sources.Count();
@@ -309,18 +287,14 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [Owner("Nkosinathi Sangweni")]
         public void CreateOAuthSource_GivenCanPublish_ShouldPusbilsh()
         {
-            var env = new Mock<IEnvironmentModel>();
             var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
+            var mockVM = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             //---------------Assert Precondition----------------
             mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
@@ -330,9 +304,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
 
 
-        List<OauthSource> GetSources()
+        List<IResource> GetSources()
         {
-            return new List<OauthSource> { new OauthSource { ResourceName = "bob" }, new OauthSource { ResourceName = "dave" } };
+            return new List<IResource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
         }
     }
 }

@@ -6,13 +6,11 @@ Feature: FileAndFolder-Move
 
 @Move
 # CODE UI TESTS
-@ignore
 Scenario: Move tool Small View
        Given I have Move Small View on design surface
        Then Move small view has
        | File or Folder | Destination | Result |
        |                |             |        |
-@ignore
 Scenario: Move tool Large View
        Given I have Move Large View on design surface
        Then Move Large View has
@@ -24,13 +22,11 @@ Scenario: Move tool Large View
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Move tool Small View water marks
        Given I have Move Small View on design surface
        Then Move small view watermarks are
        | File or Folder | Destination    | Result      |
        | [[PathToMove]] | [[MoveToPath]] | [[Success]] |
-@ignore
 Scenario: Move tool Large View Water marks
        Given I have Move Large View on design surface
        Then Move Large View watermarks are
@@ -42,7 +38,6 @@ Scenario: Move tool Large View Water marks
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Move Large View is validating when clicking on done with blank fields
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -72,7 +67,6 @@ Scenario: Move tool Large View to small view persisting data correctly
        | File or Folder | Destination | Result   |
        | C:\            | D:\         | [[Move]] |
 
-@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Move Large View on design surface
        When Move Large View has
@@ -96,7 +90,6 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | Destination | Result   |
        | C:\[[a]]       | D:\         | [[Move]] |
 
-@ignore
 # From this point on the specs are testing functionality and not UI
 Scenario: Close large view is closing large view without validating
        Given I have Move Large View on design surface
@@ -117,16 +110,15 @@ Scenario: Close large view is closing large view without validating
        | File or Folder | Destination | Result   |
        | C:\[[a]        | D:\         | [[Move]] |
 
-@ignore
 Scenario Outline: Move Large View is validating incorrect source path
        Given I have Move Large View on design surface
        And "File or Folder" is focused
        And Move Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | '<SPath>'      |                 |                 | D:\         |               |               | [[Move]] |
+       | "<SPath>"      |                 |                 | D:\         |               |               | [[Move]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -141,16 +133,15 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
-@ignore
 Scenario Outline: Move Large View is validating incorrect Destination path
        Given I have Move Large View on design surface
        And "File or Folder" is focused
        And Move Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    |                 |                 | '<DPath>'   |               |               | [[Move]] |
+       | C:/Test.txt    |                 |                 | "<DPath>"   |               |               | [[Move]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | DPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -166,16 +157,15 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Move Large View is validating incorrect variable in source username field
        Given I have Move Large View on design surface
        And "File or Folder" is focused
        And Move Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    | '<Variable>'    | sas             | D:/         |               |               | [[Move]] |
+       | C:/Test.txt    | "<Variable>"    | sas             | D:/         |               |               | [[Move]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -192,16 +182,15 @@ Examples:
 
 
 
-@ignore
 Scenario Outline: Move Large View is validating incorrect variable in Destination username field
        Given I have Move Large View on design surface
        And "File or Folder" is focused
        And Move Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    |                 |                 | D:/         | '<Username>'  | abc           | [[Move]] |
+       | C:/Test.txt    |                 |                 | D:/         | "<Username>"  | abc           | [[Move]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -217,16 +206,15 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Move Large View is validating incorrect variable in Result field
        Given I have Move Large View on design surface
        And "File or Folder" is focused
        And Move Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result       |
-       | C:/Test.txt    |                 |                 | D:/         |               |               | '<Result>'   |
+       | C:/Test.txt    |                 |                 | D:/         |               |               | "<Result>"   |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -237,7 +225,6 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario Outline: Move On error fields incorrect variables are validating
        Given I have Move Large View on design surface
        And Move Large View with water marks has
@@ -246,11 +233,11 @@ Scenario Outline: Move On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

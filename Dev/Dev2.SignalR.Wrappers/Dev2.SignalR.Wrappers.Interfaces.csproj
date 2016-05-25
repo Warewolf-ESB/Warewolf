@@ -60,7 +60,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ConnectionStateWrapped.cs" />
-    <Compile Include="HubProxyExtensions.cs" />
     <Compile Include="IHubConnectionWrapper.cs" />
     <Compile Include="IHubProxyWrapper.cs" />
   </ItemGroup>

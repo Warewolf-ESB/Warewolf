@@ -4,7 +4,7 @@
 	I want to be told the sum of two numbers
 
 Scenario: Creating ODBC Server Connector
-	Given I open New Workflow
+	Given I open New Workflow 
 	And I drag a ODBC Server database connector
 	And Source iz Enable
 	And Action iz Disable

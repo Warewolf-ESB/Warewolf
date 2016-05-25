@@ -515,7 +515,7 @@ Scenario: Convert negative recordset index from base64 to binary
 Scenario Outline: Converting two varibles on one row 
 	Given I have a convert variable "[[a]]" with a value of "QUE="
 	And I have a convert variable "[[b]]" with a value of "QUE="
-	And I convert a variable "[[a]][[b]]" from type '<From>' to type '<To>' 
+	And I convert a variable "[[a]][[b]]" from type "<From>" to type "<To>" 
 	When the base conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
@@ -539,7 +539,7 @@ Examples:
 #Bug 12177
 Scenario Outline: Converting varibles with data  
 	Given I have a convert variable "[[a]]" with a value of "QUE="
-	And I convert a variable "[[a]]test" from type '<From>' to type '<To>' 
+	And I convert a variable "[[a]]test" from type "<From>" to type "<To>" 
 	When the base conversion tool is executed
 	Then the execution has "AN" error
 Examples: 
@@ -564,8 +564,8 @@ Examples:
 
 
 Scenario Outline: Validation messages when Convert Invalid Variables  
-	Given I have a convert variable '<Variable>' with a value of '<Value>'
-	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 	
+	Given I have a convert variable "<Variable>" with a value of "<Value>"
+	And I convert a variable "<Variable>" from type "<From>" to type "<To>" 	
 	When the base conversion tool is executed
 	Then the execution has "AN" error
 Examples: 
@@ -574,7 +574,7 @@ Examples:
 	| 2   | [[my(-1).var]]                            | QUE=             | Base 64 | Text    | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
 	| 3   | [[my([-1]).var]]                          | QUE=             | Base 64 | Hex     | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
 	| 4   | [rec().a]]=]]                             | QUE=             | Base 64 | Binary  | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
-	| 5   | [[rec'()'.a]]                             | QUE=             | Base 64 | Text    | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 5   | [[rec"()".a]]                             | QUE=             | Base 64 | Text    | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 6   | [[rec"()".a]]                             | QUE=             | Base 64 | Hex     | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 7   | [[rec".a]]                                | QUE=             | Base 64 | Binary  | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 8   | [[rec.a]]                                 | QUE=             | Base 64 | Text    | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
@@ -602,7 +602,7 @@ Examples:
 	| 30  | [[my(-1).var]]                            | AA               | Text    | Binary  | Recordset index [-1] is not greater than zero                                                                                                                                                                                                           |
 	| 31  | [[my(-1).var]]                            | AA               | Text    | Hex     | Recordset index [-1] is not greater than zero                                                                                                                                                                                                           |
 	| 32  | [[my(-1).var]]                            | AA               | Text    | Base 64 | Recordset index [-1] is not greater than zero                                                                                                                                                                                                           |
-	| 33  | [[rec'()'.a]]                             | AA               | Text    | Text    | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 33  | [[rec"()".a]]                             | AA               | Text    | Text    | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 34  | [[rec"()".a]]                             | AA               | Text    | Hex     | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 35  | [[rec".a]]                                | AA               | Text    | Base 64 | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 36  | [[rec.a]]                                 | AA               | Text    | Text    | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
@@ -630,7 +630,7 @@ Examples:
 	| 58  | [[my(-1).var]]                            | 0100000101000001 | Binary  | Text    | Recordset index [-1] is not greater than zer                                                                                                                                                                                                            |
 	| 59  | [[my(-1).var]]                            | 0100000101000001 | Binary  | Hex     | Recordset index [-1] is not greater than zer                                                                                                                                                                                                            |
 	| 60  | [[my(-1).var]]                            | 0100000101000001 | Binary  | Base 64 | Recordset index [-1] is not greater than zer                                                                                                                                                                                                            |
-	| 61  | [[rec'()'.a]]                             | 0100000101000001 | Binary  | Text    | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 61  | [[rec"()".a]]                             | 0100000101000001 | Binary  | Text    | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 62  | [[rec"()".a]]                             | 0100000101000001 | Binary  | Hex     | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 63  | [[rec".a]]                                | 0100000101000001 | Binary  | Base 64 | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 64  | [[rec.a]]                                 | 0100000101000001 | Binary  | Text    | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
@@ -658,7 +658,7 @@ Examples:
 	| 86  | [[my(-1).var]]                            | 0x4141           | Hex     | Binary  | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
 	| 87  | [[my(-1).var]]                            | 0x4141           | Hex     | Base 64 | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
 	| 88  | [[my(-1).var]]                            | 0x4141           | Hex     | Text    | Recordset index [-1] is not greater than zero                                                                                                                                                                                                           |
-	| 89  | [[rec'()'.a]]                             | 0x4141           | Hex     | Text    | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 89  | [[rec"()".a]]                             | 0x4141           | Hex     | Text    | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 90  | [[rec"()".a]]                             | 0x4141           | Hex     | Base 64 | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 91  | [[rec".a]]                                | 0x4141           | Hex     | Base 64 | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 92  | [[rec.a]]                                 | 0x4141           | Hex     | Text    | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
@@ -688,8 +688,8 @@ Scenario: Convert a Variable That Does Not Exist
 	Then the execution has "AN" error
  
 Scenario Outline: Convert an empty recordset * 
-	Given I convert a variable "<Variable>" with a value of "<value>"
-	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 
+	Given I have a convert variable "<Variable>" with a value of "<value>"
+	And I convert a variable "<Variable>" from type "<From>" to type "<To>" 
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the execution has "<Error>" error
@@ -744,13 +744,12 @@ Examples:
 	| 47 | [[rs().row]]        |       | Base 64 | Hex     | Invalid Recordset |
 	| 48 | [[rs().row]]        |       | Base 64 | Base 64 | Invalid Recordset |
  
- @ignore
- #Complex types WOLF-1042
+  #Complex types WOLF-1042
 Scenario Outline: Convert from text to binary using complex types
-	Given I have a convert variable '<variable>' with a value of '<value>'
-	And I convert a variable '<variable>' from type "Text" to type '<types>' 
+	Given I have a convert variable "<variable>" with a value of "<value>"
+	And I convert a variable "<variable>" from type "Text" to type "<types>" 
 	When the base conversion tool is executed
-	Then the result is '<result>'
+	Then the result is "<result>"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # | Convert     | From    | To      |

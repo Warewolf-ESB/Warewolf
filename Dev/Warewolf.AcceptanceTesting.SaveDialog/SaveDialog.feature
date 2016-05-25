@@ -1,5 +1,4 @@
 ﻿@SaveDialog
-@ignore
 Feature: SaveDialog
 	In order to save resources
 	As a Warewolf user
@@ -43,7 +42,7 @@ Scenario: Save with duplicate name and expect validation
 	When I open "Folder 2" in save dialog 
 	When I enter name "Folder 2 Child 1"
 	Then save button is "Disabled"
-	And validation message is "An item with name 'Folder 2 Child 1' already exists in this folder."
+	And validation message is "An item with name "Folder 2 Child 1" already exists in this folder."
 
 Scenario: Save resource names with special character expect validation
     Given the Save Dialog is opened
@@ -51,7 +50,7 @@ Scenario: Save resource names with special character expect validation
 	When I open "Folder 1" in save dialog 
 	When I enter name "Save@#$"
 	Then save button is "Disabled"
-	And validation message is "'Name' contains invalid characters."
+	And validation message is ""Name" contains invalid characters."
 
 
 Scenario: Saving a Workflow in localhost with an existing name
@@ -59,6 +58,6 @@ Scenario: Saving a Workflow in localhost with an existing name
 	And the "localhost" server is visible in save dialog
 	And "Hello World" exists
 	When I attempt to save a workflow as "Hello World"
-	Then an error message appear with the value "An item with name 'Hello World' already exists in this folder."
+	Then an error message appear with the value "An item with name "Hello World" already exists in this folder."
 
 

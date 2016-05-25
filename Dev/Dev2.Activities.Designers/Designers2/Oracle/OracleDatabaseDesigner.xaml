@@ -32,6 +32,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource DatabaseIcon}"/>
+        <Binding Source="{StaticResource Explorer-Db}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>

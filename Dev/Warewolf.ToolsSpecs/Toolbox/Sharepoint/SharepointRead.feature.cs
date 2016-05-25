@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.ToolsSpecs.Toolbox.Sharepoint
+namespace Dev2.Activities.Specs.Toolbox.Sharepoint
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Sharepoint
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "SharepointRead")))
             {
-                Warewolf.ToolsSpecs.Toolbox.Sharepoint.SharepointReadFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Sharepoint.SharepointReadFeature.FeatureSetup(null);
             }
         }
         
