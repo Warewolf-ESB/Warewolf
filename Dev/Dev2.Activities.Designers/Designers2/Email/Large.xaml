@@ -7,7 +7,6 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Email"
-                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -111,7 +110,6 @@
                                      SourcePropertyValue="{Binding ModelItem.FromAccount, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ControlBorderTop}" />
@@ -124,7 +122,7 @@
                          x:Name="ThePasswordBox"
                          ToolTip="{x:Static languages:Core.EmailToolTipPassword}"
                          PasswordChanged="OnPasswordChanged"
-                         Margin="0,2,3,0"
+                         Margin="{StaticResource ControlBorderTopRight}"
                          attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
                 <i:Interaction.Behaviors>
