@@ -7,15 +7,10 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.SharepointFolderRead"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
-                               xmlns:fa="http://schemas.fontawesome.io/icons/"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                Width="320"
@@ -79,7 +74,7 @@
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[SharePoint Path]]"
-                                Margin="{StaticResource ActivityBorderTop}"
+                                Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.SharePointReadFolderInputPathToolTip}"
@@ -98,10 +93,10 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Read"  Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Read"  Margin="0,-3,0,0"/>
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal"
-                    Margin="0,-2,0,0"
+                    Margin="0,-3,0,0"
                     Grid.Row="2"
                     ToolTip="{x:Static languages:Core.ReadFolderToolTipRead}">
             <RadioButton Margin="{StaticResource ControlBorderRight}"
@@ -114,13 +109,13 @@
                 <core1:HelpSetter Text="{x:Static languages:Core.ReadFolderHelpRead}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </StackPanel>
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Result"  Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Result"  Margin="0,-3,0,0"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[Recordset().Field]]"
                                 FilterType="All"
-                                Margin="{StaticResource ControlBorderTop}"
+                                Margin="0,-3,0,0"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.ReadFolderToolTipResult}"
