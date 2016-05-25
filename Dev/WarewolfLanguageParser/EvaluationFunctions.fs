@@ -209,7 +209,7 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
                 res
             with
                 | :? System.IndexOutOfRangeException ->
-                    WarewolfAtomExpression(DataStorage.DataString lang)
+                     WarewolfAtomExpression(DataStorage.DataString lang)
     else WarewolfAtomExpression(parseAtom lang)
 
 ///Simple parse. convert a string to a language expression and replace * with the update value
