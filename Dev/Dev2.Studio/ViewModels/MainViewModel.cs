@@ -1306,6 +1306,10 @@ namespace Dev2.Studio.ViewModels
             {
                 AddExchangeWorkSurface(saveViewModel);
             }
+            else if (resourceType == "WcfSource")
+            {
+                AddNewWcfSourceSurface(saveViewModel);
+            }
             else if (resourceType == "RabbitMQSource")
             {
                 AddNewRabbitMQSourceSurface(saveViewModel);
@@ -1390,6 +1394,12 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManagePluginSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        void AddNewWcfSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WcfSource) as WorkSurfaceKey, new SourceViewModel<IWcfServerSource>(EventPublisher, new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, ActiveEnvironment), PopupProvider, new ManageWcfSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 

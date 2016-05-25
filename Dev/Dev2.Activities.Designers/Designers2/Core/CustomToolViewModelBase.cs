@@ -22,23 +22,15 @@ namespace Dev2.Activities.Designers2.Core
 {
     public abstract class CustomToolViewModelBase<T> : ActivityDesignerViewModel, INotifyPropertyChanged
     {
-        double _inputGridHeight = 60;
-        double _outputGridHeight = 60;
-        const double RowHeight = 30;
-        double _inputsMinHeight;
-        double _outputsMinHeight;
         bool _inputsHasItems;
         bool _outputsHasItems;
-        double _designHeight;
-        double _designMinHeight;
-        double _designMaxHeight;
         bool _testComplete;
-        protected string _recordsetName;
+        private string _recordsetName;
         protected bool PreviousInputsVisible;
         private bool _inputsVisible;
         protected bool PreviousTestComplete;
 
-        protected ICollection<IServiceInput> _inputs;
+        private ICollection<IServiceInput> _inputs;
         double _labelWidth;
         bool _isInputsEmptyRows;
         bool _isOutputsEmptyRows;
@@ -60,54 +52,6 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged("LabelWidth");
             }
         }
-        public double DesignMaxHeight
-        {
-            get
-            {
-                return _designMaxHeight;
-            }
-            set
-            {
-                _designMaxHeight = value;
-                OnPropertyChanged("DesignMaxHeight");
-            }
-        }
-        public double DesignMinHeight
-        {
-            get
-            {
-                return _designMinHeight;
-            }
-            set
-            {
-                _designMinHeight = value;
-                OnPropertyChanged("DesignMinHeight");
-            }
-        }
-        public double DesignHeight
-        {
-            get
-            {
-                return _designHeight;
-            }
-            set
-            {
-                _designHeight = value;
-                OnPropertyChanged("DesignHeight");
-            }
-        }
-        public double InputsMinHeight
-        {
-            get
-            {
-                return _inputsMinHeight;
-            }
-            set
-            {
-                _inputsMinHeight = value;
-                OnPropertyChanged("InputsMinHeight");
-            }
-        }
         public bool InputsHasItems
         {
             get
@@ -118,18 +62,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _inputsHasItems = value;
                 OnPropertyChanged("InputsHasItems");
-            }
-        }
-        public double OutputsMinHeight
-        {
-            get
-            {
-                return _outputsMinHeight;
-            }
-            set
-            {
-                _outputsMinHeight = value;
-                OnPropertyChanged("OutputsMinHeight");
             }
         }
         public bool OutputsHasItems
@@ -257,168 +189,6 @@ namespace Dev2.Activities.Designers2.Core
                 _recordsetName = value;
                 OnPropertyChanged("RecordsetName");
             }
-        }
-
-
-        public void SetToolHeight()
-        {
-            if (TestComplete)
-            {
-                if (Inputs != null && InputsVisible)
-                {
-                    switch (Inputs.Count)
-                    {
-                        case 0:
-                            // AddMode the Grid Height to the tool Height
-                            ToolHeight += _inputGridHeight + RowHeight;
-                            InputsHasItems = false;
-                            break;
-                        default:
-                            /* 30px used for row Height multiply by Inputs count plus 1 extra row
-                             * AddMode grid Height to tool Height original Height value
-                             * Set Maximum tool Height to calculated tool Height */
-                            if (Inputs.Count > 0 && Inputs.Count < 5 && Outputs != null && TestComplete)
-                            {
-                                _inputGridHeight = RowHeight * (Inputs.Count + 1);
-                                InputsMinHeight = _inputGridHeight;
-                                ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight = ToolHeight;
-                                InputsHasItems = false;
-                            }
-                            else if (Inputs.Count > 0 && Inputs.Count < 5)
-                            {
-                                _inputGridHeight = RowHeight * (Inputs.Count + 1);
-                                InputsMinHeight = _inputGridHeight;
-                                ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight = ToolHeight;
-                                InputsHasItems = false;
-                            }
-                            else
-                            {
-                                // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
-                                _inputGridHeight = RowHeight * 6;
-                                InputsMinHeight = _inputGridHeight;
-                                ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += RowHeight * (Inputs.Count + 2) + RowHeight;
-                                InputsHasItems = true;
-                            }
-                            break;
-                    }
-                }
-                if (Outputs != null)
-                {
-                    switch (Outputs.Count)
-                    {
-                        case 0:
-                            // AddMode the Grid Height to the tool Height
-                            ToolHeight += _outputGridHeight + RowHeight;
-                            OutputsHasItems = false;
-                            break;
-                        default:
-                            /* 30px used for row Height multiply by Outputs count plus 1 extra row
-                             * AddMode grid Height to tool Height original Height value
-                             * Set Maximum tool Height to calculated tool Height */
-                            if (Inputs != null && Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 0 && Inputs.Count < 5)
-                            {
-                                _outputGridHeight = RowHeight * (Outputs.Count + 1);
-                                OutputsMinHeight = _outputGridHeight;
-                                ToolHeight += _outputGridHeight + RowHeight;
-                                MaxToolHeight = ToolHeight;
-                                OutputsHasItems = false;
-                            }
-                            else if (Inputs != null && Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 5)
-                            {
-                                _outputGridHeight = RowHeight * (Outputs.Count + 1);
-                                OutputsMinHeight = _outputGridHeight;
-                                MaxToolHeight += OutputsMinHeight;
-                                OutputsHasItems = false;
-                            }
-                            else if (Outputs.Count > 0 && Outputs.Count < 5)
-                            {
-                                _outputGridHeight = RowHeight * (Outputs.Count + 1);
-                                OutputsMinHeight = _outputGridHeight;
-                                ToolHeight += _outputGridHeight + RowHeight;
-                                MaxToolHeight = ToolHeight;
-                                OutputsHasItems = false;
-                            }
-                            else
-                            {
-                                // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
-                                _outputGridHeight = RowHeight * 6;
-                                OutputsMinHeight = _outputGridHeight;
-                                ToolHeight += _outputGridHeight + RowHeight;
-                                MaxToolHeight += RowHeight * (Outputs.Count + 3) + RowHeight;
-                                OutputsHasItems = true;
-                            }
-                            break;
-                    }
-                }
-                SetToolHeightValue(ToolHeight);
-            }
-            else if (InputsVisible)
-            {
-                if (Inputs != null)
-                {
-                    switch (Inputs.Count)
-                    {
-                        case 0:
-                            // AddMode the Grid Height to the tool Height
-                            ToolHeight += _inputGridHeight + RowHeight;
-                            break;
-                        default:
-                            /* 30px used for row Height multiply by Inputs count plus 1 extra row
-                             * AddMode grid Height to tool Height original Height value
-                             * Set Maximum tool Height to calculated tool Height */
-                            if (Inputs.Count > 0 && Inputs.Count < 5)
-                            {
-                                _inputGridHeight = RowHeight * (Inputs.Count + 1);
-                                InputsMinHeight = _inputGridHeight;
-                                ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight = ToolHeight;
-                            }
-                            else
-                            {
-                                // Set grid Height to Maximum 6 count to allow for scroll option and Maximize design
-                                _inputGridHeight = RowHeight * 6;
-                                InputsMinHeight = _inputGridHeight;
-                                ToolHeight += _inputGridHeight + RowHeight;
-                                MaxToolHeight += RowHeight * (Inputs.Count + 1) + RowHeight;
-                            }
-                            break;
-                    }
-                }
-                SetToolHeightValue(ToolHeight);
-            }
-            else
-            {
-                SetInitialHeight();
-            }
-        }
-
-        public void SetInitialHeight()
-        {
-            DesignHeight = ToolHeight;
-            DesignMinHeight = ToolHeight;
-            DesignMaxHeight = MaxToolHeight;
-           
-        }
-
-        void SetToolHeightValue(double newToolHeight)
-        {
-            DesignHeight = newToolHeight;
-            DesignMinHeight = newToolHeight;
-            DesignMaxHeight = MaxToolHeight;
-            InputsMinHeight = _inputGridHeight;
-            OutputsMinHeight = _outputGridHeight;
-        }
-
-        public void ResetHeightValues(double height)
-        {
-            // Reset the values
-            _inputGridHeight = 60;
-            _outputGridHeight = 60;
-            ToolHeight = height;
-            MaxToolHeight = height;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
