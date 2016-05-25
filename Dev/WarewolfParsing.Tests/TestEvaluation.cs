@@ -500,8 +500,26 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1,2,3)" + GlobalConstants.CalculateTextConvertSuffix);
+            Assert.AreEqual(GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(2)" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(3)" + GlobalConstants.CalculateTextConvertSuffix, CommonFunctions.evalResultToString(res));
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EvalCalculate")]
+        public void EvalAggregateCalculate_RecSet_Star()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum([[Rec(*).a]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum(1,2,3)" + GlobalConstants.AggregateCalculateTextConvertSuffix, CommonFunctions.evalResultToString(res));
+        }
+
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -516,7 +534,23 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]][[x]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1,2,31)" + GlobalConstants.CalculateTextConvertSuffix);
+            Assert.AreEqual(GlobalConstants.CalculateTextConvertPrefix + "Sum(11)" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(21)" + GlobalConstants.CalculateTextConvertSuffix + "," + GlobalConstants.CalculateTextConvertPrefix + "Sum(31)" + GlobalConstants.CalculateTextConvertSuffix, CommonFunctions.evalResultToString(res));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EvalCalculate")]
+        public void EvalAggregateCalculate_RecSet_Complex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum([[Rec(*).a]][[x]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.AggregateCalculateTextConvertPrefix+ "Sum(1,2,31)" + GlobalConstants.AggregateCalculateTextConvertSuffix);
         }
 
         [TestMethod]
@@ -552,6 +586,22 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EvalCalculate")]
+        public void EvalAggregateCalculate_RecSet_Json_Array()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum([[Person.Score(1)]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("EvalCalculate")]
         public void EvalCalculate_RecSet_Json_Array_star()
@@ -564,7 +614,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(*)]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\",\"3\")" + GlobalConstants.CalculateTextConvertSuffix);
+            Assert.AreEqual(GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(\"3\")" + GlobalConstants.CalculateTextConvertSuffix, CommonFunctions.evalResultToString(res) );
         }
 
         [TestMethod]
@@ -593,7 +643,20 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(3,c)" + GlobalConstants.CalculateTextConvertSuffix);
+            Assert.AreEqual(GlobalConstants.CalculateTextConvertPrefix + "Sum(3)" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(c)" + GlobalConstants.CalculateTextConvertSuffix, CommonFunctions.evalResultToString(res));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EvalCalculate")]
+        public void EvalAggregateCalculate_RecSet_RecsetResult()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            //------------Execute Test---------------------------
+            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum(3,c)" + GlobalConstants.AggregateCalculateTextConvertSuffix);
         }
 
 

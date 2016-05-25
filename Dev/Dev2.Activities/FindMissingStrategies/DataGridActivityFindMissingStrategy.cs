@@ -153,10 +153,6 @@ namespace Dev2.FindMissingStrategies
                 var maAct = activity as DsfODBCDatabaseActivity;
                 if (maAct != null)
                 {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
                     if (maAct.CommandText != null)
                     {
                         results.Add(maAct.CommandText);

@@ -227,11 +227,11 @@ namespace WarewolfParsingTest
             var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", 0, env);
-            Assert.IsTrue(ast.IsWarewolfAtomResult);
-            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsTrue(ast.IsWarewolfAtomListresult);
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(x.Item.IsDataString);
-            var val = x.Item as DataStorage.WarewolfAtom.DataString;
+            Assert.IsTrue(x.Item[0].IsDataString);
+            var val = x.Item[0] as DataStorage.WarewolfAtom.DataString;
             Assert.AreEqual("a", val.Item);
             // ReSharper rstore PossibleNullReferenceException
         }
@@ -336,7 +336,7 @@ namespace WarewolfParsingTest
             var data = PublicFunctions.EvalAssign("[[rec(*).b]]", "30", 0, env3);
             var recordSet = data.RecordSets["rec"];
             Assert.IsTrue(recordSet.Data.ContainsKey("b"));
-            Assert.AreEqual(recordSet.Data["b"].Count, 2);
+            Assert.AreEqual(2, recordSet.Data["b"].Count);
             Assert.IsTrue(recordSet.Data["b"][0].IsInt);
             Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 30);
             Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 30);
