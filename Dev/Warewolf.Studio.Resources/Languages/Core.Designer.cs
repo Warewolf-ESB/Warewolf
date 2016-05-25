@@ -6057,22 +6057,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;            
-        ///        &lt;/ol&gt;.
-        /// </summary>
-        public static string RabbitMQHelpResponse {
-            get {
-                return ResourceManager.GetString("RabbitMQHelpResponse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.&lt;br /&gt;
         ///        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
         ///        &lt;br /&gt;
@@ -6197,15 +6181,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQToolTipQueueName {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipQueueName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Put response variables go in here..
-        /// </summary>
-        public static string RabbitMQToolTipResponse {
-            get {
-                return ResourceManager.GetString("RabbitMQToolTipResponse", resourceCulture);
             }
         }
         

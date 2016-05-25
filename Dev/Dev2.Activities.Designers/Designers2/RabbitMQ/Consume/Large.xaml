@@ -49,7 +49,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="SourceTextBlock" Grid.Column="0" Grid.Row="0" Text="RabbitMQ Source" />
@@ -125,28 +124,9 @@
             </Grid.ColumnDefinitions>
         </Grid>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Response" Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
-                                DefaultText="Response "
-                                Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ControlBorderTop}"
-                                IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpResponse}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                            SourcePropertyName="Response"
-                                            SourcePropertyValue="{Binding Response, UpdateSourceTrigger=PropertyChanged}"
-                                            Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
-
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
-                                DefaultText="Prefetch Count"
+                                DefaultText="Prefetch "
                                 Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipMessage}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -162,9 +142,10 @@
                                             Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
-        <CheckBox Grid.Column="1" Grid.Row="5"
+        
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1"
+                  Grid.Row="4"
                   Margin="-6,0,0,0"
                       Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -178,8 +159,9 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="6" Text="Result" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="6"
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="5"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
                                 Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -196,7 +178,7 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-
-        <errors:OnError Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
+        
+        <errors:OnError Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
     </Grid>
 </core:ActivityDesignerTemplate>

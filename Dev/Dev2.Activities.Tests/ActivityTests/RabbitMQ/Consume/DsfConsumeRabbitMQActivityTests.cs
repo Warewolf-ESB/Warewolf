@@ -28,13 +28,13 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
             dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId = Guid.Empty;
             dsfConsumeRabbitMQActivity.QueueName = string.Empty;
-            dsfConsumeRabbitMQActivity.Prefetch = string.Empty;
+            dsfConsumeRabbitMQActivity.Prefetch = null;
             //------------Assert Results-------------------------
             Assert.IsNotNull(dsfConsumeRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Consume", dsfConsumeRabbitMQActivity.DisplayName);
             Assert.IsTrue(string.IsNullOrEmpty(dsfConsumeRabbitMQActivity.QueueName));
             Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
-            Assert.IsTrue(string.IsNullOrEmpty(dsfConsumeRabbitMQActivity.Prefetch));
+            Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
         }
 
         [TestMethod]
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
-        public void PerformExecution_Given_DsfBaseActivityInputs_Should_Return_Inputs()
+        public void DsfConsumeRabbitMQActivity_Execute_DsfBaseActivity_MethodsGivenInputs()
         {
             //------------Setup for test--------------------------
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
@@ -237,7 +237,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var dataObj = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>());
 
             dsfConsumeRabbitMQActivity.QueueName = queueName;
-            dsfConsumeRabbitMQActivity.Prefetch = "2";
             dsfConsumeRabbitMQActivity.ReQueue = true;
 
             dsfConsumeRabbitMQActivity.Response = "[[response]]";

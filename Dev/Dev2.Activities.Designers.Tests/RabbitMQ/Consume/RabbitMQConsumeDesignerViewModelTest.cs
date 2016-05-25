@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             vm.QueueName = "Q1";
             vm.Result = "Success";
             vm.ReQueue = true;
-            vm.Prefetch = "2";
+            vm.Prefetch = 2;
             vm.IsRabbitMQSourceFocused = false;
             vm.IsQueueNameFocused = false;
             vm.IsPrefetchFocused = false;
