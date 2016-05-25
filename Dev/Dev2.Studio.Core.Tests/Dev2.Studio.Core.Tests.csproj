@@ -441,10 +441,6 @@
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
       <Name>Dev2.TaskScheduler.Wrappers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
-      <Project>{632e4898-1b1b-474c-a028-d13a5c914f11}</Project>
-      <Name>Dev2.UndoFramework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>

@@ -174,12 +174,10 @@ namespace WarewolfParsingTest
             JObject j = new JObject();
             
             //------------Execute Test---------------------------
-            var obj = AssignEvaluation.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
+            var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"{
-  ""Name"": ""a""
-}", result);
+            Assert.AreEqual(@"{""Name"": ""a""}", result);
         }
 
         [TestMethod]
@@ -192,8 +190,8 @@ namespace WarewolfParsingTest
 
             //------------Execute Test---------------------------
             // ReSharper disable once RedundantAssignment
-            var obj = AssignEvaluation.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
-            obj = AssignEvaluation.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("x"));
+            var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
+            obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("x"));
             var result = obj.ToString();
             //------------Assert Results-------------------------
             Assert.AreEqual(@"{
@@ -211,7 +209,7 @@ namespace WarewolfParsingTest
 
             //------------Execute Test---------------------------
             // ReSharper disable once RedundantAssignment
-            var obj = AssignEvaluation.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.Nothing);
+            var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.Nothing);
             var result = obj.ToString();
             //------------Assert Results-------------------------
             Assert.AreEqual(@"{
@@ -228,7 +226,7 @@ namespace WarewolfParsingTest
             JObject j = new JObject();
 
             //------------Execute Test---------------------------
-            var obj = AssignEvaluation.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") });
+            var obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") });
             var result = obj.ToString();
             //------------Assert Results-------------------------
             Assert.AreEqual("{\r\n  \"Name\": [\r\n    \"a\",\r\n    \"b\"\r\n  ]\r\n}", result);
@@ -244,8 +242,8 @@ namespace WarewolfParsingTest
 
             //------------Execute Test---------------------------
             // ReSharper disable once RedundantAssignment
-            var obj = AssignEvaluation.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") });
-            obj = AssignEvaluation.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("x"), DataStorage.WarewolfAtom.NewDataString("y") });
+            var obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") });
+            obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("x"), DataStorage.WarewolfAtom.NewDataString("y") });
             var result = obj.ToString();
             //------------Assert Results-------------------------
             Assert.AreEqual("{\r\n  \"Name\": [\r\n    \"x\",\r\n    \"y\"\r\n  ]\r\n}", result);
@@ -260,7 +258,7 @@ namespace WarewolfParsingTest
             JObject j = new JObject();
 
             //------------Execute Test---------------------------
-            var obj = AssignEvaluation.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.Nothing, DataStorage.WarewolfAtom.NewDataString("b") });
+            var obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.Nothing, DataStorage.WarewolfAtom.NewDataString("b") });
             var result = obj.ToString();
             //------------Assert Results-------------------------
             Assert.AreEqual("{\r\n  \"Name\": [\r\n    null,\r\n    \"b\"\r\n  ]\r\n}", result);

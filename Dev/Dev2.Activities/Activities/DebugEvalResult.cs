@@ -85,13 +85,13 @@ namespace Dev2.Activities
                     {
                         if (_evalResult.IsWarewolfAtomResult)
                         {
-                            var atomResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            var atomResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                             if (atomResult != null)
                             {
                                 var res = atomResult.Item.ToString();
                                 string resValue;
                                 DataListUtil.IsCalcEvaluation(res, out resValue);
-                                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(resValue));
+                                _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
                             }
                         }
                         _inputVariable = cleanExpression;

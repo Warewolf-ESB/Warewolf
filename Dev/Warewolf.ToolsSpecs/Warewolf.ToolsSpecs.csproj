@@ -244,7 +244,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQSteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
@@ -252,7 +251,10 @@
       <DependentUpon>ConsumeRabbitMQ.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
     <Compile Include="Toolbox\LoopConstructs\LoopConstructsCommon.cs" />
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature.cs">
@@ -261,11 +263,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
-    <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
-      <DependentUpon>Count.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
@@ -842,7 +839,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
