@@ -13,6 +13,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private string _filterText;
         private ObservableCollection<IComplexObjectItemModel> _children;
         private IComplexObjectItemModel _parent;
+        private bool _isParentObject;
 
         public ComplexObjectItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
@@ -45,6 +46,19 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _parent = value;
                 Name = _parent.Name + "." + DisplayName;
+                IsParentObject = _parent != null;
+            }
+        }
+        public bool IsParentObject
+        {
+            get
+            {
+                return _isParentObject;
+            }
+            private set
+            {
+                _isParentObject = value;
+                NotifyOfPropertyChange(() => Children);
             }
         }
 
