@@ -4844,6 +4844,9 @@ Change the Endpoint Url from, say, a development to a live environment.&lt;br/&g
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
+  <data name="ReadLocalFolderToolTipFolder" xml:space="preserve">
+    <value>Enter local file or folder path</value>
+  </data>
   <data name="WcfServiceNewHeaderLabel" xml:space="preserve">
     <value>New WCF Service Source</value>
   </data>

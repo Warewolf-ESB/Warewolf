@@ -6,10 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.Source
@@ -75,13 +73,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
-            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceSourceTypesHelp;
-            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceEditSourceHelp;
-            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceNewSourceHelp;
-
-            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceSourcesTooltip;
-            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceEditSourceTooltip;
-            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceNewSourceTooltip;
 
             if (SavedSource != null)
             {

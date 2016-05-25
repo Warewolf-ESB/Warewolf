@@ -32,6 +32,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource Explorer-Dll}"/>
+        <Binding Source="{StaticResource WcfEndPointIcon}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>

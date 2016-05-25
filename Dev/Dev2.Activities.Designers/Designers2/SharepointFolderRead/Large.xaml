@@ -78,7 +78,7 @@
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipServer}"
+                      ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
                 <i:Interaction.Behaviors>
@@ -125,7 +125,7 @@
                     Orientation="Horizontal"
                     Margin="0,-2,0,0"
                     Grid.Row="2"
-                    ToolTip="{x:Static help:HelpTextResources.ReadFolderToolTipRead}">
+                    ToolTip="{x:Static languages:Core.ReadFolderToolTipRead}">
                 <RadioButton Margin="{StaticResource ControlBorderRight}"
                          IsChecked="{Binding Path=ModelItem.IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
                 <RadioButton Margin="{StaticResource ControlBorderRight}"
@@ -145,7 +145,7 @@
                                 Margin="{StaticResource ActivityBorderTop}"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ReadFolderToolTipResult}"
+                                ToolTip="{x:Static languages:Core.ReadFolderToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
