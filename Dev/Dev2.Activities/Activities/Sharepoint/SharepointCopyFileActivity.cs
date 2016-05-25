@@ -183,12 +183,12 @@ namespace Dev2.Activities.Sharepoint
 
             if (string.IsNullOrEmpty(ServerInputPathFrom))
             {
-                throw new ArgumentNullException(ServerInputPathFrom.ToString(), @"Server input path from is not set");
+                throw new ArgumentNullException(ServerInputPathFrom, @"Server input path from is not set");
             }
 
             if (string.IsNullOrEmpty(ServerInputPathTo))
             {
-                throw new ArgumentNullException(ServerInputPathTo.ToString(), @"Server input path to is not set");
+                throw new ArgumentNullException(ServerInputPathTo, @"Server input path to is not set");
             }
         }
 

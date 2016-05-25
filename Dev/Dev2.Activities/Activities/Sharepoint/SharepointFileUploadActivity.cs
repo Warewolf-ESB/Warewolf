@@ -179,7 +179,7 @@ namespace Dev2.Activities.Sharepoint
 
             if (string.IsNullOrEmpty(LocalInputPath))
             {
-                throw new ArgumentNullException(LocalInputPath.ToString(), @"Local input path is not set");
+                throw new ArgumentNullException(LocalInputPath, @"Local input path is not set");
             }
         }
 

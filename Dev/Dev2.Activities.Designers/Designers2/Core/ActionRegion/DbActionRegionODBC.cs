@@ -113,10 +113,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set
             {
                 IsGenerateOutputsEnabled = !string.IsNullOrWhiteSpace(value);
+                _modelItem.SetProperty("CommandText", value);
                 _commandText = value;
-                _modelItem.SetProperty("CommandText", value);                
-                OnSomethingChanged(this);
                 OnPropertyChanged();
+                OnSomethingChanged(this);
             }
         }
         public bool IsGenerateOutputsEnabled
