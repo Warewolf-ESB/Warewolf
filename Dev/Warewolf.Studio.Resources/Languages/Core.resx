@@ -4593,8 +4593,6 @@ Data
   <data name="RabbitMQToolTipQueueName" xml:space="preserve">
     <value>Provide a meaningful name for the queue.</value>
   </data>
-<<<<<<< HEAD
-=======
   <data name="RabbitMQHelpResponse" xml:space="preserve">
     <value>Provide a meaningful name for the queue.&lt;br /&gt;
         &lt;br /&gt;
@@ -4604,8 +4602,7 @@ Data
         &lt;ol&gt;
             &lt;li&gt;[[Scalar]]&lt;/li&gt;            
         &lt;/ol&gt;</value>
-  </data>
-  
+  </data>  
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>
@@ -4622,7 +4619,6 @@ Data
   <data name="RabbitMQToolTipResponse" xml:space="preserve">
     <value>Put response variables go in here.</value>
   </data>
->>>>>>> WOLF-1516_-_RabbitMQ_Tool_-_Send_message
   <data name="RabbitMQHelpIsDurable" xml:space="preserve">
     <value>Make the queue durable.&lt;br/&gt;
         &lt;br /&gt;
