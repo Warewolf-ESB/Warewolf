@@ -58,7 +58,6 @@ namespace Dev2.Explorer.Specs
             ScenarioContext.Current.Add(serverName, explorerItemModel);
         }
 
-
         [When(@"I rename the folder FolderToRename to ""(.*)""")]
         public void WhenIRenameTheFolderFolderToRenameTo(string p0)
         {
@@ -106,7 +105,6 @@ namespace Dev2.Explorer.Specs
             {
                 Assert.IsTrue(allItems[0].Children[0].Children.Count(a => a.ResourceType == explorerItemModel.ResourceType && a.DisplayName == explorerItemModel.DisplayName) == 1);
             }
-
         }
 
         [Then(@"the explorer tree for ""(.*)"" will have")]
@@ -135,7 +133,6 @@ namespace Dev2.Explorer.Specs
             }
             var folderName = ScenarioContext.Current.Get<string>("folderName");
 
-
             var itemModel = ScenarioContext.Current.Get<IExplorerItem>("localhost");
             var folder = itemModel.Children.FirstOrDefault(a => a.DisplayName == folderName);
             Assert.IsNotNull(folder);
@@ -153,7 +150,6 @@ namespace Dev2.Explorer.Specs
             repository.RenameItem(new ServerExplorerItem("FolderToRename", Guid.NewGuid(), "Folder", null, Permissions.Administrator, "FolderToRename", "", ""), p0, Guid.Empty);
         }
 
-
         [When(@"I rename the resource PrimitiveReturnTypeTest to ""(.*)""")]
         public void WhenIRenameTheResourcePrimitiveReturnTypeTestTo(string p0)
         {
@@ -162,7 +158,6 @@ namespace Dev2.Explorer.Specs
             var item = repository.Load(Guid.Empty)
                                 .Children.First(a => a.DisplayName == "ExplorerSpecsRenameItem")
                       .Children.First();
-
 
             var result = repository.RenameItem(item, "BobAndDora", Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
@@ -179,7 +174,6 @@ namespace Dev2.Explorer.Specs
             var item = repository.Load(Guid.Empty).Children.First(a => a.DisplayName == "ExplorerSpecsDeleteItem")
                       .Children.First();
 
-
             var result = repository.DeleteItem(item, Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
@@ -193,7 +187,6 @@ namespace Dev2.Explorer.Specs
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
-
 
             var result = repository.DeleteItem(new ServerExplorerItem("FolderToDelete", Guid.NewGuid(), "Folder", null, Permissions.Administrator, "FolderToDelete", "", ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
@@ -229,16 +222,13 @@ namespace Dev2.Explorer.Specs
             Assert.IsNotNull(folder);
             Assert.AreEqual(folder.ResourceType, "Folder");
             Assert.AreEqual(folder.Children.Count, 0);
-
         }
-
 
         [When(@"I delete the Folder ""(.*)""")]
         public void WhenIDeleteTheFolder(string folderToDelete)
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
-
 
             var result = repository.DeleteItem(new ServerExplorerItem(folderToDelete, Guid.NewGuid(), "Folder", null, Permissions.Administrator, "", "", ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
@@ -261,6 +251,7 @@ namespace Dev2.Explorer.Specs
             ScenarioContext.Current.Add("localhost", explorerItemModel);
             ScenarioContext.Current.Add("newName", explorerItemModel);
         }
+
         [When(@"I rename the resource ""(.*)"" to ""(.*)""")]
         public void WhenIRenameTheResourceTo(string itemToRename, string p1)
         {
@@ -303,6 +294,5 @@ namespace Dev2.Explorer.Specs
             var itemModel = ScenarioContext.Current.Get<IExplorerItem>("localhost");
             Assert.AreEqual(0, itemModel.Children.Count(a => a.DisplayName == folderName));
         }
-
     }
 }
