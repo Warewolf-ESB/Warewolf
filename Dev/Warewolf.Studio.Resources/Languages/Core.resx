@@ -4594,7 +4594,7 @@ Data
     <value>Provide a meaningful name for the queue.</value>
   </data>
   <data name="RabbitMQHelpResponse" xml:space="preserve">
-    <value>Provide a meaningful name for the queue.&lt;br /&gt;
+    <value>Put the variable.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
