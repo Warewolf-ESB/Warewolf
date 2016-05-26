@@ -6044,6 +6044,22 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        Allowed:&lt;br /&gt;
         ///        Data   
         ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;            
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpPrefetch {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpPrefetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
@@ -6188,6 +6204,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQToolTipMessage {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide number of processes that can run concurrently..
+        /// </summary>
+        public static string RabbitMQToolTipPrefetch {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipPrefetch", resourceCulture);
             }
         }
         

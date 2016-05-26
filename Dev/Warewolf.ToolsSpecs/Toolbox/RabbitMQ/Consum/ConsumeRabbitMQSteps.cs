@@ -41,7 +41,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             ScenarioContext.Current.Add("Activity", consumeActivity);
             ScenarioContext.Current.Add("PrivateObj", privateObject);
         }
-       
 
         [Given(@"RabbitMq Source is Enabled")]
         public void GivenRabbitMqSourceIsEnabled()
@@ -56,6 +55,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
+
         [Then(@"EditButton is Enabled")]
         public void ThenEditButtonIsEnabled()
         {
