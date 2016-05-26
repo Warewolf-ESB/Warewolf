@@ -7,15 +7,10 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:sharepointFileUpload="clr-namespace:Dev2.Activities.Designers2.SharePointFileUpload"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
-                               xmlns:fa="http://schemas.fontawesome.io/icons/"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
@@ -74,13 +69,13 @@
             </i:Interaction.Behaviors>
         </Button>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Server Path" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Server Path From" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox x:Name="InputPathBox"
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[SharePoint Path]]"
-                                Margin="{StaticResource ActivityBorderTop}"
+                                Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.SharePointUploadPathToolTip}"
@@ -99,14 +94,14 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Local Path" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Local Path To" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox x:Name="LocalInputPath"
                                 Grid.Column="1"
                                 Grid.Row="2"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[FolderToRead]]" 
                                 FilterType="All"
-                                Margin="{StaticResource ActivityBorderTop}"
+                                Margin="{StaticResource ControlBorderTop}"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.LocalInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"

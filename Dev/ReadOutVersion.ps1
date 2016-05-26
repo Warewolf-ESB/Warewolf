@@ -11,10 +11,10 @@ foreach ($file in Get-ChildItem -recurse $WarewolfGitRepoDirectory) {
 		# Find highest version
 		$SeperateVersionNumbers = $ReadVersion.split(".")
 		$SeperateVersionNumbersHighest = $HighestReadVersion.split(".")
-		if ($SeperateVersionNumbers[0] -gt $SeperateVersionNumbersHighest[0]`
-		-or $SeperateVersionNumbers[1] -gt $SeperateVersionNumbersHighest[1]`
-		-or $SeperateVersionNumbers[2] -gt $SeperateVersionNumbersHighest[2]`
-		-or $SeperateVersionNumbers[3] -gt $SeperateVersionNumbersHighest[3]){
+		if ([convert]::ToInt32($SeperateVersionNumbers[0], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[0], 10)`
+		-or [convert]::ToInt32($SeperateVersionNumbers[1], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[1], 10)`
+		-or [convert]::ToInt32($SeperateVersionNumbers[2], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[2], 10)`
+		-or [convert]::ToInt32($SeperateVersionNumbers[3], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[3], 10)){
 			$HighestReadVersion = $ReadVersion
 		}
 
