@@ -33,7 +33,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         bool AllowNotes { get; set; }
 
-        bool IsComplexObect { get; set; }
+        bool IsComplexObject { get; set; }
 
         bool IsSelected { get; set; }
 

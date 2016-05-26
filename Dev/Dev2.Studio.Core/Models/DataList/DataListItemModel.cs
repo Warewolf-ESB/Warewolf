@@ -11,6 +11,7 @@
 using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces.DataList;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
@@ -21,7 +22,6 @@ namespace Dev2.Studio.Core.Models.DataList
 
         private string _description;
 
-        //private IDataListItemModel _parent;
         private bool _hasError;
 
         private string _errorMessage;
@@ -29,31 +29,24 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isVisible;
         private bool _isSelected;
 
-        //private string _lastIndexedName;
         private bool _isUsed;
 
         private bool _allowNotes;
-        private bool _isComplexObect;
+        private bool _isComplexObject;
         private string _displayName;
         private bool _isExpanded = true;
         protected enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
         private string _name;
-        //string _filterText;
-        //ObservableCollection<IDataListItemModel> _backupChildren    ;
+
 
         #endregion Fields
 
         #region Ctor
 
-        /*
-         * This is a piss poor implementation of optional parameters.... Constructor chaining would be far better suited to our needs, or even better a factory or builder!!!! ;)
-         */
 
         public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
         {
             Description = description;
-            //Parent = parent;
-            //Children = children;
             HasError = hasError;
             ErrorMessage = errorMessage;
             IsEditable = isEditable;
@@ -61,7 +54,6 @@ namespace Dev2.Studio.Core.Models.DataList
             DisplayName = displayname;
             IsSelected = isSelected;
             IsExpanded = isExpanded;
-            //LastIndexedName = Name;
             IsUsed = true;
             ColumnIODirection = dev2ColumnArgumentDirection;
         }
@@ -69,8 +61,6 @@ namespace Dev2.Studio.Core.Models.DataList
         #endregion Ctor
 
         #region Properties
-
-        public bool UpdatingChildren { get; protected set; }
 
         public bool IsUsed
         {
@@ -153,18 +143,6 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        //public IDataListItemModel Parent
-        //{
-        //    get
-        //    {
-        //        return _parent;
-        //    }
-        //    set
-        //    {
-        //        _parent = value;
-        //        NotifyOfPropertyChange(() => Parent);
-        //    }
-        //}
 
         public bool HasError
         {
@@ -364,17 +342,17 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public bool IsComplexObect
+        public bool IsComplexObject
         {
             get
             {
-                return _isComplexObect;
+                return _isComplexObject;
             }
 
             set
             {
-                _isComplexObect = value;
-                NotifyOfPropertyChange(() => IsComplexObect);
+                _isComplexObject = value;
+                NotifyOfPropertyChange(() => IsComplexObject);
             }
         }
 
@@ -447,7 +425,6 @@ namespace Dev2.Studio.Core.Models.DataList
 
         protected void SetColumnIODirectionFromInput(bool value)
         {
-            enDev2ColumnArgumentDirection original = _columnIODir;
 
             if (!value)
             {
@@ -471,19 +448,11 @@ namespace Dev2.Studio.Core.Models.DataList
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
             }
-
-            if (original != _columnIODir)
-            {
-                if (!UpdatingChildren)
-                {
-                    NotifyIOPropertyChanged();
-                }
-            }
+            NotifyIOPropertyChanged();
         }
 
         protected void SetColumnIODirectionFromOutput(bool value)
         {
-            enDev2ColumnArgumentDirection original = _columnIODir;
 
             if (!value)
             {
@@ -507,14 +476,8 @@ namespace Dev2.Studio.Core.Models.DataList
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
             }
-
-            if (original != _columnIODir)
-            {
-                if (!UpdatingChildren)
-                {
-                    NotifyIOPropertyChanged();
-                }
-            }
+           NotifyIOPropertyChanged();
+           
         }
 
         private void NotifyIOPropertyChanged()
