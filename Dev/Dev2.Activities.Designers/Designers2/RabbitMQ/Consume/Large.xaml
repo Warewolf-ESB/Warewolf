@@ -148,14 +148,14 @@
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
                                 DefaultText="Prefetch Count"
                                 Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RabbitMQToolTipMessage}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipPrefetch}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsPrefetchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpMessage}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpPrefetch}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                             SourcePropertyName="Prefetch"
                                             SourcePropertyValue="{Binding Prefetch, UpdateSourceTrigger=PropertyChanged}"
