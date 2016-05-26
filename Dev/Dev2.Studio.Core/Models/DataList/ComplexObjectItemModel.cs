@@ -53,10 +53,10 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 return _isParentObject;
             }
-            private set
+            set
             {
                 _isParentObject = value;
-                NotifyOfPropertyChange(() => Children);
+                NotifyOfPropertyChange(() => IsParentObject);
             }
         }
         

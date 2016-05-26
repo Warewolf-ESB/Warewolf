@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -45,9 +46,22 @@ namespace Dev2.Studio.Views.DataList
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
             DataContextChanged += OnDataContextChanged;
+            Xtg.DataContextChanged+=OnDataContextChanged;
+            Xtg.DataSourceChanged+=XtgOnDataSourceChanged;
             //KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
+        private void XtgOnDataSourceChanged(object sender, RoutedPropertyChangedEventArgs<IEnumerable> routedPropertyChangedEventArgs)
+        {
+            if (Xtg != null)
+            {
+                if (Xtg.Records != null)
+                {
+                    Xtg.Records.ExpandAll(true);
+
+                }
+            }
+        }
 
         #region Events
 
@@ -64,6 +78,7 @@ namespace Dev2.Studio.Views.DataList
                 if(Xtg.Records != null)
                 {
                     Xtg.Records.ExpandAll(true);
+                    
                 }
             }
         }
