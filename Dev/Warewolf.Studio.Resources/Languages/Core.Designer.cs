@@ -6248,7 +6248,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put response variables go in here..
+        ///   Looks up a localized string similar to Put response variables here..
         /// </summary>
         public static string RabbitMQToolTipResponse {
             get {
