@@ -430,7 +430,7 @@
                                               IsChecked="{Binding Input}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
-                                              Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                              Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
                                               AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
@@ -450,7 +450,7 @@
                                               IsChecked="{Binding Output}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
-                                              Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                              Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
                                               AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
