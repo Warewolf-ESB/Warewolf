@@ -178,10 +178,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Prefetch"), debugItem);
-            AddDebugItem(new DebugEvalResult(Prefetch, "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
+            if(!string.IsNullOrEmpty(Prefetch))
+            {
+                debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", "Prefetch"), debugItem);
+                AddDebugItem(new DebugEvalResult(Prefetch, "", env, update), debugItem);
+                _debugInputs.Add(debugItem);
+            }            
 
             debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "QueueName"), debugItem);

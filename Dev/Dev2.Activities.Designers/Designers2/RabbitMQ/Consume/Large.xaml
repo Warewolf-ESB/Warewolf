@@ -14,7 +14,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="340"
                                MinWidth="340"
-                               MinHeight="370"
+                               MinHeight="250"
                                mc:Ignorable="d"
                                d:DesignWidth="340"
                                d:DataContext="{d:DesignInstance local:RabbitMQConsumeDesignerViewModel}">
@@ -42,7 +42,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -118,15 +117,8 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=SourceTextBlock, Path=ActualWidth}" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Response" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
                                 DefaultText="Response "
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
@@ -144,8 +136,8 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
                                 DefaultText="Prefetch Count"
                                 Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipPrefetch}"
@@ -163,11 +155,12 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
-        <CheckBox Grid.Column="1" Grid.Row="5"
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1" Grid.Row="4"
                   Margin="-6,0,0,0"
                       Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Core.RabbitMQToolTipIsDurable}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpIsDurable}" DataContext="{Binding}" />
@@ -178,14 +171,14 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="6" Text="Result" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="6"
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" Margin="0,-1,0,0" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="5"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
+                                Margin="0,-1,0,0"
                                 Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resultstxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -197,6 +190,6 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <errors:OnError Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
+        <errors:OnError Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
