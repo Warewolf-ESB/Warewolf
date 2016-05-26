@@ -69,5 +69,5 @@ Given I drag RabbitMQConsume tool onto the design surface
 	When I click new source
 	Then the RabbitMQ Source window is opened		
 	And I add the new source
-	When I hit F-six to execute tool 
+	When I hit F-six to execute tool  
 	Then No queue error is Returned
