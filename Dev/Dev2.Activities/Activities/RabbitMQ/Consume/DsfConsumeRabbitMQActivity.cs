@@ -114,8 +114,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        _prefetch = ushort.Parse(Prefetch);
-
+                        _prefetch = string.IsNullOrEmpty(Prefetch) ? (ushort)1 : ushort.Parse(Prefetch);
                         Channel.BasicQos(0, _prefetch, false);
                         if (ReQueue)
                         {
@@ -147,18 +146,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 throw new Exception(string.Format("Queue '{0}' not found", queueName));
                             }
 
-                            if (!ReQueue)
-                            {
-                                BasicDeliverEventArgs basicDeliverEventArgs;
-                                Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
-                                if (basicDeliverEventArgs == null)
-                                {
-                                    throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
-                                }
-                                var body = basicDeliverEventArgs.Body;
-                                _response = Encoding.Default.GetString(body);
-                                Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
-                            }
+                            BasicDeliverEventArgs basicDeliverEventArgs;
+                            Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
+                            if(basicDeliverEventArgs == null)
+                                throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
+                            var body = basicDeliverEventArgs.Body;
+                            _response = Encoding.Default.GetString(body);
+                            Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
                         }
                     }
                 }
@@ -217,6 +211,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         protected override void AssignResult(IDSFDataObject dataObject, int update)
         {
+            base.AssignResult(dataObject, update);
+
             if (!string.IsNullOrEmpty(Response))
             {
                 dataObject.Environment.Assign(Response, _response, update);
