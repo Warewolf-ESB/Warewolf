@@ -27,7 +27,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Given(@"I drag RabbitMQConsume tool onto the design surface")]
         public void GivenIDragRabbitMQConsumeToolOntoTheDesignSurface()
         {
-            var consumeActivity = new DsfConsumeRabbitMQActivity();            
+            var consumeActivity = new DsfConsumeRabbitMQActivity();
 
             var resource = new Mock<IResourceCatalog>();
             var modelItem = ModelItemUtils.CreateModelItem(consumeActivity);
@@ -35,7 +35,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 
             var viewModel = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object);
             var privateObject = new PrivateObject(consumeActivity);
-            
+
             ScenarioContext.Current.Add("ViewModel", viewModel);
             ScenarioContext.Current.Add("Model", model);
             ScenarioContext.Current.Add("Activity", consumeActivity);
@@ -47,11 +47,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         {
             var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.NewRabbitMQSourceCommand.CanExecute(null));
-        }       
+        }
 
         [Given(@"EditButton is Disabled")]
         public void GivenEditButtonIsDisabled()
-        {                        
+        {
             var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
@@ -111,6 +111,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.SelectedRabbitMQSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == "localhost");
         }
+
         private IEnumerable<IRabbitMQServiceSourceDefinition> SourceDefinitions()
         {
             return new List<IRabbitMQServiceSourceDefinition>(new[]
@@ -157,6 +158,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.QueueName = p0;
         }
+
         [Given(@"I execute tool without a source")]
         public void GivenIExecuteToolWithoutASource()
         {
@@ -181,7 +183,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 
         [Then(@"No queue error is Returned")]
         public void ThenNoQueueErrorIsReturned()
-        {            
+        {
             var consumeRabbitMQActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("Activity");
 
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -190,11 +192,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 
             var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
             _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-            
+
             var result = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(Equals("Failure: Queue Name is required.", result));
         }
-                
+
         [Then(@"I add the new source")]
         public void ThenIAddTheNewSource()
         {
@@ -204,11 +206,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 
         [Then(@"Nothing in the queue error is Returned")]
         public void ThenNothingInTheQueueErrorIsReturned()
-        {            
+        {
             var consumeRabbitMQActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("Activity");
             consumeRabbitMQActivity.RabbitMQSourceResourceId = new Guid();
             var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
-            var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());            
+            var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(Equals(string.Format("Nothing in the Queue : {0}", consumeRabbitMQActivity.QueueName), executeResults));
         }
     }
