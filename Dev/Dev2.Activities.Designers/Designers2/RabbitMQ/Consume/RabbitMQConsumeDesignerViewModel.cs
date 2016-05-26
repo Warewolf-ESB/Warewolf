@@ -129,11 +129,13 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
+
         public string Response
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
+
         public string Prefetch
         {
             get { return GetProperty<string>(); }

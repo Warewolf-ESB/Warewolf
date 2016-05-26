@@ -21,7 +21,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
@@ -47,7 +47,7 @@
             </Grid.ColumnDefinitions>
 
             <ComboBox x:Name="InitialFocusElement"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
                       Margin="{StaticResource ControlBorderRight}"
@@ -74,9 +74,9 @@
                 </i:Interaction.Behaviors>
             </Button>
             <Button Grid.Column="2"
-                    Content="{x:Static languages:Core.New}" 
+                    Content="{x:Static languages:Core.New}"
                     Width="Auto"
-                    Style="{StaticResource ButtonOrangeStyle}" 
+                    Style="{StaticResource ButtonOrangeStyle}"
                     ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
                     Command="{Binding NewRabbitMQSourceCommand}">
                 <i:Interaction.Behaviors>

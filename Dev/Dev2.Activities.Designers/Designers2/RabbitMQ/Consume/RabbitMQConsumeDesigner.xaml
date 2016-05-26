@@ -37,5 +37,4 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
-
 </core:ActivityDesigner>
