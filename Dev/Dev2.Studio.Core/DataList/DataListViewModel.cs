@@ -1414,7 +1414,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
             }
             var name = GetNameForArrayComplexObject(c, isArray);
-            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray };
+            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray,Parent=parent };
             parent.Children.Add(complexObjectItemModel);
             if (c.HasChildNodes)
             {
