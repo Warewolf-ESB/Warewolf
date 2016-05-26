@@ -1,8 +1,8 @@
-﻿using System;
-using System.Data;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Npgsql;
+using System;
+using System.Data;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
