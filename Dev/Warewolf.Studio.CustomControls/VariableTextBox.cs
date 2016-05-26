@@ -57,7 +57,7 @@ namespace Warewolf.Studio.CustomControls
                 typeof(bool),
                 typeof(VariableTextBox));
 
-        public static DependencyProperty IsComplexObectProperty =
+        public static DependencyProperty IsComplexObjectProperty =
             DependencyProperty.Register(
                 "IsComplexObject",
                 typeof(bool),
@@ -130,7 +130,7 @@ namespace Warewolf.Studio.CustomControls
             }
             set
             {
-                if (IsComplexObect)
+                if (IsComplexObject)
                 {
                     SetValue(ViewComplexObjectsCommandProperty, value);
                 }
@@ -154,10 +154,10 @@ namespace Warewolf.Studio.CustomControls
             set { SetValue(IsUsedProperty, value); }
         }
 
-        public bool IsComplexObect
+        public bool IsComplexObject
         {
-            get { return (bool)GetValue(IsComplexObectProperty); }
-            set { SetValue(IsComplexObectProperty, value); }
+            get { return (bool)GetValue(IsComplexObjectProperty); }
+            set { SetValue(IsComplexObjectProperty, value); }
         }
     }
 }

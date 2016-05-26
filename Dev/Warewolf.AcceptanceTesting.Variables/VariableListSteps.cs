@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.Views.DataList;
-using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.AcceptanceTesting.Core;
-using Dev2;
-using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.AcceptanceTesting.Variables
 {

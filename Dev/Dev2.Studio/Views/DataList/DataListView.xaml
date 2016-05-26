@@ -384,7 +384,7 @@
                                                                         AcceptsReturn="False"
                                                                         Focusable="True"
                                                                         IsTabStop="True" 
-                                                                        Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                        Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                         ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                         DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                         AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
@@ -392,7 +392,7 @@
                                                                         Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                         IsUsed="{Binding Path=IsUsed}"
                                                                         Margin="0,0,0,0" 
-                                                                        aprop:FocusAttachedProperty.IsFocused="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        
                                                                         AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                             <customControls:VariableTextBox.Style>
                                                 <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableComplexObjectsTextboxStyle}">
@@ -411,12 +411,12 @@
                                                 </Style>
                                             </customControls:VariableTextBox.Style>
                                             <i:Interaction.Behaviors>
-                                                <behaviors:TextboxSelectAllOnFocusBehavior />
+<!--                                                <behaviors:TextboxSelectAllOnFocusBehavior />-->
                                                 <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                             </i:Interaction.Behaviors>
                                         </customControls:VariableTextBox>
-                                        <TextBlock Text="{Binding Path=DisplayName}" Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+                                        <TextBlock Text="{Binding Path=DisplayName}" Visibility="{Binding IsParentObject, Converter={StaticResource BoolToVisibilityConverterNegative}}"></TextBlock>
                                     </StackPanel>
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
