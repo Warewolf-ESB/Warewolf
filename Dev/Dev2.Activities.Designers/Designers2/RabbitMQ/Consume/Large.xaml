@@ -161,9 +161,9 @@
                       Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.RabbitMQToolTipIsDurable}">
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipReQueue}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpIsDurable}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpRequeue}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ReQueue"
                                      SourcePropertyValue="{Binding  ReQueue, UpdateSourceTrigger=PropertyChanged}"
