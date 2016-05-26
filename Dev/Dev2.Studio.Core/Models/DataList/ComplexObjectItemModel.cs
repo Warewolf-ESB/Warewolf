@@ -40,7 +40,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _parent = value;
-                if (_parent != null)
+                if (_parent != null && !string.IsNullOrEmpty(DisplayName))
                 {
                     Name = _parent.Name + "." + DisplayName;
                 }
