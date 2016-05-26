@@ -35,12 +35,12 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="SecuritySteps.cs" />
     <Compile Include="Settings Permissions.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Permissions.feature</DependentUpon>
     </Compile>
+    <Compile Include="SettingsPermissionsSteps.cs" />
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.3.4.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
