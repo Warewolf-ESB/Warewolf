@@ -4617,7 +4617,7 @@ Data
         &lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQToolTipResponse" xml:space="preserve">
-    <value>Put response variables go in here.</value>
+    <value>Put response variables here.</value>
   </data>
   <data name="RabbitMQHelpIsDurable" xml:space="preserve">
     <value>Make the queue durable.&lt;br/&gt;
