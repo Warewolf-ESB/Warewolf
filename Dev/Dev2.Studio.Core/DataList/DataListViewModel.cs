@@ -259,7 +259,7 @@ namespace Dev2.Studio.ViewModels.DataList
         bool CanViewComplexObjects(Object itemx)
         {
             var item = itemx as IDataListItemModel;
-            return item != null && !item.IsComplexObect;
+            return item != null && !item.IsComplexObject;
         }
 
         bool CanAddNotes(Object itemx)
@@ -1175,12 +1175,12 @@ namespace Dev2.Studio.ViewModels.DataList
             IRecordSetFieldItemModel childItem = DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty);
             if (recset != null)
             {
-                recset.IsComplexObect = false;
+                recset.IsComplexObject = false;
                 recset.AllowNotes = false;
                 recset.IsExpanded = false;
                 if (childItem != null)
                 {
-                    childItem.IsComplexObect = false;
+                    childItem.IsComplexObject = false;
                     childItem.AllowNotes = false;
                     childItem.Parent = recset;
                     recset.Children.Add(childItem);
@@ -1200,7 +1200,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if (childItem.Parent == null)
                     {
-                        childItem.IsComplexObect = true;
+                        childItem.IsComplexObject = true;
                         childItem.AllowNotes = false;
                     }
                     childItem.Parent = complexObjectItemModel;
@@ -1291,7 +1291,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (ScalarCollection.Count == 0)
             {
                 IScalarItemModel dataListItemModel = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
-                dataListItemModel.IsComplexObect = false;
+                dataListItemModel.IsComplexObject = false;
                 dataListItemModel.AllowNotes = false;
                 ScalarCollection.Add(dataListItemModel);
             }

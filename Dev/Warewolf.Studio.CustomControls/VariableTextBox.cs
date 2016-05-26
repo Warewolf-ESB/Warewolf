@@ -59,7 +59,7 @@ namespace Warewolf.Studio.CustomControls
 
         public static DependencyProperty IsComplexObectProperty =
             DependencyProperty.Register(
-                "IsComplexObect",
+                "IsComplexObject",
                 typeof(bool),
                 typeof(VariableTextBox));
 

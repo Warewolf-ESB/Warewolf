@@ -97,7 +97,7 @@ namespace Dev2.Studio.Core.Factories
             IComplexObjectItemModel objectItemModel = new ComplexObjectItemModel(displayName);
             if (objectItemModel.Parent == null)
             {
-                objectItemModel.IsComplexObect = true;
+                objectItemModel.IsComplexObject = true;
                 objectItemModel.AllowNotes = false;
             }
             return objectItemModel;
