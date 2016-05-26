@@ -8,18 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
+using Dev2.Diagnostics;
 using Dev2.Util;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Activities.Debug;
-using Dev2.Diagnostics;
-using RabbitMQ.Client.Events;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -37,6 +37,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
     {
         public string _response;
         public ushort _prefetch;
+
         #region Ctor
 
         public DsfConsumeRabbitMQActivity()
@@ -44,22 +45,23 @@ namespace Dev2.Activities.RabbitMQ.Consume
             DisplayName = "RabbitMQ Consume";
         }
 
-        #endregion Ctor        
+        #endregion Ctor
+
         public Guid RabbitMQSourceResourceId { get; set; }
 
         [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
-                
+
         [FindMissing]
         public string Response { get; set; }
-        
+
         [FindMissing]
         public string Prefetch { get; set; }
-        
+
         [FindMissing]
         public bool ReQueue { get; set; }
-        
+
         public QueueingBasicConsumer Consumer { get; set; }
 
         [NonSerialized]
@@ -175,7 +177,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             if (env == null)
             {
                 return new List<DebugItem>();
-            }            
+            }
             DebugItem debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Requeue"), debugItem);
             string value = ReQueue ? "True" : "False";
@@ -188,7 +190,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             _debugInputs.Add(debugItem);
 
             debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "QueueName"), debugItem);            
+            AddDebugItem(new DebugItemStaticDataParams("", "QueueName"), debugItem);
             AddDebugItem(new DebugEvalResult(QueueName, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -201,7 +203,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             base.GetDebugOutputs(dataList, update);
 
-            if(dataList == null)
+            if (dataList == null)
                 return new List<DebugItem>();
 
             DebugItem debugItem = new DebugItem();
@@ -211,7 +213,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             return _debugOutputs;
         }
 
-        #endregion
+        #endregion Overrides of DsfBaseActivity
 
         protected override void AssignResult(IDSFDataObject dataObject, int update)
         {
@@ -220,6 +222,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 dataObject.Environment.Assign(Response, _response, update);
             }
         }
+
         #endregion Overrides of DsfBaseActivity
     }
 }
