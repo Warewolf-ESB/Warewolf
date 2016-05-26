@@ -6038,7 +6038,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///   Looks up a localized string similar to Provide number of processes that can run concurrently.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6077,7 +6077,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
-        ///        Make the queue durable.
+        ///        Requeue the queue.
         /// </summary>
         public static string RabbitMQHelpRequeue {
             get {
@@ -6239,7 +6239,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue Requeue..
+        ///   Looks up a localized string similar to Requeue the queue..
         /// </summary>
         public static string RabbitMQToolTipReQueue {
             get {

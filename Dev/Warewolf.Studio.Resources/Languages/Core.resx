@@ -4607,7 +4607,7 @@ Data
     <value>Provide number of processes that can run concurrently.</value>
   </data>
   <data name="RabbitMQHelpPrefetch" xml:space="preserve">
-    <value>Provide a meaningful name for the queue.&lt;br /&gt;
+    <value>Provide number of processes that can run concurrently.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
@@ -4627,14 +4627,14 @@ Data
         Make the queue durable</value>
   </data>
   <data name="RabbitMQToolTipReQueue" xml:space="preserve">
-    <value>Make the queue Requeue.</value>
+    <value>Requeue the queue.</value>
   </data>
     <data name="RabbitMQHelpRequeue" xml:space="preserve">
     <value>Keep the message in the queue or not.&lt;br/&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
-        Make the queue durable</value>
+        Requeue the queue</value>
   </data>
   <data name="RabbitMQToolTipIsDurable" xml:space="preserve">
     <value>Make the queue durable.</value>
