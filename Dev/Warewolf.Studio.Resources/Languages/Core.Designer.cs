@@ -6073,7 +6073,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///   Looks up a localized string similar to Put the variable.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
