@@ -578,6 +578,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             var complexObjectItemModels = ComplexObjectCollection.Where(model => string.IsNullOrEmpty(model.DisplayName));
             var objectItemModels = complexObjectItemModels as IList<IComplexObjectItemModel> ?? complexObjectItemModels.ToList();
+            if (objectItemModels.Count <= 1) return;
             for (int i = objectItemModels.Count; i > 0; i--)
             {
                 ComplexObjectCollection.Remove(objectItemModels[i - 1]);

@@ -1277,7 +1277,7 @@
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="IsComplexObect" Value="False">
+                        <Trigger Property="IsComplexObject" Value="False">
                             <Setter Property="Visibility" TargetName="ViewObjectsDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="ViewObjectsButton" Value="Visible" />
                         </Trigger>
@@ -1314,7 +1314,7 @@
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsFocused" Value="True"/>
-                                <Condition Property="IsComplexObect" Value="True"/>
+                                <Condition Property="IsComplexObject" Value="True"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="Visibility" TargetName="ViewObjectsDisabled" Value="Visible" />
                             <Setter Property="Visibility" TargetName="ViewObjectsButton" Value="Hidden" />
