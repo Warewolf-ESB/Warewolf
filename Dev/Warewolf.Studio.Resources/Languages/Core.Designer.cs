@@ -6073,6 +6073,19 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keep the message in the queue or not.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue durable.
+        /// </summary>
+        public static string RabbitMQHelpRequeue {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpRequeue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put the variable.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
@@ -6222,6 +6235,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQToolTipQueueName {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipQueueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue Requeue..
+        /// </summary>
+        public static string RabbitMQToolTipReQueue {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipReQueue", resourceCulture);
             }
         }
         
