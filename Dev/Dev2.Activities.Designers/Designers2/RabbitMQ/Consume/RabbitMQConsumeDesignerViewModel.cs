@@ -83,14 +83,10 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
         public bool IsPrefetchFocused { get { return (bool)GetValue(IsPrefetchFocusedProperty); } set { SetValue(IsPrefetchFocusedProperty, value); } }
         public static readonly DependencyProperty IsPrefetchFocusedProperty = DependencyProperty.Register("IsPrefetchFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
-<<<<<<< HEAD
-        
-=======
 
         public bool IsResponseFocused { get { return (bool)GetValue(IsResponseFocusedProperty); } set { SetValue(IsResponseFocusedProperty, value); } }
         public static readonly DependencyProperty IsResponseFocusedProperty = DependencyProperty.Register("IsResponseFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
->>>>>>> WOLF-1516_-_RabbitMQ_Tool_-_Send_message
         private IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
 
         public IRabbitMQServiceSourceDefinition SelectedRabbitMQSource
@@ -133,9 +129,16 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
-        public ushort? Prefetch
+
+        public string Response
         {
-            get { return GetProperty<ushort?>(); }
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
+        }
+
+        public string Prefetch
+        {
+            get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
