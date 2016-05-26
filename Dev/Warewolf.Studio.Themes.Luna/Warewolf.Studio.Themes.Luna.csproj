@@ -159,6 +159,9 @@
     <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
     <Compile Include="XamGrid\ContextMenuSettings.cs" />
     <Compile Include="XamGrid\XamGridEx.cs" />
+    <Resource Include="Images\Filter.png" />
+    <Resource Include="Images\FilterClearButton.png" />
+    <Resource Include="Images\MagnifyingGlass.png" />
     <Resource Include="Images\Resize_Grip.png" />
     <Resource Include="Fonts\grab.cur" />
     <Resource Include="Fonts\grabbing.cur" />
@@ -383,7 +386,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Elements\XamTreeGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Images\AssignObject.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
