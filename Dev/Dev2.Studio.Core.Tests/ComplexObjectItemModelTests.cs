@@ -76,6 +76,80 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("TestItem",complexObjectItemModel.DisplayName);
             Assert.IsFalse(complexObjectItemModel.IsParentObject);
         }
-       
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ComplexObject_GetJson")]
+        public void ComplexObjectItemModel_GetJson_PrimitiveChildren_ShouldReturnCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent");
+            complexObject.Children.Add(new ComplexObjectItemModel("Name",complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Age", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Gender", complexObject));
+            //------------Execute Test---------------------------
+            var jsonString = complexObject.GetJson();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{\"Parent\":{\"Name\":\"\",\"Age\":\"\",\"Gender\":\"\"}}", jsonString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ComplexObject_GetJson")]
+        public void ComplexObjectItemModel_GetJson_HasObjectChildren_ShouldReturnCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent");
+            complexObject.Children.Add(new ComplexObjectItemModel("Name",complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Age", complexObject));
+            var schoolObject = new ComplexObjectItemModel("School", complexObject);
+            complexObject.Children.Add(schoolObject);
+            schoolObject.Children.Add(new ComplexObjectItemModel("Name", schoolObject));
+            schoolObject.Children.Add(new ComplexObjectItemModel("Location", schoolObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Gender", complexObject));
+            //------------Execute Test---------------------------
+            var jsonString = complexObject.GetJson();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{\"Parent\":{\"Name\":\"\",\"Age\":\"\",\"School\":{\"Name\":\"\",\"Location\":\"\"},\"Gender\":\"\"}}", jsonString);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ComplexObject_GetJson")]
+        public void ComplexObjectItemModel_GetJson_IsArray_PrimitiveChildren_ShouldReturnCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent");
+            complexObject.IsArray = true;
+            complexObject.Children.Add(new ComplexObjectItemModel("Name", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Age", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Gender", complexObject));
+            //------------Execute Test---------------------------
+            var jsonString = complexObject.GetJson();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{\"Parent\":[{\"Name\":\"\",\"Age\":\"\",\"Gender\":\"\"}]}", jsonString);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ComplexObject_GetJson")]
+        public void ComplexObjectItemModel_GetJson_HasObjectChildrenIsArray_ShouldReturnCorrectJson()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent");
+            complexObject.Children.Add(new ComplexObjectItemModel("Name", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("Age", complexObject));
+            var schoolObject = new ComplexObjectItemModel("School", complexObject);
+            complexObject.Children.Add(schoolObject);
+            schoolObject.Children.Add(new ComplexObjectItemModel("Name", schoolObject));
+            schoolObject.Children.Add(new ComplexObjectItemModel("Location", schoolObject));
+            schoolObject.IsArray = true;
+            complexObject.Children.Add(new ComplexObjectItemModel("Gender", complexObject));
+            //------------Execute Test---------------------------
+            var jsonString = complexObject.GetJson();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{\"Parent\":{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}}", jsonString);
+        }
     }
 }

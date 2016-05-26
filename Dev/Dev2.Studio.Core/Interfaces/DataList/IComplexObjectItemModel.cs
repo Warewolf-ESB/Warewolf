@@ -7,5 +7,6 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         ObservableCollection<IComplexObjectItemModel> Children { get; set; }
         bool IsArray { get; set; }
         IComplexObjectItemModel Parent { get; set; }
+        string GetJson();
     }
 }
