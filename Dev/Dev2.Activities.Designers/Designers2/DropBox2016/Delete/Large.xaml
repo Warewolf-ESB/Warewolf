@@ -5,7 +5,6 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
