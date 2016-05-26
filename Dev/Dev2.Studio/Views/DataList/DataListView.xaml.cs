@@ -58,6 +58,14 @@ namespace Dev2.Studio.Views.DataList
             {
                 //vm.AddRecordsetNamesIfMissing();
             }
+
+            if(Xtg != null)
+            {
+                if(Xtg.Records != null)
+                {
+                    Xtg.Records.ExpandAll(true);
+                }
+            }
         }
 
         private void NametxtTextChanged(object sender, RoutedEventArgs e)

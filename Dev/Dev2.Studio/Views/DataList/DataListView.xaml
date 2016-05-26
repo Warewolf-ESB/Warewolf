@@ -89,6 +89,7 @@
                                        DataSource="{Binding Path=BaseCollection}" 
                                        Background="Transparent" 
                                        Loaded="Xtg_OnLoaded"
+                                       DataContextChanged="OnDataContextChanged"
                                        Margin="{StaticResource ElementBorderTop}" 
                                        customControls:DataPresenterHelpers.FilterText="{Binding ElementName=SearchTextBox, Path=Text}">
                 <dataPresenter:XamTreeGrid.FieldLayoutSettings>
