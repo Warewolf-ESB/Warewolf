@@ -10,6 +10,7 @@ using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -112,8 +113,7 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (OutputArea != null)
                 {
-                    var outputs = OutputArea.Outputs.ToList();
-                    _viewmodel.OutputsRegion.Outputs = outputs;
+                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                     if (recSet != null)
                     {
