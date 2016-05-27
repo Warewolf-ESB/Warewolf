@@ -85,7 +85,7 @@
                     <core1:HelpSetter Text="{x:Static languages:Core.SharepointEditServerHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Server Path From" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Server Path" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
             <ui:IntellisenseTextBox x:Name="InputPathBox"
                                 Grid.Column="1"
                                 Grid.Row="1"
