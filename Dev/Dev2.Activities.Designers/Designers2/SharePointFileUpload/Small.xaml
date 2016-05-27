@@ -69,35 +69,10 @@
             </i:Interaction.Behaviors>
         </Button>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Server Path From" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
-        <ui:IntellisenseTextBox x:Name="InputPathBox"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                DefaultText="[[SharePoint Path]]"
-                                Margin="{StaticResource ControlBorderTop}"
-                                Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.SharePointUploadPathToolTip}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
-            <ui:IntellisenseTextBox.IntellisenseProvider>
-                <interfaceImplementors:CompositeIntellisenseProvider>
-                    <interfaceImplementors:DefaultIntellisenseProvider />
-                </interfaceImplementors:CompositeIntellisenseProvider>
-            </ui:IntellisenseTextBox.IntellisenseProvider>
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.SharePointUploadHelpFolder}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.ServerInputPath"
-                                     SourcePropertyValue="{Binding  ModelItem.ServerInputPath, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Local Path To" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Local Path From" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox x:Name="LocalInputPath"
                                 Grid.Column="1"
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 DefaultText="[[FolderToRead]]" 
                                 FilterType="All"
@@ -122,6 +97,33 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Server Path To" x:Name="InputPathBoxlbl"  Margin="{StaticResource ControlBorderTop}"/>
+        <ui:IntellisenseTextBox x:Name="InputPathBox"
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                DefaultText="[[SharePoint Path]]"
+                                Margin="{StaticResource ControlBorderTop}"
+                                Text="{Binding Path=ModelItem.ServerInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Core.SharePointUploadPathToolTip}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.SharePointUploadHelpFolder}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.ServerInputPath"
+                                     SourcePropertyValue="{Binding  ModelItem.ServerInputPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Result"  Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
