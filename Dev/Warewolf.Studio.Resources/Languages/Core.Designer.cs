@@ -5995,7 +5995,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue auto delete.&lt;br/&gt;
+        ///   Looks up a localized string similar to If set, the queue is deleted when all consumers have 
+        ///    finished using it. The last consumer can be cancelled either 
+        ///    explicitly or because its channel is closed. If there was no 
+        ///    consumer ever on the queue, it won&apos;t be deleted. Applications 
+        ///    can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6008,7 +6012,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue durable.&lt;br/&gt;
+        ///   Looks up a localized string similar to When RabbitMQ source quits or crashes it will forget the queues.
+        ///    Durable will prevent queues getting lost after the source is up again.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6021,7 +6026,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue exclusive.&lt;br/&gt;
+        ///   Looks up a localized string similar to Exclusive queues may only be accessed by the current connection, 
+        ///    and are deleted when that connection closes. Passive declaration of an exclusive 
+        ///    queue by other connections are not allowed.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6034,7 +6041,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message goes in here.&lt;br /&gt;
+        ///   Looks up a localized string similar to This is the actual content you want to add in the Queue
+        ///      When the Consumer consumes the message, this content will
+        ///      be returned as the response.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6053,13 +6062,17 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide number of processes that can run concurrently.&lt;br /&gt;
+        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    
+        ///      This will pre-fetch the given number of messages and block further traffic until you 
+        ///      Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 
+        ///      are pre-fetched at one time.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
-        ///        Allowed:&lt;br /&gt;
+        ///         Allowed:&lt;br /&gt;
         ///        Data   
         ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;            
+        ///            &lt;li&gt;Interger Value&lt;/li&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///        &lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
@@ -6070,7 +6083,8 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 
-        ///      The Queue should already be in the RabbitMQ Source in your server.&lt;br /&gt;
+        ///      The Queue should already be in the RabbitMQ Source in your server.
+        ///      Note: The Queue name is case sensitive.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6107,11 +6121,13 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Looks up a localized string similar to Only variables go in here.
         ///        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
         ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;            
+        ///        
+        ///        Allowed:&lt;br /&gt;          
+        ///         &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          
         ///        &lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpResponse {
@@ -6135,6 +6151,27 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQHelpResult {
             get {
                 return ResourceManager.GetString("RabbitMQHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  The Queue might be empty when the 
+        ///      Consumer makes the initial attempt to Consume the message.
+        ///      Put the number of seconds you want the consumer to delay when attempting to 
+        ///      consume messages from the queue.
+        ///      After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;Interger Value&lt;/li&gt;            
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpTimeOut {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpTimeOut", resourceCulture);
             }
         }
         
@@ -6212,7 +6249,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue auto delete..
+        ///   Looks up a localized string similar to Make the queue auto-delete to delete queue after Consumer are done with it..
         /// </summary>
         public static string RabbitMQToolTipIsAutoDelete {
             get {
@@ -6221,7 +6258,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue durable..
+        ///   Looks up a localized string similar to Make the queue durable to back up Queue incase of a crash..
         /// </summary>
         public static string RabbitMQToolTipIsDurable {
             get {
@@ -6230,7 +6267,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue exclusive..
+        ///   Looks up a localized string similar to Make the queue exclusive so that it&apos;s accessable only inside the current connection..
         /// </summary>
         public static string RabbitMQToolTipIsExclusive {
             get {
@@ -6239,7 +6276,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message goes in here..
+        ///   Looks up a localized string similar to The message you want to publish goes in here..
         /// </summary>
         public static string RabbitMQToolTipMessage {
             get {
@@ -6299,6 +6336,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQToolTipSource {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How long you want the Consumer to delay when checking for messages in the queue..
+        /// </summary>
+        public static string RabbitMQToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipTimeOut", resourceCulture);
             }
         }
         
