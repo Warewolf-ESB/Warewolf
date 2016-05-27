@@ -36,8 +36,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
         public string _response;
+        public string _result = "Success";
         public ushort _prefetch;
-        public const int _timeOut = 5000;
+        public int _timeOut = TimeSpan.FromMilliseconds(5000).Seconds;
 
         #region Ctor
 
@@ -62,6 +63,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         [FindMissing]
         public bool Acknowledge { get; set; }
+
+        [FindMissing]
+        public string TimeOut { get; set; }
 
         [FindMissing]
         public bool ReQueue { get; set; }
@@ -118,6 +122,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     using (Channel = Connection.CreateModel())
                     {
+                        if (!string.IsNullOrEmpty(TimeOut)) _timeOut = int.Parse(TimeOut);
                         _prefetch = string.IsNullOrEmpty(Prefetch) ? (ushort)1 : ushort.Parse(Prefetch);
                         Channel.BasicQos(0, _prefetch, Acknowledge);
                         if (ReQueue)
@@ -132,7 +137,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 throw new Exception(string.Format("Queue '{0}' not found", queueName));
                             }
 
-                            _response = response == null ? string.Format("The Queue is Empty, timeout: {0} seconds", TimeSpan.FromMilliseconds(_timeOut).Seconds) : Encoding.Default.GetString(response.Body);
+                            if(response == null)
+                            {
+                                _result = string.Format("Empty, timeout: {0} seconds", _timeOut);
+                                _response = string.Empty;
+                            }
+                            else
+                                _response = Encoding.Default.GetString(response.Body);
                         }
                         else
                         {
@@ -149,9 +160,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             }
 
                             BasicDeliverEventArgs basicDeliverEventArgs;
-                            Consumer.Queue.Dequeue(_timeOut, out basicDeliverEventArgs);
+                            Consumer.Queue.Dequeue((int)(TimeSpan.FromSeconds(_timeOut).TotalMilliseconds), out basicDeliverEventArgs);
                             if (basicDeliverEventArgs == null)
-                                _response = string.Format("The Queue is Empty, timeout: {0} seconds", TimeSpan.FromMilliseconds(_timeOut).Seconds);
+                            {
+                                _response = string.Empty;
+                                _result = string.Format("Empty, timeout: {0} seconds", _timeOut);
+                            }
                             else
                             {
                                 var body = basicDeliverEventArgs.Body;
@@ -161,7 +175,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                         }
                     }
                 }                
-                return "Success";
+                return _result;
             }
             catch (Exception ex)
             {
