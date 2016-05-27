@@ -73,10 +73,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Client.Old, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Microsoft.AspNet.SignalR.Client.Old.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
@@ -565,10 +561,6 @@
     <ProjectReference Include="..\Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj">
       <Project>{335E9126-30E1-4D23-B642-5D6BF82E2C09}</Project>
       <Name>Dev2.SignalR.Wrappers.New</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj">
-      <Project>{ca1ec490-5138-4714-8188-15d4bf6334da}</Project>
-      <Name>Dev2.SignalR.Wrappers.Old</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>

@@ -456,10 +456,6 @@
       <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
       <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj">
-      <Project>{CA1EC490-5138-4714-8188-15D4BF6334DA}</Project>
-      <Name>Dev2.SignalR.Wrappers.Old</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
       <Project>{95e8977a-0c2f-4d90-bd27-a5e8e33d1df9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
