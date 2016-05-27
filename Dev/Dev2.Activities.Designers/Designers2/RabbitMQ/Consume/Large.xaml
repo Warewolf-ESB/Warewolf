@@ -49,6 +49,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="SourceTextBlock" Grid.Column="0" Grid.Row="0" Text="RabbitMQ Source" />
@@ -120,6 +121,7 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
                                 DefaultText="Response "
+                                WrapInBrackets="True"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -155,8 +157,23 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Acknowledge" Margin="{StaticResource ControlBorderTop}" />
         <CheckBox Grid.Column="1" Grid.Row="4"
+                  Margin="-6,0,0,0"
+                      Content="Acknowledge"
+                  IsChecked="{Binding Acknowledge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipAcknowledge}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpAcknowledge}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="Acknowledge"
+                                     SourcePropertyValue="{Binding  Acknowledge, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1" Grid.Row="5"
                   Margin="-6,0,0,0"
                       Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -171,8 +188,8 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" Margin="0,-1,0,0" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="5"
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="Result" Margin="0,-1,0,0" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="6"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
                                 Margin="0,-1,0,0"
@@ -190,6 +207,6 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <errors:OnError Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
+        <errors:OnError Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
