@@ -20,7 +20,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageWcfSourceViewModel : SourceBaseImpl<IWcfServerSource>, IManageWcfSourceViewModel
     {
-
         private readonly IWcfSourceModel _updateManager;
         private readonly IEnvironmentModel _environment;
         private CancellationTokenSource _token;
@@ -48,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
-             : base("WcfSource")
+            : base("WcfSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("updateManager", updateManager);
@@ -109,8 +108,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
-
         public bool CanCancelTest()
         {
             return Testing;
@@ -155,9 +152,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _token = new CancellationTokenSource();
 
-
-            var t = new Task(
-                SetupProgressSpinner, _token.Token);
+            var t = new Task(SetupProgressSpinner, _token.Token);
 
             t.ContinueWith(a => Dispatcher.CurrentDispatcher.Invoke(() =>
             {
@@ -241,8 +236,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
-
         public Action<Action> DispatcherAction { get; set; }
 
         void SetupProgressSpinner()
@@ -287,8 +280,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        public IRequestServiceNameViewModel 
-            RequestServiceNameViewModel
+        public IRequestServiceNameViewModel RequestServiceNameViewModel
         {
             get
             {
@@ -302,7 +294,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     throw _requestServiceNameViewModel.Exception;
                 }
-
             }
         }
         void SaveConnection()
@@ -313,7 +304,6 @@ namespace Warewolf.Studio.ViewModels
 
                 if (res == MessageBoxResult.OK)
                 {
-
                     var src = ToSource();
                     src.Name = RequestServiceNameViewModel.ResourceName.Name;
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
@@ -339,8 +329,8 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = (_wcfServerSource == null ? ResourceName : _wcfServerSource.EndpointUrl).Trim();
-            Header = (_wcfServerSource == null ? ResourceName : _wcfServerSource.EndpointUrl).Trim();
+            HeaderText = (_wcfServerSource == null ? ResourceName : _wcfServerSource.Name).Trim();
+            Header = (_wcfServerSource == null ? ResourceName : _wcfServerSource.Name).Trim();
         }
         private IWcfServerSource _wcfServerSource;
         public IWcfServerSource ToSource()
