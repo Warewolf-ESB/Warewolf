@@ -132,7 +132,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 throw new Exception(string.Format("Queue '{0}' not found", queueName));
                             }
 
-                            _response = response == null ? string.Format("The Queue is Empty, timeout: {0}", _timeOut) : Encoding.Default.GetString(response.Body);
+                            _response = response == null ? string.Format("The Queue is Empty, timeout: {0} seconds", TimeSpan.FromMilliseconds(_timeOut).Seconds) : Encoding.Default.GetString(response.Body);
                         }
                         else
                         {
