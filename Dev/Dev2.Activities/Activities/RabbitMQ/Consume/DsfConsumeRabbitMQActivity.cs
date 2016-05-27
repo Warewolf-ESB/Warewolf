@@ -139,7 +139,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
                             if(response == null)
                             {
-                                _result = string.Format("Empty, timeout: {0} seconds", _timeOut);
+                                _result = string.Format("Empty, timeout: {0} second(s)", _timeOut);
                                 _response = string.Empty;
                             }
                             else
@@ -164,7 +164,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             if (basicDeliverEventArgs == null)
                             {
                                 _response = string.Empty;
-                                _result = string.Format("Empty, timeout: {0} seconds", _timeOut);
+                                _result = string.Format("Empty, timeout: {0} second(s)", _timeOut);
                             }
                             else
                             {

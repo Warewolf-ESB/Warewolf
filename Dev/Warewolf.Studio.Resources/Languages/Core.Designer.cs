@@ -6083,7 +6083,8 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 
-        ///      The Queue should already be in the RabbitMQ Source in your server.&lt;br /&gt;
+        ///      The Queue should already be in the RabbitMQ Source in your server.
+        ///      Note: The Queue name is case sensitive.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6120,11 +6121,13 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Looks up a localized string similar to Only variables go in here.
         ///        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
         ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;            
+        ///        
+        ///        Allowed:&lt;br /&gt;          
+        ///         &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          
         ///        &lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpResponse {
