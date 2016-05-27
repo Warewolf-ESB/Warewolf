@@ -5980,6 +5980,21 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aknowledge will send back result from the consumer to tell 
+        ///    RabbitMQ that a particular message has been received, 
+        ///    processed and that RabbitMQ is free to delete it.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Aknowledge message after consume?.
+        /// </summary>
+        public static string RabbitMQHelpAcknowledge {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpAcknowledge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make the queue auto delete.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
@@ -6054,7 +6069,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 
+        ///      The Queue should already be in the RabbitMQ Source in your server.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6073,7 +6089,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keep the message in the queue or not.&lt;br/&gt;
+        ///   Looks up a localized string similar to Marking this as True will leave the
+        ///    message you consumed in the queue.
+        ///    Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6086,7 +6104,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put the variable.&lt;br /&gt;
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6102,8 +6121,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.&lt;br /&gt;
-        ///        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+        ///   Looks up a localized string similar to Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:
@@ -6185,6 +6203,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aknowledge message after consume?.
+        /// </summary>
+        public static string RabbitMQToolTipAcknowledge {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipAcknowledge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make the queue auto delete..
         /// </summary>
         public static string RabbitMQToolTipIsAutoDelete {
@@ -6230,7 +6257,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue..
+        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from..
         /// </summary>
         public static string RabbitMQToolTipQueueName {
             get {
@@ -6239,7 +6266,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requeue the queue..
+        ///   Looks up a localized string similar to Requeue the response in the Queue..
         /// </summary>
         public static string RabbitMQToolTipReQueue {
             get {
@@ -6266,7 +6293,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;
         ///.
         /// </summary>
         public static string RabbitMQToolTipSource {
