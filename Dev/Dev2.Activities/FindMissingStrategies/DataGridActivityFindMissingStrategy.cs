@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Activities;
+using Dev2.Activities.WcfEndPoint;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -350,7 +351,31 @@ namespace Dev2.FindMissingStrategies
                         results.Add(maAct.OnErrorWorkflow);
                     }
                 }
-            }           
+            }
+            else if (activityType == typeof(DsfWcfEndPointActivity))
+            {
+                var maAct = activity as DsfWcfEndPointActivity;
+                if (maAct != null)
+                {
+                    if (maAct.Inputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                    }
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                    {
+                        results.Add(maAct.OnErrorVariable);
+                    }
+
+                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    {
+                        results.Add(maAct.OnErrorWorkflow);
+                    }
+                }
+            }
             return results;
         }
 
