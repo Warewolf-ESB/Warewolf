@@ -142,6 +142,12 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             set { SetProperty(value); }
         }
 
+        public bool Acknowledge
+        {
+            get { return GetProperty<bool>(); }
+            set { SetProperty(value); }
+        }
+
         public bool ReQueue
         {
             get { return GetProperty<bool>(); }
