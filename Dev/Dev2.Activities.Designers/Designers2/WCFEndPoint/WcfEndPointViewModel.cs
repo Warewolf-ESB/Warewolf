@@ -362,6 +362,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
+                SourceRegion.Dependants.Add(ActionRegion);
                 ActionRegion.Dependants.Add(InputArea);
                 ActionRegion.Dependants.Add(OutputsRegion);
             }
