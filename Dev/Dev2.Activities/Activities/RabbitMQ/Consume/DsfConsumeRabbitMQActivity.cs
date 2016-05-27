@@ -37,6 +37,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
     {
         public string _response;
         public ushort _prefetch;
+        public const int _timeOut = 5000;
 
         #region Ctor
 
@@ -58,6 +59,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         [FindMissing]
         public string Prefetch { get; set; }
+
+        [FindMissing]
+        public bool Acknowledge { get; set; }
 
         [FindMissing]
         public bool ReQueue { get; set; }
@@ -115,7 +119,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     using (Channel = Connection.CreateModel())
                     {
                         _prefetch = string.IsNullOrEmpty(Prefetch) ? (ushort)1 : ushort.Parse(Prefetch);
-                        Channel.BasicQos(0, _prefetch, false);
+                        Channel.BasicQos(0, _prefetch, Acknowledge);
                         if (ReQueue)
                         {
                             BasicGetResult response;
@@ -128,9 +132,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 throw new Exception(string.Format("Queue '{0}' not found", queueName));
                             }
 
-                            if (response == null)
-                                throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
-                            _response = Encoding.Default.GetString(response.Body);
+                            _response = response == null ? string.Format("The Queue is Empty, timeout: {0}", _timeOut) : Encoding.Default.GetString(response.Body);
                         }
                         else
                         {
@@ -147,16 +149,18 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             }
 
                             BasicDeliverEventArgs basicDeliverEventArgs;
-                            Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
-                            if(basicDeliverEventArgs == null)
-                                throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
-                            var body = basicDeliverEventArgs.Body;
-                            _response = Encoding.Default.GetString(body);
-                            Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+                            Consumer.Queue.Dequeue(_timeOut, out basicDeliverEventArgs);
+                            if (basicDeliverEventArgs == null)
+                                _response = string.Format("The Queue is Empty, timeout: {0} seconds", TimeSpan.FromMilliseconds(_timeOut).Seconds);
+                            else
+                            {
+                                var body = basicDeliverEventArgs.Body;
+                                _response = Encoding.Default.GetString(body);
+                                Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+                            }
                         }
                     }
-                }
-                Dev2Logger.Debug(String.Format("Message consumed from queue {0}", queueName));
+                }                
                 return "Success";
             }
             catch (Exception ex)
