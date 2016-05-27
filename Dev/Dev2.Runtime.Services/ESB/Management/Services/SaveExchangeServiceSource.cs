@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourcePath = src.Path,
                     ResourceID = src.Id,
                     Type = enSourceType.ExchangeSource,
-                    ResourceType = "WcfSource"
+                    ResourceType = "ExchangeSource"
                 };
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con);
                 ServerExplorerRepo.UpdateItem(con);
