@@ -124,6 +124,30 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if (activityType == typeof(DsfPostgreSqlActivity))
+            {
+                var maAct = activity as DsfPostgreSqlActivity;
+                if (maAct != null)
+                {
+                    if (maAct.Inputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                    }
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                    {
+                        results.Add(maAct.OnErrorVariable);
+                    }
+
+                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    {
+                        results.Add(maAct.OnErrorWorkflow);
+                    }
+                }
+            }
             else if (activityType == typeof(DsfOracleDatabaseActivity))
             {
                 var maAct = activity as DsfOracleDatabaseActivity;
