@@ -1,7 +1,7 @@
 "%~dp0..\..\.nuget\nuget.exe" restore "%~dp0..\..\AcceptanceTesting.sln"
-if not %errorlevel%==0 pause & exit 1
+if not %errorlevel%==0 pause
 "%~dp0..\..\.nuget\nuget.exe" restore "%~dp0..\..\UITesting.sln"
-if not %errorlevel%==0 pause & exit 1
+if not %errorlevel%==0 pause
 
 IF EXIST MSBuild (
 MSBuild "%~dp0..\..\UITesting.sln" /p:Platform="Any CPU";Configuration="Debug"
