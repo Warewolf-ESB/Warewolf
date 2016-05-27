@@ -7,6 +7,7 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.DynamicServices;
 using Warewolf.Storage;
 
@@ -196,6 +197,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             dsfConsumeRabbitMQActivity.QueueName = queueName;
             dsfConsumeRabbitMQActivity.ReQueue = true;
+            dsfConsumeRabbitMQActivity.Acknowledge = true;
 
             dsfConsumeRabbitMQActivity.Response = "[[response]]";
 
@@ -238,6 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             dsfConsumeRabbitMQActivity.QueueName = queueName;
             dsfConsumeRabbitMQActivity.ReQueue = true;
+            dsfConsumeRabbitMQActivity.Prefetch = "2";
 
             dsfConsumeRabbitMQActivity.Response = "[[response]]";
             dsfConsumeRabbitMQActivity._response = "Message";

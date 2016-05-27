@@ -4574,11 +4574,12 @@ Data
 </value>
   </data>
   <data name="RabbitMQToolTipSource" xml:space="preserve">
-    <value>Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+    <value>Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;
 </value>
 </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
-    <value>Provide a meaningful name for the queue.&lt;br /&gt;
+    <value>Provide a name of the Queue you want to consume from. 
+      The Queue should already be in the RabbitMQ Source in your server.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
@@ -4591,10 +4592,11 @@ Data
         &lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQToolTipQueueName" xml:space="preserve">
-    <value>Provide a meaningful name for the queue.</value>
+    <value>Provide a name of the Queue you want to consume from.</value>
   </data>
   <data name="RabbitMQHelpResponse" xml:space="preserve">
-    <value>Put the variable.&lt;br /&gt;
+    <value>Only variables go in here.
+        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
@@ -4626,11 +4628,25 @@ Data
         Allowed:&lt;br /&gt;
         Make the queue durable</value>
   </data>
+  <data name="RabbitMQToolTipAcknowledge" xml:space="preserve">
+    <value>Aknowledge message after consume?</value>
+  </data>
+    <data name="RabbitMQHelpAcknowledge" xml:space="preserve">
+    <value>Aknowledge will send back result from the consumer to tell 
+    RabbitMQ that a particular message has been received, 
+    processed and that RabbitMQ is free to delete it.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Aknowledge message after consume?</value>
+  </data>
   <data name="RabbitMQToolTipReQueue" xml:space="preserve">
-    <value>Requeue the queue.</value>
+    <value>Requeue the response in the Queue.</value>
   </data>
     <data name="RabbitMQHelpRequeue" xml:space="preserve">
-    <value>Keep the message in the queue or not.&lt;br/&gt;
+    <value>Marking this as True will leave the
+    message you consumed in the queue.
+    Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
@@ -4676,8 +4692,7 @@ Data
     <value>The message goes in here.</value>
   </data>
   <data name="RabbitMQHelpResult" xml:space="preserve">
-    <value>Only variables go in here.&lt;br /&gt;
-        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+    <value>Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:
