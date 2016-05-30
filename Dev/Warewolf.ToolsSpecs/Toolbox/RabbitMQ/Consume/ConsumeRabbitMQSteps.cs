@@ -27,9 +27,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Given(@"I drag RabbitMQConsume tool onto the design surface")]
         public void GivenIDragRabbitMQConsumeToolOntoTheDesignSurface()
         {
-            var consumeActivity = new DsfConsumeRabbitMQActivity();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new RabbitMQSource());
+            var consumeActivity = new DsfConsumeRabbitMQActivity(resourceCatalog.Object);
 
-            var resource = new Mock<IResourceCatalog>();
             var modelItem = ModelItemUtils.CreateModelItem(consumeActivity);
             var model = new Mock<IRabbitMQSourceModel>();
 
@@ -168,6 +169,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [When(@"I hit F-six to execute tool")]
         public void WhenIHitF_SixToExecuteTool()
         {
+         
+
             var consumeRabbitMQActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("Activity");
             var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
@@ -176,7 +179,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"Empty source error is Returned")]
         public void ThenEmptySourceErrorIsReturned()
         {
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(RabbitMQSource));
+
             var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
+            _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(string.Equals("Failure: Source has been deleted.", executeResults));
         }
@@ -192,6 +199,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 
             var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
             _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            _privateObject.SetProperty("RabbitSource", rabbitMQSource.Object);
 
             var result = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(Equals("Failure: Queue Name is required.", result));
