@@ -148,6 +148,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var expectedXml = testDbSource.ToXml();
 
             testDbSource = new ExchangeSource(expectedXml);
+            Assert.IsNotNull(testDbSource);
         }
 
         [TestMethod]

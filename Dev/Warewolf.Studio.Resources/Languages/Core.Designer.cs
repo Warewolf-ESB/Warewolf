@@ -2303,9 +2303,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These resources will be overwritten on the destination server.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///If the names are different, it is because the resource has been renamed. It will still be overwritten and then Source name will be used at the Destination..
+        ///   Looks up a localized string similar to These resources will be overwritten on the destination server.
         /// </summary>
         public static string DeployOverridesCountViewHelp {
             get {
