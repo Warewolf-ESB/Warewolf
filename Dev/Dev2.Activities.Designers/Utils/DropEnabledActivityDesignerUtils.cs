@@ -81,7 +81,7 @@ namespace Dev2.Activities.Utils
             else
             {
                 var stringValue = objectData as string;
-                if(stringValue != null && (stringValue.Contains("Decision") || stringValue.Contains("Switch")))
+                if (stringValue != null && (stringValue.Contains("Decision") || stringValue.Contains("Switch") || stringValue.Contains("SelectAndApply")))
                 {
                     dropEnabled = false;
                 }

@@ -19,8 +19,10 @@ using System.Xml.Linq;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using TechTalk.SpecFlow;
+using Dev2.Common.Interfaces;
+using Dev2.Activities.Specs.BaseTypes;
+using WarewolfParserInterop;
 
 namespace Warewolf.Tools.Specs.BaseTypes
 {
@@ -51,7 +53,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
             int row = 0;
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
-
             if(variableList != null)
             {
                 try
@@ -89,17 +90,36 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
                 {
                     DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2, 0);
-                    //var recSetElement = shape
-                    //                  .Descendants(emptyRecord.Item1)
-                    //                  .FirstOrDefault();
-                    //if (recSetElement == null)
-                    //{
-                    //    shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
-                    //}
-                    //else
-                    //{
-                    //    recSetElement.Add(new XElement(emptyRecord.Item2));
-                    //}
+                }
+            }
+
+            dynamic objList;
+            ScenarioContext.Current.TryGetValue("objList", out objList);
+            if (objList != null)
+            {
+                try
+                {
+                    foreach (dynamic variable in objList)
+                    {
+                        if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
+                        {
+                            string value = variable.Item2 == "blank" ? "" : variable.Item2;
+                            if (value.ToUpper() == "NULL")
+                            {
+                                DataObject.Environment.AssignDataShape(variable.Item1);
+                            }
+                            else
+                            {
+                                DataObject.Environment.AssignJson(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value), 0);
+                            }
+                        }
+                    }
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+
                 }
             }
 

@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
-using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Activities.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Scheduler
 {

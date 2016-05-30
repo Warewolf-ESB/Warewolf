@@ -21,6 +21,7 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 // ReSharper disable UnusedMember.Global
 
@@ -486,11 +487,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         private static void GetValue(string s, List<IServiceInput> dt)
         {
-            var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);
+            var exp = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(s);
             if(exp.IsComplexExpression)
             {
                 var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
-                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.languageExpressionToString);
+                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(FsInteropFunctions.LanguageExpressionToString);
                 dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
             }
             if(exp.IsScalarExpression)

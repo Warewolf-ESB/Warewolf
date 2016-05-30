@@ -214,12 +214,6 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
-    <Compile Include="Language Parser\Language Parser.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Language Parser.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Language Parser\LanguageParserSteps.cs" />
     <Compile Include="Scheduler\SchedulerSteps.cs" />
     <Compile Include="Scheduler\Scheduler.feature.cs">
       <AutoGen>True</AutoGen>
@@ -232,10 +226,6 @@
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Language Parser\Language Parser.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Scheduler\Scheduler.feature">
@@ -390,7 +380,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

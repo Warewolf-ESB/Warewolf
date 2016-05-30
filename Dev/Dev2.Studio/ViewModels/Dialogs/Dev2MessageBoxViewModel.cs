@@ -21,6 +21,7 @@ using Dev2.ViewModels.Dialogs;
 using FontAwesome.WPF;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Dialogs

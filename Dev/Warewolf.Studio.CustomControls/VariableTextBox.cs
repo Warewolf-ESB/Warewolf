@@ -31,6 +31,12 @@ namespace Warewolf.Studio.CustomControls
                 typeof(ICommand),
                 typeof(VariableTextBox));
 
+        public static DependencyProperty ViewComplexObjectsCommandProperty =
+            DependencyProperty.Register(
+                "ViewComplexObjectsCommand",
+                typeof(ICommand),
+                typeof(VariableTextBox));
+
         private static readonly DependencyPropertyKey HasTextPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 "HasText",
@@ -39,9 +45,21 @@ namespace Warewolf.Studio.CustomControls
                 new PropertyMetadata());
         public static DependencyProperty HasTextProperty = HasTextPropertyKey.DependencyProperty;
 
+        public static DependencyProperty AllowNotesProperty =
+            DependencyProperty.Register(
+                "AllowNotes",
+                typeof(bool),
+                typeof(VariableTextBox));
+        
         public static DependencyProperty IsUsedProperty =
             DependencyProperty.Register(
                 "IsUsed",
+                typeof(bool),
+                typeof(VariableTextBox));
+
+        public static DependencyProperty IsComplexObjectProperty =
+            DependencyProperty.Register(
+                "IsComplexObject",
                 typeof(bool),
                 typeof(VariableTextBox));
 
@@ -85,7 +103,10 @@ namespace Warewolf.Studio.CustomControls
             }
             set
             {
-                SetValue(AddNoteCommandProperty, value);
+                if (AllowNotes)
+                {
+                    SetValue(AddNoteCommandProperty, value);
+                }
             }
         }
 
@@ -101,15 +122,42 @@ namespace Warewolf.Studio.CustomControls
             }
         }
 
+        public ICommand ViewComplexObjectsCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(ViewComplexObjectsCommandProperty);
+            }
+            set
+            {
+                if (IsComplexObject)
+                {
+                    SetValue(ViewComplexObjectsCommandProperty, value);
+                }
+            }
+        }
+
         public bool HasText {
             get { return (bool)GetValue(HasTextProperty); }
             private set { SetValue(HasTextPropertyKey, value); }
         }
 
+        public bool AllowNotes
+        {
+            get { return (bool)GetValue(AllowNotesProperty); }
+            set { SetValue(AllowNotesProperty, value); }
+        }
+        
         public bool IsUsed
         {
             get { return (bool)GetValue(IsUsedProperty); }
             set { SetValue(IsUsedProperty, value); }
+        }
+
+        public bool IsComplexObject
+        {
+            get { return (bool)GetValue(IsComplexObjectProperty); }
+            set { SetValue(IsComplexObjectProperty, value); }
         }
     }
 }

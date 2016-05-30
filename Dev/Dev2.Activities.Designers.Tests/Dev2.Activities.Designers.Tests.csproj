@@ -85,7 +85,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -140,6 +143,7 @@
     <Compile Include="DropBox2016\TestResourceCatalog.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
+    <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
     <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
@@ -211,6 +215,7 @@
     <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
     <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
+    <Compile Include="SelectAndApply\SelectAndApplyViewModelDesignerTests.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
     <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
@@ -307,9 +312,7 @@
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MultiAssignTests\Stubs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -334,7 +337,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

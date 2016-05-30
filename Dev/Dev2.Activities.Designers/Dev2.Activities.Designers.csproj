@@ -392,6 +392,16 @@
     <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\MultiAssignObject\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\MultiAssignObjectDesigner.xaml.cs">
+      <DependentUpon>MultiAssignObjectDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\MultiAssignObjectDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssignObject\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Random\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1045,8 +1055,8 @@
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
     <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -1112,6 +1122,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
@@ -1376,6 +1390,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\RabbitMQ\Publish\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssignObject\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssignObject\MultiAssignObjectDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssignObject\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2061,7 +2087,6 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

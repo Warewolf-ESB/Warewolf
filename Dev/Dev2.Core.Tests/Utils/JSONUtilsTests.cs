@@ -10,8 +10,10 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Remoting;
 using Dev2.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Utils
 {
@@ -318,6 +320,21 @@ Website: http://dev2.co.za";
             var replaceSlashes = JSONUtils.ReplaceSlashes(TestData);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedResult, replaceSlashes);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("JSONUtils_CreateServiceInputMappingsFromJsonString")]
+        public void JSONUtils_CreateServiceInputMappingsFromJsonString_JsonWithPrimitiveProperties_ShouldReturnServiceMappings()
+        {
+            //------------Setup for test--------------------------
+            const string jsonString = "{\"Name\":\"\",\"Age\":\"\",\"Gender\":\"\"}";
+
+            //------------Execute Test---------------------------
+            var inputs = JSONUtils.CreateServiceInputMappingsFromJsonString(jsonString);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(inputs);
+            Assert.AreEqual(3,inputs.Count);
         }
     }
 }

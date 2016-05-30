@@ -39,6 +39,7 @@
         <ResourceDictionary Source="Elements/TabControl.xaml" />
         <ResourceDictionary Source="Elements/ValidationToolTip.xaml" />
         <ResourceDictionary Source="Elements/StackPanel.xaml" />
+        <ResourceDictionary Source="Elements/XamTreeGrid.xaml" />
 
         <!--  CUSTOMISED THEME ELEMENTS  -->
 

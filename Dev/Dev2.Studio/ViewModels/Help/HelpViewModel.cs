@@ -23,6 +23,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
 using Dev2.Webs.Callbacks;
+using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
