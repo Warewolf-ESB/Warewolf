@@ -104,7 +104,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("SharepointServerResourceId", Guid.NewGuid());
             //------------Execute Test---------------------------
             var sharepointFileMoveDesignerViewModel = new SharePointMoveFileDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointFileMoveDesignerViewModel.Validate();
             var inputPathfrom = modelItem.GetProperty<string>("ServerInputPathFrom");
             var inputPathTo = modelItem.GetProperty<string>("ServerInputPathTo");
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
             //------------Execute Test---------------------------
             var sharepointFileMoveDesignerViewModel = new SharePointMoveFileDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointFileMoveDesignerViewModel.Validate();
             var inputPathfrom = modelItem.GetProperty<string>("ServerInputPathFrom");
             var inputPathTo = modelItem.GetProperty<string>("ServerInputPathTo");
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("SharepointServerResourceId", Guid.NewGuid());
             //------------Execute Test---------------------------
             var sharepointFileMoveDesignerViewModel = new SharePointMoveFileDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointFileMoveDesignerViewModel.Validate();
 
             var inputPathTo = modelItem.GetProperty<string>("ServerInputPathTo");
@@ -187,7 +187,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("SharepointServerResourceId", Guid.NewGuid());
             //------------Execute Test---------------------------
             var sharepointFileMoveDesignerViewModel = new SharePointMoveFileDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointFileMoveDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointFileMoveDesignerViewModel.Validate();
         
             var inputPathfrom = modelItem.GetProperty<string>("ServerInputPathFrom");

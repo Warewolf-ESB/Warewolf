@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using ActivityUnitTests;
-using Dev2.Activities.Designers2.Net_DLL;
 using Dev2.Activities.Designers2.WCFEndPoint;
 using Dev2.Activities.WcfEndPoint;
 using Dev2.Collections;

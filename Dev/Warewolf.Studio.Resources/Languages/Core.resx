@@ -626,9 +626,7 @@ https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
     <value>These are the new resources that will be found on the remote server after deploy.</value>
   </data>
   <data name="DeployOverridesCountViewHelp" xml:space="preserve">
-    <value>These resources will be overwritten on the destination server.&lt;br/&gt;
-&lt;br/&gt;
-If the names are different, it is because the resource has been renamed. It will still be overwritten and then Source name will be used at the Destination.</value>
+    <value>These resources will be overwritten on the destination server</value>
   </data>
   <data name="DeployCommandHelp" xml:space="preserve">
     <value>Deploy the selected Source files to the Destination Server.</value>
@@ -4621,7 +4619,7 @@ Data</value>
   <data name="RabbitMQToolTipSource" xml:space="preserve">
     <value>Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;
 </value>
-</data>
+  </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
     <value>Provide a name of the Queue you want to consume from. 
       The Queue should already be in the RabbitMQ Source in your server.
@@ -4652,7 +4650,7 @@ Data</value>
             &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          
         &lt;/ol&gt;</value>
-  </data>  
+  </data>
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>
@@ -4673,7 +4671,6 @@ Data</value>
   <data name="RabbitMQToolTipTimeOut" xml:space="preserve">
     <value>How long you want the Consumer to delay when checking for messages in the queue.</value>
   </data>
-  
   <data name="RabbitMQHelpTimeOut" xml:space="preserve">
     <value> The Queue might be empty when the 
       Consumer makes the initial attempt to Consume the message.
@@ -4703,7 +4700,7 @@ Data</value>
   <data name="RabbitMQToolTipAcknowledge" xml:space="preserve">
     <value>Aknowledge message after consume?</value>
   </data>
-    <data name="RabbitMQHelpAcknowledge" xml:space="preserve">
+  <data name="RabbitMQHelpAcknowledge" xml:space="preserve">
     <value>Aknowledge will send back result from the consumer to tell 
     RabbitMQ that a particular message has been received, 
     processed and that RabbitMQ is free to delete it.&lt;br/&gt;
@@ -4715,7 +4712,7 @@ Data</value>
   <data name="RabbitMQToolTipReQueue" xml:space="preserve">
     <value>Requeue the response in the Queue.</value>
   </data>
-    <data name="RabbitMQHelpRequeue" xml:space="preserve">
+  <data name="RabbitMQHelpRequeue" xml:space="preserve">
     <value>Marking this as True will leave the
     message you consumed in the queue.
     Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;
@@ -4894,7 +4891,6 @@ Change the Endpoint Url from, say, a development to a live environment.&lt;br/&g
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
-
   <data name="SharePointDownloadHelpFolder" xml:space="preserve">
     <value>
         Enter SharePoint file download path &lt;br /&gt;
