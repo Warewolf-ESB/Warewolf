@@ -105,7 +105,7 @@ namespace Warewolf.Sharepoint
                 ctx.Load(folder, f => f.Files.Include(c => c.Name, c => c.ServerRelativeUrl), f => f.ParentFolder.ServerRelativeUrl, f => f.ServerRelativeUrl, f => f.Folders);
                 ctx.ExecuteQuery();
 
-                fields.AddRange(folder.Files.Select(file => file.Name));
+                fields.AddRange(folder.Files.Select(file => file.ServerRelativeUrl));
             }
 
             return fields;
