@@ -4,6 +4,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
+using Dev2.Activities.Specs.BaseTypes;
 using TechTalk.SpecFlow;
 using Warewolf.Tools.Specs.BaseTypes;
 

@@ -162,7 +162,6 @@ namespace Dev2.Core.Tests
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
-            _dataListViewModel.AddComplexObjectNamesIfMissing();
             //------------Assert Results-------------------------
             Assert.AreEqual(2, _dataListViewModel.ComplexObjectCollection.Count);
             Assert.AreEqual("Car", _dataListViewModel.ComplexObjectCollection[1].DisplayName);
@@ -220,7 +219,6 @@ namespace Dev2.Core.Tests
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
-            _dataListViewModel.AddComplexObjectNamesIfMissing();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
             Assert.AreEqual("Car", _dataListViewModel.ComplexObjectCollection[0].DisplayName);
