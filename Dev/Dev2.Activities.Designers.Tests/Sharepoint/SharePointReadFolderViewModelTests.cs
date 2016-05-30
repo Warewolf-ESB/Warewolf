@@ -152,7 +152,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("SharepointServerResourceId",Guid.NewGuid());
             //------------Execute Test---------------------------
             var sharepointReadFolderDesignerViewModel = new SharePointReadFolderDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
             var isFileandFolders = modelItem.GetProperty<bool>("IsFilesAndFoldersSelected");
             var isFiles = modelItem.GetProperty<bool>("IsFilesSelected");
