@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.Permissions
             ScenarioContext.Current.Add("environment", environmentModel);
         }
 
-        [Given(@"it has '(.*)' with '(.*)'")]
+        [Given(@"it has ""(.*)"" with ""(.*)""")]
         public void GivenItHasWith(string groupName, string groupRights)
         {
             var groupPermssions = new WindowsGroupPermission
@@ -108,7 +108,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
         }
 
-        [When(@"connected as user part of '(.*)'")]
+        [When(@"connected as user part of ""(.*)""")]
         public void WhenConnectedAsUserPartOf(string userGroup)
         {
             if (SchedulerSteps.AccountExists("SpecsUser"))
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Specs.Permissions
             return false;
         }
 
-        [Then(@"resources should have '(.*)'")]
+        [Then(@"resources should have ""(.*)""")]
         public async void ThenResourcesShouldHave(string resourcePerms)
         {
             var environmentModel = await LoadResources();
@@ -199,7 +199,7 @@ namespace Dev2.Activities.Specs.Permissions
             return environmentModel;
         }
 
-        [Then(@"resources should not have '(.*)'")]
+        [Then(@"resources should not have ""(.*)""")]
         public async void ThenResourcesShouldNotHave(string resourcePerms)
         {
             var environmentModel = await LoadResources();
@@ -219,7 +219,7 @@ namespace Dev2.Activities.Specs.Permissions
             Assert.IsTrue(totalNumberOfResources - allMatch <= 1);
         }
 
-        [Given(@"Resource '(.*)' has rights '(.*)' for '(.*)'")]
+        [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
@@ -246,7 +246,7 @@ namespace Dev2.Activities.Specs.Permissions
             resourceRepository.WriteSettings(environmentModel, settings);
         }
 
-        [Then(@"'(.*)' should have '(.*)'")]
+        [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");

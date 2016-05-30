@@ -9,7 +9,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.WCF;
 using Dev2.Studio.Core.Activities.Utils;
-using Warewolf.Core;
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
@@ -37,7 +36,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
             Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
             if (inputsFromModel == null)
-            UpdateOnActionSelection();
+                UpdateOnActionSelection();
             IsEnabled = action != null && action.SelectedAction != null;
         }
 
@@ -98,12 +97,8 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         public IToolRegion CloneRegion()
         {
 
-            var inputs2 = new List<IServiceInput>(Inputs.Select(a => new ServiceInput(a.Name, a.Value)
-            {
-                EmptyIsNull = a.EmptyIsNull,
-                TypeName = a.TypeName
-            }));
-            return new WcfInputRegionClone()
+            var inputs2 = new List<IServiceInput>(Inputs);
+            return new WcfInputRegionClone
             {
                 Inputs = inputs2,
                 IsEnabled = IsEnabled
@@ -159,14 +154,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
             set
             {
-                if (value.Count < 1)
-                {
-
-                }
-                else
-                {
-
-                }
                 _inputs = value;
                 OnPropertyChanged();
                 _modelItem.SetProperty("Inputs", value);

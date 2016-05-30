@@ -24,12 +24,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IWcfAction _selectedAction;
-        // ReSharper disable once NotAccessedField.Local
         private IWcfServiceModel _model;
         private ICollection<IWcfAction> _actions;
         private bool _isActionEnabled;
         private bool _isRefreshing;
         private double _labelWidth;
+        private IList<string> _errors;
 
         public WcfActionRegion()
         {
@@ -38,65 +38,100 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public WcfActionRegion(IWcfServiceModel model, ModelItem modelItem, ISourceToolRegion<IWcfServerSource> source)
         {
-            LabelWidth = 70;
-            ToolRegionName = "WcfActionRegion";
-            _modelItem = modelItem;
-            _model = model;
-            _source = source;
-            Dependants = new List<IToolRegion>();
-            _source.SomethingChanged += SourceOnSomethingChanged;
-            IsRefreshing = false;
-            if (_source.SelectedSource != null)
+            try
             {
-                Actions = model.GetActions(_source.SelectedSource);
+                Errors = new List<string>();
+                LabelWidth = 70;
+                ToolRegionName = "WcfActionRegion";
+                _modelItem = modelItem;
+                _model = model;
+                _source = source;
+                _source.SomethingChanged += SourceOnSomethingChanged;
+                Dependants = new List<IToolRegion>();
+                IsRefreshing = false;
+                GetActions(model);
+                UpdateSelectedAction();
+                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                {
+                    IsRefreshing = true;
+                    GetActions(_model);
+                    IsRefreshing = false;
+                    UpdateSelectedAction();
+                }, CanRefresh);
+
+                IsEnabled = true;
+                _modelItem = modelItem;
             }
-            if (Method != null && Actions != null)
+            catch (Exception e)
+            {
+                Errors.Add(e.Message);
+            }
+        }
+
+        private void GetActions(IWcfServiceModel model)
+        {
+            if(_source.SelectedSource != null)
+            {
+                try
+                {
+                    Actions = model.GetActions(_source.SelectedSource);
+                }
+                catch(Exception e)
+                {
+                    Errors.Add("Connection to source failed. Please ensure that the server and the service are still available. The error received is: " + Environment.NewLine + e.Message);
+                }
+            }
+        }
+
+        private void UpdateSelectedAction()
+        {
+            if(Method != null && Actions != null)
             {
                 IsActionEnabled = true;
                 SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
             }
-            RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-            {
-                IsRefreshing = true;
-                if (_source.SelectedSource != null)
-                {
-                    Actions = model.GetActions(_source.SelectedSource);
-                }
-                IsRefreshing = false;
-            }, CanRefresh);
+        }
 
-            IsEnabled = true;
-            _modelItem = modelItem;
+        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        {
+            try
+            {
+                Errors.Clear();
+
+                // ReSharper disable once ExplicitCallerInfoArgument
+                if (_source != null && _source.SelectedSource != null)
+                {
+                    Actions = _model.GetActions(_source.SelectedSource);
+                    SelectedAction = null;
+                    IsActionEnabled = true;
+                    IsEnabled = true;
+                }
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged(@"IsEnabled");
+            }
+            catch (Exception e)
+            {
+                Errors.Add(e.Message);
+            }
+            finally
+            {
+                OnSomethingChanged(this);
+            }
         }
 
         IWcfAction Method
         {
-            get
-            {
-                return _modelItem.GetProperty<IWcfAction>("Method");
-            }
+            get { return _modelItem.GetProperty<IWcfAction>("Method"); }
             set
             {
                 _modelItem.SetProperty("Method", value);
             }
         }
 
-        public double LabelWidth
-        {
-            get
-            {
-                return _labelWidth;
-            }
-            set
-            {
-                _labelWidth = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool CanRefresh()
         {
-            return SelectedAction != null;
+            IsActionEnabled = _source.SelectedSource != null;
+            return _source != null && _source.SelectedSource != null;
         }
 
         public IWcfAction SelectedAction
@@ -112,16 +147,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     if (!String.IsNullOrEmpty(_selectedAction.Method))
                         StorePreviousValues(_selectedAction.GetHashCodeBySource());
                 }
-                if (Dependants != null)
+                var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
+                var region = outputs as OutputsRegion;
+                if (region != null)
                 {
-                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as OutputsRegion;
-                    if (region != null)
-                    {
-                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                        region.RecordsetName = String.Empty;
+                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
+                    region.RecordsetName = String.Empty;
 
-                    }
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
@@ -162,7 +194,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged();
             }
         }
-
         public ICommand RefreshActionsCommand { get; set; }
         public bool IsActionEnabled
         {
@@ -201,6 +232,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
         public event SomethingChanged SomethingChanged;
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Implementation of IToolRegion
 
@@ -221,7 +264,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IToolRegion CloneRegion()
         {
-            return new WcfActionRegion()
+            return new WcfActionMemento
             {
                 IsEnabled = IsEnabled,
                 SelectedAction = SelectedAction == null ? null : new WcfAction()
@@ -235,7 +278,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WcfActionRegion;
+            var region = toRestore as WcfActionMemento;
             if (region != null)
             {
                 SelectedAction = region.SelectedAction;
@@ -244,24 +287,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged("SelectedAction");
             }
         }
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
-        {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            UpdateBasedOnNamespace();
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsEnabled");
-        }
-        private void UpdateBasedOnNamespace()
-        {
-            if (_source != null && _source.SelectedSource != null)
-            {
-                Actions = _model.GetActions(_source.SelectedSource);
-                SelectedAction = null;
-                IsActionEnabled = true;
-                IsEnabled = true;
-            }
-        }
-
+        
         public int GetId()
         {
             return SelectedAction.FullName.GetHashCode();
@@ -282,8 +308,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
-
-
         private void StorePreviousValues(string actionName)
         {
             _previousRegions.Remove(actionName);
@@ -308,7 +332,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                return SelectedAction == null ? new List<string> { "Invalid Action Selected" } : new List<string>();
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged();
             }
         }
 
@@ -343,6 +372,75 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (handler != null)
             {
                 handler(this, args);
+            }
+        }
+    }
+
+    public class WcfActionMemento : IActionToolRegion<IWcfAction>
+    {
+        private IWcfAction _selectedAction;
+
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Implementation of IToolRegion
+
+        public string ToolRegionName { get; set; }
+        public bool IsEnabled { get; set; }
+        public IList<IToolRegion> Dependants { get; set; }
+        public IList<string> Errors { get; set; }
+
+        public IToolRegion CloneRegion()
+        {
+            return null;
+        }
+
+        public void RestoreRegion(IToolRegion toRestore)
+        {
+        }
+
+        #endregion
+
+        #region Implementation of IActionToolRegion<IDbAction>
+
+        public IWcfAction SelectedAction
+        {
+            get
+            {
+                return _selectedAction;
+            }
+            set
+            {
+                _selectedAction = value;
+            }
+        }
+        public ICollection<IWcfAction> Actions { get; set; }
+        public ICommand RefreshActionsCommand { get; set; }
+        public bool IsActionEnabled { get; set; }
+        public bool IsRefreshing { get; set; }
+        public event SomethingChanged SomethingChanged;
+        public double LabelWidth { get; set; }
+
+        #endregion
+
+        protected virtual void OnSomethingChanged(IToolRegion args)
+        {
+            var handler = SomethingChanged;
+            if (handler != null)
+            {
+                handler(this, args);
+            }
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
