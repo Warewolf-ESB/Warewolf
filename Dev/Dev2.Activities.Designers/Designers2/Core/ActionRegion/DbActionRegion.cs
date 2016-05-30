@@ -11,11 +11,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
-
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -45,7 +41,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             try
             {
                 Errors = new List<string>();
-
+                
                 LabelWidth = 46;
                 ToolRegionName = "DbActionRegion";
                 _modelItem = modelItem;
@@ -87,7 +83,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             try
             {
                 Errors.Clear();
-
+                IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 if (_source != null && _source.SelectedSource != null)
                 {
@@ -96,16 +92,28 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsActionEnabled = true;
                     IsEnabled = true;
                 }
+                IsRefreshing = false;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
             {
+                IsRefreshing = false;
                 Errors.Add(e.Message);
+                CallErrorsEventHandler();
             }
             finally
             {
                 OnSomethingChanged(this);
+            }
+            CallErrorsEventHandler();
+        }
+
+        private void CallErrorsEventHandler()
+        {
+            if (ErrorsHandler != null)
+            {
+                ErrorsHandler(this, new List<string>(Errors));
             }
         }
 
@@ -279,6 +287,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         public int GetId()
         {
             return SelectedAction.Name.GetHashCode();
@@ -329,6 +343,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _errors = value;
                 OnPropertyChanged();
+                if(ErrorsHandler != null)
+                {
+                    ErrorsHandler.Invoke(this, new List<string>(value));
+                }
             }
         }
 
@@ -391,6 +409,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
         }
 
         #endregion

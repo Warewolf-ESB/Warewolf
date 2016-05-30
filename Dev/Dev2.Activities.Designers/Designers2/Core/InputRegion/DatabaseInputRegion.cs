@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,12 +9,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable NotAccessedField.Local
-
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
@@ -22,6 +18,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
+        // ReSharper disable once NotAccessedField.Local
         private IList<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
@@ -45,11 +42,30 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            UpdateOnActionSelection();
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"Inputs");
-            OnPropertyChanged(@"IsEnabled");
+            try
+            {
+                Errors.Clear();
+                
+                // ReSharper disable once ExplicitCallerInfoArgument
+                UpdateOnActionSelection();
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged(@"Inputs");
+                OnPropertyChanged(@"IsEnabled");
+            }
+            catch (Exception e)
+            {
+                Errors.Add(e.Message);
+                CallErrorsEventHandler();
+            }
+            CallErrorsEventHandler();
+        }
+
+        private void CallErrorsEventHandler()
+        {
+            if(ErrorsHandler != null)
+            {
+                ErrorsHandler(this, new List<string>(Errors));
+            }
         }
 
         private void UpdateOnActionSelection()
@@ -58,7 +74,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = false;
             if(_action != null && _action.SelectedAction != null)
             {
-            
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
@@ -99,7 +114,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-
             var inputs2 = new List<IServiceInput>(Inputs);
             return new DatabaseInputRegionClone
             {
@@ -114,15 +128,21 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             if (region != null)
             {
                 Inputs.Clear();
-                if(region.Inputs != null)
+                if (region.Inputs != null)
                 {
                     var inp = region.Inputs.ToList();
 
                     Inputs = inp;
                 }
                 OnPropertyChanged("Inputs");
-                IsInputsEmptyRows = Inputs == null ||Inputs.Count == 0;
+                IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         public IList<string> Errors
@@ -131,6 +151,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 IList<string> errors = new List<string>();
                 return errors;
+            }
+            set
+            {
+                ErrorsHandler.Invoke(this,new List<string>(value));
             }
         }
 

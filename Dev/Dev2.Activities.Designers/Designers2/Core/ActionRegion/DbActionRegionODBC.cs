@@ -55,15 +55,40 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            if (_source != null && _source.SelectedSource != null)
+            try
             {
-                CommandText = String.Empty;
-                IsActionEnabled = true;
-                IsEnabled = true;
+                Errors.Clear();
+                IsRefreshing = true;
+                // ReSharper disable once ExplicitCallerInfoArgument
+                if (_source != null && _source.SelectedSource != null)
+                {
+                    CommandText = String.Empty;
+                    IsActionEnabled = true;
+                    IsEnabled = true;
+                }
+                IsRefreshing = false;
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged(@"IsEnabled");
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsEnabled");
+            catch (Exception e)
+            {
+                IsRefreshing = false;
+                Errors.Add(e.Message);
+                CallErrorsEventHandler();
+            }
+            finally
+            {
+                OnSomethingChanged(this);
+            }
+            CallErrorsEventHandler();
+        }
+
+        private void CallErrorsEventHandler()
+        {
+            if (ErrorsHandler != null)
+            {
+                ErrorsHandler(this, new List<string>(Errors));
+            }
         }
 
         public IDbAction SelectedAction
@@ -195,6 +220,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
         }
 
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
 
         public int GetId()
         {

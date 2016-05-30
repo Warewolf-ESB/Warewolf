@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -30,6 +31,13 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         {
 
         }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         [ExcludeFromCodeCoverage]
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

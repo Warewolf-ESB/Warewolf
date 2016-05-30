@@ -1,3 +1,4 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -97,6 +98,12 @@ namespace Dev2.Activities.Designers2.Core
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         #endregion
