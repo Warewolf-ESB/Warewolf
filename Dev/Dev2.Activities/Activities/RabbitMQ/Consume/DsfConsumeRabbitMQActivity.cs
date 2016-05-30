@@ -20,9 +20,12 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable UseStringInterpolation
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -44,6 +47,11 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public DsfConsumeRabbitMQActivity()
         {
             DisplayName = "RabbitMQ Consume";
+        }
+
+        public DsfConsumeRabbitMQActivity(IResourceCatalog catalog)
+        {
+            ResourceCatalog = catalog;   
         }
 
         #endregion Ctor
@@ -87,7 +95,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         internal IModel Channel { get; set; }
 
-        internal RabbitMQSource RabbitMQSource { get; set; }
+        internal RabbitMQSource RabbitSource { get; set; }
 
         #region Overrides of DsfBaseActivity
 
@@ -97,8 +105,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             try
             {
-                RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
-                if (RabbitMQSource == null || RabbitMQSource.ResourceType != "RabbitMQSource")
+                RabbitSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
+                if (RabbitSource == null || RabbitSource.ResourceType != enSourceType.RabbitMQSource.ToString())
                 {
                     return "Failure: Source has been deleted.";
                 }
@@ -108,11 +116,11 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     return "Failure: Queue Name is required.";
                 }
-                ConnectionFactory.HostName = RabbitMQSource.HostName;
-                ConnectionFactory.Port = RabbitMQSource.Port;
-                ConnectionFactory.UserName = RabbitMQSource.UserName;
-                ConnectionFactory.Password = RabbitMQSource.Password;
-                ConnectionFactory.VirtualHost = RabbitMQSource.VirtualHost;
+                ConnectionFactory.HostName = RabbitSource.HostName;
+                ConnectionFactory.Port = RabbitSource.Port;
+                ConnectionFactory.UserName = RabbitSource.UserName;
+                ConnectionFactory.Password = RabbitSource.Password;
+                ConnectionFactory.VirtualHost = RabbitSource.VirtualHost;
 
                 using (Connection = ConnectionFactory.CreateConnection())
                 {
@@ -139,9 +147,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             Consumer = new QueueingBasicConsumer(Channel);
                             try
                             {
-                                Channel.BasicConsume(queue: queueName,
-                                noAck: false,
-                                consumer: Consumer);
+                                Channel.BasicConsume(queueName, false, Consumer);
                             }
                             catch (Exception)
                             {

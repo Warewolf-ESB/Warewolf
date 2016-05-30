@@ -239,8 +239,8 @@
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature.cs">
+    <Compile Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConsumeRabbitMQ.feature</DependentUpon>
@@ -595,7 +595,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature">
+    <None Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
     </None>
