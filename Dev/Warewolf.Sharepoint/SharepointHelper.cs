@@ -299,7 +299,12 @@ namespace Warewolf.Sharepoint
             var list = ctx.Web.Lists.GetByTitle("Documents");
             ctx.Load(list.RootFolder);
             ctx.ExecuteQuery();
-            var fullPath = list.RootFolder.ServerRelativeUrl + "/" + folderUrl;
+            var serverRelativeUrl = list.RootFolder.ServerRelativeUrl;
+            var fullPath = folderUrl;
+            if(!folderUrl.StartsWith(serverRelativeUrl))
+            {
+                fullPath = serverRelativeUrl + "/" + folderUrl;
+            }
             return fullPath;
         }
 

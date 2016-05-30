@@ -124,14 +124,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 IsRefreshing = false;
                 Errors.Add(e.Message);
-                if (ErrorsHandler != null)
-                {
-                    ErrorsHandler(this, new List<string>(Errors));
-                }
             }
             finally
             {
                 OnSomethingChanged(this);
+                CallErrorsEventHandler();
+            }
+        }
+
+        private void CallErrorsEventHandler()
+        {
+            if (ErrorsHandler != null)
+            {
+                ErrorsHandler(this, new List<string>(Errors));
             }
         }
 

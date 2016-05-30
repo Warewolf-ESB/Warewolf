@@ -55,9 +55,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             catch (Exception e)
             {
                 Errors.Add(e.Message);
+            }
+            finally
+            {
                 CallErrorsEventHandler();
             }
-            CallErrorsEventHandler();
         }
 
         private void CallErrorsEventHandler()
