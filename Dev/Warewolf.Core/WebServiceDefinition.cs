@@ -83,7 +83,7 @@ namespace Warewolf.Core
         public bool Equals(WebServiceDefinition other)
         {
             return Equals((Object)other);
-           
+
         }
 
         /// <summary>
@@ -150,13 +150,13 @@ namespace Warewolf.Core
 
                 hashCode = (hashCode * 397) ^ (Path != null ? Path.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Source != null ? Source.GetHashCode() : 0);
-               
-                if(OutputMappings!= null)
+
+                if (OutputMappings != null)
                 {
-                 hashCode=   OutputMappings.Aggregate(hashCode, (a, b) => a * 397 ^ (b != null ? b.GetHashCode() : 0));
+                    hashCode = OutputMappings.Aggregate(hashCode, (a, b) => a * 397 ^ (b != null ? b.GetHashCode() : 0));
                 }
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
-                if(Headers != null)
+                if (Headers != null)
                 {
                     hashCode = Headers.Aggregate(hashCode, (current, nameValue) => (current * 397) ^ (nameValue != null ? nameValue.GetHashCode() : 0));
                 }
@@ -206,7 +206,7 @@ namespace Warewolf.Core
                 }
             }
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            else if (otherHeaders == null && headers != null )
+            else if (otherHeaders == null && headers != null)
             {
                 return false;
             }

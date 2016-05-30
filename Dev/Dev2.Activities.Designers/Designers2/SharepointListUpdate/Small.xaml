@@ -121,7 +121,7 @@
                                x:Name="SmallDataGrid"
                                HeadersVisibility="None"
                                Height="78"
-                               ItemsSource="{Binding ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}">
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
             <DataGrid.Columns>

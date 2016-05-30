@@ -69,17 +69,10 @@ namespace Dev2.Activities.Designers2.Core.Source
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
-            Sources = sources.Where(source => source != null && source.ResourceType == type.ToString()).ToObservableCollection();
+            Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
-            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceSourceTypesHelp;
-            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceEditSourceHelp;
-            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceNewSourceHelp;
-
-            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceSourcesTooltip;
-            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceEditSourceTooltip;
-            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceNewSourceTooltip;
 
             if (SavedSource != null)
             {
@@ -113,7 +106,8 @@ namespace Dev2.Activities.Designers2.Core.Source
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnassignedGetOnlyAutoProperty
-                public IList<string> Errors { get; set; }
+        public IList<string> Errors { get; set; }
+
         public IToolRegion CloneRegion()
         {
             return new ExchangeSourceRegion

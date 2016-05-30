@@ -82,7 +82,8 @@
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -145,6 +146,7 @@
     <Compile Include="Core\PluginSourceDefinition.cs" />
     <Compile Include="Core\ServerSource.cs" />
     <Compile Include="Core\SharePointServiceSourceDefinition.cs" />
+    <Compile Include="Core\WcfServiceSourceDefinition.cs" />
     <Compile Include="Core\WebServiceSourceDefinition.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="Data\IDev2Definition.cs" />
@@ -238,6 +240,9 @@
     <Compile Include="IManagePluginSourceViewModel.cs" />
     <Compile Include="IManageServiceInputViewModel.cs" />
     <Compile Include="IManageSharePointSourceViewModel.cs" />
+    <Compile Include="IManageWcfServiceInputViewModel.cs" />
+    <Compile Include="IManageWcfSourceModel.cs" />
+    <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IManageWebServiceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
@@ -297,6 +302,11 @@
     <Compile Include="IWarewolfIterator.cs" />
     <Compile Include="IWarewolfListIterator.cs" />
     <Compile Include="IWarewolfWebClient.cs" />
+    <Compile Include="IWcfAction.cs" />
+    <Compile Include="IWcfServerSource.cs" />
+    <Compile Include="IWcfService.cs" />
+    <Compile Include="IWcfServiceModel.cs" />
+    <Compile Include="IWcfSource.cs" />
     <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
@@ -379,6 +389,7 @@
     <Compile Include="ToolBase\IWebServiceGetViewModel.cs" />
     <Compile Include="ToolBase\IWebServicePostViewModel.cs" />
     <Compile Include="ToolBase\IWebServicePutViewModel.cs" />
+    <Compile Include="ToolBase\WCF\IWcfEndPointViewModel.cs" />
     <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
     <Compile Include="Toolbox\IToolboxModel.cs" />
     <Compile Include="Toolbox\IToolboxViewModel.cs" />
@@ -417,7 +428,7 @@
     <Compile Include="Versioning\IVersionRepository.cs" />
     <Compile Include="Wrappers\IDirectory.cs" />
     <Compile Include="Wrappers\IDirectoryEntry.cs" />
-    <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />   
+    <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\IFile.cs" />
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>

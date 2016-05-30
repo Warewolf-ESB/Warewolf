@@ -276,6 +276,8 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
                 ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
                 ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+
                 GenerateOutputsVisible = true;
                 SetDisplayName(OutputDisplayName);
             }

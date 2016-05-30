@@ -4619,11 +4619,13 @@ Data</value>
 </value>
   </data>
   <data name="RabbitMQToolTipSource" xml:space="preserve">
-    <value>Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+    <value>Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;
 </value>
 </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
-    <value>Provide a meaningful name for the queue.&lt;br /&gt;
+    <value>Provide a name of the Queue you want to consume from. 
+      The Queue should already be in the RabbitMQ Source in your server.
+      Note: The Queue name is case sensitive.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
@@ -4636,40 +4638,125 @@ Data</value>
         &lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQToolTipQueueName" xml:space="preserve">
-    <value>Provide a meaningful name for the queue.</value>
+    <value>Provide a name of the Queue you want to consume from.</value>
+  </data>
+  <data name="RabbitMQHelpResponse" xml:space="preserve">
+    <value>Only variables go in here.
+        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
+        &lt;br /&gt;
+        
+        Allowed:&lt;br /&gt;          
+         &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          
+        &lt;/ol&gt;</value>
+  </data>  
+  <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
+    <value>Provide number of processes that can run concurrently.</value>
+  </data>
+  <data name="RabbitMQHelpPrefetch" xml:space="preserve">
+    <value>Provide number of messages that can be consumed concurrently.    
+      This will pre-fetch the given number of messages and block further traffic until you 
+      Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 
+      are pre-fetched at one time.&lt;br /&gt;
+        &lt;br /&gt;
+
+         Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;Interger Value&lt;/li&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="RabbitMQToolTipTimeOut" xml:space="preserve">
+    <value>How long you want the Consumer to delay when checking for messages in the queue.</value>
+  </data>
+  
+  <data name="RabbitMQHelpTimeOut" xml:space="preserve">
+    <value> The Queue might be empty when the 
+      Consumer makes the initial attempt to Consume the message.
+      Put the number of seconds you want the consumer to delay when attempting to 
+      consume messages from the queue.
+      After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;Interger Value&lt;/li&gt;            
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="RabbitMQToolTipResponse" xml:space="preserve">
+    <value>Put response variables here.</value>
   </data>
   <data name="RabbitMQHelpIsDurable" xml:space="preserve">
-    <value>Make the queue durable.&lt;br/&gt;
+    <value>When RabbitMQ source quits or crashes it will forget the queues.
+    Durable will prevent queues getting lost after the source is up again.&lt;br/&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
         Make the queue durable</value>
   </data>
+  <data name="RabbitMQToolTipAcknowledge" xml:space="preserve">
+    <value>Aknowledge message after consume?</value>
+  </data>
+    <data name="RabbitMQHelpAcknowledge" xml:space="preserve">
+    <value>Aknowledge will send back result from the consumer to tell 
+    RabbitMQ that a particular message has been received, 
+    processed and that RabbitMQ is free to delete it.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Aknowledge message after consume?</value>
+  </data>
+  <data name="RabbitMQToolTipReQueue" xml:space="preserve">
+    <value>Requeue the response in the Queue.</value>
+  </data>
+    <data name="RabbitMQHelpRequeue" xml:space="preserve">
+    <value>Marking this as True will leave the
+    message you consumed in the queue.
+    Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Requeue the queue</value>
+  </data>
   <data name="RabbitMQToolTipIsDurable" xml:space="preserve">
-    <value>Make the queue durable.</value>
+    <value>Make the queue durable to back up Queue incase of a crash.</value>
   </data>
   <data name="RabbitMQHelpIsExclusive" xml:space="preserve">
-    <value>Make the queue exclusive.&lt;br/&gt;
+    <value>Exclusive queues may only be accessed by the current connection, 
+    and are deleted when that connection closes. Passive declaration of an exclusive 
+    queue by other connections are not allowed.&lt;br/&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
         Make the queue exclusive</value>
   </data>
   <data name="RabbitMQToolTipIsExclusive" xml:space="preserve">
-    <value>Make the queue exclusive.</value>
+    <value>Make the queue exclusive so that it's accessable only inside the current connection.</value>
   </data>
   <data name="RabbitMQHelpIsAutoDelete" xml:space="preserve">
-    <value>Make the queue auto delete.&lt;br/&gt;
+    <value>If set, the queue is deleted when all consumers have 
+    finished using it. The last consumer can be cancelled either 
+    explicitly or because its channel is closed. If there was no 
+    consumer ever on the queue, it won't be deleted. Applications 
+    can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
         Make the queue auto delete</value>
   </data>
   <data name="RabbitMQToolTipIsAutoDelete" xml:space="preserve">
-    <value>Make the queue auto delete.</value>
+    <value>Make the queue auto-delete to delete queue after Consumer are done with it.</value>
   </data>
   <data name="RabbitMQHelpMessage" xml:space="preserve">
-    <value>The message goes in here.&lt;br /&gt;
+    <value>This is the actual content you want to add in the Queue
+      When the Consumer consumes the message, this content will
+      be returned as the response.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:&lt;br /&gt;
@@ -4682,11 +4769,10 @@ Data</value>
         &lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQToolTipMessage" xml:space="preserve">
-    <value>The message goes in here.</value>
+    <value>The message you want to publish goes in here.</value>
   </data>
   <data name="RabbitMQHelpResult" xml:space="preserve">
-    <value>Only variables go in here.&lt;br /&gt;
-        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+    <value>Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
         &lt;br /&gt;
 
         Allowed:
@@ -4738,5 +4824,184 @@ Data</value>
   </data>
   <data name="RabbitMQSourceVirtualHostHelp" xml:space="preserve">
     <value>The Virtual Host of the RabbitMQ server. Default value is /.</value>
+  </data>
+  <data name="WcfServiceSourcesHelp" xml:space="preserve">
+    <value>Select the Wcf Source you want to use from previously setup sources.</value>
+  </data>
+  <data name="WcfServiceEditSourceHelp" xml:space="preserve">
+    <value>Change the connection Endpoint properties of the selected Wcf Source&lt;br&gt;
+&lt;br/&gt;
+Change the Endpoint Url from, say, a development to a live environment.&lt;br/&gt;
+&lt;br/&gt;
+&lt;a href="http://warewolf.io/knowledge-base/data-connectors" target="_blank"&gt;Read more in the Knowledgebase.&lt;/a&gt;</value>
+  </data>
+  <data name="WcfServiceNewSourceHelp" xml:space="preserve">
+    <value>To create a new WCF source, click New.</value>
+  </data>
+  <data name="ManageWcfServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the Source you want to use</value>
+  </data>
+  <data name="ManageWcfServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected source connection</value>
+  </data>
+  <data name="ManageWcfServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a Wcf Service</value>
+  </data>
+  <data name="SharePointReadFolderInputPathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server folder or
+    file path
+    </value>
+  </data>
+  <data name="SharePointUploadPathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server upload folder path</value>
+  </data>
+  <data name="SharePointDownloadPathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server download file path</value>
+  </data>
+  <data name="SharePointFilePathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server file path</value>
+  </data>
+  <data name="SharePointReadFolderHelpFolder" xml:space="preserve">
+    <value>
+        Read SharePoint folders and files. Enter SharePoint folder or file path &lt;br /&gt;
+        Example:&lt;br /&gt; 
+        SharedFolder/HelpFolder/Help.&lt;br /&gt;
+        SharedFolder/HelpFolder/MyFile.txt&lt;br /&gt;
+        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
+        &lt;br /&gt;
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="SharePointUploadHelpFolder" xml:space="preserve">
+    <value>
+        Enter SharePoint folder upload location path &lt;br /&gt;
+        Example:&lt;br /&gt; 
+        SharedFolder/HelpFolder/Help&lt;br /&gt;
+        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
+        &lt;br /&gt;
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+
+  <data name="SharePointDownloadHelpFolder" xml:space="preserve">
+    <value>
+        Enter SharePoint file download path &lt;br /&gt;
+        Example:&lt;br /&gt; 
+        SharedFolder/Help.txt&lt;br /&gt;
+        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        &lt;br /&gt;
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="SharePointHelpCopyFrom" xml:space="preserve">
+    <value>
+        Enter SharePoint file From path &lt;br /&gt;
+        Example:&lt;br /&gt; 
+        SharedFolder/Help.txt&lt;br /&gt;
+        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        &lt;br /&gt;
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="SharePointHelpCopyTo" xml:space="preserve">
+    <value>
+        Enter SharePoint file To path &lt;br /&gt;
+        Example:&lt;br /&gt; 
+        SharedFolder/Help.txt&lt;br /&gt;
+        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        &lt;br /&gt;
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="SharePointHelpDelete" xml:space="preserve">
+    <value>
+        Enter SharePoint file path &lt;br /&gt;
+        Example:&lt;br /&gt; 
+        SharedFolder/Help.txt&lt;br /&gt;
+        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        &lt;br /&gt;
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="ReadLocalHelpFolder" xml:space="preserve">
+    <value>
+        Enter local file or folder path in here.&lt;br/&gt;
+        Download to local Example: C:\MyFolder\Help.&lt;br/&gt;
+        Upload file to SharePoint Example: C:\MyFolder\Help\help.txt.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="ReadLocalFolderToolTipFolder" xml:space="preserve">
+    <value>Enter local file or folder path</value>
+  </data>
+  <data name="WcfServiceNewHeaderLabel" xml:space="preserve">
+    <value>New WCF Service Source</value>
+  </data>
+  <data name="ManageWcfEndpointTooltip" xml:space="preserve">
+    <value>Enter Endpoint Url</value>
+  </data>
+  <data name="ExchangeEmailSourceHostNameHelp" xml:space="preserve">
+    <value>The Exchange web service endpoint url to connect to your Exchange enviroment.
+&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+e.g.&lt;br/&gt;
+&lt;table border="1" id="smtptable"&gt;
+&lt;tr align="center"&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
+&lt;tr&gt;&lt;td&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;&lt;br/&gt;If the Autodiscover url is left empty, the Exchange service endpoint will be auto dicovered based on the user name</value>
+  </data>
+  <data name="ExchangeUserNameAuthenticationHelp" xml:space="preserve">
+    <value>The user name to authenticate against the exhange server</value>
+  </data>
+  <data name="WcfSourceHostNameHelp" xml:space="preserve">
+    <value>The Wcf service endpoint url to connect to your web service.
+&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+e.g.&lt;br/&gt;
+&lt;table border="1" id="smtptable"&gt;
+&lt;tr align="center"&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
+&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; </value>
   </data>
 </root>

@@ -131,7 +131,8 @@
       <HintPath>..\Binaries\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -270,8 +271,14 @@
     <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
     <Compile Include="Activities\IWebXmlConvert.cs" />
     <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointCopyFileActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointDeleteFileActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointFileDownLoadActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointFileUploadActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointMoveFileActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointReadFolderItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUpdateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUtils.cs" />
@@ -297,6 +304,7 @@
     <Compile Include="Activities\SqlBulkInsert\SqlBulkCopyWrapper.cs" />
     <Compile Include="Activities\SqlBulkInsert\SqlBulkInserter.cs" />
     <Compile Include="Activities\SqlBulkInsert\ISqlBulkCopy.cs" />
+    <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
     <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
     <Compile Include="Activities\WebXmlConvert.cs" />

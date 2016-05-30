@@ -14,7 +14,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="340"
                                MinWidth="340"
-                               MinHeight="370"
+                               MinHeight="250"
                                mc:Ignorable="d"
                                d:DesignWidth="340"
                                d:DataContext="{d:DesignInstance local:RabbitMQConsumeDesignerViewModel}">
@@ -22,7 +22,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
@@ -49,6 +49,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="SourceTextBlock" Grid.Column="0" Grid.Row="0" Text="RabbitMQ Source" />
@@ -60,7 +62,7 @@
             </Grid.ColumnDefinitions>
 
             <ComboBox x:Name="InitialFocusElement"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
                       Margin="{StaticResource ControlBorderRight}"
@@ -87,9 +89,9 @@
                 </i:Interaction.Behaviors>
             </Button>
             <Button Grid.Column="2"
-                    Content="{x:Static languages:Core.New}" 
+                    Content="{x:Static languages:Core.New}"
                     Width="Auto"
-                    Style="{StaticResource ButtonOrangeStyle}" 
+                    Style="{StaticResource ButtonOrangeStyle}"
                     ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
                     Command="{Binding NewRabbitMQSourceCommand}">
                 <i:Interaction.Behaviors>
@@ -117,41 +119,87 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=SourceTextBlock, Path=ActualWidth}" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
+                                DefaultText="Response "
+                                WrapInBrackets="True"
+                                Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipResponse}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Margin="{StaticResource ControlBorderTop}"
+                                IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpResponse}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                            SourcePropertyName="Response"
+                                            SourcePropertyValue="{Binding Response, UpdateSourceTrigger=PropertyChanged}"
+                                            Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
-                                DefaultText="Prefetch "
+                                DefaultText="Prefetch Count"
                                 Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.RabbitMQToolTipMessage}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipPrefetch}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsPrefetchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpMessage}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpPrefetch}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                             SourcePropertyName="Prefetch"
                                             SourcePropertyValue="{Binding Prefetch, UpdateSourceTrigger=PropertyChanged}"
                                             Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
-        <CheckBox Grid.Column="1"
-                  Grid.Row="4"
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="TimeOut" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
+                                DefaultText="TimeOut in seconds"
+                                Text="{Binding TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipTimeOut}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Margin="{StaticResource ControlBorderTop}"
+                                IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsTimeOutFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpTimeOut}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                            SourcePropertyName="TimeOut"
+                                            SourcePropertyValue="{Binding TimeOut, UpdateSourceTrigger=PropertyChanged}"
+                                            Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Acknowledge" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1" Grid.Row="5"
+                  Margin="-6,0,0,0"
+                      Content="Acknowledge"
+                  IsChecked="{Binding Acknowledge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipAcknowledge}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpAcknowledge}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="Acknowledge"
+                                     SourcePropertyValue="{Binding  Acknowledge, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1" Grid.Row="6"
                   Margin="-6,0,0,0"
                       Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.RabbitMQToolTipIsDurable}">
+                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipReQueue}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpIsDurable}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpRequeue}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ReQueue"
                                      SourcePropertyValue="{Binding  ReQueue, UpdateSourceTrigger=PropertyChanged}"
@@ -159,15 +207,14 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" />
-        <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="5"
+        <TextBlock Grid.Column="0" Grid.Row="7" Text="Result" Margin="0,-1,0,0" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="7"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
+                                Margin="0,-1,0,0"
                                 Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resultstxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -178,7 +225,7 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        
-        <errors:OnError Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+        <errors:OnError Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

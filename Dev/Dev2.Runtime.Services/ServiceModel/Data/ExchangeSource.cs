@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using Dev2.Common.Common;
+﻿using Dev2.Common.Common;
 using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Microsoft.Exchange.WebServices.Data;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public class ExchangeSource : Resource, IExchangeSource, IResourceSource
+    public class ExchangeSource : Resource, IExchangeSource
     {
         private ExchangeService _exchangeService;
+
         // ReSharper disable once NotAccessedField.Local
         private IExchangeEmailSender _emailSender;
 
@@ -59,9 +60,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region CTOR
+
+        public ExchangeSource(IExchangeEmailSender sender)
+        {
+            _emailSender = sender;
+        }
 
         public ExchangeSource()
         {
@@ -96,18 +102,17 @@ namespace Dev2.Runtime.ServiceModel.Data
             Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
-        public void Send(IExchangeSource source, ExchangeTestMessage testMessage)
+        public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage)
         {
             InitializeService();
 
-            _emailSender = new ExchangeEmailSender(source);
+            _emailSender = emailSender;
 
             var emailMessage = new EmailMessage(_exchangeService)
             {
                 Body = testMessage.Body,
                 Subject = testMessage.Subject
             };
-
 
             foreach (var to in testMessage.Tos)
             {
@@ -132,7 +137,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     emailMessage.BccRecipients.Add(bcC);
                 }
             }
-            
+
             foreach (var att in testMessage.Attachments)
             {
                 if (!string.IsNullOrEmpty(att))
@@ -141,9 +146,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
             }
 
-            _emailSender.Send(_exchangeService,emailMessage);
+            _emailSender.Send(_exchangeService, emailMessage);
         }
-        #endregion
+
+        #endregion CTOR
 
         private void InitializeService()
         {
@@ -171,50 +177,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return result;
         }
 
-        public override bool IsSource
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsService
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsFolder
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsReservedService
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsServer
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsResourceVersion
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        #endregion
+        #endregion ToXml
 
         public bool Equals(IExchangeSource other)
         {
@@ -231,6 +194,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             BcCs = new List<string>();
             Attachments = new List<string>();
         }
+
         public List<string> Tos { get; set; }
         public List<string> CCs { get; set; }
         public List<string> BcCs { get; set; }

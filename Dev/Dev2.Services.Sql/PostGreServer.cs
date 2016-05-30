@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces.Services.Sql;
+using Npgsql;
+using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -6,10 +10,6 @@ using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Services.Sql;
-using Npgsql;
-using NpgsqlTypes;
 
 namespace Dev2.Services.Sql
 {
@@ -107,7 +107,7 @@ namespace Dev2.Services.Sql
         {
             VerifyConnection();
             NpgsqlDataReader reader = null;
-            
+
             var result = new List<string>();
             var cmd = new NpgsqlCommand("select datname from pg_database", _connection);
 
@@ -119,7 +119,6 @@ namespace Dev2.Services.Sql
                     result.Add(reader.GetString(0));
                 }
             }
-
             finally
             {
                 // ReSharper disable once UseNullPropagation
@@ -129,7 +128,7 @@ namespace Dev2.Services.Sql
             return result;
         }
 
-        #endregion
+        #endregion FetchDatabases
 
         #region FetchDataTable
 
@@ -152,7 +151,7 @@ namespace Dev2.Services.Sql
             return FetchDataTable(_command);
         }
 
-        #endregion
+        #endregion FetchDataTable
 
         #region FetchDataSet
 
@@ -169,7 +168,7 @@ namespace Dev2.Services.Sql
             return _factory.FetchDataSet(command);
         }
 
-        #endregion
+        #endregion FetchDataSet
 
         #region FetchStoredProcedures
 
@@ -230,7 +229,7 @@ namespace Dev2.Services.Sql
             return helpText;
         }
 
-        #endregion
+        #endregion FetchStoredProcedures
 
         #region VerifyConnection
 
@@ -242,7 +241,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        #endregion
+        #endregion VerifyConnection
 
         #region Connect
 
@@ -269,7 +268,7 @@ namespace Dev2.Services.Sql
             return true;
         }
 
-        #endregion
+        #endregion Connect
 
         private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
             Func<IDataReader, T> handler)
@@ -343,7 +342,6 @@ namespace Dev2.Services.Sql
         {
             using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
             {
-
                 List<IDbDataParameter> isOut;
                 GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
                 return isOut.Select(a => a as NpgsqlParameter).ToList();
@@ -418,16 +416,16 @@ namespace Dev2.Services.Sql
             _factory = dbFactory;
         }
 
-        // Implement IDisposable. 
-        // Do not make this method virtual. 
-        // A derived class should not be able to override this method. 
+        // Implement IDisposable.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
         public void Dispose()
         {
             Dispose(true);
-            // This object will be cleaned up by the Dispose method. 
-            // Therefore, you should call GC.SupressFinalize to 
-            // take this object off the finalization queue 
-            // and prevent finalization code for this object 
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
             // from executing a second time.
             GC.SuppressFinalize(this);
         }
@@ -435,26 +433,26 @@ namespace Dev2.Services.Sql
         [ExcludeFromCodeCoverage]
         ~PostgreServer()
         {
-            // Do not re-create Dispose clean-up code here. 
-            // Calling Dispose(false) is optimal in terms of 
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
             // readability and maintainability.
             Dispose(false);
         }
 
-        // Dispose(bool disposing) executes in two distinct scenarios. 
-        // If disposing equals true, the method has been called directly 
-        // or indirectly by a user's code. Managed and unmanaged resources 
-        // can be disposed. 
-        // If disposing equals false, the method has been called by the 
-        // runtime from inside the finalizer and you should not reference 
-        // other objects. Only unmanaged resources can be disposed. 
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
         private void Dispose(bool disposing)
         {
-            // Check to see if Dispose has already been called. 
+            // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                // If disposing equals true, dispose all managed 
-                // and unmanaged resources. 
+                // If disposing equals true, dispose all managed
+                // and unmanaged resources.
                 if (disposing)
                 {
                     // Dispose managed resources.
@@ -480,9 +478,9 @@ namespace Dev2.Services.Sql
                     }
                 }
 
-                // Call the appropriate methods to clean up 
-                // unmanaged resources here. 
-                // If disposing is false, 
+                // Call the appropriate methods to clean up
+                // unmanaged resources here.
+                // If disposing is false,
                 // only the following code is executed.
 
                 // Note disposing has been done.
@@ -490,6 +488,6 @@ namespace Dev2.Services.Sql
             }
         }
 
-        #endregion
+        #endregion IDisposable
     }
 }

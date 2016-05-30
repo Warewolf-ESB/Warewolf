@@ -35,6 +35,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="WebServiceDefinition.cs" />
     <Reference Include="Microsoft.Practices.Prism.Composition">
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
     </Reference>
@@ -101,7 +102,7 @@
     <Compile Include="ToolDescriptorCore.cs" />
     <Compile Include="ToolDescriptorInfo.cs" />
     <Compile Include="WarewolfWebClient.cs" />
-    <Compile Include="WebServiceDefinition.cs" />
+    <Compile Include="WcfService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

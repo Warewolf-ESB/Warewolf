@@ -10,14 +10,11 @@
                     xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                     xmlns:core1="clr-namespace:Dev2.Activities.Designers2.Core"
                     xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                    
                     xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                     xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
-                    xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                    xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
@@ -127,6 +124,10 @@
                                     MinLines="5"
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
+                                    AcceptsReturn="True" 
+                                    AllowMultilinePaste="True" 
+                                    AllowUserInsertLine="True"
+                                    TextWrapping="Wrap"
                                     FilterType="All"                                    
                                     WrapInBrackets="False"
                                     Text="{Binding ActionRegion.CommandText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -158,7 +159,11 @@
                     Margin="{StaticResource ControlBorderTop}"
                     ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                     HorizontalAlignment="Right"
-                    Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
+                    Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.InputGenerateOutputsDefaultHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetActionGrid">
@@ -251,6 +256,18 @@
             <Control Template="{StaticResource NewSelectionGrid}"/>
 
             <Control Template="{StaticResource NewActionGrid}" Grid.Row="1"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewWcfSelectionActionGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="1"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewOdbcSelectionActionGrid">

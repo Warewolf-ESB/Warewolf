@@ -73,7 +73,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -217,6 +218,11 @@
     <Compile Include="SelectAndApply\SelectAndApplyViewModelDesignerTests.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileDownLoadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileMoveViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileUploadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointReadFolderViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointReadListTests.cs" />
     <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
@@ -229,6 +235,7 @@
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />

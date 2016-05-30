@@ -16,6 +16,7 @@
 
         <ResourceDictionary Source="Images/AssignObject.xaml"/>
         <ResourceDictionary Source="Images/DotNetDLL.xaml" />
+        <ResourceDictionary Source="Images/WcfEndPoint.xaml" />
         <ResourceDictionary Source="Images/MySQL.xaml" />
         <ResourceDictionary Source="Images/Postgre.xaml" />
         <ResourceDictionary Source="Images/Oracle.xaml" />

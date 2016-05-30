@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Sql;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
@@ -45,6 +45,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             return base.NormalizeXmlPayload(res);
         }
+
         public override List<string> GetDatabases(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
@@ -115,6 +116,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             return new PostgreServer();
         }
+
         private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
@@ -122,9 +124,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 OutParameters = outParameters.Select(MethodParameterFromDataParameter).ToList()
             };
         }
-        #endregion
 
-        #endregion
+        #endregion Overrides of AbstractDatabaseBroker<MySqlServer>
+
+        #endregion Overrides of AbstractDatabaseBroker<MySqlServer>
 
         public override IOutputDescription TestService(DbService dbService)
         {
