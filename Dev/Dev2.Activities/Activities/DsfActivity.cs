@@ -651,7 +651,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DebugItem itemToAdd = new DebugItem();
                     if(tmpEntry.IsWarewolfAtomResult)
                     {
-                        var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var warewolfAtomResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if(warewolfAtomResult != null)
                         {
                             var variableName = serviceInput.Value;
@@ -668,7 +668,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var warewolfAtomListResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         if(warewolfAtomListResult != null)
                         {
                             var variableName = serviceInput.Value;
@@ -704,7 +704,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(tmpEntry.IsWarewolfAtomResult)
                     {
 
-                        var warewolfAtomResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var warewolfAtomResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if(warewolfAtomResult != null)
                         {
                             var variableName = dev2Definition.Name;
@@ -719,7 +719,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
 
-                        var warewolfAtomListResult = tmpEntry as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var warewolfAtomListResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         if(warewolfAtomListResult != null)
                         {
                             var variableName = dev2Definition.Name;

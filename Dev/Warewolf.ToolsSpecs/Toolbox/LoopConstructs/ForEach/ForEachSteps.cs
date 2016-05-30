@@ -25,9 +25,11 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
+   
     [Binding]
     public class ForEachSteps : RecordSetBases
     {
@@ -157,58 +159,6 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
             outputMappings.Append("</Outputs>");
             return outputMappings.ToString();
-        }
-
-        [Given(@"There is a recordset in the datalist with this shape")]
-        public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
-        {
-            List<TableRow> rows = table.Rows.ToList();
-
-            if(rows.Count == 0)
-            {
-                var rs = table.Header.ToArray()[0];
-                var field = table.Header.ToArray()[1];
-
-                List<Tuple<string, string>> emptyRecordset;
-
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
-                {
-                    emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
-                }
-                emptyRecordset.Add(new Tuple<string, string>(rs, field));
-            }
-
-            foreach(TableRow tableRow in rows)
-            {
-                List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
-
-                if(variableList == null)
-                {
-                    variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
-                }
-                variableList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
-            }
-        }
-
-        [Given(@"I have a variable ""(.*)"" with the value ""(.*)""")]
-        public void GivenIHaveAVariableWithTheValue(string variable, string value)
-        {
-            List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
-
-            if (variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
-            }
-            if (!string.IsNullOrEmpty(variable))
-            {
-                variableList.Add(new Tuple<string, string>(variable, value));
-            }
         }
 
         [Given(@"I have selected the foreach type as ""(.*)"" and used ""(.*)""")]

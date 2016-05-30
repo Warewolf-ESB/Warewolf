@@ -119,6 +119,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Switch\SwitchSteps.cs" />
+    <Compile Include="Toolbox\Data\AssignObject\AssignObject.feature.cs">
+      <DependentUpon>AssignObject.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Toolbox\Data\AssignObject\AssignObjectSteps.cs" />
     <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -238,18 +244,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature.cs">
+    <Compile Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConsumeRabbitMQ.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
+    <Compile Include="Toolbox\LoopConstructs\LoopConstructsCommon.cs" />
+    <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature.cs">
+      <DependentUpon>SelectAndApply.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
@@ -513,6 +526,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Switch.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Data\AssignObject\AssignObject.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AssignObject.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Data\Assign\Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Assign.feature.cs</LastGenOutput>
@@ -595,7 +612,12 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature">
+    <None Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
     </None>
@@ -894,7 +916,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -94,6 +94,13 @@ using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Designers2.MultiAssignObject;
+using Dev2.Activities.Designers2.Oracle;
+using Dev2.Activities.Designers2.ODBC;
+using Dev2.Activities.Designers2.PostgreSql;
+using Dev2.Activities.Designers2.RabbitMQ.Consume;
+using Dev2.Activities.Exchange;
+using Dev2.Activities.RabbitMQ.Consume;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -105,6 +112,7 @@ namespace Dev2.Studio.ActivityDesigners
             var designerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },

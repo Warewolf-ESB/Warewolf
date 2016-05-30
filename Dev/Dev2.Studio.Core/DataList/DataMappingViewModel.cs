@@ -12,16 +12,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.UndoFramework;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
@@ -32,11 +29,8 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IWebActivity _activity;
 // ReSharper disable InconsistentNaming
-        public bool _isInitialLoad = false;
+        public bool _isInitialLoad;
 // ReSharper restore InconsistentNaming
-        DelegateCommand _undo;
-        DelegateCommand _redo;
-        readonly ActionManager _actionManager;
         private string _activityName;
         private string _xmlOutput;
 
@@ -54,7 +48,6 @@ namespace Dev2.Studio.ViewModels.DataList
         {
 
             _activity = activity;
-            _actionManager = new ActionManager();
             Inputs = new ObservableCollection<IInputOutputViewModel>();
             Outputs = new ObservableCollection<IInputOutputViewModel>();
 
@@ -174,32 +167,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public ObservableCollection<IInputOutputViewModel> Outputs { get; private set; }
 
         public ObservableCollection<IInputOutputViewModel> Inputs { get; private set; }
-
-        public ICommand UndoCommand
-        {
-            get
-            {
-                return _undo ?? (_undo = new DelegateCommand(c => Undo()));
-            }
-        }
-
-        public ICommand RedoCommand
-        {
-            get
-            {
-                return _redo ?? (_redo = new DelegateCommand(c => Redo()));
-            }
-        }
-
-        public void Undo()
-        {
-            UndoFramework.Undo();
-        }
-
-        public void Redo()
-        {
-            UndoFramework.Redo();
-        }
+       
 
         public void CopyFrom(IDataMappingViewModel copyObj)
         {
@@ -210,14 +178,7 @@ namespace Dev2.Studio.ViewModels.DataList
             XmlOutput = copyObj.XmlOutput;
 
         }
-
-        public ActionManager UndoFramework
-        {
-            get
-            {
-                return _actionManager;
-            }
-        }
+        
         #endregion Bindings
 
         #region Final Output

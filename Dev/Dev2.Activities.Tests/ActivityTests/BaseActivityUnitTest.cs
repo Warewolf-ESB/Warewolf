@@ -187,8 +187,11 @@ namespace ActivityUnitTests
                     };
 
                 }
+            if(!string.IsNullOrEmpty(TestData))
+            {
                 ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, 0);
-                dataObject.IsDebug = isDebug;
+            }
+            dataObject.IsDebug = isDebug;
 
                 // we now need to set a thread ID ;)
                 dataObject.ParentThreadID = 1;
@@ -390,7 +393,7 @@ namespace ActivityUnitTests
                 {
                     return;
                 }
-                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
                 {
                     foreach(var res in listResult.Item)

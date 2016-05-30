@@ -19,10 +19,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ActivityUnitTests;
-using Dev2;
-using Dev2.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.PathOperations.Enums;
@@ -37,7 +36,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 
-namespace Warewolf.Tools.Specs.BaseTypes
+namespace Dev2.Activities.Specs.BaseTypes
 {
     [Binding]
     public class CommonSteps : BaseActivityUnitTest
@@ -61,10 +60,10 @@ namespace Warewolf.Tools.Specs.BaseTypes
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN",StringComparison.OrdinalIgnoreCase);
+            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            string fetchErrors =  result.Environment.FetchErrors();
+            string fetchErrors = result.Environment.FetchErrors();
             bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
@@ -78,7 +77,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
         public void ThenTheDebugInputsAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            if(!result.Environment.HasErrors())
+            if (!result.Environment.HasErrors())
             {
                 var inputDebugItems = GetInputDebugItems(null, result.Environment);
                 ThenTheDebugInputsAs(table, inputDebugItems);
@@ -96,7 +95,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
         public void ThenTheDebugOutputAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            if(!result.Environment.HasErrors())
+            if (!result.Environment.HasErrors())
             {
                 var outputDebugItems = GetOutputDebugItems(null, result.Environment);
                 ThenTheDebugOutputAs(table, outputDebugItems);
@@ -173,7 +172,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
                     ScenarioContext.Current.Get<string>(SourceUsernameHolder),
                     ScenarioContext.Current.Get<string>(SourcePasswordHolder),
-                    true,"");
+                    true, "");
                 StringBuilder sb = new StringBuilder();
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
                 var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());
@@ -550,15 +549,15 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
                 if (dsfActivityAbstractString != null)
                 {
-                    return DebugItemResults<string>(dsfActivityAbstractString, result.Environment);
+                    return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
                 if (dsfActivityAbstractBool != null)
                 {
-                    return DebugItemResults<bool>(dsfActivityAbstractBool, result.Environment);
+                    return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
-                return DebugItemResults<string>(activity, env);
+                return DebugItemResults(activity, env);
             }
             catch
             {
@@ -759,7 +758,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                     Assert.IsTrue(inputDebugItems[i].Value.Contains("."));
                     int val;
                     Assert.IsTrue(int.TryParse(dt[6], out val));
-                    Assert.IsTrue(Enumerable.Last<string>(dt).EndsWith("AM") || Enumerable.Last<string>(dt).EndsWith("PM"));
+                    Assert.IsTrue(dt.Last().EndsWith("AM") || dt.Last().EndsWith("PM"));
 
                 }
                 //2016/01/06 08:00:01.68

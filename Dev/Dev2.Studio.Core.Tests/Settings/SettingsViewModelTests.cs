@@ -26,6 +26,7 @@ using Dev2.PerformanceCounters.Management;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;

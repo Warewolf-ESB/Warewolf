@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
@@ -41,22 +42,22 @@ namespace Dev2.DataList.Contract
             // ReSharper disable TooWideLocalVariableScope
             string rawRecsetName;
             // ReSharper restore TooWideLocalVariableScope
-            if(FilterTO == null)
+            if (FilterTO == null)
             {
                 FilterTO = new IntellisenseFilterOpsTO();
             }
-            if(FilterTO.FilterCondition != null)
+            if (FilterTO.FilterCondition != null)
             {
                 rawRecsetName = FilterTO.FilterCondition;
-                if(rawRecsetName.Contains("[["))
+                if (rawRecsetName.Contains("[["))
                 {
                     rawRecsetName = rawRecsetName.Replace("[[", "");
                 }
-                if(rawRecsetName.Contains("]]"))
+                if (rawRecsetName.Contains("]]"))
                 {
                     rawRecsetName = rawRecsetName.Replace("]]", "");
                 }
-                if(rawRecsetName.Contains("()"))
+                if (rawRecsetName.Contains("()"))
                 {
                     // ReSharper disable RedundantAssignment
                     rawRecsetName = rawRecsetName.Replace("()", "");
@@ -65,7 +66,7 @@ namespace Dev2.DataList.Contract
             }
 
 
-            if(!string.IsNullOrEmpty(DataList))
+            if (!string.IsNullOrEmpty(DataList))
             {
                 XmlNodeList tmpRootNl = null;
 
@@ -74,38 +75,38 @@ namespace Dev2.DataList.Contract
                     xDoc.LoadXml(DataList);
                     tmpRootNl = xDoc.ChildNodes;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Error(ex);
                 }
 
-                if(tmpRootNl != null)
+                if (tmpRootNl != null)
                 {
                     XmlNodeList nl = tmpRootNl[0].ChildNodes;
-                    for(int i = 0; i < nl.Count; i++)
+                    for (int i = 0; i < nl.Count; i++)
                     {
                         XmlNode tmpNode = nl[i];
 
-                        if(IsValidChildNode(tmpNode))
+                        if (IsValidChildNode(tmpNode))
                         {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
                             IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
                             // now extract child node defs
                             XmlNodeList childNl = tmpNode.ChildNodes;
-                            for(int q = 0; q < childNl.Count; q++)
+                            for (int q = 0; q < childNl.Count; q++)
                             {
                                 children.Add(DataListFactory.CreateIntellisensePart(childNl[q].Name, ExtractDescription(childNl[q])));
                             }
-                            if(FilterTO.FilterType == enIntellisensePartType.All)
+                            if (FilterTO.FilterType == enIntellisensePartType.All)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
                             }
-                            if(FilterTO.FilterType == enIntellisensePartType.RecordsetsOnly)
+                            if (FilterTO.FilterType == enIntellisensePartType.RecordsetsOnly)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()"), ExtractDescription(tmpNode)));
                             }
-                            if(FilterTO.FilterType == enIntellisensePartType.RecordsetFields)
+                            if (FilterTO.FilterType == enIntellisensePartType.RecordsetFields)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
                             }
@@ -113,7 +114,7 @@ namespace Dev2.DataList.Contract
                         else
                         {
                             // scalar value, make it as such
-                            if(FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
+                            if (FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
                             }
@@ -137,17 +138,17 @@ namespace Dev2.DataList.Contract
         {
             bool result = false;
 
-            if(tmpNode.HasChildNodes)
+            if (tmpNode.HasChildNodes)
             {
                 // has 1 child node that DOES NOT have child nodes
-                if(tmpNode.ChildNodes.Count == 1 && !tmpNode.ChildNodes[0].HasChildNodes)
+                if (tmpNode.ChildNodes.Count == 1 && !tmpNode.ChildNodes[0].HasChildNodes)
                 {
-                    if(tmpNode.ChildNodes[0].Name != "#text")
+                    if (tmpNode.ChildNodes[0].Name != "#text")
                     {
                         result = true;
                     }
                 }
-                else if(tmpNode.ChildNodes.Count > 1)
+                else if (tmpNode.ChildNodes.Count > 1)
                 {
                     result = true;
                 }
@@ -167,16 +168,16 @@ namespace Dev2.DataList.Contract
 
             try
             {
-                if(node.Attributes != null)
+                if (node.Attributes != null)
                 {
                     XmlAttribute attribute = node.Attributes[DescAttribute];
-                    if(attribute != null)
+                    if (attribute != null)
                     {
                         result = attribute.Value;
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error(ex);
             }

@@ -30,6 +30,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Moq;
+using Dev2.Studio.Core;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests

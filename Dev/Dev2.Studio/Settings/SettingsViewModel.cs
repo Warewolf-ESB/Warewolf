@@ -33,6 +33,7 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using Dev2.Studio.Core;
 
 namespace Dev2.Settings
 {

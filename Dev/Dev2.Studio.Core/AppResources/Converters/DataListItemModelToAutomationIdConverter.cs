@@ -13,6 +13,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Core.Interfaces.DataList;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
@@ -26,16 +27,15 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             DataListItemModel itemModel = value as DataListItemModel;
 
-
             if(itemModel != null)
             {
-                if(itemModel.IsRecordset)
+                if(itemModel is IRecordSetItemModel)
                 {
                     return string.IsNullOrEmpty(itemModel.DisplayName)
                         ? string.Concat(AutoIdPrefix, "NewRecordSet", AutoIdSufix)
                         : string.Concat(AutoIdPrefix, "RecordSet_", itemModel.DisplayName, AutoIdSufix);
                 }
-                if(itemModel.IsField)
+                else if(itemModel is IScalarItemModel)
                 {
                     return string.IsNullOrEmpty(itemModel.DisplayName)
                         ? string.Concat(AutoIdPrefix, "NewField", AutoIdSufix)

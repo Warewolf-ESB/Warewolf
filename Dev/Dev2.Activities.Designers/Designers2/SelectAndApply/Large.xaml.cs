@@ -36,33 +36,23 @@ namespace Dev2.Activities.Designers2.SelectAndApply
 
         void DoDrop(object sender, DragEventArgs e)
         {
-            var dataObject = e.Data;
-            bool multipleItemsToSequence = ViewModel.MultipleItemsToSequence(dataObject);
-            if(multipleItemsToSequence)
+            DropPointOnDragEnter(sender, e);
+            var modelItem = this.DropPoint.Item;
+           /* if (/*ViewModel.SetModelItemForServiceTypes(e.Data)false)
             {
-                e.Effects = DragDropEffects.None;
                 e.Handled = true;
-            }
-
+            }*/
         }
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
-            if(_dropEnabledActivityDesignerUtils != null)
+            if (_dropEnabledActivityDesignerUtils != null)
             {
                 var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
-                if(!dropEnabled)
+                if (!dropEnabled)
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
-                }
-                else
-                {
-                    if(ViewModel.MultipleItemsToSequence(e.Data))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
                 }
             }
         }

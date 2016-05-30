@@ -1,8 +1,7 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,7 +21,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DTOFactory
     {
-
         public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index = 0, bool inserted = false, string initializeWith = "")
         {
             IDev2TOFn toReturn = null;
@@ -34,7 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<DataSplitDTO>(x =>
                 {
                     var dataSplitDto = dto as DataSplitDTO;
-                    if(dataSplitDto != null)
+                    if (dataSplitDto != null)
                     {
                         toReturn = new DataSplitDTO(initializeWith, dataSplitDto.SplitType, dataSplitDto.At, index, false, inserted);
                     }
@@ -42,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<DataMergeDTO>(x =>
                 {
                     var dataMergeDto = dto as DataMergeDTO;
-                    if(dataMergeDto != null)
+                    if (dataMergeDto != null)
                     {
                         toReturn = new DataMergeDTO(initializeWith, dataMergeDto.MergeType, dataMergeDto.At, index, dataMergeDto.Padding, dataMergeDto.Alignment, inserted);
                     }
@@ -50,7 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<CaseConvertTO>(x =>
                 {
                     var caseConvertTO = dto as CaseConvertTO;
-                    if(caseConvertTO != null)
+                    if (caseConvertTO != null)
                     {
                         toReturn = CaseConverterFactory.CreateCaseConverterTO(initializeWith, caseConvertTO.ConvertType, caseConvertTO.Result, index);
                     }
@@ -58,7 +56,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<BaseConvertTO>(x =>
                 {
                     var baseConvertTO = dto as BaseConvertTO;
-                    if(baseConvertTO != null)
+                    if (baseConvertTO != null)
                     {
                         toReturn = new BaseConvertTO(initializeWith, baseConvertTO.FromType, baseConvertTO.ToType, baseConvertTO.ToExpression, index, inserted);
                     }
@@ -72,9 +70,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<DecisionTO>(() => toReturn = new DecisionTO(initializeWith, "", "", index, inserted)),
                 TypeSwitch.Case<JsonMappingTo>(() => toReturn = new JsonMappingTo(initializeWith, index, inserted)),
                 TypeSwitch.Case<SharepointSearchTo>(() => toReturn = new SharepointSearchTo(initializeWith, "=", "", index, inserted)),
-                TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "","")),
+                TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "", "")),
                 //REPLACE WITH SHAREPOINT DELETE ACTIVITY
                 //TypeSwitch.Case<SharepointReadListTo>(() => toReturn = new SharepointReadListTo("", initializeWith, "")),
+                TypeSwitch.Case<AssignObjectDTO>(x => toReturn = new AssignObjectDTO(initializeWith, "", index, inserted)),
             TypeSwitch.Default(() => toReturn = null));
 
             return toReturn;

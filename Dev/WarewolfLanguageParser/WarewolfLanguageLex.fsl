@@ -7,8 +7,7 @@ open Microsoft.FSharp.Text.Lexing
 open Parser
 let newline (lexbuf: LexBuffer<_>) = 
     lexbuf.StartPos <- lexbuf.StartPos.NextLine
- 
-}
+ }
 
 // Regular expressions
 let whitespace = [' ' '\t' ]

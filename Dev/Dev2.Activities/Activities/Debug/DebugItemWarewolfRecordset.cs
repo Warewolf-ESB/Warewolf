@@ -8,13 +8,13 @@ namespace Dev2.Activities.Debug
 {
     public class DebugItemWarewolfRecordset : DebugOutputBase
     {
-        readonly DataASTMutable.WarewolfRecordset _warewolfRecordset;
+        readonly DataStorage.WarewolfRecordset _warewolfRecordset;
         readonly string _labelText;
         string _operand;
         readonly string _variable;
         readonly DebugItemResultType _type;
 
-        public DebugItemWarewolfRecordset(DataASTMutable.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand)
+        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand)
         {
             _warewolfRecordset = warewolfRecordset;
             _labelText = labelText;
