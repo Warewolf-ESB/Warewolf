@@ -363,19 +363,19 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         protected void OnSharepointServerChanged()
         {
-            if(_isFileTool) return;
+            
             if (SelectedSharepointServer == NewSharepointSource)
             {
                 CreateSharepointServerSource();
                 return;
             }
 
+            SharepointServers.Remove(SelectSharepointSource);
+            SharepointServerResourceId = SelectedSharepointServer.ResourceID;
+            if (_isFileTool) return;
             IsRefreshing = true;
             // Save selection
             var listName = GetListName(SelectedList);
-
-            SharepointServers.Remove(SelectSharepointSource);
-            SharepointServerResourceId = SelectedSharepointServer.ResourceID;
 
             Lists.Clear();
             LoadLists(() =>
