@@ -195,7 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         }   
                                         replacementTotal += replacementCount;
                                         counter++;
-                                        return DataASTMutable.WarewolfAtom.NewDataString(replace);
+                                        return DataStorage.WarewolfAtom.NewDataString(replace);
                                     }, update);
                                 }
                                 if (DataListUtil.IsValueScalar(Result))

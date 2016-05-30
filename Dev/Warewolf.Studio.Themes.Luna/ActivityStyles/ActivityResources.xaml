@@ -41,6 +41,10 @@
         <interfaceImplementors:CalculateIntellisenseProvider />
     </interfaceImplementors:CompositeIntellisenseProvider>
 
+    <interfaceImplementors:CompositeIntellisenseProvider x:Key="DefaultCompositeIntellisenseProvider">
+        <interfaceImplementors:DefaultIntellisenseProvider />
+    </interfaceImplementors:CompositeIntellisenseProvider>
+    
     <Style x:Key="DatagridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Padding" Value="2,5,0,0" />

@@ -86,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
-                var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if(scalarResult != null && scalarResult.Item.IsNothing)
                 {
                     throw new NullValueInVariableException("Error with variables in input.", input);

@@ -6,18 +6,18 @@ namespace Warewolf.Storage
 {
     public class WarewolfAtomIterator : IWarewolfIterator
     {
-        readonly IEnumerator<DataASTMutable.WarewolfAtom> _listResult;
+        readonly IEnumerator<DataStorage.WarewolfAtom> _listResult;
 
         readonly int _maxValue;
         int _currentValue;
-        DataASTMutable.WarewolfAtom _currentResult;
+        DataStorage.WarewolfAtom _currentResult;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public WarewolfAtomIterator(IEnumerable<DataASTMutable.WarewolfAtom> warewolfEvalResult)
+        public WarewolfAtomIterator(IEnumerable<DataStorage.WarewolfAtom> warewolfEvalResult)
         {
-            IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms = warewolfEvalResult as DataASTMutable.WarewolfAtom[] ?? warewolfEvalResult.ToArray();
+            IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms = warewolfEvalResult as DataStorage.WarewolfAtom[] ?? warewolfEvalResult.ToArray();
             _listResult = warewolfAtoms.GetEnumerator();
             _maxValue = warewolfAtoms.Count();
         }        

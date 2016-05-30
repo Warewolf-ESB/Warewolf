@@ -17,7 +17,6 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Utils;
-using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -26,6 +25,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Common.Interfaces;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace

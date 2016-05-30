@@ -227,7 +227,6 @@
     <Compile Include="Enums\enIndexFinderDirection.cs" />
     <Compile Include="Enums\enIndexFinderOccurrence.cs" />
     <Compile Include="Enums\enIntellisenseErrorCode.cs" />
-    <Compile Include="Enums\enIntellisensePartType.cs" />
     <Compile Include="Enums\enIntellisenseResultType.cs" />
     <Compile Include="Enums\enMergeAlignment.cs" />
     <Compile Include="Enums\enMergeType.cs" />
@@ -379,7 +378,6 @@
     <Folder Include="Storage\ProtocolBuffers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -111,7 +111,9 @@
       <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.18776, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
@@ -190,6 +192,7 @@
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
+    <Compile Include="DataListViewModelTests.patial.cs" />
     <Compile Include="DialogFactoryTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
@@ -233,6 +236,8 @@
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
+    <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
+    <Compile Include="ModelTests\ScalarItemModelTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
     <Compile Include="Network\ServerProxyWithFallbackTests.Specs.cs" />
@@ -257,6 +262,7 @@
     <Compile Include="Settings\LogSettingsViewModelTests.cs" />
     <Compile Include="ShareTests.cs" />
     <Compile Include="TestUtil.cs" />
+    <Compile Include="ComplexObjectItemModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
@@ -439,10 +445,6 @@
     <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
       <Name>Dev2.TaskScheduler.Wrappers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
-      <Project>{632e4898-1b1b-474c-a028-d13a5c914f11}</Project>
-      <Name>Dev2.UndoFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>

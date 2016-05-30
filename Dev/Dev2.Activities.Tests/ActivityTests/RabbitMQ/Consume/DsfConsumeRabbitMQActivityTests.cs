@@ -7,7 +7,6 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using Dev2.DynamicServices;
 using Warewolf.Storage;
 
@@ -26,10 +25,12 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
-            dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId = Guid.Empty;
-            dsfConsumeRabbitMQActivity.QueueName = string.Empty;
-            dsfConsumeRabbitMQActivity.Prefetch = null;
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
             //------------Assert Results-------------------------
             Assert.IsNotNull(dsfConsumeRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Consume", dsfConsumeRabbitMQActivity.DisplayName);
@@ -125,7 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" } });
+            privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" } });
             //------------Assert Results-------------------------
             Assert.Fail("Exception not thrown");
         }
@@ -159,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             try
             {
-                var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
             }
             catch (Exception ex)
             {
@@ -201,8 +202,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             dsfConsumeRabbitMQActivity.Response = "[[response]]";
 
-            var debugInputs = dsfConsumeRabbitMQActivity.GetDebugInputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>());
-            var debugOutputs = dsfConsumeRabbitMQActivity.GetDebugOutputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>());
+            dsfConsumeRabbitMQActivity.GetDebugInputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>());
+            dsfConsumeRabbitMQActivity.GetDebugOutputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>());
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------            
         }
@@ -283,7 +284,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             try
             {
-                var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
             }
             catch (Exception ex)
             {
@@ -325,7 +326,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             try
             {
-                var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
             }
             catch (Exception ex)
             {
@@ -363,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             try
             {
-                var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
             }
             catch (Exception ex)
             {

@@ -1,18 +1,13 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -26,6 +21,10 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -41,6 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // ReSharper disable InconsistentNaming
         private static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
+
         // ReSharper restore InconsistentNaming
 
         #endregion Class Members
@@ -56,8 +56,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         static DsfNumberFormatActivity()
         {
             _numberFormatter = new Dev2NumberFormatter(); // REVIEW : Please use a factory method to create
-
         }
+
         #endregion Constructors
 
         #region Properties
@@ -101,8 +101,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             var allErrors = new ErrorResultTO();
 
             InitializeDebug(dataObject);
@@ -124,19 +122,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
                 var counter = 1;
-                while(colItr.HasMoreData())
+                while (colItr.HasMoreData())
                 {
                     int decimalPlacesToShowValue;
                     var tmpDecimalPlacesToShow = colItr.FetchNextValue(decimalPlacesToShowIterator);
                     var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out decimalPlacesToShowValue);
-                    if(!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
+                    if (!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
                         throw new Exception("Decimals to show is not valid");
                     }
 
                     var tmpDecimalPlaces = colItr.FetchNextValue(roundingDecimalPlacesIterator);
                     var roundingDecimalPlacesValue = 0;
-                    if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsRealNumber(out roundingDecimalPlacesValue))
+                    if (!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsRealNumber(out roundingDecimalPlacesValue))
                     {
                         throw new Exception("Rounding decimal places is not valid");
                     }
@@ -146,7 +144,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     var result = _numberFormatter.Format(formatNumberTo);
 
-                    if(single != null)
+                    if (single != null)
                     {
                         allErrors.AddError(single.Message);
                     }
@@ -161,16 +159,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugOutputItem(new DebugEvalResult(Result, "",dataObject.Environment,update));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFNumberFormatActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
@@ -179,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.Environment.AddError(errorString);
                 }
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
@@ -206,7 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             environment.Assign(Result, result, update);
         }
 
-        #endregion
+        #endregion Override Methods
 
         #region Private Methods
 
@@ -225,13 +223,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Add(itemToAdd);
         }
 
-        #endregion
+        #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -240,40 +238,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
         }
 
-        #endregion
+        #endregion Get Debug Inputs/Outputs
 
         #region Update ForEach Inputs/Outputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
-
-                    if(t.Item1 == Expression)
+                    if (t.Item1 == Expression)
                     {
                         Expression = t.Item2;
                     }
 
-                    if(t.Item1 == RoundingType)
+                    if (t.Item1 == RoundingType)
                     {
                         RoundingType = t.Item2;
                     }
 
-                    if(t.Item1 == RoundingDecimalPlaces)
+                    if (t.Item1 == RoundingDecimalPlaces)
                     {
                         RoundingDecimalPlaces = t.Item2;
                     }
 
-                    if(t.Item1 == DecimalPlacesToShow)
+                    if (t.Item1 == DecimalPlacesToShow)
                     {
                         DecimalPlacesToShow = t.Item2;
                     }
@@ -283,17 +280,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
                 var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
+                if (itemUpdate != null)
                 {
                     Result = itemUpdate.Item2;
                 }
             }
         }
 
-        #endregion
+        #endregion Update ForEach Inputs/Outputs
 
         #region GetForEachInputs/Outputs
 
@@ -307,7 +304,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(Result);
         }
 
-        #endregion
-
+        #endregion GetForEachInputs/Outputs
     }
 }
