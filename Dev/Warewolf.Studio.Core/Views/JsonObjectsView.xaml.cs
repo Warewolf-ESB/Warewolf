@@ -4,34 +4,29 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using Dev2;
-using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.Decision;
-using Dev2.Common.Interfaces.Studio.Controller;
 
-namespace Warewolf.Studio.Views
+namespace Dev2.Studio.Core.Views
 {
     /// <summary>
-    /// Interaction logic for WindowBorderLess.xaml
+    /// Interaction logic for JsonObjectsView.xaml
     /// </summary>
-    public partial class WindowBorderLess
+    public partial class JsonObjectsView
     {
         Grid _blackoutGrid;
-        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
 
-        public WindowBorderLess()
+        public JsonObjectsView()
         {
             InitializeComponent();
             AddBlackOutEffect();
         }
 
-        void WindowBorderLess_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void JsonObjectsView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
 
-        void WindowBorderLess_OnClosed(object sender, EventArgs e)
+        void JsonObjectsView_OnClosed(object sender, EventArgs e)
         {
             RemoveBlackOutEffect();
         }
@@ -74,32 +69,7 @@ namespace Warewolf.Studio.Views
 
         void DoneButton_OnClick(object sender, RoutedEventArgs e)
         {
-            bool valid = true;
-            var content = ControlContentPresenter.Content as ActivityDesignerTemplate;
-
-            if (content != null)
-            {
-                var dataContext = content.DataContext as DecisionDesignerViewModel;
-                if(dataContext != null)
-                {
-                    dataContext.Validate();
-                    if (dataContext.Errors != null)
-                    {
-                        PopupController.Show(dataContext.Errors[0].Message, "Decision Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
-                        valid = false;
-                    }
-                }
-            }
-
-            if (valid)
-            {
-                DialogResult = true;
-                Close();
-            }
-        }
-
-        void CancelButton_OnClick(object sender, RoutedEventArgs e)
-        {
+            DialogResult = true;
             Close();
         }
     }

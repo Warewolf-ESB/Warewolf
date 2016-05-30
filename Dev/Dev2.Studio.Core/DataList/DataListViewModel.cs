@@ -16,6 +16,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 using Caliburn.Micro;
@@ -30,12 +31,14 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.Views;
 using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 // ReSharper disable UseNullPropagation
@@ -249,11 +252,27 @@ namespace Dev2.Studio.ViewModels.DataList
             }, CanAddNotes);
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
-
+                ViewJsonObjects(item as IComplexObjectItemModel);
             }, CanViewComplexObjects);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
             Provider = new Dev2TrieSugggestionProvider();
+        }
+
+        private void ViewJsonObjects(IComplexObjectItemModel item)
+        {
+            if (item != null)
+            {
+                var window = new JsonObjectsView();
+                window.Height = 280;
+                var contentPresenter = window.FindChild<TextBlock>();
+                if (contentPresenter != null)
+                {
+                    contentPresenter.Text = item.GetJson();
+                }
+
+                window.ShowDialog();
+            }
         }
 
         bool CanViewComplexObjects(Object itemx)
@@ -352,7 +371,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
         void SetJsonPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
-            var recsetsToRemove = ComplexObjectCollection.Where(c => c.DisplayName == part.Recordset);
+            var recsetsToRemove = ComplexObjectCollection.Where(c => c.DisplayName == part.DisplayValue);
             recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundJsonObjects(part, recsetToRemove, isUsed));
         }
 
@@ -380,7 +399,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
         static void ProcessFoundJsonObjects(IDataListVerifyPart part, IComplexObjectItemModel jsonProperty, bool isUsed)
         {
-            if (string.IsNullOrEmpty(part.Field))
+            if (string.IsNullOrEmpty(part.DisplayValue))
             {
                 if (jsonProperty != null)
                 {
@@ -390,7 +409,7 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 if (jsonProperty == null) return;
-                var childrenToRemove = jsonProperty.Children.Where(c => c.DisplayName == part.Field);
+                var childrenToRemove = jsonProperty.Children.Where(c => c.DisplayName == part.DisplayValue);
                 childrenToRemove.ToList().ForEach(childToRemove =>
                 {
                     if (childToRemove != null)
@@ -1765,98 +1784,144 @@ namespace Dev2.Studio.ViewModels.DataList
             if (DataList != null)
             {
                 // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var dataListItem in ScalarCollection)
-                {
-                    if (string.IsNullOrEmpty(dataListItem.DisplayName))
-                    {
-                        continue;
-                    }
+                missingWorkflowParts.AddRange(MissingScalars(partsToVerify, excludeUnusedItems));
+                missingWorkflowParts.AddRange(MissingRecordsets(partsToVerify, excludeUnusedItems));
+            }
+            DetectUnusedComplexObjects(partsToVerify);
+            return missingWorkflowParts;
+        }
 
-                    if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
+        private void DetectUnusedComplexObjects(IList<IDataListVerifyPart> partsToVerify)
+        {
+            var items = ComplexObjectCollection.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
+            var models = items as IList<IComplexObjectItemModel> ?? items.ToList();
+            var unusedItems =
+                from itemModel in models
+                where !(
+                    from part in partsToVerify
+                    select part.DisplayValue
+                    ).Contains(itemModel.Name)
+                select itemModel;
+            foreach(var complexObjectItemModel in unusedItems)
+            {
+                complexObjectItemModel.IsUsed = false;
+            }
+            var usedItems =
+                from itemModel in models
+                where (
+                    from part in partsToVerify
+                    select part.DisplayValue
+                    ).Contains(itemModel.Name)
+                select itemModel;
+            foreach(var complexObjectItemModel in usedItems)
+            {
+                complexObjectItemModel.IsUsed = true;
+            }
+            foreach(var complexObjectItemModel in ComplexObjectCollection)
+            {
+                var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
+                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed);
+            }
+        }
+
+        private List<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        {
+            List<IDataListVerifyPart> missingWorkflowParts = new List<IDataListVerifyPart>();
+            foreach (var dataListItem in RecsetCollection)
+            {
+                if(String.IsNullOrEmpty(dataListItem.DisplayName))
+                {
+                    continue;
+                }
+                if(dataListItem.Children.Count > 0)
+                {
+                    if(partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
                     {
-                        if (dataListItem.IsEditable)
+                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                        if(dataListItem.IsEditable)
                         {
                             // skip it if unused and exclude is on ;)
-                            if (excludeUnusedItems && !dataListItem.IsUsed)
+                            if(excludeUnusedItems && !dataListItem.IsUsed)
                             {
                                 continue;
                             }
-                            missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
-                        }
-                    }
-                }
-
-                foreach (var dataListItem in RecsetCollection)
-                {
-                    if (String.IsNullOrEmpty(dataListItem.DisplayName))
-                    {
-                        continue;
-                    }
-                    if (dataListItem.Children.Count > 0)
-                    {
-                        if (partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
-                        {
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            if (dataListItem.IsEditable)
-                            {
-                                // skip it if unused and exclude is on ;)
-                                if (excludeUnusedItems && !dataListItem.IsUsed)
-                                {
-                                    continue;
-                                }
-                                missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, String.Empty, dataListItem.Description));
-                                // ReSharper disable LoopCanBeConvertedToQuery
-                                foreach (var child in dataListItem.Children)
-                                // ReSharper restore LoopCanBeConvertedToQuery
-                                {
-                                    if (!String.IsNullOrEmpty(child.DisplayName))
-                                    {
-                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                        if (dataListItem.IsEditable)
-                                        {
-                                            missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
+                            missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, String.Empty, dataListItem.Description));
                             // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach (var child in dataListItem.Children)
-                            {
+                            foreach(var child in dataListItem.Children)
                                 // ReSharper restore LoopCanBeConvertedToQuery
-                                if (partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
+                            {
+                                if(!String.IsNullOrEmpty(child.DisplayName))
                                 {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if (child.IsEditable)
+                                    if(dataListItem.IsEditable)
                                     {
-                                        // skip it if unused and exclude is on ;)
-                                        if (excludeUnusedItems && !dataListItem.IsUsed)
-                                        {
-                                            continue;
-                                        }
                                         missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
                                     }
                                 }
                             }
                         }
                     }
-                    else if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
+                    else
                     {
-                        if (dataListItem.IsEditable)
+                        // ReSharper disable LoopCanBeConvertedToQuery
+                        foreach(var child in dataListItem.Children)
                         {
-                            // skip it if unused and exclude is on ;)
-                            if (excludeUnusedItems && !dataListItem.IsUsed)
+                            // ReSharper restore LoopCanBeConvertedToQuery
+                            if(partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
                             {
-                                continue;
+                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                if(child.IsEditable)
+                                {
+                                    // skip it if unused and exclude is on ;)
+                                    if(excludeUnusedItems && !dataListItem.IsUsed)
+                                    {
+                                        continue;
+                                    }
+                                    missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
+                                }
                             }
-                            missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
                         }
                     }
                 }
+                else if(partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
+                {
+                    if(dataListItem.IsEditable)
+                    {
+                        // skip it if unused and exclude is on ;)
+                        if(excludeUnusedItems && !dataListItem.IsUsed)
+                        {
+                            continue;
+                        }
+                        missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
+                    }
+                }
             }
+            return missingWorkflowParts;
+        }
 
+        private List<IDataListVerifyPart> MissingScalars(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        {
+            List<IDataListVerifyPart> missingWorkflowParts = new List<IDataListVerifyPart>();
+            foreach (var dataListItem in ScalarCollection)
+            {
+                if(string.IsNullOrEmpty(dataListItem.DisplayName))
+                {
+                    continue;
+                }
+
+                if(partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
+                {
+                    if(dataListItem.IsEditable)
+                    {
+                        // skip it if unused and exclude is on ;)
+                        if(excludeUnusedItems && !dataListItem.IsUsed)
+                        {
+                            continue;
+                        }
+                        missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
+                    }
+                }
+            }
             return missingWorkflowParts;
         }
 
