@@ -100,13 +100,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 IsRefreshing = false;
                 Errors.Add(e.Message);
-                CallErrorsEventHandler();
             }
             finally
             {
                 OnSomethingChanged(this);
+                CallErrorsEventHandler();
             }
-            CallErrorsEventHandler();
         }
 
         private void CallErrorsEventHandler()
