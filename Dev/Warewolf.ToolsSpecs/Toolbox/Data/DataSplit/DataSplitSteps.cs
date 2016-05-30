@@ -160,25 +160,27 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
         }
         
-        [Then(@"the split recordset ""(.*)"" will be")]
-        public void ThenTheSplitRecordsetWillBe(string variable, Table table)
-        {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<TableRow> tableRows = table.Rows.ToList();
-            var recordSets = result.Environment.Eval(variable, 0);
-            if (recordSets.IsWarewolfAtomListresult)
-            {
-                // ReSharper disable PossibleNullReferenceException
-                var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
-                // ReSharper restore PossibleNullReferenceException
-                Assert.AreEqual<int>(tableRows.Count, recordSetValues.Count);
-                
-                for (int i = 0; i < tableRows.Count; i++)
-                {
-                    Assert.AreEqual<string>(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]).Trim());
-                }
-            }
-        }
+         [Then(@"the split recordset ""(.*)"" will be")]
+         public void ThenTheSplitRecordsetWillBe(string variable, Table table)
+         {
+             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+             List<TableRow> tableRows = table.Rows.ToList();
+             var recordSets = result.Environment.Eval(variable, 0);
+             if (recordSets.IsWarewolfAtomListresult)
+             {
+                 // ReSharper disable PossibleNullReferenceException
+                 var recordSetValues = (recordSets as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                 // ReSharper restore PossibleNullReferenceException
+                 Assert.AreEqual<int>(tableRows.Count, recordSetValues.Count);
+
+                 for (int i = 0; i < tableRows.Count; i++)
+                 {
+                     Assert.AreEqual<string>(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]).Trim());
+                 }
+             }
+
+         }
+
 
         [When(@"the data split tool is executed")]
         public void WhenTheDataSplitToolIsExecuted()

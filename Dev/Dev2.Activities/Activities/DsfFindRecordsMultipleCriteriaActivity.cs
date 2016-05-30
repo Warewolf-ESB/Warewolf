@@ -127,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 bool hasEvaled = false;
                 foreach (var searchvar in toSearch)
                 {
-                    Func<DataASTMutable.WarewolfAtom, bool> func = null;
+                    Func<DataStorage.WarewolfAtom, bool> func = null;
                     foreach (FindRecordsTO to in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
                     {
                         if (to.From.Length > 0 && String.IsNullOrEmpty(to.To)
@@ -137,8 +137,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         ValidateRequiredFields(to, out errorsTo);
                         var right = env.EvalAsList(to.SearchCriteria, update);
-                        IEnumerable<DataASTMutable.WarewolfAtom> from = new List<DataASTMutable.WarewolfAtom>();
-                        IEnumerable<DataASTMutable.WarewolfAtom> tovalue = new List<DataASTMutable.WarewolfAtom>();
+                        IEnumerable<DataStorage.WarewolfAtom> from = new List<DataStorage.WarewolfAtom>();
+                        IEnumerable<DataStorage.WarewolfAtom> tovalue = new List<DataStorage.WarewolfAtom>();
 
                         if (!String.IsNullOrEmpty(to.From))
                         {
@@ -208,20 +208,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncAnd(Func<DataASTMutable.WarewolfAtom, bool> func, string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to)
+        Func<DataStorage.WarewolfAtom, bool> CombineFuncAnd(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
             var func2 = CreateFuncFromOperator(searchType, values, from, to);
             return a => func.Invoke(a) && func2.Invoke(a);
         }
 
-        Func<DataASTMutable.WarewolfAtom, bool> CombineFuncOr(Func<DataASTMutable.WarewolfAtom, bool> func, string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to)
+        Func<DataStorage.WarewolfAtom, bool> CombineFuncOr(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
             var func2 = CreateFuncFromOperator(searchType, values, from, to);
             return a => func.Invoke(a) || func2.Invoke(a);
         }
 
 
-        Func<DataASTMutable.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to)
+        Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
 
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);

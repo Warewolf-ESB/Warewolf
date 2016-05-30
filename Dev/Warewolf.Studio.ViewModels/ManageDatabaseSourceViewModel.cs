@@ -825,7 +825,7 @@ namespace Warewolf.Studio.ViewModels
         }
     }
 
-    public class ComputerNameProvider : ISuggestionProvider, IComputerNameProvider
+    public class ComputerNameProvider : WpfControls.Editors.ISuggestionProvider, IComputerNameProvider
     {
         private IList<ComputerName> _names;
 

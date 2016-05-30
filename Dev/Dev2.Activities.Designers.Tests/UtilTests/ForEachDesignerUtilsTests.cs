@@ -329,5 +329,37 @@ namespace Dev2.Core.Tests.Activities
             Assert.IsTrue(dropEnabled);
         }
 
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_SelectAndApplyModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("SelectAndApply");
+            //------------Execute Test---------------------------
+            var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_SelectAndApplyModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("SelectAndApply");
+            //------------Execute Test---------------------------
+            var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
     }
 }

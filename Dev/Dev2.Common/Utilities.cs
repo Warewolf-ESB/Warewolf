@@ -1,10 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 
 namespace Dev2.Common
 {
     public static class Utilities
     {
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
+        {
+            var second = e as IList<T> ?? e.ToList();
+            return second.SelectMany(c => f(c).Flatten(f)).Concat(second);
+        }
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
             if(userPrinciple == null)

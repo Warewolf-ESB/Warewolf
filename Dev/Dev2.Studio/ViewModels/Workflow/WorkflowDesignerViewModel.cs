@@ -790,10 +790,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #region DataList Workflow Specific Methods
-
-        // We will be assuming that a workflow field is a recordset based on 2 criteria:
-        // 1. If the field contains a set of parenthesis
-        // 2. If the field contains a period, it is a recordset with a field.
         IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             var dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
@@ -810,7 +806,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
                         foreach (var field in workflowFields)
                         {
-                            WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts);
+                            var modelProperty = flowNode.Properties["Action"];
+                            var isJsonObjectSource = false;
+                            if (modelProperty != null)
+                            {
+                                var activity = modelProperty.ComputedValue;
+                                if(activity.GetType() == typeof(DsfMultiAssignObjectActivity))
+                                {
+                                    isJsonObjectSource = true;
+                                }
+                            }
+                            WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts,isJsonObjectSource);
                         }
                     }
                 }

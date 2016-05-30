@@ -159,7 +159,7 @@ namespace Dev2.Studio.Controller
             var large = new ConfigureSwitch();
             var dataContext = new SwitchDesignerViewModel(modelItem,display);
             large.DataContext = dataContext;
-            var window = new WindowBorderLess();
+            var window = new ActivityDefaultWindow();
             window.Height = 280;
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Controller
             var large = new ConfigureSwitchArm();
             var dataContext = new SwitchDesignerViewModel(modelData,"") { SwitchVariable = variable };
             large.DataContext = dataContext;
-            var window = new WindowBorderLess();
+            var window = new ActivityDefaultWindow();
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -292,7 +292,7 @@ namespace Dev2.Studio.Controller
             var large = new Large();
             var dataContext = new DecisionDesignerViewModel(mi);
             large.DataContext = dataContext;
-            var window = new WindowBorderLess();
+            var window = new ActivityDefaultWindow();
             window.Height = 350;
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)

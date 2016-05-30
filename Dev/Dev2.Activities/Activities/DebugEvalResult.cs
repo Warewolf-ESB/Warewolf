@@ -15,8 +15,8 @@ namespace Dev2.Activities
     {
         string _inputVariable;
         readonly string _label;
+        readonly CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
-        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false)
         {
@@ -44,7 +44,7 @@ namespace Dev2.Activities
                         innerIterator.AddVariableToIterateOn(inIterator);
                         innerListOfIters.Add(inIterator);
                     }
-                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    var atomList = new List<DataStorage.WarewolfAtom>();
                     while (innerIterator.HasMoreData())
                     {
                         var stringToUse = "";
@@ -53,10 +53,10 @@ namespace Dev2.Activities
                         {
                             stringToUse += warewolfIterator.GetNextValue();
                         }
-                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                        atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
                     }
                     var finalString = string.Join("", atomList);
-                    _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
                     if (DataListUtil.IsFullyEvaluated(finalString))
                     {
                         _inputVariable = finalString;
@@ -85,13 +85,13 @@ namespace Dev2.Activities
                     {
                         if (_evalResult.IsWarewolfAtomResult)
                         {
-                            var atomResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            var atomResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                             if (atomResult != null)
                             {
                                 var res = atomResult.Item.ToString();
                                 string resValue;
                                 DataListUtil.IsCalcEvaluation(res, out resValue);
-                                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(resValue));
+                                _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
                             }
                         }
                         _inputVariable = cleanExpression;
@@ -102,7 +102,7 @@ namespace Dev2.Activities
             catch(Exception e)
             {
                 Dev2Logger.Error(e.Message,e);
-                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
             
         }
@@ -121,7 +121,7 @@ namespace Dev2.Activities
         {
             if (_evalResult.IsWarewolfAtomResult)
             {
-                var scalarResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                var scalarResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (scalarResult != null && !scalarResult.Item.IsNothing)
                 {
                     var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
@@ -138,7 +138,7 @@ namespace Dev2.Activities
             }
             else if (_evalResult.IsWarewolfAtomListresult)
             {
-                var listResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
                 {
                     return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate).GetDebugItemResult();
@@ -146,7 +146,7 @@ namespace Dev2.Activities
             }
             else if (_evalResult.IsWarewolfRecordSetResult)
             {
-                var listResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
                 if (listResult != null)
                 {
                     return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText,  "=").GetDebugItemResult();

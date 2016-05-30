@@ -48,28 +48,28 @@ namespace Dev2.Core.Tests.Utils {
             return dLVM;
         }
 
-        internal IDataListItemModel CreateRecordSetDataListItem(string name, int numberOfRecords, string recordSetPrefix, IDataListViewModel dLVM) {
-            string[] records = new string[numberOfRecords];
-            for(int i = 0; i < numberOfRecords; i++) {
-                records[i] = string.Format("{0}{1}", recordSetPrefix, i + 1);
-            }
-            IDataListItemModel dLIVM = CreateRecordSetDataListItem(name, records, dLVM);
+        //internal IDataListItemModel CreateRecordSetDataListItem(string name, int numberOfRecords, string recordSetPrefix, IDataListViewModel dLVM) {
+        //    string[] records = new string[numberOfRecords];
+        //    for(int i = 0; i < numberOfRecords; i++) {
+        //        records[i] = string.Format("{0}{1}", recordSetPrefix, i + 1);
+        //    }
+        //    IDataListItemModel dLIVM = CreateRecordSetDataListItem(name, records, dLVM);
 
-            return dLIVM;
+        //    return dLIVM;
 
-        }
+        //}
 
-        internal IDataListItemModel CreateRecordSetDataListItem(string name, string[] recordNames, IDataListViewModel dLVM) {
-            IDataListItemModel dLIVM = CreateDataListItemViewModel(name, dLVM);
+        //internal IDataListItemModel CreateRecordSetDataListItem(string name, string[] recordNames, IDataListViewModel dLVM) {
+        //    IDataListItemModel dLIVM = CreateDataListItemViewModel(name, dLVM);
 
-            foreach(var nameResources in recordNames) {
-                IDataListItemModel dataListRecordSetField = CreateDataListItemViewModel(nameResources, dLVM);
-                dataListRecordSetField.Parent = dLIVM;
-                dLIVM.Children.Add(dataListRecordSetField);
-            }
+        //    foreach(var nameResources in recordNames) {
+        //        IDataListItemModel dataListRecordSetField = CreateDataListItemViewModel(nameResources, dLVM);
+        //        dataListRecordSetField.Parent = dLIVM;
+        //        dLIVM.Children.Add(dataListRecordSetField);
+        //    }
 
-            return dLIVM;
-        }
+        //    return dLIVM;
+        //}
 
         #endregion DataListItemViewModel Creation Methods
 

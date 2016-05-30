@@ -169,7 +169,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         case TaskStatus.RanToCompletion:
                             {
-                                TestMessage = "Passed";
+                                TestMessage = "";
                                 TestFailed = false;
                                 TestPassed = true;
                                 Testing = false;

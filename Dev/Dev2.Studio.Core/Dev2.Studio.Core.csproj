@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2</RootNamespace>
+    <RootNamespace>Dev2.Studio.Core</RootNamespace>
     <AssemblyName>Dev2.Studio.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -275,11 +275,21 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
+    <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
     <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
+    <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
+    <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />
+    <Compile Include="Interfaces\DataList\IRecordSetItemModel.cs" />
+    <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
+    <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
+    <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
+    <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />
+    <Compile Include="Models\DataList\RecordSetItemModel.cs" />
+    <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -289,7 +299,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CustomControls\CachingContentHost.cs" />
-    <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
     <Compile Include="DataList\DataMappingViewModelFactory.cs" />
@@ -399,8 +408,6 @@
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
     <Compile Include="Models\IExplorerItemModel.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
-    <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
-    <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -566,13 +573,17 @@
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
-      <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
-      <Name>Dev2.UndoFramework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj">
+      <Project>{17125877-2cf0-42b2-89d3-418e40bde5d0}</Project>
+      <Name>Gma.DataStructures.StringSearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>

@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.Interfaces;
 
 namespace WarewolfParsingTest
 {
@@ -36,5 +39,20 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void AddToScalarsCreatesAscalar()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j =  JObject.FromObject(new Person(){Name = "n",Children = new List<Person>()});
+            var added = WarewolfDataEvaluationCommon.addToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+           Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+           Assert.AreEqual( ((JObject)added.JsonObjects["bob"]).GetValue("Name").ToString(),"n");
+        }
     }
 }

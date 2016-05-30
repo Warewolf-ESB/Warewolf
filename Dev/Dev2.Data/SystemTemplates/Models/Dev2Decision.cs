@@ -33,11 +33,11 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string Col3 { get; set; }
 
-        public IEnumerable<DataASTMutable.WarewolfAtom> Cols1 { get; set; }
+        public IEnumerable<DataStorage.WarewolfAtom> Cols1 { get; set; }
 
-        public IEnumerable<DataASTMutable.WarewolfAtom> Cols2 { get; set; }
+        public IEnumerable<DataStorage.WarewolfAtom> Cols2 { get; set; }
 
-        public IEnumerable<DataASTMutable.WarewolfAtom> Cols3 { get; set; }
+        public IEnumerable<DataStorage.WarewolfAtom> Cols3 { get; set; }
 
         public int PopulatedColumnCount
         {

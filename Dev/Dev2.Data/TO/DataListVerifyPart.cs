@@ -32,7 +32,7 @@ namespace Dev2.DataList.Contract
 
             get
             {
-                return RecordsetIndex != string.Empty;
+                return !string.IsNullOrEmpty(RecordsetIndex);
             }
 
         }
@@ -42,10 +42,19 @@ namespace Dev2.DataList.Contract
 
             get
             {
-                return Recordset.Length == 0;
+                return Recordset != null && Recordset.Length == 0;
             }
         }
 
+        public bool IsJson
+        {
+            get;set;
+        }
+
+        internal DataListVerifyPart(string displayName)
+        {
+            DisplayValue = displayName;
+        }
         internal DataListVerifyPart(string recordset, string field) : this(recordset, field, string.Empty, string.Empty) { }
 
         internal DataListVerifyPart(string recordset, string field, bool useRaw) : this(recordset, field, string.Empty, string.Empty, useRaw) { }

@@ -12,7 +12,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Interfaces;
-using Dev2.UndoFramework;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
@@ -32,7 +31,6 @@ namespace Dev2.Studio.Core.Interfaces
         ICommand CutCommand { get; }
         ICommand PasteCommand { get; }
         ICommand OpenWebsiteCommand { get; }
-        ActionManager UndoFramework { get; set; }
         bool CanPaste { get; }
         bool CanCopyOrCut { get; }
         bool IsAnyCellSelected { get; }

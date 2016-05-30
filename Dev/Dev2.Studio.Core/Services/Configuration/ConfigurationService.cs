@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using Dev2.Studio.Core;
 
 namespace Dev2.Services.Configuration
 {

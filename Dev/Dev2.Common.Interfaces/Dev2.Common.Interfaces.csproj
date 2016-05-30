@@ -181,6 +181,7 @@
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
+    <Compile Include="enIntellisensePartType.cs" />
     <Compile Include="Dropbox\IDropBoxFactory.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="IEmailAttachmentVm.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
+    <Compile Include="IExecutionEnvironment.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
     <Compile Include="IExchangeServiceSource.cs" />
@@ -223,6 +225,8 @@
     <Compile Include="IFilenameValidator.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IHelpView.cs" />
+    <Compile Include="IIntellisenseStringResult.cs" />
+    <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
@@ -265,6 +269,7 @@
     <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
+    <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IOAuthSource.cs" />
     <Compile Include="IPasteView.cs" />
@@ -287,6 +292,7 @@
     <Compile Include="ISplashView.cs" />
     <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IStudioUpdateManager.cs" />
+    <Compile Include="ISuggestionProvider.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />
@@ -314,6 +320,7 @@
     <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IDev2MessageBoxViewModel.cs" />
     <Compile Include="PopupController\IMessage.cs" />
@@ -440,7 +447,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

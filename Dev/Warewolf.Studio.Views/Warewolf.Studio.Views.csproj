@@ -221,8 +221,8 @@
     </Compile>
     <Compile Include="TreeUtils.cs" />
     <Compile Include="WidthConverter.cs" />
-    <Compile Include="WindowBorderLess.xaml.cs">
-      <DependentUpon>WindowBorderLess.xaml</DependentUpon>
+    <Compile Include="ActivityDefaultWindow.xaml.cs">
+      <DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -318,16 +318,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WindowBorderLess.xaml">
+    <Page Include="ActivityDefaultWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoComplete\WpfControls.CS\WpfControls.CS.csproj">
-      <Project>{bb2abb74-ba58-4812-83aa-ec8171f42df4}</Project>
-      <Name>WpfControls.CS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
       <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
       <Name>Dev2.Activities.Designers</Name>
@@ -394,7 +390,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

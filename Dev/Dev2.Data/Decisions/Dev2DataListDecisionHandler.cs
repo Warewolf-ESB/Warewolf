@@ -240,9 +240,9 @@ namespace Dev2.Data.Decision
             return null;
         }
 
-        static WarewolfDataEvaluationCommon.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col,int update)
+        static CommonFunctions.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col,int update)
         {
-            var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            var warewolfEvalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             try
             {
                 warewolfEvalResult = env.Eval(col, update);
