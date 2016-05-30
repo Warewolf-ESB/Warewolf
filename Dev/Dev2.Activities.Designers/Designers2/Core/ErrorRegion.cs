@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces.ToolBase;
@@ -35,6 +36,12 @@ namespace Dev2.Activities.Designers2.Core
         public void RestoreRegion(IToolRegion toRestore)
         {
 
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         public IList<string> Errors

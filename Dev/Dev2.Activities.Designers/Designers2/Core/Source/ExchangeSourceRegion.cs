@@ -124,6 +124,13 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SelectedSource = region.SelectedSource;
             }
         }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

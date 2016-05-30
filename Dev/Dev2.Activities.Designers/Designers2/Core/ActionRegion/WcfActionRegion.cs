@@ -41,22 +41,32 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             try
             {
                 Errors = new List<string>();
-                LabelWidth = 70;
-                ToolRegionName = "WcfActionRegion";
+
+                LabelWidth = 46;
+                ToolRegionName = "DbActionRegion";
                 _modelItem = modelItem;
                 _model = model;
                 _source = source;
                 _source.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
-                GetActions(model);
-                UpdateSelectedAction();
+                if (_source.SelectedSource != null)
+                {
+                    Actions = model.GetActions(_source.SelectedSource);
+                }
+                if (!string.IsNullOrEmpty(Method.FullName))
+                {
+                    IsActionEnabled = true;
+                    SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
+                }
                 RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
-                    GetActions(_model);
+                    if (_source.SelectedSource != null)
+                    {
+                        Actions = model.GetActions(_source.SelectedSource);
+                    }
                     IsRefreshing = false;
-                    UpdateSelectedAction();
                 }, CanRefresh);
 
                 IsEnabled = true;
@@ -68,36 +78,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void GetActions(IWcfServiceModel model)
-        {
-            if(_source.SelectedSource != null)
-            {
-                try
-                {
-                    Actions = model.GetActions(_source.SelectedSource);
-                }
-                catch(Exception e)
-                {
-                    Errors.Add("Connection to source failed. Please ensure that the server and the service are still available. The error received is: " + Environment.NewLine + e.Message);
-                }
-            }
-        }
-
-        private void UpdateSelectedAction()
-        {
-            if(Method != null && Actions != null)
-            {
-                IsActionEnabled = true;
-                SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
-            }
-        }
-
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
-
+                IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 if (_source != null && _source.SelectedSource != null)
                 {
@@ -106,16 +92,28 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsActionEnabled = true;
                     IsEnabled = true;
                 }
+                IsRefreshing = false;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
             {
+                IsRefreshing = false;
                 Errors.Add(e.Message);
+                CallErrorsEventHandler();
             }
             finally
             {
                 OnSomethingChanged(this);
+            }
+            CallErrorsEventHandler();
+        }
+
+        private void CallErrorsEventHandler()
+        {
+            if (ErrorsHandler != null)
+            {
+                ErrorsHandler(this, new List<string>(Errors));
             }
         }
 
@@ -287,7 +285,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged("SelectedAction");
             }
         }
-        
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         public int GetId()
         {
             return SelectedAction.FullName.GetHashCode();
@@ -400,6 +404,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         #endregion

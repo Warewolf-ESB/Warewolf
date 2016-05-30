@@ -113,15 +113,21 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             try
             {
                 Errors.Clear();
-
+                IsRefreshing = true;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 UpdateBasedOnNamespace();
+                IsRefreshing = false;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
             catch(Exception e)
             {
+                IsRefreshing = false;
                 Errors.Add(e.Message);
+                if (ErrorsHandler != null)
+                {
+                    ErrorsHandler(this, new List<string>(Errors));
+                }
             }
             finally
             {
@@ -289,6 +295,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsEnabled = region.IsEnabled;
                 OnPropertyChanged("SelectedAction");
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         public int GetId()

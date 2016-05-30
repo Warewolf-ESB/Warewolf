@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -126,6 +127,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 OnPropertyChanged("Inputs");
                 IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         public IList<string> Errors

@@ -355,6 +355,12 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.MySqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion.ErrorsHandler += (sender, list) =>
+                {
+                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    UpdateDesignValidationErrors(errorInfos);
+                    Errors = new List<IActionableErrorInfo>(errorInfos);
+                };
                 regions.Add(ActionRegion);
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
