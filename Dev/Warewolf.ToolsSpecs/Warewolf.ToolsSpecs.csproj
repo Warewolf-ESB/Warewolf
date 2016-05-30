@@ -615,7 +615,6 @@
     <None Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
-    </None>    
     <None Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
