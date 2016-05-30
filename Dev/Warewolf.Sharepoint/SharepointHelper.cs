@@ -105,7 +105,7 @@ namespace Warewolf.Sharepoint
                 ctx.Load(folder, f => f.Files.Include(c => c.Name, c => c.ServerRelativeUrl), f => f.ParentFolder.ServerRelativeUrl, f => f.ServerRelativeUrl, f => f.Folders);
                 ctx.ExecuteQuery();
 
-                fields.AddRange(folder.Files.Select(file => file.Name));
+                fields.AddRange(folder.Files.Select(file => file.ServerRelativeUrl));
             }
 
             return fields;
@@ -299,7 +299,12 @@ namespace Warewolf.Sharepoint
             var list = ctx.Web.Lists.GetByTitle("Documents");
             ctx.Load(list.RootFolder);
             ctx.ExecuteQuery();
-            var fullPath = list.RootFolder.ServerRelativeUrl + "/" + folderUrl;
+            var serverRelativeUrl = list.RootFolder.ServerRelativeUrl;
+            var fullPath = folderUrl;
+            if(!folderUrl.StartsWith(serverRelativeUrl))
+            {
+                fullPath = serverRelativeUrl + "/" + folderUrl;
+            }
             return fullPath;
         }
 

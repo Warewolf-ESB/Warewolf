@@ -345,58 +345,72 @@ namespace Dev2.Activities.Designers2.Net_DLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () =>
+                SourceRegion = new DotNetSourceRegion(Model, ModelItem)
                 {
-                    OutputsRegion.IsEnabled = false;
-                    if(Regions != null)
-                    {
-                        foreach(var toolRegion in Regions)
+                    SourceChangedAction = () =>
                         {
-                            if(toolRegion.Errors != null)
+                            OutputsRegion.IsEnabled = false;
+                            if (Regions != null)
                             {
-                                toolRegion.Errors.Clear();
+                                foreach (var toolRegion in Regions)
+                                {
+                                    if (toolRegion.Errors != null)
+                                    {
+                                        toolRegion.Errors.Clear();
+                                    }
+                                }
                             }
                         }
-                    }
-                }
                 };
                 regions.Add(SourceRegion);
-                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () =>
+                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion)
                 {
-                    OutputsRegion.IsEnabled = false;
-                    if (Regions != null)
-                    {
-                        foreach (var toolRegion in Regions)
+                    SourceChangedNamespace = () =>
                         {
-                            if (toolRegion.Errors != null)
+                            OutputsRegion.IsEnabled = false;
+                            if (Regions != null)
                             {
-                                toolRegion.Errors.Clear();
+                                foreach (var toolRegion in Regions)
+                                {
+                                    if (toolRegion.Errors != null)
+                                    {
+                                        toolRegion.Errors.Clear();
+                                    }
+                                }
                             }
                         }
-                    }
-                } };
+                };
                 NamespaceRegion.SomethingChanged += (sender, args) =>
                 {
                     if (args.Errors != null)
                         Errors =
-                            args.Errors.Select(e => new ActionableErrorInfo {ErrorType = ErrorType.Critical, Message = e} as IActionableErrorInfo)
+                            args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
                                 .ToList();
                 };
                 regions.Add(NamespaceRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () =>
+                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
                 {
-                    OutputsRegion.IsEnabled = false;
-                    if (Regions != null)
-                    {
-                        foreach (var toolRegion in Regions)
+                    SourceChangedAction = () =>
                         {
-                            if (toolRegion.Errors != null)
+                            OutputsRegion.IsEnabled = false;
+                            if (Regions != null)
                             {
-                                toolRegion.Errors.Clear();
+                                foreach (var toolRegion in Regions)
+                                {
+                                    if (toolRegion.Errors != null)
+                                    {
+                                        toolRegion.Errors.Clear();
+                                    }
+                                }
                             }
                         }
-                    }
-                } };
+                };
+                ActionRegion.ErrorsHandler += (sender, list) =>
+                {
+                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    UpdateDesignValidationErrors(errorInfos);
+                    Errors = new List<IActionableErrorInfo>(errorInfos);
+                };
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);

@@ -12,10 +12,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
@@ -217,6 +214,12 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
                 SelectedSource = region.SelectedSource;
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         #endregion
