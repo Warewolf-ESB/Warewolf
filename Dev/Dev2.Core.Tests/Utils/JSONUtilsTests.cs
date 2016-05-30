@@ -10,7 +10,6 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Remoting;
 using Dev2.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
