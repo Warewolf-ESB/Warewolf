@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses;
 using System.Drawing;
 
 namespace Warewolf.Studio.UISpecs
@@ -114,20 +113,20 @@ namespace Warewolf.Studio.UISpecs
 
         #region Properties and Fields
 
-        OutsideWorkflowDesignSurfaceUIMap Uimap
+        UIMap Uimap
         {
             get
             {
                 if ((_uiMap == null))
                 {
-                    _uiMap = new OutsideWorkflowDesignSurfaceUIMap();
+                    _uiMap = new UIMap();
                 }
 
                 return _uiMap;
             }
         }
 
-        private OutsideWorkflowDesignSurfaceUIMap _uiMap;
+        private UIMap _uiMap;
 
         #endregion
     }

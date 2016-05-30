@@ -4,6 +4,7 @@ Feature: FileAndFolder-Move
 	as a Warewolf user
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
 
+@ignore
 @Move
 # CODE UI TESTS
 Scenario: Move tool Small View
@@ -11,6 +12,7 @@ Scenario: Move tool Small View
        Then Move small view has
        | File or Folder | Destination | Result |
        |                |             |        |
+@ignore
 Scenario: Move tool Large View
        Given I have Move Large View on design surface
        Then Move Large View has
@@ -22,11 +24,13 @@ Scenario: Move tool Large View
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
+@ignore
 Scenario: Move tool Small View water marks
        Given I have Move Small View on design surface
        Then Move small view watermarks are
        | File or Folder | Destination    | Result      |
        | [[PathToMove]] | [[MoveToPath]] | [[Success]] |
+@ignore
 Scenario: Move tool Large View Water marks
        Given I have Move Large View on design surface
        Then Move Large View watermarks are
@@ -38,6 +42,7 @@ Scenario: Move tool Large View Water marks
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
+@ignore
 Scenario: Move Large View is validating when clicking on done with blank fields
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -67,6 +72,7 @@ Scenario: Move tool Large View to small view persisting data correctly
        | File or Folder | Destination | Result   |
        | C:\            | D:\         | [[Move]] |
 
+@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Move Large View on design surface
        When Move Large View has
@@ -90,6 +96,7 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | Destination | Result   |
        | C:\[[a]]       | D:\         | [[Move]] |
 
+@ignore
 # From this point on the specs are testing functionality and not UI
 Scenario: Close large view is closing large view without validating
        Given I have Move Large View on design surface
@@ -110,6 +117,7 @@ Scenario: Close large view is closing large view without validating
        | File or Folder | Destination | Result   |
        | C:\[[a]        | D:\         | [[Move]] |
 
+@ignore
 Scenario Outline: Move Large View is validating incorrect source path
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -133,6 +141,7 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
+@ignore
 Scenario Outline: Move Large View is validating incorrect Destination path
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -157,6 +166,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Move Large View is validating incorrect variable in source username field
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -181,7 +191,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-
+@ignore
 Scenario Outline: Move Large View is validating incorrect variable in Destination username field
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -206,6 +216,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Move Large View is validating incorrect variable in Result field
        Given I have Move Large View on design surface
        And "File or Folder" is focused
@@ -225,6 +236,7 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
+@ignore
 Scenario Outline: Move On error fields incorrect variables are validating
        Given I have Move Large View on design surface
        And Move Large View with water marks has

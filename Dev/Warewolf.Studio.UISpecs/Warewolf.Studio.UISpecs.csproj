@@ -76,17 +76,6 @@
     </Compile>
     <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
-    <Compile Include="OutsideWorkflowDesignSurfaceUIMap.cs">
-      <DependentUpon>OutsideWorkflowDesignSurfaceUIMap.uitest</DependentUpon>
-    </Compile>
-    <Compile Include="OutsideWorkflowDesignSurfaceUIMap.Designer.cs">
-      <DependentUpon>OutsideWorkflowDesignSurfaceUIMap.uitest</DependentUpon>
-    </Compile>
-    <Compile Include="OutsideWorkflowDesignSurfaceUISpecs.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OutsideWorkflowDesignSurfaceUISpecs.feature</DependentUpon>
-    </Compile>
     <Compile Include="ActionSteps.cs" />
     <Compile Include="Tools\Control Flow - Decision1.feature.cs">
       <AutoGen>True</AutoGen>
@@ -227,14 +216,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
     </None>
-    <None Include="OutsideWorkflowDesignSurfaceUIMap.uitest">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
-    <None Include="OutsideWorkflowDesignSurfaceUISpecs.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OutsideWorkflowDesignSurfaceUISpecs.feature.cs</LastGenOutput>
-    </None>
     <None Include="Tools\Control Flow - Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Control Flow - Decision1.feature.cs</LastGenOutput>
