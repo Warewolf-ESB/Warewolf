@@ -3,6 +3,7 @@
 	As a Warewolf user
 	I want a tool that I can input a url and get a html document
 
+@ignore
 @WebRequest
 # Coded Ui Test
 Scenario: Web Request Tool small view
@@ -11,6 +12,7 @@ Scenario: Web Request Tool small view
 	And result is ""
 	And Header is Not Visible
 	And Preview is not visible
+@ignore
 Scenario: Web Request Tool Large view
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View
@@ -23,6 +25,7 @@ Scenario: Web Request Tool Large view
 	|                            |                       |
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
+@ignore
 Scenario: Web Request Tool Large view is not throwing error for valid data
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View
@@ -44,6 +47,7 @@ Scenario: Web Request Tool Large view is not throwing error for valid data
 	When I click on "Preview"
 	Then Validation message is not thrown
 
+@ignore
 Scenario Outline: Web Request Tool Large view is validating incorrect variables
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View

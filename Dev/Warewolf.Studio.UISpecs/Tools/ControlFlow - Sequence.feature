@@ -3,6 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
+@ignore
 @Sequence 
 # Coded UI Tests
 Scenario: Four tool names is visible in sequence small view
@@ -37,6 +38,7 @@ Scenario: Tools are visible when I expand large view
     And End this workflow is "Unselected"
     And Done button is "Visible"
 
+@ignore
 Scenario: Service in sequence
 	Given I have Sequence small view on design surface
 	And I have "Service" in Sequence small view

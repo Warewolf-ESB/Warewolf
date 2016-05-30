@@ -3,6 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
+@ignore
 #Spec to be modified once test results section is included in tool window
  Scenario: Editing Oracle Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service

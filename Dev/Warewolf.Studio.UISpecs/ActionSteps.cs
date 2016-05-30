@@ -10,7 +10,6 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses;
 
 namespace Warewolf.Studio.UISpecs
 {
@@ -22,24 +21,14 @@ namespace Warewolf.Studio.UISpecs
         [Then(@"I ""(.*)""")]
         public void TheRecordedActionIsPerformed(string p0)
         {
-            Type workflowDesignerMapType = Uimap.GetType();
-            Type outsideWorkflowDesignerMapType = OutsideWorkflowDesignSurfaceUiMap.GetType();
-            MethodInfo workflowDesignerAction = workflowDesignerMapType.GetMethod(p0);
-            MethodInfo outsideWorkflowDesignerAction = outsideWorkflowDesignerMapType.GetMethod(p0);
-            if (workflowDesignerAction != null && outsideWorkflowDesignerAction != null)
+            MethodInfo getActionRecording = typeof(UIMap).GetMethod(p0);
+            if (getActionRecording != null)
             {
-                throw new InvalidOperationException("Cannot distinguish between duplicated action recordings, both named '" + p0 + "' in different UI maps.");
+                getActionRecording.Invoke(uiMap, new object[] { });
             }
             else
             {
-                if (outsideWorkflowDesignerAction != null)
-                {
-                    outsideWorkflowDesignerAction.Invoke(OutsideWorkflowDesignSurfaceUiMap, new object[] { });
-                }
-                if (workflowDesignerAction != null)
-                {
-                    workflowDesignerAction.Invoke(Uimap, new object[] { });
-                }
+                throw new InvalidOperationException("Cannot find action recording " + p0);
             }
         }
 
@@ -80,10 +69,10 @@ namespace Warewolf.Studio.UISpecs
         [Scope(Tag = "NeedsBlankWorkflow")]
         public static void InitializeABlankWorkflow()
         {
-            var outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
-            outsideWorkflowDesignSurfaceUiMap.Assert_NewWorkFlow_RibbonButton_Exists();
-            outsideWorkflowDesignSurfaceUiMap.Click_New_Workflow_Ribbon_Button();
-            new UIMap().Assert_StartNode_Exists();
+            var map = new UIMap();
+            map.Assert_NewWorkFlow_RibbonButton_Exists();
+            map.Click_New_Workflow_Ribbon_Button();
+            map.Assert_StartNode_Exists();
         }
 
         [AfterScenario]
@@ -92,10 +81,10 @@ namespace Warewolf.Studio.UISpecs
         {
             try
             {
-                var uiMap = new UIMap();
-                uiMap.Assert_Close_Tab_Button_Exists();
-                uiMap.Click_Close_Tab_Button();
-                new OutsideWorkflowDesignSurfaceUIMap().Click_MessageBox_No();
+                var map = new UIMap();
+                map.Assert_Close_Tab_Button_Exists();
+                map.Click_Close_Tab_Button();
+                map.Click_MessageBox_No();
             }
             catch (UITestControlNotFoundException e)
             {
@@ -105,7 +94,7 @@ namespace Warewolf.Studio.UISpecs
 
         #region Properties and Fields
 
-        UIMap Uimap
+        UIMap uiMap
         {
             get
             {
@@ -119,21 +108,6 @@ namespace Warewolf.Studio.UISpecs
         }
 
         private UIMap _uiMap;
-
-        OutsideWorkflowDesignSurfaceUIMap OutsideWorkflowDesignSurfaceUiMap
-        {
-            get
-            {
-                if ((_outsideWorkflowDesignSurfaceUiMap == null))
-                {
-                    _outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
-                }
-
-                return _outsideWorkflowDesignSurfaceUiMap;
-            }
-        }
-
-        private OutsideWorkflowDesignSurfaceUIMap _outsideWorkflowDesignSurfaceUiMap;
 
         #endregion
     }
