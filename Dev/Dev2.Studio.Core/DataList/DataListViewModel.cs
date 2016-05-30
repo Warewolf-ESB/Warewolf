@@ -129,7 +129,7 @@ namespace Dev2.Studio.ViewModels.DataList
                      return model.HasError;
                  });*/
 
-                var hasErrors = recSetsHasErrors || scalasHasErrors|| complexObjectHasErrors;
+                var hasErrors = recSetsHasErrors || scalasHasErrors || complexObjectHasErrors;
                 return hasErrors;
             }
         }
@@ -215,10 +215,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     _recsetCollection = new ObservableCollection<IRecordSetItemModel>();
                     _recsetCollection.CollectionChanged += (o, args) =>
-                        {
-                            RemoveItemPropertyChangeEvent(args);
-                            AddItemPropertyChangeEvent(args);
-                        };
+                    {
+                        RemoveItemPropertyChangeEvent(args);
+                        AddItemPropertyChangeEvent(args);
+                    };
                 }
                 return _recsetCollection;
             }
@@ -814,7 +814,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddRowToScalars();
                 AddRowToRecordsets();
                 AddRowToComplexObjects();
-                
+
             }
         }
 
@@ -1089,7 +1089,7 @@ namespace Dev2.Studio.ViewModels.DataList
             List<IComplexObjectItemModel> blankList = ComplexObjectCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
             if (blankList.Count == 0)
             {
-               AddComplexObject();
+                AddComplexObject();
             }
 
             foreach (var complexObjectItemModel in ComplexObjectCollection)
@@ -1407,15 +1407,15 @@ namespace Dev2.Studio.ViewModels.DataList
             var isArray = false;
             if (xmlNode.Attributes != null)
             {
-                 isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
+                isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
             }
             var name = GetNameForArrayComplexObject(xmlNode, isArray);
-            var parent = new ComplexObjectItemModel(name) {IsArray = isArray};
+            var parent = new ComplexObjectItemModel(name) { IsArray = isArray };
             ComplexObjectCollection.Add(parent);
             foreach (XmlNode c in children)
             {
-                AddComplexObjectFromXmlNode(c,parent);
-                
+                AddComplexObjectFromXmlNode(c, parent);
+
             }
         }
 
@@ -1433,7 +1433,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
             }
             var name = GetNameForArrayComplexObject(c, isArray);
-            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray,Parent=parent };
+            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray, Parent = parent };
             parent.Children.Add(complexObjectItemModel);
             if (c.HasChildNodes)
             {
@@ -1556,7 +1556,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool ParseIsEditable(XmlAttribute attr)
         {
-           return ParseBoolAttribute(attr);
+            return ParseBoolAttribute(attr);
         }
 
         private bool ParseBoolAttribute(XmlAttribute attr)
