@@ -8,6 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.DB;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Common.Utils
 {
@@ -45,6 +50,17 @@ namespace Dev2.Common.Utils
         {
             string replaceSlashes = stringToReplaceIn.Replace(@"\", @"\\");
             return replaceSlashes;
+        }
+
+        public static IList<IServiceInput> CreateServiceInputMappingsFromJsonString(string jsonString)
+        {
+            var serviceInputMappingsFromJsonString = new List<IServiceInput>();
+            var obj = JsonConvert.DeserializeObject(jsonString) as JObject;
+            if (obj != null)
+            {
+                
+            }
+            return serviceInputMappingsFromJsonString;
         }
     }
 }

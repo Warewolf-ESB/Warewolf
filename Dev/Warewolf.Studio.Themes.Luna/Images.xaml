@@ -125,6 +125,7 @@
         <ResourceDictionary Source="Images/EditFileLogo.xaml" />
         <ResourceDictionary Source="Images/Email-Source.xaml" />
         <ResourceDictionary Source="Images/Utility-PublishRabbitMQ.xaml" />
+        <ResourceDictionary Source="Images/SelectApply.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -218,8 +218,8 @@
     </Compile>
     <Compile Include="TreeUtils.cs" />
     <Compile Include="WidthConverter.cs" />
-    <Compile Include="WindowBorderLess.xaml.cs">
-      <DependentUpon>WindowBorderLess.xaml</DependentUpon>
+    <Compile Include="ActivityDefaultWindow.xaml.cs">
+      <DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -311,7 +311,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WindowBorderLess.xaml">
+    <Page Include="ActivityDefaultWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
