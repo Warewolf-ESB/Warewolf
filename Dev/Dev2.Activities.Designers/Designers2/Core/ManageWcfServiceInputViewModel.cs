@@ -18,6 +18,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
 using Warewolf.Core;
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -239,6 +240,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         #endregion Implementation of IToolRegion

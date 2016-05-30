@@ -249,6 +249,12 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
         }
 
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         public int GetId()
         {
             return SelectedNamespace.FullName.GetHashCode();

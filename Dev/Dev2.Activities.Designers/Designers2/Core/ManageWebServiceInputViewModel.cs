@@ -417,6 +417,12 @@ namespace Dev2.Activities.Designers2.Core
         {
         }
 
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;

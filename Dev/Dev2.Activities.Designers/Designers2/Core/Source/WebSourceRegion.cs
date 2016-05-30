@@ -221,6 +221,12 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Implementation of ISourceToolRegion<IWebServiceSource>

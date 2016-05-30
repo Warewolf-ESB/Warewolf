@@ -10,16 +10,16 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
     public class WcfSourceRegion : ISourceToolRegion<IWcfServerSource>
     {
-        private bool _isEnabled;
         private IWcfServerSource _selectedSource;
         private ICollection<IWcfServerSource> _sources;
         private readonly ModelItem _modelItem;
-        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
+
         private Guid _sourceId;
         private Action _sourceChangedAction;
         private double _labelWidth;
@@ -32,9 +32,8 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public WcfSourceRegion(IWcfServiceModel model, ModelItem modelItem)
         {
-            LabelWidth = 70;
+            LabelWidth = 46;
             ToolRegionName = "WcfSourceRegion";
-            SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
@@ -56,7 +55,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
             }
         }
-
         [ExcludeFromCodeCoverage]
         public string NewSourceHelpText
         {
@@ -139,27 +137,9 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public double LabelWidth
-        {
-            get
-            {
-                return _labelWidth;
-            }
-            set
-            {
-                _labelWidth = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void SetInitialValues()
-        {
-            IsEnabled = true;
-        }
-
         public WcfSourceRegion()
         {
-            SetInitialValues();
+            
         }
 
         Guid SourceId
@@ -197,31 +177,30 @@ namespace Dev2.Activities.Designers2.Core.Source
                 _sourceChangedAction = value;
             }
         }
-
         public event SomethingChanged SomethingChanged;
+        public double LabelWidth
+        {
+            get
+            {
+                return _labelWidth;
+            }
+            set
+            {
+                _labelWidth = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public bool IsEnabled
-        {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                _isEnabled = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
             return new WcfSourceRegion()
             {
-                IsEnabled = IsEnabled,
                 SelectedSource = SelectedSource
             };
         }
@@ -232,8 +211,13 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (region != null)
             {
                 SelectedSource = region.SelectedSource;
-                IsEnabled = region.IsEnabled;
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         #endregion
@@ -248,23 +232,9 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                if (!Equals(value, _selectedSource) && _selectedSource != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedSource.Name))
-                        StorePreviousValues(_selectedSource.Id);
-                }
-
-                if (IsAPreviousValue(value) && _selectedSource != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedSource(value);
-                }
-                else
-                {
-                    SetSelectedSource(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                }
+                SetSelectedSource(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 if (delegateCommand != null)
                 {
@@ -281,28 +251,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.Id;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged("SelectedSource");
-        }
-
-        private void StorePreviousValues(Guid id)
-        {
-            _previousRegions.Remove(id);
-            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
-        }
-
-        private void RestorePreviousValues(IWcfServerSource value)
-        {
-            var toRestore = _previousRegions[value.Id];
-            foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
-            {
-                toolRegion.Item1.RestoreRegion(toolRegion.Item2);
-            }
-        }
-
-        private bool IsAPreviousValue(IWcfServerSource value)
-        {
-            return _previousRegions.Keys.Any(a => a == value.Id);
         }
 
         public ICollection<IWcfServerSource> Sources

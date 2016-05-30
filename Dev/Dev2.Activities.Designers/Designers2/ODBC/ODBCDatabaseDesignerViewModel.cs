@@ -386,6 +386,12 @@ namespace Dev2.Activities.Designers2.ODBC
                 {
                     CommandText = ((IODBCActionToolRegion<IDbAction>)ActionRegion).CommandText;
                 };
+                ActionRegion.ErrorsHandler += (sender, list) =>
+                {
+                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    UpdateDesignValidationErrors(errorInfos);
+                    Errors = new List<IActionableErrorInfo>(errorInfos);
+                };
                 CommandText = ((IODBCActionToolRegion<IDbAction>)ActionRegion).CommandText;
                 regions.Add(ActionRegion);
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
