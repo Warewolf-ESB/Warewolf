@@ -730,6 +730,9 @@ namespace Dev2.Studio.ViewModels
                 case "PluginSource":
                     EditPluginSource(resourceModel);
                     break;
+                case "WcfSource":
+                    EditWcfSource(resourceModel);
+                    break;
                 case "EmailSource":
                     EditEmailSource(resourceModel);
                     break;
@@ -930,6 +933,25 @@ namespace Dev2.Studio.ViewModels
                 VirtualHost = source.VirtualHost
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RabbitMQSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        void EditWcfSource(IContextualResourceModel resourceModel)
+        {
+            var wcfsource = new WcfSource(resourceModel.WorkflowXaml.ToXElement());
+
+            var def = new WcfServiceSourceDefinition()
+            {
+                Id = wcfsource.Id,
+                Name = wcfsource.ResourceName,
+                Path = wcfsource.Path,
+                ResourceName = wcfsource.Name,
+                EndpointUrl = wcfsource.EndpointUrl
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WcfSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
@@ -1215,6 +1237,25 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var wcfSourceViewModel = new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker, _activeEnvironment);
+            var vm = new SourceViewModel<IWcfServerSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageWcfSourceControl());
+
+            if (workSurfaceKey == null)
+            {
+                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+                workSurfaceKey.ResourceID = selectedSource.ResourceID;
+                workSurfaceKey.ServerID = ActiveServer.ServerID;
+            }
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         public void NewResource(string resourceType, string resourcePath)
         {
 
@@ -1265,6 +1306,10 @@ namespace Dev2.Studio.ViewModels
             else if (resourceType == "ExchangeSource")
             {
                 AddExchangeWorkSurface(saveViewModel);
+            }
+            else if (resourceType == "WcfSource")
+            {
+                AddNewWcfSourceSurface(saveViewModel);
             }
             else if (resourceType == "RabbitMQSource")
             {
@@ -1350,6 +1395,12 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManagePluginSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        void AddNewWcfSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WcfSource) as WorkSurfaceKey, new SourceViewModel<IWcfServerSource>(EventPublisher, new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, ActiveEnvironment), PopupProvider, new ManageWcfSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 

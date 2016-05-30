@@ -1,18 +1,13 @@
-﻿
-/*
+﻿/*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
@@ -23,7 +18,12 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Warewolf.Core;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -42,11 +42,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var dbSource = serializer.Deserialize<IDbSource>(values["source"]);
                 // ReSharper disable MaximumChainedReferences
-                ServiceModel.Services services = new ServiceModel.Services();              
-                
-var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-               
-                if (dbSource.Type == enSourceType.ODBC) {
+                ServiceModel.Services services = new ServiceModel.Services();
+
+                var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
+
+                if (dbSource.Type == enSourceType.ODBC)
+                {
                     DbSource db = new DbSource();
                     db.DatabaseName = dbSource.DbName;
                     db.ResourceID = dbSource.Id;
@@ -62,16 +63,14 @@ var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerW
                 }
                 else
                 {
-                    
-                   var methods = services.FetchMethods(src).Select(method => CreateDbAction(method,src)).OrderBy(a => a.Name);
+                    var methods = services.FetchMethods(src).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name);
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,
                         Message = serializer.SerializeToBuilder(methods)
                     });
                 }
-                 
-                
+
                 // ReSharper restore MaximumChainedReferences
             }
             catch (Exception e)
@@ -84,7 +83,7 @@ var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerW
             }
         }
 
-        DbAction CreateDbAction(ServiceMethod a, DbSource src)
+        private DbAction CreateDbAction(ServiceMethod a, DbSource src)
         {
             // ReSharper disable MaximumChainedReferences
             var inputs = a.Parameters.Select(b => new ServiceInput(b.Name, b.DefaultValue ?? "") as IServiceInput).ToList();
@@ -93,8 +92,7 @@ var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerW
             {
                 Name = a.Name,
                 Inputs = inputs,
-                SourceId =  src.ResourceID
-                
+                SourceId = src.ResourceID
             };
         }
 

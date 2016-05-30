@@ -72,7 +72,7 @@
                              ToolTip="{x:Static languages:Core.ManageEmailHostNameTooltip}"
                              Text="{Binding AutoDiscoverUrl, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.EmailSourceHostNameHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ExchangeEmailSourceHostNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
 
@@ -84,7 +84,7 @@
                              ToolTip="{x:Static languages:Core.ManageEmailUserNameTooltip}"
                              Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ExchangeUserNameAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
 

@@ -20,6 +20,8 @@ namespace Dev2.Common.Interfaces
 
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
 
+        void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);
+
         void NewResource(string resourceType, string resourcePath);
 
         string OpenPasteWindow(string current);

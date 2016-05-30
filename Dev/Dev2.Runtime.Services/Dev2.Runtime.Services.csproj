@@ -109,7 +109,8 @@
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="Npgsql, Version=3.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
@@ -134,6 +135,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
@@ -158,6 +160,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -177,6 +180,14 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="DynamicProxy\Constants.cs" />
+    <Compile Include="DynamicProxy\DynamicObject.cs" />
+    <Compile Include="DynamicProxy\DynamicProxy.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyException.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyFactory.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyFactoryOptions.cs" />
+    <Compile Include="DynamicProxy\IDynamicProxy.cs" />
+    <Compile Include="DynamicProxy\IDynamicProxyFactory.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
@@ -190,6 +201,8 @@
     <Compile Include="ESB\Management\Services\FetchPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchServerPermissions.cs" />
     <Compile Include="ESB\Management\Services\FetchRabbitMQServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchWcfAction.cs" />
+    <Compile Include="ESB\Management\Services\FetchWcfSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
     <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
@@ -246,6 +259,7 @@
     <Compile Include="ESB\Management\Services\RenameResource.cs" />
     <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
     <Compile Include="ESB\Management\Services\SaveSharePointServiceSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveWcfServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
@@ -259,6 +273,8 @@
     <Compile Include="ESB\Management\Services\TestDbSourceService.cs" />
     <Compile Include="ESB\Management\Services\TestExchangeServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestPluginService.cs" />
+    <Compile Include="ESB\Management\Services\TestWcfService.cs" />
+    <Compile Include="ESB\Management\Services\TestWcfServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestWebService.cs" />
     <Compile Include="ESB\Management\Services\TestRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestWebserviceSourceService.cs" />
@@ -278,6 +294,7 @@
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
+    <Compile Include="Interfaces\IWcfProxyService.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
@@ -324,6 +341,9 @@
     <Compile Include="ServiceModel\Data\ExchangeSource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
+    <Compile Include="ServiceModel\Data\WcfProxyService.cs" />
+    <Compile Include="ServiceModel\Data\WcfService.cs" />
+    <Compile Include="ServiceModel\Data\WcfSource.cs" />
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
@@ -464,9 +484,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

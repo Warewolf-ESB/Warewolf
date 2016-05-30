@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -11,13 +8,16 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SaveExchangeServiceSource : IEsbManagementEndpoint
     {
-        IExplorerServerResourceRepository _serverExplorerRepository;
-        IResourceCatalog _resourceCatalogue;
+        private IExplorerServerResourceRepository _serverExplorerRepository;
+        private IResourceCatalog _resourceCatalogue;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -41,7 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Name = src.Name,
                     ResourcePath = src.Path,
                     ResourceID = src.Id,
-                    Type = enSourceType.ExchangeSource
+                    Type = enSourceType.ExchangeSource,
+                    ResourceType = "ExchangeSource"
                 };
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, con);
                 ServerExplorerRepo.UpdateItem(con);
@@ -66,11 +67,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return newDs;
         }
+
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
             get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
             set { _serverExplorerRepository = value; }
         }
+
         public IResourceCatalog ResourceCatalogue
         {
             get

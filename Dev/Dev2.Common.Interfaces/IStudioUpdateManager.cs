@@ -26,9 +26,11 @@ namespace Dev2.Common.Interfaces
         void Save(IExchangeSource emailServiceSource);
 
         void Save(ISharepointServerSource sharePointServiceSource);
-    
+
         // ReSharper disable once InconsistentNaming
         void Save(IRabbitMQServiceSourceDefinition rabbitMQServiceSource);
+
+        void Save(IWcfServerSource wcfSource);
 
         void TestConnection(IServerSource serverSource);
 
@@ -42,6 +44,8 @@ namespace Dev2.Common.Interfaces
         // ReSharper disable once InconsistentNaming
         string TestConnection(IRabbitMQServiceSourceDefinition rabbitMQServiceSource);
 
+        string TestConnection(IWcfServerSource wcfServerSource);
+
         IList<string> TestDbConnection(IDbSource serverSource);
 
         DataTable TestDbService(IDatabaseService inputValues);
@@ -52,7 +56,11 @@ namespace Dev2.Common.Interfaces
 
         string TestPluginService(IPluginService inputValues);
 
+        string TestWcfService(IWcfService inputValues);
+
         void Save(IPluginService toDbSource);
+
+        void Save(IWcfService toSource);
 
         event ItemSaved ItemSaved;
 

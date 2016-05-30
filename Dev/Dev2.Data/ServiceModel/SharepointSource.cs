@@ -1,14 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 using Warewolf.Sharepoint;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Data.ServiceModel
@@ -19,6 +20,7 @@ namespace Dev2.Data.ServiceModel
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
+
         public string UserName { get; set; }
         public string Password { get; set; }
 
@@ -99,6 +101,7 @@ namespace Dev2.Data.ServiceModel
                 return true;
             }
         }
+
         public override bool IsService
         {
             get
@@ -106,6 +109,7 @@ namespace Dev2.Data.ServiceModel
                 return false;
             }
         }
+
         public override bool IsFolder
         {
             get
@@ -113,6 +117,7 @@ namespace Dev2.Data.ServiceModel
                 return false;
             }
         }
+
         public override bool IsReservedService
         {
             get
@@ -120,6 +125,7 @@ namespace Dev2.Data.ServiceModel
                 return false;
             }
         }
+
         public override bool IsServer
         {
             get
@@ -127,6 +133,7 @@ namespace Dev2.Data.ServiceModel
                 return false;
             }
         }
+
         public override bool IsResourceVersion
         {
             get
@@ -141,7 +148,7 @@ namespace Dev2.Data.ServiceModel
             return sharepointHelper.LoadLists();
         }
 
-        public List<ISharepointFieldTo> LoadFieldsForList(string listName,bool editableFieldsOnly = false)
+        public List<ISharepointFieldTo> LoadFieldsForList(string listName, bool editableFieldsOnly = false)
         {
             var sharepointHelper = CreateSharepointHelper();
             return sharepointHelper.LoadFieldsForList(listName, editableFieldsOnly);
@@ -152,7 +159,7 @@ namespace Dev2.Data.ServiceModel
             string userName = null;
             string password = null;
 
-            if(AuthenticationType == AuthenticationType.User)
+            if (AuthenticationType == AuthenticationType.User)
             {
                 userName = UserName;
                 password = Password;

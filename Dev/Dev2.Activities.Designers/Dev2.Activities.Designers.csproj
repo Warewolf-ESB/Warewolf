@@ -108,7 +108,8 @@
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -223,11 +224,13 @@
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\WcfActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\ExchangeInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
@@ -245,19 +248,22 @@
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\ExchangeSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
+    <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
-    <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Delete\WebDeleteRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
@@ -767,6 +773,56 @@
     <Compile Include="Designers2\Service\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\SharePointCopyFileDesigner.xaml.cs">
+      <DependentUpon>SharePointCopyFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\SharePointCopyFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointCopyFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesigner.xaml.cs">
+      <DependentUpon>SharePointDeleteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointDeleteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesigner.xaml.cs">
+      <DependentUpon>SharePointFileDownLoadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointFileDownload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\SharePointFileUploadDesigner.xaml.cs">
+      <DependentUpon>SharePointFileUploadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\SharePointFileUploadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointFileUpload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\SharePointReadFolderDesigner.xaml.cs">
+      <DependentUpon>SharePointReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\SharePointReadFolderDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointFolderRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\SharepointListCreate\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -806,6 +862,16 @@
     </Compile>
     <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesignerViewModel.cs" />
     <Compile Include="Designers2\SharepointListUpdate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\SharePointMoveFileDesigner.xaml.cs">
+      <DependentUpon>SharePointMoveFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\SharePointMoveFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointMoveFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\SortRecords\Large.xaml.cs">
@@ -879,6 +945,16 @@
     <Compile Include="Designers2\Unzip\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\WCFEndPoint\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml.cs">
+      <DependentUpon>WcfEndPointDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointViewModel.cs" />
     <Compile Include="Designers2\Web Service Put\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1685,6 +1761,66 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\SharePointCopyFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointCopyFile\SharePointCopyFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointCopyFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointDeleteFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointDeleteFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileDownload\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileDownload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileUpload\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileUpload\SharePointFileUploadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileUpload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointFolderRead\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointFolderRead\SharePointReadFolderDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointFolderRead\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\SharepointListCreate\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1732,6 +1868,18 @@
     <Page Include="Designers2\SharepointListUpdate\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharePointMoveFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointMoveFile\SharePointMoveFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointMoveFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\SortRecords\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1810,6 +1958,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Unzip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WCFEndPoint\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WCFEndPoint\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

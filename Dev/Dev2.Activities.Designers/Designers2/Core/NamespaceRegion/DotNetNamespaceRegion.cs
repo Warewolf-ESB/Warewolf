@@ -21,7 +21,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         private readonly ISourceToolRegion<IPluginSource> _source;
         private bool _isEnabled;
 
-        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedNamespace;
         private INamespaceItem _selectedNamespace;
         private IPluginServiceModel _model;

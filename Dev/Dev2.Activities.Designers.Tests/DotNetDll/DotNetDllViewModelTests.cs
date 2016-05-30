@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.SetDisplayName("dsfbob_builer");
             PrivateObject p = new PrivateObject(vm);
-            Assert.AreEqual(p.GetProperty("DisplayName"), "DotNet DLL Connectordsfbob_builer");
+            Assert.AreEqual(p.GetProperty("DisplayName"), "DotNet DLLdsfbob_builer");
         }
 
 

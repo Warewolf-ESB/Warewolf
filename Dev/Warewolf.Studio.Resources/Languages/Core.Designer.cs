@@ -3015,6 +3015,21 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Exchange web service endpoint url to connect to your Exchange enviroment.
+        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;/table&gt;&lt;br/&gt;If the Autodiscover url is left empty, the Exchange service endpoint will be auto dicovered based on the user name.
+        /// </summary>
+        public static string ExchangeEmailSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("ExchangeEmailSourceHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected connection.&lt;br&gt;
         ///&lt;br/&gt;
         ///Change the connection string from, say, a development database to a live database.&lt;br/&gt;
@@ -3051,6 +3066,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExchangeSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("ExchangeSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user name to authenticate against the exhange server.
+        /// </summary>
+        public static string ExchangeUserNameAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("ExchangeUserNameAuthenticationHelp", resourceCulture);
             }
         }
         
@@ -4855,6 +4879,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter Endpoint Url.
+        /// </summary>
+        public static string ManageWcfEndpointTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfEndpointTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected source connection.
+        /// </summary>
+        public static string ManageWcfServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a Wcf Service.
+        /// </summary>
+        public static string ManageWcfServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Source you want to use.
+        /// </summary>
+        public static string ManageWcfServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel this action.
         /// </summary>
         public static string ManageWebPasteCancelTooltip {
@@ -5947,7 +6007,26 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue auto delete.&lt;br/&gt;
+        ///   Looks up a localized string similar to Aknowledge will send back result from the consumer to tell 
+        ///    RabbitMQ that a particular message has been received, 
+        ///    processed and that RabbitMQ is free to delete it.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Aknowledge message after consume?.
+        /// </summary>
+        public static string RabbitMQHelpAcknowledge {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpAcknowledge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If set, the queue is deleted when all consumers have 
+        ///    finished using it. The last consumer can be cancelled either 
+        ///    explicitly or because its channel is closed. If there was no 
+        ///    consumer ever on the queue, it won&apos;t be deleted. Applications 
+        ///    can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -5960,7 +6039,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue durable.&lt;br/&gt;
+        ///   Looks up a localized string similar to When RabbitMQ source quits or crashes it will forget the queues.
+        ///    Durable will prevent queues getting lost after the source is up again.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -5973,7 +6053,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue exclusive.&lt;br/&gt;
+        ///   Looks up a localized string similar to Exclusive queues may only be accessed by the current connection, 
+        ///    and are deleted when that connection closes. Passive declaration of an exclusive 
+        ///    queue by other connections are not allowed.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -5986,7 +6068,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message goes in here.&lt;br /&gt;
+        ///   Looks up a localized string similar to This is the actual content you want to add in the Queue
+        ///      When the Consumer consumes the message, this content will
+        ///      be returned as the response.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6005,7 +6089,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    
+        ///      This will pre-fetch the given number of messages and block further traffic until you 
+        ///      Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 
+        ///      are pre-fetched at one time.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///         Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;Interger Value&lt;/li&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpPrefetch {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpPrefetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 
+        ///      The Queue should already be in the RabbitMQ Source in your server.
+        ///      Note: The Queue name is case sensitive.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
@@ -6024,8 +6130,41 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.&lt;br /&gt;
-        ///        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+        ///   Looks up a localized string similar to Marking this as True will leave the
+        ///    message you consumed in the queue.
+        ///    Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Requeue the queue.
+        /// </summary>
+        public static string RabbitMQHelpRequeue {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpRequeue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        
+        ///        Allowed:&lt;br /&gt;          
+        ///         &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpResponse {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
         ///        Allowed:
@@ -6039,6 +6178,27 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQHelpResult {
             get {
                 return ResourceManager.GetString("RabbitMQHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  The Queue might be empty when the 
+        ///      Consumer makes the initial attempt to Consume the message.
+        ///      Put the number of seconds you want the consumer to delay when attempting to 
+        ///      consume messages from the queue.
+        ///      After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;Interger Value&lt;/li&gt;            
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpTimeOut {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpTimeOut", resourceCulture);
             }
         }
         
@@ -6107,7 +6267,16 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue auto delete..
+        ///   Looks up a localized string similar to Aknowledge message after consume?.
+        /// </summary>
+        public static string RabbitMQToolTipAcknowledge {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipAcknowledge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue auto-delete to delete queue after Consumer are done with it..
         /// </summary>
         public static string RabbitMQToolTipIsAutoDelete {
             get {
@@ -6116,7 +6285,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue durable..
+        ///   Looks up a localized string similar to Make the queue durable to back up Queue incase of a crash..
         /// </summary>
         public static string RabbitMQToolTipIsDurable {
             get {
@@ -6125,7 +6294,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue exclusive..
+        ///   Looks up a localized string similar to Make the queue exclusive so that it&apos;s accessable only inside the current connection..
         /// </summary>
         public static string RabbitMQToolTipIsExclusive {
             get {
@@ -6134,7 +6303,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message goes in here..
+        ///   Looks up a localized string similar to The message you want to publish goes in here..
         /// </summary>
         public static string RabbitMQToolTipMessage {
             get {
@@ -6143,11 +6312,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a meaningful name for the queue..
+        ///   Looks up a localized string similar to Provide number of processes that can run concurrently..
+        /// </summary>
+        public static string RabbitMQToolTipPrefetch {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipPrefetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from..
         /// </summary>
         public static string RabbitMQToolTipQueueName {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipQueueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requeue the response in the Queue..
+        /// </summary>
+        public static string RabbitMQToolTipReQueue {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipReQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put response variables here..
+        /// </summary>
+        public static string RabbitMQToolTipResponse {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipResponse", resourceCulture);
             }
         }
         
@@ -6161,12 +6357,21 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;
         ///.
         /// </summary>
         public static string RabbitMQToolTipSource {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How long you want the Consumer to delay when checking for messages in the queue..
+        /// </summary>
+        public static string RabbitMQToolTipTimeOut {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipTimeOut", resourceCulture);
             }
         }
         
@@ -6544,6 +6749,37 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ReadFolderToolTipUsername {
             get {
                 return ResourceManager.GetString("ReadFolderToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter local file or folder path.
+        /// </summary>
+        public static string ReadLocalFolderToolTipFolder {
+            get {
+                return ResourceManager.GetString("ReadLocalFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter local file or folder path in here.&lt;br/&gt;
+        ///        Download to local Example: C:\MyFolder\Help.&lt;br/&gt;
+        ///        Upload file to SharePoint Example: C:\MyFolder\Help\help.txt.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string ReadLocalHelpFolder {
+            get {
+                return ResourceManager.GetString("ReadLocalHelpFolder", resourceCulture);
             }
         }
         
@@ -8041,11 +8277,117 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file download path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointDownloadHelpFolder {
+            get {
+                return ResourceManager.GetString("SharePointDownloadHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server download file path.
+        /// </summary>
+        public static string SharePointDownloadPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointDownloadPathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit the connection properties of the selected SharePoint Server..
         /// </summary>
         public static string SharepointEditServerHelp {
             get {
                 return ResourceManager.GetString("SharepointEditServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server file path.
+        /// </summary>
+        public static string SharePointFilePathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointFilePathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file From path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointHelpCopyFrom {
+            get {
+                return ResourceManager.GetString("SharePointHelpCopyFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file To path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointHelpCopyTo {
+            get {
+                return ResourceManager.GetString("SharePointHelpCopyTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointHelpDelete {
+            get {
+                return ResourceManager.GetString("SharePointHelpDelete", resourceCulture);
             }
         }
         
@@ -8111,6 +8453,40 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharepointInsertToolTipResult {
             get {
                 return ResourceManager.GetString("SharepointInsertToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Read SharePoint folders and files. Enter SharePoint folder or file path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/HelpFolder/Help.&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/MyFile.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointReadFolderHelpFolder {
+            get {
+                return ResourceManager.GetString("SharePointReadFolderHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server folder or
+        ///    file path
+        ///    .
+        /// </summary>
+        public static string SharePointReadFolderInputPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointReadFolderInputPathToolTip", resourceCulture);
             }
         }
         
@@ -8230,6 +8606,37 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharepointToolTipToVariable {
             get {
                 return ResourceManager.GetString("SharepointToolTipToVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint folder upload location path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/HelpFolder/Help&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointUploadHelpFolder {
+            get {
+                return ResourceManager.GetString("SharePointUploadHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server upload folder path.
+        /// </summary>
+        public static string SharePointUploadPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointUploadPathToolTip", resourceCulture);
             }
         }
         
@@ -9087,6 +9494,60 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WarewolfUrl {
             get {
                 return ResourceManager.GetString("WarewolfUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the connection Endpoint properties of the selected Wcf Source&lt;br&gt;
+        ///&lt;br/&gt;
+        ///Change the Endpoint Url from, say, a development to a live environment.&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
+        /// </summary>
+        public static string WcfServiceEditSourceHelp {
+            get {
+                return ResourceManager.GetString("WcfServiceEditSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New WCF Service Source.
+        /// </summary>
+        public static string WcfServiceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("WcfServiceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To create a new WCF source, click New..
+        /// </summary>
+        public static string WcfServiceNewSourceHelp {
+            get {
+                return ResourceManager.GetString("WcfServiceNewSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Wcf Source you want to use from previously setup sources..
+        /// </summary>
+        public static string WcfServiceSourcesHelp {
+            get {
+                return ResourceManager.GetString("WcfServiceSourcesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.
+        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
+        /// </summary>
+        public static string WcfSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("WcfSourceHostNameHelp", resourceCulture);
             }
         }
         

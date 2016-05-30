@@ -86,13 +86,13 @@
             </Button>
         </Grid>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Queue Name" Margin="{StaticResource ActivityBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Queue Name" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="1"
                                 DefaultText="Queue Name"
                                 Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.RabbitMQToolTipQueueName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ActivityBorderTop}"
+                                Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsQueueNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
@@ -105,7 +105,7 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Message" Margin="{StaticResource ActivityBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Message" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 VerticalAlignment="Stretch"
@@ -117,7 +117,7 @@
                                 MaxHeight="50"
                                 AcceptsTab="True"
                                 Padding="2,5,2,2"
-                                Margin="{StaticResource ActivityBorderTop}"
+                                Margin="{StaticResource ControlBorderTop}"
                                 VerticalContentAlignment="Top"
                                 VerticalScrollBarVisibility="Auto"
                                 HorizontalScrollBarVisibility="Auto"

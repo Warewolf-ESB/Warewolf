@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
+using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
@@ -46,7 +47,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
-        public IAsyncWorker _asyncWorker;
+        public IAsyncWorker AsyncWorker;
         private ISourceToolRegion<IExchangeSource> _sourceRegion;
 
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
@@ -58,11 +59,12 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         {
         }
 
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IExchangeServiceModel model,IEventAggregator eventPublisher) : base(modelItem)
+        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model,IEventAggregator eventPublisher) : base(modelItem)
         {
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
             _eventPublisher = eventPublisher;
+            AsyncWorker = asyncWorker;
             Model = model;
             SetupCommonProperties();
         }
@@ -73,7 +75,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            _asyncWorker = asyncWorker;
+            AsyncWorker = asyncWorker;
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
@@ -97,7 +99,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             InitialiseViewModel();
         }
         
-
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -109,14 +110,14 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             InitializeProperties();
         }
 
-        public List<KeyValuePair<string, string>> Properties { get; private set; }
+        public List<KeyValuePair<string, string>> Properties { get; set; }
         void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
             AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
         }
 
-        void AddProperty(string key, string value)
+        public void AddProperty(string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -157,20 +158,13 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             {
                 return _testing;
             }
-            private set
+             set
             {
                 _testing = value;
 
                 OnPropertyChanged("Testing");
             }
         }
-
-        public void SetDisplayName(string displayName)
-        {
-            
-        }
-
-        public bool GenerateOutputsVisible { get; set; }
 
         private IExchangeServiceModel Model { get; set; }
         public override IList<IToolRegion> BuildRegions()
@@ -186,8 +180,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(true));
         public bool IsEmailSourceFocused { get { return (bool)GetValue(IsEmailSourceFocusedProperty); } set { SetValue(IsEmailSourceFocusedProperty, value); } }
         public static readonly DependencyProperty IsEmailSourceFocusedProperty = DependencyProperty.Register("IsEmailSourceFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-        public bool IsFromAccountFocused { get { return (bool)GetValue(IsFromAccountFocusedProperty); } set { SetValue(IsFromAccountFocusedProperty, value); } }
-        public static readonly DependencyProperty IsFromAccountFocusedProperty = DependencyProperty.Register("IsFromAccountFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        
         public bool IsToFocused { get { return (bool)GetValue(IsToFocusedProperty); } set { SetValue(IsToFocusedProperty, value); } }
         public static readonly DependencyProperty IsToFocusedProperty = DependencyProperty.Register("IsToFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
@@ -224,6 +217,9 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public void TestEmailAccount()
         {
+
+            if (Errors != null && Errors.Count > 0)return;
+           
             Testing = true;
             StatusMessage = string.Empty;
 
@@ -278,22 +274,19 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
 
             SendEmail(testSource, testMessage);
-            
         }
 
         private void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
         {
-            _asyncWorker.Start(() =>
+            AsyncWorker.Start(() =>
             {
                 try
                 {
-                    testSource.Send(testSource, testMessage);
-                    StatusMessage = "Passed";
+                    testSource.Send(new ExchangeEmailSender(testSource), testMessage);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    var s = ex;
-                    StatusMessage = "One or more errors occured";
+                    SetStatusMessage("One or more errors occured");
                 }
                 finally
                 {
@@ -302,10 +295,11 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             });
         }
 
-        protected virtual IWebRequestInvoker CreateWebRequestInvoker()
+        public void SetStatusMessage(string message)
         {
-            return new WebRequestInvoker();
+            StatusMessage = message;
         }
+
 
         void ChooseAttachments()
         {
@@ -349,10 +343,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("FromAccount", GetDatalistString()).ValidateRules("'From Account'", () => IsFromAccountFocused = true))
-            {
-                yield return error;
-            }
             foreach (var error in GetRuleSet("Recipients", GetDatalistString()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
@@ -385,6 +375,9 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             switch (propertyName)
             {
+                case "EmailSource":
+                    ruleSet.Add(new IsNullRule(() => SourceRegion.SelectedSource));
+                    break;
                 case "To":
                     var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com");
                     ruleSet.Add(toExprRule);
@@ -418,10 +411,16 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
+
             if (mainViewModel != null)
             {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+                SetHelpModelHelpText(helpText, mainViewModel);
             }
+        }
+
+        private void SetHelpModelHelpText(string helpText, IMainViewModel mainViewModel)
+        {
+            mainViewModel.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }
