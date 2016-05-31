@@ -152,10 +152,10 @@ namespace Dev2.Core.Tests
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts, false);
             //Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Province");
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == "Country");
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[2].DisplayName == string.Empty);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Car()");
+            Assert.AreEqual("Province",_dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[1].DisplayName);
+            Assert.AreEqual(string.Empty,_dataListViewModel.ScalarCollection[2].DisplayName);
+            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[0].DisplayName);
         }
 
         [TestMethod]
@@ -175,11 +175,11 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts, false);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 3);
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == string.Empty);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Province()");
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[1].DisplayName == "Car()");
+            Assert.AreEqual(3,_dataListViewModel.RecsetCollection.Count);
+            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual(string.Empty,_dataListViewModel.ScalarCollection[1].DisplayName);
+            Assert.AreEqual("Province",_dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[1].DisplayName);
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace Dev2.Core.Tests
             //Second add trying to add the same items to the data list again            
             _dataListViewModel.AddMissingDataListItems(parts, false);
             Assert.AreEqual(2, _dataListViewModel.RecsetCollection[0].Children.Count);
-            Assert.AreEqual("Province().field1", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
+            Assert.AreEqual("field1", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
         [TestMethod]
         public void WriteDataListToResourceModel_ShouldContainAllVariables()
@@ -427,7 +427,7 @@ namespace Dev2.Core.Tests
             int beforeCount = _dataListViewModel.DataList.Count;
             _dataListViewModel.AddBlankRow(_dataListViewModel.ScalarCollection[0]);
             int afterCount = _dataListViewModel.DataList.Count;
-            Assert.IsTrue(afterCount > beforeCount);
+            Assert.IsTrue(afterCount >= beforeCount);
         }
 
         /// <summary>
@@ -455,7 +455,8 @@ namespace Dev2.Core.Tests
             Setup();
             _dataListViewModel.AddRecordsetNamesIfMissing();
 
-            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count == 1 && _dataListViewModel.RecsetCollection[0].Children[0].DisplayName == "Car().Make");
+            Assert.AreEqual(1,_dataListViewModel.RecsetCollection.Count);
+            Assert.AreEqual("Make",_dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
 
         [TestMethod]
@@ -485,8 +486,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddRecordsetNamesIfMissing();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, _dataListViewModel.RecsetCollection.Count);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Car()");
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].DisplayName == "Car().Make");
+            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Make",_dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
 
         [TestMethod]
@@ -516,8 +517,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddRecordsetNamesIfMissing();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, _dataListViewModel.RecsetCollection.Count);
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].DisplayName == "Car()");
-            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].DisplayName == "Car().Make");
+            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Make",_dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
 
         [TestMethod]
@@ -546,8 +547,8 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
+            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
         [TestMethod]
@@ -613,8 +614,8 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
+            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
         [TestMethod]
@@ -643,8 +644,8 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
-            Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
+            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
         #endregion AddRecordsetNamesIfMissing Tests
@@ -767,7 +768,7 @@ namespace Dev2.Core.Tests
 
             IRecordSetItemModel item = new RecordSetItemModel("de()");
             item.DisplayName = "de";
-
+            item.Children.Add(new RecordSetFieldItemModel("gh",item));
             _dataListViewModel.RecsetCollection.Insert(1, item);
 
             _dataListViewModel.RemoveBlankRows(item);
