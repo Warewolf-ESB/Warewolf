@@ -212,19 +212,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb());
             ScenarioContext.Current.Add("result", result);
         }
-
-        [Then(@"The mapping uses the following indexes")]
-        public void ThenTheMappingUsesTheFollowingIndexes(Table table)
-        {
-            var scenarioContext = ScenarioContext.Current;
-            var updateValues = scenarioContext.Get<List<int>>("indexUpdate").Select(a => a.ToString());
-            foreach(var tableRow in table.Rows)
-            {
-              Assert.IsTrue(updateValues.Contains(tableRow[0]));
-              
-            }
-        }
-
+        
         [Then(@"the foreach executes (.*) times")]
         public void ThenTheForeachExecutesTimes(int numOfIterations)
         {
