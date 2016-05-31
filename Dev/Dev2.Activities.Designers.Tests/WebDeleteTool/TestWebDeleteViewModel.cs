@@ -181,6 +181,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             Assert.IsTrue(deleteViewModel.InputArea.IsEnabled);
             Assert.IsTrue(deleteViewModel.ErrorRegion.IsEnabled);
             Assert.IsFalse(deleteViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.AreEqual(0, deleteViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 
@@ -206,6 +207,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
 
             //---------------Execute Test ----------------------
             Assert.IsTrue(deleteViewModel.ErrorRegion.IsEnabled);
+            
             //---------------Test Result -----------------------
         }
 
@@ -230,7 +232,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             Assert.AreEqual(deleteViewModel.OutputsRegion.Outputs.First().MappedFrom, "Result");
-
+            
             //---------------Test Result -----------------------
         }
 
@@ -261,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             Assert.IsTrue(deleteViewModel.ErrorRegion.IsEnabled);
             Assert.AreEqual(1, deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
-
+            Assert.AreEqual(0, deleteViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 
@@ -295,6 +297,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, deleteViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 
@@ -328,6 +331,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
             Assert.IsTrue(deleteViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, deleteViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 
