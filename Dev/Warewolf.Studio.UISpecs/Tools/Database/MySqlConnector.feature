@@ -9,6 +9,7 @@
 # Editing MySql Connector and Test Execution is unsuccesful
 # Changing Actions
 
+@ignore
 Scenario: Creating MySQL Connector
 	Given I open New Workflow
 	Then "New Workflow" tab is opened
@@ -48,6 +49,7 @@ Scenario: Creating MySQL Connector
 	| [[new_procedure().id]] = 1212    |
 	| [[new_procedure().value]] = ffff |
 
+@ignore
 Scenario: Opening Saved workflow with MySQL Connector tool
    Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
@@ -66,6 +68,7 @@ Scenario: Opening Saved workflow with MySQL Connector tool
 	| value       | [[new_procedure().value]] |
 	And "Recordset Name" equals "new_procedure"
 
+@ignore
 Scenario: Change MySQL Source on Existing tool
 	Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
@@ -89,6 +92,7 @@ Scenario: Change MySQL Source on Existing tool
 	And "Mapping" is "Disabled" 
 	And "Validate" is "Disabled"
 
+@ignore
 #Spec to be modified once test results section is included in tool window
  Scenario: Editing MySql Connector and Test Execution is unsuccesful
    Given I open "MySql_workflow" service
@@ -113,6 +117,7 @@ Scenario: Change MySQL Source on Existing tool
 	| Output | Output Alias | Recordset Name      |
 	And "Save" is "Disabled"
 
+@ignore
 Scenario: Changing MySQL Actions
 	Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
@@ -155,6 +160,7 @@ Scenario: Changing MySQL Actions
 	| value       | [[new_procedure().value]] | 
 	And "Recordset Name" equals "new_procedure"
 
+@ignore
 Scenario: Change MySQL Recordset Name
 	Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
@@ -192,8 +198,7 @@ Scenario: Change MySQL Recordset Name
 	| id          | [[New_Category().id]]    |
 	| value       | [[New_Category().value]] |
 
-
-	
+@ignore
 Scenario: Invalid Recordset name
 	Given I open New Workflow
 	Then "New Workflow" tab is opened

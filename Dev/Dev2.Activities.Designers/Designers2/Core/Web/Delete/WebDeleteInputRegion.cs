@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -172,6 +173,12 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                     Headers.Remove(Headers.First());
                 }
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         public IList<string> Errors

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces.ToolBase
@@ -12,6 +13,8 @@ namespace Dev2.Common.Interfaces.ToolBase
 
         IToolRegion CloneRegion();
         void RestoreRegion(IToolRegion toRestore);
+
+        EventHandler<List<string>> ErrorsHandler { get; set; } 
     }
 
     public delegate void SomethingChanged(object sender, IToolRegion args);

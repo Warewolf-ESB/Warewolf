@@ -364,6 +364,12 @@ namespace Dev2.Activities.Designers2.Oracle
                         OutputsRegion.IsEnabled = false;
                     }
                 };
+                ActionRegion.ErrorsHandler += (sender, list) =>
+                {
+                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    UpdateDesignValidationErrors(errorInfos);
+                    Errors = new List<IActionableErrorInfo>(errorInfos);
+                };
                 regions.Add(ActionRegion);
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);

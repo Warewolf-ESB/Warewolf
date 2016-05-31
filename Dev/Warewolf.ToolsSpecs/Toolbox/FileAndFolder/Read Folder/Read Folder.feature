@@ -15,7 +15,7 @@ Scenario Outline: Read Folder file at location
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
-         | Input Path                   | Read   | Username   | Password |Private Key File       |
+         | Input Path                  | Read   | Username   | Password | Private Key File       |
          | <source> = <sourceLocation> | <read> | <username> | String   | <sourcePrivateKeyFile> |
 	And the debug output as
 		|                        |
@@ -129,7 +129,7 @@ Scenario Outline: Read Folder file at location with invalid directories
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "AN" error
 	And the debug inputs as
-         | Input Path                   | Read   | Username   | Password |
+         | Input Path                  | Read   | Username   | Password |
          | <source> = <sourceLocation> | <read> | <username> | String   |
 	And the debug output as
 		|                        |
@@ -152,7 +152,7 @@ Scenario Outline: Read Folder file at location using complex types
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
-         | Input Path                   | Read   | Username   | Password |
+         | Input Path                  | Read   | Username   | Password |
          | <source> = <sourceLocation> | <read> | <username> | String   |
 	And the debug output as
 		|                        |

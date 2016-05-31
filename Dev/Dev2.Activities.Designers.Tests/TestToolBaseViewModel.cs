@@ -44,6 +44,12 @@ namespace Dev2.Activities.Designers.Tests
         {
         }
 
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
+        }
+
         public IList<string> Errors
         {
             get

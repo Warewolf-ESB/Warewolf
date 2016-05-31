@@ -4,6 +4,7 @@ Feature: FileAndFolder-Rename
 	as a Warewolf user
 	I want a tool that will rename a File or Floder at a given location
 
+@ignore
 @Rename
 # Coded UI
 Scenario: Rename tool Small View
@@ -23,6 +24,7 @@ Scenario: Rename tool Large View
        And End this workflow is "Unselected"
        And Done button is "Visible"
 
+@ignore
 Scenario: Rename tool Small View water marks
        Given I have Rename Small View on design surface
        Then Rename small view watermarks are
@@ -68,6 +70,7 @@ Scenario: Rename tool Large View to small view persisting data correctly
        | File or Folder | New Name   | Result     |
        | C:\ Test       | C:\ Rename | [[Rename]] |
 
+@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Rename Large View on design surface
        When Rename Large View has
@@ -91,6 +94,7 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | New Name   | Result     |
        | C:\[[a]]       | C:\ Rename | [[Rename]] |
 
+@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Rename Large View on design surface
        And Rename Large View has
@@ -110,6 +114,7 @@ Scenario: Close large view is closing large view without validating
        | File or Folder | New Name   | Result     |
        | C:\[[a]        | C:\ Rename | [[Rename]] |
 
+@ignore
 Scenario Outline: Rename Large View is validating incorrect source path
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -133,6 +138,7 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
+@ignore
 Scenario Outline: Rename Large View is validating incorrect New Name path
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -157,6 +163,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Rename Large View is validating incorrect variable in File Username field
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -182,6 +189,7 @@ Examples:
 
 
 
+@ignore
 Scenario Outline: Rename Large View is validating incorrect variable in New Name username field
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -206,6 +214,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Rename Large View is validating incorrect variable in Result field
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -225,6 +234,7 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
+@ignore
 Scenario Outline: Rename On error fields incorrect variables are validating
        Given I have Rename Large View on design surface
        And Rename Large View with water marks has

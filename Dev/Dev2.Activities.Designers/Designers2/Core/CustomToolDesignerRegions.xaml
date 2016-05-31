@@ -100,8 +100,8 @@
             </Button>
             <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
                                                         Grid.Column="2"
-                                                        Width="25"
-                                                        Height="25"
+                                                        Width="22"
+                                                        Height="22"
                                                         Visibility="{Binding ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
@@ -201,8 +201,8 @@
             </Button>
             <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
                                                         Grid.Column="2"
-                                                        Width="25"
-                                                        Height="25"
+                                                        Width="22"
+                                                        Height="22"
                                                         Visibility="{Binding Path=ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
@@ -241,8 +241,8 @@
             </Button>
             <customControls:CircularProgressBar Margin="{StaticResource ControlBorderLeft}"
                                                         Grid.Column="2"
-                                                        Width="25"
-                                                        Height="25"
+                                                        Width="22"
+                                                        Height="22"
                                                         Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>

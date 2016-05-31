@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("SharepointServerResourceId", Guid.NewGuid());
             //------------Execute Test---------------------------
             var sharepointReadFolderDesignerViewModel = new SharePointFileUploadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
             var inputPath = modelItem.GetProperty<string>("LocalInputPath");
             var sourceId = modelItem.GetProperty<Guid>("SharepointServerResourceId");
@@ -131,7 +131,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
            modelItem.SetProperty("LocalInputPath","TestFolder");
             //------------Execute Test---------------------------
             var sharepointReadFolderDesignerViewModel = new SharePointFileUploadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
             var inputPath = modelItem.GetProperty<string>("LocalInputPath");
             modelItem.GetProperty<Guid>("SharepointServerResourceId");
@@ -153,7 +153,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
             //------------Execute Test---------------------------
             var sharepointReadFolderDesignerViewModel = new SharePointFileUploadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
-            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+            sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
          
 
