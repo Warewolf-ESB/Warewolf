@@ -28,7 +28,7 @@ Scenario: Creating ODBC Server Connector
 	Then Outputs appears az
 	| Mapped From | Mapped To                     | 
 	| Column1     | [[Command().Column1]] | 
-
+	And record set name is equal "Command"
 	And Recordset Name equal "Command"	
 
 Scenario: Opening Saved workflow with ODBC Server tool

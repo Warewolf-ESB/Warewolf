@@ -11,7 +11,6 @@ Scenario: Creating Oracle Server Connector
 	And Action is Disable
 	And Inputs is Disable
 	And Outputs is Disable
-	And Validate is Disable
 	When I Selected "GreenPoint" as Source
 	Then Action is Enable
 	When I selected "HR.TESTPROC9" az the action
@@ -40,7 +39,7 @@ Scenario: Opening Saved workflow with Oracle Server tool
    Given I open workflow with Oracle connector
 	And Source is Enable
 	And Source iss "testingDBSrc"
-	And Action is Enable
+	#And Action is Enable
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
@@ -57,7 +56,7 @@ Scenario: Change Source on Existing tool
 	Given I open workflow with Oracle connector
 	And Source is Enable
 	And Source iss "testingDBSrc"
-	And Action is Enable
+	#And Action is Enable
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
@@ -76,7 +75,7 @@ Scenario: Change Source on Existing tool
 	And Validate is Enable
 
 #Spec to be modified once test results section is included in tool window
-@ignore
+#@ignore
  Scenario: Editing DB Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
@@ -105,7 +104,7 @@ Scenario: Changing Actions
 	Given I open workflow with Oracle connector
 	And Source is Enable
 	And Source iss "testingDBSrc"
-	And Action is Enable
+	#And Action is Enable
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
@@ -130,7 +129,7 @@ Scenario: Change Recordset Name
 	Given I open workflow with Oracle connector
 	And Source is Enable
 	And Source iss "testingDBSrc"
-	And Action is Enable
+	#And Action is Enable
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
