@@ -204,6 +204,7 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
             Assert.IsFalse(model.InputArea.IsEnabled);
             Assert.IsTrue(model.ErrorRegion.IsEnabled);
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.AreEqual(0, model.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -230,6 +231,7 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
 
             //------------Assert Results-------------------------
             Assert.IsTrue(model.ErrorRegion.IsEnabled);
+            Assert.AreEqual(1, model.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -262,6 +264,7 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
             Assert.IsFalse(model.ErrorRegion.IsEnabled);
             Assert.AreEqual(2, model.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[fname]]");
+            Assert.AreEqual(0, model.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -297,6 +300,7 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[fname]]");
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, model.ManageServiceInputViewModel.Errors.Count);
         }
     }
 

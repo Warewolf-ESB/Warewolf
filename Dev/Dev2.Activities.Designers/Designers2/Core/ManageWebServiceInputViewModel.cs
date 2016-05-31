@@ -197,6 +197,7 @@ namespace Dev2.Activities.Designers2.Core
             OutputArea.IsEnabled = false;
             TestResults = String.Empty;
             TestResultsAvailable = false;
+            Errors.Clear();
 
             _viewmodel.SetDisplayName("");
             _viewmodel.ErrorMessage(new Exception(), false);

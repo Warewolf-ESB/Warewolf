@@ -342,6 +342,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             //------------Assert Results-------------------------
             Assert.IsTrue(ODBCServer.SourceRegion.IsEnabled);
             Assert.IsTrue(ODBCServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -361,6 +362,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
 
             //------------Assert Results-------------------------
             Assert.IsTrue(ODBCServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -382,6 +384,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
 
             //------------Assert Results-------------------------
             Assert.IsTrue(ODBCServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -404,6 +407,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             //------------Assert Results-------------------------
             Assert.IsTrue(ODBCServer.SourceRegion.IsEnabled);
             Assert.IsTrue(ODBCServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -424,6 +428,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             //------------Assert Results-------------------------
             Assert.IsTrue(ODBCServer.SourceRegion.IsEnabled);
             Assert.IsTrue(ODBCServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -445,6 +450,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             //------------Assert Results-------------------------
             Assert.IsTrue(ODBCServer.SourceRegion.IsEnabled);
             Assert.IsTrue(ODBCServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
     }
