@@ -40,6 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
 

@@ -384,5 +384,196 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
+        [Given(@"Source iz Enable")]
+        public void GivenSourceIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Action iz Disable")]
+        public void GivenActionIzDisable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Inputs iz Disable")]
+        public void GivenInputsIzDisable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Outputs iz Disable")]
+        public void GivenOutputsIzDisable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I Selected ""(.*)"" az Source")]
+        public void WhenISelectedAzSource(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Action iz Enable")]
+        public void ThenActionIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I selected ""(.*)"" as thee action")]
+        public void WhenISelectedAsTheeAction(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Inputs iz Enable")]
+        public void ThenInputsIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Inputs appears az")]
+        public void ThenInputsAppearsAz(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Validate iz Enable")]
+        public void ThenValidateIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I click Validatt")]
+        public void WhenIClickValidatt()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I click Tezt")]
+        public void WhenIClickTezt()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Test Connector and Calculate Outputz outputs appear az")]
+        public void ThenTestConnectorAndCalculateOutputzOutputsAppearAz(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I clicked OKay")]
+        public void WhenIClickedOKay()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Outputs appears az")]
+        public void ThenOutputsAppearsAz(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"record set name is equal ""(.*)""")]
+        public void ThenRecordSetNameIsEqual(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Recordset Name equal ""(.*)""")]
+        public void ThenRecordsetNameEqual(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I open workflow with ODBC connector")]
+        public void GivenIOpenWorkflowWithODBCConnector()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Source iz ""(.*)""")]
+        public void GivenSourceIz(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Action iz Enable")]
+        public void GivenActionIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Action iz ""(.*)""")]
+        public void GivenActionIz(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"Inputs iz Enable")]
+        public void GivenInputsIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Source iz changed to ""(.*)""")]
+        public void WhenSourceIzChangedTo(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Action iz Enable")]
+        public void WhenActionIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Inputs iz Disable")]
+        public void WhenInputsIzDisable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Outputs iz Disable")]
+        public void WhenOutputsIzDisable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Validate iz Enable")]
+        public void WhenValidateIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"""(.*)"" is selected az the data source")]
+        public void WhenIsSelectedAzTheDataSource(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Action iz changed to ""(.*)""")]
+        public void WhenActionIzChangedTo(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Inputs iz Enable")]
+        public void WhenInputsIzEnable()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Inputs appears az")]
+        public void WhenInputsAppearsAz(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"Recordset Name iz changed from to ""(.*)""")]
+        public void WhenRecordsetNameIzChangedFromTo(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }

@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsRefreshing = false;
                 }, CanRefresh);
 
-                IsEnabled = true;
+                IsEnabled = false;
                 _modelItem = modelItem;
             }
             catch (Exception e)

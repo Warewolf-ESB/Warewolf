@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Common.Interfaces.UndoFramework;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 
@@ -31,11 +33,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenIDragAOracleServerDatabaseConnector()
         {
             var oracleServerActivity = new DsfOracleDatabaseActivity();
+            
             var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            
+            var mockInputArea = new Mock<IGenerateInputArea>();
+            var mockOutputArea = new Mock<IGenerateOutputArea>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
@@ -55,11 +62,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-            mockServiceInputViewModel.SetupAllProperties();
-            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem);
 
+            var mockAction = new Mock<Action>(MockBehavior.Default);
+            
+            mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
+            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
+            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
+
+            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+            oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;
+            
             ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
@@ -77,12 +91,57 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
+        [Given(@"I open New Workflow")]
+        public void GivenIOpenNewWorkflow()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [Then(@"Data Source is focused")]
+        public void ThenDataSourceIsFocused()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" is selected as the action")]
+        public void ThenIsSelectedAsTheAction(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
+        public void ThenInspectDataConnectorHyperLinkIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"inputs are")]
+        public void ThenInputsAre(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"input mappings are")]
+        public void ThenInputMappingsAre(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"output mappings are")]
+        public void ThenOutputMappingsAre(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
 
         private static OracleDatabaseDesignerViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<OracleDatabaseDesignerViewModel>("viewModel");
         }
 
+        private static Mock<IManageDatabaseInputViewModel> GetOutputViewModel()
+        {
+            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
+        }
         private static Mock<IManageServiceInputViewModel> GetInputViewModel()
         {
             return ScenarioContext.Current.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
@@ -303,12 +362,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().TestInputCommand.Execute();
         }
 
-        [Then(@"the Test Connector and Calculate Outputs window is open")]
-        public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
-        {
-            //GetInputViewModel().SetupProperty(model => model.Inputs,null);   
-        }
-
         [Then(@"Test Inputs appear az")]
         public void ThenTestInputsAppearAs(Table table)
         {
@@ -317,7 +370,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             foreach (var row in table.Rows)
             {
                 var inputValue = row["EID"];
-                var serviceInputs = viewModel.ManageServiceInputViewModel.Inputs.ToList();
+                var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
                 serviceInput.Value = inputValue;
                 rowNum++;
@@ -358,7 +411,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Outputs = outputs
             };
             var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -392,11 +445,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
-            mockServiceInputViewModel.SetupAllProperties();
-            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem);
+            mockDatabaseInputViewModel.SetupAllProperties();
+            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
             ScenarioContext.Current.Add("viewModel", oracleDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
