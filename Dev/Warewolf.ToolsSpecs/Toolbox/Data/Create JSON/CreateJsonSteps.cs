@@ -73,13 +73,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
-
-        [Then(@"the value of ""(.*)"" should be ""(.*)""a""(.*)""c""(.*)""")]
-        public void ThenTheValueOfShouldBeAC(string p0, string p1, string p2, string p3)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> toList;

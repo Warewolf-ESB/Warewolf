@@ -5,6 +5,7 @@ using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var DsfWebGetActivity = new TestDsfWebGetActivity();
+            DsfWebGetActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Response", "[[Response]]", "") };
             DsfWebGetActivity.Inputs = serviceInputs;

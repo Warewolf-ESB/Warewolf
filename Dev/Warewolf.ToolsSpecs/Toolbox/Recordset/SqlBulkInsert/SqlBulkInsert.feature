@@ -364,32 +364,3 @@ Scenario: Import data into table with blank data
 	Then the new table will have
 		| Col1 | Col2     | Col3                           |
 	And the execution has "AN" error
-
-#Wolf-1359
-Scenario: Edit DB Source
-	Given I have "DB Source" as "DemoDB"
-	And table as "dbo.[Country]" 
-	And I have this data
-	| InputData                  | ToField     | Type        |
-	| [[Country(*).CountryID]]   | CountryID   | int         |
-	| [[Country(*).Description]] | Description | varchar(50) |
-	When I click "Edit"
-	Then the "DemoDB" tab is opened
-
-#Complex Types WOLF-1042
-Scenario Outline: Saving results in complex types
-	Given I have "DB Source" as "DemoDB"
-	And table as "dbo.[Country]"
-	And I have this data
-	| InputData                          | ToField     | Type        |
-	| [[Country(*).CountryID().value]]   | CountryID   | int         |
-	| [[Country(*).Description().value]] | Description | varchar(50) |
-	And "skip blank rows" is checked by default
-	And The result variable "<result>" equals "<value>"
-	When the tool is executed
-	And the execution has "NO" error 
-	Examples: 
-	| result                | value   |
-	| [[rec().set().value]] | Success |
-
-

@@ -11508,294 +11508,13 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void FindIndexUsingInvalidInputs(string inField, string values, string match, string criteria, string result, string varVal, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find index using invalid inputs", exampleTags);
-#line 2414
-this.ScenarioSetup(scenarioInfo);
-#line 2415
- testRunner.Given(string.Format("I have the following in field \"{0}\" equals \"<value>\"", inField), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 2416
- testRunner.And(string.Format("the fields to search is \"{0}\"", match), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2417
- testRunner.And(string.Format("search the recordset with type \"{0}\" and criteria is \"{1}\"", match, criteria), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2418
- testRunner.And(string.Format("The result variable is \"{0}\" equals \"{1}\"", result, varVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2419
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2420
- testRunner.Then("the find records index multiple result should be \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 2421
- testRunner.And("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using invalid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Super")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "S")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "Error: unexpected expression")]
-        public virtual void FindIndexUsingInvalidInputs_Var()
-        {
-            this.FindIndexUsingInvalidInputs("[[var]]", "Super", "Starts With", "S", "[[a]]", "Error: unexpected expression", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using invalid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[v]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[v]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "S")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "Error: unexpected expression")]
-        public virtual void FindIndexUsingInvalidInputs_V()
-        {
-            this.FindIndexUsingInvalidInputs("[[v]]", "", "Starts With", "S", "[[a]]", "Error: unexpected expression", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using invalid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Safely")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "Safely")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Safely")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "S")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "Invalid expression, Only Recordsets can be entered")]
-        public virtual void FindIndexUsingInvalidInputs_Safely()
-        {
-            this.FindIndexUsingInvalidInputs("Safely", "Safely", "Starts With", "S", "[[a]]", "Invalid expression, Only Recordsets can be entered", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using invalid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "423423")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "423423")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "423423")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Contains")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "Invalid expression, Only Recordsets can be entered")]
-        public virtual void FindIndexUsingInvalidInputs_423423()
-        {
-            this.FindIndexUsingInvalidInputs("423423", "423423", "Contains", "23", "[[a]]", "Invalid expression, Only Recordsets can be entered", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using invalid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Contains")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "Invalid expression, Only Recordsets can be entered")]
-        public virtual void FindIndexUsingInvalidInputs_()
-        {
-            this.FindIndexUsingInvalidInputs("", "", "Contains", "23", "[[a]]", "Invalid expression, Only Recordsets can be entered", ((string[])(null)));
-        }
-        
-        public virtual void FindIndexUsingValidInputs(string inField, string values, string match, string criteria, string critval, string index, string result, string varVal, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find index using valid inputs", exampleTags);
-#line 2432
-this.ScenarioSetup(scenarioInfo);
-#line 2433
- testRunner.Given(string.Format("I have the following in field \"{0}\" equals \"<value>\"", inField), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 2434
- testRunner.And(string.Format("the fields to search is \"{0}\"", match), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2435
- testRunner.And(string.Format("search the recordset with type \"{0}\" and criteria is \"{1}\" equals \"{2}\"", match, criteria, critval), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2436
- testRunner.And(string.Format("The result variable is \"{0}\" equals \"{1}\"", result, varVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2437
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2438
- testRunner.Then(string.Format("the find records index multiple result should be \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 2439
- testRunner.And("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec([[int]]).set,[[int]]= 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Super")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[rc().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "s")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rs().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "1")]
-        public virtual void FindIndexUsingValidInputs_Variant0()
-        {
-            this.FindIndexUsingValidInputs("[[rec([[int]]).set,[[int]]= 1", "Super", "Starts With", "[[rc().a]]", "s", "1", "[[rs().a]]", "1", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Super Star")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[rc(1).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "S")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rs(1).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "1")]
-        public virtual void FindIndexUsingValidInputs_Variant1()
-        {
-            this.FindIndexUsingValidInputs("[[rec().set]]", "Super Star", "Starts With", "[[rc(1).a]]", "S", "2", "[[rs(1).a]]", "1", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Safely")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[rc(*).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "S")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rs(*).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "1")]
-        public virtual void FindIndexUsingValidInputs_Variant2()
-        {
-            this.FindIndexUsingValidInputs("[[rec().set]]", "Safely", "Starts With", "[[rc(*).a]]", "S", "1", "[[rs(*).a]]", "1", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "423423")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Contains")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[rc([[int]]).a]], [[int]]=1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rs([[int]]).a]], [[int]]=2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "2")]
-        public virtual void FindIndexUsingValidInputs_Variant3()
-        {
-            this.FindIndexUsingValidInputs("[[rec().set]]", "423423", "Contains", "[[rc([[int]]).a]], [[int]]=1", "23", "2", "[[rs([[int]]).a]], [[int]]=2", "2", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "2313")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Contains")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "2")]
-        public virtual void FindIndexUsingValidInputs_Variant4()
-        {
-            this.FindIndexUsingValidInputs("[[rec().set]]", "2313", "Contains", "23", "", "2", "[[a]]", "2", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Super")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Contains")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[va]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "s")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "1")]
-        public virtual void FindIndexUsingValidInputs_Variant5()
-        {
-            this.FindIndexUsingValidInputs("[[rec().set]]", "Super", "Contains", "[[va]]", "s", "2", "[[a]]", "1", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Super")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Contains")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "1,2")]
-        public virtual void FindIndexUsingValidInputs_Variant6()
-        {
-            this.FindIndexUsingValidInputs("[[rec().set]]", "Super", "Contains", "[[var]]", "\"\"", "2", "[[a]]", "1,2", ((string[])(null)));
-        }
-        
-        public virtual void FindIndexUsingValidInputsComplexTypes(string inField, string values, string match, string criteria, string critval, string index, string result, string varVal, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find index using valid inputs complex types", exampleTags);
-#line 2452
-this.ScenarioSetup(scenarioInfo);
-#line 2453
- testRunner.Given(string.Format("I have the following in field \"{0}\" equals \"{1}\"", inField, values), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 2454
- testRunner.And(string.Format("the fields to search is \"{0}\"", match), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2455
- testRunner.And(string.Format("search the recordset with type \"{0}\" and criteria is \"{1}\" equals \"{2}\"", match, criteria, critval), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2456
- testRunner.And(string.Format("The result variable is \"{0}\" equals \"{1}\"", result, varVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2457
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2458
- testRunner.Then(string.Format("the find records index multiple result should be \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 2459
- testRunner.And("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2463
- testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find index using valid inputs complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().row(1).set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:inField", "[[rec().row(1).set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:values", "Super")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Match", "Starts With")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Criteria", "[[rc([[int]]).row(*).set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Critval", "s")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Index", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rs().a().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varVal", "1")]
-        public virtual void FindIndexUsingValidInputsComplexTypes_Rec_Row1_Set()
-        {
-            this.FindIndexUsingValidInputsComplexTypes("[[rec().row(1).set]]", "Super", "Starts With", "[[rc([[int]]).row(*).set]]", "s", "1", "[[rs().a().set]]", "1", ((string[])(null)));
-        }
-        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find Record using match type as is Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
         public virtual void FindRecordUsingMatchTypeAsIsNull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record using match type as is Null", ((string[])(null)));
-#line 2466
+#line 2415
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table286 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11804,19 +11523,19 @@ this.ScenarioSetup(scenarioInfo);
             table286.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
-#line 2467
+#line 2416
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table286, "Given ");
-#line 2470
+#line 2419
  testRunner.And("field to search is \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2471
+#line 2420
  testRunner.And("search the recordset with type \"Is NULL\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2472
+#line 2421
  testRunner.And("when match all search criteria is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2473
+#line 2422
  testRunner.And("when requires all fields to match is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2474
+#line 2423
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2475
+#line 2424
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -11828,7 +11547,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindRecordUsingMatchTypeAsIsNotNull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record using match type as is not Null", ((string[])(null)));
-#line 2477
+#line 2426
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table287 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11837,19 +11556,19 @@ this.ScenarioSetup(scenarioInfo);
             table287.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
-#line 2478
+#line 2427
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table287, "Given ");
-#line 2481
+#line 2430
  testRunner.And("field to search is \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2482
+#line 2431
  testRunner.And("search the recordset with type \"Is Not NULL\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2483
+#line 2432
  testRunner.And("when match all search criteria is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2484
+#line 2433
  testRunner.And("when requires all fields to match is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2485
+#line 2434
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2486
+#line 2435
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

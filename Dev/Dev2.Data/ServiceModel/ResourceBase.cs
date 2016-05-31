@@ -521,6 +521,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         });
                     }
                     AddEmailSources(elementToUse);
+                    AddRabbitMQSources(elementToUse);
                     AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
                 }
                 catch(Exception e)
@@ -599,6 +600,34 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Guid resId;
                 Guid.TryParse(resourceIdAsString, out resId);
                 Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+            }
+        }
+
+        private void AddRabbitMQSources(XElement elementToUse)
+        {
+            if(elementToUse == null)
+            {
+                return;
+            }
+            if(Dependencies == null)
+            {
+                Dependencies = new List<IResourceForTree>();
+            }
+            var dependenciesFromXml = from desc in elementToUse.Descendants()
+                where (desc.Name.LocalName.Contains("DsfPublishRabbitMQActivity") || desc.Name.LocalName.Contains("DsfConsumeRabbitMQActivity")) && desc.HasAttributes
+                select desc;
+            var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+            var count = xElements.Count;
+            if(count == 1)
+            {
+                var element = xElements[0];
+                var resourceIdAsString = element.AttributeSafe("RabbitMQSourceResourceId");
+                var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                Guid uniqueId;
+                Guid.TryParse(uniqueIdAsString, out uniqueId);
+                Guid resId;
+                Guid.TryParse(resourceIdAsString, out resId);
+                Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "RabbitMQSource"));
             }
         }
 

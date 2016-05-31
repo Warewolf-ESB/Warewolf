@@ -164,28 +164,4 @@ Scenario Outline: Unzip file validation
 		| 79 | [[sourcePath]]                 | ""            | ""          | c:\copyfile80.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP88            | integrationtester | I73573r0     | True     | [[rec(@).a]]           | ""              | ""      | AN           | True             | Result - Recordset index [[@]] contains invalid character(s)                  | 1.Result - Recordset index [[@]] contains invalid character(s)                        |
 		| 80 | [[sourcePath]]                 | ""            | ""          | c:\copyfile81.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP89            | integrationtester | I73573r0     | True     | [[rec"()".a]]          | ""              | ""      | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)             | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                   |
 		| 81 | [[sourcePath]]                 | ""            | ""          | c:\copyfile82.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP90            | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""              | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
-																													
-#Complex Types WOLF-1042
-Scenario Outline: Unzip file at location using complex types
-	Given I have a source path "<source>" with value "<sourceLocation>"
-	And zip credentials as "<username>" and "<password>"
-	And I have a destination path "<destination>" with value "<destinationLocation>"
-	And destination credentials as "<destUsername>" and "<destPassword>"
-	And overwrite is "<selected>"
-	And result as "<resultVar>"	
-	And Archive Password as "<archivepassword>"
-    When the Unzip file tool is executed
-	Then the result variable "<resultVar>" will be "<result>"
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password |
-         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | String           |         
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-	Examples: 
-	| No | Name           | source                             | sourceLocation | username | password | destination | destinationLocation | destUsername | destPassword | selected | archivepassword | resultVar  | result  | errorOccured |
-	| 1  | Local to Local | [[file().resources().path]]        | c:\test0.zip   | ""       | ""       | [[path1]]   | c:\ZIP0             | ""           | ""           | True     | ""              | [[result]] | Success | NO           |
-	| 2  | Local to Local | [[file(*).resources(1).path]]      | c:\test0.zip   | ""       | ""       | [[path1]]   | c:\ZIP0             | ""           | ""           | True     | ""              | [[result]] | Success | NO           |
-	| 3  | Local to Local | [[file().resources([[int]]).path]] | c:\test0.zip   | ""       | ""       | [[path1]]   | c:\ZIP0             | ""           | ""           | True     | ""              | [[result]] | Success | NO           |
-			  	  										
+	  	  										

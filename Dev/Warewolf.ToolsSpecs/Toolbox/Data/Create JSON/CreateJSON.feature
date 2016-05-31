@@ -393,28 +393,3 @@ Scenario: Recordset with * multiple fields and  scalar values different length f
 	And the debug output as
 	|                                                                                             |
 	| [[json]] = { rec :[ c , b , g ], bob : the builder } |
-
-
-#COmplex Types WOLF-1042
-Scenario Outline: Simple object with single field
-	Given I have a variable "<object>" with value "<value>"
-	And I select variable "<object>" with name "a"
-	And a result variable "[[json]]"
-	When the create json tool is executed
-	Then the value of "[[json]]" should be "<result>"
-	And the execution has "NO" error
-	And the debug inputs as
-	| # |                              |
-	| 1 | [[rec(1).set().a]] = <value> |
-	And the debug output as
-	|                       |
-	|   [[json]] = <result> |
-Examples: 
-	| type          | object                   | value | result        |
-	| Character     | [[rec().set().a]]        | c     | {"a":["c"]}   |
-	| Integer       | [[rec(1).set().a]]       | 2     | {"a":2}       |
-	| Decimal       | [[rec([[int]]).set().a]] | 5.6   | {"a":5.6}     |
-	| String        | [[rec(*).set().a]]       | Hello | {"a":"Hello"} |
-	| Boolean_True  | [[rec().set(*).a]]       | true  | {"a":true}    |
-	| Boolean_False | [[rec().set().a]]        | false | {"a":false}   |
-	| Null          | [[rec().set().a]]        |       | {"a":null}    |

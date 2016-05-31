@@ -13,7 +13,7 @@ using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public class ExchangeSource : Resource, IExchangeSource
+    public class ExchangeSource : Resource, IExchangeSource, IResourceSource
     {
         private ExchangeService _exchangeService;
 
@@ -67,6 +67,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public ExchangeSource(IExchangeEmailSender sender)
         {
             _emailSender = sender;
+            ResourceType = "ExchangeSource";
         }
 
         public ExchangeSource()
@@ -170,7 +171,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-                new XAttribute("Type", ResourceType),
+                new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
 

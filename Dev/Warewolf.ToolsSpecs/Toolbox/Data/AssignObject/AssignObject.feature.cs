@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
+namespace Warewolf.ToolsSpecs.Toolbox.Data.AssignObject
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "AssignObject")))
             {
-                Dev2.Activities.Specs.Toolbox.Data.AssignObject.AssignObjectFeature.FeatureSetup(null);
+                Warewolf.ToolsSpecs.Toolbox.Data.AssignObject.AssignObjectFeature.FeatureSetup(null);
             }
         }
         
@@ -1263,7 +1263,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a record set variable equal to a group calculation (sum)", ((string[])(null)));
 #line 380
- this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 381
  testRunner.Given("I assign the value 30 to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 382

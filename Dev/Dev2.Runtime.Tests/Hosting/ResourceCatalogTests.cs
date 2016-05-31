@@ -845,39 +845,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(workflow);
             Assert.IsInstanceOfType(workflow, typeof(Workflow));
         }
-
-        [TestMethod]
-        public void GetResource_UnitTest_WebService_IncorrectType_ExpectNoResource()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "WebService";
-            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var xml = XmlResource.Fetch("WeatherWebSource");
-            var resource = new WebSource(xml);
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.SaveResource(workspaceID, resource);
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            IResource webServiceForID = result.FirstOrDefault(resource1 => resource1.ResourceID != resource.ResourceID);
-            Assert.IsNotNull(webServiceForID);
-            var webServiceID = webServiceForID.ResourceID;
-            //------------Execute Test---------------------------
-            webServiceForID.ResourceType = "PluginService";
-            var webService = rc.GetResource<WebService>(workspaceID, webServiceID);
-            //------------Assert Results-------------------------
-            Assert.IsNull(webService);
-        }
-
+        
         [TestMethod]
         public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWebSource()
         {
@@ -2635,33 +2603,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(resourceFound);
             Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
         }
-
-        [TestMethod]
-        [Owner("Huggs")]
-        public void ResourceCatalog_GetResource_DbSource_IncorrectType_ExpectNoResource()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "CitiesDatabase";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
-
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspace(workspaceID);
-            var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
-            Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            oldResource.ResourceType = "WebService";
-            var resourceFound = rc.GetResource<DbSource>(workspaceID, oldResource.ResourceID);
-            //------------Assert Results-------------------------        
-            Assert.IsNull(resourceFound);
-        }
-
+        
 
         #endregion
 

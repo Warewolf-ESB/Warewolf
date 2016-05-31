@@ -964,7 +964,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             if(dataObject != null)
             {
                 var executionErrors = dataObject.Environment.FetchErrors();
-                StringAssert.Contains(executionErrors, "Invalid recordset:[[recset1(-1).field2]]");
+                StringAssert.Contains(executionErrors, "[[recset1(-1).field2]]");
             }
             else
             {
