@@ -205,6 +205,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
                 SortCommand.RaiseCanExecuteChanged();
             }
+            if (ViewComplexObjectsCommand != null)
+            {
+                ViewComplexObjectsCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public ObservableCollection<IRecordSetItemModel> RecsetCollection
@@ -349,7 +353,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (part.IsScalar)
                 {
                     SetScalarPartIsUsed(part, isUsed);
-                }                
+                }
                 else
                 {
                     SetRecordSetPartIsUsed(part, isUsed);
@@ -364,7 +368,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var recsetsToRemove = RecsetCollection.Where(c => c.DisplayName == part.Recordset);
             recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
         }
-      
+
         static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
         {
             if (string.IsNullOrEmpty(part.Field))
@@ -387,7 +391,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 });
             }
         }
-        
+
         void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
             var scalarsToRemove = ScalarCollection.Where(c => c.DisplayName == part.Field);
@@ -439,20 +443,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 foreach (var dataListItemModel in unusedComplexObjects)
                 {
                     ComplexObjectCollection.Remove(dataListItemModel);
-                }
-            }
-            foreach (var complexObject in ComplexObjectCollection)
-            {
-                if (complexObject.Children.Count > 0)
-                {
-                    var unUsedComplexObjectCollection = complexObject.Children.Where(c => c.IsUsed == false).ToList();
-                    if (unUsedComplexObjectCollection.Any())
-                    {
-                        foreach (var unusedRecsetChild in unUsedComplexObjectCollection)
-                        {
-                            complexObject.Children.Remove(unusedRecsetChild);
-                        }
-                    }
                 }
             }
 
@@ -543,8 +533,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-
-
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
@@ -570,7 +558,6 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 ComplexObjectCollection.Remove(objectItemModels[i - 1]);
             }
-
         }
 
         private void AddComplexObject(IDataListVerifyPart part)
@@ -595,7 +582,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 if (itemModel == null)
                 {
-
                     itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
                     ComplexObjectCollection.Add(itemModel);
                 }
@@ -611,7 +597,6 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                         itemModel = item;
                     }
-
                 }
             }
         }
@@ -705,7 +690,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-
         private IList<string> RefreshTries(List<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
@@ -717,7 +701,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             return accList;
         }
-
 
         private IList<string> RefreshRecordSets(List<IRecordSetItemModel> toList, IList<string> accList)
         {
@@ -758,8 +741,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             return accList;
         }
-
-
+        
         public void AddBlankRow(IDataListItemModel item)
         {
             if (item != null)
@@ -772,17 +754,11 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     AddRowToRecordsets();
                 }
-                else if (item is ComplexObjectItemModel)
-                {
-                    AddRowToComplexObjects();
-                }
             }
             else
             {
                 AddRowToScalars();
                 AddRowToRecordsets();
-                AddRowToComplexObjects();
-
             }
         }
 
@@ -809,9 +785,18 @@ namespace Dev2.Studio.ViewModels.DataList
             if (itemToRemove == null)
                 return;
 
-            if ((itemToRemove is IScalarItemModel))
+            if(itemToRemove is IComplexObjectItemModel)
             {
-                IScalarItemModel item = ScalarCollection.Where(x => x.DisplayName == itemToRemove.DisplayName).SingleOrDefault();
+                var item = ComplexObjectCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
+                if (item != null)
+                {
+                    ComplexObjectCollection.Remove(item);
+                }
+            }
+
+            if (itemToRemove is IScalarItemModel)
+            {
+                var item = ScalarCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
                 if (item != null)
                 {
                     ScalarCollection.Remove(item);
@@ -820,7 +805,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             else if (itemToRemove is IRecordSetItemModel)
             {
-                IRecordSetItemModel item = RecsetCollection.Where(x => x.DisplayName == itemToRemove.DisplayName).SingleOrDefault();
+                var item = RecsetCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
                 if (item != null)
                 {
                     RecsetCollection.Remove(item);
@@ -831,7 +816,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 foreach (var recset in RecsetCollection)
                 {
-                    IRecordSetFieldItemModel item = recset.Children.Where(x => x.DisplayName == itemToRemove.DisplayName).SingleOrDefault();
+                    var item = recset.Children.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
                     if (item != null)
                     {
                         recset.Children.Remove(item);
@@ -959,21 +944,17 @@ namespace Dev2.Studio.ViewModels.DataList
         void ValidateRecordsetChildren(IRecordSetItemModel recset)
         {
             CheckForEmptyRecordset();
-
-            if(recset != null)
+            if (recset != null)
             {
                 CheckDataListItemsForDuplicates(recset.Children);
             }
-
             CheckForFixedEmptyRecordsets();
         }
 
         void ValidateRecordset()
         {
             CheckForEmptyRecordset();
-
             CheckDataListItemsForDuplicates(DataList);
-
             CheckForFixedEmptyRecordsets();
         }
 
@@ -1055,27 +1036,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
         }
-        void AddRowToComplexObjects()
-        {
-            List<IComplexObjectItemModel> blankList = ComplexObjectCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-            if (blankList.Count == 0)
-            {
-                AddComplexObject();
-            }
-
-            foreach (var complexObjectItemModel in ComplexObjectCollection)
-            {
-                List<IComplexObjectItemModel> blankChildList = complexObjectItemModel.Children.Where(c => c.IsBlank).ToList();
-                if (blankChildList.Count != 0) continue;
-
-                IComplexObjectItemModel newChild = DataListItemModelFactory.CreateComplexObjectItemModel(string.Empty);
-                if (newChild != null)
-                {
-                    newChild.Parent = complexObjectItemModel;
-                    complexObjectItemModel.Children.Add(newChild);
-                }
-            }
-        }
 
         static void FixNamingForRecset(IDataListItemModel recset)
         {
@@ -1133,6 +1093,16 @@ namespace Dev2.Studio.ViewModels.DataList
 
                 hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
             }
+
+            if (ComplexObjectCollection != null)
+            {
+                hasUnused = ComplexObjectCollection.Any(sc => !sc.IsUsed);
+                if (hasUnused)
+                {
+                    DeleteCommand.RaiseCanExecuteChanged();
+                    return true;
+                }
+            }
             return hasUnused;
         }
 
@@ -1177,27 +1147,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     recset.Children.Add(childItem);
                 }
                 RecsetCollection.Add(recset);
-            }
-        }
-
-        private void AddComplexObject()
-        {
-            IComplexObjectItemModel complexObjectItemModel = DataListItemModelFactory.CreateComplexObjectItemModel(string.Empty);
-            IComplexObjectItemModel childItem = DataListItemModelFactory.CreateComplexObjectItemModel(string.Empty);
-            if (complexObjectItemModel != null)
-            {
-                complexObjectItemModel.IsExpanded = false;
-                if (childItem != null)
-                {
-                    if (childItem.Parent == null)
-                    {
-                        childItem.IsComplexObject = true;
-                        childItem.AllowNotes = false;
-                    }
-                    childItem.Parent = complexObjectItemModel;
-                    complexObjectItemModel.Children.Add(childItem);
-                }
-                ComplexObjectCollection.Add(complexObjectItemModel);
             }
         }
 
@@ -1273,7 +1222,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 ComplexObjectCollection.Clear();
 
                 AddRecordSet();
-                AddComplexObject();
             }
 
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
@@ -1296,10 +1244,6 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection.Add(recordsetsNode);
 
             DataListHeaderItemModel complexObjectNode = DataListItemModelFactory.CreateDataListHeaderItem("Object");
-            if (ComplexObjectCollection.Count == 0)
-            {
-                AddComplexObject();
-            }
             BaseCollection.Add(complexObjectNode);
             WriteToResourceModel();
         }
@@ -1386,7 +1330,6 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (XmlNode c in children)
             {
                 AddComplexObjectFromXmlNode(c, parent);
-
             }
         }
 
@@ -1458,11 +1401,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     // It is possible for the .Attributes property to be null, a check should be added
                     CreateColumns(subc, cols, recset);
                 }
-
-
-                //                var castCols = cols.Select(dataListItemModel => dataListItemModel as IRecordSetFieldItemModel).ToList();
-                //
-                //                AddColumnsToRecordSet(castCols, recset);
             }
         }
 
@@ -1556,7 +1494,6 @@ namespace Dev2.Studio.ViewModels.DataList
             return result;
         }
 
-
         private const string RootTag = "DataList";
         private const string Description = "Description";
         private const string IsEditable = "IsEditable";
@@ -1605,7 +1542,6 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var complexObjectItemModel in complexObjectItemModels)
             {
                 AddComplexObjectsToBuilder(result, complexObjectItemModel);
-
             }
 
             result.Append("</" + RootTag + ">");
@@ -1773,7 +1709,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     select part.DisplayValue
                     ).Contains(itemModel.Name)
                 select itemModel;
-            foreach(var complexObjectItemModel in unusedItems)
+            foreach (var complexObjectItemModel in unusedItems)
             {
                 complexObjectItemModel.IsUsed = false;
             }
@@ -1784,11 +1720,11 @@ namespace Dev2.Studio.ViewModels.DataList
                     select part.DisplayValue
                     ).Contains(itemModel.Name)
                 select itemModel;
-            foreach(var complexObjectItemModel in usedItems)
+            foreach (var complexObjectItemModel in usedItems)
             {
                 complexObjectItemModel.IsUsed = true;
             }
-            foreach(var complexObjectItemModel in ComplexObjectCollection)
+            foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
                 complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed);
@@ -1800,31 +1736,31 @@ namespace Dev2.Studio.ViewModels.DataList
             List<IDataListVerifyPart> missingWorkflowParts = new List<IDataListVerifyPart>();
             foreach (var dataListItem in RecsetCollection)
             {
-                if(String.IsNullOrEmpty(dataListItem.DisplayName))
+                if (String.IsNullOrEmpty(dataListItem.DisplayName))
                 {
                     continue;
                 }
-                if(dataListItem.Children.Count > 0)
+                if (dataListItem.Children.Count > 0)
                 {
-                    if(partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
+                    if (partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
                     {
                         //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                        if(dataListItem.IsEditable)
+                        if (dataListItem.IsEditable)
                         {
                             // skip it if unused and exclude is on ;)
-                            if(excludeUnusedItems && !dataListItem.IsUsed)
+                            if (excludeUnusedItems && !dataListItem.IsUsed)
                             {
                                 continue;
                             }
                             missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, String.Empty, dataListItem.Description));
                             // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach(var child in dataListItem.Children)
-                                // ReSharper restore LoopCanBeConvertedToQuery
+                            foreach (var child in dataListItem.Children)
+                            // ReSharper restore LoopCanBeConvertedToQuery
                             {
-                                if(!String.IsNullOrEmpty(child.DisplayName))
+                                if (!String.IsNullOrEmpty(child.DisplayName))
                                 {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if(dataListItem.IsEditable)
+                                    if (dataListItem.IsEditable)
                                     {
                                         missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
                                     }
@@ -1835,16 +1771,16 @@ namespace Dev2.Studio.ViewModels.DataList
                     else
                     {
                         // ReSharper disable LoopCanBeConvertedToQuery
-                        foreach(var child in dataListItem.Children)
+                        foreach (var child in dataListItem.Children)
                         {
                             // ReSharper restore LoopCanBeConvertedToQuery
-                            if(partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
+                            if (partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
                             {
                                 //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                if(child.IsEditable)
+                                if (child.IsEditable)
                                 {
                                     // skip it if unused and exclude is on ;)
-                                    if(excludeUnusedItems && !dataListItem.IsUsed)
+                                    if (excludeUnusedItems && !dataListItem.IsUsed)
                                     {
                                         continue;
                                     }
@@ -1854,12 +1790,12 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                     }
                 }
-                else if(partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
+                else if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
                 {
-                    if(dataListItem.IsEditable)
+                    if (dataListItem.IsEditable)
                     {
                         // skip it if unused and exclude is on ;)
-                        if(excludeUnusedItems && !dataListItem.IsUsed)
+                        if (excludeUnusedItems && !dataListItem.IsUsed)
                         {
                             continue;
                         }
@@ -1875,17 +1811,17 @@ namespace Dev2.Studio.ViewModels.DataList
             List<IDataListVerifyPart> missingWorkflowParts = new List<IDataListVerifyPart>();
             foreach (var dataListItem in ScalarCollection)
             {
-                if(string.IsNullOrEmpty(dataListItem.DisplayName))
+                if (string.IsNullOrEmpty(dataListItem.DisplayName))
                 {
                     continue;
                 }
 
-                if(partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
+                if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
                 {
-                    if(dataListItem.IsEditable)
+                    if (dataListItem.IsEditable)
                     {
                         // skip it if unused and exclude is on ;)
-                        if(excludeUnusedItems && !dataListItem.IsUsed)
+                        if (excludeUnusedItems && !dataListItem.IsUsed)
                         {
                             continue;
                         }
