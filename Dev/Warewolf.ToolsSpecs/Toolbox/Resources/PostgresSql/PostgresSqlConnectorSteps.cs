@@ -116,8 +116,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Inputs is Enabled")]
-        public void ThenInputsIsEnabled()
+        [Then(@"Inputs is Enabled for postgresSql")]
+        public void ThenInputsIsEnabledForPostgresSql()
         {
             var viewModel = GetViewModel();
             var hasInputs = viewModel.InputArea.Inputs != null;
@@ -147,12 +147,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
-
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
         }
-
-        [Then(@"Test button is Clicked")]
-        public void ThenTestButtonIsClicked()
+        [Then(@"button is clicked")]
+        public void ThenButtonIsClicked(Table table)
         {
             var viewModel = GetViewModel();
             viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);

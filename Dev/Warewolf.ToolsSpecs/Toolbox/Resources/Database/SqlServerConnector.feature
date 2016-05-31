@@ -7,7 +7,7 @@ Scenario: Opening Saved workflow with SQL Server tool
    Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
-	And Action is Enabled
+	#And Action is Enabled
 	And Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enabled
 	And Inputs appear as
@@ -24,7 +24,7 @@ Scenario: Change SQL Server Source on Existing tool
 	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
-	And Action is Enabled
+	#And Action is Enabled
 	And Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enabled
 	And Inputs appear as
@@ -71,7 +71,7 @@ Scenario: Changing SQL Server Actions
 	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
-	And Action is Enabled
+	#And Action is Enabled
 	And Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enabled
 	And Inputs appear as
@@ -94,7 +94,7 @@ Scenario: Change SQL Server Recordset Name
 	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
-	And Action is Enabled
+	#And Action is Enabled
 	And Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enabled
 	And Inputs appear as

@@ -5,7 +5,7 @@
 
 
 Scenario: Creating Oracle Server Connector
-	Given I open New Workflow
+	Given I open New oracleDb Workflow
 	And I drag a Oracle Server database connector
 	And Source is Enable
 	And Action is Disable
@@ -20,7 +20,6 @@ Scenario: Creating Oracle Server Connector
 	| EID		|       | false         |
 	And Validate is Enable
 	When I click Validat
-	Then the Test Connector and Calculate Outputs window is open
 	And Test Inputs appear az
 	| EID		 |
 	| 100        |
@@ -33,7 +32,7 @@ Scenario: Creating Oracle Server Connector
 	| Mapped From | Mapped To                     | 
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
 
-	And Recordset Name equalz "HR_TESTPROC9"	
+	Then Recordset Name equalz "HR_TESTPROC9"	
 
 Scenario: Opening Saved workflow with Oracle Server tool
    Given I open workflow with Oracle connector
@@ -75,7 +74,7 @@ Scenario: Change Source on Existing tool
 	And Validate is Enable
 
 #Spec to be modified once test results section is included in tool window
-#@ignore
+@ignore
  Scenario: Editing DB Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened

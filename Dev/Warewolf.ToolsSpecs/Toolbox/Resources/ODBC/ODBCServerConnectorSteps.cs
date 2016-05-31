@@ -14,8 +14,10 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Runtime.ServiceModel.Data;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
@@ -30,34 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"I drag a ODBC Server database connector")]
         public void GivenIDragAODBCServerDatabaseConnector()
         {
-            var ODBCServerActivity = new DsfODBCDatabaseActivity();
-            var modelItem = ModelItemUtils.CreateModelItem(ODBCServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
-            var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
-            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
-            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-
-            _greenPointSource = new DbSourceDefinition
-            {
-                Name = "GreenPoint",
-                Type = enSourceType.ODBC
-            };
-
-            var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
-            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-            mockServiceInputViewModel.SetupAllProperties();
-            var ODBCServerDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem);
-
-
-            ScenarioContext.Current.Add("viewModel", ODBCServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            Assert.IsNotNull(GetViewModel());
         }
 
         [Given(@"I open workflow with ODBC connector")]
@@ -119,6 +94,96 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
+        [Given(@"I open a new Workflow")]
+        public void GivenIOpenANewWorkflow()
+        {
+
+            var shellViewModel = new Mock<IShellViewModel>();            
+            var mockServer = new Mock<IServer>();
+            shellViewModel.Setup(model => model.ActiveServer).Returns(mockServer.Object);
+
+            var sourceId = Guid.NewGuid();
+            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
+            var outputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
+                new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
+            };
+            var odbcServerActivity = new DsfODBCDatabaseActivity
+            {
+                SourceId = sourceId,
+                CommandText = "dbo.Pr_CitiesGetCountries",
+                Inputs = inputs,
+                Outputs = outputs              
+            };
+
+            CustomContainer.Register(shellViewModel.Object);
+            
+            var modelItem = ModelItemUtils.CreateModelItem(odbcServerActivity);
+
+            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
+            var mockDbServiceModel = new Mock<IDbServiceModel>();
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            var mockInputArea = new Mock<IGenerateInputArea>();
+            var mockOutputArea = new Mock<IGenerateOutputArea>();
+            var mockAction = new Mock<Action>(MockBehavior.Default);
+
+            mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
+            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
+            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
+
+            _greenPointSource = new DbSourceDefinition
+            {
+                Name = "GreenPoint",
+                Type = enSourceType.ODBC
+            };
+
+            _testingDbSource = new DbSourceDefinition
+            {
+                Name = "testingDBSrc",
+                Type = enSourceType.ODBC,
+                Id = sourceId
+            };
+            _importOrderAction = new DbAction
+            {
+                Name = "dbo.ImportOrder",
+                Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") }
+            };
+
+            _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
+            _getCountriesAction.Inputs = inputs;
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
+            mockServiceInputViewModel.SetupAllProperties();
+            
+            var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem,mockDbServiceModel.Object);
+
+            ScenarioContext.Current.Add("viewModel", odbcDatabaseDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+        }
+        [Then(@"Test Connector and Calculate Outputs window is open")]
+        public void ThenTestConnectorAndCalculateOutputsWindowIsOpen()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void ThenIs(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
 
         [Given(@"Source iz Enable")]
         public void GivenSourceIsEnabled()
@@ -384,194 +449,64 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
-        [Given(@"Source iz Enable")]
-        public void GivenSourceIzEnable()
+        
+        [Given(@"I open New Workflow")]
+        public void GivenIOpenNewWorkflow()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsNotNull(viewModel);
+        }
+
+        [Then(@"Data Source is focused")]
+        public void ThenDataSourceIsFocused()
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"Action iz Disable")]
-        public void GivenActionIzDisable()
+        [Then(@"""(.*)"" is selected as the action")]
+        public void ThenIsSelectedAsTheAction(string p0)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"Inputs iz Disable")]
-        public void GivenInputsIzDisable()
+        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
+        public void ThenInspectDataConnectorHyperLinkIs(string p0)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"Outputs iz Disable")]
-        public void GivenOutputsIzDisable()
+        [Then(@"inputs are")]
+        public void ThenInputsAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"I Selected ""(.*)"" az Source")]
-        public void WhenISelectedAzSource(string p0)
+        [Then(@"input mappings are")]
+        public void ThenInputMappingsAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"Action iz Enable")]
-        public void ThenActionIzEnable()
+        [Then(@"output mappings are")]
+        public void ThenOutputMappingsAre(Table table)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"I selected ""(.*)"" as thee action")]
-        public void WhenISelectedAsTheeAction(string p0)
+        [Given(@"I open ""(.*)"" service")]
+        public void GivenIOpenService(string p0)
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"Inputs iz Enable")]
-        public void ThenInputsIzEnable()
+        [Then(@"Data Source iz focused")]
+        public void ThenDataSourceIzFocused()
         {
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"Inputs appears az")]
-        public void ThenInputsAppearsAz(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Validate iz Enable")]
-        public void ThenValidateIzEnable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I click Validatt")]
-        public void WhenIClickValidatt()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I click Tezt")]
-        public void WhenIClickTezt()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Test Connector and Calculate Outputz outputs appear az")]
-        public void ThenTestConnectorAndCalculateOutputzOutputsAppearAz(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I clicked OKay")]
-        public void WhenIClickedOKay()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Outputs appears az")]
-        public void ThenOutputsAppearsAz(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"record set name is equal ""(.*)""")]
-        public void ThenRecordSetNameIsEqual(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Recordset Name equal ""(.*)""")]
-        public void ThenRecordsetNameEqual(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I open workflow with ODBC connector")]
-        public void GivenIOpenWorkflowWithODBCConnector()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Source iz ""(.*)""")]
-        public void GivenSourceIz(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Action iz Enable")]
-        public void GivenActionIzEnable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Action iz ""(.*)""")]
-        public void GivenActionIz(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"Inputs iz Enable")]
-        public void GivenInputsIzEnable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Source iz changed to ""(.*)""")]
-        public void WhenSourceIzChangedTo(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Action iz Enable")]
-        public void WhenActionIzEnable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Inputs iz Disable")]
-        public void WhenInputsIzDisable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Outputs iz Disable")]
-        public void WhenOutputsIzDisable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Validate iz Enable")]
-        public void WhenValidateIzEnable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"""(.*)"" is selected az the data source")]
-        public void WhenIsSelectedAzTheDataSource(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Action iz changed to ""(.*)""")]
-        public void WhenActionIzChangedTo(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Inputs iz Enable")]
-        public void WhenInputsIzEnable()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Inputs appears az")]
-        public void WhenInputsAppearsAz(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"Recordset Name iz changed from to ""(.*)""")]
-        public void WhenRecordsetNameIzChangedFromTo(string p0)
+        [Then(@"""(.*)"" iz selected as the action")]
+        public void ThenIzSelectedAsTheAction(string p0)
         {
             ScenarioContext.Current.Pending();
         }
