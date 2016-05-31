@@ -91,16 +91,6 @@ namespace Dev2.Studio.Core.Factories
             IScalarItemModel dataListModel = new ScalarItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
             return dataListModel;
         }
-
-        public static IComplexObjectItemModel CreateComplexObjectItemModel(string displayName)
-        {
-            IComplexObjectItemModel objectItemModel = new ComplexObjectItemModel(displayName);
-            if (objectItemModel.Parent == null)
-            {
-                objectItemModel.IsComplexObject = true;
-                objectItemModel.AllowNotes = false;
-            }
-            return objectItemModel;
-        }
+        
     }
 }

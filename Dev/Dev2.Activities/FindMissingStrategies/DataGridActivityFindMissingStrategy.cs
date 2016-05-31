@@ -69,6 +69,14 @@ namespace Dev2.FindMissingStrategies
                     results.AddRange(InternalFindMissing(maAct.FieldsCollection));
                 }
             }
+            else if (activityType == typeof(DsfMultiAssignObjectActivity))
+            {
+                DsfMultiAssignObjectActivity maAct = activity as DsfMultiAssignObjectActivity;
+                if (maAct != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+                }
+            }
             else if (activityType == typeof(DsfGatherSystemInformationActivity))
             {
                 DsfGatherSystemInformationActivity maAct = activity as DsfGatherSystemInformationActivity;
