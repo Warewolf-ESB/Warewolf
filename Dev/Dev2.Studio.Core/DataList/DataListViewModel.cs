@@ -349,18 +349,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (part.IsScalar)
                 {
                     SetScalarPartIsUsed(part, isUsed);
-                }
-                if (part.IsJson)
-                {
-                    SetJsonPartIsUsed(part, isUsed);
-                }
+                }                
                 else
                 {
                     SetRecordSetPartIsUsed(part, isUsed);
                 }
             }
 
-            WriteToResourceModel();
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
@@ -369,12 +364,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var recsetsToRemove = RecsetCollection.Where(c => c.DisplayName == part.Recordset);
             recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
         }
-        void SetJsonPartIsUsed(IDataListVerifyPart part, bool isUsed)
-        {
-            var recsetsToRemove = ComplexObjectCollection.Where(c => c.DisplayName == part.DisplayValue);
-            recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundJsonObjects(part, recsetToRemove, isUsed));
-        }
-
+      
         static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
         {
             if (string.IsNullOrEmpty(part.Field))
@@ -397,29 +387,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 });
             }
         }
-        static void ProcessFoundJsonObjects(IDataListVerifyPart part, IComplexObjectItemModel jsonProperty, bool isUsed)
-        {
-            if (string.IsNullOrEmpty(part.DisplayValue))
-            {
-                if (jsonProperty != null)
-                {
-                    jsonProperty.IsUsed = isUsed;
-                }
-            }
-            else
-            {
-                if (jsonProperty == null) return;
-                var childrenToRemove = jsonProperty.Children.Where(c => c.DisplayName == part.DisplayValue);
-                childrenToRemove.ToList().ForEach(childToRemove =>
-                {
-                    if (childToRemove != null)
-                    {
-                        childToRemove.IsUsed = isUsed;
-                    }
-                });
-            }
-        }
-
+        
         void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
             var scalarsToRemove = ScalarCollection.Where(c => c.DisplayName == part.Field);
@@ -992,7 +960,10 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             CheckForEmptyRecordset();
 
-            CheckDataListItemsForDuplicates(recset.Children);
+            if(recset != null)
+            {
+                CheckDataListItemsForDuplicates(recset.Children);
+            }
 
             CheckForFixedEmptyRecordsets();
         }
@@ -2004,16 +1975,17 @@ namespace Dev2.Studio.ViewModels.DataList
                         return null;
                     });
 
-                    string.Join(Environment.NewLine, allErrorMessages.Where(s => !string.IsNullOrEmpty(s)));
+                    var errorMessages = allErrorMessages as IList<string> ?? allErrorMessages.ToList();
+                    string.Join(Environment.NewLine, errorMessages.Where(s => !string.IsNullOrEmpty(s)));
 
-                    allErrorMessages = ScalarCollection.Select(model =>
+                    allErrorMessages = errorMessages.Union(ScalarCollection.Select(model =>
                     {
                         if (model.HasError)
                         {
                             return BuildErrorMessage(model);
                         }
                         return null;
-                    });
+                    }));
                     string completeErrorMessage = Environment.NewLine + string.Join(Environment.NewLine, allErrorMessages.Where(s => !string.IsNullOrEmpty(s)));
 
                     return completeErrorMessage;
