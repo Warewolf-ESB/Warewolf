@@ -88,6 +88,14 @@ namespace Dev2.Studio.Core.Models.DataList
                         }
                     }
                 }
+                else
+                {
+                    var intellisenseResult = parser.ValidateName(name, "Recordset field");
+                    if (intellisenseResult != null)
+                    {
+                        SetError(intellisenseResult.Message);
+                    }                                        
+                }
             }
             return name;
         }
