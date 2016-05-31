@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -42,11 +43,32 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            UpdateOnActionSelection();
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"Inputs");
-            OnPropertyChanged(@"IsEnabled");
+            try
+            {
+                Errors.Clear();
+
+                // ReSharper disable once ExplicitCallerInfoArgument
+                UpdateOnActionSelection();
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged(@"Inputs");
+                OnPropertyChanged(@"IsEnabled");
+            }
+            catch (Exception e)
+            {
+                Errors.Add(e.Message);
+            }
+            finally
+            {
+                CallErrorsEventHandler();
+            }
+        }
+
+        private void CallErrorsEventHandler()
+        {
+            if (ErrorsHandler != null)
+            {
+                ErrorsHandler(this, new List<string>(Errors));
+            }
         }
 
         private void UpdateOnActionSelection()
@@ -55,7 +77,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = false;
             if (_action != null && _action.SelectedAction != null)
             {
-
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
@@ -96,7 +117,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-
             var inputs2 = new List<IServiceInput>(Inputs);
             return new WcfInputRegionClone
             {
@@ -120,6 +140,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 OnPropertyChanged("Inputs");
                 IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
             }
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         public IList<string> Errors

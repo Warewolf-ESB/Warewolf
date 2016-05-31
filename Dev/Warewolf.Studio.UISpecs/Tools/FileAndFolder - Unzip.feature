@@ -3,6 +3,7 @@
 	as a Warewolf user
 	I want a tool that will Unzip File(s) or Folder(s) at a given location
 
+@ignore
 @Unzip 
 # COded UI TEST
 Scenario: Unzip tool Small View
@@ -10,6 +11,7 @@ Scenario: Unzip tool Small View
        Then Unzip small view has
        | Zip Name | Destination | Result |
        |          |             |        |
+@ignore
 Scenario: Unzip tool Large View
        Given I have Unzip Large View on design surface
        Then Unzip Large View has
@@ -21,11 +23,13 @@ Scenario: Unzip tool Large View
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
+@ignore
 Scenario: Unzip tool Small View water marks
        Given I have Unzip Small View on design surface
        Then Unzip small view watermarks are
        | Zip Name        | Destination     | Result      |
        | [[PathToUnzip]] | [[UnzipToPath]] | [[Success]] |
+@ignore
 Scenario: Unzip tool Large View Water marks
        Given I have Unzip Large View on design surface
        Then Unzip Large View watermarks are
@@ -37,6 +41,7 @@ Scenario: Unzip tool Large View Water marks
        | [[Error().Message]]        | http://lcl:3142/services/err |    
        And End this workflow is "Unselected"
        And Done button is "Visible"
+@ignore
 Scenario: Unzip Large View is validating when clicking on done with blank fields
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -47,6 +52,7 @@ Scenario: Unzip Large View is validating when clicking on done with blank fields
        When I click "Done"
        Then Validation message is thrown
        And Unzip Small View is "Not Visible"
+@ignore
 Scenario: Unzip tool Large View to small view persisting data correctly
        Given I have Unzip Large View on design surface
        And Unzip Large View has
@@ -65,6 +71,7 @@ Scenario: Unzip tool Large View to small view persisting data correctly
        | Zip Name    | Destination | Result    |
        | C:\Test.zip | D:\         | [[Unzip]] |
 
+@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Unzip Large View on design surface
        When Unzip Large View has
@@ -88,6 +95,7 @@ Scenario: After correcting incorrect variable done button is closing large view
        | Zip Name | Destination | Result    |
        | C:\[[a]] | D:\         | [[Unzip]] |
 
+@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Unzip Large View on design surface
        And Unzip Large View has
@@ -107,6 +115,7 @@ Scenario: Close large view is closing large view without validating
        | Zip Name | Destination | Result    |
        | C:\[[a]  | D:\         | [[Unzip]] |
 
+@ignore
 Scenario Outline: Unzip Large View is validating incorrect source path
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -130,6 +139,7 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
+@ignore
 Scenario Outline: Unzip Large View is validating incorrect Destination path
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -154,6 +164,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Unzip Large View is validating incorrect variable in source username field
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -179,6 +190,7 @@ Examples:
 
 
 
+@ignore
 Scenario Outline: Unzip Large View is validating incorrect variable in Destination username field
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -203,6 +215,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Unzip Large View is validating incorrect variable in Result field
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -222,6 +235,7 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
+@ignore
 Scenario Outline: Unzip On error fields incorrect variables are validating
        Given I have Unzip Large View on design surface
        And Unzip Large View with water marks has

@@ -31,8 +31,6 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
-// ReSharper disable ArrangeTypeMemberModifiers
-// ReSharper disable InconsistentNaming
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -74,7 +72,6 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
             this.RunViewSetup();
         }
 
-        // ReSharper disable once InconsistentNaming
         Guid UniqueID { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()
         {
@@ -350,6 +347,12 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                 SourceRegion = new WcfSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 ActionRegion = new WcfActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion.ErrorsHandler += (sender, list) =>
+                {
+                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    UpdateDesignValidationErrors(errorInfos);
+                    Errors = new List<IActionableErrorInfo>(errorInfos);
+                };
                 regions.Add(ActionRegion);
                 InputArea = new WcfInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
@@ -439,7 +442,6 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                     ManageServiceInputViewModel.InputArea.IsEnabled = true;
                     ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
-
                 }
                 else
                 {
@@ -454,7 +456,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
 
         public IWcfService ToModel()
         {
-            var pluginServiceDefinition = new WcfService()
+            var wcfServiceDefinition = new WcfService()
             {
                 Source = SourceRegion.SelectedSource,
                 Action = ActionRegion.SelectedAction,
@@ -462,9 +464,9 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
             };
             foreach (var serviceInput in InputArea.Inputs)
             {
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, "") { TypeName = serviceInput.TypeName });
+                wcfServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, "") { TypeName = serviceInput.TypeName });
             }
-            return pluginServiceDefinition;
+            return wcfServiceDefinition;
         }
 
         public void ErrorMessage(Exception exception, bool hasError)

@@ -3,6 +3,7 @@
 	As Warewolf user
 	I want a tool that joins two or more pieces of data together
 
+@ignore
 @DataMerge
 # Coded UI Tests
 Scenario: DataMerge Small View
@@ -14,6 +15,7 @@ Scenario: DataMerge Small View
 	And result is as ""
 	And Scroll bar is "Disabled"
 
+@ignore
 Scenario: DataMerge Large View
 	Given I have DataMerge Large View on design surface
 	And DataMerge Small View grid has
@@ -28,6 +30,7 @@ Scenario: DataMerge Large View
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 
+@ignore
 Scenario: DataMerge Small View focus is at row1
 	Given I have DataMerge Small View on design surface
 	And "Row 1" is focused
@@ -48,6 +51,7 @@ Scenario: Passing Variables in Small View and inserting row
 	| 2 |      | Index |       |
 	| 3 | Ware | Index | 2     |
 
+@ignore
 Scenario: Deleting rows in Small View
 	Given I have DataMerge Small View on design surface
 	When I Enter  DataMerge Small View grid has
@@ -62,7 +66,8 @@ Scenario: Deleting rows in Small View
 	| # | Data | With  | Using |
 	| 1 | Test | Index | 1     |
 	| 2 |      | Index |       |
-	
+
+@ignore
 Scenario: Passing Variables in Large View and inserting row
 	Given I have DataMerge Large View on design surface
 	When I Enter  DataMerge Large View grid has
@@ -80,6 +85,7 @@ Scenario: Passing Variables in Large View and inserting row
 	| 3 | Ware | Index | 2     |         |       |
 	And Scroll bar is "Enabled"
 
+@ignore
 Scenario: Deleting rows in Large View
 	Given I have DataMerge Large View on design surface
 	When I Enter  DataMerge Large View grid has
@@ -94,8 +100,8 @@ Scenario: Deleting rows in Large View
 	| 1 | Test | Index | 1     |         | Left  |
 	| 2 |      | Index |       |         |       |
 	And Scroll bar is "Enabled"
-							
 
+@ignore
 Scenario Outline: Data Merge Large View using and padding is enabled and disabled
 	Given I have DataMerge Large View on design surface
 	When I select "Row 1"  with as "<With>" then using is "<Using>" and padding is "<Padding>"
@@ -140,6 +146,7 @@ Scenario: Data Merge Large View is validating invalid variables on done
 	Then Validation message is not thrown
 	And DataMerge Small View is "Visible"
 
+@ignore
 Scenario: Data Merge Large View is validating invalid recordsets on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
@@ -159,6 +166,7 @@ Scenario: Data Merge Large View is validating invalid recordsets on done
 	Then Validation message is not thrown
 	And DataMerge Small View is "Visible"
 
+@ignore
 Scenario Outline: Data Merge Large View is validating invalid variables
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
@@ -179,6 +187,7 @@ Examples:
     | 6  | [[a]][[rec().a]] | False      |
     | 7  | [[rec([[a]]).a]] | True       |
 
+@ignore
 Scenario Outline: Invalid variables in using is validating on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
@@ -200,6 +209,7 @@ Examples:
     | 7  | [[rec([[a]]).a]] | False      |
     | 8  | 12               | False      |
 
+@ignore
 Scenario Outline: Invalid variables in Padding is validating on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
@@ -223,6 +233,7 @@ Examples:
     | 9  | a                | False      |
     | 10 | ,                | False      |
 
+@ignore
 Scenario Outline: Invalid variables in Result is validating on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
@@ -246,6 +257,7 @@ Examples:
     | 9  | a                | False      |
     | 10 | ,                | True       |
 
+@ignore
 Scenario: Collapse largeview is closing large view
 	Given I have DataMerge Small View on design surface
 	When I open DataMerge large view
@@ -258,6 +270,7 @@ Scenario: Collapse largeview is closing large view
 	And Validation message is not thrown
 	Then DataMerge Small View is "Visible"
 
+@ignore
 Scenario: Opening DataMerge Quick Variable Input
 	Given I have DataMerge Small View on design surface
 	When I select "QVI"
@@ -273,6 +286,7 @@ Scenario: Opening DataMerge Quick Variable Input
 	And Preview button is "Disabled"
 	And Add button is "Dsiabled"
 
+@ignore
 Scenario: Adding DataMerge Variables by using QVI
     Given I have DataMerge Small View on design surface
 	When I select "QVI"
@@ -307,6 +321,7 @@ Scenario: Adding DataMerge Variables by using QVI
 	| 5 |       | Index |       |
 	And Scroll bar is "Enabled"
 
+@ignore
 Scenario: Adding DataMerge Variables by using QVI and split on chars
     Given I have DataMerge Large view on design surface
 	When I select "QVI"
@@ -339,6 +354,7 @@ Scenario: Adding DataMerge Variables by using QVI and split on chars
 	| 5 |       | Index |       |         | Left  |
 	And Scroll bar is "Enabled"
 
+@ignore
 ##This split by using "Tab" is not working because I can"t use tab while entering variable list but I can paste 
 ## So option must work as expected.
 Scenario: Adding DataMerge Variables by using QVI and split on Tab
@@ -372,6 +388,7 @@ Scenario: Adding DataMerge Variables by using QVI and split on Tab
 	| 5 |       | Index |       |         | Left  |
 	And Scroll bar is "Enabled"
 
+@ignore
 Scenario: Adding Variables in Datamerge QVI and split on chars
     Given I have DataMerge Large view on design surface
 	When I select "QVI"
@@ -410,6 +427,7 @@ Scenario: Adding Variables in Datamerge QVI and split on chars
 	| 9 |       | Index |       |
 	And Scroll bar is "Enabled"
 
+@ignore
 Scenario Outline: DataMerge QVI Prefix and Suffix
     Given I have DataMerge Large view on design surface
 	When I select "QVI"
@@ -445,6 +463,7 @@ Scenario Outline: DataMerge QVI Prefix and Suffix
 	| 1  | a      | ""     | Selected | Unselected |
 	| 2  | ""     | a      | Selected | Unselected |
 
+@ignore
 Scenario:  DataMerge QVI Replace is Replacing Variables
     Given I have DataMerge Large view on design surface
 	And Large view grid has

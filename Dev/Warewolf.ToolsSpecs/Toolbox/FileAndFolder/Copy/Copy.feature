@@ -97,9 +97,9 @@ Scenario Outline: Copy file at location using complex types
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		 | No | source                        | sourceLocation   | username | password | destination  | destinationLocation                               | destUsername | destPassword | selected | resultVar  | result  | errorOccured |
-		 | 1  | [[file().resources().path]]   | c:\copyfile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                   | ""           | ""           | True     | [[result]] | Success | NO           |
-		 | 2  | [[file(1).resources(*).path]]   | c:\copyfile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                   | ""           | ""           | True     | [[result]] | Success | NO           |
+		 | No | source                                      | sourceLocation   | username | password | destination  | destinationLocation                               | destUsername | destPassword | selected | resultVar  | result  | errorOccured |
+		 | 1  | [[file().resources().path]]                 | c:\copyfile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                   | ""           | ""           | True     | [[result]] | Success | NO           |
+		 | 2  | [[file(1).resources(*).path]]               | c:\copyfile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                   | ""           | ""           | True     | [[result]] | Success | NO           |
 		 | 3  | [[file([[int]]).resources([[var]]).path]]   | c:\copyfile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                   | ""           | ""           | True     | [[result]] | Success | NO           |
                        																										 
 

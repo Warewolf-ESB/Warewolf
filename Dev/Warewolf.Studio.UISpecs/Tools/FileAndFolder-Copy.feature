@@ -3,6 +3,7 @@
 	as a Warewolf user
 	I want a tool that Copy File or Folder from a given location to another location
 
+@ignore
 @Copy
 # CODED UI TESTS
 Scenario: Copy tool Small View
@@ -11,6 +12,7 @@ Scenario: Copy tool Small View
        | File or Folder | Destination | Result |
        |                |             |        |
 
+@ignore
 Scenario: Copy tool Large View
        Given I have Copy Large View on design surface
        Then Copy Large View has
@@ -23,12 +25,14 @@ Scenario: Copy tool Large View
        And End this workflow is "Unselected"
        And Done button is "Visible"
 
+@ignore
 Scenario: Copy tool Small View water marks
        Given I have Copy Small View on design surface
        Then Copy small view watermarks are
        | File or Folder | Destination    | Result      |
        | [[PathToCopy]] | [[CopyToPath]] | [[Success]] |
 
+@ignore
 Scenario: Copy tool Large View Water marks
        Given I have Copy Large View on design surface
        Then Copy Large View watermarks are
@@ -40,6 +44,7 @@ Scenario: Copy tool Large View Water marks
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
+@ignore
 Scenario: Copy Large View is validating when clicking on done with blank fields
        Given I have Copy Large View on design surface
        And "File or Folder" is focused
@@ -50,6 +55,7 @@ Scenario: Copy Large View is validating when clicking on done with blank fields
        When I click "Done"
        Then Validation message is thrown
        And Copy Small View is "Not Visible"
+@ignore
 Scenario: Copy tool Large View to small view persisting data correctly
        Given I have Copy Large View on design surface
        And Copy Large View has
@@ -68,6 +74,7 @@ Scenario: Copy tool Large View to small view persisting data correctly
        | File or Folder | Destination | Result   |
        | C:\            | D:\         | [[copy]] |
 
+@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Copy Large View on design surface
        When Copy Large View has
@@ -91,6 +98,7 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | Destination | Result   |
        | C:\[[a]]       | D:\         | [[copy]] |
 
+@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Copy Large View on design surface
        And Copy Large View has
@@ -110,6 +118,7 @@ Scenario: Close large view is closing large view without validating
        | File or Folder | Destination | Result   |
        | C:\[[a]        | D:\         | [[copy]] |
 
+@ignore
 Scenario Outline: Copy Large View is validating incorrect source path
        Given I have Copy Large View on design surface
        And "File or Folder" is focused
@@ -133,6 +142,7 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
+@ignore
 Scenario Outline: Copy Large View is validating incorrect Destination path
        Given I have Copy Large View on design surface
        And "File or Folder" is focused
@@ -157,6 +167,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Copy Large View is validating incorrect variable in source username field
        Given I have Copy Large View on design surface
        And "File or Folder" is focused
@@ -181,7 +192,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-
+@ignore
 Scenario Outline: Copy Large View is validating incorrect variable in Destination username field
        Given I have Copy Large View on design surface
        And "File or Folder" is focused
@@ -206,6 +217,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Copy Large View is validating incorrect variable in Result field
        Given I have Copy Large View on design surface
        And "File or Folder" is focused
@@ -225,6 +237,7 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
+@ignore
 Scenario Outline: Copy On error fields incorrect variables are validating
        Given I have Copy Large View on design surface
        And Copy Large View with water marks has

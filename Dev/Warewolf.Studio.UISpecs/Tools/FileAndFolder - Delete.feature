@@ -3,6 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
+@ignore
 @Delete
 # COded UI Specs
 Scenario: Delete tool Small View
@@ -10,6 +11,7 @@ Scenario: Delete tool Small View
        Then Delete small view has
        | File or Folder |  Result |
        |                |         |
+@ignore
 Scenario: Delete tool Large View
        Given I have Delete Large View on design surface
        Then Delete Large View has
@@ -20,11 +22,13 @@ Scenario: Delete tool Large View
        | Put error in this variable | Call this web service |
        |                            |                       |      
        And Done button is "Visible"
+@ignore
 Scenario: Delete tool Small View water marks
        Given I have Delete Small View on design surface
        Then Delete small view watermarks are
        | File or Folder   |Result      |
        | [[PathToDelete]] |[[Success]] |
+@ignore
 Scenario: Delete tool Large View Water marks
        Given I have Delete Large View on design surface
        Then Delete Large View watermarks are
@@ -33,8 +37,9 @@ Scenario: Delete tool Large View Water marks
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service        |
-       | [[Error().Message]]        | http://lcl:3142/services/err |     
+       | [[Error().Message]]        | http://lcl:3142/services/err |
        And Done button is "Visible"
+@ignore
 Scenario: Removing Data in the field brings back water marks
        Given I have Delete Large View on design surface
        And Delete Large View has
@@ -52,6 +57,7 @@ Scenario: Removing Data in the field brings back water marks
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
 
+@ignore
 Scenario: Delete Large View is validating when clicking on done with blank fields
        Given I have Delete Large View on design surface
        And "File or Folder" is focused
@@ -62,6 +68,7 @@ Scenario: Delete Large View is validating when clicking on done with blank field
        When I click "Done"
        Then Validation message is thrown
        And Delete Small View is "Not Visible"
+@ignore
 Scenario: Delete tool Large View to small view persisting data correctly
        Given I have Delete Large View on design surface
        And Delete Large View has
@@ -78,6 +85,7 @@ Scenario: Delete tool Large View to small view persisting data correctly
        | File or Folder |  Result            |
        | C:\Test        |  [[FolderDeleted]] |
 
+@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Delete Large View on design surface
        When Delete Large View has
@@ -100,6 +108,7 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | Result            |
        | C:\[[a]]       | [[FolderDeleted]] |
 
+@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Delete Large View on design surface
        And Delete Large View has
@@ -118,6 +127,7 @@ Scenario: Close large view is closing large view without validating
         | File or Folder | Result            |
         | C:\[[a2@]]     | [[FolderDeleted]] |
 
+@ignore
 Scenario Outline: Delete Large View is validating incorrect path
        Given I have Delete Large View on design surface
        And "File or Folder" is focused
@@ -141,6 +151,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Delete Large View is validating incorrect variable in  username field
        Given I have Delete Large View on design surface
        And "File or Folder" is focused
@@ -164,6 +175,7 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
+@ignore
 Scenario Outline: Delete Large View is validating incorrect variable in Result field
        Given I have Delete Large View on design surface
        And "File or Folder" is focused
@@ -182,6 +194,7 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
+@ignore
 Scenario Outline: Delete On error fields incorrect variables are validating
        Given I have Delete Large View on design surface
        And Delete Large View with water marks has

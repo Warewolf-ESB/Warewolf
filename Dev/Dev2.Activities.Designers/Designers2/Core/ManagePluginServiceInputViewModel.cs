@@ -109,7 +109,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-           
             _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
             if (TestResults != null)
             {
@@ -251,6 +250,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
+        }
+
+        public EventHandler<List<string>> ErrorsHandler
+        {
+            get;
+            set;
         }
 
         #endregion

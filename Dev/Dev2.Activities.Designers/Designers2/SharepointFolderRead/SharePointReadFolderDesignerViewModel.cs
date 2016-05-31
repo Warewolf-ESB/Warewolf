@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
            
             if (SharepointServerResourceId == Guid.Empty)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please SharePoint source" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
 
                 return Errors;
             }
