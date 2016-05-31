@@ -347,9 +347,9 @@ Scenario: Assign a json variable with a calculate expression using json array
 	| 4 | [[Person.TotalScore]] = 7		|
 
 Scenario: Assign two json and data 
-	Given I assign the value 1 to a variable "[[rec.a(1)]]"	
-	And I assign the value 2 to a variable "[[rec.a(2)]]"
-	And I assign the value Test[[rec.a(1)]].Warewolf[[rec.a(2)]] to a variable "[[Lr.a(1)]]"
+	Given I assign the value 1 to a json object "[[rec.a(1)]]"	
+	And I assign the value 2 to a json object "[[rec.a(2)]]"
+	And I assign the value Test[[rec.a(1)]].Warewolf[[rec.a(2)]] to a json object "[[Lr.a(1)]]"
 	When the assign object tool is executed
 	Then the value of "[[Lr.a(1)]]" equals "Test1.Warewolf2"
 	And the execution has "NO" error
@@ -365,8 +365,8 @@ Scenario: Assign two json and data
 	| 3 | [[Lr.a(1)]]  = Test1.Warewolf2 |
 
 Scenario: Assign the value of a negative json index
-	Given I assign the value 10 to a variable "[[rec.set()]]"	
-	And I assign the value [[rec.set(-1)]] to a variable "[[var]]"
+	Given I assign the value 10 to a json object "[[rec.set()]]"	
+	And I assign the value [[rec.set(-1)]] to a json object "[[var]]"
 	When the assign object tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as
@@ -378,9 +378,9 @@ Scenario: Assign the value of a negative json index
 
 
 Scenario: Assign a record set variable equal to a group calculation (sum)
-	Given I assign the value 30 to a variable "[[rec(1).a]]"
-	And I assign the value 30 to a variable "[[rec(1).b]]"
-	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"
+	Given I assign the value 30 to a json object "[[rec(1).a]]"
+	And I assign the value 30 to a json object "[[rec(1).b]]"
+	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a json object "[[Result.a]]"
 	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "60"
 	And the execution has "NO" error
@@ -396,12 +396,12 @@ Scenario: Assign a record set variable equal to a group calculation (sum)
 	| 3 | [[Result.a]] = 60 |
 
 
-	Scenario: Assign a variable equal to a group calculation with scalar and recordset
-	Given I assign the value 1 to a variable "[[a.b]]"
-	And I assign the value 2 to a variable "[[b.a]]"
-	And I assign the value [[a.b]] to a variable "[[rec(1).a]]"
-	And I assign the value [[b.a]] to a variable "[[rec(1).b]]"
-	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"
+Scenario: Assign a variable equal to a group calculation with scalar and recordset
+	Given I assign the value 1 to a json object "[[a.b]]"
+	And I assign the value 2 to a json object "[[b.a]]"
+	And I assign the value [[a.b]] to a json object "[[rec(1).a]]"
+	And I assign the value [[b.a]] to a json object "[[rec(1).b]]"
+	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a json object "[[Result.a]]"
 	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "3"
 	And the execution has "NO" error
@@ -422,10 +422,10 @@ Scenario: Assign a record set variable equal to a group calculation (sum)
 
 	 
 
-	Scenario: Evaluating recursive recordset variable in a group calculation
-	Given I assign the value 1 to a variable "[[rec(1).a]]"
-	And I assign the value "rec(1).a" to a variable "[[rec(1).b]]"
-	And I assign the value "=sum(1+1)" to a variable "[[Result.a]]"
+Scenario: Evaluating recursive recordset variable in a group calculation
+	Given I assign the value 1 to a json object "[[rec(1).a]]"
+	And I assign the value "rec(1).a" to a json object "[[rec(1).b]]"
+	And I assign the value "=sum(1+1)" to a json object "[[Result.a]]"
 	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "2"
 	And the execution has "NO" error
@@ -442,9 +442,9 @@ Scenario: Assign a record set variable equal to a group calculation (sum)
 
 
 	Scenario: Evaluating recursive invalid recordset variable in a group calculation
-	Given I assign the value 1 to a variable "[[rec(1).a]]"
-	And I assign the value "rec(1).a*" to a variable "[[rec(1).b]]"
-	And I assign the value "=[[[[rec(1).b]]]]+1" to a variable "[[Result.c]]"
+	Given I assign the value 1 to a json object "[[rec(1).a]]"
+	And I assign the value "rec(1).a*" to a json object "[[rec(1).b]]"
+	And I assign the value "=[[[[rec(1).b]]]]+1" to a json object "[[Result.c]]"
 	When the assign object tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as
