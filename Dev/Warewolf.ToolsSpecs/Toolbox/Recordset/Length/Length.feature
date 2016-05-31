@@ -158,28 +158,6 @@ Examples:
 | [[rec([[int]])]] | ""   | AN    |                                                   | [[sdasd]]          | 3               |
 | [[c]]            | ""   | AN    | Scalar not allowed                                | [[d]]              | Failure         |
 
-#Complex Types WOLF-1042
-Scenario Outline: Ensure the Complex type length inputs work as expected 
-	Given I get the length from a object that looks like with this shape
-	| rs             |   |
-	| rs().row().set | 1 |
-	| rs().row().set | 2 |
-	| rs().row().set | 3 |
-	| rs().row().set | 4 |
-	| rs().row().set | 5 |
-	| rs().row().set | 6 |
-	| rs().row().set | 7 |
-	And get length on record "<variable>"	
-	When the length tool is executed
-	Then the length result should be "<val>"
-	And the result variable "<result>" will be "<value>"
-	And the execution has "<Error>" error
-	And the debug inputs as "<message>"
-Examples: 
-| variable                   | val | error | message | result                | value |
-| [[rs(1).row().set]]        | 1   | No    |         | [[rec(1).row().val]]  | 1     |
-| [[rs(*).row([[int]]).set]] | 4   | No    |         | [[rec(1).row(3).val]] | 4     |
-
 Scenario: Length of an null recordset
 	Given I get the length from a recordset that looks like with this shape
 	| rs           |      |

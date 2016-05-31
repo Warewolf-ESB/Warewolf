@@ -310,24 +310,3 @@ Scenario: Convert a Variable That is NULL
 	And I convert a variable "[[var]]" to "lower"		
 	When the case conversion tool is executed
 	Then the execution has "No" error
-
-#Complex Types WOLF-1042
-Scenario Outline: Convert a sentence to uppercase using complex types
-	Given I have a case convert variable "<variable>" with a value of "<value>"
-	And I convert a variable "<variable>" to "<To>"	
-	When the case conversion tool is executed
-	Then the sentence will be "<result>"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert              | To   |
-	| 1 | <variable> = <value> | <To> |
-	And the debug output as  
-	| # |                        |
-	| 1 | <variable> = <results> | 
-	Examples: 
-	| variable                                    | value    | To         | Result   |
-	| [[granparent(1).parents(*).childName]]      | troy-ave | TITLE CASE | Troy-Ave |
-	| [[granparent().parents([[int]]).childName]] | Jesse    | LOWER      | jesse    |
-	| [[granparent(1).parents(1).childName]]      | Jesse    | UPPER      | JESSE    |
-
-
