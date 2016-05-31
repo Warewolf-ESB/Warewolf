@@ -1162,6 +1162,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 SortRecset(_toggleSortOrder);
                 SortComplexObjects(_toggleSortOrder);
                 _toggleSortOrder = !_toggleSortOrder;
+                WriteToResourceModel();
             }
             finally { IsSorting = false; }
         }
