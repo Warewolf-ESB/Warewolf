@@ -493,7 +493,6 @@
                                                     MaxHeight="80"
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
-                                                    WrapInBrackets="False"
                                                     ToolTip="{x:Static languages:Core.MappingsDefaultValueHelp}"
                                                     Text="{Binding Path=MappedTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">

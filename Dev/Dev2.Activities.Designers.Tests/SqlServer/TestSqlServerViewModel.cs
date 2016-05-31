@@ -164,6 +164,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.InputArea.IsEnabled);
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             Assert.IsFalse(sqlServer.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.AreEqual(0, sqlServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -191,6 +192,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
+            Assert.AreEqual(1, sqlServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]
@@ -224,6 +226,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             Assert.AreEqual(2, sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
+            Assert.AreEqual(0, sqlServer.ManageServiceInputViewModel.Errors.Count);
         }
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -257,6 +260,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, sqlServer.ManageServiceInputViewModel.Errors.Count);
         }
 
         [TestMethod]

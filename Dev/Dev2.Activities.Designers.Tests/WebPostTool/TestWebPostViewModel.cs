@@ -181,6 +181,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.IsTrue(postViewModel.InputArea.IsEnabled);
             Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             Assert.IsFalse(postViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.AreEqual(0, postViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 
@@ -261,6 +262,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             Assert.AreEqual(1, postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
+            Assert.AreEqual(0, postViewModel.ManageServiceInputViewModel.Errors.Count);
 
             //---------------Test Result -----------------------
         }
@@ -295,6 +297,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, postViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 
@@ -328,6 +331,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, postViewModel.ManageServiceInputViewModel.Errors.Count);
             //---------------Test Result -----------------------
         }
 

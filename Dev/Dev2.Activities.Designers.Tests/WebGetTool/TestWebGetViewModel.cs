@@ -162,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.InputArea.IsEnabled);
             Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
-
+            Assert.AreEqual(0, webget.ManageServiceInputViewModel.Errors.Count);
             //------------Assert Results-------------------------
         }
 
@@ -190,6 +190,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Execute Test---------------------------
 
             Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -215,6 +216,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Execute Test---------------------------
 
             Assert.AreEqual(webget.OutputsRegion.Outputs.First().MappedFrom, "Result");
+            
             //------------Assert Results-------------------------
         }
 
@@ -246,6 +248,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             Assert.AreEqual(1, webget.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
+            Assert.AreEqual(0, webget.ManageServiceInputViewModel.Errors.Count);
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -278,6 +281,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, webget.ManageServiceInputViewModel.Errors.Count);
             //------------Assert Results-------------------------
         }
 
@@ -311,6 +315,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
+            Assert.AreEqual(0, webget.ManageServiceInputViewModel.Errors.Count);
             //------------Assert Results-------------------------
         }
 
