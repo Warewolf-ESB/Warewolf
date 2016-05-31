@@ -1278,21 +1278,6 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	|       |
 	| NO |
 
-#Complex Types WOLF-1042
-Scenario Outline: Ensuring all complex type inputs work as expected
-	Given a decision variable "<variable1>" value "<Var1>"	
-	And a decision variable "<variable2>" value "<Var2>"
-	And is "<variable1>" "<matchtype>" "<variable2>"
-	And Require all decisions to be true is "<Requirement>"
-	When the decision tool is executed
-	Then the execution has "NO" error
-	Examples: 
-	| variable1                                   | Var1 | variable2                              | Var2 | MatchType |
-	| [[granparent(1).parent(2).childrenName      | Lee  | [[granparent(2).parent(2).childrenName | Lee  | Equals    |
-	| [[granparent().parent().Numchildren         | 10   | [[granparent(1).parent(1).Numchildren  | 5    | >         |
-	| [[granparent(*).parent(*).Numchildren       | 27   |                                        |      | isNumeric |
-	| [[granparent([[int]]).parent(*).Numchildren | 20   |                                        |      | isNumeric |
-
 
 Scenario: validate that a variable is Null negative
 	Given a decision variable "[[A]]" value "1"

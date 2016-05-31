@@ -688,11 +688,10 @@ Scenario: Convert a Variable That Does Not Exist
 	Then the execution has "AN" error
  
 Scenario Outline: Convert an empty recordset * 
-	Given I have a convert variable "<Variable>" with a value of "<value>"
+	Given I have a convert variable "<Variable>" with a value of "<Value>"
 	And I convert a variable "<Variable>" from type "<From>" to type "<To>" 
-	When the case conversion tool is executed
+	When the base conversion tool is executed
 	Then the execution has "AN" error
-	And the execution has "<Error>" error
 Examples: 
 	| No | Variable            | Value | From    | To      | Error             |
 	| 1  | [[rs(*).row]]       |       | Binary  | Binary  | Invalid Recordset |
@@ -744,24 +743,6 @@ Examples:
 	| 47 | [[rs().row]]        |       | Base 64 | Hex     | Invalid Recordset |
 	| 48 | [[rs().row]]        |       | Base 64 | Base 64 | Invalid Recordset |
  
-  #Complex types WOLF-1042
-Scenario Outline: Convert from text to binary using complex types
-	Given I have a convert variable "<variable>" with a value of "<value>"
-	And I convert a variable "<variable>" from type "Text" to type "<types>" 
-	When the base conversion tool is executed
-	Then the result is "<result>"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| # | Convert     | From    | To      |
-	| 1 | <variables> | <types> | <types> |
-	And the debug output as  
-	| # |                       |
-	| 1 | <variables> = <value> |
-	Examples: 
-	| variables                                  | value | types   | results                                                |
-	| [[granparent(*).parents().initials]]       | AA    | Binary  | [[granparent().parents().initials]] = 0100000101000001 |
-	| [[granparent().parents([[int]]).initials]] | AA    | Base 64 | [[granparent().parents().initials]] = QUE=             |
-	| [[granparent(*).parents(*).initials]]      | AA    | Hex     | [[granparent().parents().initials]] = 0x4141           |
 
 Scenario: Convert a Variable that is null 
 	Given I have a convert variable "[[var]]" with a value of "NULL"

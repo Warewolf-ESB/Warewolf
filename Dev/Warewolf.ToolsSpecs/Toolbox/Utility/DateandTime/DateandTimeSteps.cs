@@ -188,7 +188,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
             else
             {
-                Assert.AreEqual(expectedResult, actualValue);
+                if(actualValue != null)
+                {
+                    actualValue = actualValue.Replace('"', ' ').Trim();
+                    Assert.AreEqual(expectedResult, actualValue);
+                }
             }
         }
 

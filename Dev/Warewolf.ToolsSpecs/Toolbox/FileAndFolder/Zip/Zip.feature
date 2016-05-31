@@ -105,26 +105,3 @@ Scenario Outline: Zip file at location Null
 		| 3  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestSpeed | [[result]] | Success | NO           | 1.66              |
 		| 4  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | Success | NO           | 1.71              |
 	
-#Complex Types	WOLF-1042								
-Scenario Outline: Zip file at location using complex types
-	Given I have a source path "<source>" with value "<sourceLocation>"
-	And source credentials as "<username>" and "<password>" for zip tests
-	And I have a destination path "<destination>" with value "<destinationLocation>"
-	And destination credentials as "<destUsername>" and "<destPassword>"
-	And overwrite is "<selected>"
-	And result as "<resultVar>"	
-	And Archive Password as "<archivepassword>"
-	And the Compression as "<compression>"
-    When the Zip file tool is executed
-	Then the result variable "<resultVar>" will be "<result>"
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password  | Compression Ratio |
-         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | <archivepassword> | <compression>     |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-	Examples: 
-		| No | Name           | source                      | sourceLocation    | username | password | destination | destinationLocation | destUsername | destPassword | selected | archivepassword | compression | resultVar  | result  | errorOccured |
-		| 1  | Local to Local | [[file().resources().path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | None        | [[result]] | Success | NO           |
-			  	  										                               

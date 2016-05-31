@@ -103,8 +103,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Sharepoint", "Ware
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Interfaces", "Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj", "{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Old", "Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj", "{CA1EC490-5138-4714-8188-15D4BF6334DA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Dev2.Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A713537F-C661-4029-8981-C04D0E39EECA}"
@@ -148,8 +146,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8DC9BC61
 		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
 		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -320,10 +316,6 @@ Global
 		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA1EC490-5138-4714-8188-15D4BF6334DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA5E9373-46FE-41B9-AB2E-BD637F48B456}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -335,10 +327,6 @@ Global
 		{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

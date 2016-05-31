@@ -348,42 +348,6 @@ Scenario Outline:Excute Javascript with incorrect values
 	| 88      | There was an error when returning a value from your script, remember to use the "Return" keyword when returning the result |
 	| [[var]] | Scalar value {var} is NULL                                                                                                 |
 
-Scenario Outline:Execute Javascript using recordsets
-	Given I have the script to execute "<script>" equals to "<val>"
-	And I have selected the language as "JavaScript"
-	When I execute the script tool
-	Then the execution has "No" error
-	And the debug inputs as  
-	| Language   | Script   |
-	| JavaScript | <script> |
-	And the debug output as 
-	|                        |
-	| <result> = <ResultVal> |
-	Examples: 
-	| Script                        | val                 | result                      | ResultVal |
-	| [[rec().a]]                   | return "a message"; | [[rs().a]]                  | a message |
-	| [[rec().a]]                   | return "a message"; | [[rs(1).a]]                 | a message |
-	| [[a]]                         | return "a message"; | [[rs().a]]                  | a message |
-	| [[rec(*).a]]                  | return "a message"; | [[rs(*).a]]                 | a message |
-	| [[rec([[int]]).a]],[[int]] =1 | return "a message"; | [[rs([[int]]).a]],[[int]]=1 | a message |
-
-#Complex Types WOLF-1042
-Scenario Outline:Execute Javascript using complex types
-	Given I have the script to execute "<script>" equals to "<val>"
-	And I have selected the language as "JavaScript"
-	When I execute the script tool
-	Then the execution has "No" error
-	And the debug inputs as  
-	| Language   | Script   |
-	| JavaScript | <script> |
-	And the debug output as 
-	|                        |
-	| <result> = <ResultVal> |
-	Examples: 
-	| Script                 | val                 | result                       | ResultVal |
-	| [[rec().row(*).value]] | return "a message"; | [[rs(1).row([[int]]).value]] | a message |
-
-
 Scenario: Execute JavaScript with a null variable 
 	Given I have a script variable "[[val1]]" with this value "null"
 	Given I have a script variable "[[val2]]" with this value "null"

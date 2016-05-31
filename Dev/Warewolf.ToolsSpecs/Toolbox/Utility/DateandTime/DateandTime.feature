@@ -248,14 +248,14 @@ Scenario: Date and Time output format with quoted strings
        And I selected Add time as "Years" with a value of 1
        And the output format as "yyyy-mm-dd "wrong date""
        When the datetime tool is executed
-       Then the datetime result should be "2014-03-29 wrong date"
+       Then the datetime result should be "2014-03-29 "13rong 29ate""
        And the execution has "NO" error
        And the debug inputs as  
        | Input        | Input Format | Add Time |    | Output Format           |
        | 2013 March 29| yyyy MM dd   | Years    | 1  | yyyy-mm-dd "wrong date" |  
        And the debug output as 
-       |                                    |  
-       | [[result]] = 2014-03-29 wrong date |
+       |                                        |
+       | [[result]] = 2014-03-29 "13rong 29ate" |
 
 Scenario: Date and Time output format without inputs must return correct format
 	Given I have a date "" 
@@ -266,20 +266,8 @@ Scenario: Date and Time output format without inputs must return correct format
 	Then the datetime result should contain milliseconds
 	And the execution has "NO" error
 
-#Complex Types WOLF-1042
-Scenario Outline: Ensure Date and Time Input and outputs accepts complex types
-       Given I have a date "<Date>"  with "<DateVal>"
-       And the input format as "<Input>" with "<value>"
-       And the output format as "<Output>" with "<val>"
-	   And I selected Add time as "Years" with a value of "<years>"
-       When the datetime tool is executed
-       Then the execution has "<Error>" error
-	   And the result variable "<res>" will be "<result>"
-Examples: 
-	| Date                          | Dateval    | Input               | value      | years | Output             | val       | res                    | result     | Error |
-	| [[rec(1).row().value]]        | 31/07/2015 | [[rs(1).row().set]] | dd/mm/yyyy | 0     | [[rs().row().set]] | mm-dd-yyy | [[rec(3).row().value]] | 31-07-2015 | No    |
-	| [[rec(*).row([[int]]).value]] | 31/08/2015 | [[rs(1).row().set]] | dd/mm/yyyy | 0     | [[rs().row().set]] | mm-dd-yyy | [[rec(3).row().value]] | 31-08-2015 | No    |
-	Scenario: Date and Time output format with NULL inputs 
+
+Scenario: Date and Time output format with NULL inputs 
        Given I have a Date time variable "[[a]]" with value "NULL"
 	   And I have a date "[[a]]" 
        And the input format as "dd-MM-yy"

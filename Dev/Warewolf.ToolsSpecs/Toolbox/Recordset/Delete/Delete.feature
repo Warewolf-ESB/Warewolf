@@ -245,25 +245,3 @@ Scenario Outline: Ensure delete variables of different types produce desired res
 	And the debug output as  
 	|                      |
 	| [[result]] = Failure |
-
-#Complex Types WOLF-1042
-Scenario Outline: Delete a complex types 
-	Given I have the following recordset
-	| rs             | val |
-	| rs().row().set | 1   |
-	| rs().row().set | 2   |
-	| rs().row().set | 3   |
-	And I delete a record "[[rs().row(2).set]]"
-	When the delete tool is executed
-	Then the delete result should be "Success"
-	And the recordset "[[rs(*).row]]" will be as follows
-	| rs             | val |
-	| rs().row().set | 1   |
-	| rs().row().set | 3   |
-	And the execution has "NO" error
-	And the debug output as  
-	| result               |
-	| <result> = <Success> |	
-	Examples: 
-	| result               | Success |
-	| [[rj().set().value]] | Success |
