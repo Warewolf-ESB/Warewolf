@@ -89,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             }
         }
 
-        [Given(@"I have this xml ""(.*)"" in a variable ""(.*)""")]
+        [Given(@"I have this xml ""(.*)"" in a variable '(.*)'")]
         public void GivenIHaveThisXmlInAVariable(string xml, string variable)
         {
             List<Tuple<string, string>> variableList;

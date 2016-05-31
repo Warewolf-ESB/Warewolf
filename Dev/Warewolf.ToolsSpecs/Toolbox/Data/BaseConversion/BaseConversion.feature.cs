@@ -3895,15 +3895,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 690
 this.ScenarioSetup(scenarioInfo);
 #line 691
- testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"<value>\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 692
  testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 693
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 694
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 695
- testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4628,103 +4626,23 @@ this.ScenarioSetup(scenarioInfo);
             this.ConvertAnEmptyRecordset("48", "[[rs().row]]", "", "Base 64", "Base 64", "Invalid Recordset", ((string[])(null)));
         }
         
-        public virtual void ConvertFromTextToBinaryUsingComplexTypes(string variables, string value, string types, string results, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary using complex types", exampleTags);
-#line 748
-this.ScenarioSetup(scenarioInfo);
-#line 749
- testRunner.Given(string.Format("I have a convert variable \"<variable>\" with a value of \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 750
- testRunner.And(string.Format("I convert a variable \"<variable>\" from type \"Text\" to type \"{0}\"", types), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 751
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 752
- testRunner.Then("the result is \"<result>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 753
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Convert",
-                        "From",
-                        "To"});
-            table82.AddRow(new string[] {
-                        "1",
-                        string.Format("{0}", variables),
-                        string.Format("{0}", types),
-                        string.Format("{0}", types)});
-#line 754
- testRunner.And("the debug inputs as", ((string)(null)), table82, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table83.AddRow(new string[] {
-                        "1",
-                        string.Format("{0} = {1}", variables, value)});
-#line 757
- testRunner.And("the debug output as", ((string)(null)), table83, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variables", "[[granparent(*).parents().initials]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "AA")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:types", "Binary")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:results", "[[granparent().parents().initials]] = 0100000101000001")]
-        public virtual void ConvertFromTextToBinaryUsingComplexTypes_Variant0()
-        {
-            this.ConvertFromTextToBinaryUsingComplexTypes("[[granparent(*).parents().initials]]", "AA", "Binary", "[[granparent().parents().initials]] = 0100000101000001", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variables", "[[granparent().parents([[int]]).initials]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "AA")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:types", "Base 64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:results", "[[granparent().parents().initials]] = QUE=")]
-        public virtual void ConvertFromTextToBinaryUsingComplexTypes_Variant1()
-        {
-            this.ConvertFromTextToBinaryUsingComplexTypes("[[granparent().parents([[int]]).initials]]", "AA", "Base 64", "[[granparent().parents().initials]] = QUE=", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variables", "[[granparent(*).parents(*).initials]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "AA")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:types", "Hex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:results", "[[granparent().parents().initials]] = 0x4141")]
-        public virtual void ConvertFromTextToBinaryUsingComplexTypes_Variant2()
-        {
-            this.ConvertFromTextToBinaryUsingComplexTypes("[[granparent(*).parents(*).initials]]", "AA", "Hex", "[[granparent().parents().initials]] = 0x4141", ((string[])(null)));
-        }
-        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable that is null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertAVariableThatIsNull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable that is null", ((string[])(null)));
-#line 766
+#line 747
 this.ScenarioSetup(scenarioInfo);
-#line 767
+#line 748
  testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 768
+#line 749
  testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 769
+#line 750
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 770
+#line 751
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 771
+#line 752
  testRunner.And("the execution has \"Scalar value {[[var]]} is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

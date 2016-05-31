@@ -671,7 +671,6 @@
     <Compile Include="Designers2\MultiAssign\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Behaviors\DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
     <Compile Include="Designers2\Random\RandomDesigner.xaml.cs">
@@ -2076,6 +2075,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Behaviors\" />
     <Folder Include="Designers2\Core\Web\Get\" />
     <Folder Include="Designers2\Core\Web\Post\" />
     <Folder Include="Themes\" />

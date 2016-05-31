@@ -258,57 +258,6 @@ Given I have the following duplicated recordset
 	| [[rs().row]] | 51           | [[rec(1).a]]                | Error : scalar in unique  |
 	| [[rs().row]] | adas         | [[rec(1).a]]                | Error : scalar in unique  |
 
-
-Scenario Outline: Ensure recordsets with scalar values work
-	Given I have the following duplicated recordset
-	| rs       | val | rec           | value     |
-	| rs().row | 10  | [[rec().set]] | This      |
-	| rs().row | 20  | [[rec().set]] | Test      |
-	| rs().row | 20  | [[rec().set]] | Warehouse |
-	| rs().row | 30  | [[rec().set]] | Tuesday   |
-	And I want to find unique in field "<InField>" with the return field "<Return>"
-	And The result variable is "[[a]]"
-	When the unique tool is executed	
-	Then the unique result will be
-	| rs       | val | rec           | value     |
-	| rs().row | 10  | [[rec().set]] | This      |
-	| rs().row | 20  | [[rec().set]] | Test      |
-	| rs().row | 30  | [[rec().set]] | Tuesday   |
-	And the execution has "NO" error
-	And the debug inputs as  
-	| # | In Field(s) | Return Fields |
-	| 1 | InField     | Return        |	
-	And the debug output as 
-	| # |                           |
-	| 1 | [[a]] = This,Test,Tuesday |
-	Examples: 
-	| InField                        | Return                          |
-	| [[rec([[int]].set),[[int]] = 4 | [[rs([[int]]).row]],[[int]] = 2 |
-
-#Complex Types WOLF-1042
-Scenario: Find unique records in a complex type
-	Given I have the following duplicated recordset
-	| rs             | val |
-	| rs().row().set | 10  |
-	| rs().row().set | 20  |
-	| rs().row().set | 20  |
-	| rs().row().set | 30  |
-	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
-	And The result variable is "[[rec().unique]]"
-	When the unique tool is executed	
-	Then the unique result will be
-	|                    | unique |
-	| rec().unique().set | 10     |
-	| rec().unique().set | 20     |
-	| rec().unique().set | 30     |
-	And the execution has "NO" error
-	And the debug inputs as  
-	| #           |                          | Return Fields        |
-	| In Field(s) | [[rs(4).row().set]] = 30 | [[rs().row().set]] = |	
-	And the debug output as 
-	| # |                              |
-	| 1 | [[rec(1).unique().set]] = 10 |
-
 Scenario: Executing Unique record tool with NULL recordset
 	Given I have the following duplicated recordset
 	| rs       | val  |

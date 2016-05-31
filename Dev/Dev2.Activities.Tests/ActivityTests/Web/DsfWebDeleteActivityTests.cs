@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         private static TestDsfWebDeleteActivity CreateTestDeleteActivity()
         {
             var testDsfWebDeleteActivity = new TestDsfWebDeleteActivity();
+            testDsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             return testDsfWebDeleteActivity;
         }
 
@@ -141,37 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugInputs.Count);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebDeleteActivity_Execute")]
-        public void DsfWebDeleteActivity_Delete_WithNoOutputDescription_ShouldAddError()
-        {
-            //------------Setup for test--------------------------
-            var environment = new ExecutionEnvironment();
-            environment.Assign("[[City]]", "PMB", 0);
-            environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebDeleteActivity = CreateTestDeleteActivity();
-            var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
-            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebDeleteActivity.Inputs = serviceInputs;
-            dsfWebDeleteActivity.Outputs = serviceOutputs;
-            //dsfWebPostActivity.ResponseFromWeb = response;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebDeleteActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            dsfWebDeleteActivity.QueryString = "";
-            //dsfWebDeleteActivity.PostData = "";
-            dsfWebDeleteActivity.SourceId = Guid.Empty;
-            dsfWebDeleteActivity.Headers = new List<INameValue>();
-            //------------Execute Test---------------------------
-            dsfWebDeleteActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.IsNull(dsfWebDeleteActivity.OutputDescription);
-            Assert.AreEqual(1, environment.Errors.Count);
-            Assert.AreEqual("There are no outputs", environment.Errors.ToList()[0]);
-        }
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
@@ -199,6 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var service = new WebService(serviceXml) { RequestResponse = response };
             dsfWebDeleteActivity.OutputDescription = service.GetOutputDescription();
             dsfWebDeleteActivity.ResponseFromWeb = response;
+            dsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -245,7 +218,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             // ReSharper disable once ObjectCreationAsStatement
             new WebService(serviceXml) { RequestResponse = response };
             dsfWebDeleteActivity.OutputDescription = new OutputDescription();
-            dsfWebDeleteActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape(){Paths = new List<IPath>(){new StringPath(){ActualPath = "[[Response]]", OutputExpression = "[[Response]]"}}});
+            dsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            dsfWebDeleteActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
             dsfWebDeleteActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
@@ -260,7 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Assert Results-------------------------
             Assert.IsNotNull(dsfWebDeleteActivity.OutputDescription);
             Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
-                  }
+        }
 
 
         [TestMethod]
@@ -287,6 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dsfWebDeleteActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
+
             dsfWebDeleteActivity.Inputs = serviceInputs;
             dsfWebDeleteActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
@@ -393,6 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var service = new WebService(serviceXml) { RequestResponse = response };
             dsfWebDeleteActivity.OutputDescription = service.GetOutputDescription();
             dsfWebDeleteActivity.ResponseFromWeb = response;
+            dsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);

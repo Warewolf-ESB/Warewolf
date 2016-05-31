@@ -186,8 +186,6 @@
     <Compile Include="Designers2\Core\Stubs\TestActivity.cs" />
     <Compile Include="Designers2\Core\Stubs\TestActivityDesignerCollectionViewModelItemsInitialized.cs" />
     <Compile Include="Designers2\Core\Stubs\TestActivityDesignerViewModel.cs" />
-    <Compile Include="Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
-    <Compile Include="BehaviourTests.cs" />
     <Compile Include="DateTimeTests\DateTimeViewModelTests.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
@@ -312,7 +310,9 @@
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Behaviour Stubs\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

@@ -377,7 +377,7 @@ Scenario: Assign the value of a negative json index
 	| 1 | [[rec.set(1)]] = 10 |
 
 
-	Scenario: Assign a record set variable equal to a group calculation (sum)
+Scenario: Assign a record set variable equal to a group calculation (sum)
 	Given I assign the value 30 to a variable "[[rec(1).a]]"
 	And I assign the value 30 to a variable "[[rec(1).b]]"
 	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"

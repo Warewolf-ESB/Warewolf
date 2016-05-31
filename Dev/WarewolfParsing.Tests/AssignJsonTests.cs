@@ -323,76 +323,7 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Ignore]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_addsArrayIfItDoesNotExist()
-        {
-            var env = CreateTestEnvWithData();
-
-            var result = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child.Name]]");
-            var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewIndexNestedNameExpression(new LanguageAST.BasicJsonIndexedPropertyIdentifier("Children", LanguageAST.JsonIdentifierExpression.Terminal, LanguageAST.Index.Star)))));
-
-            Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual(env2.JsonObjects["Bob"].ToString(), "{\r\n  \"Children\": [\r\n    \"2\",\r\n    \"4\",\r\n    \"3\"\r\n  ]\r\n}");
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Ignore]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_addsArrayIfItDoesNotExistIntIndex()
-        {
-            var env = CreateTestEnvWithData();
-            JArray x = new JArray();
-
-            var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewIndexNestedNameExpression(new LanguageAST.BasicJsonIndexedPropertyIdentifier("Children", LanguageAST.JsonIdentifierExpression.Terminal, LanguageAST.Index.NewIntIndex(1))))));
-
-            Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual(env2.JsonObjects["Bob"].ToString(), "{\r\n  \"Children\": [\r\n    \"2\"\r\n  ]\r\n}");
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Ignore]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_addsArrayIfItDoesNotExistInt_RandomIndex()
-        {
-            var env = CreateTestEnvWithData();
-            JArray x = new JArray();
-
-            var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewIndexNestedNameExpression(new LanguageAST.BasicJsonIndexedPropertyIdentifier("Children", LanguageAST.JsonIdentifierExpression.Terminal, LanguageAST.Index.NewIntIndex(5))))));
-
-            Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual(env2.JsonObjects["Bob"].ToString(), "{\r\n  \"Children\": [\r\n    null,\r\n    null,\r\n    null,\r\n    null,\r\n    \"2\"\r\n  ]\r\n}");
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [Ignore]
-        [TestCategory("AssignEvaluation_assignGivenAValue")]
-        public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_addsArrayIfItDoesNotExistIntLast()
-        {
-            var env = CreateTestEnvWithData();
-            JArray x = new JArray();
-
-            var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-
-            var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewIndexNestedNameExpression(new LanguageAST.BasicJsonIndexedPropertyIdentifier("Children", LanguageAST.JsonIdentifierExpression.Terminal, LanguageAST.Index.Last)))));
-
-            Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual(env2.JsonObjects["Bob"].ToString(), "{\r\n  \"Children\": [\r\n    \"2\"\r\n  ]\r\n}");
-        }
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
