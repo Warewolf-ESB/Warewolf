@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.AreEqual("Q1", vm.QueueName);
             Assert.IsTrue(vm.ReQueue);
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);
-            Assert.AreEqual((ushort)2, vm.Prefetch);
+            Assert.AreEqual((ushort)2, ushort.Parse(vm.Prefetch));
         }
         [TestMethod]
         [Owner("Mthembu Sanele")]
@@ -70,10 +70,10 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
             var privateObject = new PrivateObject(vm);
             privateObject.Invoke("NewRabbitMQSource");
-            var property = privateObject.Invoke("_model.CreateNewSource");
+    
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
-            Assert.IsNotNull(property);
+          
         }
 
         [TestMethod]
