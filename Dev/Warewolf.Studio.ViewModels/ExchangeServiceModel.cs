@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Warewolf.Studio.ViewModels

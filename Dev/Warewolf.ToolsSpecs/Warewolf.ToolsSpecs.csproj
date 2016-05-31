@@ -231,6 +231,7 @@
     <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Write File.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Write File\WriteFileSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Zip\Zip.feature.cs">

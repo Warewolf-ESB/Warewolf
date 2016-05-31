@@ -765,62 +765,6 @@ this.ScenarioSetup(scenarioInfo);
         {
             this.ExecutingWithIncorrectRecordsets("[[rec&^]][[rec&^]] is not a valid variable", ((string[])(null)));
         }
-        
-        public virtual void AssignADateTimeIntoAComplexTypes(string @object, string type, string error, string output, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a DateTime into a complex types", exampleTags);
-#line 224
-this.ScenarioSetup(scenarioInfo);
-#line 225
- testRunner.Given(string.Format("I have a variable \"{0}\" and I selected \"{1}\"", @object, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 226
- testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 227
- testRunner.Then(string.Format("the value of the variable \"{0}\" is a valid \"DateTime\"", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 228
- testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "Type",
-                        "results"});
-            table23.AddRow(new string[] {
-                        "1",
-                        string.Format("{0}", @object),
-                        string.Format("{0}", type),
-                        string.Format("{0}", output)});
-#line 229
- testRunner.And("the debug output as", ((string)(null)), table23, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a DateTime into a complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(1).set().value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:object", "[[rec(1).set().value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "DateTime")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:output", "2015/08/05 11:40:36.975 AM")]
-        public virtual void AssignADateTimeIntoAComplexTypes_Rec1_Set_Value()
-        {
-            this.AssignADateTimeIntoAComplexTypes("[[rec(1).set().value]]", "DateTime", "NO", "2015/08/05 11:40:36.975 AM", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a DateTime into a complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(*).set([[int]]).value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:object", "[[rec(*).set([[int]]).value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "DateTime")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "No")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:output", "2015/08/05 11:40:36.975 AM")]
-        public virtual void AssignADateTimeIntoAComplexTypes_Rec_SetInt_Value()
-        {
-            this.AssignADateTimeIntoAComplexTypes("[[rec(*).set([[int]]).value]]", "DateTime", "No", "2015/08/05 11:40:36.975 AM", ((string[])(null)));
-        }
     }
 }
 #pragma warning restore

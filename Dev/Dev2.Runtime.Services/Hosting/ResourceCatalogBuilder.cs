@@ -110,15 +110,23 @@ namespace Dev2.Runtime.Hosting
                 }
 
                 // Use the parallel task library to process file system ;)
-              
-                var resourceBaseType = typeof(IResourceSource);
-                var types = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(s => s.GetTypes())
-                    .Where(p => resourceBaseType.IsAssignableFrom(p));
+                IList<Type> allTypes = new List<Type>();
                 var connectionTypeName = typeof(Connection).Name;
                 var dropBoxSourceName = typeof(DropBoxSource).Name;
                 var dbType = typeof(DbSource).Name;
-                var allTypes = types as IList<Type> ?? types.ToList();
+                try
+                {
+                    var resourceBaseType = typeof(IResourceSource);
+                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                    var types = assemblies
+                        .SelectMany(s => s.GetTypes())
+                        .Where(p => resourceBaseType.IsAssignableFrom(p));                    
+                    allTypes = types as IList<Type> ?? types.ToList();
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("Error loading types.",e);
+                }
                 streams.ForEach(currentItem =>
                 {
 

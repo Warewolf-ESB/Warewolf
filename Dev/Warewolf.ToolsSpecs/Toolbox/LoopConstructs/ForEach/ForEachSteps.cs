@@ -213,20 +213,6 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             ScenarioContext.Current.Add("result", result);
         }
 
-        [Given(@"I Map the input recordset ""(.*)"" to ""(.*)""")]
-        public void GivenIMapTheInputRecordsetTo(string inMapFrom, string inMapTo)
-        {
-            ScenarioContext.Current.Add("inMapFrom", inMapFrom);
-            ScenarioContext.Current.Add("inMapTo", inMapTo);
-        }
-
-        [Given(@"I Map the output recordset ""(.*)"" to ""(.*)""")]
-        public void GivenIMapTheOutputRecordsetTo(string outMapFrom, string outMapTo)
-        {
-            ScenarioContext.Current.Add("outMapFrom", outMapFrom);
-            ScenarioContext.Current.Add("outMapTo", outMapTo);
-        }
-
         [Then(@"The mapping uses the following indexes")]
         public void ThenTheMappingUsesTheFollowingIndexes(Table table)
         {
