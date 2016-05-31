@@ -135,25 +135,4 @@ Scenario Outline: Write file validation
 		| 48 | Local with Overwrite | [[sourcePath]]                 | ""                | ""              | c:\filetoread.txt | Append Bottom | [[rec().a]] rules        | ""                    | ""       | [[result]]             | ""               | AN           | False            |                                                                                                                                                                                                                           | 1.Contents - No Value assigned for : [[rec().a]]                                                                                                                                                                               |
 		| 49 | Local with Overwrite | [[sourcePath]]                 | ""                | ""              | c:\filetoread.txt | Append Bottom | [[rec([[a]]).a]] rules   | ""                    | ""       | [[result]]             | ""               | AN           | False            |                                                                                                                                                                                                                           | 1.Contents - No Value assigned for : [[a]]                                                                                                                                                                                     |
 		| 50 | Local with Overwrite | [[variable]]                   | c:\Tempfile.txt   | ""              | c:\filetoread.txt | Overwrite     | [[var]] variable is null | ""                    | ""       | [[result]]             | variable is null | NO           | False            |                                                                                                                                                                                                                           | ""                                                                                                                                                                                                                             |
-      
-#Complex Types WOLF-1042
-Scenario Outline: Write file at location using complex types
-	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And source credentials as "<username>" and "<password>"	
-	And Method is "<method>"
-	And input contents as "<content>" with value "<values>"    
-	And result as "<resultVar>"
-    When the write file tool is executed
-	Then the result variable "<resultVar>" will be "<result>"
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Output Path                 | Method   | Username   | Password | File Contents |
-         | <source> = <sourceLocation> | <method> | <username> | String   | <content>     |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-		Examples: 
-		| Name                 | source                              | sourceLocation           | method    | content | values         | username | password | resultVar  | result  | errorOccured |
-		| Local with Overwrite | [[file().resources().path]]         | c:\Temp\filetowrite0.txt | Overwrite | [[var]] | warewolf rules | ""       | ""       | [[result]] | Success | NO           |
-		| Local with Overwrite | [[file(1).resources([[int]]).path]] | c:\Temp\filetowrite0.txt | Overwrite | [[var]] | warewolf rules | ""       | ""       | [[result]] | Success | NO           |
-		| Local with Overwrite | [[file().resources(*).path]]        | c:\Temp\filetowrite0.txt | Overwrite | [[var]] | warewolf rules | ""       | ""       | [[result]] | Success | NO           |		
+  

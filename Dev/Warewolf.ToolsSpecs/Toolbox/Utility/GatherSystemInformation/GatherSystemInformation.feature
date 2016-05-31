@@ -220,16 +220,3 @@ Scenario Outline:Executing with Incorrect Recordsets
 	| [[rec&^[a]]().a]]                          |
 	| [[]]                                       |
 	| [[rec&^]][[rec&^]] is not a valid variable |
-
-Scenario Outline: Assign a DateTime into a complex types
-	Given I have a variable "<object>" and I selected "<Type>"	
-	When the gather system infomartion tool is executed
-	Then the value of the variable "<object>" is a valid "DateTime"
-	And the execution has "<error>" error
-	And the debug output as 
-	| # | Variable   | Type   | results  |
-	| 1 | <object> | <Type> | <output> |
-	Examples: 
-	| object                        | Type     | error | output                     |
-	| [[rec(1).set().value]]        | DateTime | NO    | 2015/08/05 11:40:36.975 AM |
-	| [[rec(*).set([[int]]).value]] | DateTime | No    | 2015/08/05 11:40:36.975 AM |

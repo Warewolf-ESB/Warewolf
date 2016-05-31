@@ -890,7 +890,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 250
        testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 251
-       testRunner.Then("the datetime result should be \"2014-03-29 wrong date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("the datetime result should be \"2014-03-29 \"13rong 29ate\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 252
        testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -912,7 +912,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table34.AddRow(new string[] {
-                        "[[result]] = 2014-03-29 wrong date"});
+                        "[[result]] = 2014-03-29 \"13rong 29ate\""});
 #line 256
        testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
@@ -945,88 +945,27 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void EnsureDateAndTimeInputAndOutputsAcceptsComplexTypes(string date, string dateval, string input, string value, string years, string output, string val, string res, string result, string error, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Date and Time Input and outputs accepts complex types", exampleTags);
-#line 270
-this.ScenarioSetup(scenarioInfo);
-#line 271
-       testRunner.Given(string.Format("I have a date \"{0}\"  with \"<DateVal>\"", date), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 272
-       testRunner.And(string.Format("the input format as \"{0}\" with \"{1}\"", input, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 273
-       testRunner.And(string.Format("the output format as \"{0}\" with \"{1}\"", output, val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 274
-    testRunner.And(string.Format("I selected Add time as \"Years\" with a value of \"{0}\"", years), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
-       testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 276
-       testRunner.Then(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 277
-    testRunner.And(string.Format("the result variable \"{0}\" will be \"{1}\"", res, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure Date and Time Input and outputs accepts complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(1).row().value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Date", "[[rec(1).row().value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Dateval", "31/07/2015")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Input", "[[rs(1).row().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "dd/mm/yyyy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:years", "0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rs().row().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "mm-dd-yyy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:res", "[[rec(3).row().value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31-07-2015")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
-        public virtual void EnsureDateAndTimeInputAndOutputsAcceptsComplexTypes_Rec1_Row_Value()
-        {
-            this.EnsureDateAndTimeInputAndOutputsAcceptsComplexTypes("[[rec(1).row().value]]", "31/07/2015", "[[rs(1).row().set]]", "dd/mm/yyyy", "0", "[[rs().row().set]]", "mm-dd-yyy", "[[rec(3).row().value]]", "31-07-2015", "No", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure Date and Time Input and outputs accepts complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(*).row([[int]]).value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Date", "[[rec(*).row([[int]]).value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Dateval", "31/08/2015")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Input", "[[rs(1).row().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "dd/mm/yyyy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:years", "0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rs().row().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "mm-dd-yyy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:res", "[[rec(3).row().value]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31-08-2015")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
-        public virtual void EnsureDateAndTimeInputAndOutputsAcceptsComplexTypes_Rec_RowInt_Value()
-        {
-            this.EnsureDateAndTimeInputAndOutputsAcceptsComplexTypes("[[rec(*).row([[int]]).value]]", "31/08/2015", "[[rs(1).row().set]]", "dd/mm/yyyy", "0", "[[rs().row().set]]", "mm-dd-yyy", "[[rec(3).row().value]]", "31-08-2015", "No", ((string[])(null)));
-        }
-        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time output format with NULL inputs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
         public virtual void DateAndTimeOutputFormatWithNULLInputs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time output format with NULL inputs", ((string[])(null)));
-#line 282
- this.ScenarioSetup(scenarioInfo);
-#line 283
+#line 270
+this.ScenarioSetup(scenarioInfo);
+#line 271
        testRunner.Given("I have a Date time variable \"[[a]]\" with value \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 284
+#line 272
     testRunner.And("I have a date \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 285
+#line 273
        testRunner.And("the input format as \"dd-MM-yy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 286
+#line 274
        testRunner.And("the output format as \"dd-MM-yy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
+#line 275
    testRunner.And("I selected Add time as \"Years\" with a value of 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
+#line 276
        testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 289
+#line 277
        testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

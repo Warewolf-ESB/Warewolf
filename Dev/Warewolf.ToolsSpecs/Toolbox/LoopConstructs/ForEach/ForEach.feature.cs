@@ -1691,194 +1691,30 @@ this.ScenarioSetup(scenarioInfo);
             this.ExecuteAForeachOverATool("InRange", "", "0", "AN", "The To field cannot be left empty", ((string[])(null)));
         }
         
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes(string type, string variable, string value, string from, string to, string error, string message, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool using complex types", exampleTags);
-#line 459
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table50.AddRow(new string[] {
-                        "[[rs().field().value]]",
-                        "1"});
-            table50.AddRow(new string[] {
-                        "[[rs().field().value]]",
-                        "2"});
-            table50.AddRow(new string[] {
-                        "[[rs().field().value]]",
-                        "3"});
-#line 460
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table50, "Given ");
-#line 465
- testRunner.And(string.Format("I have selected the foreach type as \"{0}\" and used \"<variable>\"", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 466
- testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 467
- testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 468
- testRunner.Then(string.Format("the foreach executes {0} times", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 469
- testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 470
- testRunner.And(string.Format("the debug outputs as \"{0}\"", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "InRecordset")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).field(*)]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "An")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Number of Executes must be a whole number from 1 onwards")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant0()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("InRecordset", "[[rs(*).field(*)]]", "", "", "", "An", "Number of Executes must be a whole number from 1 onwards", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "InRecordset")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().field()]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant1()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("InRecordset", "[[rs().field()]]", "5", "", "", "No", "", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "InCSV")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).field(*)]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "An")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Number of Executes must be a whole number from 1 onwards")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant2()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("InCSV", "[[rs(*).field(*)]]", "", "", "", "An", "Number of Executes must be a whole number from 1 onwards", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "InCSV")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().field()]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant3()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("InCSV", "[[rs().field()]]", "5", "", "", "No", "", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "InRange")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "[[rs(*).field(*)]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "[[rs(*).field(*)]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "An")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Number of Executes must be a whole number from 1 onwards")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant4()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("InRange", "", "", "[[rs(*).field(*)]]", "[[rs(*).field(*)]]", "An", "Number of Executes must be a whole number from 1 onwards", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "InRange")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "[[rs().field()]] = 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "[[rs().field()]] = 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant5()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("InRange", "", "", "[[rs().field()]] = 1", "[[rs().field()]] = 2", "No", "", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "NumOfExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs(*).field(*)]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "An")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Number of Executes must be a whole number from 1 onwards")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant6()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("NumOfExecution", "[[rs(*).field(*)]]", "", "", "", "An", "Number of Executes must be a whole number from 1 onwards", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool using complex types")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "NumOfExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rs().field()]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:from", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "")]
-        public virtual void ExecuteAForeachOverAToolUsingComplexTypes_Variant7()
-        {
-            this.ExecuteAForeachOverAToolUsingComplexTypes("NumOfExecution", "[[rs().field()]]", "5", "", "", "No", "", ((string[])(null)));
-        }
-        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach over a tool null in csv")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
         public virtual void ExecuteAForeachOverAToolNullInCsv()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in csv", ((string[])(null)));
-#line 483
+#line 457
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table51.AddRow(new string[] {
+            table50.AddRow(new string[] {
                         "[[count]]",
                         "NULL"});
-#line 484
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table51, "Given ");
-#line 487
+#line 458
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table50, "Given ");
+#line 461
  testRunner.And("I have selected the foreach type as \"InCSV\" and used \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 488
+#line 462
  testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 489
+#line 463
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 490
+#line 464
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1890,24 +1726,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachOverAToolNullInRecordsets()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in Recordsets", ((string[])(null)));
-#line 492
+#line 466
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table52.AddRow(new string[] {
+            table51.AddRow(new string[] {
                         "[[count().a]]",
                         "NULL"});
-#line 493
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table52, "Given ");
-#line 496
+#line 467
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table51, "Given ");
+#line 470
  testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[count().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 497
+#line 471
  testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 498
+#line 472
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 499
+#line 473
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1919,24 +1755,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachOverAToolNullInNumberofexecutions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in numberofexecutions", ((string[])(null)));
-#line 501
+#line 475
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table53.AddRow(new string[] {
+            table52.AddRow(new string[] {
                         "[[count]]",
                         "NULL"});
-#line 502
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table53, "Given ");
-#line 505
+#line 476
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table52, "Given ");
+#line 479
  testRunner.And("I have selected the foreach type as \"NumOfExecution\" and used \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 506
+#line 480
  testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 507
+#line 481
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 508
+#line 482
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1948,25 +1784,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachOverAToolNullInRange()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over a tool null in Range", ((string[])(null)));
-#line 510
+#line 484
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table54.AddRow(new string[] {
+            table53.AddRow(new string[] {
                         "[[count]]",
                         "NULL"});
-#line 511
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table54, "Given ");
-#line 514
+#line 485
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table53, "Given ");
+#line 488
  testRunner.And("I have selected the foreach type as \"InRange\" from \"[[rs(2).field]]\" to \"[[value]" +
                     "]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 515
+#line 489
  testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 516
+#line 490
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 517
+#line 491
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1978,33 +1814,33 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachOverAnActivityWithNumberOfExecutionsEquals1Invalid()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach over an activity with number of executions equals +1 invalid", ((string[])(null)));
-#line 519
+#line 493
 this.ScenarioSetup(scenarioInfo);
-#line 520
+#line 494
  testRunner.And("I have selected the foreach type as \"NumOfExecution\" as \"+1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 521
+#line 495
  testRunner.And("the underlying dropped activity is a(n) \"Activity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 522
+#line 496
  testRunner.And("I Map the input recordset \"[[rs(*).field]]\" to \"[[test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 523
+#line 497
  testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
+#line 498
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         "index"});
-            table55.AddRow(new string[] {
+            table54.AddRow(new string[] {
                         "0"});
-#line 525
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table55, "Then ");
-#line 528
+#line 499
+ testRunner.Then("The mapping uses the following indexes", ((string)(null)), table54, "Then ");
+#line 502
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Number"});
-#line 529
- testRunner.And("the debug inputs as", ((string)(null)), table56, "And ");
+#line 503
+ testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2015,33 +1851,33 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachWithNumberOfExecutionsEquals1Invalid()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach with number of executions equals @#$1 invalid", ((string[])(null)));
-#line 532
+#line 506
 this.ScenarioSetup(scenarioInfo);
-#line 533
+#line 507
  testRunner.And("I have selected the foreach type as \"NumOfExecution\" as \"+1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 534
+#line 508
  testRunner.And("the underlying dropped activity is a(n) \"Activity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 535
+#line 509
  testRunner.And("I Map the input recordset \"[[rs(*).field]]\" to \"[[test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 536
+#line 510
  testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 537
+#line 511
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                         "index"});
-            table57.AddRow(new string[] {
+            table56.AddRow(new string[] {
                         "0"});
-#line 538
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table57, "Then ");
-#line 541
+#line 512
+ testRunner.Then("The mapping uses the following indexes", ((string)(null)), table56, "Then ");
+#line 515
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Number"});
-#line 542
- testRunner.And("the debug inputs as", ((string)(null)), table58, "And ");
+#line 516
+ testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2052,26 +1888,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachWithNumberOfExecutionsAsRecordsetWithStar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach with number of executions as recordset with star", ((string[])(null)));
-#line 545
+#line 519
 this.ScenarioSetup(scenarioInfo);
-#line 546
+#line 520
  testRunner.And("I have selected the foreach type as \"NumOfExecution\" as \"[[rec(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 547
+#line 521
  testRunner.And("the underlying dropped activity is a(n) \"Activity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 548
+#line 522
  testRunner.And("I Map the input recordset \"[[rs(*).field]]\" to \"[[test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 549
+#line 523
  testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 550
+#line 524
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 551
+#line 525
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Number"});
-#line 552
- testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
+#line 526
+ testRunner.And("the debug inputs as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2082,54 +1918,54 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachUsingInRecordsetWithIncorrectRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach using In Recordset with incorrect recordset", ((string[])(null)));
-#line 555
+#line 529
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table60.AddRow(new string[] {
+            table59.AddRow(new string[] {
                         "[[rs().field]]",
                         "1"});
-            table60.AddRow(new string[] {
+            table59.AddRow(new string[] {
                         "[[rs().field]]",
                         "2"});
-            table60.AddRow(new string[] {
+            table59.AddRow(new string[] {
                         "[[rs().field]]",
                         "3"});
-            table60.AddRow(new string[] {
+            table59.AddRow(new string[] {
                         "[[rs().field]]",
                         "6"});
-#line 556
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table60, "Given ");
-#line 562
+#line 530
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table59, "Given ");
+#line 536
  testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]%^&]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 563
+#line 537
  testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 564
+#line 538
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 565
+#line 539
  testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 566
+#line 540
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Recordset"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "* in Recordset",
                         "[[rs(1).field]] = 1"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 2"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 3"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 6"});
-#line 567
- testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
+#line 541
+ testRunner.And("the debug inputs as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

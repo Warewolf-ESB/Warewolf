@@ -487,34 +487,6 @@ Examples:
 	| [[rec().a]]  | 30/07/2015 | [[rs(*).a]] | 01/01/2016 | [[rj(1).a]] | dd/mm/yyyy | [[rg(1).set]] | 7      |
 	| [[rec(*).a]] | 30/07/2015 | [[rs(1).a]] | 01/01/2016 | [[rj().a]]  | dd/mm/yyyy | [[rg().set]]  | 7      |
 	
-Scenario: Variables that do not exist
-	Given I have a first date "[[a]]" equal to ""
-	And I have a second date "[[b]]" equals ""
-	And the date format as "[[v]]" equals ""
-	And I selected output in "years" 	
-	When the datetime difference tool is executed
-	Then the difference should be ""
-	And the execution has "AN" error
-	And the debug output as 
-	|            |                                            |
-	| [[result]] | The expression [[a]] has no value assigned |
-
-Scenario Outline: Calculate the number of months using complex types
-	Given I have a first date "<input1>" equals "<Val1>" 
-	And I have a second date "<input2>" equals "<Val2>" 
-	And the date format as "<inputformat>" equals "<Val3>"
-	And I selected output in "months" 	
-	When the datetime difference tool is executed
-	Then the difference should be "7"
-	And the execution has "<error>" error
-	And the result variable "<res>" will be "<result>"
-Examples: 
-	| input1                      | Val1                   | input2                 | Val2       | inputformat          | Val3       | res                              | error | result            |
-	| [[rec().row(*).set]]        | 30/07/2015             | [[rs(*).date().value]] | 01/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |
-	| [[rec(1).row([[int]]).set]] | 31/07/2015             | [[rs(*).date().value]] | 02/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |
-	| now() = !!DateWithMS!!      | 2014/01/06 08:00:01.00 | ""                     | Years      |                      |            |                                  |       |                   |
-
-
 
 Scenario: Calculate the number of Years by using Null variable as first date
 	Given I have date time difference variable "[[a]]" with value "NULL"

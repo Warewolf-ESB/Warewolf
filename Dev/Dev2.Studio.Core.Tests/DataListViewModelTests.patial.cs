@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Caliburn.Micro;
-using Dev2.Data.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
 
