@@ -139,26 +139,3 @@ Scenario Outline: Read Folder file at location with invalid directories
 	| 1  | Local Files | 4234         | 4234           | Files  | ""       | ""       | [[result]] |        |
 	| 2  | UNC         | [[var]]      |                | Folder | ""       | ""       | [[result]] |        |
 	| 3  | FTP         | [[variable]] | ""             | Files  | ""       | ""       | [[result]] |        |
-
-	
-	
-#Complex Types WOLF-1042
-Scenario Outline: Read Folder file at location using complex types
-	Given I have a source path "<source>" with value "<sourceLocation>"
-	And source credentials as "<username>" and "<password>"
-	And Read is "<read>"   
-	And result as "<resultVar>"
-    When the read folder file tool is executed
-	Then the result variable "<resultVar>" will be "<result>"
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Input Path                  | Read   | Username   | Password |
-         | <source> = <sourceLocation> | <read> | <username> | String   |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-    Examples: 
-	| No | Name        | source                              | sourceLocation | read  | username | password | resultVar  | result | errorOccured |
-	| 1  | Local Files | [[file().resources().path]]         | c:\            | Files | ""       | ""       | [[result]] | String | NO           |
-	| 2  | Local Files | [[file(*).resources().path]]        | e:\            | Files | ""       | ""       | [[result]] | String | NO           |
-	| 3  | Local Files | [[file([[int]]).resources(1).path]] | d:\            | Files | ""       | ""       | [[result]] | String | NO           |							 									

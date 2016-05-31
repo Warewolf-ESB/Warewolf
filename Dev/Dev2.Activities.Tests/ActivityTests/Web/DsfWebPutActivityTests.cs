@@ -89,6 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity();
+            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
@@ -129,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity();
+            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
@@ -175,6 +177,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity();
+            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Response", "[[Response]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
@@ -230,6 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity();
+            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
@@ -275,6 +279,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity();
+            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
@@ -326,6 +331,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PutData = "This is post:[[Post]]"
             };
+            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");

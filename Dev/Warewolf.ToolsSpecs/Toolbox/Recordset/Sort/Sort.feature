@@ -261,24 +261,7 @@ Scenario Outline: Sort recordset
 	Examples: 
 	| input                          | direction | result             |
 	| [[rs(1).a]]                    | Forward   | Mongolia,Zambia    |
-
-
-#Complex Types WOLF-1042
-Scenario Outline: Sort recordset using complex types
-	Given I have the following recordset to sort
-	| rs           | value     |
-	| rs().rec().a | Zambia    |
-	| rs().rec().a | Mangolia  |
-	| rs().rec().a | America   |
-	| rs().rec().a | Australia |
-	And I sort a record "<input>"
-	And my sort order is "<direction>"
-	When the sort records tool is executed
-	Then the execution has "<error>" error
-	Examples: 
-	| input             | direction | error | result          |
-	| [[rs().rec(1).a]] | Forward   | No    | Mongolia,Zambia |
-
+	
 Scenario: Sort Recordset without field Forwards
 	Given I have the following recordset to sort
 	| rs       | value     |
@@ -291,7 +274,7 @@ Scenario: Sort Recordset without field Forwards
 	When the sort records tool is executed
 	Then the execution has "AN" error
 
-#				
+				
 Scenario: Sort Null Recordset
 	Given I have the following recordset to sort
 	| rs     | value |
