@@ -52,7 +52,6 @@
                                           x:Name="SearchTextBox" 
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
-                                          TextChanged="SearchTextBox_OnTextChanged"
                                           LabelText="Filter"
                                           HorizontalAlignment="Stretch" >
             </customControls:SearchTextBox>

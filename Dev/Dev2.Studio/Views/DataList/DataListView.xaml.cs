@@ -21,10 +21,8 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Infragistics.Windows.DataPresenter;
 using Infragistics.Windows.DataPresenter.Events;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.CustomControls;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.DataList
@@ -264,25 +262,6 @@ namespace Dev2.Studio.Views.DataList
         private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
         {
             WriteToResourceModel();
-        }
-
-        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            var text = sender as SearchTextBox;
-            if (text != null && !string.IsNullOrWhiteSpace(text.Text))
-            {
-                Xtg.FieldLayouts[1].RecordFilters.Clear();
-                Xtg.FieldLayouts[1].RecordFilters.Add(new RecordFilter(new Infragistics.Windows.DataPresenter.Field("DisplayName")));
-                Xtg.FieldLayouts[1].RecordFilters[0].Conditions.Add(new Infragistics.Windows.Controls.ComparisonCondition(Infragistics.Windows.Controls.ComparisonOperator.Contains, text.Text));
-
-                Xtg.FieldLayouts[2].RecordFilters.Clear();
-                Xtg.FieldLayouts[2].RecordFilters.Add(new RecordFilter(new Infragistics.Windows.DataPresenter.Field("DisplayName")));
-                Xtg.FieldLayouts[2].RecordFilters[0].Conditions.Add(new Infragistics.Windows.Controls.ComparisonCondition(Infragistics.Windows.Controls.ComparisonOperator.Contains, text.Text));
-
-                Xtg.FieldLayouts[4].RecordFilters.Clear();
-                Xtg.FieldLayouts[4].RecordFilters.Add(new RecordFilter(new Infragistics.Windows.DataPresenter.Field("DisplayName")));
-                Xtg.FieldLayouts[4].RecordFilters[0].Conditions.Add(new Infragistics.Windows.Controls.ComparisonCondition(Infragistics.Windows.Controls.ComparisonOperator.Contains, text.Text));
-            }
         }
     }
 }
