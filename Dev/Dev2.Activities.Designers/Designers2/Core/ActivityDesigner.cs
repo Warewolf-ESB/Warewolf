@@ -25,7 +25,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
-using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -41,7 +40,6 @@ namespace Dev2.Activities.Designers2.Core
         where TViewModel : ActivityDesignerViewModel
     {
         bool _isInitialFocusDone;
-        readonly AdornerControl _helpAdorner;
         readonly AdornerControl _errorsAdorner;
         IDesignerManagementService _designerManagementService;
         bool _isDisposed;
@@ -57,7 +55,6 @@ namespace Dev2.Activities.Designers2.Core
             //This line is bad it causes the overall designer to not get focus when clicking on it
             //Please be very careful about putting this line in.
             //FocusManager.SetIsFocusScope(this , true);
-            _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
@@ -199,12 +196,6 @@ namespace Dev2.Activities.Designers2.Core
             BindingOperations.SetBinding(viewModel, ActivityDesignerViewModel.IsMouseOverProperty, new Binding(IsMouseOverProperty.Name)
             {
                 Source = this,
-                Mode = BindingMode.OneWay
-            });
-
-            BindingOperations.SetBinding(_helpAdorner, AdornerControl.IsAdornerVisibleProperty, new Binding(ActivityDesignerViewModel.ShowHelpProperty.Name)
-            {
-                Source = viewModel,
                 Mode = BindingMode.OneWay
             });
 

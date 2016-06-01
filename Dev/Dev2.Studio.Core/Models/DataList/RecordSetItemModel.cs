@@ -21,8 +21,6 @@ namespace Dev2.Studio.Core.Models.DataList
             Children = children;
         }
 
-        //private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
-
         public ObservableCollection<IRecordSetFieldItemModel> Children
         {
             get
@@ -35,72 +33,6 @@ namespace Dev2.Studio.Core.Models.DataList
                 NotifyOfPropertyChange(() => Children);
             }
         }
-
-        //public enDev2ColumnArgumentDirection ColumnIODirection
-        //{
-        //    get
-        //    {
-        //        return _columnIODir;
-        //    }
-        //    set
-        //    {
-        //        _columnIODir = value;
-
-        //        NotifyIOPropertyChanged();
-        //    }
-        //}
-
-        //public string Description
-        //{
-        //    get
-        //    {
-        //        return _description;
-        //    }
-        //    set
-        //    {
-        //        _description = value;
-        //        NotifyOfPropertyChange(() => Description);
-        //    }
-        //}
-
-        //public string DisplayName
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public string ErrorMessage
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool HasError
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
 
         public override bool Input
         {
@@ -165,118 +97,6 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        //public bool IsBlank
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsCheckBoxVisible
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsEditable
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsExpanded
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsHeader
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsSelected
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsUsed
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsVisible
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool Output
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
         public string FilterText
         {
             get
@@ -323,47 +143,6 @@ namespace Dev2.Studio.Core.Models.DataList
             Children = new ObservableCollection<IRecordSetFieldItemModel>(Children.Where(a => a.DisplayName.ToUpper().Contains(searchText.ToUpper())));
         }
 
-        //public void RemoveError()
-        //{
-        //    HasError = false;
-        //    ErrorMessage = string.Empty;
-        //}
-
-        //public void SetError(string errorMessage)
-        //{
-        //    HasError = true;
-        //    ErrorMessage = errorMessage;
-        //}
-
-        //public string ValidateName(string name)
-        //{
-        //    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-        //    if (!string.IsNullOrEmpty(name))
-        //    {
-        //            name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                
-        //        if (!string.IsNullOrEmpty(name))
-        //        {
-        //            var intellisenseResult = parser.ValidateName(name, "Recordset");
-        //            if (intellisenseResult != null)
-        //            {
-        //                SetError(intellisenseResult.Message);
-        //            }
-        //            else
-        //            {
-        //                if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-        //                {
-        //                    RemoveError();
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return name;
-        //}
-
         #region Overrides of DataListItemModel
 
         public override string ValidateName(string name)
@@ -372,10 +151,6 @@ namespace Dev2.Studio.Core.Models.DataList
             if (!string.IsNullOrEmpty(name))
             {
                 name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                //else if(IsField)
-                //{
-                //    name = DataListUtil.ExtractFieldNameFromValue(name);
-                //}
 
                 if(!string.IsNullOrEmpty(name))
                 {
@@ -397,6 +172,21 @@ namespace Dev2.Studio.Core.Models.DataList
                 }
             }
             return name;
+        }
+
+        #endregion
+
+        #region Overrides of DataListItemModel
+
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override string ToString()
+        {
+            return DisplayName;
         }
 
         #endregion

@@ -318,12 +318,10 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Display text" />
 
-            <ui:IntellisenseTextBox Grid.Column="1"
+            <TextBox Grid.Column="1"
                                     Margin="1,1,0,1"
-                                    DefaultText="[[Display text]]"
-                                    WrapInBrackets="False"
                                     x:Name="DisplayText"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource TextBoxStyle}"
                                     Text="{Binding DisplayText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
@@ -335,7 +333,7 @@
                                          SourcePropertyValue="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
+            </TextBox>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -344,12 +342,10 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" x:Name="TrueArmLabel" Text="True arm text" />
 
-            <ui:IntellisenseTextBox Grid.Column="1"
+            <TextBox Grid.Column="1"
                                     Margin="0,1,0,1"
-                                    DefaultText="True arm text"
-                                    WrapInBrackets="False"
                                     x:Name="TrueArmText"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource TextBoxStyle}"
                                     Text="{Binding TrueArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsTrueArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
@@ -361,7 +357,7 @@
                                          SourcePropertyValue="{Binding TrueArmText, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
+            </TextBox>
         </Grid>
         <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -370,12 +366,10 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="False arm text" />
 
-            <ui:IntellisenseTextBox Grid.Column="1"
+            <TextBox Grid.Column="1"
                                     Margin="1,1,0,1"
-                                    DefaultText="False arm text"
-                                    WrapInBrackets="False"
                                     x:Name="FalseArmText"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource TextBoxStyle}"
                                     Text="{Binding FalseArmText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFalseArmFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
@@ -387,7 +381,7 @@
                                          SourcePropertyValue="{Binding FalseArmText, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
-            </ui:IntellisenseTextBox>
+            </TextBox>
         </Grid>
         <errors:OnError Grid.Column="0"
                         Grid.Row="7"

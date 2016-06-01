@@ -45,6 +45,7 @@ namespace Dev2.TO
         public static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAllDecision();
         Action<DecisionTO> _deleteAction;
         bool _isLast;
+        private bool _isInitializing;
         public RelayCommand DeleteCommand { get;  set; }
 
         public DecisionTO()
@@ -56,6 +57,7 @@ namespace Dev2.TO
         {
             UpdateDisplayAction = updateDisplayAction??(a=>{});
             Inserted = inserted;
+            _isInitializing = true;
             From = "";
             To = "";
             MatchValue = matchValue;
@@ -75,7 +77,7 @@ namespace Dev2.TO
                     DeleteAction(this);
                 }
             }, CanDelete);
-            
+            _isInitializing = false;
         }
 
         public Action<DecisionTO> DeleteAction
@@ -93,6 +95,7 @@ namespace Dev2.TO
         public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction = null,Action<DecisionTO> deleteAction = null)
         {
             UpdateDisplayAction = updateDisplayAction ?? (x => { });
+            _isInitializing = true;
             Inserted = false;
             MatchValue = a.Col1;
             SearchCriteria = a.Col2;
@@ -112,7 +115,7 @@ namespace Dev2.TO
                     DeleteAction(this);
                 }
             },CanDelete);
-
+            _isInitializing = false;
         }
 
        public bool CanDelete(object obj)
@@ -146,6 +149,10 @@ namespace Dev2.TO
             }
             set
             {
+                if (_from == value)
+                {
+                    return;
+                }
                 _from = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
@@ -164,6 +171,10 @@ namespace Dev2.TO
             }
             set
             {
+                if (_to == value)
+                {
+                    return;
+                }
                 _to = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
@@ -182,6 +193,10 @@ namespace Dev2.TO
             }
             set
             {
+                if (_searchCriteria == value)
+                {
+                    return;
+                }
                 _searchCriteria = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
@@ -191,7 +206,7 @@ namespace Dev2.TO
 
         void UpdateDisplay()
         {
-            if(IndexNumber == 1)
+            if(!_isInitializing)
             {
                 UpdateDisplayAction(this);
             }
@@ -206,6 +221,10 @@ namespace Dev2.TO
             }
             set
             {
+                if (_matchValue == value)
+                {
+                    return;
+                }
                 _matchValue = value;
                
                 OnPropertyChanged();
@@ -231,13 +250,17 @@ namespace Dev2.TO
                 if (value != null)
                 {
                     _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
-                    OnPropertyChanged();
-                    RaiseCanAddRemoveChanged();
                     if (!string.IsNullOrEmpty(_searchType))
                     {
                         IsSearchCriteriaEnabled = true;
                     }
                     UpdateMatchVisibility(this, _searchType, Whereoptions);
+                    if (_searchType == value)
+                    {
+                        return;
+                    }
+                    OnPropertyChanged();
+                    RaiseCanAddRemoveChanged();                   
                     UpdateDisplay();
                 }
             }

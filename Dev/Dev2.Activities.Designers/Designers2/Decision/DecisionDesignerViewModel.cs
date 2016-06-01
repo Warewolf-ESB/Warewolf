@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.Decision
     public class DecisionDesignerViewModel : ActivityCollectionDesignerObservableViewModel<DecisionTO>
     {
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
-
+        
         static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAll();
         public DecisionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -51,18 +51,23 @@ namespace Dev2.Activities.Designers2.Decision
             Collection.CollectionChanged += CollectionCollectionChanged;
             WhereOptions = new ObservableCollection<string>(FindRecsetOptions.FindAll().Select(c => c.HandlesType()));
             SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
+            _isInitializing = true;
             ConfigureDecisionExpression(ModelItem);
             InitializeItems(Tos);
             DeleteCommand = new DelegateCommand(x =>
             {
                DeleteRow(x as DecisionTO);
             });
-            if(String.IsNullOrEmpty(DisplayName))
+            _isInitializing = false;
+            if (DisplayText != DisplayName)
             {
-                UpdateDecisionDisplayName((DecisionTO)Tos[0]);
+                DisplayName = DisplayText;
             }
-            DisplayText = DisplayName;
-  
+            if (String.IsNullOrEmpty(DisplayName) || DisplayName== "Decision")
+            {
+                DisplayName = "Decision";
+                DisplayText = DisplayName;
+            }
         }
 
         void CollectionCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -200,7 +205,7 @@ namespace Dev2.Activities.Designers2.Decision
                         FalseArmText = decisions.FalseArmText;
                         DisplayText = decisions.DisplayText;
                         RequireAllDecisionsToBeTrue = decisions.Mode==Dev2DecisionMode.AND;
-                        return new ObservableCollection<IDev2TOFn>(decisions.TheStack.Select((a,i) => new DecisionTO(a,i,UpdateDecisionDisplayName,DeleteRow)));
+                        return new ObservableCollection<IDev2TOFn>(decisions.TheStack.Select((a, i) => new DecisionTO(a, i+1, UpdateDecisionDisplayName, DeleteRow)));
                     
                     }
 
@@ -246,24 +251,15 @@ namespace Dev2.Activities.Designers2.Decision
 
         public bool IsFalseArmFocused { get { return (bool)GetValue(IsFalseArmFocusedProperty); } set { SetValue(IsFalseArmFocusedProperty, value); } }
         public static readonly DependencyProperty IsFalseArmFocusedProperty = DependencyProperty.Register("IsFalseArmFocused", typeof(bool), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(bool)));
-
+        private bool _isInitializing;
 
 
         void OnSearchTypeChanged(object indexObj)
         {
           
             var index = (int)indexObj;
-
-            if(index == 0)
-            {
-                UpdateDecisionDisplayName((DecisionTO)Tos[index]);
-            }
-            if(index == -1)
-            {
-                index = 0;
-            }
-
-            if(index < 0 || index >= Tos.Count)
+            UpdateDecisionDisplayName((DecisionTO)Tos[index]);
+            if (index < 0 || index >= Tos.Count)
             {
                 return;
             }
@@ -283,9 +279,9 @@ namespace Dev2.Activities.Designers2.Decision
 
         void UpdateDecisionDisplayName(DecisionTO dec)
         {
-            if (dec != null && dec.IndexNumber == 1)
+            
+            if (dec != null && !_isInitializing && dec.IndexNumber==1)
             {
-
                 DisplayName = String.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType, dec.IsBetweenCriteriaVisible ? string.Format("{0} and {1}", dec.From, dec.To) : dec.SearchCriteria, dec.SearchType==null|| dec.SearchType.ToLower().Contains("is")?"":"Is");
                 DisplayText = String.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType, dec.IsBetweenCriteriaVisible ? string.Format("{0} and {1}", dec.From, dec.To) : dec.SearchCriteria, dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
             }
