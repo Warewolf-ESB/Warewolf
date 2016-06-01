@@ -15,6 +15,7 @@
              xmlns:dataList1="clr-namespace:Dev2.Studio.ViewModels.DataList;assembly=Dev2.Studio.Core"
              xmlns:dataList3="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              LostKeyboardFocus="UserControlLostKeyboardFocus"
+             MouseEnter="DataListView_OnMouseEnter"
              KeyboardNavigation.DirectionalNavigation="Continue" KeyboardNavigation.TabNavigation="Cycle"
              x:Name="DataListViewControl"
              AutomationProperties.AutomationId="UI_DataListView_AutoID"
@@ -33,6 +34,7 @@
     </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
+          MouseEnter="DataListView_OnMouseEnter"
           Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -100,15 +102,15 @@
                 </dataPresenter:XamTreeGrid.FieldSettings>
                 <dataPresenter:XamTreeGrid.FieldLayouts >
                     <dataPresenter:FieldLayout Key="{x:Type dataList3:DataListHeaderItemModel}">
-                        <dataPresenter:TemplateField Name="DisplayName" Label=" Display Name" Width="*">
+                        <dataPresenter:TemplateField Name="DisplayName" Label=" Display Name" Width="*" AllowEdit="True">
                             <dataPresenter:TemplateField.DisplayTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding .}" FontWeight="Bold" />
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TextField BindingType="Unbound" Name="Input" Label="Input" Width="60"/>
-                        <dataPresenter:TextField BindingType="Unbound" Name="Output" Label="Output" Width="60"/>
+                        <dataPresenter:TextField BindingType="Unbound" Name="Input" Label="Input" Width="60" AllowEdit="False"/>
+                        <dataPresenter:TextField BindingType="Unbound" Name="Output" Label="Output" Width="60" AllowEdit="False"/>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
                     </dataPresenter:FieldLayout>
                     <dataPresenter:FieldLayout Key="{x:Type dataList3:ScalarItemModel}" ParentFieldName="Children">
@@ -284,7 +286,7 @@
                         </dataPresenter:TemplateField>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
                     </dataPresenter:FieldLayout>
-                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:ScalarItemModel}">
+                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:RecordSetItemModel}">
                         <dataPresenter:TemplateField Name="DisplayName" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" Width="*" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
                                 <DataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">

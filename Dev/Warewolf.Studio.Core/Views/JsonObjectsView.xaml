@@ -20,18 +20,40 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Command="Close" Key="Escape" />
+    </Window.InputBindings>
 
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock></TextBlock>
-        <StackPanel Grid.Row="1" 
+        <StackPanel Grid.Row="0" 
+                    Grid.Column="0" 
+                    Background="{StaticResource WareWolfMenuBrush}" 
+                    HorizontalAlignment="Stretch" 
+                    Orientation="Horizontal">
+            <TextBlock Margin="5" Text="Object" Style="{StaticResource SourceHeader}"></TextBlock>
+        </StackPanel>
+        <TextBox TextWrapping="Wrap" 
+                 Margin="{StaticResource ElementBorder}"
+                 Grid.Row="1" 
+                 x:Name="ResponseTextbox"
+                 IsReadOnly="True"
+                 Height="Auto" 
+                 AcceptsReturn="True" 
+                 VerticalContentAlignment="Top"
+                 SnapsToDevicePixels="True" 
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto" >
+        </TextBox>
+        <StackPanel Grid.Row="2" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
-                    Margin="0,3,5,5">
-            <Button x:Name="DoneButton" Content="Close" Width="Auto" Click="DoneButton_OnClick"  Margin="{StaticResource ControlBorderRight}"></Button>
+                    Margin="0,0,5,5">
+            <Button x:Name="DoneButton" Content="Close" Width="Auto" Click="DoneButton_OnClick" ></Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -935,8 +935,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             foreach (var intellisenseResult in parts)
             {
-                getCol = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
-                if (!string.IsNullOrEmpty(getCol))
+                var varWithNoBrackets = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
+                if (!string.IsNullOrEmpty(getCol) && !varWithNoBrackets.Equals(getCol))
                 {
                     result.Add(getCol);
                 }
