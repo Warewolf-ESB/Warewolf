@@ -38,7 +38,6 @@ Scenario: Opening Saved workflow with Oracle Server tool
    Given I open workflow with Oracle connector
 	And Source is Enable
 	And Source iss "testingDBSrc"
-	#And Action is Enable
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
@@ -102,8 +101,7 @@ Scenario: Change Source on Existing tool
 Scenario: Changing Actions
 	Given I open workflow with Oracle connector
 	And Source is Enable
-	And Source iss "testingDBSrc"
-	#And Action is Enable
+	And Source iss "testingDBSrc"	
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az
@@ -127,8 +125,7 @@ Scenario: Changing Actions
 Scenario: Change Recordset Name
 	Given I open workflow with Oracle connector
 	And Source is Enable
-	And Source iss "testingDBSrc"
-	#And Action is Enable
+	And Source iss "testingDBSrc"	
 	And Action iss "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
 	Then Inputs appear az

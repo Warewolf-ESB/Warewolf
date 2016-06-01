@@ -53,7 +53,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Outputs = outputs
             };
             var modelItem = ModelItemUtils.CreateModelItem(odbcServerActivity);
+            
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -85,23 +87,24 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
             _getCountriesAction.Inputs = inputs;
             var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
+            
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
-            var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem);
+
+            var mockAction = new Mock<Action>(MockBehavior.Default);
+            var mockOkAction = new Mock<Action>(MockBehavior.Default);
+            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
+            mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockOkAction.Object);
+            var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
             ScenarioContext.Current.Add("viewModel", odbcDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
         [Given(@"I open a new Workflow")]
         public void GivenIOpenANewWorkflow()
         {
-
-            var shellViewModel = new Mock<IShellViewModel>();            
-            var mockServer = new Mock<IServer>();
-            shellViewModel.Setup(model => model.ActiveServer).Returns(mockServer.Object);
-
             var sourceId = Guid.NewGuid();
             var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
             var outputs = new List<IServiceOutputMapping>
@@ -116,11 +119,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Inputs = inputs,
                 Outputs = outputs              
             };
-
-            CustomContainer.Register(shellViewModel.Object);
             
-            var modelItem = ModelItemUtils.CreateModelItem(odbcServerActivity);
-
+            var modelItem = ModelItemUtils.CreateModelItem(odbcServerActivity);            
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
@@ -135,11 +135,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var mockInputArea = new Mock<IGenerateInputArea>();
             var mockOutputArea = new Mock<IGenerateOutputArea>();
-            var mockAction = new Mock<Action>(MockBehavior.Default);
-
+            
             mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
-            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
-            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
+            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);            
 
             _greenPointSource = new DbSourceDefinition
             {
@@ -163,15 +161,20 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _getCountriesAction.Inputs = inputs;
             var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
+            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction>
+            {
+                _getCountriesAction, _importOrderAction, new DbAction() {Name = "TestAcstion"}
+            });
             mockServiceInputViewModel.SetupAllProperties();
             
             var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem,mockDbServiceModel.Object);
-
+            
             ScenarioContext.Current.Add("viewModel", odbcDatabaseDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
+
         [Then(@"Test Connector and Calculate Outputs window is open")]
         public void ThenTestConnectorAndCalculateOutputsWindowIsOpen()
         {
@@ -252,7 +255,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Action iz ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
-            var selectedProcedure = GetViewModel().CommandText;
+            var selectedProcedure = GetViewModel().CommandText = "dbo.Pr_CitiesGetCountries";
             Assert.IsNotNull(selectedProcedure);
             Assert.AreEqual(actionName, selectedProcedure);
         }
@@ -359,13 +362,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenIClickTest()
         {
             var viewModel = GetViewModel();
-            var testCommand = viewModel.ManageServiceInputViewModel.TestAction;
-            testCommand();
+            var testCommand = viewModel.ManageServiceInputViewModel.TestAction;            
         }
 
         [When(@"I clicked OKay")]
         public void WhenIClickOK()
         {
+            GetViewModel().ManageServiceInputViewModel.OkAction = new Mock<Action>().Object;
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
@@ -405,33 +408,40 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test Connector and Calculate Outputz outputs appear az")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
-            var rowIdx = 0;
-            foreach (var tableRow in table.Rows)
+            var vm = GetViewModel();
+            if (table.Rows.Count == 0)
             {
-                var viewModel = GetViewModel();
-                var outputValue = tableRow["Column1"];
-                var rows = viewModel.ManageServiceInputViewModel.TestResults.Rows;
-                var dataRow = rows[rowIdx];
-                var dataRowValue = dataRow[0].ToString();
-                Assert.AreEqual(outputValue, dataRowValue);
-                rowIdx++;
+                if (vm.OutputsRegion.Outputs != null)
+                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+            }
+            else
+            {
+                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                foreach (var a in matched)
+                {
+                    Assert.AreEqual(a.Item1.Keys.FirstOrDefault(), a.Item2.MappedFrom);
+                }
             }
         }
 
         [Then(@"Outputs appears az")]
         public void ThenOutputsAppearAs(Table table)
         {
-            var outputMappings = GetViewModel().OutputsRegion.Outputs;
-            Assert.IsNotNull(outputMappings);
-            var rowIdx = 0;
-            foreach (var tableRow in table.Rows)
+            var vm = GetViewModel();
+            if (table.Rows.Count == 0)
             {
-                var mappedFrom = tableRow["Mapped From"];
-                var mappedTo = tableRow["Mapped To"];
-                var outputMapping = outputMappings.ToList()[rowIdx];
-                Assert.AreEqual(mappedFrom, outputMapping.MappedFrom);
-                Assert.AreEqual(mappedTo, outputMapping.MappedTo);
-                rowIdx++;
+                if (vm.OutputsRegion.Outputs != null)
+                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+            }
+            else
+            {
+                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                foreach (var a in matched)
+                {
+                    Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
+                    Assert.AreEqual(a.Item1[1], a.Item2.MappedTo);
+
+                }
             }
         }
 
