@@ -48,7 +48,7 @@ namespace Dev2.Studio.Views.DataList
             DataContextChanged += OnDataContextChanged;
             Xtg.DataContextChanged+=OnDataContextChanged;
             Xtg.DataSourceChanged+=XtgOnDataSourceChanged;
-            //KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
+            KeyboardNavigation.SetTabNavigation(Xtg, KeyboardNavigationMode.Cycle);
         }
 
         private void XtgOnDataSourceChanged(object sender, RoutedPropertyChangedEventArgs<IEnumerable> routedPropertyChangedEventArgs)
@@ -58,7 +58,6 @@ namespace Dev2.Studio.Views.DataList
                 if (Xtg.Records != null)
                 {
                     Xtg.Records.ExpandAll(true);
-
                 }
             }
         }
@@ -78,7 +77,6 @@ namespace Dev2.Studio.Views.DataList
                 if(Xtg.Records != null)
                 {
                     Xtg.Records.ExpandAll(true);
-                    
                 }
             }
         }
@@ -88,7 +86,6 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
-
                 TextBox txtbox = sender as TextBox;
                 if(txtbox != null)
                 {
@@ -129,15 +126,15 @@ namespace Dev2.Studio.Views.DataList
 
         private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            //var keyboardFocus = Keyboard.FocusedElement as UIElement;
-            //if (e.KeyboardDevice.IsKeyDown(Key.Tab))
-            //{
-            //    if (keyboardFocus != null)
-            //    {
-            //        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
-            //        e.Handled = true;
-            //    }
-            //}
+            var keyboardFocus = Keyboard.FocusedElement as UIElement;
+            if (e.KeyboardDevice.IsKeyDown(Key.Tab))
+            {
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+                    e.Handled = true;
+                }
+            }
             WriteToResourceModel();
         }
 
@@ -162,7 +159,6 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
-
                 Button btn = sender as Button;
                 if(btn != null)
                 {
@@ -183,7 +179,6 @@ namespace Dev2.Studio.Views.DataList
                 {
                     model.FindMissing();
                 }
-
             }
         }
 
@@ -234,7 +229,6 @@ namespace Dev2.Studio.Views.DataList
                 var fieldLayouts = Xtg.FieldLayouts;
                 if (type == typeof(RecordSetItemModel))
                 {
-                    
                     var fieldLayout = fieldLayouts[2];
                     if (fieldLayout != null)
                     {
@@ -263,6 +257,11 @@ namespace Dev2.Studio.Views.DataList
         private void Xtg_OnLoaded(object sender, RoutedEventArgs e)
         {
             Xtg.Records.ExpandAll(true);
+        }
+
+        private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            WriteToResourceModel();
         }
     }
 }
