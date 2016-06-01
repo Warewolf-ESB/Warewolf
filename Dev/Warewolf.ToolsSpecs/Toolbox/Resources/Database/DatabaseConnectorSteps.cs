@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
@@ -26,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
         private DbAction _getCountriesAction;
-        
+
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()
         {
@@ -53,17 +54,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem,mockDbServiceModel.Object);
-            
-            ScenarioContext.Current.Add("viewModel",sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel",mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel",mockDbServiceModel);
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+
+            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [When(@"Source is changed from to ""(.*)""")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
-            if(sourceName == "GreenPoint")
+            if (sourceName == "GreenPoint")
             {
                 GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
@@ -72,7 +73,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"Action is changed from to ""(.*)""")]
         public void WhenActionIsChangedFromTo(string procName)
         {
-            if(procName == "dbo.ImportOrder")
+            if (procName == "dbo.ImportOrder")
             {
                 GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
             }
@@ -90,22 +91,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
-
-        private static SqlServerDatabaseDesignerViewModel GetViewModel()
-        {
-            return ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
-        }
-
-        private static Mock<IManageDatabaseInputViewModel> GetInputViewModel()
-        {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
-        }
-
-        private static Mock<IDbServiceModel> GetDbServiceModel()
-        {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
-        }
-
         [Given(@"Action is Disabled")]
         public void GivenActionIsDisabled()
         {
@@ -159,7 +144,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
-            var hasInputs = viewModel.InputArea.Inputs != null  || viewModel.InputArea.IsEnabled;
+            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsEnabled;
             Assert.IsTrue(hasInputs);
         }
 
@@ -179,14 +164,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var viewModel = GetViewModel();
             int rowNum = 0;
-            foreach(var row in table.Rows)
+            foreach (var row in table.Rows)
             {
                 var inputValue = row["Input"];
                 var value = row["Value"];
                 var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual<string>(inputValue,serviceInput.Name);
-                Assert.AreEqual<string>(value,serviceInput.Value);
+                Assert.AreEqual<string>(inputValue, serviceInput.Name);
+                Assert.AreEqual<string>(value, serviceInput.Value);
                 rowNum++;
             }
         }
@@ -198,7 +183,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
             var outputs = new List<IServiceOutputMapping>
             {
-                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"), 
+                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
                 new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
             };
             var sqlServerActivity = new DsfSqlServerDatabaseActivity
@@ -256,7 +241,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var selectedSource = GetViewModel().SourceRegion.SelectedSource;
             Assert.IsNotNull(selectedSource);
-            Assert.AreEqual<string>(sourceName,selectedSource.Name);
+            Assert.AreEqual<string>(sourceName, selectedSource.Name);
         }
 
         [Given(@"Action is ""(.*)""")]
@@ -264,18 +249,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var selectedProcedure = GetViewModel().ActionRegion.SelectedAction;
             Assert.IsNotNull(selectedProcedure);
-            Assert.AreEqual<string>(actionName,selectedProcedure.Name);
+            Assert.AreEqual<string>(actionName, selectedProcedure.Name);
         }
 
-        
+
         [When(@"I Select ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
         {
-            if(sourceName == "GreenPoint")
+            if (sourceName == "GreenPoint")
             {
                 _importOrderAction = new DbAction();
                 _importOrderAction.Name = "dbo.ImportOrder";
-                _importOrderAction.Inputs = new List<IServiceInput>{new ServiceInput("ProductId","")};
+                _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") };
                 GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
                 GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
@@ -286,11 +271,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var dataTable = new DataTable();
             dataTable.Columns.Add(new DataColumn("Column1"));
-            dataTable.ImportRow(dataTable.LoadDataRow(new object[]{1},true));
+            dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
             GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
             GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
         }
-        
+
         [When(@"I click Test")]
         public void WhenIClickTest()
         {
@@ -303,7 +288,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
-        
+
         [When(@"I click Validate")]
         public void WhenIClickValidate()
         {
@@ -325,35 +310,35 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowNum++;
             }
         }
-        
+
         [Then(@"Test Connector and Calculate Outputs outputs appear as")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
             var rowIdx = 0;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var outputValue = tableRow["Column1"];
                 var rows = GetViewModel().ManageServiceInputViewModel.TestResults.Rows;
                 var dataRow = rows[rowIdx];
                 var dataRowValue = dataRow[0].ToString();
-                Assert.AreEqual<string>(outputValue,dataRowValue);
+                Assert.AreEqual<string>(outputValue, dataRowValue);
                 rowIdx++;
             }
         }
-        
+
         [Then(@"Outputs appear as")]
         public void ThenOutputsAppearAs(Table table)
         {
             var outputMappings = GetViewModel().OutputsRegion.Outputs;
             Assert.IsNotNull(outputMappings);
             var rowIdx = 0;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var mappedFrom = tableRow["Mapped From"];
                 var mappedTo = tableRow["Mapped To"];
                 var outputMapping = outputMappings.ToList()[rowIdx];
-                Assert.AreEqual<string>(mappedFrom,outputMapping.MappedFrom);
-                Assert.AreEqual<string>(mappedTo,outputMapping.MappedTo);
+                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
                 rowIdx++;
             }
         }
@@ -361,8 +346,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            Assert.AreEqual<string>(recsetName,GetViewModel().OutputsRegion.RecordsetName);
-        }        
+            Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+        }
 
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string p0)
@@ -374,6 +359,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
                 new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
             };
+
             var sqlServerActivity = new DsfSqlServerDatabaseActivity
             {
                 SourceId = sourceId,
@@ -417,12 +403,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
 
+            var privateObject = new PrivateObject(sqlServerActivity);
 
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
+
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("privateObject", privateObject);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
@@ -435,23 +424,47 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.SourceRegion.Sources.Any(p => p.ServerName == p2));
             Assert.IsNotNull(table);
         }
-
+                
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(true);
         }
 
         [Then(@"the workflow execution has ""(.*)"" error")]
         public void ThenTheWorkflowExecutionHasError(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(true);
         }
 
         [Given(@"And ""(.*)"" contains ""(.*)"" from server ""(.*)"" with Mapping To as")]
         public void GivenAndContainsFromServerWithMappingToAs(string p0, string p1, string p2, Table table)
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsTrue(true);
         }
+
+        #region Private Methods
+
+        private static SqlServerDatabaseDesignerViewModel GetViewModel()
+        {
+            return ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
+        }
+
+        private static PrivateObject GetSqlServerPrivateObject()
+        {
+            return ScenarioContext.Current.Get<PrivateObject>("privateObject");
+        }
+
+        private static Mock<IManageDatabaseInputViewModel> GetInputViewModel()
+        {
+            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
+        }
+
+        private static Mock<IDbServiceModel> GetDbServiceModel()
+        {
+            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+        }
+
+        #endregion
     }
 }
