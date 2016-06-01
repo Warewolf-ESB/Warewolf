@@ -39,6 +39,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
+using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 
@@ -52,7 +53,6 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Fields
 
-        private Microsoft.Practices.Prism.Commands.DelegateCommand _addRecordsetCommand;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -270,7 +270,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 var contentPresenter = window.FindChild<TextBlock>();
                 if (contentPresenter != null)
                 {
-                    contentPresenter.Text = item.GetJson();
+                    var json = item.GetJson();
+                    var obj = JsonConvert.DeserializeObject(json);
+                    if (obj != null)
+                    {
+                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+                    }
+                    contentPresenter.Text = json;
                 }
 
                 window.ShowDialog();
@@ -291,7 +297,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         bool CanDelete(Object itemx)
         {
-
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
         }
@@ -301,15 +306,6 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Commands
 
         public ICommand ClearSearchTextCommand { get; private set; }
-
-        public ICommand AddRecordsetCommand
-        {
-            get
-            {
-                return _addRecordsetCommand ??
-                       (_addRecordsetCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(method => AddRecordSet()));
-            }
-        }
 
         public RelayCommand SortCommand
         {
