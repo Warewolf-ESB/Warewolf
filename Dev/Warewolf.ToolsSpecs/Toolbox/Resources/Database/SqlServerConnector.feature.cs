@@ -382,28 +382,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void NoSQLServerActionToBeLoadedError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No SQL Server Action to be loaded Error", ((string[])(null)));
-#line 115
+#line 113
 this.ScenarioSetup(scenarioInfo);
-#line 116
+#line 114
  testRunner.Given("I have a workflow \"NoStoredProceedureToLoad\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-#line 117
+#line 115
  testRunner.And("\"NoStoredProceedureToLoad\" contains \"Testing/SQL/NoSqlStoredProceedure\" from serv" +
                     "er \"localhost\" with mapping as", ((string)(null)), table14, "And ");
-#line 119
+#line 117
  testRunner.When("\"NoStoredProceedureToLoad\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 118
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table15.AddRow(new string[] {
                         "Error: The selected database does not contain actions to perform"});
-#line 121
+#line 119
  testRunner.And("the \"Testing/SQL/NoSqlStoredProceedure\" in Workflow \"NoStoredProceedureToLoad\" de" +
                     "bug outputs as", ((string)(null)), table15, "And ");
 #line hidden
@@ -416,9 +416,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PassingNullInputValuesToSQLServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Null Input values to SQL Server", ((string[])(null)));
-#line 125
+#line 123
 this.ScenarioSetup(scenarioInfo);
-#line 126
+#line 124
  testRunner.Given("I have a workflow \"PassingNullInputValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -429,19 +429,19 @@ this.ScenarioSetup(scenarioInfo);
                         "[[value]]",
                         "a",
                         "True"});
-#line 127
+#line 125
  testRunner.And("\"PassingNullInputValue\" contains \"Acceptance Testing Resources/GreenPoint\" from s" +
                     "erver \"localhost\" with mapping as", ((string)(null)), table16, "And ");
-#line 130
+#line 128
  testRunner.When("\"PassingNullInputValue\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
+#line 129
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table17.AddRow(new string[] {
                         "Error: Scalar value { value } is NULL"});
-#line 132
+#line 130
  testRunner.And("the \"Acceptance Testing Resources/GreenPoint\" in Workflow \"PassingNullInputValue\"" +
                     " debug outputs as", ((string)(null)), table17, "And ");
 #line hidden
@@ -454,9 +454,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MappedToRecordsetsIncorrect()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mapped To Recordsets incorrect", ((string[])(null)));
-#line 136
+#line 134
 this.ScenarioSetup(scenarioInfo);
-#line 137
+#line 135
  testRunner.Given("I have a workflow \"BadSqlParameterName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -467,7 +467,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "a",
                         "True"});
-#line 138
+#line 136
  testRunner.And("\"BadSqlParameterName\" contains \"Acceptance Testing Resources/GreenPoint\" from ser" +
                     "ver \"localhost\" with mapping as", ((string)(null)), table18, "And ");
 #line hidden
@@ -480,19 +480,19 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "some column Name",
                         "[[dbo_leon bob proc().some column Name]]"});
-#line 141
+#line 139
  testRunner.And("And \"BadSqlParameterName\" contains \"Acceptance Testing Resources/GreenPoint\" from" +
                     " server \"localhost\" with Mapping To as", ((string)(null)), table19, "And ");
-#line 145
+#line 143
  testRunner.When("\"BadSqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 146
+#line 144
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table20.AddRow(new string[] {
                         "Error: Sql Error: parse error"});
-#line 147
+#line 145
  testRunner.And("the \"Acceptance Testing Resources/GreenPoint\" in Workflow \"BadSqlParameterName\" d" +
                     "ebug outputs as", ((string)(null)), table20, "And ");
 #line hidden
@@ -505,9 +505,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ParameterNotFoundInTheCollection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parameter not found in the collection", ((string[])(null)));
-#line 153
+#line 151
 this.ScenarioSetup(scenarioInfo);
-#line 154
+#line 152
  testRunner.Given("I have a workflow \"BadMySqlParameterName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -518,19 +518,19 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "`p_startswith`",
                         "false"});
-#line 155
+#line 153
  testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySql/MySqlParameters\" from server \"loc" +
                     "alhost\" with mapping as", ((string)(null)), table21, "And ");
-#line 158
+#line 156
  testRunner.When("\"BadMySqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 159
+#line 157
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table22.AddRow(new string[] {
                         "Parameter \"p_startswith\" not found in the collection"});
-#line 160
+#line 158
  testRunner.And("the \"Testing/MySql/MySqlParameters\" in Workflow \"BadMySqlParameterName\" debug out" +
                     "puts as", ((string)(null)), table22, "And ");
 #line hidden
@@ -543,9 +543,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RecordsetHasInvalidCharacter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset has invalid character", ((string[])(null)));
-#line 165
+#line 163
 this.ScenarioSetup(scenarioInfo);
-#line 166
+#line 164
  testRunner.Given("I have a workflow \"MappingHasIncorrectCharacter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -556,19 +556,19 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "charValue",
                         "True"});
-#line 167
+#line 165
  testRunner.And("\"MappingHasIncorrectCharacter\" contains \"Acceptance Testing Resources/GreenPoint\"" +
                     " from server \"localhost\" with mapping as", ((string)(null)), table23, "And ");
-#line 170
+#line 168
  testRunner.When("\"MappingHasIncorrectCharacter\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 171
+#line 169
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table24.AddRow(new string[] {
                         "[[dbo_ConvertTo,Int().result]] : Recordset name has invalid format"});
-#line 172
+#line 170
  testRunner.And("the \"Acceptance Testing Resources/GreenPoint\" in Workflow \"MappingHasIncorrectCha" +
                     "racter\" debug outputs as", ((string)(null)), table24, "And ");
 #line hidden
@@ -581,9 +581,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SqlServerBackwardCompatiblity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SqlServer backward Compatiblity", ((string[])(null)));
-#line 179
+#line 175
 this.ScenarioSetup(scenarioInfo);
-#line 180
+#line 176
  testRunner.Given("I have a workflow \"DataMigration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -601,11 +601,11 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "[[dbo_GetCountries().Description]]",
                         "dbo_GetCountries().Description"});
-#line 181
+#line 177
  testRunner.And("\"DataMigration\" contains \"DataCon\" from server \"localhost\" with mapping as", ((string)(null)), table25, "And ");
-#line 185
+#line 181
  testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 186
+#line 182
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
