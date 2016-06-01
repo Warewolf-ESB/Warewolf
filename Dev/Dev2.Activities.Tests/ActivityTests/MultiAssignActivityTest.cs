@@ -649,7 +649,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.AreEqual(8, data.Count);
+            Assert.AreEqual(17, data.Count);
             Assert.AreEqual("Value1", data[7]);
 
         }

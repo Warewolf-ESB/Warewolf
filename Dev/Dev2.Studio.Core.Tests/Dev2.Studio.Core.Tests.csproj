@@ -181,7 +181,6 @@
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
-    <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
     <Compile Include="AppResources\Comparers\ContexttualResourceModelEqualityComparerTests.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerTests.cs" />
@@ -481,6 +480,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActivityDropView\" />
+    <Folder Include="AppResources\Behaviors\" />
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Dock\" />
     <Folder Include="ViewModelTests\Configuration\" />
