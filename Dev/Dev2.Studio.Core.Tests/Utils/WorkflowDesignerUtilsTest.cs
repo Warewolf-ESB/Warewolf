@@ -12,11 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.Windows;
 using Caliburn.Micro;
-using Dev2.Core.Tests.ProperMoqs;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -156,86 +152,7 @@ namespace Dev2.Core.Tests.Utils
             WorkflowDesignerUtils.EditResource(mockResourceModel.Object, null);
             //------------Assert Results-------------------------
         }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("WorkflowDesignerUtils_OnClick")]
-        public void WorkflowDesignerUtils_ShowExampleWorkflow_DsfMultiAssignExampleResourceNotFound_MultiAssignExampleShown()
-        {
-
-            var mockedResourceRepo = new Mock<IResourceRepository>();
-            var mockedEnvironment = new Mock<IEnvironmentModel>();
-            var popupController = new MoqPopup(MessageBoxResult.OK);
-
-            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
-
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.ShowExampleWorkflow("DsfMultiAssignActivity", mockedEnvironment.Object, popupController);
-
-            // Assert MultiAssign example shown
-            Assert.AreEqual(1, popupController.ShowHitCount, "Info messagebox not shown when example workflow not found");
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("WorkflowDesignerUtils_OnClick")]
-        public void WorkflowDesignerUtils_ShowExampleWorkflow_DsfMultiAssign_MultiAssignExampleShown()
-        {
-            const string expectedResourceName = "Example - MultiAssign";
-            var aggregator = new Mock<EventAggregator>();
-            IResourceModel actualResourceInvoked = null;
-            aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
-            {
-                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
-            });
-            EventPublishers.Aggregator = aggregator.Object;
-
-            var mockedResourceRepo = new Mock<IResourceRepository>();
-            var mockedEnvironment = new Mock<IEnvironmentModel>();
-            var mockedExampleWorkflow = new Mock<IResourceModel>();
-
-            mockedExampleWorkflow.Setup(res => res.DisplayName).Returns(expectedResourceName);
-            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockedExampleWorkflow.Object);
-            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
-
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.ShowExampleWorkflow("DsfMultiAssignActivity", mockedEnvironment.Object, null);
-
-            // Assert MultiAssign example shown
-            Assert.AreEqual(expectedResourceName, actualResourceInvoked.DisplayName, "Example for MultiAssign not shown");
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("WorkflowDesignerUtils_OnClick")]
-        public void WorkflowDesignerUtils_ShowExampleWorkflow_DsfDateTime_DateTimeExampleShown()
-        {
-            const string expectedResourceName = "Example - DateTime";
-            var aggregator = new Mock<EventAggregator>();
-            IResourceModel actualResourceInvoked = null;
-            aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
-            {
-                var workSurfaceObject = msg is AddWorkSurfaceMessage ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
-                actualResourceInvoked = workSurfaceObject is IResourceModel ? workSurfaceObject as IResourceModel : null;
-            });
-            EventPublishers.Aggregator = aggregator.Object;
-
-            var mockedResourceRepo = new Mock<IResourceRepository>();
-            var mockedEnvironment = new Mock<IEnvironmentModel>();
-            var mockedExampleWorkflow = new Mock<IResourceModel>();
-
-            mockedExampleWorkflow.Setup(res => res.DisplayName).Returns(expectedResourceName);
-            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockedExampleWorkflow.Object);
-            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
-
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.ShowExampleWorkflow("DsfDateTimeActivity", mockedEnvironment.Object, null);
-
-            // Assert MultiAssign example shown
-            Assert.AreEqual(expectedResourceName, actualResourceInvoked.DisplayName, "Example for DateTime tool not shown");
-        }
-
+        
         [TestMethod]
         [Owner("Leon rajindrapersadh")]
         [TestCategory("WorkflowDesignerUtils_OnClick")]

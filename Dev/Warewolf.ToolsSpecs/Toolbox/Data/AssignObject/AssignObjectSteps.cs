@@ -47,6 +47,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
+        [Given(@"I assign the value (.*) to a json object ""(.*)""")]
+        public void GivenIAssignTheValueToAJsonObject(int value, string variable)
+        {
+            GivenIAssignTheValueToAJsonObject(value.ToString(), variable);
+        }
+
         [When(@"the assign object tool is executed")]
         public void WhenTheAssignObjectToolIsExecuted()
         {
