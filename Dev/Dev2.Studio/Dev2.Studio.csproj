@@ -283,7 +283,6 @@
     <Compile Include="AppResources\Behaviors\TextboxSetFocusOnCreationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDeployHighlightingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDragDropBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehavior.cs" />
     <Compile Include="AppResources\Behaviors\PopupBuildVisualTreeOnLoad.cs" />
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
