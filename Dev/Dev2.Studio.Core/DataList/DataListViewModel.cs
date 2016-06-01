@@ -1160,7 +1160,9 @@ namespace Dev2.Studio.ViewModels.DataList
                 IsSorting = true;
                 SortScalars(_toggleSortOrder);
                 SortRecset(_toggleSortOrder);
+                SortComplexObjects(_toggleSortOrder);
                 _toggleSortOrder = !_toggleSortOrder;
+                WriteToResourceModel();
             }
             finally { IsSorting = false; }
         }
@@ -1193,6 +1195,15 @@ namespace Dev2.Studio.ViewModels.DataList
                 RecsetCollection.Add(item);
             }
             AddRecordSet();
+        }
+        private void SortComplexObjects(bool ascending)
+        {
+            IList<IComplexObjectItemModel> newRecsetCollection = @ascending ? ComplexObjectCollection.OrderBy(c => c.DisplayName).ToList() : ComplexObjectCollection.OrderByDescending(c => c.DisplayName).ToList();
+            ComplexObjectCollection.Clear();
+            foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
+            {
+                ComplexObjectCollection.Add(item);
+            }
         }
 
         /// <summary>
@@ -1608,7 +1619,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <date>2013/06/25</date>
         private bool HasItems()
         {
-            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1);
+            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count > 1);
         }
         #endregion Private Methods
 
