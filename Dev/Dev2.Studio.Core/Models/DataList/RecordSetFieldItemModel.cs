@@ -27,7 +27,6 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 return _parent;
             }
-
             set
             {
                 _parent = value;
@@ -50,15 +49,10 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                     else
                     {
-                        if (
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue,
-                                StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable,
-                                StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset,
-                                StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet,
-                                StringComparison.InvariantCulture))
+                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
                         {
                             RemoveError();
                         }
@@ -73,15 +67,10 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                     else
                     {
-                        if (
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue,
-                                StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable,
-                                StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset,
-                                StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet,
-                                StringComparison.InvariantCulture))
+                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
                         {
                             RemoveError();
                             name = fieldName;
