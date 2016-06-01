@@ -7,12 +7,9 @@ Scenario: Creating ODBC Server Connector
 	Given I open a new Workflow 
 	And I drag a ODBC Server database connector
 	And Source iz Enable
-	#And Action iz Disable
-	#And Inputs iz Disable
-	#And Outputs iz Disable
 	When I Selected "GreenPoint" az Source
 	Then Action iz Enable
-	When I selected "Command" as thee action
+	When I selected "dbo_Pr_CitiesGetCountries" as thee action
 	Then Inputs iz Enable 
 	And Inputs appears az 
 	| Input     | Value | Empty is Null |
@@ -21,13 +18,13 @@ Scenario: Creating ODBC Server Connector
 	When I click Validatt
 	When I click Tezt
 	Then Test Connector and Calculate Outputz outputs appear az
-	| Column1 |
+	| CountryID |
 	| 1       |
 	When I clicked OKay
 	Then Outputs appears az
 	| Mapped From | Mapped To                     | 
-	| Column1     | [[Command().Column1]] | 
-	And Recordset Name equal "Command"	
+	| CountryID     | [[dbo_Pr_CitiesGetCountries().CountryID]] | 
+	And Recordset Name equal "dbo_Pr_CitiesGetCountries"	
 
 Scenario: Opening Saved workflow with ODBC Server tool
    Given I open workflow with ODBC connector

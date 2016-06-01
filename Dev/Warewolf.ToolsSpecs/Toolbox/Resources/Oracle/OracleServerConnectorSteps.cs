@@ -87,8 +87,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
 
             var mockAction = new Mock<Action>(MockBehavior.Default);
-            var mock = new Mock<IOutputsToolRegion>();
-
 
             mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
             mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
