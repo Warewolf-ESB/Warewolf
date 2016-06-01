@@ -853,15 +853,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (!string.IsNullOrEmpty(_expressionString))
                     {
                         workflowFields = GetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
-                    }
-                    else
-                    {
                         var activity = property.ComputedValue;
                         if (activity != null)
                         {
-                            workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
+                            workflowFields.AddRange(GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList));
                         }
-                    }                    
+                    }                                     
                 }
                 else
                 {
