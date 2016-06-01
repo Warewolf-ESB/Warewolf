@@ -766,7 +766,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (item == null) return;
 
-            if (!(item is IRecordSetItemModel) && !(item is IScalarItemModel))
+            if (!(item is IRecordSetItemModel) && item is IScalarItemModel)
             {
                 RemoveBlankScalars();
             }

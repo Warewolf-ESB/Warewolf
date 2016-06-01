@@ -250,13 +250,13 @@ namespace Dev2.Core.Tests
             var personObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(model => model.Name == "Person");
             Assert.IsNotNull(personObject);
             Assert.IsNotNull(personObject.Children);
-            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name == "Name"));
-            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name == "Age"));
-            var schools = personObject.Children.FirstOrDefault(model => model.Name == "Schools");
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.DisplayName == "Name"));
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.DisplayName == "Age"));
+            var schools = personObject.Children.FirstOrDefault(model => model.DisplayName == "Schools");
             Assert.IsNotNull(schools);
             Assert.IsFalse(schools.IsArray);
-            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name == "Name"));
-            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name == "Location"));
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.DisplayName == "Name"));
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.DisplayName == "Location"));
         }
 
         [TestMethod]
@@ -269,13 +269,13 @@ namespace Dev2.Core.Tests
             var personObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(model => model.Name == "Person");
             Assert.IsNotNull(personObject);
             Assert.IsNotNull(personObject.Children);
-            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name == "Name"));
-            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name == "Age"));
-            var schools = personObject.Children.FirstOrDefault(model => model.Name == "Schools()");
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.DisplayName == "Name"));
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.DisplayName == "Age"));
+            var schools = personObject.Children.FirstOrDefault(model => model.DisplayName == "Schools()");
             Assert.IsNotNull(schools);
             Assert.IsTrue(schools.IsArray);
-            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name == "Name"));
-            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name == "Location"));
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.DisplayName == "Name"));
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.DisplayName == "Location"));
         }
 
         #endregion AddMode Missing Tests
