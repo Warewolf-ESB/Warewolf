@@ -21,8 +21,10 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics.Windows.DataPresenter;
 using Infragistics.Windows.DataPresenter.Events;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.CustomControls;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.DataList
@@ -48,7 +50,7 @@ namespace Dev2.Studio.Views.DataList
             DataContextChanged += OnDataContextChanged;
             Xtg.DataContextChanged+=OnDataContextChanged;
             Xtg.DataSourceChanged+=XtgOnDataSourceChanged;
-            //KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
+            KeyboardNavigation.SetTabNavigation(Xtg, KeyboardNavigationMode.Cycle);
         }
 
         private void XtgOnDataSourceChanged(object sender, RoutedPropertyChangedEventArgs<IEnumerable> routedPropertyChangedEventArgs)
@@ -58,7 +60,6 @@ namespace Dev2.Studio.Views.DataList
                 if (Xtg.Records != null)
                 {
                     Xtg.Records.ExpandAll(true);
-
                 }
             }
         }
@@ -78,7 +79,6 @@ namespace Dev2.Studio.Views.DataList
                 if(Xtg.Records != null)
                 {
                     Xtg.Records.ExpandAll(true);
-                    
                 }
             }
         }
@@ -88,7 +88,6 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
-
                 TextBox txtbox = sender as TextBox;
                 if(txtbox != null)
                 {
@@ -129,15 +128,15 @@ namespace Dev2.Studio.Views.DataList
 
         private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            //var keyboardFocus = Keyboard.FocusedElement as UIElement;
-            //if (e.KeyboardDevice.IsKeyDown(Key.Tab))
-            //{
-            //    if (keyboardFocus != null)
-            //    {
-            //        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
-            //        e.Handled = true;
-            //    }
-            //}
+            var keyboardFocus = Keyboard.FocusedElement as UIElement;
+            if (e.KeyboardDevice.IsKeyDown(Key.Tab))
+            {
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+                    e.Handled = true;
+                }
+            }
             WriteToResourceModel();
         }
 
@@ -162,7 +161,6 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
-
                 Button btn = sender as Button;
                 if(btn != null)
                 {
@@ -183,7 +181,6 @@ namespace Dev2.Studio.Views.DataList
                 {
                     model.FindMissing();
                 }
-
             }
         }
 
@@ -234,7 +231,6 @@ namespace Dev2.Studio.Views.DataList
                 var fieldLayouts = Xtg.FieldLayouts;
                 if (type == typeof(RecordSetItemModel))
                 {
-                    
                     var fieldLayout = fieldLayouts[2];
                     if (fieldLayout != null)
                     {
@@ -263,6 +259,30 @@ namespace Dev2.Studio.Views.DataList
         private void Xtg_OnLoaded(object sender, RoutedEventArgs e)
         {
             Xtg.Records.ExpandAll(true);
+        }
+
+        private void DataListView_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            WriteToResourceModel();
+        }
+
+        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var text = sender as SearchTextBox;
+            if (text != null && !string.IsNullOrWhiteSpace(text.Text))
+            {
+                Xtg.FieldLayouts[1].RecordFilters.Clear();
+                Xtg.FieldLayouts[1].RecordFilters.Add(new RecordFilter(new Infragistics.Windows.DataPresenter.Field("DisplayName")));
+                Xtg.FieldLayouts[1].RecordFilters[0].Conditions.Add(new Infragistics.Windows.Controls.ComparisonCondition(Infragistics.Windows.Controls.ComparisonOperator.Contains, text.Text));
+
+                Xtg.FieldLayouts[2].RecordFilters.Clear();
+                Xtg.FieldLayouts[2].RecordFilters.Add(new RecordFilter(new Infragistics.Windows.DataPresenter.Field("DisplayName")));
+                Xtg.FieldLayouts[2].RecordFilters[0].Conditions.Add(new Infragistics.Windows.Controls.ComparisonCondition(Infragistics.Windows.Controls.ComparisonOperator.Contains, text.Text));
+
+                Xtg.FieldLayouts[4].RecordFilters.Clear();
+                Xtg.FieldLayouts[4].RecordFilters.Add(new RecordFilter(new Infragistics.Windows.DataPresenter.Field("DisplayName")));
+                Xtg.FieldLayouts[4].RecordFilters[0].Conditions.Add(new Infragistics.Windows.Controls.ComparisonCondition(Infragistics.Windows.Controls.ComparisonOperator.Contains, text.Text));
+            }
         }
     }
 }
