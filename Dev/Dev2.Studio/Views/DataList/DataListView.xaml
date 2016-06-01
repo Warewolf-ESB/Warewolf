@@ -15,6 +15,7 @@
              xmlns:dataList1="clr-namespace:Dev2.Studio.ViewModels.DataList;assembly=Dev2.Studio.Core"
              xmlns:dataList3="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              LostKeyboardFocus="UserControlLostKeyboardFocus"
+             MouseEnter="DataListView_OnMouseEnter"
              KeyboardNavigation.DirectionalNavigation="Continue" KeyboardNavigation.TabNavigation="Cycle"
              x:Name="DataListViewControl"
              AutomationProperties.AutomationId="UI_DataListView_AutoID"
@@ -284,7 +285,7 @@
                         </dataPresenter:TemplateField>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
                     </dataPresenter:FieldLayout>
-                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:ScalarItemModel}">
+                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:RecordSetItemModel}">
                         <dataPresenter:TemplateField Name="DisplayName" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" Width="*" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
                                 <DataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">

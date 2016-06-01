@@ -39,8 +39,10 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
+using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
+
 // ReSharper disable UseNullPropagation
 // ReSharper disable ConvertPropertyToExpressionBody
 
@@ -51,7 +53,6 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Fields
 
-        private DelegateCommand _addRecordsetCommand;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -88,7 +89,6 @@ namespace Dev2.Studio.ViewModels.DataList
             set
             {
                 _searchText = value;
-                FilterItems();
                 NotifyOfPropertyChange(() => SearchText);
             }
         }
@@ -229,8 +229,6 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         bool _toggleSortOrder = true;
-        ObservableCollection<IScalarItemModel> _backupScalars;
-        ObservableCollection<IRecordSetItemModel> _backupRecsets;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
 
         #endregion Properties
@@ -272,7 +270,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 var contentPresenter = window.FindChild<TextBlock>();
                 if (contentPresenter != null)
                 {
-                    contentPresenter.Text = item.GetJson();
+                    var json = item.GetJson();
+                    var obj = JsonConvert.DeserializeObject(json);
+                    if (obj != null)
+                    {
+                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+                    }
+                    contentPresenter.Text = json;
                 }
 
                 window.ShowDialog();
@@ -293,7 +297,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         bool CanDelete(Object itemx)
         {
-
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
         }
@@ -303,15 +306,6 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Commands
 
         public ICommand ClearSearchTextCommand { get; private set; }
-
-        public ICommand AddRecordsetCommand
-        {
-            get
-            {
-                return _addRecordsetCommand ??
-                       (_addRecordsetCommand = new DelegateCommand(method => AddRecordSet()));
-            }
-        }
 
         public RelayCommand SortCommand
         {
@@ -640,56 +634,6 @@ namespace Dev2.Studio.ViewModels.DataList
             InitializeDataListViewModel(Resource);
         }
 
-        void FilterItems()
-        {
-            if (_backupScalars != null)
-            {
-                ScalarCollection.Clear();
-                foreach (var dataListItemModel in _backupScalars)
-                {
-                    ScalarCollection.Add(dataListItemModel);
-                }
-            }
-            if (_backupRecsets != null)
-            {
-                RecsetCollection.Clear();
-                foreach (var dataListItemModel in _backupRecsets)
-                {
-                    RecsetCollection.Add(dataListItemModel);
-                }
-            }
-
-            if (SearchText == null)
-            {
-                return;
-            }
-            _backupScalars = new ObservableCollection<IScalarItemModel>();
-            _backupRecsets = new ObservableCollection<IRecordSetItemModel>();
-            foreach (var dataListItemModel in ScalarCollection)
-            {
-                _backupScalars.Add(dataListItemModel);
-            }
-            foreach (var dataListItemModel in RecsetCollection)
-            {
-                _backupRecsets.Add(dataListItemModel);
-            }
-
-            for (int index = 0; index < ScalarCollection.Count; index++)
-            {
-                var item = ScalarCollection[index];
-                if (!item.DisplayName.ToUpper().Contains(SearchText.ToUpper()))
-                    ScalarCollection.Remove(item);
-            }
-
-            for (int index = 0; index < RecsetCollection.Count; index++)
-            {
-                var item = RecsetCollection[index];
-                item.Filter(SearchText);
-                if (!item.FilterText.ToUpper().Contains(SearchText.ToUpper()))
-                    RecsetCollection.Remove(item);
-            }
-        }
-
         private IList<string> RefreshTries(List<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
@@ -766,7 +710,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (item == null) return;
 
-            if (!(item is IRecordSetItemModel) && !(item is IScalarItemModel))
+            if (!(item is IRecordSetItemModel) && item is IScalarItemModel)
             {
                 RemoveBlankScalars();
             }
