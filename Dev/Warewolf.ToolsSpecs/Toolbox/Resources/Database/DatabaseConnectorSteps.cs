@@ -307,8 +307,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click Validate")]
         public void WhenIClickValidate()
         {
-            //GetViewModel().TestInputCommand.Execute(null);
-            Assert.Fail();
+            GetViewModel().TestInputCommand.Execute();
+            //Assert.Fail();
         }
 
         [Then(@"Test Inputs appear as")]
@@ -362,101 +362,96 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetNameEquals(string recsetName)
         {
             Assert.AreEqual<string>(recsetName,GetViewModel().OutputsRegion.RecordsetName);
+        }        
+
+        [Given(@"I have a workflow ""(.*)""")]
+        public void GivenIHaveAWorkflow(string p0)
+        {
+            var sourceId = Guid.NewGuid();
+            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
+            var outputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
+                new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
+            };
+            var sqlServerActivity = new DsfSqlServerDatabaseActivity
+            {
+                SourceId = sourceId,
+                ProcedureName = "dbo.Pr_CitiesGetCountries",
+                Inputs = inputs,
+                Outputs = outputs
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
+            var mockServiceInputViewModel = new Mock<IManageDatabaseInputViewModel>();
+            var mockDbServiceModel = new Mock<IDbServiceModel>();
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            _greenPointSource = new DbSourceDefinition
+            {
+                Name = "GreenPoint",
+                Type = enSourceType.SqlDatabase
+            };
+
+            _testingDbSource = new DbSourceDefinition
+            {
+                Name = "testingDBSrc",
+                Type = enSourceType.SqlDatabase,
+                Id = sourceId,
+                ServerName = "localhost"
+            };
+            _importOrderAction = new DbAction
+            {
+                Name = "dbo.ImportOrder",
+                Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") }
+            };
+
+            _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
+            _getCountriesAction.Inputs = inputs;
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+
+
+            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
+            mockServiceInputViewModel.SetupAllProperties();
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+
+            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
-        //[Then(@"the Test Connector and Calculate Outputs window is opened")]
-        //public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
+        [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
+        public void GivenContainsFromServerWithMappingAs(string p0, string p1, string p2, Table table)
+        {
+            var viewModel = GetViewModel();
+            Assert.IsNotNull(viewModel);
+            Assert.IsTrue(viewModel.SourceRegion.Sources.Any(p => p.ServerName == p2));
+            Assert.IsNotNull(table);
+        }
 
-        //[When(@"I select new_procedure as the action")]
-        //public void WhenISelectnew_procedureAsTheAction()
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
+        [When(@"""(.*)"" is executed")]
+        public void WhenIsExecuted(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
 
-        //[Then(@"""(.*)"" is ""(.*)""")]
-        //public void ThenIs(string p0, string p1)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
+        [Then(@"the workflow execution has ""(.*)"" error")]
+        public void ThenTheWorkflowExecutionHasError(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
 
-        //[Then(@"Data Source is focused")]
-        //public void ThenDataSourceIsFocused()
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[When(@"""(.*)"" is selected as the data source")]
-        //public void WhenIsSelectedAsTheDataSource(string p0)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Then(@"""(.*)"" is selected as the action")]
-        //public void ThenIsSelectedAsTheAction(string p0)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Then(@"Inspect Data Connector hyper link is ""(.*)""")]
-        //public void ThenInspectDataConnectorHyperLinkIs(string p0)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Then(@"inputs are")]
-        //public void ThenInputsAre(Table table)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[When(@"testing the action fails")]
-        //public void WhenTestingTheActionFails()
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Then(@"input mappings are")]
-        //public void ThenInputMappingsAre(Table table)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Then(@"output mappings are")]
-        //public void ThenOutputMappingsAre(Table table)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Given(@"I have a workflow ""(.*)""")]
-        //public void GivenIHaveAWorkflow(string p0)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
-        //public void GivenContainsFromServerWithMappingAs(string p0, string p1, string p2, Table table)
-        //{
-        //}
-
-        //[When(@"""(.*)"" is executed")]
-        //public void WhenIsExecuted(string p0)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Then(@"the workflow execution has ""(.*)"" error")]
-        //public void ThenTheWorkflowExecutionHasError(string p0)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
-
-        //[Given(@"And ""(.*)"" contains ""(.*)"" from server ""(.*)"" with Mapping To as")]
-        //public void GivenAndContainsFromServerWithMappingToAs(string p0, string p1, string p2, Table table)
-        //{
-        //    throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        //}
+        [Given(@"And ""(.*)"" contains ""(.*)"" from server ""(.*)"" with Mapping To as")]
+        public void GivenAndContainsFromServerWithMappingToAs(string p0, string p1, string p2, Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }
