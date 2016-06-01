@@ -473,9 +473,6 @@
       <DependentUpon>OnError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\FileActivityDesignerViewModel.cs" />
-    <Compile Include="Designers2\Core\Help\HelpAdorner.xaml.cs">
-      <DependentUpon>HelpAdorner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\Core\Adorners\AdornerControl.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerButton.cs" />
     <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
@@ -1477,10 +1474,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Core\Errors\OnError.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\Core\Help\HelpAdorner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
