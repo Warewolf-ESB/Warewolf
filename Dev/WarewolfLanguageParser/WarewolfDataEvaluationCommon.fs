@@ -313,14 +313,14 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
             | RecordSetNameExpression x ->evalDataSetExpression env update x
             | ComplexExpression  a -> EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)
             |  _ -> 
-        let res = evalJson env update buffer
-        match res with
-        | WarewolfAtomListresult a -> 
-            a
-            |> Seq.map enQuote
-            |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
-            |> WarewolfAtomListresult
-        | _ -> failwith "recordest results callot be supported by calculate"
+                let res = evalJson env update buffer
+                match res with
+                | WarewolfAtomListresult a -> 
+                a
+                |> Seq.map enQuote
+                |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
+                |> WarewolfAtomListresult
+                | _ -> failwith "recordest results callot be supported by calculate"
                                                                                  
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
@@ -739,8 +739,7 @@ and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetColumnIden
                 if recordset.Count = 0 then addAtomToRecordSetWithFraming recordset name.Column value 1 false
                 else updateColumnWithValue recordset name.Column value
             | Last -> 
-                addAtomToRecordSetWithFraming recordset name.Column value (getPositionFromRecset recordset name.Column) 
-                    true
+                addAtomToRecordSetWithFraming recordset name.Column value (getPositionFromRecset recordset name.Column) true
             | IndexExpression a -> 
                 addAtomToRecordSetWithFraming recordset name.Column value 
                     (evalIndex env 0 (languageExpressionToString a)) false
@@ -783,29 +782,13 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
                         index <- index + 1
                     recsetmutated
             | Last -> 
-                let countVals = Seq.length value 
                 let mutable recsetmutated = recordset
-                let mutable index = recordset.LastIndex+1   
+                let mutable index = (getPositionFromRecset recordset name.Column)
                 for a in value do  
-                    recsetmutated<-addAtomToRecordSetWithFraming recordset name.Column a index false  
+                    recsetmutated<-addAtomToRecordSetWithFraming recordset name.Column a index true
                     index<-index+1
                 recsetmutated   
-            | IndexExpression _ -> failwith "Invalid assign from list" // logic below does not make sense. removed it. If there is a use case then add it back it. 
-//                let res = eval env update (languageExpressionToString b) |> evalResultToString
-//                match b, assignValue with
-//                | WarewolfAtomExpression atom, _ -> 
-//                    match atom with
-//                    | Int a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
-//                    | _ -> failwith "Invalid index"
-//                | _, Some av -> 
-//                    let data : WarewolfEnvironment = 
-//                        (evalAssignWithFrame 
-//                             (new WarewolfParserInterop.AssignValue((sprintf " // added 0 here!
-//                                                                               [[%s(%s).%s]]" name.Name res name.Column), 
-//                                                                    av.Value)) update env)
-//                    data.RecordSets.[name.Name]
-//                | _, _ -> failwith "Invalid assign from list"
-        
+            | IndexExpression _ -> failwith "Invalid assign from list"
         let recsets = Map.remove name.Name env.RecordSets |> fun a -> Map.add name.Name recsetAdded a
         { env with RecordSets = recsets }
     else 
