@@ -312,7 +312,7 @@ Scenario: Find an index of data in a recordset with Doesn"t Start With
 	| rs().field | why   |
 	| rs().field | yay   |	
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn"t Start With" and criteria is "w"
+	And search the recordset with type "Doesn't Start With" and criteria is "w"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And the execution has "NO" error
@@ -320,7 +320,7 @@ Scenario: Find an index of data in a recordset with Doesn"t Start With
 	| #           |                        | # |                    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
 	| In Field(s) | [[rs(1).field]] = what |   |                    |   |  |     |                             |                                |
 	|             | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
-	|             | [[rs(3).field]] = yay  | 1 | Doesn"t Start With | w |  |     | NO                          | NO                             |
+	|             | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 3 |
@@ -333,7 +333,7 @@ Scenario: Find an index of data in a recordset with Doesn"t End With
 	| rs().field | modev  |
 	| rs().field | yay    |	
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn"t End With" and criteria is "v"
+	And search the recordset with type "Doesn't End With" and criteria is "v"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
@@ -342,7 +342,7 @@ Scenario: Find an index of data in a recordset with Doesn"t End With
 	| In Field(s) | [[rs(1).field]] = arev  |   |                  |   |  |     |                             |                                |
 	|             | [[rs(2).field]] = v     |   |                  |   |  |     |                             |                                |
 	|             | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
-	|             | [[rs(4).field]] = yay   | 1 | Doesn"t End With | v |  |     | NO                          | NO                             |
+	|             | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 4 |
@@ -1071,7 +1071,7 @@ Scenario: Find an index of data in a recordset search type is Doesn"t Contain
 	| rs().field | user     |
 	| rs().field | Warewolf |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn"t Contain" and criteria is "Warewolf"
+	And search the recordset with type "Doesn't Contain" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
@@ -1082,7 +1082,7 @@ Scenario: Find an index of data in a recordset search type is Doesn"t Contain
 	|             | [[rs(3).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(4).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(5).field]] = user     |   |                 |          |  |     |                             |                                |
-	|             | [[rs(6).field]] = Warewolf | 1 | Doesn"t Contain | Warewolf |  |     | NO                          | NO                             |      
+	|             | [[rs(6).field]] = Warewolf | 1 | Doesn't Contain | Warewolf |  |     | NO                          | NO                             |      
 	And the debug output as
 	|                 |
 	| [[result]] = 5 |
@@ -1097,7 +1097,7 @@ Scenario: Find an index of data in a recordset search type is Doesn"t Contain mu
 	| rs().field | user     |
 	| rs().field | Warewolf |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn"t Contain" and criteria is "Warewolf"
+	And search the recordset with type "Doesn't Contain" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,5
 	And the execution has "NO" error
@@ -1108,7 +1108,7 @@ Scenario: Find an index of data in a recordset search type is Doesn"t Contain mu
 	|             | [[rs(3).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(4).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(5).field]] = user     |   |                 |          |  |     |                             |                                |
-	|             | [[rs(6).field]] = Warewolf | 1 | Doesn"t Contain | Warewolf |  |     | NO                          | NO                             |
+	|             | [[rs(6).field]] = Warewolf | 1 | Doesn't Contain | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
 	| [[result]] = 1,5 |
@@ -1123,7 +1123,7 @@ Scenario: Find an index of data in a recordset search type is Doesn"t Contain re
 	| rs().field | Mars  |
 	| rs().field | Mars  |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn"t Contain" and criteria is "Mars"
+	And search the recordset with type "Doesn't Contain" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
@@ -1134,7 +1134,7 @@ Scenario: Find an index of data in a recordset search type is Doesn"t Contain re
 	|             | [[rs(3).field]] = Mars |   |                 |      |  |     |                             |                                |
 	|             | [[rs(4).field]] = Mars |   |                 |      |  |     |                             |                                |
 	|             | [[rs(5).field]] = Mars |   |                 |      |  |     |                             |                                |
-	|             | [[rs(6).field]] = Mars | 1 | Doesn"t Contain | Mars |  |     | NO                          | NO                             |     
+	|             | [[rs(6).field]] = Mars | 1 | Doesn't Contain | Mars |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |

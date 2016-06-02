@@ -433,21 +433,3 @@ Scenario: Calculate using variables with a no existent value
 	| fx =                       |
 	| SUM([[a]],[[b]]) =  |
 
-
-#Complex Types WOLF-1042
-Scenario Outline: Calculate using complex types () input in an agregate function like SUM
-	Given I have a calculate variable "[[var().int().value]]" equal to 
-	| var().int().value | value |
-	| var().int().value | 1     |
-	| var().int().value | 2     |
-	| var().int().value | 3     |
-	And I have the formula "<fx>"
-	When the calculate tool is executed
-	Then the calculate result should be "3"
-	And the execution has "NO" error
-	Then the calculate "<result>" should be "<value>"
-	Examples: 
-	| No | fx                                 | result               | value |
-	| 1  | SUM([[var().int().value]])         | [[rs().set().value]] | 3     |
-	| 1  | SUM([[var(1).int([[val]]).value]]) | [[rs().set().value]] | 10000 |
-	| 1  | SUM([[var().int(*).value]])        | [[rs().set().value]] | 10007 |
