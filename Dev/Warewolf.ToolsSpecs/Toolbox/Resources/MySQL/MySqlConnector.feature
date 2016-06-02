@@ -13,12 +13,12 @@ Scenario: Creating mysql server connector
 	And Input is Not enabled for mysql connector tool
 	And I select Action for mysql connector tool
 	And Input is enabled for mysql connector tool
-	And Inputs are "xxx" for mysql connector tool
+	And Inputs are "SomeInput" for mysql connector tool
 	Then I click validate on mysql connector tool
 	When I click Test on mysql connector tool
 	And The Connector and Calculate Outputs appear for mysql connector tool
 	Then I click Okay on mysql connector tool
-	And The recordset name appear as "xxx" on mysql connector tool
+	And The recordset name appear as "SomeRecordSet" on mysql connector tool
 	
 Scenario: Opening exisitng mysql server connector tool
 	Given I open an existing mysql connector tool
