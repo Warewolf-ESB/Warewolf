@@ -753,6 +753,19 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
+        public void Eval_Json_Root()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            //------------Execute Test---------------------------
+            var res = EvaluationFunctions.eval(env, 0, "[[@Person]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("22", CommonFunctions.evalResultToString(res));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
         public void Eval_JsonNested()
         {
             //------------Setup for test--------------------------

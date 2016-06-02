@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var httpClient = deleteActivityFromBase.CreateClient(null, String.Empty, webSource);
             //---------------Test Result -----------------------
             Assert.IsNotNull(httpClient);
-       
+
 
             AuthenticationHeaderValue webClientCredentials = httpClient.DefaultRequestHeaders.Authorization;
             Assert.IsNotNull(webClientCredentials);
@@ -255,10 +255,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(3, debugInputs.Count);
         }
-
         private static WebSource CreateTestWebSource()
         {
-            return new WebSource()
+            return new WebSource
             {
                 Password = "PasJun1",
                 UserName = "User1",
@@ -284,6 +283,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         #region Overrides of DsfWebPostActivity
 
         public string ResponseFromWeb { private get; set; }
+
 
         public TestDsfWebBaseActivity(WebRequestDataDto webRequestDataDto)
             : base(webRequestDataDto)

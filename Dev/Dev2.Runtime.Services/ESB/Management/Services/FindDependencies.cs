@@ -119,15 +119,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceID));
             dependants.ForEach(c =>
             {
-                if (!seenResource.Contains(c))
+                var resource = ResourceCatalog.GetResource(workspaceId, c) ?? ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, c);
+                if (resource != null)
                 {
-                    var resource = ResourceCatalog.GetResource(workspaceId, c) ?? ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, c);
-
-                    if (resource != null)
-                    {
-                        sb.Append(string.Format("<dependency id=\"{0}\" />", resource.ResourceID));
-                    }
+                    sb.Append(string.Format("<dependency id=\"{0}\" />", resource.ResourceID));
                 }
+
             });
             sb.Append("</node>");
             seenResource.Add(resourceID);
