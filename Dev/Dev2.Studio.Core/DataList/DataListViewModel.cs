@@ -267,7 +267,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 var window = new JsonObjectsView();
                 window.Height = 280;
-                var contentPresenter = window.FindChild<TextBlock>();
+                var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
                     var json = item.GetJson();
@@ -443,6 +443,7 @@ namespace Dev2.Studio.ViewModels.DataList
             WriteToResourceModel();
             EventPublisher.Publish(new UpdateIntellisenseMessage());
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+            ViewComplexObjectsCommand.RaiseCanExecuteChanged();
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
