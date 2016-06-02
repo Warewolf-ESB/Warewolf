@@ -30,7 +30,7 @@ namespace Dev2.Studio.Diagnostics
             {
                 throw new ArgumentNullException("e");
             }
-            if (_busy || (e.Source!=null && e.Source.Contains("InfragisticsWPF4.DragDrop")))
+            if (_busy || (e.Source!=null && (e.Source.Contains("InfragisticsWPF4.DragDrop") || e.Source.Contains("PresentationFramework"))))
             {
                 return true;
             }
