@@ -4558,6 +4558,9 @@ Data
   <data name="CalculateToolTipFx" xml:space="preserve">
     <value>Excel like calculation</value>
   </data>
+  <data name="ViewJsonObjectTooltip" xml:space="preserve">
+    <value>Click to see the JSON representation of this object.</value>
+  </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Returns the calculation result.</value>
   </data>
