@@ -27,12 +27,14 @@ namespace Dev2.Core.Tests
         public void DependencyGraphGenerator_BuildGraph_WhenGraphDataValid_ExpectValidGraph()
         {
             //------------Setup for test--------------------------
-            const string graphData = @"<graph title=""Local Dependants Graph: MyLocalWF"">
-  <node id=""9139Local"" x="""" y="""" broken=""false"">
-    <dependency id=""MyLocalWF"" />
-  </node>
-  <node id=""MyLocalWF"" x="""" y="""" broken=""false""></node>
-</graph>";
+            const string graphData = "<graph title=\"Local Dependants Graph: 45e1fcc5-9f68-4d4a-9e01-20d587dee532\">" +
+                                        "<node id=\"45e1fcc5-9f68-4d4a-9e01-20d587dee532\" x=\"\" y=\"\" broken=\"false\">" +
+                                            "<dependency id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" />" +
+                                        "</node>" +
+                                        "<node id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" x=\"\" y=\"\" broken=\"false\">" +
+                                            "<dependency id=\"e0e2cb45-aa63-417f-bc41-2fe4e906ba56\" />" +
+                                        "</node>" +
+                                     "</graph>";
 
             var data = new StringBuilder(graphData);
             var dependencyGraphGenerator = new DependencyGraphGenerator();
