@@ -160,14 +160,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Assign_Object_Small_View_Exists_On_Design_Surface()
         {
             #region Variable Declarations
-            WpfCustom uIDsfMultiAssignObjectCustom = this.UIWarewolfDEV2ASHLEYLEWindow.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfMultiAssignObjectCustom;
+            WpfCustom assignObject = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject;
             #endregion
 
             // Verify that the 'Exists' property of 'DsfMultiAssignObjectActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Assign_Object_Small_View_Exists_On_Design_SurfaceExpectedValues.UIDsfMultiAssignObjectCustomExists, uIDsfMultiAssignObjectCustom.Exists);
-
-            // Verify that the 'AutomationId' property of 'DsfMultiAssignObjectActivity' custom control equals 'Assign Object (1)(MultiAssignObjectDesigner)'
-            Assert.AreEqual(this.Assert_Assign_Object_Small_View_Exists_On_Design_SurfaceExpectedValues.UIDsfMultiAssignObjectCustomAutomationId, uIDsfMultiAssignObjectCustom.AutomationId);
+            Assert.AreEqual(this.Assert_Assign_Object_Small_View_Exists_On_Design_SurfaceExpectedValues.AssignObjectExists, assignObject.Exists);
         }
         
         /// <summary>
@@ -899,6 +896,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Display_Name_Exists_On_Data_Merge_Small_View - Use 'Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Display_Name_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfEdit displayName = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.DisplayName;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'DisplayName' text box equals 'Edit'
+            Assert.AreEqual(this.Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues.DisplayNameControlType, displayName.ControlType.ToString(), "Displayname textbox does not exist on Data Merge");
+        }
+        
+        /// <summary>
         /// Assert_Done_Button_Exists_On_Assign_Object_Large_View - Use 'Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Done_Button_Exists_On_Assign_Object_Large_View()
@@ -909,6 +919,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'Done' button equals 'True'
             Assert.AreEqual(this.Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist on Assign Object large view");
+        }
+        
+        /// <summary>
+        /// Assert_Done_Button_Exists_On_Data_Merge_Large_View - Use 'Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Done_Button_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.DoneButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues.DoneButtonExists, doneButton.Exists, "Done button does not exist on data merge large view");
         }
         
         /// <summary>
@@ -1433,6 +1456,32 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_View - Use 'Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfCheckBox endthisworkflowCheckBox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.OnErrorGroup.EndthisworkflowCheckBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'End this workflow' check box equals 'True'
+            Assert.AreEqual(this.Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues.EndthisworkflowCheckBoxExists, endthisworkflowCheckBox.Exists, "OnError End this workflow checkbox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_View - Use 'Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfEdit variableTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.OnErrorGroup.VariableTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Variable_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues.VariableTextboxExists, variableTextbox.Exists, "OnError variable textbox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
         /// Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_View - Use 'Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_View()
@@ -1547,6 +1596,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
             Assert.AreEqual(this.Assert_QVI_Button_Exists_on_Assign_Object_Small_ViewExpectedValues.OpenQuickVariableInputExists, openQuickVariableInput.Exists, "QVI Button does not exist on Assign Object small view");
+        }
+        
+        /// <summary>
+        /// Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_View - Use 'Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfToggleButton openQuickVariableInpToggleButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.OpenQuickVariableInpToggleButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
+            Assert.AreEqual(this.Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues.OpenQuickVariableInpToggleButtonExists, openQuickVariableInpToggleButton.Exists, "QVI toggle button does not exist on Data Merge small view");
         }
         
         /// <summary>
@@ -1677,6 +1739,166 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
             Assert.AreEqual(this.Assert_Replace_Exists_OnDesignSurfaceExpectedValues.ReplaceExists, replace.Exists, "Replace on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Result_Textbox_Exists_On_Data_Merge_Large_View - Use 'Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Result_Textbox_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfEdit resultTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.ResultTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues.ResultTextboxExists, resultTextbox.Exists, "Result textbox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_Result_Textbox_Exists_On_Data_Merge_Small_View - Use 'Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Result_Textbox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfEdit resultTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.ResultTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues.ResultTextboxExists, resultTextbox.Exists, "Result textbox does not exist on Data Merge small view");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_View - Use 'Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfEdit paddingTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.PaddingCell.PaddingTextbox;
+            WpfComboBox alignCombobox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.AlignCell.AlignCombobox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Padding_Row1_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues.PaddingTextboxExists, paddingTextbox.Exists, "Row 1 padding textbox does not exist on Data Merge large view");
+
+            // Verify that the 'Exists' property of 'UI__Row1_Alignment_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues.AlignComboboxExists, alignCombobox.Exists, "Row 1 align combobox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_Combobox_Exists_On_Data_Merge_Small_View - Use 'Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_Combobox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfComboBox row1TypeCombobox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.TypeCell.Row1TypeCombobox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Row1_MergeType_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues.Row1TypeComboboxExists, row1TypeCombobox.Exists, "Row1 combo box does not exist on Data Merge small view");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_View - Use 'Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfEdit row1IndexTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.IndexCell.Row1IndexTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__At_Row1_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues.Row1IndexTextboxExists, row1IndexTextbox.Exists, "Row 1 Index Textbox does not exist on Data Merge small view");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_View - Use 'Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfText inputFloatingText = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.InputCell.InputTextbox.InputFloatingText;
+            #endregion
+
+            // Verify that the 'Exists' property of '[[Recordset().F1]]' label equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues.InputFloatingTextExists, inputFloatingText.Exists, "Input textbox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_View - Use 'Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfText inputFloatingText = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.InputCell.Row1InputTextbox.InputFloatingText;
+            #endregion
+
+            // Verify that the 'Exists' property of '[[Recordset().F1]]' label equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues.InputFloatingTextExists, inputFloatingText.Exists, "Row 1 textbox on Data Merge small view does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_View - Use 'Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_View()
+        {
+            #region Variable Declarations
+            WpfEdit usingTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.UsingCell.UsingTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__At_Row1_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues.UsingTextboxExists, usingTextbox.Exists, "Row 1 using textbox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_View - Use 'Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_View()
+        {
+            #region Variable Declarations
+            WpfComboBox widthCombobox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.LargeView.DatGrid.Row.WidthCell.WidthCombobox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Row1_MergeType_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues.WidthComboboxExists, widthCombobox.Exists, "With combobox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_Row2_Combobox_Exists_On_Data_Merge_Small_View - Use 'Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row2_Combobox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfComboBox row2TypeCombobox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.TypeCell.Row2TypeCombobox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Row2_MergeType_AutoID' combo box equals 'True'
+            Assert.AreEqual(this.Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues.Row2TypeComboboxExists, row2TypeCombobox.Exists, "Row 2 combobox does not exist on Data Merge large view");
+        }
+        
+        /// <summary>
+        /// Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_View - Use 'Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfEdit row2IndexTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.IndexCell.Row2IndexTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__At_Row2_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues.Row2IndexTextboxExists, row2IndexTextbox.Exists, "Row 2 index textbox does not exist on Data Merge small view");
+        }
+        
+        /// <summary>
+        /// Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_View - Use 'Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_View()
+        {
+            #region Variable Declarations
+            WpfEdit row2InputTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.UISmallDataGridTable.Row.InputCell.Row2InputTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Row2_InputVariable_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues.Row2InputTextboxExists, row2InputTextbox.Exists, "Row 2 Recordset Textbox does not exist on Data Merge small view");
         }
         
         /// <summary>
@@ -7415,6 +7637,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
         public virtual Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues
         {
             get
@@ -7424,6 +7658,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues = new Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues();
                 }
                 return this.mAssert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues;
             }
         }
         
@@ -7907,6 +8153,30 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+            }
+        }
+        
         public virtual Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues
         {
             get
@@ -8012,6 +8282,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_QVI_Button_Exists_on_Assign_Object_Small_ViewExpectedValues = new Assert_QVI_Button_Exists_on_Assign_Object_Small_ViewExpectedValues();
                 }
                 return this.mAssert_QVI_Button_Exists_on_Assign_Object_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues;
             }
         }
         
@@ -8132,6 +8414,150 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Replace_Exists_OnDesignSurfaceExpectedValues = new Assert_Replace_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Replace_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues = new Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues = new Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues();
+                }
+                return this.mAssert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues == null))
+                {
+                    this.mAssert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues = new Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues();
+                }
+                return this.mAssert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
             }
         }
         
@@ -9946,18 +10372,6 @@ namespace Warewolf.Studio.UISpecs
                 return this.mDecisionDialog;
             }
         }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -10093,7 +10507,11 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Display_Name_Exists_On_Assign_Object_Small_View_On_The_Design_SurfaceExpectedValues mAssert_Display_Name_Exists_On_Assign_Object_Small_View_On_The_Design_SurfaceExpectedValues;
         
+        private Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
         private Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues mAssert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues;
+        
+        private Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues;
         
         private Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues mAssert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues;
         
@@ -10175,6 +10593,10 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_NewWorkFlow_RibbonButton_ExistsExpectedValues mAssert_NewWorkFlow_RibbonButton_ExistsExpectedValues;
         
+        private Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+        
+        private Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+        
         private Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues mAssert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_ViewExpectedValues;
         
         private Assert_Override_Count_ExistsExpectedValues mAssert_Override_Count_ExistsExpectedValues;
@@ -10192,6 +10614,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_PostWeb_RequestTool_Small_View_Exists_OnDesignSurfaceExpectedValues mAssert_PostWeb_RequestTool_Small_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_QVI_Button_Exists_on_Assign_Object_Small_ViewExpectedValues mAssert_QVI_Button_Exists_on_Assign_Object_Small_ViewExpectedValues;
+        
+        private Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues;
         
         private Assert_Random_Exists_OnDesignSurfaceExpectedValues mAssert_Random_Exists_OnDesignSurfaceExpectedValues;
         
@@ -10212,6 +10636,30 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Rename_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Rename_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Replace_Exists_OnDesignSurfaceExpectedValues mAssert_Replace_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+        
+        private Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
+        private Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+        
+        private Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
+        private Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
+        private Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+        
+        private Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
+        private Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues mAssert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues;
+        
+        private Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues mAssert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues;
+        
+        private Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
+        private Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
+        
+        private Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues mAssert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues;
         
         private Assert_SaveDialog_CancelButton_ExistsExpectedValues mAssert_SaveDialog_CancelButton_ExistsExpectedValues;
         
@@ -10514,8 +10962,6 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private DecisionDialog mDecisionDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -10665,12 +11111,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfMultiAssignObjectActivity' custom control equals 'True'
         /// </summary>
-        public bool UIDsfMultiAssignObjectCustomExists = true;
-        
-        /// <summary>
-        /// Verify that the 'AutomationId' property of 'DsfMultiAssignObjectActivity' custom control equals 'Assign Object (1)(MultiAssignObjectDesigner)'
-        /// </summary>
-        public string UIDsfMultiAssignObjectCustomAutomationId = "Assign Object (1)(MultiAssignObjectDesigner)";
+        public bool AssignObjectExists = true;
         #endregion
     }
     
@@ -11515,10 +11956,40 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Display_Name_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Display_Name_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'DisplayName' text box equals 'Edit'
+        /// </summary>
+        public string DisplayNameControlType = "Edit";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Done_Button_Exists_On_Assign_Object_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class Assert_Done_Button_Exists_On_Assign_Object_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Done_Button_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Done_Button_Exists_On_Data_Merge_Large_ViewExpectedValues
     {
         
         #region Fields
@@ -12130,6 +12601,36 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_OnError_End_this_workflow_Checkbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'End this workflow' check box equals 'True'
+        /// </summary>
+        public bool EndthisworkflowCheckBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_OnError_Variable_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Variable_AutoID' text box equals 'True'
+        /// </summary>
+        public bool VariableTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_OnError_WebService_Textbox_Exists_On_Assign_Object_Large_View'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12261,6 +12762,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
         /// </summary>
         public bool OpenQuickVariableInputExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_QVI_Toggle_Button_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Open Quick Variable Input' toggle button equals 'True'
+        /// </summary>
+        public bool OpenQuickVariableInpToggleButtonExists = true;
         #endregion
     }
     
@@ -12411,6 +12927,191 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfReplaceActivity' custom control equals 'True'
         /// </summary>
         public bool ReplaceExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Result_Textbox_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Result_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' text box equals 'True'
+        /// </summary>
+        public bool ResultTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Result_Textbox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Result_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Resulttxt_AutoID' text box equals 'True'
+        /// </summary>
+        public bool ResultTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_Align_Combobox_Exists_On_Data_Merge_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Padding_Row1_AutoID' text box equals 'True'
+        /// </summary>
+        public bool PaddingTextboxExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_Alignment_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool AlignComboboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_Combobox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_MergeType_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool Row1TypeComboboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__At_Row1_AutoID' text box equals 'True'
+        /// </summary>
+        public bool Row1IndexTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_Input_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '[[Recordset().F1]]' label equals 'True'
+        /// </summary>
+        public bool InputFloatingTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '[[Recordset().F1]]' label equals 'True'
+        /// </summary>
+        public bool InputFloatingTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_Using_Textbox_Exists_On_Data_Merge_Large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__At_Row1_AutoID' text box equals 'True'
+        /// </summary>
+        public bool UsingTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row1_With_Combobox_Exists_On_Data_Merge_large_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_MergeType_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool WidthComboboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row2_Combobox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row2_Combobox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row2_MergeType_AutoID' combo box equals 'True'
+        /// </summary>
+        public bool Row2TypeComboboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row2_Index_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__At_Row2_AutoID' text box equals 'True'
+        /// </summary>
+        public bool Row2IndexTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_View'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Row2_Recordset_Textbox_Exists_On_Data_Merge_Small_ViewExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row2_InputVariable_AutoID' text box equals 'True'
+        /// </summary>
+        public bool Row2InputTextboxExists = true;
         #endregion
     }
     
@@ -17656,10 +18357,873 @@ namespace Warewolf.Studio.UISpecs
                 return this.mOpenQuickVariableInpToggleButton;
             }
         }
+        
+        public WpfEdit DisplayName
+        {
+            get
+            {
+                if ((this.mDisplayName == null))
+                {
+                    this.mDisplayName = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mDisplayName.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DisplayNameBox";
+                    this.mDisplayName.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDisplayName;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public SmallView1 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView1(this);
+                }
+                return this.mSmallView;
+            }
+        }
+        
+        public LargeView1 LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new LargeView1(this);
+                }
+                return this.mLargeView;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        
+        private WpfEdit mDisplayName;
+        
+        private WpfButton mDoneButton;
+        
+        private SmallView1 mSmallView;
+        
+        private LargeView1 mLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView1 : WpfCustom
+    {
+        
+        public SmallView1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISmallDataGridTable UISmallDataGridTable
+        {
+            get
+            {
+                if ((this.mUISmallDataGridTable == null))
+                {
+                    this.mUISmallDataGridTable = new UISmallDataGridTable(this);
+                }
+                return this.mUISmallDataGridTable;
+            }
+        }
+        
+        public WpfEdit ResultTextbox
+        {
+            get
+            {
+                if ((this.mResultTextbox == null))
+                {
+                    this.mResultTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mResultTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+                    this.mResultTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mResultTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISmallDataGridTable mUISmallDataGridTable;
+        
+        private WpfEdit mResultTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallDataGridTable : WpfTable
+    {
+        
+        public UISmallDataGridTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row Row
+        {
+            get
+            {
+                if ((this.mRow == null))
+                {
+                    this.mRow = new Row(this);
+                }
+                return this.mRow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row mRow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row : WpfRow
+    {
+        
+        public Row(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputCell InputCell
+        {
+            get
+            {
+                if ((this.mInputCell == null))
+                {
+                    this.mInputCell = new InputCell(this);
+                }
+                return this.mInputCell;
+            }
+        }
+        
+        public TypeCell TypeCell
+        {
+            get
+            {
+                if ((this.mTypeCell == null))
+                {
+                    this.mTypeCell = new TypeCell(this);
+                }
+                return this.mTypeCell;
+            }
+        }
+        
+        public IndexCell IndexCell
+        {
+            get
+            {
+                if ((this.mIndexCell == null))
+                {
+                    this.mIndexCell = new IndexCell(this);
+                }
+                return this.mIndexCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputCell mInputCell;
+        
+        private TypeCell mTypeCell;
+        
+        private IndexCell mIndexCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputCell : WpfCell
+    {
+        
+        public InputCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row1InputTextbox Row1InputTextbox
+        {
+            get
+            {
+                if ((this.mRow1InputTextbox == null))
+                {
+                    this.mRow1InputTextbox = new Row1InputTextbox(this);
+                }
+                return this.mRow1InputTextbox;
+            }
+        }
+        
+        public WpfEdit Row2InputTextbox
+        {
+            get
+            {
+                if ((this.mRow2InputTextbox == null))
+                {
+                    this.mRow2InputTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRow2InputTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Row2_InputVariable_AutoID";
+                    this.mRow2InputTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRow2InputTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row1InputTextbox mRow1InputTextbox;
+        
+        private WpfEdit mRow2InputTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row1InputTextbox : WpfEdit
+    {
+        
+        public Row1InputTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Row1_InputVariable_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText InputFloatingText
+        {
+            get
+            {
+                if ((this.mInputFloatingText == null))
+                {
+                    this.mInputFloatingText = new WpfText(this);
+                    #region Search Criteria
+                    this.mInputFloatingText.SearchProperties[WpfText.PropertyNames.Name] = "[[Recordset().F1]]";
+                    this.mInputFloatingText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mInputFloatingText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mInputFloatingText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TypeCell : WpfCell
+    {
+        
+        public TypeCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox Row1TypeCombobox
+        {
+            get
+            {
+                if ((this.mRow1TypeCombobox == null))
+                {
+                    this.mRow1TypeCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mRow1TypeCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_MergeType_AutoID";
+                    this.mRow1TypeCombobox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRow1TypeCombobox;
+            }
+        }
+        
+        public WpfComboBox Row2TypeCombobox
+        {
+            get
+            {
+                if ((this.mRow2TypeCombobox == null))
+                {
+                    this.mRow2TypeCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mRow2TypeCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row2_MergeType_AutoID";
+                    this.mRow2TypeCombobox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRow2TypeCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mRow1TypeCombobox;
+        
+        private WpfComboBox mRow2TypeCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class IndexCell : WpfCell
+    {
+        
+        public IndexCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Row1IndexTextbox
+        {
+            get
+            {
+                if ((this.mRow1IndexTextbox == null))
+                {
+                    this.mRow1IndexTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRow1IndexTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__At_Row1_AutoID";
+                    this.mRow1IndexTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRow1IndexTextbox;
+            }
+        }
+        
+        public WpfEdit Row2IndexTextbox
+        {
+            get
+            {
+                if ((this.mRow2IndexTextbox == null))
+                {
+                    this.mRow2IndexTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRow2IndexTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__At_Row2_AutoID";
+                    this.mRow2IndexTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRow2IndexTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mRow1IndexTextbox;
+        
+        private WpfEdit mRow2IndexTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LargeView1 : WpfCustom
+    {
+        
+        public LargeView1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public DatGrid DatGrid
+        {
+            get
+            {
+                if ((this.mDatGrid == null))
+                {
+                    this.mDatGrid = new DatGrid(this);
+                }
+                return this.mDatGrid;
+            }
+        }
+        
+        public WpfEdit ResultTextbox
+        {
+            get
+            {
+                if ((this.mResultTextbox == null))
+                {
+                    this.mResultTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mResultTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Resulttxt_AutoID";
+                    this.mResultTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mResultTextbox;
+            }
+        }
+        
+        public OnErrorGroup1 OnErrorGroup
+        {
+            get
+            {
+                if ((this.mOnErrorGroup == null))
+                {
+                    this.mOnErrorGroup = new OnErrorGroup1(this);
+                }
+                return this.mOnErrorGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DatGrid mDatGrid;
+        
+        private WpfEdit mResultTextbox;
+        
+        private OnErrorGroup1 mOnErrorGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DatGrid : WpfTable
+    {
+        
+        public DatGrid(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row3 Row
+        {
+            get
+            {
+                if ((this.mRow == null))
+                {
+                    this.mRow = new Row3(this);
+                }
+                return this.mRow;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row3 mRow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row3 : WpfRow
+    {
+        
+        public Row3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputCell1 InputCell
+        {
+            get
+            {
+                if ((this.mInputCell == null))
+                {
+                    this.mInputCell = new InputCell1(this);
+                }
+                return this.mInputCell;
+            }
+        }
+        
+        public WidthCell WidthCell
+        {
+            get
+            {
+                if ((this.mWidthCell == null))
+                {
+                    this.mWidthCell = new WidthCell(this);
+                }
+                return this.mWidthCell;
+            }
+        }
+        
+        public UsingCell UsingCell
+        {
+            get
+            {
+                if ((this.mUsingCell == null))
+                {
+                    this.mUsingCell = new UsingCell(this);
+                }
+                return this.mUsingCell;
+            }
+        }
+        
+        public PaddingCell PaddingCell
+        {
+            get
+            {
+                if ((this.mPaddingCell == null))
+                {
+                    this.mPaddingCell = new PaddingCell(this);
+                }
+                return this.mPaddingCell;
+            }
+        }
+        
+        public AlignCell AlignCell
+        {
+            get
+            {
+                if ((this.mAlignCell == null))
+                {
+                    this.mAlignCell = new AlignCell(this);
+                }
+                return this.mAlignCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputCell1 mInputCell;
+        
+        private WidthCell mWidthCell;
+        
+        private UsingCell mUsingCell;
+        
+        private PaddingCell mPaddingCell;
+        
+        private AlignCell mAlignCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputCell1 : WpfCell
+    {
+        
+        public InputCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputTextbox InputTextbox
+        {
+            get
+            {
+                if ((this.mInputTextbox == null))
+                {
+                    this.mInputTextbox = new InputTextbox(this);
+                }
+                return this.mInputTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputTextbox mInputTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputTextbox : WpfEdit
+    {
+        
+        public InputTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Row1_InputVariable_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText InputFloatingText
+        {
+            get
+            {
+                if ((this.mInputFloatingText == null))
+                {
+                    this.mInputFloatingText = new WpfText(this);
+                    #region Search Criteria
+                    this.mInputFloatingText.SearchProperties[WpfText.PropertyNames.Name] = "[[Recordset().F1]]";
+                    this.mInputFloatingText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mInputFloatingText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mInputFloatingText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WidthCell : WpfCell
+    {
+        
+        public WidthCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "With";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox WidthCombobox
+        {
+            get
+            {
+                if ((this.mWidthCombobox == null))
+                {
+                    this.mWidthCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mWidthCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_MergeType_AutoID";
+                    this.mWidthCombobox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mWidthCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mWidthCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UsingCell : WpfCell
+    {
+        
+        public UsingCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Using";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UsingTextbox
+        {
+            get
+            {
+                if ((this.mUsingTextbox == null))
+                {
+                    this.mUsingTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUsingTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__At_Row1_AutoID";
+                    this.mUsingTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUsingTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUsingTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PaddingCell : WpfCell
+    {
+        
+        public PaddingCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Padding";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit PaddingTextbox
+        {
+            get
+            {
+                if ((this.mPaddingTextbox == null))
+                {
+                    this.mPaddingTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mPaddingTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Padding_Row1_AutoID";
+                    this.mPaddingTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mPaddingTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mPaddingTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AlignCell : WpfCell
+    {
+        
+        public AlignCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Align";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox AlignCombobox
+        {
+            get
+            {
+                if ((this.mAlignCombobox == null))
+                {
+                    this.mAlignCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mAlignCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_Alignment_AutoID";
+                    this.mAlignCombobox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mAlignCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mAlignCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OnErrorGroup1 : WpfGroup
+    {
+        
+        public OnErrorGroup1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.AutomationId] = "OnErrorGroupBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit VariableTextbox
+        {
+            get
+            {
+                if ((this.mVariableTextbox == null))
+                {
+                    this.mVariableTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mVariableTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Variable_AutoID";
+                    this.mVariableTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mVariableTextbox;
+            }
+        }
+        
+        public WpfCheckBox EndthisworkflowCheckBox
+        {
+            get
+            {
+                if ((this.mEndthisworkflowCheckBox == null))
+                {
+                    this.mEndthisworkflowCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEndthisworkflowCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__IsEnded_AutoID";
+                    this.mEndthisworkflowCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mEndthisworkflowCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mVariableTextbox;
+        
+        private WpfCheckBox mEndthisworkflowCheckBox;
         #endregion
     }
     
@@ -34051,128 +35615,6 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfButton mDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        
-        public WpfCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        
-        private WpfCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDsfMultiAssignObjectCustom
-        {
-            get
-            {
-                if ((this.mUIDsfMultiAssignObjectCustom == null))
-                {
-                    this.mUIDsfMultiAssignObjectCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfMultiAssignObjectCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignObjectDesigner";
-                    this.mUIDsfMultiAssignObjectCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign Object (1)(MultiAssignObjectDesigner)";
-                    this.mUIDsfMultiAssignObjectCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIDsfMultiAssignObjectCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDsfMultiAssignObjectCustom;
         #endregion
     }
 }

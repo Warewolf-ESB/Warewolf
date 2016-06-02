@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 // ReSharper disable RedundantAssignment
+// ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest
 {
@@ -32,7 +33,6 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Parse")]
-        // ReSharper disable InconsistentNaming
         public void WarewolfParse_Parse_Nested_ExpectComplex()
         {
 
@@ -102,7 +102,6 @@ namespace WarewolfParsingTest
                 var x = data[2] as LanguageAST.LanguageExpression.RecordSetExpression;
                 Assert.IsNotNull(x);
                 Assert.IsTrue(x.Item.Index.IsIntIndex);
-                //Assert.AreEqual(((LanguageAST.Index.IntIndex)x.Item.Index).Item , 0);
                 Assert.AreEqual(x.Item.Column, "a");
                 Assert.AreEqual(x.Item.Name, "rec");
             }
@@ -202,20 +201,12 @@ namespace WarewolfParsingTest
             var ast = PublicFunctions.EvalEnvExpression("[[b]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            // ReSharper disable PossibleNullReferenceException
-            // ReSharper disable PossibleNullReferenceException
-            // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x != null && x.Item.IsInt);
-            // ReSharper restore PossibleNullReferenceException
-            // ReSharper restore PossibleNullReferenceException
             var val = x.Item as DataStorage.WarewolfAtom.Int;
-            // ReSharper disable PossibleNullReferenceException
             if (val != null)
             {
                 Assert.AreEqual(2344, val.Item);
             }
-            // ReSharper restore PossibleNullReferenceException
-            // ReSharper rstore PossibleNullReferenceException
         }
 
         [TestMethod]
@@ -633,13 +624,12 @@ namespace WarewolfParsingTest
 
             var recordSet = envx.RecordSets["bec"];
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
-            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.AreEqual(2, recordSet.Data["a"].Count);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual(1, (recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(2, (recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual(1, (recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item);
 
         }
 
@@ -784,11 +774,11 @@ namespace WarewolfParsingTest
 
             var recordSet = testEnv3.RecordSets["bec"];
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
-            Assert.AreEqual(recordSet.Data["a"].Count, 1);
+            Assert.AreEqual(1, recordSet.Data["a"].Count);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual(26, (recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(27, (recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(1, (recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item);
 
 
         }
@@ -796,7 +786,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        [ExpectedException(typeof(NullValueInVariableException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void WarewolfParse_Eval_FramedAssign_WithNoIndexLeftAndRightError()
         {
 
@@ -824,13 +814,11 @@ namespace WarewolfParsingTest
 
             var recordSet = testEnv3.RecordSets["bec"];
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
-            Assert.AreEqual(recordSet.Data["a"].Count, 1);
+            Assert.AreEqual(1, recordSet.Data["a"].Count);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
-
-
+            Assert.AreEqual(26, (recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(1, (recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(27, (recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item);
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

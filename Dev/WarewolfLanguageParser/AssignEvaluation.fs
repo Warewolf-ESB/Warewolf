@@ -192,6 +192,8 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
             | Star -> false
             | Last -> true
             | _ -> true
+        | ComplexExpression a -> let exp = languageExpressionToString rightParse
+                                 not (exp.Contains("(*)"))
         | _ -> true
     
     match right with

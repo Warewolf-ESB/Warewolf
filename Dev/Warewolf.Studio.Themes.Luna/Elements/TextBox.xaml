@@ -3,7 +3,8 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                     xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
-                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources">
 
     <ResourceDictionary.MergedDictionaries>
         <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
@@ -1168,6 +1169,7 @@
                                         x:Name="ViewObjectsButton"
                                         Grid.Column="0"
                                         Margin="-5,0,0,0"
+                                        ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
                                     <Button.Template>
