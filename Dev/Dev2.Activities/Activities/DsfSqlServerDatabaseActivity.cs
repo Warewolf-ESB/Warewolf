@@ -49,8 +49,7 @@ namespace Dev2.Activities
         }
 
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
-        {
-            
+        {            
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
