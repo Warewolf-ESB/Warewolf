@@ -452,6 +452,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click to clear the filter text..
+        /// </summary>
+        public static string ClearVariableListFilterTooltip {
+            get {
+                return ResourceManager.GetString("ClearVariableListFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.
         ///
@@ -2255,6 +2264,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DeleteToolTipUsername {
             get {
                 return ResourceManager.GetString("DeleteToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to delete unused variable of this object..
+        /// </summary>
+        public static string DeleteVariableListObjectTooltip {
+            get {
+                return ResourceManager.GetString("DeleteVariableListObjectTooltip", resourceCulture);
             }
         }
         
