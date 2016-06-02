@@ -17,6 +17,8 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 using Dev2.DataList.Contract;
+using Moq.Protected;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
@@ -346,7 +348,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            if(!string.IsNullOrEmpty(recsetName))
+                Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
         }
 
         [Given(@"I have a workflow ""(.*)""")]
@@ -359,7 +362,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
                 new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
             };
-
+                       
             var sqlServerActivity = new DsfSqlServerDatabaseActivity
             {
                 SourceId = sourceId,
@@ -367,6 +370,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Inputs = inputs,
                 Outputs = outputs
             };
+            //sqlServerActivity.Execute(new Mock<IDSFDataObject>().Object, 0);
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
             var mockServiceInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
@@ -424,25 +428,33 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.SourceRegion.Sources.Any(p => p.ServerName == p2));
             Assert.IsNotNull(table);
         }
-                
+
+
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string p0)
         {
+            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);            
             Assert.IsTrue(true);
         }
 
-        [Then(@"the workflow execution has ""(.*)"" error")]
-        public void ThenTheWorkflowExecutionHasError(string p0)
+        [Then(@"The sqlsERVER ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        public void ThenTheSqlsERVERInWorkflowDebugOutputsAs(string p0, string p1, Table table)
         {
-            Assert.IsTrue(true);
+            var viewModel = GetViewModel().ErrorRegion.Errors;
+            if (table != null && viewModel.Count > 0)
+                Assert.IsTrue(table.Rows[0].Values.ToString() == p0);
         }
-
+        [Then(@"the sqlsERVER workflow execution has ""(.*)"" error")]
+        public void ThenTheSqlsERVERWorkflowExecutionHasError(string p0)
+        {
+            Assert.IsNotNull(GetViewModel().ManageServiceInputViewModel.Errors);
+        }
         [Given(@"And ""(.*)"" contains ""(.*)"" from server ""(.*)"" with Mapping To as")]
         public void GivenAndContainsFromServerWithMappingToAs(string p0, string p1, string p2, Table table)
         {
             Assert.IsTrue(true);
         }
-
+       
         #region Private Methods
 
         private static SqlServerDatabaseDesignerViewModel GetViewModel()
@@ -464,6 +476,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
+
+        [Then(@"the workflow execution has ""(.*)"" error")]
+        public void ThenTheWorkflowExecutionHasError(string p0)
+        {
+            Assert.AreEqual(0, GetViewModel().ErrorRegion.Errors.Count);
+        }
+
 
         #endregion
     }
