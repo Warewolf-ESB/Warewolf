@@ -6,7 +6,7 @@
 
 
 // Regular tokens
-%token OPENLANGUAGE CLOSELANGAUGE OPENBRACKET CLOSEDBRACKET STAR DOT 
+%token OPENLANGUAGE CLOSELANGAUGE OPENBRACKET CLOSEDBRACKET STAR DOT ATIDF
 %token <string> INT   
 %token <string> FLOAT
 %token <string> STRING    
@@ -43,6 +43,7 @@ langExpression :
 	| CLOSEDBRACKET {WarewolfAtomExpression (DataString ")")}
 	| STAR {WarewolfAtomExpression (DataString "*")}
 	| DOT {WarewolfAtomExpression (DataString ".")}
+	| ATIDF {WarewolfAtomExpression (DataString "@")}
 variableExpression 	:
 	| langExpression  variableExpression   {   $1::$2}
 	| scalar {  [ScalarExpression $1] }	
@@ -56,11 +57,11 @@ recset :
 	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index = IndexExpression $4 ;}}
 
 jsonIdentifierExpression : 
-    |OPENLANGUAGE VARNAME DOT nestedJsonIdentifier CLOSELANGAUGE { NestedNameExpression {ObjectName = $2; Next = $4;} }
-	|OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression {ObjectName = $2; Next = $7; Index =tryParseIndex($4) ;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression {ObjectName = $2; Next = $7; Index =Star ;}}
-    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression {ObjectName = $2; Next = $6; Index =Last ;}}
-	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression {ObjectName = $2; Next = $7; Index = IndexExpression $4 ;}}
+    |OPENLANGUAGE ATIDF VARNAME DOT nestedJsonIdentifier CLOSELANGAUGE { NestedNameExpression { ObjectName = $3; Next = $5; }}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =tryParseIndex($5) ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =Star ;}}
+    |OPENLANGUAGE ATIDF VARNAME OPENBRACKET CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $7; Index =Last ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index = IndexExpression $5 ;}}
 
 nestedJsonIdentifier : 
     | VARNAME  { NameExpression  {Name= $1} }

@@ -15,15 +15,15 @@ namespace WarewolfParsingTest
     [TestClass]
     public class AssignJsonTests
     {
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
+      [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
-        public void AssignSingleProperty_ValueProperty_Assign_A_Property()
+        public void AssignSingleProperty_ValueProperty_Assign_A_PropertyWithAtNotation()
         {
             //------------Setup for test--------------------------
            
             ExecutionEnvironment environment = new ExecutionEnvironment();
-            var values = new List<IAssignValue>() { new AssignValue("[[Person.Name]]", "John") };
+            var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John") };
            Dev2JsonSerializer ser = new Dev2JsonSerializer();
             
             //------------Execute Test---------------------------
@@ -42,16 +42,16 @@ namespace WarewolfParsingTest
                 Assert.Fail("bob");
             }
         }
-
+        
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
-        public void AssignSingleProperty_AssignAChildArrayValue()
+        public void AssignSingleProperty_AssignAChildArrayValue_WithAtNotation()
         {
             //------------Setup for test--------------------------
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
-            var values = new List<IAssignValue>() { new AssignValue("[[Person.Name]]", "John"), new AssignValue("[[Person.Children(1).Name]]", "Mary") };
+            var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary") };
             Dev2JsonSerializer ser = new Dev2JsonSerializer();
             //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
 
@@ -71,16 +71,17 @@ namespace WarewolfParsingTest
                 Assert.Fail("bob");
             }
         }
+        
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
-        public void AssignSingleProperty_AssignASecondValueChildName()
+        public void AssignSingleProperty_AssignASecondValueChildNameWithAtNotation()
         {
             //------------Setup for test--------------------------
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
-            var values = new List<IAssignValue>() { new AssignValue("[[Person.Name]]", "John"), new AssignValue("[[Person.Children(1).Name]]", "Mary"), new AssignValue("[[Person.Children(2).Name]]", "Joe") };
+            var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe") };
             Dev2JsonSerializer ser = new Dev2JsonSerializer();
             //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
 
@@ -102,14 +103,14 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
-        public void AssignSingleProperty_AssignALastValueChildName()
+        public void AssignSingleProperty_AssignALastValueChildNameWithAtNotation()
         {
             //------------Setup for test--------------------------
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
-            var values = new List<IAssignValue>() { new AssignValue("[[Person.Name]]", "John"), new AssignValue("[[Person.Children(1).Name]]", "Mary"), new AssignValue("[[Person.Children(2).Name]]", "Joe"), new AssignValue("[[Person.Children(2).Name]]", "Moe") };
+            var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe"), new AssignValue("[[@Person.Children(2).Name]]", "Moe") };
             Dev2JsonSerializer ser = new Dev2JsonSerializer();
             //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
 
@@ -129,16 +130,17 @@ namespace WarewolfParsingTest
                 Assert.Fail("bob");
             }
         }
+      
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
-        public void AssignSingleProperty_AssignAllValueChildName()
+        public void AssignSingleProperty_AssignAllValueChildNameWithAtNotation()
         {
             //------------Setup for test--------------------------
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
-            var values = new List<IAssignValue>() { new AssignValue("[[Person.Name]]", "John"), new AssignValue("[[Person.Children(1).Name]]", "Mary"), new AssignValue("[[Person.Children(2).Name]]", "Joe"), new AssignValue("[[Person.Children(*).Name]]", "Moe") };
+            var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe"), new AssignValue("[[@Person.Children(*).Name]]", "Moe") };
             Dev2JsonSerializer ser = new Dev2JsonSerializer();
             //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
 
@@ -398,7 +400,7 @@ namespace WarewolfParsingTest
             JArray x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child.Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child.Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
 
@@ -523,7 +525,7 @@ namespace WarewolfParsingTest
             JArray x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child(1).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(1).Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
 
@@ -540,7 +542,7 @@ namespace WarewolfParsingTest
             JArray x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child().Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
 
@@ -558,7 +560,7 @@ namespace WarewolfParsingTest
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child().Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
 
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             // ReSharper disable once RedundantAssignment
@@ -578,8 +580,8 @@ namespace WarewolfParsingTest
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child().Name]]");
-            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child().Age]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
+            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Age]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
             // ReSharper disable once RedundantAssignment
@@ -600,8 +602,8 @@ namespace WarewolfParsingTest
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, env);
             var thirdResult = PublicFunctions.EvalEnvExpression("[[rec(3).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child().Name]]");
-            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child(*).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
+            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
             // ReSharper disable once RedundantAssignment
@@ -623,9 +625,9 @@ namespace WarewolfParsingTest
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
             var secondResult = PublicFunctions.EvalEnvExpression("[[rec(2).a]]", 0, env);
             var thirdResult = PublicFunctions.EvalEnvExpression("[[rec(3).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child().Name]]");
-            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child(*).Name]]");
-            var parsed3 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Age]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
+            var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]");
+            var parsed3 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Age]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
             var val3 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed3;
@@ -648,7 +650,7 @@ namespace WarewolfParsingTest
             JArray x = new JArray();
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child(1).Name]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(1).Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
 
@@ -681,7 +683,7 @@ namespace WarewolfParsingTest
         [ExpectedException(typeof(Exception))]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_Scalar()
         {
-            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Child]]");
+            var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Child]]");
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
         }
 
