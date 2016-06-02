@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +15,8 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Interfaces.UndoFramework;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 
@@ -26,16 +29,43 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
         private DbAction _getCountriesAction;
+        private OutputsRegion _outPuts;
 
         [Given(@"I drag a Oracle Server database connector")]
         public void GivenIDragAOracleServerDatabaseConnector()
         {
+            var viewModel = GetViewModel();
+            Assert.IsNotNull(viewModel);
+        }
+
+        [Given(@"Source iss ""(.*)""")]
+        public void GivenSourceIs(string sourceName)
+        {
+            var selectedSource = GetViewModel().SourceRegion.SelectedSource;
+            Assert.IsNotNull(selectedSource);
+            Assert.AreEqual(sourceName, selectedSource.Name);
+        }
+
+        [Given(@"Source is Enable")]
+        public void GivenSourceIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
+        }
+
+        [Given(@"I open New oracleDb Workflow")]
+        public void GivenIOpenNewOracleDbWorkflow()
+        {
             var oracleServerActivity = new DsfOracleDatabaseActivity();
             var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+
+            var mockInputArea = new Mock<IGenerateInputArea>();
+            var mockOutputArea = new Mock<IGenerateOutputArea>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
@@ -55,27 +85,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-            mockServiceInputViewModel.SetupAllProperties();
-            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem);
 
-            ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
-        }
+            var mockAction = new Mock<Action>(MockBehavior.Default);
 
-        [Given(@"Source iss ""(.*)""")]
-        public void GivenSourceIs(string sourceName)
-        {
-            var selectedSource = GetViewModel().SourceRegion.SelectedSource;
-            Assert.IsNotNull(selectedSource);
-            Assert.AreEqual(sourceName, selectedSource.Name);
-        }
+            mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
+            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
+            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
+            mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockAction.Object);
 
-        [Given(@"Source is Enable")]
-        public void GivenSourceIsEnabled()
-        {
-            var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
+            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+            oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;            
+
+            AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
         }
 
         private static OracleDatabaseDesignerViewModel GetViewModel()
@@ -83,6 +104,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             return ScenarioContext.Current.Get<OracleDatabaseDesignerViewModel>("viewModel");
         }
 
+        private static Mock<IManageDatabaseInputViewModel> GetOutputViewModel()
+        {
+            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
+        }
         private static Mock<IManageServiceInputViewModel> GetInputViewModel()
         {
             return ScenarioContext.Current.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
@@ -208,13 +233,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
-
-        [Then(@"""(.*)"" is ""(.*)""")]
-        public void ThenIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
+        
         [When(@"Recordset Name iz changed to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
@@ -238,13 +257,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Assert.AreEqual(value, serviceInput.Value);
                 rowNum++;
             }
-        }
-
-        [Given(@"I open ""(.*)"" service")]
-        public void GivenIOpenService(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+        }        
 
         [When(@"I Selected ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
@@ -274,7 +287,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         [When(@"I click Testz")]
         public void WhenIClickTest()
-        {
+        {            
             var testCommand = GetViewModel().ManageServiceInputViewModel.TestAction;
             testCommand();
         }
@@ -285,30 +298,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
-        [When(@"""(.*)"" is selected as the data source")]
-        public void WhenIsSelectedAsTheDataSource(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"testing the action fails")]
-        public void WhenTestingTheActionFails()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [When(@"I click Validat")]
         public void WhenIClickValidate()
         {
             GetViewModel().TestInputCommand.Execute();
         }
 
-        [Then(@"the Test Connector and Calculate Outputs window is open")]
-        public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
-        {
-            //GetInputViewModel().SetupProperty(model => model.Inputs,null);   
-        }
-
+        [When(@"Test Inputs appear az")]
         [Then(@"Test Inputs appear az")]
         public void ThenTestInputsAppearAs(Table table)
         {
@@ -317,26 +313,31 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             foreach (var row in table.Rows)
             {
                 var inputValue = row["EID"];
-                var serviceInputs = viewModel.ManageServiceInputViewModel.Inputs.ToList();
+                var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
                 serviceInput.Value = inputValue;
                 rowNum++;
             }
-        }
+        }           
 
         [Then(@"Test Connector and Calculate Outputs outputs appear az")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
-            var rowIdx = 0;
-            foreach (var tableRow in table.Rows)
+            var vm = GetViewModel();
+            if (table.Rows.Count == 0)
             {
-                var viewModel = GetViewModel();
-                var outputValue = tableRow["Column1"];
-                var rows = viewModel.ManageServiceInputViewModel.TestResults.Rows;
-                var dataRow = rows[rowIdx];
-                var dataRowValue = dataRow[0].ToString();
-                Assert.AreEqual(outputValue, dataRowValue);
-                rowIdx++;
+                if (vm.OutputsRegion.Outputs != null)
+                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+            }
+            else
+            {
+                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                foreach (var a in matched)
+                {
+                    Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
+                    Assert.AreEqual(a.Item1[1], a.Item2.MappedTo);
+
+                }
             }
         }
 
@@ -358,7 +359,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Outputs = outputs
             };
             var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -368,6 +369,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+
 
             _greenPointSource = new DbSourceDefinition
             {
@@ -392,35 +395,52 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
-            mockServiceInputViewModel.SetupAllProperties();
-            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem);
+            mockDatabaseInputViewModel.SetupAllProperties();
+            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
             ScenarioContext.Current.Add("viewModel", oracleDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Then(@"Outputs appear az")]
         public void ThenOutputsAppearAs(Table table)
         {
-            var outputMappings = GetViewModel().OutputsRegion.Outputs;
-            Assert.IsNotNull(outputMappings);
-            var rowIdx = 0;
-            foreach (var tableRow in table.Rows)
+            var vm = GetViewModel();
+            if (table.Rows.Count == 0)
             {
-                var mappedFrom = tableRow["Mapped From"];
-                var mappedTo = tableRow["Mapped To"];
-                var outputMapping = outputMappings.ToList()[rowIdx];
-                Assert.AreEqual(mappedFrom, outputMapping.MappedFrom);
-                Assert.AreEqual(mappedTo, outputMapping.MappedTo);
-                rowIdx++;
+                if (vm.OutputsRegion.Outputs != null)
+                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
             }
+            else
+            {
+                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                foreach (var a in matched)
+                {
+                    Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
+                    Assert.AreEqual(a.Item1[1], a.Item2.MappedTo);
+                }
+            }
+            var outputMappings = vm.OutputsRegion.Outputs;
+            Assert.IsNotNull(outputMappings);
         }
 
         [Then(@"Recordset Name equalz ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            if(string.IsNullOrEmpty(recsetName))            
+                Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
         }
+
+        #region Private Methods
+
+        private static void AddScenarioContext(OracleDatabaseDesignerViewModel oracleServerDesignerViewModel, Mock<IManageDatabaseInputViewModel> mockDatabaseInputViewModel, Mock<IDbServiceModel> mockDbServiceModel)
+        {
+            ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
+            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+        }
+
+        #endregion
     }
 }
