@@ -1789,7 +1789,7 @@ namespace Dev2.Runtime.Hosting
                 if(resource.Dependencies == null) return;
                 resource.Dependencies.ForEach(tree =>
                 {
-                    if(tree.ResourceID == resourceId && !dependants.Contains(resource.ResourceID))
+                    if(tree.ResourceID == resourceId)
                     {
                         dependants.Add(resource.ResourceID);
                     }
