@@ -23,10 +23,12 @@ and [<ExcludeFromCodeCoverage>] RecordSetColumnIdentifier =
 and [<ExcludeFromCodeCoverage>] JsonIdentifier = 
     { Name : string }
 /// Object Notation [[Object.SomethingElse]]
+/// Object Notation [[@Object.SomethingElse]]
 and [<ExcludeFromCodeCoverage>] JsonPropertyIdentifier = 
     { ObjectName : string
       Next : JsonIdentifierExpression }
 ///IndexedObjectNotation [[Object(*).SomethingElse 
+///IndexedObjectNotation [[@Object(*).SomethingElse 
 and [<ExcludeFromCodeCoverage>] BasicJsonIndexedPropertyIdentifier = 
     { ObjectName : string
       Next : JsonIdentifierExpression
