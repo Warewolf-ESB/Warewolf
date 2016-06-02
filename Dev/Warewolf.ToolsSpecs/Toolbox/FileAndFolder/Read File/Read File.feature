@@ -46,8 +46,6 @@ Scenario Outline: Read File at locationNull
 	| 6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                     |
 	| 7  | SFTP PK    | [[path]] | sftp://localhost/filetoread1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |C:\\Temp\\key.opk    |
 
-
-
 	
 Scenario Outline: Read File validation
     Given I have a variable "[[a]]" with a value "<Val1>"

@@ -298,12 +298,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
-        [When(@"""(.*)"" is selected as the data source")]
-        public void WhenIsSelectedAsTheDataSource(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }        
-
         [When(@"I click Validat")]
         public void WhenIClickValidate()
         {

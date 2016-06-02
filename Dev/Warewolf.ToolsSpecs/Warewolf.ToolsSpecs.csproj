@@ -313,6 +313,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Resources\MySQL\MySqlConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MySqlConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\MySQL\MySqlConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs" />
     <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector1.feature.cs">
       <AutoGen>True</AutoGen>
@@ -597,6 +603,10 @@
     <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\MySQL\MySqlConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

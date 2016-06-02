@@ -142,7 +142,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
         [Then(@"Test button is Enabled")]
         public void ThenValidateIsEnabled()
         {
@@ -299,7 +298,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.ManageServiceInputViewModel.TestCommand.CanExecute(null));
-
             viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
         }
 

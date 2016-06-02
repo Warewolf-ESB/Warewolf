@@ -19,7 +19,7 @@ Scenario: Creating PostgresSql Server Connector
 	| name | salary | age |
 	| Bill | 4200   | 45  |
 
-	Scenario: Opening Saved workflow with Postgres Server tool
+Scenario: Opening Saved workflow with Postgres Server tool
 	Given I Open workflow with PostgreSql connector
 	And Source Is Enable
 	And Source Is "postgressql"
@@ -31,3 +31,38 @@ Scenario: Creating PostgresSql Server Connector
 	| fname |       | false | 
 	And Validate Is Enable
 	
+Scenario: Change the source on existing postgresql tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable
+
+Scenario: Change the action on existing postgresql tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable
+
+Scenario: Change the recordset on existing postgresql tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable

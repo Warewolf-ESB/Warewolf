@@ -466,59 +466,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             Assert.IsNotNull(viewModel);
         }
-
-        [Then(@"Data Source is focused")]
-        public void ThenDataSourceIsFocused()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"""(.*)"" is selected as the action")]
-        public void ThenIsSelectedAsTheAction(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
-        public void ThenInspectDataConnectorHyperLinkIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"inputs are")]
-        public void ThenInputsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"input mappings are")]
-        public void ThenInputMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"output mappings are")]
-        public void ThenOutputMappingsAre(Table table)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I open ""(.*)"" service")]
-        public void GivenIOpenService(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Data Source iz focused")]
-        public void ThenDataSourceIzFocused()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"""(.*)"" iz selected as the action")]
-        public void ThenIzSelectedAsTheAction(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
     }
 }
