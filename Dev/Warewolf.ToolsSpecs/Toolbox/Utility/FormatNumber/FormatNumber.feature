@@ -215,26 +215,6 @@ Scenario: Format number rounding with unknown scalar decimals value to show
 	|                   |
 	| [[result]] = 789 |
 
-#Complex Types WOLF-1042
-Scenario Outline: Format number using complex types 
-	Given I have a number "<Number>"
-	And I selected rounding "<Rounding>" to "<RoundingValue>" 
-	And I want to show "<Decimals>" decimals with value "<DecimalVal>"
-	When the format number is executed
-	Then the result "<result>" will be returned
-	And the execution has "<Error>" error
-	And the debug inputs as  
-	| Number   | Rounding   | RoundingValue   | Decimals to show |
-	| <Number> | <Rounding> | <RoundingValue> | <DecimalVal>     |
-	And the debug output as 
-	| Result   |
-	| <result> |
-Examples: 
-| Number           | Rounding | RoundingValue                       | Decimals               | DecimalVal | Error | Result                          |
-| 788.894564545645 | Normal   | [[rs().set().value]] = 0            | [[rj().count().value]] | 0          | No    | [[rec(2).result().value]] = 789 |
-| 788.894564545645 | Normal   | [[rs(1).set([[int]]).value(*).set]] | [[rj().count().value]] | 0          | No    | [[rec(1).result(2).value]] = 10 |
-| 788.894564545645 | Normal   | [[rs(*).set().value()]]             | [[rj().count().value]] | 0          | No    | [[rec(2).result(1).value]] = 50 |
-
 Scenario: Format a variable with a null value
 	Given I have a formatnumber variable "[[int]]" equal to NULL
 	And I have a number "[[int]]"

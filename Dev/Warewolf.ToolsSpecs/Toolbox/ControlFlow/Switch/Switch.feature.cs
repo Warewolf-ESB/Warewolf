@@ -186,49 +186,6 @@ this.ScenarioSetup(scenarioInfo);
         {
             this.EnsureThatAVariableRecordsetEvaluatesToTheValueOnTheDatalist("[[rec(*).a]]", "3", "[[rec(*).a]] = 3", ((string[])(null)));
         }
-        
-        public virtual void EnsureThatAnObjectEvaluatesToTheValueOnTheDatalist(string variable, string val, string @switch, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that an object evaluates to the value on the datalist", exampleTags);
-#line 39
-this.ScenarioSetup(scenarioInfo);
-#line 40
- testRunner.Given(string.Format("I need to switch on variable \"<object>\" with the value \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 41
- testRunner.When("the switch tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 42
- testRunner.Then(string.Format("the variable \"<object>\" will evaluate to \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 43
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 44
- testRunner.And(string.Format("the debug inputs as \"{0}\"", @switch), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure that an object evaluates to the value on the datalist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Switch")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[Granparent().parent().child().pet]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[Granparent().parent().child().pet]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:switch", "[[Granparent().parent().child().pet]] = 4")]
-        public virtual void EnsureThatAnObjectEvaluatesToTheValueOnTheDatalist_Granparent_Parent_Child_Pet()
-        {
-            this.EnsureThatAnObjectEvaluatesToTheValueOnTheDatalist("[[Granparent().parent().child().pet]]", "4", "[[Granparent().parent().child().pet]] = 4", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure that an object evaluates to the value on the datalist")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Switch")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[Granparent(1).parent([[int]]).child(5).pet]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[Granparent(1).parent([[int]]).child(5).pet]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:switch", "[[Granparent(1).parent(2).child(5).pet]] = 7")]
-        public virtual void EnsureThatAnObjectEvaluatesToTheValueOnTheDatalist_Granparent1_ParentInt_Child5_Pet()
-        {
-            this.EnsureThatAnObjectEvaluatesToTheValueOnTheDatalist("[[Granparent(1).parent([[int]]).child(5).pet]]", "7", "[[Granparent(1).parent(2).child(5).pet]] = 7", ((string[])(null)));
-        }
     }
 }
 #pragma warning restore

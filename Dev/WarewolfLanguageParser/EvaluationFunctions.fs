@@ -208,8 +208,8 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
                 ParseCache <- ParseCache.Add(lang, res)
                 res
             with
-                | :? System.IndexOutOfRangeException ->
-                     WarewolfAtomExpression(DataStorage.DataString lang)
+                | :? System.IndexOutOfRangeException as ex ->
+                     raise ex
     else WarewolfAtomExpression(parseAtom lang)
 
 ///Simple parse. convert a string to a language expression and replace * with the update value
