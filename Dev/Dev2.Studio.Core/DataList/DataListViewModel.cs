@@ -565,6 +565,7 @@ namespace Dev2.Studio.ViewModels.DataList
             for (int index = 0; index < paths.Length; index++)
             {
                 string path = paths[index];
+                var pathToMatch = path.Replace("@", "");
                 var isArray = false;
                 if (path.Contains("()") || path.Contains("(*)"))
                 {
@@ -573,7 +574,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 if (itemModel == null)
                 {
-                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == path);
+                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
                 }
                 if (itemModel == null)
                 {
@@ -584,7 +585,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if (itemModel.DisplayName != path)
                     {
-                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == path);
+                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
                         if (item == null)
                         {
                             item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
