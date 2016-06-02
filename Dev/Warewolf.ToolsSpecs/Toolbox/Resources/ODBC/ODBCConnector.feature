@@ -4,32 +4,27 @@
 	I want to be told the sum of two numbers
 
 Scenario: Creating ODBC Server Connector
-	Given I open New Workflow 
+	Given I open a new Workflow 
 	And I drag a ODBC Server database connector
 	And Source iz Enable
-	And Action iz Disable
-	And Inputs iz Disable
-	And Outputs iz Disable
 	When I Selected "GreenPoint" az Source
 	Then Action iz Enable
-	When I selected "Command" as thee action
+	When I selected "dbo_Pr_CitiesGetCountries" as thee action
 	Then Inputs iz Enable 
 	And Inputs appears az 
 	| Input     | Value | Empty is Null |
 	| EID		|       | false         |
 	And Validate iz Enable
 	When I click Validatt
-	Then the Test Connector and Calculate Outputs window is open
 	When I click Tezt
 	Then Test Connector and Calculate Outputz outputs appear az
-	| Column1 |
+	| CountryID |
 	| 1       |
 	When I clicked OKay
 	Then Outputs appears az
 	| Mapped From | Mapped To                     | 
-	| Column1     | [[Command().Column1]] | 
-
-	And Recordset Name equal "Command"	
+	| CountryID     | [[dbo_Pr_CitiesGetCountries().CountryID]] | 
+	And Recordset Name equal "dbo_Pr_CitiesGetCountries"	
 
 Scenario: Opening Saved workflow with ODBC Server tool
    Given I open workflow with ODBC connector
@@ -76,10 +71,9 @@ Scenario: Change Source on Existing tool
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
    Then "1 Data Source" is "Enabled"
-   And Data Source is focused
    When "DemoDB" is selected az the data source
    Then "2 Select Action" is "Enabled"
-   And "dbo.InsertDummyUser" is selected as the action
+   And "dbo.InsertDummyUser" iz selected as the action
    Then "3 Test Connector and Calculate Outputs" is "Enabled" 
    And Inspect Data Connector hyper link is "Visible"
    And inputs are

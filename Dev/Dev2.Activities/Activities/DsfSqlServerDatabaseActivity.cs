@@ -21,7 +21,7 @@ namespace Dev2.Activities
             Type = "SQL Server Database";
             DisplayName = "SQL Server Database";
         }
-
+        
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
             var execErrors = new ErrorResultTO();
@@ -49,8 +49,7 @@ namespace Dev2.Activities
         }
 
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
-        {
-            
+        {            
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
