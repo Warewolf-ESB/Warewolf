@@ -4561,6 +4561,12 @@ Data
   <data name="ViewJsonObjectTooltip" xml:space="preserve">
     <value>Click to see the JSON representation of this object.</value>
   </data>
+  <data name="DeleteVariableListObjectTooltip" xml:space="preserve">
+    <value>Click to delete unused variable of this object.</value>
+  </data>
+  <data name="ClearVariableListFilterTooltip" xml:space="preserve">
+    <value>Click to clear the filter text.</value>
+  </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Returns the calculation result.</value>
   </data>
