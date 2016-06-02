@@ -103,6 +103,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             dependants.AddRange(ResourceCatalog.Instance.GetDependants(workspaceId, resourceId));
             dependants = dependants.Distinct().ToList();
             var sb = new StringBuilder();
+            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceId));
             dependants.ForEach(c =>
             {
                 var resource = ResourceCatalog.Instance.GetResource(workspaceId, c) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, c);
@@ -116,7 +117,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             });
 
-            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceId));
+            
             sb.Append("</node>");
             return sb;
         }
@@ -160,6 +161,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var dependencies = resource.Dependencies;
                 if (dependencies != null)
                 {
+                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"{1}\">", resource.ResourceID, BrokenString));
                     sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resource.ResourceID));
                     // ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c => sb.Append(string.Format("<dependency id=\"{0}\" />", c.ResourceID)));
@@ -175,7 +177,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     });
                 }
-                sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"{1}\">", resource.ResourceID, BrokenString));
+               
                 sb.Append("</node>");
             }
             return sb;

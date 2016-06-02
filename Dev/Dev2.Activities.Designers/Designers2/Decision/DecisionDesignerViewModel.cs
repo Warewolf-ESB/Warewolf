@@ -59,6 +59,10 @@ namespace Dev2.Activities.Designers2.Decision
                DeleteRow(x as DecisionTO);
             });
             _isInitializing = false;
+            if (DisplayText != DisplayName)
+            {
+                DisplayName = DisplayText;
+            }
             if (String.IsNullOrEmpty(DisplayName) || DisplayName== "Decision")
             {
                 DisplayName = "Decision";

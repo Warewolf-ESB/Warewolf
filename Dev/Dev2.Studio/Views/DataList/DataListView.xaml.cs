@@ -126,15 +126,15 @@ namespace Dev2.Studio.Views.DataList
 
         private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            var keyboardFocus = Keyboard.FocusedElement as UIElement;
-            if (e.KeyboardDevice.IsKeyDown(Key.Tab))
-            {
-                if (keyboardFocus != null)
-                {
-                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
-                    e.Handled = true;
-                }
-            }
+            //var keyboardFocus = Keyboard.FocusedElement as UIElement;
+            //if (e.KeyboardDevice.IsKeyDown(Key.Tab))
+            //{
+            //    if (keyboardFocus != null)
+            //    {
+            //        keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
+            //        e.Handled = true;
+            //    }
+            //}
             WriteToResourceModel();
         }
 

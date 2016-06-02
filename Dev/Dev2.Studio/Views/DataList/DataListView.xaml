@@ -34,6 +34,7 @@
     </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
+          MouseEnter="DataListView_OnMouseEnter"
           Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -53,7 +54,8 @@
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
                                           LabelText="Filter"
-                                          HorizontalAlignment="Stretch" >
+                                          HorizontalAlignment="Stretch" 
+                                          Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
             </customControls:SearchTextBox>
             <Button Grid.Column="1"
                     x:Name="DeleteButton"
@@ -101,15 +103,15 @@
                 </dataPresenter:XamTreeGrid.FieldSettings>
                 <dataPresenter:XamTreeGrid.FieldLayouts >
                     <dataPresenter:FieldLayout Key="{x:Type dataList3:DataListHeaderItemModel}">
-                        <dataPresenter:TemplateField Name="DisplayName" Label=" Display Name" Width="*">
+                        <dataPresenter:TemplateField Name="DisplayName" Label=" Display Name" Width="*" AllowEdit="True">
                             <dataPresenter:TemplateField.DisplayTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding .}" FontWeight="Bold" />
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TextField BindingType="Unbound" Name="Input" Label="Input" Width="60"/>
-                        <dataPresenter:TextField BindingType="Unbound" Name="Output" Label="Output" Width="60"/>
+                        <dataPresenter:TextField BindingType="Unbound" Name="Input" Label="Input" Width="60" AllowEdit="False"/>
+                        <dataPresenter:TextField BindingType="Unbound" Name="Output" Label="Output" Width="60" AllowEdit="False"/>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
                     </dataPresenter:FieldLayout>
                     <dataPresenter:FieldLayout Key="{x:Type dataList3:ScalarItemModel}" ParentFieldName="Children">
