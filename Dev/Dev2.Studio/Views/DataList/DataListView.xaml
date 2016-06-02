@@ -54,7 +54,8 @@
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
                                           LabelText="Filter"
-                                          HorizontalAlignment="Stretch" >
+                                          HorizontalAlignment="Stretch" 
+                                          Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
             </customControls:SearchTextBox>
             <Button Grid.Column="1"
                     x:Name="DeleteButton"
