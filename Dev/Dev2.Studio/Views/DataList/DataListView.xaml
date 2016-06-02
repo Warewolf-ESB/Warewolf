@@ -53,6 +53,7 @@
                                           x:Name="SearchTextBox" 
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
+                                          ClearSearchToolTip="{x:Static languages:Core.ClearVariableListFilterTooltip}"
                                           LabelText="Filter"
                                           HorizontalAlignment="Stretch" 
                                           Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}">
