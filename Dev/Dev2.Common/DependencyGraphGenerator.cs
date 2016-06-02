@@ -106,11 +106,7 @@ namespace Dev2.Common
                         if (dependency != null)
                         {
                             node.NodeDependencies.Add(dependency);
-                        }
-                        else
-                        {
-                            node.NodeDependencies.Add(CreateNode(dependencyElem,depID,width,height,ref count));
-                        }
+                        }                        
                     }
 
                     //Now adjust position according to nodesize
