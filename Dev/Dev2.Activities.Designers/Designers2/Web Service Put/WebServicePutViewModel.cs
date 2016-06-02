@@ -21,7 +21,6 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
-using Warewolf.Storage;
 
 // ReSharper disable UnusedMember.Global
 
@@ -32,6 +31,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 {
     public class WebServicePutViewModel : CustomToolWithRegionBase, IWebServicePutViewModel
     {
+        private readonly IServiceInputBuilder _builder;
         const string DoneText = "Done";
         const string FixText = "Fix";
         const string OutputDisplayName = " - Outputs";
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
-
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
         }
@@ -60,6 +60,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             Model = model;
             SetupCommonProperties();
         }
+
+    
 
         Guid UniqueID
         {
@@ -460,7 +462,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
-                PostData = InputArea.PutData,
+                
+                PostData =  InputArea.PutData,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
@@ -475,33 +478,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
             string postValue = InputArea.PutData;
-            GetValue(s, dt);
-            GetValue(postValue, dt);
+            _builder.GetValue(s, dt);
+            _builder.GetValue(postValue, dt);
             foreach(var nameValue in InputArea.Headers)
             {
-                GetValue(nameValue.Name, dt);
-                GetValue(nameValue.Value, dt);
+                _builder.GetValue(nameValue.Name, dt);
+                _builder.GetValue(nameValue.Value, dt);
             }
             return dt;
-        }
-
-        private static void GetValue(string s, List<IServiceInput> dt)
-        {
-            var exp = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(s);
-            if(exp.IsComplexExpression)
-            {
-                var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
-                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(FsInteropFunctions.LanguageExpressionToString);
-                dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
-            }
-            if(exp.IsScalarExpression)
-            {
-                dt.Add(new ServiceInput(s, ""));
-            }
-            if(exp.IsRecordSetExpression)
-            {
-                dt.Add(new ServiceInput(s, ""));
-            }
         }
 
         private IWebServiceModel Model { get; set; }
