@@ -255,7 +255,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            AssignEvaluation.evalAssignWithFrame(new AssignValue("[[Person.Name]]", "dora"), 0, data);
+            AssignEvaluation.evalAssignWithFrame(new AssignValue("[[@Person.Name]]", "dora"), 0, data);
 
             //------------Assert Results-------------------------
             var jsonObject = data.JsonObjects["Person"];
@@ -278,13 +278,13 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(3).b]]", "c", 0);
             env.Assign("[[x]]", "1", 0);
             env.Assign("[[y]]", "y", 0);
-            env.AssignJson(new AssignValue("[[Person.Name]]", "bob"), 0);
-            env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
-            env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(1).Name]]", "Mary"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(2).Name]]", "Jane"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(1)]]", "2"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(2)]]", "3"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Name]]", "bob"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Age]]", "22"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Spouse.Name]]", "dora"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(2).Name]]", "Jane"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(1)]]", "2"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);

@@ -102,7 +102,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec(1).a]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec(*).a]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec([[a]]).a]]"));
-            Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[a.b.c]]"));
+            Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[@a.b.c]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("a"));
 
         }
@@ -167,13 +167,13 @@ namespace WarewolfParsingTest
             env.Assign("[[y]]", "y", 0);
             env.Assign("[[r]]", "s", 0);
             env.Assign("[[s]]", "s", 0);
-            env.AssignJson(new AssignValue("[[Person.Name]]", "bob"), 0);
-            env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
-            env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(1).Name]]", "Mary"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(2).Name]]", "Jane"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(1)]]", "2"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(2)]]", "3"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Name]]", "bob"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Age]]", "22"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Spouse.Name]]", "dora"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(2).Name]]", "Jane"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(1)]]", "2"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);

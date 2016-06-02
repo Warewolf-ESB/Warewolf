@@ -50,7 +50,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = CommonFunctions.evalResultToString( EvaluationFunctions.eval(added, 0, "[[bob.Name]]"));
+            var evalled = CommonFunctions.evalResultToString( EvaluationFunctions.eval(added, 0, "[[@bob.Name]]"));
 
             Assert.AreEqual(evalled, "n");
         }
@@ -69,7 +69,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Spouse.Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Spouse.Name]]"));
 
             Assert.AreEqual(evalled, "o");
         }
@@ -88,7 +88,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children(1).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children(1).Name]]"));
 
             Assert.AreEqual(evalled, "p");
         }
@@ -109,7 +109,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children(*).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children(*).Name]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -127,7 +127,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children(*)]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children(*)]]"));
             Assert.IsTrue(evalled.Contains(@"""Name"": ""p"""));
             Assert.IsTrue(evalled.Contains(@"""Name"": ""q"""));
 
@@ -147,7 +147,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children().Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[@bob.Children().Name]]"));
 
             Assert.AreEqual(evalled, "q");
         }
@@ -851,13 +851,13 @@ namespace WarewolfParsingTest
             env.Assign("[[z]]", "2", 0);
             env.Assign("[[q]]", "r", 0);
             env.Assign("[[r]]", "1", 0);
-            env.AssignJson(new AssignValue("[[Person.Name]]","bob"),0 );
-            env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
-            env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(1).Name]]", "Mary"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(2).Name]]", "Jane"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(1)]]", "2"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(2)]]", "3"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Name]]","bob"),0 );
+            env.AssignJson(new AssignValue("[[@Person.Age]]", "22"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Spouse.Name]]", "dora"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(2).Name]]", "Jane"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(1)]]", "2"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             PrivateObject p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");

@@ -349,7 +349,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0,  "[[Person.Age]]" );
+            var res = EvaluationFunctions.eval(env, 0,  "[[@Person.Age]]" );
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),  "22" );
         }
@@ -365,7 +365,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0,  "[[Person.Score(1)]]" );
+            var res = EvaluationFunctions.eval(env, 0,  "[[@Person.Score(1)]]" );
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),  "2" );
         }
@@ -381,7 +381,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0,  "[[Person.Score(*)]]" );
+            var res = EvaluationFunctions.eval(env, 0,  "[[@Person.Score(*)]]" );
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),  "2,3" );
         }
@@ -745,7 +745,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[Person.Age]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@Person.Age]]");
             //------------Assert Results-------------------------
            Assert.AreEqual("22",CommonFunctions.evalResultToString(res));
         }
@@ -758,7 +758,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[Person.Spouse.Name]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@Person.Spouse.Name]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("dora", CommonFunctions.evalResultToString(res));
         }
@@ -773,7 +773,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[Person.Children(1).Name]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@Person.Children(1).Name]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("Mary", CommonFunctions.evalResultToString(res));
         }
@@ -786,7 +786,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[Person.Children(*).Name]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@Person.Children(*).Name]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("Mary,Jane", CommonFunctions.evalResultToString(res));
         }
@@ -885,13 +885,13 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(3).b]]", "c", 0);
             env.Assign("[[x]]", "1", 0);
             env.Assign("[[y]]", "y", 0);
-            env.AssignJson(new AssignValue("[[Person.Name]]", "bob"), 0);
-            env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
-            env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(1).Name]]", "Mary"), 0);
-            env.AssignJson(new AssignValue("[[Person.Children(2).Name]]", "Jane"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(1)]]", "2"), 0);
-            env.AssignJson(new AssignValue("[[Person.Score(2)]]", "3"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Name]]", "bob"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Age]]", "22"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Spouse.Name]]", "dora"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Children(2).Name]]", "Jane"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(1)]]", "2"), 0);
+            env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
