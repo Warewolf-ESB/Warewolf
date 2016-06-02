@@ -10,17 +10,16 @@ Scenario: Creating PostgresSql Server Connector
 	Then Test Inputs appear
 	| Input     | Value | Empty is Null |
 	| fname		|       | false         |
-	Then Inputs is Enabled 
+	Then Inputs is Enabled for postgresSql
 	Given I Enter a value as the input
 	| fname |
 	| Bill  |
 	Then Test button is Enabled 
-	Then Test button is Clicked 
-	Then Test Connector and Calculate Outputs outputs appear as
+	Then button is clicked
 	| name | salary | age |
 	| Bill | 4200   | 45  |
 
-	Scenario: Opening Saved workflow with Postgres Server tool
+Scenario: Opening Saved workflow with Postgres Server tool
 	Given I Open workflow with PostgreSql connector
 	And Source Is Enable
 	And Source Is "postgressql"
@@ -32,3 +31,38 @@ Scenario: Creating PostgresSql Server Connector
 	| fname |       | false | 
 	And Validate Is Enable
 	
+Scenario: Change the source on existing postgresql tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable
+
+Scenario: Change the action on existing postgresql tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable
+
+Scenario: Change the recordset on existing postgresql tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable

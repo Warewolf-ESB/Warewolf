@@ -1,10 +1,10 @@
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
-using Gma.DataStructures.StringSearch;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Gma.DataStructures.StringSearch;
 
 namespace Dev2
 {
