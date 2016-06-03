@@ -127,6 +127,7 @@ namespace Dev2.Activities.Designers2.Core
                     throw new Exception("No Outputs detected");
                 }
 
+                _viewmodel.OutputsRegion.ObjectResult = TestResults;
                 _viewmodel.OutputsRegion.Description = Description;
                 _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
                 OutputCountExpandAllowed = _viewmodel.OutputsRegion.Outputs.Count > 3;
