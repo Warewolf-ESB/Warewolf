@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var rec = new Recordset();
                 rec.Fields.AddRange(new List<RecordsetField>(serviceDef.OutputMappings.Select(a => new RecordsetField { Name = a.MappedFrom, Alias = a.MappedTo, RecordsetAlias = a.RecordSetName, Path = new DataTablePath(a.RecordSetName, a.MappedFrom) })));
                 recset.Add(rec);
-                var parameters = serviceDef.Inputs == null ? new List<MethodParameter>() : serviceDef.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, Type = a.TypeName }).ToList();
+                var parameters = serviceDef.Inputs == null ? new List<MethodParameter>() : serviceDef.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
 
                 var res = new PluginService
                 {

@@ -13,6 +13,8 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
@@ -63,7 +65,7 @@ namespace Dev2.Activities
                 AssemblyName = Namespace.AssemblyName, 
                 Fullname = namespaceItem.FullName,
                 Method = method.Method,
-                Parameters = method.Inputs.Select(a=>new MethodParameter{EmptyToNull = a.EmptyIsNull,IsRequired = a.RequiredField,Name = a.Name,Value = a.Value,Type = a.TypeName}).ToList(),
+                Parameters = method.Inputs.Select(a=>new MethodParameter{EmptyToNull = a.EmptyIsNull,IsRequired = a.RequiredField,Name = a.Name,Value = a.Value,TypeName = a.TypeName}).ToList(),
                 OutputFormatter = formater
             };
 
@@ -83,18 +85,29 @@ namespace Dev2.Activities
 
             if (input != string.Empty)
             {
+                
                 try
                 {
-                    XmlDocument xDoc = new XmlDocument();
-                    input = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), input);
-                    xDoc.LoadXml(input);
-
-                    if (xDoc.DocumentElement != null)
+                    if (IsObject)
                     {
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                        IDictionary<string, int> indexCache = new Dictionary<string, int>();
-                        var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache,  update,dataObj);
+                        var jContainer = JsonConvert.DeserializeObject(input) as JObject;
+                        dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
+                    }
+                    else
+                    {
+
+
+                        XmlDocument xDoc = new XmlDocument();
+                        input = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), input);
+                        xDoc.LoadXml(input);
+
+                        if (xDoc.DocumentElement != null)
+                        {
+                            XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                            IDictionary<string, int> indexCache = new Dictionary<string, int>();
+                            var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
+                            TryConvert(children, outputDefs, indexCache, update, dataObj);
+                        }
                     }
                 }
                 catch (Exception e)

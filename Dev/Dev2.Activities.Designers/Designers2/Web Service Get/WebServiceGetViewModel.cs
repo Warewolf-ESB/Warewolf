@@ -457,6 +457,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
+            _builder = _builder ?? new ServiceInputBuilder();
             _builder.GetValue(s, dt);
             foreach (var nameValue in InputArea.Headers)
             {
