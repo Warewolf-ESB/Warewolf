@@ -62,17 +62,30 @@ namespace Dev2.Activities
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
-                AssemblyName = Namespace.AssemblyName, 
+                AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 Method = method.Method,
-                Parameters = method.Inputs.Select(a=>new MethodParameter{EmptyToNull = a.EmptyIsNull,IsRequired = a.RequiredField,Name = a.Name,Value = a.Value,TypeName = a.TypeName}).ToList(),
+                Parameters = method.Inputs.
+                Select(a =>
+                new MethodParameter
+                {
+                    EmptyToNull = a.EmptyIsNull
+                    ,
+                    IsRequired = a.RequiredField
+                    ,
+                    Name = a.Name
+                    ,
+                    Value = a.Value
+                    ,
+                    TypeName = a.TypeName
+                }).ToList(),
                 OutputFormatter = formater
             };
 
             try
             {
                 var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
-                PushXmlIntoEnvironment(result,update,dataObject);
+                PushXmlIntoEnvironment(result, update, dataObject);
             }
             catch (Exception e)
             {
@@ -80,12 +93,12 @@ namespace Dev2.Activities
             }
         }
 
-        public void PushXmlIntoEnvironment(string input, int update,IDSFDataObject dataObj)
+        public void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
 
             if (input != string.Empty)
             {
-                
+
                 try
                 {
                     if (IsObject)
@@ -112,7 +125,7 @@ namespace Dev2.Activities
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e);                 
+                    Dev2Logger.Error(e.Message, e);
                 }
             }
         }
@@ -166,7 +179,7 @@ namespace Dev2.Activities
                         if (level == 0)
                         {
                             // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, outputDefs, indexCache, update,dataObj, ++level);
+                            TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
                         }
                     }
                 }
