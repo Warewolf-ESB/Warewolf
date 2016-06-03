@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{86F22F
 		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
 		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CodedUI.SpecGenerator", "Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj", "{0D2942AB-2C34-43F9-BB49-8BABA58A660A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.UITestExtension", "Warewolf.Studio.UITestExtension\Warewolf.Studio.UITestExtension.csproj", "{4278D2F3-3E9F-4031-9983-DD88C77F6119}"
 EndProject
@@ -52,10 +50,6 @@ Global
 		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{227596D7-ACEE-48AB-8A27-2B20AF449C97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D2942AB-2C34-43F9-BB49-8BABA58A660A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4278D2F3-3E9F-4031-9983-DD88C77F6119}.Release|Any CPU.ActiveCfg = Release|Any CPU
