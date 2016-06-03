@@ -283,8 +283,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///  &lt;/tr&gt;
         ///  &lt;tr&gt;
         ///    &lt;td&gt;max()&lt;/td&gt;
-        ///    &lt;td&gt;median()&lt;/td&gt;
-        ///    [rest of string was truncated]&quot;;.
+        ///    &lt;td&gt;medi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CalculateForAggregatesHelpFx {
             get {
@@ -2830,7 +2829,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp. [rest of string was truncated]&quot;;.
+        ///&lt;tr&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourceEnableSslHelp {
             get {
@@ -2856,7 +2855,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/t [rest of string was truncated]&quot;;.
+        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;t [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourceHostNameHelp {
             get {
@@ -2890,7 +2889,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;liv [rest of string was truncated]&quot;;.
+        ///&lt;tr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourcePortHelp {
             get {
@@ -3518,7 +3517,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3.. [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -3533,7 +3532,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3.. [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -5072,6 +5071,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MappingsDefaultValueHelp {
             get {
                 return ResourceManager.GetString("MappingsDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you would like the default variables in an object, put the object name in here..
+        /// </summary>
+        public static string MappingsObjectNameHelp {
+            get {
+                return ResourceManager.GetString("MappingsObjectNameHelp", resourceCulture);
             }
         }
         
@@ -7668,7 +7676,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -8182,7 +8190,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to To set server wide permissions for security, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.
         ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute [rest of string was truncated]&quot;;.
+        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribu [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SettingsSecurityServerHelpWindowsGroup {
             get {
@@ -8777,8 +8785,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[ [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Fiel [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -9059,7 +9066,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        h2 {
         ///            font-size: 16px;
         ///            font-family: &apos;Source Sans Pro&apos;;
-        ///            text-decoration:  [rest of string was truncated]&quot;;.
+        ///         [rest of string was truncated]&quot;;.
         /// </summary>
         public static string StandardStyling {
             get {
