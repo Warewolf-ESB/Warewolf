@@ -85,6 +85,7 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
+                    //Resource.Languages.Core.FileNotFound;
                     throw new Exception("File not found [ " + path.Path + " ]");
                 }
             }
