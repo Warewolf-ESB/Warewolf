@@ -58,6 +58,9 @@ recset :
 
 jsonIdentifierExpression : 
 	|OPENLANGUAGE ATIDF VARNAME CLOSELANGAUGE { NameExpression  {Name= $3} }
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =tryParseIndex($5) ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =Star  ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =Last  ;}}
     |OPENLANGUAGE ATIDF VARNAME DOT nestedJsonIdentifier CLOSELANGAUGE { NestedNameExpression { ObjectName = $3; Next = $5; }}
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =tryParseIndex($5) ;}}
 	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =Star ;}}
@@ -90,5 +93,3 @@ atom :
 	|  INT {  tryParseAtom $1 }
 	| VARNAME {  DataString $1 }   	   
 	| STRING {  DataString $1 } 
-	
-	
