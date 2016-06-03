@@ -241,7 +241,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(maAct.OnErrorVariable);
                     }
-
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                     {
                         results.Add(maAct.OnErrorWorkflow);
@@ -277,7 +280,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(maAct.OnErrorVariable);
                     }
-
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                     {
                         results.Add(maAct.OnErrorWorkflow);
@@ -317,7 +323,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(maAct.OnErrorVariable);
                     }
-
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                     {
                         results.Add(maAct.OnErrorWorkflow);
@@ -349,6 +358,10 @@ namespace Dev2.FindMissingStrategies
                             results.Add(nameValue.Value);
                         }
                     }
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);
@@ -377,7 +390,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(maAct.OnErrorVariable);
                     }
-
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                     {
                         results.Add(maAct.OnErrorWorkflow);
@@ -401,7 +417,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(maAct.OnErrorVariable);
                     }
-
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                     {
                         results.Add(maAct.OnErrorWorkflow);

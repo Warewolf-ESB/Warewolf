@@ -158,7 +158,7 @@ namespace Dev2.Core.Tests.Workflows
             dataListItems.Add(dataListItem3);
             Thread.Sleep(3000);
             workflowDesigner.Dispose();
-            Assert.AreEqual(5, dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(6, dataListViewModel.ScalarCollection.Count);
 
         }
         [TestMethod]
@@ -190,7 +190,7 @@ namespace Dev2.Core.Tests.Workflows
             Thread.Sleep(3000);
 
             workflowDesigner.Dispose();
-            Assert.AreEqual(5, dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(6, dataListViewModel.ScalarCollection.Count);
 
         }
         [TestMethod]
