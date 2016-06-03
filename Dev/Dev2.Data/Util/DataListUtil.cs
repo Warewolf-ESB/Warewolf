@@ -1641,7 +1641,16 @@ namespace Dev2.Data.Util
 
                     if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
-                        if (tmpNode.HasChildNodes)
+                        var jsonAttribute = false;
+                        if (tmpNode.Attributes != null)
+                        {
+                            var xmlAttribute = tmpNode.Attributes["IsJson"];
+                            if (xmlAttribute != null)
+                            {
+                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+                            }
+                        }
+                        if (tmpNode.HasChildNodes && !jsonAttribute)
                         {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
@@ -1661,7 +1670,8 @@ namespace Dev2.Data.Util
                         else
                         {
                             // scalar value, make it as such
-                            result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                            var name = jsonAttribute ? "@"+tmpNode.Name:tmpNode.Name;
+                            result.Add(DataListFactory.CreateDefinition(name, "", "", false, "", false, ""));
                         }
                     }
                 }

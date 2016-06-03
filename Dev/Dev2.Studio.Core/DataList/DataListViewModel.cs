@@ -1252,7 +1252,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             }
                             if (jsonAttribute)
                             {
-                                AddComplexObjectFromXmlNode(c);
+                                AddComplexObjectFromXmlNode(c,null);
                             }
                             else
                             {
@@ -1275,22 +1275,22 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void AddComplexObjectFromXmlNode(XmlNode xmlNode)
-        {
-            var children = xmlNode.ChildNodes;
-            var isArray = false;
-            if (xmlNode.Attributes != null)
-            {
-                isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
-            }
-            var name = GetNameForArrayComplexObject(xmlNode, isArray);
-            var parent = new ComplexObjectItemModel(name) { IsArray = isArray };
-            ComplexObjectCollection.Add(parent);
-            foreach (XmlNode c in children)
-            {
-                AddComplexObjectFromXmlNode(c, parent);
-            }
-        }
+//        private void AddComplexObjectFromXmlNode(XmlNode xmlNode)
+//        {
+//            var children = xmlNode.ChildNodes;
+//            var isArray = false;
+//            if (xmlNode.Attributes != null)
+//            {
+//                isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
+//            }
+//            var name = GetNameForArrayComplexObject(xmlNode, isArray);
+//            var parent = new ComplexObjectItemModel(name) { IsArray = isArray };
+//            ComplexObjectCollection.Add(parent);
+//            foreach (XmlNode c in children)
+//            {
+//                AddComplexObjectFromXmlNode(c, parent);
+//            }
+//        }
 
         private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
         {
@@ -1301,13 +1301,22 @@ namespace Dev2.Studio.ViewModels.DataList
         private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObjectItemModel parent)
         {
             var isArray = false;
+            var ioDirection = enDev2ColumnArgumentDirection.None;
             if (c.Attributes != null)
             {
                 isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
+                ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
             }
             var name = GetNameForArrayComplexObject(c, isArray);
-            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray, Parent = parent };
-            parent.Children.Add(complexObjectItemModel);
+            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray, Parent = parent, ColumnIODirection = ioDirection };
+            if (parent != null)
+            {
+                parent.Children.Add(complexObjectItemModel);
+            }
+            else
+            {
+                ComplexObjectCollection.Add(complexObjectItemModel);
+            }
             if (c.HasChildNodes)
             {
                 var children = c.ChildNodes;
