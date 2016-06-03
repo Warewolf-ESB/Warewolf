@@ -63,6 +63,9 @@ namespace Dev2.Activities.Designers2.Core
         private IOutputDescription _description;
         private bool _isOutputsEmptyRows;
         private bool _outputCountExpandAllowed;
+        private bool _isObject;
+        private string _objectName;
+        private string _objectResult;
 
         #region Implementation of IToolRegion
 
@@ -204,6 +207,47 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public bool IsObject
+        {
+            get { return _isObject; }
+            set
+            {
+                _isObject = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public string ObjectName
+        {
+            get { return _objectName; }
+            set
+            {
+                _objectName = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public string ObjectResult
+        {
+            get { return _objectResult; }
+            set
+            {
+                if (value != null)
+                {
+                    _objectResult = value;
+                    _modelItem.SetProperty("Outputs", value);
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    _objectResult = string.Empty;
+                    _modelItem.SetProperty("Outputs", _objectResult);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public IOutputDescription Description
         {
             get
