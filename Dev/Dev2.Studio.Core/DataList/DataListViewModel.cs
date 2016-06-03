@@ -1275,23 +1275,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-//        private void AddComplexObjectFromXmlNode(XmlNode xmlNode)
-//        {
-//            var children = xmlNode.ChildNodes;
-//            var isArray = false;
-//            if (xmlNode.Attributes != null)
-//            {
-//                isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
-//            }
-//            var name = GetNameForArrayComplexObject(xmlNode, isArray);
-//            var parent = new ComplexObjectItemModel(name) { IsArray = isArray };
-//            ComplexObjectCollection.Add(parent);
-//            foreach (XmlNode c in children)
-//            {
-//                AddComplexObjectFromXmlNode(c, parent);
-//            }
-//        }
-
         private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
         {
             var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
