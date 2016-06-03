@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.ObjectModel;
+using Dev2;
 
 namespace WpfControls.CS.Test
 {
@@ -44,7 +45,6 @@ namespace WpfControls.CS.Test
         {
             Dev2Provider = new Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption.All, level)
             {
-                Level = level,
                 VariableList = new ObservableCollection<string>
                 {
                     "[[a]]",
@@ -62,7 +62,8 @@ namespace WpfControls.CS.Test
                 }
                 
             };
-            
+            Dev2Provider.Level = level;
+
             Dev2RecsetProvider = new Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption.Recordsets,level)
             {
           
