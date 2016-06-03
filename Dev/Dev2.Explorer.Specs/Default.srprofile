@@ -7,7 +7,7 @@
     <Server serverUrl="http://specrunserver:6365" publishResults="true" />
   -->
   <TestAssemblyPaths>
-    <TestAssemblyPath>Dev2.Runtime.Services.Specs.dll</TestAssemblyPath>
+    <TestAssemblyPath>Dev2.Explorer.Specs.dll</TestAssemblyPath>
   </TestAssemblyPaths>
   <DeploymentTransformation>
     <Steps>
