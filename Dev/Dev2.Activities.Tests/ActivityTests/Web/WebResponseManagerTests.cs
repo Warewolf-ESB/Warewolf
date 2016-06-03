@@ -18,7 +18,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class WebWebXmlConvertTests
+    public class WebResponseManagerTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -30,7 +30,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             try
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new WebXmlConvert(It.IsAny<IOutputDescription>(), It.IsAny<ICollection<IServiceOutputMapping>>());
+                new WebResponseManager()
+                {
+                    OutputDescription = It.IsAny<IOutputDescription>()
+                    ,
+                    Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
+                };
             }
             catch (Exception ex)
             {
@@ -44,7 +49,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void UnescapeRawXml_GivenEscapedXml_ShouldUnescapeXml()
         {
             //---------------Set up test pack-------------------
-            var webXmlConvert = new WebXmlConvert(It.IsAny<IOutputDescription>(), It.IsAny<ICollection<IServiceOutputMapping>>());
+            var webXmlConvert = new WebResponseManager()
+            {
+                OutputDescription = It.IsAny<IOutputDescription>()
+                    ,
+                Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
+            };
             StringBuilder value = new StringBuilder("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(value.ToString());
@@ -60,7 +70,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void UnescapeRawXml_GivenUnEscapedXml_ShouldUnescapeXml()
         {
             //---------------Set up test pack-------------------
-            var webXmlConvert = new WebXmlConvert(It.IsAny<IOutputDescription>(), It.IsAny<ICollection<IServiceOutputMapping>>());
+            var webXmlConvert = new WebResponseManager()
+            {
+                OutputDescription = It.IsAny<IOutputDescription>()
+                    ,
+                Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
+            };
             StringBuilder value = new StringBuilder("x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(value.ToString());
@@ -74,20 +89,25 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NullReferenceException))]
-        public void PushXmlIntoEnvironment_GivenNoDataObject_ShouldCatchObjectNullException()
+        public void PushResponseIntoEnvironment_GivenNoDataObject_ShouldCatchObjectNullException()
         {
             //---------------Set up test pack-------------------
-            var webXmlConvert = new WebXmlConvert(It.IsAny<IOutputDescription>(), It.IsAny<ICollection<IServiceOutputMapping>>());
+            var webXmlConvert = new WebResponseManager()
+            {
+                OutputDescription = It.IsAny<IOutputDescription>()
+                    ,
+                Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
+            };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webXmlConvert);
             //---------------Execute Test ----------------------
-            webXmlConvert.PushXmlIntoEnvironment(string.Empty, 1, null);
+            webXmlConvert.PushResponseIntoEnvironment(string.Empty, 1, null);
             //---------------Test Result -----------------------
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void PushXmlIntoEnvironment_GivenResponse_ShouldNotThrowException()
+        public void PushResponseIntoEnvironment_GivenResponse_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
 
@@ -111,7 +131,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             var outPutDesc = service.GetOutputDescription();
-            var webXmlConvert = new WebXmlConvert(outPutDesc, serviceOutputs);
+            var webXmlConvert = new WebResponseManager()
+            {
+                OutputDescription = outPutDesc,
+                Outputs = serviceOutputs
+            };
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -121,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Execute Test ----------------------
             try
             {
-                webXmlConvert.PushXmlIntoEnvironment(response, 0, dataObjectMock.Object);
+                webXmlConvert.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
             }
             catch (Exception e)
             {
@@ -155,7 +179,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             var outPutDesc = service.GetOutputDescription();
-            var webXmlConvert = new WebXmlConvert(outPutDesc, serviceOutputs);
+            var webXmlConvert = new WebResponseManager()
+            {
+                OutputDescription = outPutDesc,
+                Outputs = serviceOutputs
+            };
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -165,7 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Execute Test ----------------------
             try
             {
-                webXmlConvert.PushXmlIntoEnvironment(string.Empty, 0, dataObjectMock.Object);
+                webXmlConvert.PushResponseIntoEnvironment(string.Empty, 0, dataObjectMock.Object);
                 dataObjectMock.Verify(o => o.Environment.AddError("No Web Response received"));
             }
             catch (Exception e)
@@ -200,7 +228,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             const string errorWasThrown = "Error was Thrown";
             var mockoutPutDesc = new Mock<IOutputDescription>();
             mockoutPutDesc.SetupGet(description => description.DataSourceShapes).Throws(new Exception(errorWasThrown));
-            var webXmlConvert = new WebXmlConvert(mockoutPutDesc.Object, serviceOutputs);
+            var webXmlConvert = new WebResponseManager()
+            {
+                OutputDescription = mockoutPutDesc.Object
+                ,
+                Outputs = serviceOutputs
+            };
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -209,7 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webXmlConvert);
             //---------------Execute Test ----------------------
-            webXmlConvert.PushXmlIntoEnvironment(response, 0, dataObjectMock.Object);
+            webXmlConvert.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
             dataObjectMock.Verify(o => o.Environment.AddError(errorWasThrown));
 
 
