@@ -796,8 +796,12 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
         addToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast update assignValue
 
 let addToJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
-    let rem = Map.remove name env.JsonObjects |> Map.add name value
-    { env with JsonObjects = rem }
+    let jsonNameExp = parseLanguageExpressionWithoutUpdate name
+    match jsonNameExp with
+        | JsonIdentifierExpression a -> let correctName = languageExpressionToStringNoBrackets jsonNameExp
+                                        let rem = Map.remove correctName env.JsonObjects |> Map.add correctName value
+                                        { env with JsonObjects = rem }
+        | _ -> failwith "Invalid Json Expression"
 
 let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
     match env.JsonObjects.TryFind name with
