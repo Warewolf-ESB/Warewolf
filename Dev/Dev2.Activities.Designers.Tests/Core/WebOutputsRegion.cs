@@ -19,7 +19,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = new List<IServiceOutputMapping>{new ServiceOutputMapping("a","b","c")}};
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act, true));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             
             //------------Execute Test---------------------------
             Assert.IsTrue(outputsRegion.IsEnabled);
@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null};
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act, true));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
 
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsEnabled);
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act, true));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act, true));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act, true));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());

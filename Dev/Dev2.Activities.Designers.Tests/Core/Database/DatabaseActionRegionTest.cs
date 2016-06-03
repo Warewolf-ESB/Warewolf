@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dbActionRegion.Errors.Count);
-            Assert.IsTrue(dbActionRegion.IsEnabled);
+            Assert.IsFalse(dbActionRegion.IsEnabled);
         }
 
         [TestMethod]
