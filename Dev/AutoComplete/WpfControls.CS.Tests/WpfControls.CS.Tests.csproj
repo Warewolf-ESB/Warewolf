@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfControls.CS.Test</RootNamespace>
-    <AssemblyName>WpfControls.CS.Test</AssemblyName>
+    <AssemblyName>WpfControls.CS.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -109,7 +109,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Dev2TrieSugggestionProvider.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="RequiredValidationRule.cs" />
     <Compile Include="Window1.xaml.cs">
@@ -127,7 +126,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -156,9 +155,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj">
       <Project>{17125877-2CF0-42B2-89D3-418E40BDE5D0}</Project>

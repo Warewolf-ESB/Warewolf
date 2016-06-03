@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="http://wpfcontrols.com/"
         xmlns:local="clr-namespace:WpfControls.CS.Test"
+        xmlns:editors="clr-namespace:WpfControls.Editors;assembly=WpfControls"
         Title="{Binding Path=SelectedItem, ElementName=Actb}" SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         Padding="10">
@@ -84,7 +85,7 @@
         
         <Label Content="_Open"   Grid.Column="0"
                                  Grid.Row="1" />
-        <wpf:AutoCompleteTextBox VerticalAlignment="Top"
+        <editors:AutoCompleteTextBox VerticalAlignment="Top"
                                  Height="25"
                                  Grid.Column="1"
                                  Grid.Row="1"
@@ -94,19 +95,19 @@
                                  IconVisibility="Visible"
                                  Provider="{Binding Dev2Provider}"
                                  x:Name="Actb">
-            <wpf:AutoCompleteTextBox.SelectedItem>
+            <editors:AutoCompleteTextBox.SelectedItem>
                 <Binding Path="SelectedPath" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:RequiredValidationRule/>
                     </Binding.ValidationRules>
                 </Binding>
-            </wpf:AutoCompleteTextBox.SelectedItem>
-            <wpf:AutoCompleteTextBox.LoadingContent>
+            </editors:AutoCompleteTextBox.SelectedItem>
+            <editors:AutoCompleteTextBox.LoadingContent>
                 <TextBlock Text="Loading..."
                            Margin="5"
                            FontSize="14" />
-            </wpf:AutoCompleteTextBox.LoadingContent>
-            <wpf:AutoCompleteTextBox.Icon>
+            </editors:AutoCompleteTextBox.LoadingContent>
+            <editors:AutoCompleteTextBox.Icon>
                 <Border Width="20"
                         Height="20">
                     <Image Source="Resources/search_icon.png"
@@ -115,12 +116,12 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
                 </Border>
-            </wpf:AutoCompleteTextBox.Icon>
-        </wpf:AutoCompleteTextBox>
+            </editors:AutoCompleteTextBox.Icon>
+        </editors:AutoCompleteTextBox>
 
         <Label Content="Recset"   Grid.Column="0"
                                  Grid.Row="2" />
-        <wpf:AutoCompleteTextBox VerticalAlignment="Top"
+        <editors:AutoCompleteTextBox VerticalAlignment="Top"
                                  Height="25"
                                  Grid.Column="1"
                                  Grid.Row="2"
@@ -130,19 +131,19 @@
                                  IconVisibility="Visible"
                                  Provider="{Binding Dev2RecsetProvider}"
                                  x:Name="Act2b">
-            <wpf:AutoCompleteTextBox.SelectedItem>
+            <editors:AutoCompleteTextBox.SelectedItem>
                 <Binding Path="SelectedPathRecset" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:RequiredValidationRule/>
                     </Binding.ValidationRules>
                 </Binding>
-            </wpf:AutoCompleteTextBox.SelectedItem>
-            <wpf:AutoCompleteTextBox.LoadingContent>
+            </editors:AutoCompleteTextBox.SelectedItem>
+            <editors:AutoCompleteTextBox.LoadingContent>
                 <TextBlock Text="Loading..."
                            Margin="5"
                            FontSize="14" />
-            </wpf:AutoCompleteTextBox.LoadingContent>
-            <wpf:AutoCompleteTextBox.Icon>
+            </editors:AutoCompleteTextBox.LoadingContent>
+            <editors:AutoCompleteTextBox.Icon>
                 <Border Width="20"
                         Height="20">
                     <Image Source="Resources/search_icon.png"
@@ -151,13 +152,13 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
                 </Border>
-            </wpf:AutoCompleteTextBox.Icon>
-        </wpf:AutoCompleteTextBox>
+            </editors:AutoCompleteTextBox.Icon>
+        </editors:AutoCompleteTextBox>
 
 
         <Label Content="Scalar"   Grid.Column="0"
                                  Grid.Row="3" />
-        <wpf:AutoCompleteTextBox VerticalAlignment="Top"
+        <editors:AutoCompleteTextBox VerticalAlignment="Top"
                                  Height="25"
                                  Grid.Column="1"
                                  Grid.Row="3"
@@ -167,19 +168,19 @@
                                  IconVisibility="Visible"
                                  Provider="{Binding Dev2ScalarProvider}"
                                  x:Name="Actb2">
-            <wpf:AutoCompleteTextBox.SelectedItem>
+            <editors:AutoCompleteTextBox.SelectedItem>
                 <Binding Path="SelectedPathScalar" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:RequiredValidationRule/>
                     </Binding.ValidationRules>
                 </Binding>
-            </wpf:AutoCompleteTextBox.SelectedItem>
-            <wpf:AutoCompleteTextBox.LoadingContent>
+            </editors:AutoCompleteTextBox.SelectedItem>
+            <editors:AutoCompleteTextBox.LoadingContent>
                 <TextBlock Text="Loading..."
                            Margin="5"
                            FontSize="14" />
-            </wpf:AutoCompleteTextBox.LoadingContent>
-            <wpf:AutoCompleteTextBox.Icon>
+            </editors:AutoCompleteTextBox.LoadingContent>
+            <editors:AutoCompleteTextBox.Icon>
                 <Border Width="20"
                         Height="20">
                     <Image Source="Resources/search_icon.png"
@@ -188,8 +189,8 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
                 </Border>
-            </wpf:AutoCompleteTextBox.Icon>
-        </wpf:AutoCompleteTextBox>
+            </editors:AutoCompleteTextBox.Icon>
+        </editors:AutoCompleteTextBox>
 
         <StackPanel Grid.Column="1"
                     Grid.Row="4"
