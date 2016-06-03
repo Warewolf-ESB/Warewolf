@@ -42,6 +42,9 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
             }
+            ObjectName = _modelItem.GetProperty<string>("ObjectName");
+            IsObject = _modelItem.GetProperty<bool>("IsObject");
+            
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -213,9 +216,10 @@ namespace Dev2.Activities.Designers2.Core
             get { return _isObject; }
             set
             {
-                _isObject = value; 
+                _isObject = value;
+                _modelItem.SetProperty("IsObject", value);
                 OnPropertyChanged();
-            }
+            }            
         }
 
         public string ObjectName
@@ -223,8 +227,18 @@ namespace Dev2.Activities.Designers2.Core
             get { return _objectName; }
             set
             {
-                _objectName = value; 
-                OnPropertyChanged();
+                if (value != null)
+                {
+                    _objectName = value;
+                    _modelItem.SetProperty("ObjectName", value);
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    _objectName = string.Empty;
+                    _modelItem.SetProperty("ObjectName", _objectName);
+                    OnPropertyChanged();
+                }
             }
         }
 
