@@ -123,6 +123,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             : base(modelItem)
         {
             Model = model;
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
 
