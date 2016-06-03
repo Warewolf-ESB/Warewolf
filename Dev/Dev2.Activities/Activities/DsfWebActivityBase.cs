@@ -32,7 +32,7 @@ namespace Dev2.Activities
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
-
+        public IWebResponseManager ResponseManager { get; set; }
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null)
