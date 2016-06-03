@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IWcfService service = serializer.Deserialize<IWcfService>(resourceDefinition);
 
                 var source = ResourceCatalog.Instance.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, service.Source.Id);
-                var parameters = service.Inputs == null ? new List<MethodParameter>() : service.Inputs.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, Type = a.TypeName }).ToList();
+                var parameters = service.Inputs == null ? new List<MethodParameter>() : service.Inputs.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
 
                 var res = new WcfService()
                 {

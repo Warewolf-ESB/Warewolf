@@ -152,7 +152,7 @@ namespace Warewolf.Core
                 OnPropertyChanged();
             }
         }
-        public Type TypeName { get; set; }
+        public string TypeName { get; set; }
 
         #endregion
     }

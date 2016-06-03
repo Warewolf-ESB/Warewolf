@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(typeof(object), sm.Parameters[0].Type);
+            Assert.AreEqual(typeof(object).FullName, sm.Parameters[0].TypeName);
         }
 
         [TestMethod]
@@ -233,7 +233,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(typeof(string), sm.Parameters[0].Type);
+            Assert.AreEqual(typeof(string).FullName, sm.Parameters[0].TypeName);
         }
 
         [TestMethod]
