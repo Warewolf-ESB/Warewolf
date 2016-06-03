@@ -50,6 +50,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _source.SomethingChanged += SourceOnSomethingChanged;
                 Dependants = new List<IToolRegion>();
                 IsRefreshing = false;
+                IsEnabled = false;
                 if (_source.SelectedSource != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource);
@@ -57,6 +58,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!string.IsNullOrEmpty(ProcedureName))
                 {
                     IsActionEnabled = true;
+                    IsEnabled = true;
                     SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);
                 }
                 RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -69,7 +71,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsRefreshing = false;
                 }, CanRefresh);
 
-                IsEnabled = false;
                 _modelItem = modelItem;
             }
             catch (Exception e)
