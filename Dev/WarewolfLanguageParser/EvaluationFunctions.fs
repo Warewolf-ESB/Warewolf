@@ -87,11 +87,11 @@ and languageExpressionToString (x : LanguageExpression) =
     | WarewolfAtomExpression a -> atomtoString a
     | JsonIdentifierExpression a -> 
         match a with
-        | NameExpression x -> sprintf "[[%s]]" x.Name
-        | NestedNameExpression x -> sprintf "[[%s.%s]]" x.ObjectName (jsonExpressionToString x.Next "")
+        | NameExpression x -> sprintf "[[@%s]]" x.Name
+        | NestedNameExpression x -> sprintf "[[@%s.%s]]" x.ObjectName (jsonExpressionToString x.Next "")
         | Terminal -> ""
         | IndexNestedNameExpression x -> 
-            sprintf "[[%s(%s).%s]]" x.ObjectName (IndexToString x.Index) (jsonExpressionToString x.Next "")
+            sprintf "[[@%s(%s).%s]]" x.ObjectName (IndexToString x.Index) (jsonExpressionToString x.Next "")
     | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d) "" a
     | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index)
 

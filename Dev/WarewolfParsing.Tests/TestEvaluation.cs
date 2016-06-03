@@ -564,7 +564,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Age]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[@Person.Age]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"22\")" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -580,7 +580,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(1)]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[@Person.Score(1)]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -596,7 +596,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum([[Person.Score(1)]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum([[@Person.Score(1)]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.AggregateCalculateTextConvertSuffix);
         }
@@ -612,7 +612,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(*)]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[@Person.Score(*)]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(\"3\")" + GlobalConstants.CalculateTextConvertSuffix, CommonFunctions.evalResultToString(res) );
         }
