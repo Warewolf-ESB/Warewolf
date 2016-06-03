@@ -125,6 +125,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             : base(modelItem)
         {
             Model = model;
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
 
