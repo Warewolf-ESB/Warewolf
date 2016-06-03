@@ -5084,6 +5084,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MappingsObjectNameTooltip.
+        /// </summary>
+        public static string MappingsObjectNameTooltip {
+            get {
+                return ResourceManager.GetString("MappingsObjectNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MappingsObjectOutputHelp.
+        /// </summary>
+        public static string MappingsObjectOutputHelp {
+            get {
+                return ResourceManager.GetString("MappingsObjectOutputHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MappingsObjectOutputTooltip.
+        /// </summary>
+        public static string MappingsObjectOutputTooltip {
+            get {
+                return ResourceManager.GetString("MappingsObjectOutputTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you would like the default variables in a recordset, put the recordset name in here..
         /// </summary>
         public static string MappingsRecordsetNameHelp {

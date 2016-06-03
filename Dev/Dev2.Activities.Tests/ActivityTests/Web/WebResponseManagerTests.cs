@@ -9,7 +9,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Storage;
 
