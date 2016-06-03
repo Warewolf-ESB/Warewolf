@@ -757,10 +757,29 @@ namespace WarewolfParsingTest
         {
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
+            const string expected = "{" +
+                                    "\"Name\": \"bob\"," +
+                                    "\"Age\": \"22\"," +
+                                    "\"Spouse\": {" +
+                                    "\"Name\": \"dora\"" +
+                                    "}," +
+                                    "\"Children\": [" +
+                                    "{" +
+                                    "\"Name\": \"Mary\"" +
+                                    "}," +
+                                    "{" +
+                                    "\"Name\": \"Jane\"" +
+                                    "}" +
+                                    "]," +
+                                    "\"Score\": [" +
+                                    "\"2\"," +
+                                    "\"3\"" +
+                                    "]" +
+                                    "}";
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.eval(env, 0, "[[@Person]]");
             //------------Assert Results-------------------------
-            Assert.AreEqual("22", CommonFunctions.evalResultToString(res));
+            Assert.AreEqual(expected.Replace(" ",""), CommonFunctions.evalResultToString(res).Replace(Environment.NewLine,"").Replace(" ",""));
         }
 
         [TestMethod]
