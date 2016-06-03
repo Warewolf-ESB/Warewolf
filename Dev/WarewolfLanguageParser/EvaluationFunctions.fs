@@ -95,6 +95,21 @@ and languageExpressionToString (x : LanguageExpression) =
     | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d) "" a
     | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index)
 
+and languageExpressionToStringNoBrackets (x : LanguageExpression) = 
+    match x with
+    | RecordSetExpression a -> sprintf "%s(%s).%s" a.Name (IndexToString a.Index) a.Column
+    | ScalarExpression a -> sprintf "%s" a
+    | WarewolfAtomExpression a -> atomtoString a
+    | JsonIdentifierExpression a -> 
+        match a with
+        | NameExpression x -> sprintf "%s" x.Name
+        | NestedNameExpression x -> sprintf "%s.%s" x.ObjectName (jsonExpressionToString x.Next "")
+        | Terminal -> ""
+        | IndexNestedNameExpression x -> 
+            sprintf "%s(%s).%s" x.ObjectName (IndexToString x.Index) (jsonExpressionToString x.Next "")
+    | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d) "" a
+    | RecordSetNameExpression a -> sprintf "%s(%s)" a.Name (IndexToString a.Index)
+
 /// convert a json expression to a string. uses an accumulater to append to while traversing an expression
 and jsonExpressionToString a acc = 
     match a with

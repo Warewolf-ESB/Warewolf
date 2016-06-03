@@ -9,6 +9,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Storage;
 
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void UnescapeRawXml_GivenEscapedXml_ShouldUnescapeXml()
         {
             //---------------Set up test pack-------------------
-            var webXmlConvert = new WebResponseManager()
+            var responseManager = new WebResponseManager()
             {
                 OutputDescription = It.IsAny<IOutputDescription>()
                     ,
@@ -58,9 +59,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             StringBuilder value = new StringBuilder("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(value.ToString());
-            Assert.IsNotNull(webXmlConvert);
+            Assert.IsNotNull(responseManager);
             //---------------Execute Test ----------------------
-            var result = webXmlConvert.UnescapeRawXml(value.ToString());
+            var result = responseManager.UnescapeRawXml(value.ToString());
             //---------------Test Result -----------------------
             Assert.AreEqual("<x>this \" is' & neat</x>", result);
         }
@@ -70,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void UnescapeRawXml_GivenUnEscapedXml_ShouldUnescapeXml()
         {
             //---------------Set up test pack-------------------
-            var webXmlConvert = new WebResponseManager()
+            var responseManager = new WebResponseManager()
             {
                 OutputDescription = It.IsAny<IOutputDescription>()
                     ,
@@ -79,9 +80,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             StringBuilder value = new StringBuilder("x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(value.ToString());
-            Assert.IsNotNull(webXmlConvert);
+            Assert.IsNotNull(responseManager);
             //---------------Execute Test ----------------------
-            var result = webXmlConvert.UnescapeRawXml(value.ToString());
+            var result = responseManager.UnescapeRawXml(value.ToString());
             //---------------Test Result -----------------------
             Assert.AreEqual(value.ToString(), result);
         }
@@ -92,16 +93,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void PushResponseIntoEnvironment_GivenNoDataObject_ShouldCatchObjectNullException()
         {
             //---------------Set up test pack-------------------
-            var webXmlConvert = new WebResponseManager()
+            var responseManager = new WebResponseManager()
             {
                 OutputDescription = It.IsAny<IOutputDescription>()
                     ,
                 Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
             };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(webXmlConvert);
+            Assert.IsNotNull(responseManager);
             //---------------Execute Test ----------------------
-            webXmlConvert.PushResponseIntoEnvironment(string.Empty, 1, null);
+            responseManager.PushResponseIntoEnvironment(string.Empty, 1, null);
             //---------------Test Result -----------------------
         }
 
@@ -131,7 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             var outPutDesc = service.GetOutputDescription();
-            var webXmlConvert = new WebResponseManager()
+            var responseManager = new WebResponseManager()
             {
                 OutputDescription = outPutDesc,
                 Outputs = serviceOutputs
@@ -141,11 +142,57 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(webXmlConvert);
+            Assert.IsNotNull(responseManager);
             //---------------Execute Test ----------------------
             try
             {
-                webXmlConvert.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
+                responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PushResponseIntoEnvironment_GivenResponseAndIsJosn_ShouldAssignJsonObjects()
+        {
+            //---------------Set up test pack-------------------
+
+            const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
+                                 "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
+                                 "\"Visibility\": \"greater than 7 mile(s):0\"," +
+                                 "\"Temperature\": \"59 F (15 C)\"," +
+                                 "\"DewPoint\": \"41 F (5 C)\"," +
+                                 "\"RelativeHumidity\": \"51%\"," +
+                                 "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
+                                 "\"Status\": \"Success\"" +
+                                 "}";
+            var environment = new ExecutionEnvironment();
+            
+            var responseManager = new WebResponseManager()
+            {
+                IsObject = true,
+                ObjectName = "[[@weather]]"
+            };
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(responseManager);
+            //---------------Execute Test ----------------------
+            try
+            {
+                responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
+                var evalRes = environment.Eval("[[@weather]]", 0);
+                Assert.IsNotNull(evalRes);
+                var stringResult = CommonFunctions.evalResultToString(evalRes);
+                Assert.AreEqual(response.Replace(" ",""),stringResult.Replace(Environment.NewLine,"").Replace(" ",""));
+                var propRes = environment.Eval("[[@weather.RelativeHumidity]]", 0);
+                Assert.IsNotNull(propRes);
             }
             catch (Exception e)
             {
@@ -179,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             var outPutDesc = service.GetOutputDescription();
-            var webXmlConvert = new WebResponseManager()
+            var responseManager = new WebResponseManager()
             {
                 OutputDescription = outPutDesc,
                 Outputs = serviceOutputs
@@ -189,11 +236,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
             dataObjectMock.Setup(o => o.Environment.AddError("No Web Response received"));
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(webXmlConvert);
+            Assert.IsNotNull(responseManager);
             //---------------Execute Test ----------------------
             try
             {
-                webXmlConvert.PushResponseIntoEnvironment(string.Empty, 0, dataObjectMock.Object);
+                responseManager.PushResponseIntoEnvironment(string.Empty, 0, dataObjectMock.Object);
                 dataObjectMock.Verify(o => o.Environment.AddError("No Web Response received"));
             }
             catch (Exception e)
@@ -228,7 +275,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             const string errorWasThrown = "Error was Thrown";
             var mockoutPutDesc = new Mock<IOutputDescription>();
             mockoutPutDesc.SetupGet(description => description.DataSourceShapes).Throws(new Exception(errorWasThrown));
-            var webXmlConvert = new WebResponseManager()
+            var responseManager = new WebResponseManager()
             {
                 OutputDescription = mockoutPutDesc.Object
                 ,
@@ -240,9 +287,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             dataObjectMock.Setup(o => o.Environment.AddError(errorWasThrown));
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(webXmlConvert);
+            Assert.IsNotNull(responseManager);
             //---------------Execute Test ----------------------
-            webXmlConvert.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
+            responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
             dataObjectMock.Verify(o => o.Environment.AddError(errorWasThrown));
 
 
