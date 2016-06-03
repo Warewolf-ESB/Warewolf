@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dev2.Runtime.ServiceModel.Data;
@@ -225,7 +226,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-               isolated.Value.ListNamespaces(null, "Foo");
+                isolated.Value.ListNamespaces(null, "Foo");
             }
         }
 
@@ -242,7 +243,36 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 Assert.IsFalse(result.Any());
             }
         }
-      
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        public void PluginRuntimeHandler_ListMethods_WhenInvalidLocation_ExpectNoResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var result = isolated.Value.ListMethods("z:\foo\asm.dll", "asm.dll", "asm.dll");
+                Assert.IsFalse(result.Any());
+            }
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        public void PluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListMethods(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+            }
+        }
+
         #endregion
 
         #region Run
@@ -319,7 +349,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-                 isolated.Value.Run(args);
+                isolated.Value.Run(args);
             }
         }
 
@@ -400,37 +430,27 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         #endregion
     }
 
-    public sealed class Isolated<T> : IDisposable where T : MarshalByRefObject
+    public class Person
     {
-        private AppDomain _domain;
-        private readonly T _value;
-
-        public Isolated()
+        public string Name { get; set; }
+        public string SurName { get; set; }
+        public int Age { get; set; }
+    }
+    public class Car
+    {
+        public string Model { get; set; }
+        public string Make { get; set; }
+    }
+    public class Main
+    {
+        public Person GETPerson(Car car)
         {
-            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-               null, AppDomain.CurrentDomain.SetupInformation);
-
-            Type type = typeof(T);
-
-            _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
-        }
-
-        public T Value
-        {
-            get
+            return new Person()
             {
-                return _value;
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_domain != null)
-            {
-                AppDomain.Unload(_domain);
-
-                _domain = null;
-            }
+                Name = "Micky",
+                Age = 1,
+                SurName = "Mouse " + car.Make + car.Model
+            };
         }
     }
 }

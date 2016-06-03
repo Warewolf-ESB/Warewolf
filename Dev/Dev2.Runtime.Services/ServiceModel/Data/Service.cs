@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out emptyToNull) && emptyToNull,
                     IsRequired = (validator = input.Element("Validator")) != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
                     DefaultValue = input.AttributeSafe("DefaultValue"),
-                    Type = tmpType
+                    TypeName = tmpType.FullName
                 });
             }
             return result;

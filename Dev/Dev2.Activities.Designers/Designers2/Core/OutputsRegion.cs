@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Core
         private readonly ModelItem _modelItem;
         private bool _isEnabled;
         private ICollection<IServiceOutputMapping> _outputs;
-        public OutputsRegion(ModelItem modelItem)
+        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
         {
             ToolRegionName = "OutputsRegion";
             _modelItem = modelItem;
@@ -44,6 +44,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObject = _modelItem.GetProperty<bool>("IsObject");
+            IsObjectOutputUsed = isObjectOutputUsed;
             
         }
 
@@ -69,6 +70,7 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isObject;
         private string _objectName;
         private string _objectResult;
+        private bool _isObjectOutputUsed;
 
         #region Implementation of IToolRegion
 
@@ -85,6 +87,17 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public bool IsObjectOutputUsed
+        {
+            get { return _isObjectOutputUsed; }
+            set
+            {
+                _isObjectOutputUsed = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -250,13 +263,13 @@ namespace Dev2.Activities.Designers2.Core
                 if (value != null)
                 {
                     _objectResult = value;
-                    _modelItem.SetProperty("Outputs", value);
+                    _modelItem.SetProperty("ObjectResult", value);
                     OnPropertyChanged();
                 }
                 else
                 {
                     _objectResult = string.Empty;
-                    _modelItem.SetProperty("Outputs", _objectResult);
+                    _modelItem.SetProperty("ObjectResult", _objectResult);
                     OnPropertyChanged();
                 }
             }

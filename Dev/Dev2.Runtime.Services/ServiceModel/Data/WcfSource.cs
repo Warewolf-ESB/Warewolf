@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     action.Inputs.Add(new ServiceInput
                     {
                         Name = paramater.Name,
-                        TypeName = paramater.ParameterType
+                        TypeName = paramater.ParameterType.FullName
                     });
                 }
 

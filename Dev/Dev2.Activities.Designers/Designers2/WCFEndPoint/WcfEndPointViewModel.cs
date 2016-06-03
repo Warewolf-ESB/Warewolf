@@ -356,7 +356,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                 regions.Add(ActionRegion);
                 InputArea = new WcfInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
-                OutputsRegion = new OutputsRegion(ModelItem);
+                OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
