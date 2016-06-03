@@ -126,6 +126,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             : base(modelItem)
         {
             Model = model;
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
 
@@ -352,7 +353,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
                 regions.Add(SourceRegion);
                 InputArea = new WebDeleteInputRegion(ModelItem, SourceRegion);
                 regions.Add(InputArea);
-                OutputsRegion = new OutputsRegion(ModelItem);
+                OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {

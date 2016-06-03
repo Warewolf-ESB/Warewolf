@@ -264,12 +264,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{378E17
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{C1E44084-B760-4ABF-840F-6D695B1222E0}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Server\Service\Cleanup.bat = TestScripts\Server\Service\Cleanup.bat
-		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
@@ -281,12 +275,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{9A1925D0-ABD8-4653-BF67-DDBD2245D3E0}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
-		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
 EndProject

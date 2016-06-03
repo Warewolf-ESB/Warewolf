@@ -19,10 +19,11 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = new List<IServiceOutputMapping>{new ServiceOutputMapping("a","b","c")}};
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             
             //------------Execute Test---------------------------
             Assert.IsTrue(outputsRegion.IsEnabled);
+            Assert.IsTrue(outputsRegion.IsObjectOutputUsed);
             //------------Assert Results-------------------------
         }
 
@@ -34,10 +35,11 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null};
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
 
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsEnabled);
+            Assert.IsTrue(outputsRegion.IsObjectOutputUsed);
             //------------Assert Results-------------------------
         }
 
@@ -48,13 +50,14 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsEnabled);
+            Assert.IsTrue(outputsRegion.IsObjectOutputUsed);
             //------------Assert Results-------------------------
         }
 
@@ -66,14 +69,14 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsEnabled);
-
+            Assert.IsTrue(outputsRegion.IsObjectOutputUsed);
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             //------------Assert Results-------------------------
             Assert.IsNotNull(x, "x != null");
@@ -87,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
-            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act));
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -95,7 +98,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             
             //------------Execute Test---------------------------
             Assert.IsFalse(outputsRegion.IsEnabled);
-
+            Assert.IsTrue(outputsRegion.IsObjectOutputUsed);
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             outputsRegion.Outputs.Clear();
             Assert.IsFalse(outputsRegion.IsEnabled);

@@ -40,14 +40,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                 PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
 
-                var methods = services.Methods(svc, Guid.Empty, Guid.Empty).Select(a => new PluginAction
+                    var serviceMethodList = services.Methods(svc, Guid.Empty, Guid.Empty);
+                    var methods = serviceMethodList.Select(a => new PluginAction
                 {
                     FullName = ns.FullName,
-                    Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.Type } as IServiceInput).ToList(),
+                    Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "") { Name = x.Name, EmptyIsNull = x.EmptyToNull, RequiredField = x.IsRequired, TypeName = x.TypeName } as IServiceInput).ToList(),
                     Method = a.Name,
                     Variables = a.Parameters.Select(x => new NameValue() { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
-                } as IPluginAction
-                    ).ToList();
+                } as IPluginAction).ToList();
                 return serializer.SerializeToBuilder(new ExecuteMessage()
                 {
                     HasError = false,

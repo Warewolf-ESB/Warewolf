@@ -51,7 +51,7 @@ namespace Dev2.Activities.WcfEndPoint
             Source = ResourceCatalog.GetResource<WcfSource>(dataObject.WorkspaceID, SourceId);
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
-            var methodParameters = method.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, Type = a.TypeName }).ToList();
+            var methodParameters = method.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
             BuildParameterIterators(update, methodParameters.ToList(),itrCollection,itrs,dataObject);
             try
             {

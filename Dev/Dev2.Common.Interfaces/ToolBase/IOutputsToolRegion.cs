@@ -14,6 +14,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsObject { get; set; }
         string ObjectName { get; set; }
         string ObjectResult { get; set; }
+        bool IsObjectOutputUsed { get; set; }
         IOutputDescription Description { get; set; }
         bool OutputCountExpandAllowed { get; set; }
     }
