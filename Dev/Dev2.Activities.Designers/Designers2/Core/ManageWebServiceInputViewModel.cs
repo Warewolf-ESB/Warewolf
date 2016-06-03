@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-
+        bool IsObject { get; set; }
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
@@ -101,7 +101,7 @@ namespace Dev2.Activities.Designers2.Core
                 var serializer = new Dev2JsonSerializer();
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
-                    TestResults = responseService.RequestResponse;
+                   TestResults = responseService.RequestResponse;
                     _recordsetList = responseService.Recordsets;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
