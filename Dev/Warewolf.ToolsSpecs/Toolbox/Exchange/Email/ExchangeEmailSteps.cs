@@ -73,7 +73,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
-
+            
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
