@@ -565,7 +565,10 @@ namespace Dev2.Studio.ViewModels.DataList
             for (int index = 0; index < paths.Length; index++)
             {
                 string path = paths[index];
+                var pathToMatch = path.Replace("@", "");
                 var isArray = false;
+             
+
                 if (path.Contains("()") || path.Contains("(*)"))
                 {
                     isArray = true;
@@ -573,7 +576,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 if (itemModel == null)
                 {
-                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == path);
+                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
                 }
                 if (itemModel == null)
                 {
@@ -582,9 +585,9 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 else
                 {
-                    if (itemModel.DisplayName != path)
+                    if (itemModel.DisplayName != pathToMatch)
                     {
-                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == path);
+                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
                         if (item == null)
                         {
                             item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
@@ -686,7 +689,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             return accList;
         }
-        
+
         public void AddBlankRow(IDataListItemModel item)
         {
             if (item != null)
@@ -730,7 +733,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (itemToRemove == null)
                 return;
 
-            if(itemToRemove is IComplexObjectItemModel)
+            if (itemToRemove is IComplexObjectItemModel)
             {
                 var item = ComplexObjectCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
                 if (item != null)

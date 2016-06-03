@@ -208,8 +208,8 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
                 ParseCache <- ParseCache.Add(lang, res)
                 res
             with
-                | :? System.IndexOutOfRangeException ->
-                     WarewolfAtomExpression(DataStorage.DataString lang)
+                | :? System.IndexOutOfRangeException as ex ->
+                     raise ex
     else WarewolfAtomExpression(parseAtom lang)
 
 ///Simple parse. convert a string to a language expression and replace * with the update value
@@ -407,8 +407,10 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
-            WarewolfAtomListresult
-                (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+            if Seq.isEmpty data then
+                WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+            else
+                WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent recordset"
     | ComplexExpression _ -> failwith "no current use case please contact the warewolf product owner "
     | WarewolfAtomExpression _ -> failwith "no current use case please contact the warewolf product owner "

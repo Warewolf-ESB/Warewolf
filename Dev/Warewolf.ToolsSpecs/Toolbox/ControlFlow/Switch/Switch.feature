@@ -33,18 +33,3 @@ Examples:
 | [[rec().a]]  | 3   | [[rec().a]] = 3  |
 | [[rec(1).a]] | 3   | [[rec(1).a]] = 3 |
 | [[rec(*).a]] | 3   | [[rec(*).a]] = 3 |
-
-
-#Complex Types WOLF-1042
-Scenario Outline: Ensure that an object evaluates to the value on the datalist
-	Given I need to switch on variable "<object>" with the value "<val>"		
-	When the switch tool is executed
-	Then the variable "<object>" will evaluate to "<val>"
-	Then the execution has "NO" error
-	And the debug inputs as "<switch>"
-Examples: 
-| variable                                       | val                                      | switch                                       |
-| [[Granparent().parent().child().pet]]          | 4                                        | [[Granparent().parent().child().pet]] = 4    |
-| [[Granparent(1).parent([[int]]).child(5).pet]] | 7                                        | [[Granparent(1).parent(2).child(5).pet]] = 7 |
-
-# | [[Granparent(*).parent(*).child(*).pet]] | 10                                           |  |
