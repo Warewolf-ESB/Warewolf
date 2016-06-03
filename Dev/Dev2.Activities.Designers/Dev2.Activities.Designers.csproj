@@ -139,6 +139,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WarewolfLanguageParser">
+      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -1144,10 +1147,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -143,8 +143,8 @@
       <HintPath>..\packages\Log4Net.Async.1.3.0.0\lib\net40\Log4Net.Async.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -973,10 +973,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
