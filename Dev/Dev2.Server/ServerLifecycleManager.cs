@@ -121,8 +121,6 @@ namespace Dev2
         {
             var result = 0;
            
-            try
-            {
                 CommandLineParameters options = new CommandLineParameters();
                 CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
                 if(!parser.ParseArguments(arguments, options))
@@ -231,15 +229,6 @@ namespace Dev2
                         ServiceBase.Run(service);
                     }
                 }
-            }
-            catch(Exception err)
-            {
-                Dev2Logger.Error("Error Starting Server", err);
-                // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Error("Error Starting Server. Stack trace", err);
-                // ReSharper restore InvokeAsExtensionMethod
-                throw;
-            }
             return result;
         }
 
@@ -1065,8 +1054,6 @@ namespace Dev2
         /// </summary>
         bool PreloadReferences()
         {
-            try
-            {
                 if(!LoadExternalDependencies())
                 {
                     return false;
@@ -1085,12 +1072,6 @@ namespace Dev2
                 }
 
                 return Result;
-            }
-            catch(Exception e)
-            {
-                LogException(e);
-                return false;
-            }
         }
 
         /// <summary>
