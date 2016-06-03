@@ -964,8 +964,17 @@ This account needs to be a valid email address/account for the Host server.</val
   <data name="MappingsRecordsetNameHelp" xml:space="preserve">
     <value>If you would like the default variables in a recordset, put the recordset name in here.</value>
   </data>
+  <data name="MappingsObjectOutputHelp" xml:space="preserve">
+    <value>MappingsObjectOutputHelp</value>
+  </data>
+  <data name="MappingsObjectOutputTooltip" xml:space="preserve">
+    <value>MappingsObjectOutputTooltip</value>
+  </data>
   <data name="MappingsObjectNameHelp" xml:space="preserve">
     <value>If you would like the default variables in an object, put the object name in here.</value>
+  </data>
+  <data name="MappingsObjectNameTooltip" xml:space="preserve">
+    <value>MappingsObjectNameTooltip</value>
   </data>
   <data name="MappingsDefaultValueHelp" xml:space="preserve">
     <value>The default value to be used when mapping this field.</value>
