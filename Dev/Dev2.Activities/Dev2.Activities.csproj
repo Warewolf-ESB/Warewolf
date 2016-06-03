@@ -272,7 +272,6 @@
     <Compile Include="Activities\IFlowNodeActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Consume\DsfConsumeRabbitMQActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
-    <Compile Include="Activities\IWebXmlConvert.cs" />
     <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCopyFileActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
@@ -310,7 +309,8 @@
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
     <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
-    <Compile Include="Activities\WebXmlConvert.cs" />
+    <Compile Include="Activities\WebResponseManager.cs" />
+    <Compile Include="Activities\IWebResponseManager.cs" />
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
     <Compile Include="BussinessLogic\RsOpIsBinary.cs" />
