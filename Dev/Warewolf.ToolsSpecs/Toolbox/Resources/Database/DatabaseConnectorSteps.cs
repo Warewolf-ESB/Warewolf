@@ -16,9 +16,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
-using Dev2.DataList.Contract;
-using Moq.Protected;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {

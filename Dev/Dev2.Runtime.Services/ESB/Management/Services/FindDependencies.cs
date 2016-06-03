@@ -16,7 +16,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -31,6 +30,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindDependencies : IEsbManagementEndpoint
     {
+        private IResourceCatalog _resourceCatalog;
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -54,10 +55,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 if (string.IsNullOrEmpty(resourceId))
                 {
-                    throw new InvalidDataContractException("ResourceName is empty or null");
+                    throw new InvalidDataContractException("ResourceId is empty or null");
                 }
-                var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, Guid.Parse(resourceId));
-                var resourceName = resource.ResourceID;
+                Guid resId;
+                if (!Guid.TryParse(resourceId, out resId))
+                {
+                    throw new InvalidDataContractException("ResourceId is not a GUID");
+                }
+                var resource = ResourceCatalog.GetResource(theWorkspace.ID, resId);
                 if (!string.IsNullOrEmpty(dependsOnMeString))
                 {
                     if (!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -68,13 +73,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (dependsOnMe)
                 {
-                    result.Message.Append(string.Format("<graph title=\"Local Dependants Graph: {0}\">", resourceName));
-                    result.Message.Append(FindWhatDependsOnMe(resource, theWorkspace.ID));
+                    result.Message.Append(string.Format("<graph title=\"Local Dependants Graph: {0}\">", resourceId));
+                    result.Message.Append(FindWhatDependsOnMe(theWorkspace.ID, resource.ResourceID, new List<Guid>()));
                     result.Message.Append("</graph>");
                 }
                 else
                 {
-                    result.Message.Append(string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceName));
+                    result.Message.Append(string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceId));
                     result.Message.Append(FindDependenciesRecursive(resource.ResourceID, theWorkspace.ID, new List<Guid>()));
                     result.Message.Append("</graph>");
                 }
@@ -89,36 +94,48 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-
-        StringBuilder FindWhatDependsOnMe(IResource res, Guid workspaceId)
+        public IResourceCatalog ResourceCatalog
         {
-            if (res == null)
+            private get
             {
-                throw new ArgumentNullException("res", @"Resource not found");
+                return _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
             }
-            var resourceName = res.ResourceID;
+            set
+            {
+                _resourceCatalog = value;
+            }
+        }
 
-            var resourceId = res.ResourceID;
-            var dependants = ResourceCatalog.Instance.GetDependants(Guid.Empty, resourceId);
-            dependants.AddRange(ResourceCatalog.Instance.GetDependants(workspaceId, resourceId));
+        StringBuilder FindWhatDependsOnMe(Guid workspaceId, Guid resourceID, List<Guid> seenResource)
+        {
+            if (resourceID == null)
+            {
+                throw new ArgumentNullException("resourceID", @"Resource not found");
+            }
+            var dependants = ResourceCatalog.GetDependants(Guid.Empty, resourceID) ?? new List<Guid>();
+            dependants.AddRange(ResourceCatalog.GetDependants(workspaceId, resourceID) ?? new List<Guid>());
             dependants = dependants.Distinct().ToList();
             var sb = new StringBuilder();
-            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceId));
+            sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resourceID));
             dependants.ForEach(c =>
             {
-                var resource = ResourceCatalog.Instance.GetResource(workspaceId, c) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, c);
-
+                var resource = ResourceCatalog.GetResource(workspaceId, c) ?? ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, c);
                 if (resource != null)
                 {
-                    const string BrokenString = "false";
-                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"{1}\">", resource.ResourceID, BrokenString));
-                    sb.Append(string.Format("<dependency id=\"{0}\" />", resourceName));
-                    sb.Append("</node>");
+                    sb.Append(string.Format("<dependency id=\"{0}\" />", resource.ResourceID));
+                }
+
+            });
+            sb.Append("</node>");
+            seenResource.Add(resourceID);
+            dependants.ForEach(c =>
+            {
+                if (!seenResource.Contains(c))
+                {
+                    var depOfCurrentDep = FindWhatDependsOnMe(workspaceId, c, seenResource);
+                    sb.Append(depOfCurrentDep);
                 }
             });
-
-            
-            sb.Append("</node>");
             return sb;
         }
 
@@ -154,14 +171,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var sb = new StringBuilder();
 
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceGuid);
+            var resource = ResourceCatalog.GetResource(workspaceId, resourceGuid);
             if (resource != null)
             {
-                const string BrokenString = "false";
                 var dependencies = resource.Dependencies;
                 if (dependencies != null)
                 {
-                    sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"{1}\">", resource.ResourceID, BrokenString));
                     sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resource.ResourceID));
                     // ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c => sb.Append(string.Format("<dependency id=\"{0}\" />", c.ResourceID)));
@@ -177,8 +192,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     });
                 }
-               
-                sb.Append("</node>");
             }
             return sb;
         }

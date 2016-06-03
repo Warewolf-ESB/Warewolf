@@ -97,7 +97,7 @@ namespace Dev2.Common
                 foreach(Node node in graph.Nodes)
                 {
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
-                    var dependencyElems = nodeElem.Elements("node");
+                    var dependencyElems = nodeElem.Elements("dependency");
                     foreach(XElement dependencyElem in dependencyElems)
                     {
                         string depID = dependencyElem.Attribute("id").Value;
@@ -106,11 +106,7 @@ namespace Dev2.Common
                         if (dependency != null)
                         {
                             node.NodeDependencies.Add(dependency);
-                        }
-                        else
-                        {
-                            node.NodeDependencies.Add(CreateNode(dependencyElem,depID,width,height,ref count));
-                        }
+                        }                        
                     }
 
                     //Now adjust position according to nodesize

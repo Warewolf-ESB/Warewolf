@@ -16,6 +16,13 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             Children = children;
             Parent = parent;
+            if (parent == null)
+            {
+                if (!Name.StartsWith("@"))
+                {
+                    Name = "@" + DisplayName;
+                }
+            }
         }
 
         public ObservableCollection<IComplexObjectItemModel> Children
@@ -129,6 +136,15 @@ namespace Dev2.Studio.Core.Models.DataList
                 }
             }
         }
+
+        #region Overrides of DataListItemModel
+
+        public override string ValidateName(string name)
+        {
+            return name.Replace("@", "");
+        }
+
+        #endregion
 
         #region Overrides of DataListItemModel
 
