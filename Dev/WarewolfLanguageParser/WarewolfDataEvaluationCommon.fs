@@ -801,7 +801,8 @@ let addToJsonObjects (env : WarewolfEnvironment) (name : string) (value : JConta
         | JsonIdentifierExpression a -> let correctName = languageExpressionToStringNoBrackets jsonNameExp
                                         let rem = Map.remove correctName env.JsonObjects |> Map.add correctName value
                                         { env with JsonObjects = rem }
-        | _ -> failwith "Invalid Json Expression"
+        | _ -> let rem = Map.remove name env.JsonObjects |> Map.add name value
+               { env with JsonObjects = rem }
 
 let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
     match env.JsonObjects.TryFind name with

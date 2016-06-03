@@ -1812,7 +1812,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_LanguageExpressionToString_NestedJsonArrayOfObjects()
         {
             var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Age]]"));
-            Assert.AreEqual(str, "[[Person.Child(*).Age]]");
+            Assert.AreEqual("[[@Person.Child(*).Age]]", str);
         }
 
         [TestMethod]
@@ -1821,7 +1821,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_LanguageExpressionToString_NestedProperty()
         {
             var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child]]"));
-            Assert.AreEqual(str, "[[Person.Child]]");
+            Assert.AreEqual("[[@Person.Child]]", str);
         }
 
 
