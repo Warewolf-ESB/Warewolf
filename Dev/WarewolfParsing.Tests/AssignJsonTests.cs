@@ -680,11 +680,11 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
-        [ExpectedException(typeof(Exception))]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_Scalar()
         {
             var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Child]]");
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
+            Assert.IsNotNull(exp);
         }
 
         [TestMethod]
