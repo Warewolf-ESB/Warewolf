@@ -84,6 +84,10 @@ namespace Dev2.Activities
 
             try
             {
+                foreach(var methodParameter in args.Parameters)
+                {
+                    var warewolfEvalResult = dataObject.Environment.Eval(methodParameter.Value, 0);
+                }
                 var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
                 PushXmlIntoEnvironment(result, update, dataObject);
             }
