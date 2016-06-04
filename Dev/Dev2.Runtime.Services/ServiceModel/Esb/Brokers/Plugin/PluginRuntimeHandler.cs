@@ -60,13 +60,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 return null;
             }
-            var parameters = BuildParameterList(setupInfo.Parameters);
-            var typeList = BuildTypeList(setupInfo.Parameters);
-
-            var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
-            var instance = Activator.CreateInstance(type);
-            var pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, parameters, CultureInfo.CurrentCulture);
+            object pluginResult;
+            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             // do formating here to avoid object serialization issues ;)
             var formater = setupInfo.OutputFormatter;
@@ -92,24 +87,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     return null;
                 }
-                var parameters = BuildParameterList(setupInfo.Parameters);
-                var typeList = BuildTypeList(setupInfo.Parameters);
-                
-
-                var type = loadedAssembly.GetType(setupInfo.Fullname);
-                var valuedTypeList = new List<object>();
-                foreach (var methodParameter in setupInfo.Parameters)
-                {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                    if (anonymousType != null)
-                    {
-                        valuedTypeList.Add(anonymousType);
-                    }
-                }
-                var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
-                object instance = Activator.CreateInstance(type);
-                
-                var pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                object pluginResult;
+                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
 
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
                 // do formating here to avoid object serialization issues ;)
@@ -133,6 +112,28 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 return null;
             }
+        }
+
+        private MethodInfo ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
+        {
+            var parameters = BuildParameterList(setupInfo.Parameters);
+            var typeList = BuildTypeList(setupInfo.Parameters);
+
+            var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var valuedTypeList = new List<object>();
+            foreach(var methodParameter in setupInfo.Parameters)
+            {
+                var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                if(anonymousType != null)
+                {
+                    valuedTypeList.Add(anonymousType);
+                }
+            }
+            var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
+            object instance = Activator.CreateInstance(type);
+
+            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+            return methodToRun;
         }
 
         // ReSharper disable once InconsistentNaming
