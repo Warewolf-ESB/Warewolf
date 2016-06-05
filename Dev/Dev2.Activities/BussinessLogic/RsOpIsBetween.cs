@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.DataList;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.BussinessLogic
@@ -46,7 +47,7 @@ namespace Dev2.BussinessLogic
                     DateTime toDt;
                     if(!DateTime.TryParse(toVal, out toDt))
                     {
-                        throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
+                        throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
                     }
                     DateTime recDateTime;
                     if(DateTime.TryParse(a.ToString(), out recDateTime))
