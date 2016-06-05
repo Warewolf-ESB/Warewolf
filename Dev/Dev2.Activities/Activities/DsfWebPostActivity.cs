@@ -95,10 +95,16 @@ namespace Dev2.Activities
             }
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, postData);
-            IWebXmlConvert webXmlConvert = new WebXmlConvert(OutputDescription, Outputs);
-            webXmlConvert.PushXmlIntoEnvironment(webRequestResult, update, dataObject);
-            
+
+
+            WebResponseManager = new WebResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
+            WebResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+
         }
+
+        public IWebResponseManager WebResponseManager { get; set; }
+
+        
 
         [ExcludeFromCodeCoverage]
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)

@@ -123,6 +123,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             : base(modelItem)
         {
             Model = model;
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
 
@@ -360,7 +361,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 regions.Add(SourceRegion);
                 InputArea = new WebGetInputRegion(ModelItem, SourceRegion);
                 regions.Add(InputArea);
-                OutputsRegion = new OutputsRegion(ModelItem);
+                OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
@@ -457,6 +458,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         {
             var dt = new List<IServiceInput>();
             string s = InputArea.QueryString;
+            _builder = _builder ?? new ServiceInputBuilder();
             _builder.GetValue(s, dt);
             foreach (var nameValue in InputArea.Headers)
             {

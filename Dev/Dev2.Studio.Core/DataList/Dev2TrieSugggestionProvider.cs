@@ -15,6 +15,8 @@ namespace Dev2
         private readonly char[] _tokenisers = "!@#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
         public ITrie<string> PatriciaTrie { get; private set; }
         private ObservableCollection<string> _variableList;
+        private IntellisenseStringProvider.FilterOption all;
+        private int level;
 
         public ObservableCollection<string> VariableList
         {
@@ -150,11 +152,18 @@ namespace Dev2
         private SuffixTrie<string> PatriciaTrieRecsets { get; set; }
         private SuffixTrie<string> PatriciaTrieScalars { get; set; }
         private SuffixTrie<string> PatriciaTrieJsonObjects { get; set; }
+        public int Level { get; set; }
 
         public Dev2TrieSugggestionProvider()
         {
             VariableList = new ObservableCollection<string>();
             PatriciaTrie = new PatriciaTrie<string>();
+        }
+
+        public Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption all, int level)
+        {
+            this.all = all;
+            this.level = level;
         }
 
         public IEnumerable<string> GetSuggestions(string orignalText, int caretIndex, bool tokenise, enIntellisensePartType type)

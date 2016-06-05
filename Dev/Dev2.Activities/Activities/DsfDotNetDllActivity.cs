@@ -13,6 +13,8 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
@@ -60,17 +62,34 @@ namespace Dev2.Activities
             var args = new PluginInvokeArgs
             {
                 AssemblyLocation = Namespace.AssemblyLocation,
-                AssemblyName = Namespace.AssemblyName, 
+                AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 Method = method.Method,
-                Parameters = method.Inputs.Select(a=>new MethodParameter{EmptyToNull = a.EmptyIsNull,IsRequired = a.RequiredField,Name = a.Name,Value = a.Value,Type = a.TypeName}).ToList(),
+                Parameters = method.Inputs.
+                Select(a =>
+                new MethodParameter
+                {
+                    EmptyToNull = a.EmptyIsNull
+                    ,
+                    IsRequired = a.RequiredField
+                    ,
+                    Name = a.Name
+                    ,
+                    Value = a.Value
+                    ,
+                    TypeName = a.TypeName
+                }).ToList(),
                 OutputFormatter = formater
             };
 
             try
             {
+                foreach(var methodParameter in args.Parameters)
+                {
+                    var warewolfEvalResult = dataObject.Environment.Eval(methodParameter.Value, 0);
+                }
                 var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
-                PushXmlIntoEnvironment(result,update,dataObject);
+                PushXmlIntoEnvironment(result, update, dataObject);
             }
             catch (Exception e)
             {
@@ -78,28 +97,39 @@ namespace Dev2.Activities
             }
         }
 
-        public void PushXmlIntoEnvironment(string input, int update,IDSFDataObject dataObj)
+        public void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
 
             if (input != string.Empty)
             {
+
                 try
                 {
-                    XmlDocument xDoc = new XmlDocument();
-                    input = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), input);
-                    xDoc.LoadXml(input);
-
-                    if (xDoc.DocumentElement != null)
+                    if (IsObject)
                     {
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                        IDictionary<string, int> indexCache = new Dictionary<string, int>();
-                        var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache,  update,dataObj);
+                        var jContainer = JsonConvert.DeserializeObject(input) as JObject;
+                        dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
+                    }
+                    else
+                    {
+
+
+                        XmlDocument xDoc = new XmlDocument();
+                        input = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), input);
+                        xDoc.LoadXml(input);
+
+                        if (xDoc.DocumentElement != null)
+                        {
+                            XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                            IDictionary<string, int> indexCache = new Dictionary<string, int>();
+                            var outputDefs = Outputs.Select(a => new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true, a.MappedTo) as IDev2Definition).ToList();
+                            TryConvert(children, outputDefs, indexCache, update, dataObj);
+                        }
                     }
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e);                 
+                    Dev2Logger.Error(e.Message, e);
                 }
             }
         }
@@ -153,7 +183,7 @@ namespace Dev2.Activities
                         if (level == 0)
                         {
                             // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, outputDefs, indexCache, update,dataObj, ++level);
+                            TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
                         }
                     }
                 }

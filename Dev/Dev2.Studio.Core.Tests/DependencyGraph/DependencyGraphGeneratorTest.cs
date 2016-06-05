@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests
             var data = new StringBuilder(graphData);
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
-            const string expected = @"<graph title=""Local Dependants Graph: MyLocalWF""><node id=""9139Local"" x=""-100"" y=""-400"" broken=""False""><dependency id=""MyLocalWF"" /></node><node id=""MyLocalWF"" x=""-352"" y=""-262"" broken=""False""></node></graph>";
+            const string expected = "<graph title=\"Local Dependants Graph: 45e1fcc5-9f68-4d4a-9e01-20d587dee532\"><node id=\"45e1fcc5-9f68-4d4a-9e01-20d587dee532\" x=\"-100\" y=\"-400\" broken=\"False\"><dependency id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" /></node><node id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" x=\"-352\" y=\"-262\" broken=\"False\"></node></graph>";
 
             //------------Execute Test---------------------------
             // for some silly reason this is what comes through when you debug?

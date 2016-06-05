@@ -30,10 +30,10 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var parameters = src.Method.Parameters == null
                 ? new List<MethodParameter>()
-                : src.Method.Parameters.Select(a => new MethodParameter { Name = a.Name, Value = a.Value, Type = a.Type })
+                : src.Method.Parameters.Select(a => new MethodParameter { Name = a.Name, Value = a.Value, TypeName = a.TypeName })
                     .ToList();
             var paramObjects =
-                parameters.Select(methodParameter => Convert.ChangeType(methodParameter.Value, methodParameter.Type)).ToArray();
+                parameters.Select(methodParameter => Convert.ChangeType(methodParameter.Value, Type.GetType(methodParameter.TypeName))).ToArray();
 
             var result = proxy.CallMethod(src.Method.Name, paramObjects);
             var dataBrowser = DataBrowserFactory.CreateDataBrowser();
@@ -75,10 +75,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                             IsRequired = a.RequiredField,
                             Name = a.Name,
                             Value = a.Value,
-                            Type = a.TypeName
+                            TypeName = a.TypeName
                         }).ToList();
             var paramObjects =
-                parameters.Select(methodParameter => Convert.ChangeType(methodParameter.Value, methodParameter.Type)).ToArray();
+                parameters.Select(methodParameter => Convert.ChangeType(methodParameter.Value, Type.GetType(methodParameter.TypeName))).ToArray();
 
             var result = proxy.CallMethod(action.Method, paramObjects);
 

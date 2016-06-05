@@ -32,6 +32,7 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+using Warewolf.Storage;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -414,7 +415,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
-                OutputsRegion = new OutputsRegion(ModelItem);
+                OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
@@ -536,7 +537,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
             };
             foreach (var serviceInput in InputArea.Inputs)
             {
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, "") { TypeName = serviceInput.TypeName });
+                var exp = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(serviceInput.Value);
+                var value = FsInteropFunctions.LanguageExpressionToString(exp);
+                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, value)
+                {
+                    TypeName = serviceInput.TypeName
+                });
             }
             return pluginServiceDefinition;
         }

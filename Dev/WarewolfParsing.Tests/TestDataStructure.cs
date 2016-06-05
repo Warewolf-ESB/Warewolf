@@ -46,8 +46,8 @@ namespace WarewolfParsingTest
         {
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
-            JObject j =  JObject.FromObject(new Person(){Name = "n",Children = new List<Person>()});
-            var added = WarewolfDataEvaluationCommon.addToJsonObjects(createDataSet, "bob", j);
+            JObject j =  JObject.FromObject(new Person{Name = "n",Children = new List<Person>()});
+            var added = WarewolfDataEvaluationCommon.addToJsonObjects(createDataSet, "[[@bob]]", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------

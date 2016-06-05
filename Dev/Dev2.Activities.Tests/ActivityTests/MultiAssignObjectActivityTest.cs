@@ -32,7 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithValue()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "somevalue";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithSpecialCharsInValue()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue@#", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue@#", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "somevalue@#";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -76,8 +76,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithNewValue()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue1", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue2", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "somevalue2";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -99,10 +99,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithMultipleValues()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue1", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value2]]", "somevalue2", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value3]]", "somevalue3", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value4]]", "somevalue4", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value2]]", "somevalue2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value3]]", "somevalue3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value4]]", "somevalue4", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -113,10 +113,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
             string actual1, actual2, actual3, actual4;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value1", out actual1, out error);
-            GetScalarValueFromEnvironment(result.Environment, "test.value2", out actual2, out error);
-            GetScalarValueFromEnvironment(result.Environment, "test.value3", out actual3, out error);
-            GetScalarValueFromEnvironment(result.Environment, "test.value4", out actual4, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual1, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value2", out actual2, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value3", out actual3, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value4", out actual4, out error);
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithAnEmptyField()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value]]", "", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value]]", "", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value", out actual, out error);
 
             Assert.IsTrue(actual == string.Empty);
         }
@@ -188,7 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithValue4LayersDeap()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1.value2.value3.value4]]", "somevalue", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1.value2.value3.value4]]", "somevalue", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "somevalue";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value1.value2.value3.value4", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1.value2.value3.value4", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithCalculatedValue()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", GlobalConstants.CalculateTextConvertPrefix + "SUM(1,2,3) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", GlobalConstants.CalculateTextConvertPrefix + "SUM(1,2,3) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "7";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value1", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -232,11 +232,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithCalculatedValueFromJson()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "1", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value2]]", "2", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value3]]", "3", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
-                "SUM([[test.value1]], [[test.value2]], [[test.value3]]) + 1" +
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value2]]", "2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value3]]", "3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
+                "SUM([[@test.value1]], [[@test.value2]], [[@test.value3]]) + 1" +
                 GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
@@ -248,7 +248,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = "7";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.total1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.total1", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -259,10 +259,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectArrayWithMultipleValues()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(1)]]", "somevalue1", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(2)]]", "somevalue2", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(3)]]", "somevalue3", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(4)]]", "somevalue4", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(1)]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(2)]]", "somevalue2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(3)]]", "somevalue3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(4)]]", "somevalue4", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -273,10 +273,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
             string actual1, actual2, actual3, actual4;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.value(1)", out actual1, out error);
-            GetScalarValueFromEnvironment(result.Environment, "test.value(2)", out actual2, out error);
-            GetScalarValueFromEnvironment(result.Environment, "test.value(3)", out actual3, out error);
-            GetScalarValueFromEnvironment(result.Environment, "test.value(4)", out actual4, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(1)", out actual1, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(2)", out actual2, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(3)", out actual3, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.value(4)", out actual4, out error);
 
             Assert.AreEqual(expected1, actual1);
             Assert.AreEqual(expected2, actual2);
@@ -290,11 +290,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithCalculatedValueFromJsonArray()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(1)]]", "1", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(2)]]", "2", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.value(3)]]", "3", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
-                "SUM([[test.value(*)]]) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(1)]]", "1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(2)]]", "2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.value(3)]]", "3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
+                "SUM([[@test.value(*)]]) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -302,10 +302,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "7";
+            const string expected = "4";
             string actual;
             string error;
-            GetScalarValueFromEnvironment(result.Environment, "test.total1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.total1", out actual, out error);
 
             Assert.AreEqual(expected, actual);
         }

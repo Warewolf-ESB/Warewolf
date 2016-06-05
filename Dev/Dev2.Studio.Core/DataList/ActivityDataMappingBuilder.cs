@@ -146,7 +146,6 @@ namespace Dev2.DataList
                     // handle workflows differently ;)
                     if(IsWorkflow)
                     {
-                        //if (!activity.ResourceModel.Environment.IsLocalHost && !activity.ResourceModel.Environment.HasLoadedResources)
                         if(activity.IsNotAvailable())
                         {
                             inputs = activity.ResourceModel.Inputs;

@@ -20,7 +20,7 @@ namespace Dev2.Activities
         {
 
         }
-
+        
         #region Overrides
 
 
@@ -41,12 +41,13 @@ namespace Dev2.Activities
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, string.Empty);
-            IWebXmlConvert webXmlConvert = new WebXmlConvert(OutputDescription, Outputs);
-            webXmlConvert.PushXmlIntoEnvironment(webRequestResult, update, dataObject);
+            ResponseManager = new WebResponseManager { OutputDescription = OutputDescription, Outputs = Outputs , IsObject = IsObject, ObjectName = ObjectName};
+            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
             
         }
 
         #endregion
 
+        
     }
 }
