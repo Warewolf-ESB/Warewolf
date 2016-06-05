@@ -23,7 +23,6 @@ using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Interfaces;
 using Microsoft.Win32.SafeHandles;
-using Warewolf.Resource;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
