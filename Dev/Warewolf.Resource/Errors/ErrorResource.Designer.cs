@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Warewolf.Resource {
+namespace Warewolf.Resource.Errors {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Warewolf.Resource {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ErrorResource {
+    public class ErrorResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Warewolf.Resource {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Resource.ErrorResource", typeof(ErrorResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Resource.Errors.ErrorResource", typeof(ErrorResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Warewolf.Resource {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,16 +63,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to {0} contains invalid character(s).
         /// </summary>
-        internal static string ContainsInvalidCharecters {
+        public static string ContainsInvalidCharecters {
             get {
                 return ResourceManager.GetString("ContainsInvalidCharecters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory - [[rec]] does not exist in your variable list.
+        ///   Looks up a localized string similar to Directory -  {0} does not exist in your variable list.
         /// </summary>
-        internal static string DirectoryDoesNotExist {
+        public static string DirectoryDoesNotExist {
             get {
                 return ResourceManager.GetString("DirectoryDoesNotExist", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Directory not found {0}.
         /// </summary>
-        internal static string DirectoryNotFound {
+        public static string DirectoryNotFound {
             get {
                 return ResourceManager.GetString("DirectoryNotFound", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string DirectoryOpeningClosingBracketMismatch {
+        public static string DirectoryOpeningClosingBracketMismatch {
             get {
                 return ResourceManager.GetString("DirectoryOpeningClosingBracketMismatch", resourceCulture);
             }
@@ -99,16 +99,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Password cannot be empty or only white space.
         /// </summary>
-        internal static string EmptyPassword {
+        public static string EmptyPassword {
             get {
                 return ResourceManager.GetString("EmptyPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Name - [[rec]] does not exist in your variable list.
+        ///   Looks up a localized string similar to File Name -  {0} does not exist in your variable list.
         /// </summary>
-        internal static string FileNameNotInVariableList {
+        public static string FileNameNotInVariableList {
             get {
                 return ResourceManager.GetString("FileNameNotInVariableList", resourceCulture);
             }
@@ -117,43 +117,34 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to File Name - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string FilenameOpeningClosingBracketMismatch {
+        public static string FilenameOpeningClosingBracketMismatch {
             get {
                 return ResourceManager.GetString("FilenameOpeningClosingBracketMismatch", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File {0} not found.
+        ///   Looks up a localized string similar to File {0} not found .
         /// </summary>
-        internal static string FileNotFound {
+        public static string FileNotFound {
             get {
                 return ResourceManager.GetString("FileNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please supply valid File Name.
+        ///   Looks up a localized string similar to Please supply a valid File/Folder.
         /// </summary>
-        internal static string InvalidFileName {
+        public static string InvalidFileName {
             get {
                 return ResourceManager.GetString("InvalidFileName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please supply a valid File or Folder.
+        ///   Looks up a localized string similar to Result - Invalid Region {0}.
         /// </summary>
-        internal static string InvalidFolder {
-            get {
-                return ResourceManager.GetString("InvalidFolder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[rec([[[[b]]]]).a]].
-        /// </summary>
-        internal static string InvalidRegion {
+        public static string InvalidRegion {
             get {
                 return ResourceManager.GetString("InvalidRegion", resourceCulture);
             }
@@ -162,34 +153,34 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to No Value assigned for {0}.
         /// </summary>
-        internal static string NoValueAssigned {
+        public static string NoValueAssigned {
             get {
                 return ResourceManager.GetString("NoValueAssigned", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset index [[@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Recordset index {0} contains invalid character(s).
         /// </summary>
-        internal static string RecordsetIndexInvalidCharecters {
+        public static string RecordsetIndexInvalidCharecters {
             get {
                 return ResourceManager.GetString("RecordsetIndexInvalidCharecters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Name - Recordset name [[rec(]] contains invalid character(s).
+        ///   Looks up a localized string similar to File Name - Recordset name  {0} contains invalid character(s).
         /// </summary>
-        internal static string RecordsetnameInvalidCharecters {
+        public static string RecordsetnameInvalidCharecters {
             get {
                 return ResourceManager.GetString("RecordsetnameInvalidCharecters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string ResultInvalidCharecters {
+        public static string ResultInvalidCharecters {
             get {
                 return ResourceManager.GetString("ResultInvalidCharecters", resourceCulture);
             }
@@ -198,7 +189,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string ResultOpeningClosingBracketMismatch {
+        public static string ResultOpeningClosingBracketMismatch {
             get {
                 return ResourceManager.GetString("ResultOpeningClosingBracketMismatch", resourceCulture);
             }
@@ -207,61 +198,61 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to The result field only allows a single result.
         /// </summary>
-        internal static string SingleResultAllowe {
+        public static string SingleResultAllowed {
             get {
-                return ResourceManager.GetString("SingleResultAllowe", resourceCulture);
+                return ResourceManager.GetString("SingleResultAllowed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - No Value assigned for : [[a]].
+        ///   Looks up a localized string similar to Contents - No Value assigned for : {0}.
         /// </summary>
-        internal static string String1 {
+        public static string String1 {
             get {
                 return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var 1]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String10 {
+        public static string String10 {
             get {
                 return ResourceManager.GetString("String10", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[@var]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String11 {
+        public static string String11 {
             get {
                 return ResourceManager.GetString("String11", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var.a]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String12 {
+        public static string String12 {
             get {
                 return ResourceManager.GetString("String12", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[var[[a]]]].
+        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
         /// </summary>
-        internal static string String13 {
+        public static string String13 {
             get {
                 return ResourceManager.GetString("String13", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String14 {
+        public static string String14 {
             get {
                 return ResourceManager.GetString("String14", resourceCulture);
             }
@@ -270,16 +261,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String15 {
+        public static string String15 {
             get {
                 return ResourceManager.GetString("String15", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String16 {
+        public static string String16 {
             get {
                 return ResourceManager.GetString("String16", resourceCulture);
             }
@@ -288,16 +279,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String17 {
+        public static string String17 {
             get {
                 return ResourceManager.GetString("String17", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory - Variable name [[a&amp;]] contains invalid character(s).
+        ///   Looks up a localized string similar to Directory - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String18 {
+        public static string String18 {
             get {
                 return ResourceManager.GetString("String18", resourceCulture);
             }
@@ -306,16 +297,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Directory - Recordset index (**) contains invalid character(s).
         /// </summary>
-        internal static string String19 {
+        public static string String19 {
             get {
                 return ResourceManager.GetString("String19", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - No Value assigned for : [[rec().a]].
+        ///   Looks up a localized string similar to Contents - No Value assigned for :  {0}.
         /// </summary>
-        internal static string String2 {
+        public static string String2 {
             get {
                 return ResourceManager.GetString("String2", resourceCulture);
             }
@@ -324,70 +315,70 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Please supply a valid File or Folder.
         /// </summary>
-        internal static string String20 {
+        public static string String20 {
             get {
                 return ResourceManager.GetString("String20", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory not found [ C:\\\\\gvh ].
+        ///   Looks up a localized string similar to Directory not found  {0}.
         /// </summary>
-        internal static string String21 {
+        public static string String21 {
             get {
                 return ResourceManager.GetString("String21", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory - Variable name [[index$x]] contains invalid character(s).
+        ///   Looks up a localized string similar to Directory - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String22 {
+        public static string String22 {
             get {
                 return ResourceManager.GetString("String22", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Value assigned for [[a]].
+        ///   Looks up a localized string similar to No Value assigned for  {0}.
         /// </summary>
-        internal static string String23 {
+        public static string String23 {
             get {
                 return ResourceManager.GetString("String23", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name [[$#]] contains invalid character(s).
+        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String24 {
+        public static string String24 {
             get {
                 return ResourceManager.GetString("String24", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Value assigned for [[a]] 2.1.No Value assigned for [[b]].
+        ///   Looks up a localized string similar to No Value assigned for  {0} 2.1.No Value assigned for {1}.
         /// </summary>
-        internal static string String25 {
+        public static string String25 {
             get {
                 return ResourceManager.GetString("String25", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Value assigned for [[index]].
+        ///   Looks up a localized string similar to No Value assigned for  {0}.
         /// </summary>
-        internal static string String26 {
+        public static string String26 {
             get {
                 return ResourceManager.GetString("String26", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Recordset name [[indexx&amp;]] contains invalid character(s).
+        ///   Looks up a localized string similar to Username - Recordset name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String27 {
+        public static string String27 {
             get {
                 return ResourceManager.GetString("String27", resourceCulture);
             }
@@ -396,7 +387,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String28 {
+        public static string String28 {
             get {
                 return ResourceManager.GetString("String28", resourceCulture);
             }
@@ -405,7 +396,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to The result field only allows a single result.
         /// </summary>
-        internal static string String29 {
+        public static string String29 {
             get {
                 return ResourceManager.GetString("String29", resourceCulture);
             }
@@ -414,7 +405,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets don&apos;t match.
         /// </summary>
-        internal static string String3 {
+        public static string String3 {
             get {
                 return ResourceManager.GetString("String3", resourceCulture);
             }
@@ -423,16 +414,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String30 {
+        public static string String30 {
             get {
                 return ResourceManager.GetString("String30", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String31 {
+        public static string String31 {
             get {
                 return ResourceManager.GetString("String31", resourceCulture);
             }
@@ -441,61 +432,52 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String32 {
+        public static string String32 {
             get {
                 return ResourceManager.GetString("String32", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name {0} contains invalid character(s).
         /// </summary>
-        internal static string String33 {
-            get {
-                return ResourceManager.GetString("String33", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var 1]] contains invalid character(s).
-        /// </summary>
-        internal static string String34 {
+        public static string String34 {
             get {
                 return ResourceManager.GetString("String34", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[var[[a]]]].
+        ///   Looks up a localized string similar to Result - Invalid Region {0}.
         /// </summary>
-        internal static string String35 {
+        public static string String35 {
             get {
                 return ResourceManager.GetString("String35", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset index [[@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Recordset index  {0} contains invalid character(s).
         /// </summary>
-        internal static string String36 {
+        public static string String36 {
             get {
                 return ResourceManager.GetString("String36", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset name [[rec&quot;()&quot;]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Recordset name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String37 {
+        public static string String37 {
             get {
                 return ResourceManager.GetString("String37", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[rec([[[[b]]]]).a]].
+        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
         /// </summary>
-        internal static string String38 {
+        public static string String38 {
             get {
                 return ResourceManager.GetString("String38", resourceCulture);
             }
@@ -504,7 +486,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String39 {
+        public static string String39 {
             get {
                 return ResourceManager.GetString("String39", resourceCulture);
             }
@@ -513,16 +495,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Contents - Recordset index (**) contains invalid character(s).
         /// </summary>
-        internal static string String4 {
+        public static string String4 {
             get {
                 return ResourceManager.GetString("String4", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory - [[rec]] does not exist in your variable list.
+        ///   Looks up a localized string similar to Directory -  {0} does not exist in your variable list.
         /// </summary>
-        internal static string String40 {
+        public static string String40 {
             get {
                 return ResourceManager.GetString("String40", resourceCulture);
             }
@@ -531,7 +513,7 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Password cannot be empty or only white space.
         /// </summary>
-        internal static string String41 {
+        public static string String41 {
             get {
                 return ResourceManager.GetString("String41", resourceCulture);
             }
@@ -540,43 +522,43 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Please supply valid File Name.
         /// </summary>
-        internal static string String42 {
+        public static string String42 {
             get {
                 return ResourceManager.GetString("String42", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String43 {
+        public static string String43 {
             get {
                 return ResourceManager.GetString("String43", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name [[$#]] contains invalid character(s).
+        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String44 {
+        public static string String44 {
             get {
                 return ResourceManager.GetString("String44", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - Recordset name [[indexx&amp;]] contains invalid character(s).
+        ///   Looks up a localized string similar to Contents - Recordset name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String45 {
+        public static string String45 {
             get {
                 return ResourceManager.GetString("String45", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[rec([[[[b]]]]).a]].
+        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
         /// </summary>
-        internal static string String46 {
+        public static string String46 {
             get {
                 return ResourceManager.GetString("String46", resourceCulture);
             }
@@ -585,88 +567,88 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string String47 {
+        public static string String47 {
             get {
                 return ResourceManager.GetString("String47", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset index [[@]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Recordset index  {0} contains invalid character(s).
         /// </summary>
-        internal static string String48 {
+        public static string String48 {
             get {
                 return ResourceManager.GetString("String48", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var.a]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String49 {
+        public static string String49 {
             get {
                 return ResourceManager.GetString("String49", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - Variable name [[var$]]  contains invalid character(s).
+        ///   Looks up a localized string similar to Contents - Variable name  {0}  contains invalid character(s).
         /// </summary>
-        internal static string String5 {
+        public static string String5 {
             get {
                 return ResourceManager.GetString("String5", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[@var]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String50 {
+        public static string String50 {
             get {
                 return ResourceManager.GetString("String50", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name [[var 1]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String51 {
+        public static string String51 {
             get {
                 return ResourceManager.GetString("String51", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[var[[a]]]].
+        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
         /// </summary>
-        internal static string String52 {
+        public static string String52 {
             get {
                 return ResourceManager.GetString("String52", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset name [[rec&quot;()&quot;]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Recordset name  {0} contains invalid character(s).
         /// </summary>
-        internal static string String7 {
+        public static string String7 {
             get {
                 return ResourceManager.GetString("String7", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region [[var[[a]]]].
+        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
         /// </summary>
-        internal static string String9 {
+        public static string String9 {
             get {
                 return ResourceManager.GetString("String9", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable .
+        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s)  2.Result - Variable .
         /// </summary>
-        internal static string UsernameInvalidCharecters {
+        public static string UsernameInvalidCharecters {
             get {
                 return ResourceManager.GetString("UsernameInvalidCharecters", resourceCulture);
             }
@@ -675,16 +657,16 @@ namespace Warewolf.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        internal static string UsernameOpeningClosingBracketMismatch {
+        public static string UsernameOpeningClosingBracketMismatch {
             get {
                 return ResourceManager.GetString("UsernameOpeningClosingBracketMismatch", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name [[$#]] contains invalid character(s).
+        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s).
         /// </summary>
-        internal static string VariableContainsInvalidCharecters {
+        public static string VariableContainsInvalidCharecters {
             get {
                 return ResourceManager.GetString("VariableContainsInvalidCharecters", resourceCulture);
             }
