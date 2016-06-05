@@ -86,7 +86,6 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
@@ -101,7 +100,7 @@ namespace Dev2.Activities.Designers2.Core
                 var serializer = new Dev2JsonSerializer();
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
-                    TestResults = responseService.RequestResponse;
+                   TestResults = responseService.RequestResponse;
                     _recordsetList = responseService.Recordsets;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
@@ -172,7 +171,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     throw new Exception("No Outputs detected");
                 }
-
+                _viewmodel.OutputsRegion.ObjectResult = TestResults;
                 _viewmodel.OutputsRegion.Description = Description;
                 _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
                 OutputCountExpandAllowed = _viewmodel.OutputsRegion.Outputs.Count > 3;

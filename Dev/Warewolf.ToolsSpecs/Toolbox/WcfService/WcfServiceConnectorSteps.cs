@@ -59,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
                     {
                         Name = r.Key,
                         Value = r.Value,
-                        TypeName = typeof(string)
+                        TypeName = typeof(string).FullName
                     });
                 }
             }

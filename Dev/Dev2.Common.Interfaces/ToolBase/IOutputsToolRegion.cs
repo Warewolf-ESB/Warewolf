@@ -11,6 +11,10 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool OutputMappingEnabled { get; set; }
         bool IsOutputsEmptyRows { get; }
         string RecordsetName { get; set; }
+        bool IsObject { get; set; }
+        string ObjectName { get; set; }
+        string ObjectResult { get; set; }
+        bool IsObjectOutputUsed { get; set; }
         IOutputDescription Description { get; set; }
         bool OutputCountExpandAllowed { get; set; }
     }

@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels
         private void SetupAuthorizeUri()
         {
             _oauth2State = Guid.NewGuid().ToString("N");
-            if (AppKey != null)
+            if (!string.IsNullOrEmpty(AppKey))
             {
                 var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(_redirectUri), _oauth2State);
                 AuthUri = authorizeUri;

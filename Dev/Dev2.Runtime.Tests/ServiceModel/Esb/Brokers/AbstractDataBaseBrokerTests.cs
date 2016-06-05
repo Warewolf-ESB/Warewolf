@@ -175,8 +175,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
                     Name = "TestMethod",
                     Parameters = new List<MethodParameter>
                     {
-                        new MethodParameter { Name = "Param1", Type = typeof(string), Value = "Hello" },
-                        new MethodParameter { Name = "Param2", Type = typeof(int), Value = "99" }
+                        new MethodParameter { Name = "Param1", TypeName = typeof(string).FullName, Value = "Hello" },
+                        new MethodParameter { Name = "Param2", TypeName = typeof(int).FullName, Value = "99" }
                     },
                     ExecuteAction = "BobTestMethod"
                     

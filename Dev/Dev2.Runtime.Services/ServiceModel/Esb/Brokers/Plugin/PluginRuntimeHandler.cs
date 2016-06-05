@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,11 +20,12 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
-    
+
     /// <summary>
     /// Handler that invokes a plugin in its own app domain
     /// </summary>
@@ -54,17 +56,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             Assembly loadedAssembly;
             _assemblyLocation = setupInfo.AssemblyLocation;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            if (! _assemblyLoader. TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
                 return null;
             }
-            var parameters = BuildParameterList(setupInfo.Parameters);
-            var typeList = BuildTypeList(setupInfo.Parameters);
-
-            var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var methodToRun = type.GetMethod(setupInfo.Method, typeList);
-            var instance = Activator.CreateInstance(type);
-            var pluginResult = methodToRun.Invoke(instance, parameters);
+            object pluginResult;
+            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             // do formating here to avoid object serialization issues ;)
             var formater = setupInfo.OutputFormatter;
@@ -80,37 +77,63 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         public IOutputDescription Test(PluginInvokeArgs setupInfo)
         {
-            Assembly loadedAssembly;
-
-            _assemblyLocation = setupInfo.AssemblyLocation;
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            if (! _assemblyLoader. TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            try
             {
+                Assembly loadedAssembly;
+
+                _assemblyLocation = setupInfo.AssemblyLocation;
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+                {
+                    return null;
+                }
+                object pluginResult;
+                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+                // do formating here to avoid object serialization issues ;)
+                var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+
+                if (pluginResult != null)
+                {
+                    pluginResult = AdjustPluginResult(pluginResult, methodToRun);
+
+                    var tmpData = dataBrowser.Map(pluginResult);
+                    dataSourceShape.Paths.AddRange(tmpData);
+                }
+
+                var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+                result.DataSourceShapes.Add(dataSourceShape);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
                 return null;
             }
+        }
+
+        private MethodInfo ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
+        {
             var parameters = BuildParameterList(setupInfo.Parameters);
             var typeList = BuildTypeList(setupInfo.Parameters);
 
             var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var methodToRun = type.GetMethod(setupInfo.Method, typeList);
-            var instance = Activator.CreateInstance(type);
-            var pluginResult = methodToRun.Invoke(instance, parameters);
-            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-            // do formating here to avoid object serialization issues ;)
-            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-
-            if (pluginResult != null)
+            var valuedTypeList = new List<object>();
+            foreach(var methodParameter in setupInfo.Parameters)
             {
-                pluginResult = AdjustPluginResult(pluginResult, methodToRun);
-
-                var tmpData = dataBrowser.Map(pluginResult);
-                dataSourceShape.Paths.AddRange(tmpData);
+                var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                if(anonymousType != null)
+                {
+                    valuedTypeList.Add(anonymousType);
+                }
             }
+            var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
+            object instance = Activator.CreateInstance(type);
 
-            var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-            result.DataSourceShapes.Add(dataSourceShape);
-            return result;
+            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+            return methodToRun;
         }
 
         // ReSharper disable once InconsistentNaming
@@ -133,7 +156,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 Assembly loadedAssembly;
                 List<string> namespaces = new List<string>();
-                if (_assemblyLoader.  TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     namespaces = loadedAssembly.GetTypes()
@@ -181,7 +204,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,
-                                Type = parameterInfo.ParameterType
+                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
                             }));
                     serviceMethodList.Add(serviceMethod);
                 });
@@ -316,10 +339,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             int pos = 0;
             parameters.ForEach(parameter =>
             {
-                parameterValues[pos] = Convert.ChangeType(parameter.Value, parameter.Type);
+                parameterValues[pos] = DeriveType(parameter.TypeName);
                 pos++;
             });
             return parameterValues;
+        }
+        private Type DeriveType(string typename)
+        {
+            var type = Type.GetType(typename, true);
+            return type;
         }
 
         /// <summary>
@@ -327,17 +355,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        private Type[] BuildTypeList(List<MethodParameter> parameters)
+        private List<Type> BuildTypeList(IEnumerable<MethodParameter> parameters)
         {
-
-            if (parameters.Count == 0) return new Type[] { };
-            var typeList = new Type[parameters.Count];
-            int pos = 0;
-            parameters.ForEach(parameter =>
+            var typeList = new List<Type>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var methodParameter in parameters)
             {
-                typeList[pos] = parameter.Type;
-                pos++;
-            });
+                var type = DeriveType(methodParameter.TypeName);
+                typeList.Add(type);
+            }
             return typeList;
         }
 

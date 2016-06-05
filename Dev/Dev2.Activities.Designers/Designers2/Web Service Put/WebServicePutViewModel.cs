@@ -58,6 +58,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             : base(modelItem)
         {
             Model = model;
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
 
@@ -378,7 +379,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 //InputArea = new WebDeleteInputRegion(ModelItem, SourceRegion);
                 InputArea = new WebPutInputRegion(ModelItem, SourceRegion);
                 regions.Add(InputArea);
-                OutputsRegion = new OutputsRegion(ModelItem);
+                OutputsRegion = new OutputsRegion(ModelItem, true);
                 regions.Add(OutputsRegion);
                 if(OutputsRegion.Outputs.Count > 0)
                 {

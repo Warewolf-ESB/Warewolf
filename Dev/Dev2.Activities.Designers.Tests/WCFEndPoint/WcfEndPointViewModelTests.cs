@@ -134,7 +134,7 @@ namespace Dev2.Activities.Designers.Tests.WCFEndPoint
 
             model.InputArea.Inputs = new List<IServiceInput>
             {
-                new ServiceInput {Name = "test", TypeName = typeof (string)}
+                new ServiceInput {Name = "test", TypeName = typeof (string).FullName}
             };
           
             model.ToModel();

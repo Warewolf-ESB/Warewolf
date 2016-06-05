@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Linq;
@@ -39,12 +40,16 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Views;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
+using Newtonsoft.Json;
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -170,6 +175,38 @@ namespace Dev2.Activities.Designers2.Service
                 AuthorizationServiceOnPermissionsChanged(null, null);
             }
 
+            ViewComplexObjectsCommand = new RelayCommand(item =>
+            {
+                ViewJsonObjects(item as IComplexObjectItemModel);
+            }, CanViewComplexObjects);
+        }
+
+        bool CanViewComplexObjects(Object itemx)
+        {
+            var item = itemx as IDataListItemModel;
+            return item != null && !item.IsComplexObject;
+        }
+
+        private void ViewJsonObjects(IComplexObjectItemModel item)
+        {
+            if (item != null)
+            {
+                var window = new JsonObjectsView();
+                window.Height = 280;
+                var contentPresenter = window.FindChild<TextBox>();
+                if (contentPresenter != null)
+                {
+                    var json = item.GetJson();
+                    var obj = JsonConvert.DeserializeObject(json);
+                    if (obj != null)
+                    {
+                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+                    }
+                    contentPresenter.Text = json;
+                }
+
+                window.ShowDialog();
+            }
         }
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
@@ -241,6 +278,8 @@ namespace Dev2.Activities.Designers2.Service
         public ICommand FixErrorsCommand { get; private set; }
 
         public ICommand DoneCommand { get; private set; }
+
+        public RelayCommand ViewComplexObjectsCommand { get; set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
 

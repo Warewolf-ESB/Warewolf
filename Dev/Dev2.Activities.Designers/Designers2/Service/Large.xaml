@@ -98,6 +98,7 @@
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                         VerticalAlignment="Center"
                                                         WrapInBrackets="False"
+                                                        ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
@@ -119,7 +120,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ui:IntellisenseTextBox.Style>
-                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource IntellisenseComplexObjectsTextboxStyle}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                                                     <Setter Property="Control.BorderThickness" Value="1" />

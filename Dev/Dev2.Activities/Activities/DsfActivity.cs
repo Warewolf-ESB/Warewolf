@@ -204,7 +204,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ActivityStateData { get; set; }
         public bool RemoveInputFromOutput { get; set; }
 
+        public bool IsObject { get; set; }
 
+        public string ObjectName { get; set; }
+
+        public string ObjectResult { get; set; }
         protected override bool CanInduceIdle
         {
             get

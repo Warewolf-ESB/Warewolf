@@ -264,12 +264,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{378E17
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{C1E44084-B760-4ABF-840F-6D695B1222E0}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Server\Service\Cleanup.bat = TestScripts\Server\Service\Cleanup.bat
-		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
@@ -282,19 +276,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{9A1925D0-ABD8-4653-BF67-DDBD2245D3E0}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
-		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS", "AutoComplete\WpfControls.CS\WpfControls.CS.csproj", "{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.ExchangeSource", "Warewolf.AcceptanceTesting.ExchangeSource\Warewolf.AcceptanceTesting.ExchangeSource.csproj", "{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS.Tests", "AutoComplete\WpfControls.CS.Tests\WpfControls.CS.Tests.csproj", "{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -678,10 +666,10 @@ Global
 		{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
