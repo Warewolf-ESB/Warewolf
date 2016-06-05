@@ -237,4 +237,238 @@
   <data name="UsernameRecordsetnameInvalidCharecters" xml:space="preserve">
     <value>Username - Recordset name {0} contains invalid character(s)</value>
   </data>
+  <data name="AliasEmpty" xml:space="preserve">
+    <value>Alias cannot be empty</value>
+  </data>
+  <data name="AttachmentInvalidFormat" xml:space="preserve">
+    <value>Attachments is not in the valid format: {0}</value>
+  </data>
+  <data name="BCCAddressInvalidFormat" xml:space="preserve">
+    <value>BCC address is not in the valid format: {0}</value>
+  </data>
+  <data name="BlankResultVariable" xml:space="preserve">
+    <value>Blank result variable</value>
+  </data>
+  <data name="BlankUSINGValue" xml:space="preserve">
+    <value>The 'Using' value cannot be blank.</value>
+  </data>
+  <data name="CannotExecuteCMDFromTool" xml:space="preserve">
+    <value>Cannot execute CMD from tool.</value>
+  </data>
+  <data name="CannotExecuteExplorerFromTool" xml:space="preserve">
+    <value>Cannot execute explorer from tool.</value>
+  </data>
+  <data name="CannotLocateRootDataList" xml:space="preserve">
+    <value>Fatal Error : Cannot locate Root DataList for resumption!</value>
+  </data>
+  <data name="CCAddressInvalidFormat" xml:space="preserve">
+    <value>CC address is not in the valid format: {0}</value>
+  </data>
+  <data name="ColumnDoesNotAlloNull" xml:space="preserve">
+    <value>The column {0} does not allow NULL. Please check your mappings to ensure you have mapped data into it.</value>
+  </data>
+  <data name="ColumnSetAsIdentityKeepIdentityIsFalse" xml:space="preserve">
+    <value>The column {0} is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.</value>
+  </data>
+  <data name="ColumnSetAsIdentityKeepIdentityIsTrue" xml:space="preserve">
+    <value>The column {0} is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.</value>
+  </data>
+  <data name="ConvertOptionDoesNotExist" xml:space="preserve">
+    <value>Convert option does not exist</value>
+  </data>
+  <data name="DataSourceEmpty" xml:space="preserve">
+    <value>DataSource cannot be empty</value>
+  </data>
+  <data name="DataSourceMustBeJSonOrRecordSet" xml:space="preserve">
+    <value>DataSource must be a Recordset or JSON array variable.</value>
+  </data>
+  <data name="DecimalsNorValid" xml:space="preserve">
+    <value>Decimals to show is not valid</value>
+  </data>
+  <data name="DropBoxCallerHasNoPermission" xml:space="preserve">
+    <value>The caller does not have the required permissions</value>
+  </data>
+  <data name="DropBoxCannotLocateSpecifiedFiles" xml:space="preserve">
+    <value>Cannot locate the file/s specified. Please confirm that the correct file location has been entered.</value>
+  </data>
+  <data name="DropBoxConfirmCorrectFileDestination" xml:space="preserve">
+    <value>Please confirm that the correct file destination has been entered</value>
+  </data>
+  <data name="DropBoxConfirmCorrectFileLocation" xml:space="preserve">
+    <value>Please confirm that the correct file location has been entered</value>
+  </data>
+  <data name="DropboxCorrectFileName" xml:space="preserve">
+    <value>Please specify a correct dropbox file name</value>
+  </data>
+  <data name="DropBoxDestinationFileAlreadyExist" xml:space="preserve">
+    <value>Destination File already exists and overwrite is set to false</value>
+  </data>
+  <data name="DropBoxFilePathMissing" xml:space="preserve">
+    <value>Please specify the path of file in Dropbox</value>
+  </data>
+  <data name="DropBoxPathContainsColon" xml:space="preserve">
+    <value>Path contains a colon (\":\") that is not part of a volume identifier (for example, \"c:\")</value>
+  </data>
+  <data name="DropBoxSpecifiedPathExceedMaxLength" xml:space="preserve">
+    <value>The specified path, file name, or both exceed the system-defined maximum length</value>
+  </data>
+  <data name="EmptyScript" xml:space="preserve">
+    <value>Empty script to execute</value>
+  </data>
+  <data name="EnsureValueIsInteger" xml:space="preserve">
+    <value>Please ensure that the {0} is an integer value.</value>
+  </data>
+  <data name="ForEachWithNoContentError" xml:space="preserve">
+    <value>Can not execute a For Each with no content</value>
+  </data>
+  <data name="FROMAddressInvalidFormat" xml:space="preserve">
+    <value>FROM address is not in the valid format: {0}</value>
+  </data>
+  <data name="FROMAndTORequired" xml:space="preserve">
+    <value>From and to Must be populated</value>
+  </data>
+  <data name="HeadersAreNull" xml:space="preserve">
+    <value>Headers Are Null</value>
+  </data>
+  <data name="IntegerOrDecimaExpectedForEnd" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End</value>
+  </data>
+  <data name="IntegerOrDecimaExpectedForStart" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Invalid {0}</value>
+  </data>
+  <data name="InvalidActivity" xml:space="preserve">
+    <value>Invalid activity</value>
+  </data>
+  <data name="InvalidCalculate" xml:space="preserve">
+    <value>Invalid Calculate</value>
+  </data>
+  <data name="InvalidEmailSource" xml:space="preserve">
+    <value>Invalid Email Source</value>
+  </data>
+  <data name="InvalidRecordset" xml:space="preserve">
+    <value>Invalid recordset:</value>
+  </data>
+  <data name="InvalidTimeOutSecondsText" xml:space="preserve">
+    <value>Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.</value>
+  </data>
+  <data name="IsBlank" xml:space="preserve">
+    <value>{0} is blank</value>
+  </data>
+  <data name="IsRequired" xml:space="preserve">
+    <value>{0} is Required</value>
+  </data>
+  <data name="LocalInputPathEmpty" xml:space="preserve">
+    <value>Local input path is not set</value>
+  </data>
+  <data name="MultipleVariablesInResultField" xml:space="preserve">
+    <value>Multiple variables in result field.</value>
+  </data>
+  <data name="NoActionsInSelectedDB" xml:space="preserve">
+    <value>The selected database does not contain actions to perform</value>
+  </data>
+  <data name="NoMethodSelected" xml:space="preserve">
+    <value>No Method Selected</value>
+  </data>
+  <data name="NoNamespaceSelected" xml:space="preserve">
+    <value>No Namespace Selected.</value>
+  </data>
+  <data name="NoOutPuts" xml:space="preserve">
+    <value>There are no outputs</value>
+  </data>
+  <data name="NoProcessFound" xml:space="preserve">
+    <value>No process found matching the search criteria</value>
+  </data>
+  <data name="NoRecordSet" xml:space="preserve">
+    <value>No recordset given</value>
+  </data>
+  <data name="NoWebResponse" xml:space="preserve">
+    <value>No Web Response received</value>
+  </data>
+  <data name="NullESBChannel" xml:space="preserve">
+    <value>FATAL ERROR : Null ESB channel!!</value>
+  </data>
+  <data name="NullRecordSet" xml:space="preserve">
+    <value>Recordset is null {0}</value>
+  </data>
+  <data name="NullScalarValue" xml:space="preserve">
+    <value>Scalar value {{{0}}} is NULL</value>
+  </data>
+  <data name="OneVariableAccepted" xml:space="preserve">
+    <value>Can only accept one variable</value>
+  </data>
+  <data name="PADDINGMustBeSingleCharecter" xml:space="preserve">
+    <value>'Padding' must be a single character</value>
+  </data>
+  <data name="PositiveIntegerRequired" xml:space="preserve">
+    <value>Please enter a positive integer for the {0}</value>
+  </data>
+  <data name="ProblemsWithIterators" xml:space="preserve">
+    <value>Problems with Iterators for: {0}</value>
+  </data>
+  <data name="QueryIsNull" xml:space="preserve">
+    <value>Query is Null</value>
+  </data>
+  <data name="RabbitQueueNameAndMessageRequired" xml:space="preserve">
+    <value>Failure: Queue Name and Message are required.</value>
+  </data>
+  <data name="RabbitQueueNameRequired" xml:space="preserve">
+    <value>Failure: Queue Name is required.</value>
+  </data>
+  <data name="RabbitQueueNotFound" xml:space="preserve">
+    <value>Queue {0} not found</value>
+  </data>
+  <data name="RabbitSourceHasBeenDeleted" xml:space="preserve">
+    <value>Failure: Source has been deleted.</value>
+  </data>
+  <data name="RequiredRecordSetName" xml:space="preserve">
+    <value>Value must be a recordset name</value>
+  </data>
+  <data name="RequiredRecordSetNameONLY" xml:space="preserve">
+    <value>Must only be a recordset name</value>
+  </data>
+  <data name="RequiredVaraibleNameONLY" xml:space="preserve">
+    <value>Please insert only variables into Fields To Search</value>
+  </data>
+  <data name="RoundingNotValid" xml:space="preserve">
+    <value>Rounding decimal places is not valid</value>
+  </data>
+  <data name="SameParentAndChildDataListId" xml:space="preserve">
+    <value>Parent and Child DataList IDs are the same, aborting resumption!</value>
+  </data>
+  <data name="ScalarsNotAllowed" xml:space="preserve">
+    <value>Scalars are not allowed. Please check the following:</value>
+  </data>
+  <data name="ScriptingErrorReturningValue" xml:space="preserve">
+    <value>There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result</value>
+  </data>
+  <data name="ServerInputPathEmpty" xml:space="preserve">
+    <value>Server input path {0} is not set</value>
+  </data>
+  <data name="SourceInvalid" xml:space="preserve">
+    <value>Please select valid source</value>
+  </data>
+  <data name="TimeMustBeNumeric" xml:space="preserve">
+    <value>Add Time amount must be numeric</value>
+  </data>
+  <data name="ToAddressInvalidFormat" xml:space="preserve">
+    <value>TO address is not in the valid format: {0}</value>
+  </data>
+  <data name="UserInputRequired" xml:space="preserve">
+    <value>The process required user input.</value>
+  </data>
+  <data name="USINGMustBeARealNumber" xml:space="preserve">
+    <value>The 'Using' value must be a real number.</value>
+  </data>
+  <data name="ValueTimeOutOutOfRange" xml:space="preserve">
+    <value>Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}.</value>
+  </data>
+  <data name="VariableInputError" xml:space="preserve">
+    <value>Error with variables in input.</value>
+  </data>
+  <data name="WebRequestError" xml:space="preserve">
+    <value>Error getting web request</value>
+  </data>
 </root>

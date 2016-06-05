@@ -26,6 +26,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Validation;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -174,7 +175,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     };
                 }
             }
-            throw  new Exception("Convert option does not exist");
+            throw  new Exception(ErrorResource.ConvertOptionDoesNotExist);
         }
 
         

@@ -61,6 +61,114 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alias cannot be empty.
+        /// </summary>
+        public static string AliasEmpty {
+            get {
+                return ResourceManager.GetString("AliasEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attachments is not in the valid format: {0}.
+        /// </summary>
+        public static string AttachmentInvalidFormat {
+            get {
+                return ResourceManager.GetString("AttachmentInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BCC address is not in the valid format: {0}.
+        /// </summary>
+        public static string BCCAddressInvalidFormat {
+            get {
+                return ResourceManager.GetString("BCCAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blank result variable.
+        /// </summary>
+        public static string BlankResultVariable {
+            get {
+                return ResourceManager.GetString("BlankResultVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;Using&apos; value cannot be blank..
+        /// </summary>
+        public static string BlankUSINGValue {
+            get {
+                return ResourceManager.GetString("BlankUSINGValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute CMD from tool..
+        /// </summary>
+        public static string CannotExecuteCMDFromTool {
+            get {
+                return ResourceManager.GetString("CannotExecuteCMDFromTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute explorer from tool..
+        /// </summary>
+        public static string CannotExecuteExplorerFromTool {
+            get {
+                return ResourceManager.GetString("CannotExecuteExplorerFromTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fatal Error : Cannot locate Root DataList for resumption!.
+        /// </summary>
+        public static string CannotLocateRootDataList {
+            get {
+                return ResourceManager.GetString("CannotLocateRootDataList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CC address is not in the valid format: {0}.
+        /// </summary>
+        public static string CCAddressInvalidFormat {
+            get {
+                return ResourceManager.GetString("CCAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The column {0} does not allow NULL. Please check your mappings to ensure you have mapped data into it..
+        /// </summary>
+        public static string ColumnDoesNotAlloNull {
+            get {
+                return ResourceManager.GetString("ColumnDoesNotAlloNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The column {0} is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping..
+        /// </summary>
+        public static string ColumnSetAsIdentityKeepIdentityIsFalse {
+            get {
+                return ResourceManager.GetString("ColumnSetAsIdentityKeepIdentityIsFalse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The column {0} is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data..
+        /// </summary>
+        public static string ColumnSetAsIdentityKeepIdentityIsTrue {
+            get {
+                return ResourceManager.GetString("ColumnSetAsIdentityKeepIdentityIsTrue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets don&apos;t match.
         /// </summary>
         public static string ContentOpeningClosingBracketMismatch {
@@ -102,6 +210,42 @@ namespace Warewolf.Resource.Errors {
         public static string ContentVariablenameInvalidCharecters {
             get {
                 return ResourceManager.GetString("ContentVariablenameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convert option does not exist.
+        /// </summary>
+        public static string ConvertOptionDoesNotExist {
+            get {
+                return ResourceManager.GetString("ConvertOptionDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataSource cannot be empty.
+        /// </summary>
+        public static string DataSourceEmpty {
+            get {
+                return ResourceManager.GetString("DataSourceEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataSource must be a Recordset or JSON array variable..
+        /// </summary>
+        public static string DataSourceMustBeJSonOrRecordSet {
+            get {
+                return ResourceManager.GetString("DataSourceMustBeJSonOrRecordSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decimals to show is not valid.
+        /// </summary>
+        public static string DecimalsNorValid {
+            get {
+                return ResourceManager.GetString("DecimalsNorValid", resourceCulture);
             }
         }
         
@@ -214,6 +358,105 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The caller does not have the required permissions.
+        /// </summary>
+        public static string DropBoxCallerHasNoPermission {
+            get {
+                return ResourceManager.GetString("DropBoxCallerHasNoPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot locate the file/s specified. Please confirm that the correct file location has been entered..
+        /// </summary>
+        public static string DropBoxCannotLocateSpecifiedFiles {
+            get {
+                return ResourceManager.GetString("DropBoxCannotLocateSpecifiedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please confirm that the correct file destination has been entered.
+        /// </summary>
+        public static string DropBoxConfirmCorrectFileDestination {
+            get {
+                return ResourceManager.GetString("DropBoxConfirmCorrectFileDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please confirm that the correct file location has been entered.
+        /// </summary>
+        public static string DropBoxConfirmCorrectFileLocation {
+            get {
+                return ResourceManager.GetString("DropBoxConfirmCorrectFileLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify a correct dropbox file name.
+        /// </summary>
+        public static string DropboxCorrectFileName {
+            get {
+                return ResourceManager.GetString("DropboxCorrectFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination File already exists and overwrite is set to false.
+        /// </summary>
+        public static string DropBoxDestinationFileAlreadyExist {
+            get {
+                return ResourceManager.GetString("DropBoxDestinationFileAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify the path of file in Dropbox.
+        /// </summary>
+        public static string DropBoxFilePathMissing {
+            get {
+                return ResourceManager.GetString("DropBoxFilePathMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path contains a colon (\&quot;:\&quot;) that is not part of a volume identifier (for example, \&quot;c:\&quot;).
+        /// </summary>
+        public static string DropBoxPathContainsColon {
+            get {
+                return ResourceManager.GetString("DropBoxPathContainsColon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified path, file name, or both exceed the system-defined maximum length.
+        /// </summary>
+        public static string DropBoxSpecifiedPathExceedMaxLength {
+            get {
+                return ResourceManager.GetString("DropBoxSpecifiedPathExceedMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty script to execute.
+        /// </summary>
+        public static string EmptyScript {
+            get {
+                return ResourceManager.GetString("EmptyScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ensure that the {0} is an integer value..
+        /// </summary>
+        public static string EnsureValueIsInteger {
+            get {
+                return ResourceManager.GetString("EnsureValueIsInteger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Name -  {0} does not exist in your variable list.
         /// </summary>
         public static string FileNameNotInVariableList {
@@ -313,11 +556,209 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not execute a For Each with no content.
+        /// </summary>
+        public static string ForEachWithNoContentError {
+            get {
+                return ResourceManager.GetString("ForEachWithNoContentError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FROM address is not in the valid format: {0}.
+        /// </summary>
+        public static string FROMAddressInvalidFormat {
+            get {
+                return ResourceManager.GetString("FROMAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From and to Must be populated.
+        /// </summary>
+        public static string FROMAndTORequired {
+            get {
+                return ResourceManager.GetString("FROMAndTORequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Headers Are Null.
+        /// </summary>
+        public static string HeadersAreNull {
+            get {
+                return ResourceManager.GetString("HeadersAreNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for End.
+        /// </summary>
+        public static string IntegerOrDecimaExpectedForEnd {
+            get {
+                return ResourceManager.GetString("IntegerOrDecimaExpectedForEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for Start.
+        /// </summary>
+        public static string IntegerOrDecimaExpectedForStart {
+            get {
+                return ResourceManager.GetString("IntegerOrDecimaExpectedForStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid {0}.
+        /// </summary>
+        public static string Invalid {
+            get {
+                return ResourceManager.GetString("Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid activity.
+        /// </summary>
+        public static string InvalidActivity {
+            get {
+                return ResourceManager.GetString("InvalidActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Calculate.
+        /// </summary>
+        public static string InvalidCalculate {
+            get {
+                return ResourceManager.GetString("InvalidCalculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Email Source.
+        /// </summary>
+        public static string InvalidEmailSource {
+            get {
+                return ResourceManager.GetString("InvalidEmailSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please supply a valid File/Folder.
         /// </summary>
         public static string InvalidFileOrFolder {
             get {
                 return ResourceManager.GetString("InvalidFileOrFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid recordset:.
+        /// </summary>
+        public static string InvalidRecordset {
+            get {
+                return ResourceManager.GetString("InvalidRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value {0} for TimeoutSecondsText could not be interpreted as a numeric value..
+        /// </summary>
+        public static string InvalidTimeOutSecondsText {
+            get {
+                return ResourceManager.GetString("InvalidTimeOutSecondsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is blank.
+        /// </summary>
+        public static string IsBlank {
+            get {
+                return ResourceManager.GetString("IsBlank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is Required.
+        /// </summary>
+        public static string IsRequired {
+            get {
+                return ResourceManager.GetString("IsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local input path is not set.
+        /// </summary>
+        public static string LocalInputPathEmpty {
+            get {
+                return ResourceManager.GetString("LocalInputPathEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple variables in result field..
+        /// </summary>
+        public static string MultipleVariablesInResultField {
+            get {
+                return ResourceManager.GetString("MultipleVariablesInResultField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected database does not contain actions to perform.
+        /// </summary>
+        public static string NoActionsInSelectedDB {
+            get {
+                return ResourceManager.GetString("NoActionsInSelectedDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Method Selected.
+        /// </summary>
+        public static string NoMethodSelected {
+            get {
+                return ResourceManager.GetString("NoMethodSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Namespace Selected..
+        /// </summary>
+        public static string NoNamespaceSelected {
+            get {
+                return ResourceManager.GetString("NoNamespaceSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no outputs.
+        /// </summary>
+        public static string NoOutPuts {
+            get {
+                return ResourceManager.GetString("NoOutPuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No process found matching the search criteria.
+        /// </summary>
+        public static string NoProcessFound {
+            get {
+                return ResourceManager.GetString("NoProcessFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No recordset given.
+        /// </summary>
+        public static string NoRecordSet {
+            get {
+                return ResourceManager.GetString("NoRecordSet", resourceCulture);
             }
         }
         
@@ -331,11 +772,155 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Web Response received.
+        /// </summary>
+        public static string NoWebResponse {
+            get {
+                return ResourceManager.GetString("NoWebResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FATAL ERROR : Null ESB channel!!.
+        /// </summary>
+        public static string NullESBChannel {
+            get {
+                return ResourceManager.GetString("NullESBChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recordset is null {0}.
+        /// </summary>
+        public static string NullRecordSet {
+            get {
+                return ResourceManager.GetString("NullRecordSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scalar value {{{0}}} is NULL.
+        /// </summary>
+        public static string NullScalarValue {
+            get {
+                return ResourceManager.GetString("NullScalarValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can only accept one variable.
+        /// </summary>
+        public static string OneVariableAccepted {
+            get {
+                return ResourceManager.GetString("OneVariableAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Padding&apos; must be a single character.
+        /// </summary>
+        public static string PADDINGMustBeSingleCharecter {
+            get {
+                return ResourceManager.GetString("PADDINGMustBeSingleCharecter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password cannot be empty or only white space.
         /// </summary>
         public static string PasswordEmpty {
             get {
                 return ResourceManager.GetString("PasswordEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a positive integer for the {0}.
+        /// </summary>
+        public static string PositiveIntegerRequired {
+            get {
+                return ResourceManager.GetString("PositiveIntegerRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problems with Iterators for: {0}.
+        /// </summary>
+        public static string ProblemsWithIterators {
+            get {
+                return ResourceManager.GetString("ProblemsWithIterators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query is Null.
+        /// </summary>
+        public static string QueryIsNull {
+            get {
+                return ResourceManager.GetString("QueryIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure: Queue Name and Message are required..
+        /// </summary>
+        public static string RabbitQueueNameAndMessageRequired {
+            get {
+                return ResourceManager.GetString("RabbitQueueNameAndMessageRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure: Queue Name is required..
+        /// </summary>
+        public static string RabbitQueueNameRequired {
+            get {
+                return ResourceManager.GetString("RabbitQueueNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue {0} not found.
+        /// </summary>
+        public static string RabbitQueueNotFound {
+            get {
+                return ResourceManager.GetString("RabbitQueueNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure: Source has been deleted..
+        /// </summary>
+        public static string RabbitSourceHasBeenDeleted {
+            get {
+                return ResourceManager.GetString("RabbitSourceHasBeenDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value must be a recordset name.
+        /// </summary>
+        public static string RequiredRecordSetName {
+            get {
+                return ResourceManager.GetString("RequiredRecordSetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must only be a recordset name.
+        /// </summary>
+        public static string RequiredRecordSetNameONLY {
+            get {
+                return ResourceManager.GetString("RequiredRecordSetNameONLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please insert only variables into Fields To Search.
+        /// </summary>
+        public static string RequiredVaraibleNameONLY {
+            get {
+                return ResourceManager.GetString("RequiredVaraibleNameONLY", resourceCulture);
             }
         }
         
@@ -385,11 +970,92 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rounding decimal places is not valid.
+        /// </summary>
+        public static string RoundingNotValid {
+            get {
+                return ResourceManager.GetString("RoundingNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent and Child DataList IDs are the same, aborting resumption!.
+        /// </summary>
+        public static string SameParentAndChildDataListId {
+            get {
+                return ResourceManager.GetString("SameParentAndChildDataListId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scalars are not allowed. Please check the following:.
+        /// </summary>
+        public static string ScalarsNotAllowed {
+            get {
+                return ResourceManager.GetString("ScalarsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error when returning a value from your script, remember to use the &apos;Return&apos; keyword when returning the result.
+        /// </summary>
+        public static string ScriptingErrorReturningValue {
+            get {
+                return ResourceManager.GetString("ScriptingErrorReturningValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server input path {0} is not set.
+        /// </summary>
+        public static string ServerInputPathEmpty {
+            get {
+                return ResourceManager.GetString("ServerInputPathEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The result field only allows a single result.
         /// </summary>
         public static string SingleResultAllowed {
             get {
                 return ResourceManager.GetString("SingleResultAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select valid source.
+        /// </summary>
+        public static string SourceInvalid {
+            get {
+                return ResourceManager.GetString("SourceInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Time amount must be numeric.
+        /// </summary>
+        public static string TimeMustBeNumeric {
+            get {
+                return ResourceManager.GetString("TimeMustBeNumeric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TO address is not in the valid format: {0}.
+        /// </summary>
+        public static string ToAddressInvalidFormat {
+            get {
+                return ResourceManager.GetString("ToAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The process required user input..
+        /// </summary>
+        public static string UserInputRequired {
+            get {
+                return ResourceManager.GetString("UserInputRequired", resourceCulture);
             }
         }
         
@@ -417,6 +1083,42 @@ namespace Warewolf.Resource.Errors {
         public static string UsernameVariablenameInvalidCharecters {
             get {
                 return ResourceManager.GetString("UsernameVariablenameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;Using&apos; value must be a real number..
+        /// </summary>
+        public static string USINGMustBeARealNumber {
+            get {
+                return ResourceManager.GetString("USINGMustBeARealNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}..
+        /// </summary>
+        public static string ValueTimeOutOutOfRange {
+            get {
+                return ResourceManager.GetString("ValueTimeOutOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error with variables in input..
+        /// </summary>
+        public static string VariableInputError {
+            get {
+                return ResourceManager.GetString("VariableInputError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error getting web request.
+        /// </summary>
+        public static string WebRequestError {
+            get {
+                return ResourceManager.GetString("WebRequestError", resourceCulture);
             }
         }
     }

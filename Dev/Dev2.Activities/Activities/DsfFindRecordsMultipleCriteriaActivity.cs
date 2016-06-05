@@ -29,6 +29,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -116,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var scalarValues = toSearch.Where(DataListUtil.IsValueScalar).ToList();
                 if (scalarValues.Any())
                 {
-                    throw new Exception("Scalars are not allowed. Please check the following:" + Environment.NewLine + string.Join(Environment.NewLine, scalarValues));
+                    throw new Exception(ErrorResource.ScalarsNotAllowed + Environment.NewLine + string.Join(Environment.NewLine, scalarValues));
                 }
                 List<int> results = new List<int>();
                 if (dataObject.IsDebugMode())
@@ -133,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (to.From.Length > 0 && String.IsNullOrEmpty(to.To)
                            || to.To.Length > 0 && String.IsNullOrEmpty(to.From))
                         {
-                            throw new Exception("From and to Must be populated");
+                            throw new Exception(ErrorResource.FROMAndTORequired);
                         }
                         ValidateRequiredFields(to, out errorsTo);
                         var right = env.EvalAsList(to.SearchCriteria, update);
@@ -233,19 +234,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             errors = new ErrorResultTO();
             if (string.IsNullOrEmpty(searchTo.SearchType))
             {
-                errors.AddError("Search type is required");
+                errors.AddError(string.Format(ErrorResource.IsRequired ,"Search Type"));
             }
 
             if (searchTo.SearchType.Equals("Is Between"))
             {
                 if (string.IsNullOrEmpty(searchTo.From))
                 {
-                    errors.AddError("From is required");
+                    errors.AddError(string.Format(ErrorResource.IsRequired, "FROM"));
                 }
 
                 if (string.IsNullOrEmpty(searchTo.To))
                 {
-                    errors.AddError("To is required");
+                    errors.AddError(string.Format(ErrorResource.IsRequired,"TO"));
                 }
             }
         }

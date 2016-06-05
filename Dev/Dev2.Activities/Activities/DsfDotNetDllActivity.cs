@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using WarewolfParserInterop;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -44,12 +45,12 @@ namespace Dev2.Activities
             errors = new ErrorResultTO();
             if (Namespace == null)
             {
-                errors.AddError("No Namespace Selected.");
+                errors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
             if (Method == null)
             {
-                errors.AddError("No Method Selected.");
+                errors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
             ExecuteService(update, out errors, Method, Namespace, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));

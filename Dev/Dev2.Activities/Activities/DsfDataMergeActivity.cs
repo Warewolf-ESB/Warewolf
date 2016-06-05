@@ -29,6 +29,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -218,24 +219,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         {
                                             if(string.IsNullOrEmpty(at))
                                             {
-                                                allErrors.AddError("The 'Using' value cannot be blank.");
+                                                allErrors.AddError(ErrorResource.BlankUSINGValue);
                                             }
 
                                             int atValue;
                                             if(!Int32.TryParse(at, out atValue) || atValue < 0)
                                             {
-                                                allErrors.AddError("The 'Using' value must be a real number.");
+                                                allErrors.AddError(ErrorResource.USINGMustBeARealNumber);
                                             }
                                             if(pad.Length > 1)
                                             {
-                                                allErrors.AddError("'Padding' must be a single character");
+                                                allErrors.AddError(ErrorResource.PADDINGMustBeSingleCharecter);
                                             }
                                         }
                                         else
                                         {
                                             if(MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at))
                                             {
-                                                allErrors.AddError("The 'Using' value cannot be blank.");
+                                                allErrors.AddError(ErrorResource.BlankUSINGValue);
                                             }
                                         }
                                         mergeOperations.Merge(val, MergeCollection[pos].MergeType, at, pad, MergeCollection[pos].Alignment);
