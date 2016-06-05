@@ -106,6 +106,33 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Body must have Member.
+        /// </summary>
+        public static string BodyMustHaveMember {
+            get {
+                return ResourceManager.GetString("BodyMustHaveMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot be a variable.
+        /// </summary>
+        public static string CannotBeVariable {
+            get {
+                return ResourceManager.GetString("CannotBeVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot specify a Recordset as part of a comma saperated list of expressions.
+        /// </summary>
+        public static string CannotCommaSeperateRecordset {
+            get {
+                return ResourceManager.GetString("CannotCommaSeperateRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot execute CMD from tool..
         /// </summary>
         public static string CannotExecuteCMDFromTool {
@@ -219,6 +246,15 @@ namespace Warewolf.Resource.Errors {
         public static string ConvertOptionDoesNotExist {
             get {
                 return ResourceManager.GetString("ConvertOptionDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid characters have been entered in the CSV Numbers.
+        /// </summary>
+        public static string CSVInvalidCharecters {
+            get {
+                return ResourceManager.GetString("CSVInvalidCharecters", resourceCulture);
             }
         }
         
@@ -457,6 +493,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value must be a lamda expression.
+        /// </summary>
+        public static string ExpectedLambdaExpresion {
+            get {
+                return ResourceManager.GetString("ExpectedLambdaExpresion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problem with input: expressions must be comma separated.
+        /// </summary>
+        public static string ExpressionMustBeCommaSeperated {
+            get {
+                return ResourceManager.GetString("ExpressionMustBeCommaSeperated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Name -  {0} does not exist in your variable list.
         /// </summary>
         public static string FileNameNotInVariableList {
@@ -664,11 +718,38 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid result type was encountered from warewolfstorage.
+        /// </summary>
+        public static string InvalidResultTypeFromWarewolfStorage {
+            get {
+                return ResourceManager.GetString("InvalidResultTypeFromWarewolfStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort field is invalid. You may only sort on a single RecordSet columns.
+        /// </summary>
+        public static string InvalidSortField {
+            get {
+                return ResourceManager.GetString("InvalidSortField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value {0} for TimeoutSecondsText could not be interpreted as a numeric value..
         /// </summary>
         public static string InvalidTimeOutSecondsText {
             get {
                 return ResourceManager.GetString("InvalidTimeOutSecondsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsBetween Numeric and DateTime mis-match.
+        /// </summary>
+        public static string IsBetweenDataTypeMismatch {
+            get {
+                return ResourceManager.GetString("IsBetweenDataTypeMismatch", resourceCulture);
             }
         }
         
@@ -705,6 +786,15 @@ namespace Warewolf.Resource.Errors {
         public static string MultipleVariablesInResultField {
             get {
                 return ResourceManager.GetString("MultipleVariablesInResultField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must have body.
+        /// </summary>
+        public static string MustHaveBody {
+            get {
+                return ResourceManager.GetString("MustHaveBody", resourceCulture);
             }
         }
         
@@ -817,6 +907,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can only have a scalar, a RecordSet or a RecordSet with column qualification as input.
+        /// </summary>
+        public static string OnlyScalarRecordsetCommaSeperated {
+            get {
+                return ResourceManager.GetString("OnlyScalarRecordsetCommaSeperated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;Padding&apos; must be a single character.
         /// </summary>
         public static string PADDINGMustBeSingleCharecter {
@@ -894,6 +993,15 @@ namespace Warewolf.Resource.Errors {
         public static string RabbitSourceHasBeenDeleted {
             get {
                 return ResourceManager.GetString("RabbitSourceHasBeenDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} must be a whole number from 1 onwards..
+        /// </summary>
+        public static string RangeFromOne {
+            get {
+                return ResourceManager.GetString("RangeFromOne", resourceCulture);
             }
         }
         
@@ -1033,6 +1141,33 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Star notation is not accepted in the {0}..
+        /// </summary>
+        public static string StarNotationNotAllowed {
+            get {
+                return ResourceManager.GetString("StarNotationNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must supply a Destination Name.
+        /// </summary>
+        public static string SupplyDestinationName {
+            get {
+                return ResourceManager.GetString("SupplyDestinationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must supply a Source Name.
+        /// </summary>
+        public static string SupplySourceName {
+            get {
+                return ResourceManager.GetString("SupplySourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Time amount must be numeric.
         /// </summary>
         public static string TimeMustBeNumeric {
@@ -1047,6 +1182,15 @@ namespace Warewolf.Resource.Errors {
         public static string ToAddressInvalidFormat {
             get {
                 return ResourceManager.GetString("ToAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to parse the Source Name.
+        /// </summary>
+        public static string UnableToParseSourceName {
+            get {
+                return ResourceManager.GetString("UnableToParseSourceName", resourceCulture);
             }
         }
         

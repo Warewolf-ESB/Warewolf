@@ -252,6 +252,15 @@
   <data name="BlankUSINGValue" xml:space="preserve">
     <value>The 'Using' value cannot be blank.</value>
   </data>
+  <data name="BodyMustHaveMember" xml:space="preserve">
+    <value>Body must have Member</value>
+  </data>
+  <data name="CannotBeVariable" xml:space="preserve">
+    <value>Cannot be a variable</value>
+  </data>
+  <data name="CannotCommaSeperateRecordset" xml:space="preserve">
+    <value>Cannot specify a Recordset as part of a comma saperated list of expressions</value>
+  </data>
   <data name="CannotExecuteCMDFromTool" xml:space="preserve">
     <value>Cannot execute CMD from tool.</value>
   </data>
@@ -275,6 +284,9 @@
   </data>
   <data name="ConvertOptionDoesNotExist" xml:space="preserve">
     <value>Convert option does not exist</value>
+  </data>
+  <data name="CSVInvalidCharecters" xml:space="preserve">
+    <value>Invalid characters have been entered in the CSV Numbers</value>
   </data>
   <data name="DataSourceEmpty" xml:space="preserve">
     <value>DataSource cannot be empty</value>
@@ -318,6 +330,12 @@
   <data name="EnsureValueIsInteger" xml:space="preserve">
     <value>Please ensure that the {0} is an integer value.</value>
   </data>
+  <data name="ExpectedLambdaExpresion" xml:space="preserve">
+    <value>Value must be a lamda expression</value>
+  </data>
+  <data name="ExpressionMustBeCommaSeperated" xml:space="preserve">
+    <value>Problem with input: expressions must be comma separated</value>
+  </data>
   <data name="ForEachWithNoContentError" xml:space="preserve">
     <value>Can not execute a For Each with no content</value>
   </data>
@@ -351,8 +369,17 @@
   <data name="InvalidRecordset" xml:space="preserve">
     <value>Invalid recordset:</value>
   </data>
+  <data name="InvalidResultTypeFromWarewolfStorage" xml:space="preserve">
+    <value>Invalid result type was encountered from warewolfstorage</value>
+  </data>
+  <data name="InvalidSortField" xml:space="preserve">
+    <value>Sort field is invalid. You may only sort on a single RecordSet columns</value>
+  </data>
   <data name="InvalidTimeOutSecondsText" xml:space="preserve">
     <value>Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.</value>
+  </data>
+  <data name="IsBetweenDataTypeMismatch" xml:space="preserve">
+    <value>IsBetween Numeric and DateTime mis-match</value>
   </data>
   <data name="IsBlank" xml:space="preserve">
     <value>{0} is blank</value>
@@ -365,6 +392,9 @@
   </data>
   <data name="MultipleVariablesInResultField" xml:space="preserve">
     <value>Multiple variables in result field.</value>
+  </data>
+  <data name="MustHaveBody" xml:space="preserve">
+    <value>Must have body</value>
   </data>
   <data name="NoActionsInSelectedDB" xml:space="preserve">
     <value>The selected database does not contain actions to perform</value>
@@ -399,6 +429,9 @@
   <data name="OneVariableAccepted" xml:space="preserve">
     <value>Can only accept one variable</value>
   </data>
+  <data name="OnlyScalarRecordsetCommaSeperated" xml:space="preserve">
+    <value>Can only have a scalar, a RecordSet or a RecordSet with column qualification as input</value>
+  </data>
   <data name="PADDINGMustBeSingleCharecter" xml:space="preserve">
     <value>'Padding' must be a single character</value>
   </data>
@@ -422,6 +455,9 @@
   </data>
   <data name="RabbitSourceHasBeenDeleted" xml:space="preserve">
     <value>Failure: Source has been deleted.</value>
+  </data>
+  <data name="RangeFromOne" xml:space="preserve">
+    <value>{0} must be a whole number from 1 onwards.</value>
   </data>
   <data name="RequiredRecordSetName" xml:space="preserve">
     <value>Value must be a recordset name</value>
@@ -450,11 +486,23 @@
   <data name="SourceInvalid" xml:space="preserve">
     <value>Please select valid source</value>
   </data>
+  <data name="StarNotationNotAllowed" xml:space="preserve">
+    <value>The Star notation is not accepted in the {0}.</value>
+  </data>
+  <data name="SupplyDestinationName" xml:space="preserve">
+    <value>Must supply a Destination Name</value>
+  </data>
+  <data name="SupplySourceName" xml:space="preserve">
+    <value>Must supply a Source Name</value>
+  </data>
   <data name="TimeMustBeNumeric" xml:space="preserve">
     <value>Add Time amount must be numeric</value>
   </data>
   <data name="ToAddressInvalidFormat" xml:space="preserve">
     <value>TO address is not in the valid format: {0}</value>
+  </data>
+  <data name="UnableToParseSourceName" xml:space="preserve">
+    <value>Unable to parse the Source Name</value>
   </data>
   <data name="UserInputRequired" xml:space="preserve">
     <value>The process required user input.</value>
