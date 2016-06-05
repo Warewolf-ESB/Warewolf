@@ -61,11 +61,110 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} contains invalid character(s).
+        ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets don&apos;t match.
         /// </summary>
-        public static string ContainsInvalidCharecters {
+        public static string ContentOpeningClosingBracketMismatch {
             get {
-                return ResourceManager.GetString("ContainsInvalidCharecters", resourceCulture);
+                return ResourceManager.GetString("ContentOpeningClosingBracketMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contents - Recordset index {0} contains invalid character(s).
+        /// </summary>
+        public static string ContentRecordsetIndexContainsInvalidCharecters {
+            get {
+                return ResourceManager.GetString("ContentRecordsetIndexContainsInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contents - Recordset name  {0} contains invalid character(s).
+        /// </summary>
+        public static string ContentRecordsetnameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("ContentRecordsetnameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contents - No Value assigned for : {0}.
+        /// </summary>
+        public static string ContentsNoValueAssigned {
+            get {
+                return ResourceManager.GetString("ContentsNoValueAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contents - Variable name  {0}  contains invalid character(s).
+        /// </summary>
+        public static string ContentVariablenameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("ContentVariablenameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination cannot be empty or only white space.
+        /// </summary>
+        public static string DestinationEmpty {
+            get {
+                return ResourceManager.GetString("DestinationEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination - Invalid expression: opening and closing brackets don&quot;t match.
+        /// </summary>
+        public static string DestinationOpeningClosingBracketMismatch {
+            get {
+                return ResourceManager.GetString("DestinationOpeningClosingBracketMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination - Recordset index {0} contains invalid character(s).
+        /// </summary>
+        public static string DestinationRecordsetIndexInvalidCharecters {
+            get {
+                return ResourceManager.GetString("DestinationRecordsetIndexInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination - Recordset name [[rec(a]] contains invalid character(s).
+        /// </summary>
+        public static string DestinationRecordsetInvalidCharecters {
+            get {
+                return ResourceManager.GetString("DestinationRecordsetInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Username - Recordset index {0} contains invalid character(s).
+        /// </summary>
+        public static string DestinationUsernameRecordsetIndexInvalidCharecters {
+            get {
+                return ResourceManager.GetString("DestinationUsernameRecordsetIndexInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Username - Variable name {0} contains invalid character(s).
+        /// </summary>
+        public static string DestinationUsernameVariableInvalidCharecters {
+            get {
+                return ResourceManager.GetString("DestinationUsernameVariableInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination - Variable name {0} contains invalid character(s).
+        /// </summary>
+        public static string DestinationVariablenameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("DestinationVariablenameInvalidCharecters", resourceCulture);
             }
         }
         
@@ -97,11 +196,20 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password cannot be empty or only white space.
+        ///   Looks up a localized string similar to Directory - Recordset index {0} contains invalid character(s).
         /// </summary>
-        public static string EmptyPassword {
+        public static string DirectoryRecordsetIndexInvalidCharecters {
             get {
-                return ResourceManager.GetString("EmptyPassword", resourceCulture);
+                return ResourceManager.GetString("DirectoryRecordsetIndexInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory - Variable name  {0} contains invalid character(s).
+        /// </summary>
+        public static string DirectoryVariablenameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("DirectoryVariablenameInvalidCharecters", resourceCulture);
             }
         }
         
@@ -124,6 +232,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Name - Recordset name  {0} contains invalid character(s).
+        /// </summary>
+        public static string FileNameRecordsetnameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("FileNameRecordsetnameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File {0} not found .
         /// </summary>
         public static string FileNotFound {
@@ -133,20 +250,74 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please supply a valid File/Folder.
+        ///   Looks up a localized string similar to File or Folder cannot be empty or only white space.
         /// </summary>
-        public static string InvalidFileName {
+        public static string FileOrFolderEmpty {
             get {
-                return ResourceManager.GetString("InvalidFileName", resourceCulture);
+                return ResourceManager.GetString("FileOrFolderEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region {0}.
+        ///   Looks up a localized string similar to File or Folder - Invalid expression: opening and closing brackets don&quot;t match.
         /// </summary>
-        public static string InvalidRegion {
+        public static string FileOrFolderOpeningClosingBracketMismatch {
             get {
-                return ResourceManager.GetString("InvalidRegion", resourceCulture);
+                return ResourceManager.GetString("FileOrFolderOpeningClosingBracketMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File or Folder - Recordset index {0} contains invalid character(s).
+        /// </summary>
+        public static string FileOrFolderRecordsetindexInvalid {
+            get {
+                return ResourceManager.GetString("FileOrFolderRecordsetindexInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File or Folder - Recordset index {0} contains invalid character(s).
+        /// </summary>
+        public static string FileOrFolderRecordsetIndexInvalidCharecters {
+            get {
+                return ResourceManager.GetString("FileOrFolderRecordsetIndexInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File or Folder - Recordset name {0} contains invalid character(s).
+        /// </summary>
+        public static string FileOrFolderRecordsetnameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("FileOrFolderRecordsetnameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File or Folder - Variable name {0} contains invalid character(s).
+        /// </summary>
+        public static string FileOrFolderVariableInvalidCharecters {
+            get {
+                return ResourceManager.GetString("FileOrFolderVariableInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File or Folder - Variable name [[a&amp;]] contains invalid character(s).
+        /// </summary>
+        public static string FileOrFolderVariablenameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("FileOrFolderVariablenameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please supply a valid File/Folder.
+        /// </summary>
+        public static string InvalidFileOrFolder {
+            get {
+                return ResourceManager.GetString("InvalidFileOrFolder", resourceCulture);
             }
         }
         
@@ -160,29 +331,20 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset index {0} contains invalid character(s).
+        ///   Looks up a localized string similar to Password cannot be empty or only white space.
         /// </summary>
-        public static string RecordsetIndexInvalidCharecters {
+        public static string PasswordEmpty {
             get {
-                return ResourceManager.GetString("RecordsetIndexInvalidCharecters", resourceCulture);
+                return ResourceManager.GetString("PasswordEmpty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Name - Recordset name  {0} contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
         /// </summary>
-        public static string RecordsetnameInvalidCharecters {
+        public static string ResultInvalidRegion {
             get {
-                return ResourceManager.GetString("RecordsetnameInvalidCharecters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string ResultInvalidCharecters {
-            get {
-                return ResourceManager.GetString("ResultInvalidCharecters", resourceCulture);
+                return ResourceManager.GetString("ResultInvalidRegion", resourceCulture);
             }
         }
         
@@ -196,461 +358,38 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The result field only allows a single result.
+        ///   Looks up a localized string similar to Result - Recordset index {0} contains invalid character(s).
         /// </summary>
-        public static string SingleResultAllowed {
+        public static string ResultRecordsetIndexInvalidCharecters {
             get {
-                return ResourceManager.GetString("SingleResultAllowed", resourceCulture);
+                return ResourceManager.GetString("ResultRecordsetIndexInvalidCharecters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - No Value assigned for : {0}.
+        ///   Looks up a localized string similar to Result - Recordset name [[rec&quot;()&quot;]] contains invalid character(s).
         /// </summary>
-        public static string String1 {
+        public static string ResultRecordsetInvalidCharecters {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String10 {
-            get {
-                return ResourceManager.GetString("String10", resourceCulture);
+                return ResourceManager.GetString("ResultRecordsetInvalidCharecters", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
         /// </summary>
-        public static string String11 {
+        public static string ResultVariableContainsInvalidCharecters {
             get {
-                return ResourceManager.GetString("String11", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String12 {
-            get {
-                return ResourceManager.GetString("String12", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
-        /// </summary>
-        public static string String13 {
-            get {
-                return ResourceManager.GetString("String13", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String14 {
-            get {
-                return ResourceManager.GetString("String14", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String15 {
-            get {
-                return ResourceManager.GetString("String15", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String16 {
-            get {
-                return ResourceManager.GetString("String16", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String17 {
-            get {
-                return ResourceManager.GetString("String17", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String18 {
-            get {
-                return ResourceManager.GetString("String18", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory - Recordset index (**) contains invalid character(s).
-        /// </summary>
-        public static string String19 {
-            get {
-                return ResourceManager.GetString("String19", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contents - No Value assigned for :  {0}.
-        /// </summary>
-        public static string String2 {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please supply a valid File or Folder.
-        /// </summary>
-        public static string String20 {
-            get {
-                return ResourceManager.GetString("String20", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory not found  {0}.
-        /// </summary>
-        public static string String21 {
-            get {
-                return ResourceManager.GetString("String21", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String22 {
-            get {
-                return ResourceManager.GetString("String22", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Value assigned for  {0}.
-        /// </summary>
-        public static string String23 {
-            get {
-                return ResourceManager.GetString("String23", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String24 {
-            get {
-                return ResourceManager.GetString("String24", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Value assigned for  {0} 2.1.No Value assigned for {1}.
-        /// </summary>
-        public static string String25 {
-            get {
-                return ResourceManager.GetString("String25", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Value assigned for  {0}.
-        /// </summary>
-        public static string String26 {
-            get {
-                return ResourceManager.GetString("String26", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username - Recordset name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String27 {
-            get {
-                return ResourceManager.GetString("String27", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String28 {
-            get {
-                return ResourceManager.GetString("String28", resourceCulture);
+                return ResourceManager.GetString("ResultVariableContainsInvalidCharecters", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The result field only allows a single result.
         /// </summary>
-        public static string String29 {
+        public static string SingleResultAllowed {
             get {
-                return ResourceManager.GetString("String29", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets don&apos;t match.
-        /// </summary>
-        public static string String3 {
-            get {
-                return ResourceManager.GetString("String3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String30 {
-            get {
-                return ResourceManager.GetString("String30", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String31 {
-            get {
-                return ResourceManager.GetString("String31", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String32 {
-            get {
-                return ResourceManager.GetString("String32", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name {0} contains invalid character(s).
-        /// </summary>
-        public static string String34 {
-            get {
-                return ResourceManager.GetString("String34", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region {0}.
-        /// </summary>
-        public static string String35 {
-            get {
-                return ResourceManager.GetString("String35", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset index  {0} contains invalid character(s).
-        /// </summary>
-        public static string String36 {
-            get {
-                return ResourceManager.GetString("String36", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String37 {
-            get {
-                return ResourceManager.GetString("String37", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
-        /// </summary>
-        public static string String38 {
-            get {
-                return ResourceManager.GetString("String38", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String39 {
-            get {
-                return ResourceManager.GetString("String39", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contents - Recordset index (**) contains invalid character(s).
-        /// </summary>
-        public static string String4 {
-            get {
-                return ResourceManager.GetString("String4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory -  {0} does not exist in your variable list.
-        /// </summary>
-        public static string String40 {
-            get {
-                return ResourceManager.GetString("String40", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password cannot be empty or only white space.
-        /// </summary>
-        public static string String41 {
-            get {
-                return ResourceManager.GetString("String41", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please supply valid File Name.
-        /// </summary>
-        public static string String42 {
-            get {
-                return ResourceManager.GetString("String42", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String43 {
-            get {
-                return ResourceManager.GetString("String43", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String44 {
-            get {
-                return ResourceManager.GetString("String44", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contents - Recordset name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String45 {
-            get {
-                return ResourceManager.GetString("String45", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
-        /// </summary>
-        public static string String46 {
-            get {
-                return ResourceManager.GetString("String46", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
-        /// </summary>
-        public static string String47 {
-            get {
-                return ResourceManager.GetString("String47", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset index  {0} contains invalid character(s).
-        /// </summary>
-        public static string String48 {
-            get {
-                return ResourceManager.GetString("String48", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String49 {
-            get {
-                return ResourceManager.GetString("String49", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contents - Variable name  {0}  contains invalid character(s).
-        /// </summary>
-        public static string String5 {
-            get {
-                return ResourceManager.GetString("String5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String50 {
-            get {
-                return ResourceManager.GetString("String50", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Variable name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String51 {
-            get {
-                return ResourceManager.GetString("String51", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
-        /// </summary>
-        public static string String52 {
-            get {
-                return ResourceManager.GetString("String52", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset name  {0} contains invalid character(s).
-        /// </summary>
-        public static string String7 {
-            get {
-                return ResourceManager.GetString("String7", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid Region  {0}.
-        /// </summary>
-        public static string String9 {
-            get {
-                return ResourceManager.GetString("String9", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s)  2.Result - Variable .
-        /// </summary>
-        public static string UsernameInvalidCharecters {
-            get {
-                return ResourceManager.GetString("UsernameInvalidCharecters", resourceCulture);
+                return ResourceManager.GetString("SingleResultAllowed", resourceCulture);
             }
         }
         
@@ -664,11 +403,20 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username - Recordset name {0} contains invalid character(s).
+        /// </summary>
+        public static string UsernameRecordsetnameInvalidCharecters {
+            get {
+                return ResourceManager.GetString("UsernameRecordsetnameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username - Variable name  {0} contains invalid character(s).
         /// </summary>
-        public static string VariableContainsInvalidCharecters {
+        public static string UsernameVariablenameInvalidCharecters {
             get {
-                return ResourceManager.GetString("VariableContainsInvalidCharecters", resourceCulture);
+                return ResourceManager.GetString("UsernameVariablenameInvalidCharecters", resourceCulture);
             }
         }
     }
