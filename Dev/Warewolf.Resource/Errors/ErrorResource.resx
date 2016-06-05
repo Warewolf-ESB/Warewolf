@@ -121,7 +121,7 @@
     <value>{0} contains invalid character(s)</value>
   </data>
   <data name="DirectoryDoesNotExist" xml:space="preserve">
-    <value>Directory - [[rec]] does not exist in your variable list</value>
+    <value>Directory -  {0} does not exist in your variable list</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Directory not found {0}</value>
@@ -133,100 +133,97 @@
     <value>Password cannot be empty or only white space</value>
   </data>
   <data name="FileNameNotInVariableList" xml:space="preserve">
-    <value>File Name - [[rec]] does not exist in your variable list</value>
+    <value>File Name -  {0} does not exist in your variable list</value>
   </data>
   <data name="FilenameOpeningClosingBracketMismatch" xml:space="preserve">
     <value>File Name - Invalid expression: opening and closing brackets don"t match</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
-    <value>File {0} not found</value>
+    <value>File {0} not found </value>
   </data>
   <data name="InvalidFileName" xml:space="preserve">
-    <value>Please supply valid File Name</value>
-  </data>
-  <data name="InvalidFolder" xml:space="preserve">
-    <value>Please supply a valid File or Folder</value>
+    <value>Please supply a valid File/Folder</value>
   </data>
   <data name="InvalidRegion" xml:space="preserve">
-    <value>Result - Invalid Region [[rec([[[[b]]]]).a]]</value>
+    <value>Result - Invalid Region {0}</value>
   </data>
   <data name="NoValueAssigned" xml:space="preserve">
     <value>No Value assigned for {0}</value>
   </data>
   <data name="RecordsetIndexInvalidCharecters" xml:space="preserve">
-    <value>Result - Recordset index [[@]] contains invalid character(s)</value>
+    <value>Result - Recordset index {0} contains invalid character(s)</value>
   </data>
   <data name="RecordsetnameInvalidCharecters" xml:space="preserve">
-    <value>File Name - Recordset name [[rec(]] contains invalid character(s)</value>
+    <value>File Name - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="ResultInvalidCharecters" xml:space="preserve">
-    <value>Result - Variable name [[var@]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="ResultOpeningClosingBracketMismatch" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don"t match</value>
   </data>
-  <data name="SingleResultAllowe" xml:space="preserve">
+  <data name="SingleResultAllowed" xml:space="preserve">
     <value>The result field only allows a single result</value>
   </data>
   <data name="String1" xml:space="preserve">
-    <value>Contents - No Value assigned for : [[a]]</value>
+    <value>Contents - No Value assigned for : {0}</value>
   </data>
   <data name="String10" xml:space="preserve">
-    <value>Result - Variable name [[var 1]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String11" xml:space="preserve">
-    <value>Result - Variable name [[@var]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String12" xml:space="preserve">
-    <value>Result - Variable name [[var.a]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String13" xml:space="preserve">
-    <value>Result - Invalid Region [[var[[a]]]]</value>
+    <value>Result - Invalid Region  {0}</value>
   </data>
   <data name="String14" xml:space="preserve">
-    <value>Result - Variable name [[var@]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String15" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don"t match</value>
   </data>
   <data name="String16" xml:space="preserve">
-    <value>Result - Variable name [[var@]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String17" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don"t match</value>
   </data>
   <data name="String18" xml:space="preserve">
-    <value>Directory - Variable name [[a&amp;]] contains invalid character(s)</value>
+    <value>Directory - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String19" xml:space="preserve">
     <value>Directory - Recordset index (**) contains invalid character(s)</value>
   </data>
   <data name="String2" xml:space="preserve">
-    <value>Contents - No Value assigned for : [[rec().a]]</value>
+    <value>Contents - No Value assigned for :  {0}</value>
   </data>
   <data name="String20" xml:space="preserve">
     <value>Please supply a valid File or Folder</value>
   </data>
   <data name="String21" xml:space="preserve">
-    <value>Directory not found [ C:\\\\\gvh ]</value>
+    <value>Directory not found  {0}</value>
   </data>
   <data name="String22" xml:space="preserve">
-    <value>Directory - Variable name [[index$x]] contains invalid character(s)</value>
+    <value>Directory - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String23" xml:space="preserve">
-    <value>No Value assigned for [[a]]</value>
+    <value>No Value assigned for  {0}</value>
   </data>
   <data name="String24" xml:space="preserve">
-    <value>Username - Variable name [[$#]] contains invalid character(s)</value>
+    <value>Username - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String25" xml:space="preserve">
-    <value>No Value assigned for [[a]] 2.1.No Value assigned for [[b]]</value>
+    <value>No Value assigned for  {0} 2.1.No Value assigned for {1}</value>
   </data>
   <data name="String26" xml:space="preserve">
-    <value>No Value assigned for [[index]]</value>
+    <value>No Value assigned for  {0}</value>
   </data>
   <data name="String27" xml:space="preserve">
-    <value>Username - Recordset name [[indexx&amp;]] contains invalid character(s)</value>
+    <value>Username - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="String28" xml:space="preserve">
     <value>Username - Invalid expression: opening and closing brackets don"t match</value>
@@ -241,28 +238,25 @@
     <value>Result - Invalid expression: opening and closing brackets don"t match</value>
   </data>
   <data name="String31" xml:space="preserve">
-    <value>Result - Variable name [[var@]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String32" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don"t match</value>
   </data>
-  <data name="String33" xml:space="preserve">
-    <value>Result - Variable name [[var@]] contains invalid character(s)</value>
-  </data>
   <data name="String34" xml:space="preserve">
-    <value>Result - Variable name [[var 1]] contains invalid character(s)</value>
+    <value>Result - Variable name {0} contains invalid character(s)</value>
   </data>
   <data name="String35" xml:space="preserve">
-    <value>Result - Invalid Region [[var[[a]]]]</value>
+    <value>Result - Invalid Region {0}</value>
   </data>
   <data name="String36" xml:space="preserve">
-    <value>Result - Recordset index [[@]] contains invalid character(s)</value>
+    <value>Result - Recordset index  {0} contains invalid character(s)</value>
   </data>
   <data name="String37" xml:space="preserve">
-    <value>Result - Recordset name [[rec"()"]] contains invalid character(s)</value>
+    <value>Result - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="String38" xml:space="preserve">
-    <value>Result - Invalid Region [[rec([[[[b]]]]).a]]</value>
+    <value>Result - Invalid Region  {0}</value>
   </data>
   <data name="String39" xml:space="preserve">
     <value>Directory - Invalid expression: opening and closing brackets don"t match</value>
@@ -271,7 +265,7 @@
     <value>Contents - Recordset index (**) contains invalid character(s)</value>
   </data>
   <data name="String40" xml:space="preserve">
-    <value>Directory - [[rec]] does not exist in your variable list</value>
+    <value>Directory -  {0} does not exist in your variable list</value>
   </data>
   <data name="String41" xml:space="preserve">
     <value>Password cannot be empty or only white space</value>
@@ -280,51 +274,51 @@
     <value>Please supply valid File Name</value>
   </data>
   <data name="String43" xml:space="preserve">
-    <value>Result - Variable name [[var@]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String44" xml:space="preserve">
-    <value>Username - Variable name [[$#]] contains invalid character(s)</value>
+    <value>Username - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String45" xml:space="preserve">
-    <value>Contents - Recordset name [[indexx&amp;]] contains invalid character(s)</value>
+    <value>Contents - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="String46" xml:space="preserve">
-    <value>Result - Invalid Region [[rec([[[[b]]]]).a]]</value>
+    <value>Result - Invalid Region  {0}</value>
   </data>
   <data name="String47" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don"t match</value>
   </data>
   <data name="String48" xml:space="preserve">
-    <value>Result - Recordset index [[@]] contains invalid character(s)</value>
+    <value>Result - Recordset index  {0} contains invalid character(s)</value>
   </data>
   <data name="String49" xml:space="preserve">
-    <value>Result - Variable name [[var.a]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String5" xml:space="preserve">
-    <value>Contents - Variable name [[var$]]  contains invalid character(s)</value>
+    <value>Contents - Variable name  {0}  contains invalid character(s)</value>
   </data>
   <data name="String50" xml:space="preserve">
-    <value>Result - Variable name [[@var]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String51" xml:space="preserve">
-    <value>Result - Variable name [[var 1]] contains invalid character(s)</value>
+    <value>Result - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="String52" xml:space="preserve">
-    <value>Result - Invalid Region [[var[[a]]]]</value>
+    <value>Result - Invalid Region  {0}</value>
   </data>
   <data name="String7" xml:space="preserve">
-    <value>Result - Recordset name [[rec"()"]] contains invalid character(s)</value>
+    <value>Result - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="String9" xml:space="preserve">
-    <value>Result - Invalid Region [[var[[a]]]]</value>
+    <value>Result - Invalid Region  {0}</value>
   </data>
   <data name="UsernameInvalidCharecters" xml:space="preserve">
-    <value>Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable </value>
+    <value>Username - Variable name  {0} contains invalid character(s)  2.Result - Variable </value>
   </data>
   <data name="UsernameOpeningClosingBracketMismatch" xml:space="preserve">
     <value>Username - Invalid expression: opening and closing brackets don"t match</value>
   </data>
   <data name="VariableContainsInvalidCharecters" xml:space="preserve">
-    <value>Username - Variable name [[$#]] contains invalid character(s)</value>
+    <value>Username - Variable name  {0} contains invalid character(s)</value>
   </data>
 </root>

@@ -347,6 +347,10 @@
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
       <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>
       <Name>Warewolf.Sharepoint</Name>
