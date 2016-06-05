@@ -22,6 +22,7 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -89,7 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    allErrors.AddError("No recordset given");
+                    allErrors.AddError(ErrorResource.NoRecordSet);
                 }
             }
                 catch(Exception err)

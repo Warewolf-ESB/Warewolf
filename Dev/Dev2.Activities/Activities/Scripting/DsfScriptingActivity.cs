@@ -26,6 +26,7 @@ using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -148,7 +149,7 @@ namespace Dev2.Activities
             {
                 if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
                 {
-                    allErrors.AddError("There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result");
+                    allErrors.AddError(ErrorResource.ScriptingErrorReturningValue);
                 }
                 else
                 {

@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable UseStringInterpolation
 
@@ -112,13 +113,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 RabbitSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitSource == null || RabbitSource.ResourceType != enSourceType.RabbitMQSource.ToString())
                 {
-                    return "Failure: Source has been deleted.";
+                    return ErrorResource.RabbitSourceHasBeenDeleted;
                 }
 
                 string queueName;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName))
                 {
-                    return "Failure: Queue Name is required.";
+                    return ErrorResource.RabbitQueueNameRequired;
                 }
                 ConnectionFactory.HostName = RabbitSource.HostName;
                 ConnectionFactory.Port = RabbitSource.Port;
@@ -142,7 +143,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             }
                             catch (Exception)
                             {
-                                throw new Exception(string.Format("Queue '{0}' not found", queueName));
+                                throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                             }
 
                             if(response == null)
@@ -162,7 +163,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             }
                             catch (Exception)
                             {
-                                throw new Exception(string.Format("Queue '{0}' not found", queueName));
+                                throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                             }
 
                             BasicDeliverEventArgs basicDeliverEventArgs;

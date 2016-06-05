@@ -19,6 +19,7 @@ using Dev2.Util;
 using Microsoft.Exchange.WebServices.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
@@ -113,7 +114,7 @@ namespace Dev2.Activities.Exchange
 
                 if (runtimeSource == null)
                 {
-                    dataObject.Environment.Errors.Add("Invalid Email Source");
+                    dataObject.Environment.Errors.Add(ErrorResource.InvalidEmailSource);
                     return;
                 }
                 if (IsDebug)
@@ -301,7 +302,7 @@ namespace Dev2.Activities.Exchange
             }
             catch (Exception exception)
             {
-                throw new Exception(string.Format("Attachments is not in the valid format: {0}", attachmentsValue), exception);
+                throw new Exception(string.Format(ErrorResource.AttachmentInvalidFormat, attachmentsValue), exception);
             }
         }
 
@@ -314,7 +315,7 @@ namespace Dev2.Activities.Exchange
             }
             catch (FormatException exception)
             {
-                throw new Exception(string.Format("To address is not in the valid format: {0}", toValue), exception);
+                throw new Exception(string.Format(ErrorResource.ToAddressInvalidFormat, toValue), exception);
             }
         }
 
@@ -327,7 +328,7 @@ namespace Dev2.Activities.Exchange
             }
             catch (FormatException exception)
             {
-                throw new Exception(string.Format("CC address is not in the valid format: {0}", toValue), exception);
+                throw new Exception(string.Format(ErrorResource.CCAddressInvalidFormat, toValue), exception);
             }
         }
 
@@ -340,7 +341,7 @@ namespace Dev2.Activities.Exchange
             }
             catch (FormatException exception)
             {
-                throw new Exception(string.Format("BCC address is not in the valid format: {0}", toValue), exception);
+                throw new Exception(string.Format(ErrorResource.BCCAddressInvalidFormat, toValue), exception);
             }
         }
 

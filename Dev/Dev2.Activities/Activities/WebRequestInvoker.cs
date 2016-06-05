@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
 {
@@ -125,7 +126,7 @@ namespace Dev2.Activities
                 var webRequest = base.GetWebRequest(address);
                 if(webRequest == null)
                 {
-                    throw new Exception("Error getting web request");
+                    throw new Exception(ErrorResource.WebRequestError);
                 }
                 webRequest.Timeout = _timeoutMilliseconds;
                 return webRequest;

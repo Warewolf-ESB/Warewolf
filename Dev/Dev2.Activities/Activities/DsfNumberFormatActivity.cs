@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -129,14 +130,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out decimalPlacesToShowValue);
                     if (!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
-                        throw new Exception("Decimals to show is not valid");
+                        throw new Exception(ErrorResource.DecimalsNorValid);
                     }
 
                     var tmpDecimalPlaces = colItr.FetchNextValue(roundingDecimalPlacesIterator);
                     var roundingDecimalPlacesValue = 0;
                     if (!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsRealNumber(out roundingDecimalPlacesValue))
                     {
-                        throw new Exception("Rounding decimal places is not valid");
+                        throw new Exception(ErrorResource.RoundingNotValid);
                     }
 
                     var binaryDataListItem = colItr.FetchNextValue(expressionIterator);

@@ -25,6 +25,7 @@ using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -92,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
                         if(CountNumber == string.Empty)
                         {
-                            allErrors.AddError("Blank result variable");
+                            allErrors.AddError(ErrorResource.BlankResultVariable);
                         }
                         if(dataObject.IsDebugMode())
                         {
@@ -116,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
-                                allErrors.AddError(String.Format( "Recordset is null {0}",RecordsetName));
+                                allErrors.AddError(String.Format(ErrorResource.NullRecordSet, RecordsetName));
                             }
                         }
                     }

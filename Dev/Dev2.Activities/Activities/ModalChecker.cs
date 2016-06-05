@@ -13,6 +13,8 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable UnusedMember.Local
 
 namespace Dev2.Activities
@@ -22,7 +24,7 @@ namespace Dev2.Activities
         public static Boolean IsWaitingForUserInput(Process process)
         {
             if(process == null)
-                throw new Exception("No process found matching the search criteria");
+                throw new Exception(ErrorResource.NoProcessFound);
             // for thread safety
             if(process.HasExited) return false;
             ModalChecker checker = new ModalChecker(process);

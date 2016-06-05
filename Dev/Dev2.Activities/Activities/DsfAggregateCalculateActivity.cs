@@ -15,6 +15,7 @@ using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -89,7 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if(scalarResult != null && scalarResult.Item.IsNothing)
                 {
-                    throw new NullValueInVariableException("Error with variables in input.", input);
+                    throw new NullValueInVariableException(ErrorResource.VariableInputError, input);
                 }
                 var inputIterator = new WarewolfIterator(warewolfEvalResult);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);

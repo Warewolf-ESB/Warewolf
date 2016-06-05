@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.String.Json;
+using Warewolf.Resource.Errors;
 using WarewolfParserInterop;
 
 namespace Dev2.Activities
@@ -39,7 +40,7 @@ namespace Dev2.Activities
 
                     if (OutputDescription == null)
                     {
-                        dataObj.Environment.AddError("There are no outputs");
+                        dataObj.Environment.AddError(ErrorResource.NoOutPuts);
                         return;
                     }
                     int i = 0;
@@ -56,7 +57,7 @@ namespace Dev2.Activities
                     var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                     if (string.IsNullOrEmpty(input))
                     {
-                        dataObj.Environment.AddError("No Web Response received");
+                        dataObj.Environment.AddError(ErrorResource.NoWebResponse);
                     }
                     else
                     {

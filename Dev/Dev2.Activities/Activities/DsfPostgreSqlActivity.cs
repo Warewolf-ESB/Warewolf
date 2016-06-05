@@ -4,6 +4,7 @@ using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
 {
@@ -29,7 +30,7 @@ namespace Dev2.Activities
 
             if (string.IsNullOrEmpty(ProcedureName))
             {
-                errors.AddError("The selected database does not contain actions to perform");
+                errors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
 

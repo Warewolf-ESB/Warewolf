@@ -9,6 +9,7 @@ using System.Activities;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -109,15 +110,15 @@ namespace Dev2.Activities.SelectAndApply
 
             if (string.IsNullOrEmpty(DataSource))
             {
-                allErrors.AddError("DataSource cannot be empty");
+                allErrors.AddError(ErrorResource.DataSourceEmpty);
             }
             if (string.IsNullOrEmpty(Alias))
             {
-                allErrors.AddError("Alias cannot be empty");
+                allErrors.AddError(ErrorResource.AliasEmpty);
             }
             if (!DataSource.Contains("(*)") && !DataSource.Contains("()"))
             {
-                allErrors.AddError("DataSource must be a Recordset or JSON array variable.");
+                allErrors.AddError(ErrorResource.DataSourceMustBeJSonOrRecordSet);
             }
             if (allErrors.HasErrors())
             {
