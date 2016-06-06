@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2.Common;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
@@ -67,14 +68,14 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Error("Function evaluation Error", ex);
+                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
                     error = ex.Message;
                     isSuccessfulEvaluation = false;
                 }
             }
             else
             {
-                error = "Unable to evaluate empty function";
+                error = ErrorResource.CannotEvaluateEmptyFunction;
                 isSuccessfulEvaluation = false;
             }
 
@@ -127,14 +128,14 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Error("Function evaluation Error",ex);
+                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
             }
             else
             {
-                error = "Nothing to Evaluate";
+                error = ErrorResource.NothingToEvaluate;
             }
 
             return evaluationState;
@@ -160,7 +161,7 @@ namespace Dev2.MathOperations
             if(value == null || value.Count == 0)
             {
                 evaluationState = false;
-                error = "Cannot evaluate empty value list";
+                error = ErrorResource.CannotEvaluateEmptyValueList;
             }
             else if(!string.IsNullOrEmpty(expression))
             {
@@ -175,14 +176,14 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Error("Function evaluation Error", ex);
+                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
             }
             else
             {
-                error = "Nothing to Evaluate";
+                error = ErrorResource.NothingToEvaluate;
                 evaluationState = false;
             }
             return evaluationState;
@@ -208,14 +209,14 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Error("Function evaluation Error", ex);
+                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
             }
             else
             {
-                error = "Nothing to Evaluate";
+                error = ErrorResource.NothingToEvaluate;
                 evaluationState = false;
             }
 

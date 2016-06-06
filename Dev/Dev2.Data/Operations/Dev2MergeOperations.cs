@@ -12,6 +12,7 @@
 using System;
 using System.Text;
 using Dev2.Data.Enums;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Operations
 {
@@ -70,12 +71,12 @@ namespace Dev2.Data.Operations
                         break;
 
                     default:
-                        throw new Exception("Error In Dev2MergeOperations");
+                        throw new Exception(ErrorResource.ErrorInDev2MergeOperations);
                 }
             }
             else
             {
-                throw new ArgumentNullException("value", "The value can not be null.");
+                throw new ArgumentNullException("value", ErrorResource.ValueCannotBeNull);
             }
 
         }
@@ -118,7 +119,7 @@ namespace Dev2.Data.Operations
                     break;
 
                 default:
-                    throw new Exception("Error In Dev2MergeOperations");
+                    throw new Exception(ErrorResource.ErrorInDev2MergeOperations);
             }
             Merge(value, mergingType, at, padding, mergeAlignment);
         }

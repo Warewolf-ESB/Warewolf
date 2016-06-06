@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Dev2.Common;
 using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
@@ -93,13 +94,13 @@ namespace Dev2.MathOperations
                 }
                 else
                 {
-                    throw new NullReferenceException("Calculation Manager is currently null");
+                    throw new NullReferenceException(ErrorResource.CalculationManagerIsNull);
                 }
             }
 
             else
             {
-                throw new InvalidOperationException("Unable to create the defined function");
+                throw new InvalidOperationException(ErrorResource.UnableToCreateDefinedFunction);
             }
 
 
@@ -121,13 +122,13 @@ namespace Dev2.MathOperations
                 }
                 else
                 {
-                    throw new NullReferenceException("Calculation Manager is currently null");
+                    throw new NullReferenceException(ErrorResource.CalculationManagerIsNull);
                 }
             }
 
             else
             {
-                throw new InvalidOperationException("Unable to create the defined function");
+                throw new InvalidOperationException(ErrorResource.UnableToCreateDefinedFunction);
             }
 
 

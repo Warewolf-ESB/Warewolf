@@ -88,6 +88,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bad Resource. Cannot determine its type..
+        /// </summary>
+        public static string BadResource {
+            get {
+                return ResourceManager.GetString("BadResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BCC address is not in the valid format: {0}.
         /// </summary>
         public static string BCCAddressInvalidFormat {
@@ -133,6 +142,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculation Manager is currently null.
+        /// </summary>
+        public static string CalculationManagerIsNull {
+            get {
+                return ResourceManager.GetString("CalculationManagerIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot be a variable.
         /// </summary>
         public static string CannotBeVariable {
@@ -160,6 +178,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to evaluate empty function.
+        /// </summary>
+        public static string CannotEvaluateEmptyFunction {
+            get {
+                return ResourceManager.GetString("CannotEvaluateEmptyFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot evaluate empty value list.
+        /// </summary>
+        public static string CannotEvaluateEmptyValueList {
+            get {
+                return ResourceManager.GetString("CannotEvaluateEmptyValueList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot execute CMD from tool..
         /// </summary>
         public static string CannotExecuteCMDFromTool {
@@ -183,6 +219,24 @@ namespace Warewolf.Resource.Errors {
         public static string CannotLocateRootDataList {
             get {
                 return ResourceManager.GetString("CannotLocateRootDataList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot remove null List of functions.
+        /// </summary>
+        public static string CannotRemoveNullListOfFunctions {
+            get {
+                return ResourceManager.GetString("CannotRemoveNullListOfFunctions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot Save a Null list of functions.
+        /// </summary>
+        public static string CannotSaveNullListOfFunctions {
+            get {
+                return ResourceManager.GetString("CannotSaveNullListOfFunctions", resourceCulture);
             }
         }
         
@@ -241,7 +295,16 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets dont match.
+        ///   Looks up a localized string similar to Connection timed out..
+        /// </summary>
+        public static string ConnectionTimedOut {
+            get {
+                return ResourceManager.GetString("ConnectionTimedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets don&apos;t match.
         /// </summary>
         public static string ContentOpeningClosingBracketMismatch {
             get {
@@ -309,6 +372,24 @@ namespace Warewolf.Resource.Errors {
         public static string ConvertOptionDoesNotExist {
             get {
                 return ResourceManager.GetString("ConvertOptionDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete {0}. Please check the path exists..
+        /// </summary>
+        public static string CouldNotDelete {
+            get {
+                return ResourceManager.GetString("CouldNotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to could not locate any data of type [ {0} ].
+        /// </summary>
+        public static string CouldnotLocateDataType {
+            get {
+                return ResourceManager.GetString("CouldnotLocateDataType", resourceCulture);
             }
         }
         
@@ -394,6 +475,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination directory can not be a child of the source directory.
+        /// </summary>
+        public static string DestinationDirectoryCannotBeAChild {
+            get {
+                return ResourceManager.GetString("DestinationDirectoryCannotBeAChild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination directory already exists and overwrite is set to false.
+        /// </summary>
+        public static string DestinationDirectoryExist {
+            get {
+                return ResourceManager.GetString("DestinationDirectoryExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination cannot be empty or only white space.
         /// </summary>
         public static string DestinationEmpty {
@@ -403,7 +502,25 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination - Invalid expression: opening and closing brackets dont match.
+        ///   Looks up a localized string similar to Destination file already exists and overwrite is set to false.
+        /// </summary>
+        public static string DestinationFileAlreadyExists {
+            get {
+                return ResourceManager.GetString("DestinationFileAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination must be a directory.
+        /// </summary>
+        public static string DestinationMustBeADirectory {
+            get {
+                return ResourceManager.GetString("DestinationMustBeADirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination - Invalid expression: opening and closing brackets don&apos;t match.
         /// </summary>
         public static string DestinationOpeningClosingBracketMismatch {
             get {
@@ -475,7 +592,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets dont match.
+        ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets don&apos;t match.
         /// </summary>
         public static string DirectoryOpeningClosingBracketMismatch {
             get {
@@ -610,6 +727,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error In Dev2IndexFinder.
+        /// </summary>
+        public static string ErrorInDev2IndexFinder {
+            get {
+                return ResourceManager.GetString("ErrorInDev2IndexFinder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error In Dev2MergeOperations.
+        /// </summary>
+        public static string ErrorInDev2MergeOperations {
+            get {
+                return ResourceManager.GetString("ErrorInDev2MergeOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generic parameter T must be an enumeration type..
         /// </summary>
         public static string ExpectedEnumerationTypeParameter {
@@ -624,6 +759,15 @@ namespace Warewolf.Resource.Errors {
         public static string ExpectedLambdaExpresion {
             get {
                 return ResourceManager.GetString("ExpectedLambdaExpresion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expression cannot be null.
+        /// </summary>
+        public static string ExpressionCannotBeNull {
+            get {
+                return ResourceManager.GetString("ExpressionCannotBeNull", resourceCulture);
             }
         }
         
@@ -646,6 +790,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following file(s) exist in the destination folder and overwrite is set to false:- {0}.
+        /// </summary>
+        public static string FileExistInDestinationFolder {
+            get {
+                return ResourceManager.GetString("FileExistInDestinationFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Name -  {0} does not exist in your variable list.
         /// </summary>
         public static string FileNameNotInVariableList {
@@ -655,7 +808,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Name - Invalid expression: opening and closing brackets dont match.
+        ///   Looks up a localized string similar to File Name - Invalid expression: opening and closing brackets don&apos;t match.
         /// </summary>
         public static string FilenameOpeningClosingBracketMismatch {
             get {
@@ -669,6 +822,15 @@ namespace Warewolf.Resource.Errors {
         public static string FileNameRecordsetnameInvalidCharecters {
             get {
                 return ResourceManager.GetString("FileNameRecordsetnameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File was not created.
+        /// </summary>
+        public static string FileNotCreated {
+            get {
+                return ResourceManager.GetString("FileNotCreated", resourceCulture);
             }
         }
         
@@ -691,7 +853,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File or Folder - Invalid expression: opening and closing brackets dont match.
+        ///   Looks up a localized string similar to File or Folder - Invalid expression: opening and closing brackets don&apos;t match.
         /// </summary>
         public static string FileOrFolderOpeningClosingBracketMismatch {
             get {
@@ -745,11 +907,29 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A file with the same name exists on the destination and overwrite is set to false.
+        /// </summary>
+        public static string FileWithSameNameExist {
+            get {
+                return ResourceManager.GetString("FileWithSameNameExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can not execute a For Each with no content.
         /// </summary>
         public static string ForEachWithNoContentError {
             get {
                 return ResourceManager.GetString("ForEachWithNoContentError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to formatName cannot be null or empty string..
+        /// </summary>
+        public static string FormatNameCannotBeNull {
+            get {
+                return ResourceManager.GetString("FormatNameCannotBeNull", resourceCulture);
             }
         }
         
@@ -772,6 +952,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Function cannot be null.
+        /// </summary>
+        public static string FunctionCannotBeNull {
+            get {
+                return ResourceManager.GetString("FunctionCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Function evaluation Error.
+        /// </summary>
+        public static string FunctionEvaluationError {
+            get {
+                return ResourceManager.GetString("FunctionEvaluationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gridsplitter only works in grid.
         /// </summary>
         public static string GridsplitterOnlyWorksInGrids {
@@ -786,6 +984,24 @@ namespace Warewolf.Resource.Errors {
         public static string HeadersAreNull {
             get {
                 return ResourceManager.GetString("HeadersAreNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect type of argument or operand..
+        /// </summary>
+        public static string IncorrectOperandType {
+            get {
+                return ResourceManager.GetString("IncorrectOperandType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect user name and password for {0}.
+        /// </summary>
+        public static string IncorrectUsernameAndPassword {
+            get {
+                return ResourceManager.GetString("IncorrectUsernameAndPassword", resourceCulture);
             }
         }
         
@@ -826,11 +1042,29 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid archive password.
+        /// </summary>
+        public static string InvalidArchivePassword {
+            get {
+                return ResourceManager.GetString("InvalidArchivePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Calculate.
         /// </summary>
         public static string InvalidCalculate {
             get {
                 return ResourceManager.GetString("InvalidCalculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid region detected: An open [[ without a related close ]].
+        /// </summary>
+        public static string InvalidCloseRegion {
+            get {
+                return ResourceManager.GetString("InvalidCloseRegion", resourceCulture);
             }
         }
         
@@ -858,6 +1092,24 @@ namespace Warewolf.Resource.Errors {
         public static string InvalidLength {
             get {
                 return ResourceManager.GetString("InvalidLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid region detected: A close ]] without a related open [[.
+        /// </summary>
+        public static string InvalidOpenRegion {
+            get {
+                return ResourceManager.GetString("InvalidOpenRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system..
+        /// </summary>
+        public static string InvalidPath {
+            get {
+                return ResourceManager.GetString("InvalidPath", resourceCulture);
             }
         }
         
@@ -988,6 +1240,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must be a child element of the Canvas..
+        /// </summary>
+        public static string MustBeAchildElementOfTheCanvas {
+            get {
+                return ResourceManager.GetString("MustBeAchildElementOfTheCanvas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Must have body.
         /// </summary>
         public static string MustHaveBody {
@@ -1056,6 +1317,15 @@ namespace Warewolf.Resource.Errors {
         public static string NoRecordSet {
             get {
                 return ResourceManager.GetString("NoRecordSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing to Evaluate.
+        /// </summary>
+        public static string NothingToEvaluate {
+            get {
+                return ResourceManager.GetString("NothingToEvaluate", resourceCulture);
             }
         }
         
@@ -1186,6 +1456,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The path is in the incorrect format..
+        /// </summary>
+        public static string PathIsInIncorrectFormat {
+            get {
+                return ResourceManager.GetString("PathIsInIncorrectFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path of type &apos;{0}&apos; expected, path of type &apos;{1}&apos; received..
         /// </summary>
         public static string PathMismatch {
@@ -1276,6 +1555,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You appear to have recordsets of differnt sizes.
+        /// </summary>
+        public static string RecordsetsHaveDifferntSizes {
+            get {
+                return ResourceManager.GetString("RecordsetsHaveDifferntSizes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recursive Directory Create Failed For [ {0} ].
+        /// </summary>
+        public static string RecursiveDirectoryCreateFailed {
+            get {
+                return ResourceManager.GetString("RecursiveDirectoryCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There should not be more than one RegexValidationRule in a Bindings ValidationRules.
         /// </summary>
         public static string RegexValidationRuleShouldHaveOneRule {
@@ -1330,7 +1627,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets dont match.
+        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&apos;t match.
         /// </summary>
         public static string ResultOpeningClosingBracketMismatch {
             get {
@@ -1362,6 +1659,15 @@ namespace Warewolf.Resource.Errors {
         public static string ResultVariableContainsInvalidCharecters {
             get {
                 return ResourceManager.GetString("ResultVariableContainsInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rounding decimal places must be between {0} and {1}..
+        /// </summary>
+        public static string RoundingDecimalPlaceBetween {
+            get {
+                return ResourceManager.GetString("RoundingDecimalPlaceBetween", resourceCulture);
             }
         }
         
@@ -1465,6 +1771,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source and destination need to be both files or directories.
+        /// </summary>
+        public static string SourceAndDestinationNOTFilesOrDirectory {
+            get {
+                return ResourceManager.GetString("SourceAndDestinationNOTFilesOrDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source can not be an empty string.
+        /// </summary>
+        public static string SourceCannotBeAnEmptyString {
+            get {
+                return ResourceManager.GetString("SourceCannotBeAnEmptyString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source directory does not exist or could not be found: {0}.
         /// </summary>
         public static string SourceDirectoryDoesNotExist {
@@ -1474,11 +1798,29 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source must be a file.
+        /// </summary>
+        public static string SourceMustBeAFile {
+            get {
+                return ResourceManager.GetString("SourceMustBeAFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Star notation is not accepted in the {0}..
         /// </summary>
         public static string StarNotationNotAllowed {
             get {
                 return ResourceManager.GetString("StarNotationNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The start index specified was not a number..
+        /// </summary>
+        public static string StartIndexNotANumber {
+            get {
+                return ResourceManager.GetString("StartIndexNotANumber", resourceCulture);
             }
         }
         
@@ -1555,6 +1897,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to create the defined function.
+        /// </summary>
+        public static string UnableToCreateDefinedFunction {
+            get {
+                return ResourceManager.GetString("UnableToCreateDefinedFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to parse the Source Name.
         /// </summary>
         public static string UnableToParseSourceName {
@@ -1573,7 +1924,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets dont match.
+        ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets don&apos;t match.
         /// </summary>
         public static string UsernameOpeningClosingBracketMismatch {
             get {
@@ -1618,6 +1969,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value can not be null..
+        /// </summary>
+        public static string ValueCannotBeNull {
+            get {
+                return ResourceManager.GetString("ValueCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to VALUE must be an enum..
         /// </summary>
         public static string ValueMustBeAnEnum {
@@ -1641,6 +2001,15 @@ namespace Warewolf.Resource.Errors {
         public static string VariableInputError {
             get {
                 return ResourceManager.GetString("VariableInputError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable [[]] is missing a name.
+        /// </summary>
+        public static string VariableIsMissing {
+            get {
+                return ResourceManager.GetString("VariableIsMissing", resourceCulture);
             }
         }
         
@@ -1677,6 +2046,15 @@ namespace Warewolf.Resource.Errors {
         public static string WebServiceNotFound {
             get {
                 return ResourceManager.GetString("WebServiceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The XPath expression provided is not valid.
+        /// </summary>
+        public static string XPathProvidedNotValid {
+            get {
+                return ResourceManager.GetString("XPathProvidedNotValid", resourceCulture);
             }
         }
     }
