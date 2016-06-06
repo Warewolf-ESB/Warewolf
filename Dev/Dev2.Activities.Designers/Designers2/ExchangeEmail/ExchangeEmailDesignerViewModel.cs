@@ -228,13 +228,13 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             if (string.IsNullOrEmpty(To))
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.TOAddressRequired} };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.ToAddressRequired} };
                 return;
             }
             if (SourceRegion.SelectedSource == null)
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.SourceInvalid } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.InvalidSource } };
                 return;
             }
         
