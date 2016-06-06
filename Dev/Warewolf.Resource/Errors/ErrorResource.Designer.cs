@@ -1553,5 +1553,8 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("WebRequestError", resourceCulture);
             }
         }
+        public static string NoOutputs { get; set; }
+        public static string TOAddressRequired { get; set; }
+        public static string SourceInvalid { get; set; }
     }
 }
