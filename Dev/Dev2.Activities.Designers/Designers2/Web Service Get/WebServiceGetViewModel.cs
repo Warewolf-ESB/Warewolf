@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             : base(modelItem)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var server = shellViewModel.ActiveServer;
+            var server = shellViewModel.ActiveServer;            
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             _builder = new ServiceInputBuilder();

@@ -13,9 +13,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
-using Dev2.Providers.Validation.Rules;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Threading;
@@ -54,12 +52,6 @@ namespace Dev2.Activities.Designers2.SharepointListCreate
             {
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
-        }
-
-        public IRuleSet GetRuleSet(string propertyName)
-        {
-            var ruleSet = new RuleSet();
-            return ruleSet;
         }
     }
 }
