@@ -28,11 +28,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
 
         public override string CollectionName { get { return "FieldsCollection"; } }
 
-        public void TestAddTitleBarQuickVariableInputToggle()
-        {
-            AddTitleBarQuickVariableInputToggle();
-        }
-
         #region Overrides of ActivityCollectionDesignerViewModel<ActivityDTO>
 
         protected override void DoCustomAction(string propertyName)
