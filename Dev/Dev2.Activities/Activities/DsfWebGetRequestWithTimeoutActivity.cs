@@ -24,6 +24,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
@@ -135,7 +136,7 @@ namespace Dev2.Activities
                         {
                             if (timeoutval < 0)
                             {
-                                allErrors.AddError(string.Format("Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}.", int.MaxValue));
+                                allErrors.AddError(string.Format(ErrorResource.ValueTimeOutOutOfRange, int.MaxValue));
                                 timeoutSecondsError = true;
                             }
                             else
@@ -143,7 +144,7 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            allErrors.AddError(string.Format("Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.", TimeOutText));
+                            allErrors.AddError(string.Format(ErrorResource.InvalidTimeOutSecondsText, TimeOutText));
                             timeoutSecondsError = true;
                         }
 

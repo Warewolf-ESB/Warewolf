@@ -13,6 +13,7 @@ using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Validation.Rules;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Validation
 {
@@ -21,7 +22,7 @@ namespace Dev2.Validation
         public IsSingleValueRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "result field only allows a single result";
+            ErrorText = ErrorResource.SingleResultAllowed;
         }
 
 

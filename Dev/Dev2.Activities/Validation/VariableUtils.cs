@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Validation
 {
@@ -65,7 +66,7 @@ namespace Dev2.Validation
                     {
                         ErrorType = ErrorType.Critical,
                         Message = (string.IsNullOrEmpty(labelText) ? "" : labelText + " - ")
-                                  + "Invalid expression: opening and closing brackets don't match."
+                                  + ErrorResource.ResultOpeningClosingBracketMismatch
                     };
                 }
             }

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -300,13 +301,13 @@ namespace Dev2.TO
                 }
                 return jObjects;
             }
-            throw new Exception("Invalid result type was encountered from warewolfstorage");
+            throw new Exception(ErrorResource.InvalidResultTypeFromWarewolfStorage);
         }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {
-            if (string.IsNullOrEmpty(sourceName)) return "Must supply a Source Name";
-            if (string.IsNullOrEmpty(destinationName)) return "Must supply a Destination Name";
+            if (string.IsNullOrEmpty(sourceName)) return ErrorResource.SupplySourceName;
+            if (string.IsNullOrEmpty(destinationName)) return ErrorResource.SupplyDestinationName;
 
             return ValidateInput(sourceName);
 
@@ -324,7 +325,7 @@ namespace Dev2.TO
                     if (complex.Item
                         .Any(x => x.IsRecordSetNameExpression))
                     {
-                        return "Cannot specify a Recordset as part of a comma saperated list of expressions";
+                        return ErrorResource.CannotCommaSeperateRecordset;
                     }
                     if (complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1 ||
@@ -339,7 +340,7 @@ namespace Dev2.TO
                            .Aggregate((a, b) => a && b))
                     // ReSharper restore MaximumChainedReferences
                     {
-                        return "Problem with input: expressions must be comma separated";
+                        return ErrorResource.ExpressionMustBeCommaSeperated;
                     }
                 }
                 else if (!parsed.IsRecordSetNameExpression &&
@@ -347,12 +348,12 @@ namespace Dev2.TO
                         !parsed.IsScalarExpression &&
                         !parsed.IsWarewolfAtomExpression)
                 {
-                    return "Can only have a scalar, a RecordSet or a RecordSet with column qualification as input";
+                    return ErrorResource.OnlyScalarRecordsetCommaSeperated;
                 }
             }
             catch (Exception)
             {
-                return "Unable to parse the Source Name";
+                return ErrorResource.UnableToParseSourceName;
             }
             return null;
         }

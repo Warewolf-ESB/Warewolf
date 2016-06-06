@@ -166,6 +166,10 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Warewolf.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Warewolf.Resource\bin\Debug\Warewolf.Resource.dll</HintPath>
+    </Reference>
     <Reference Include="WarewolfLanguageParser">
       <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
     </Reference>

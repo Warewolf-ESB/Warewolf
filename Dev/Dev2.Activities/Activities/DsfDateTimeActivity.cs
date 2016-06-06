@@ -31,6 +31,7 @@ using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -285,7 +286,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
                 {
-                    throw new Exception("Add Time amount must be numeric");
+                    throw new Exception(ErrorResource.TimeMustBeNumeric);
                 }
             }
             return DateTimeConverterFactory.CreateDateTimeTO(evaledDateTime, evaledInputFormat, evaledOutputFormat, timeModifierType, tmpTimeAmount, Result);

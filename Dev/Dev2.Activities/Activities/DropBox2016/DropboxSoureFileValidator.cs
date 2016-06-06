@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security;
 using Dev2.Common.Interfaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.DropBox2016
 {
@@ -25,19 +26,19 @@ namespace Dev2.Activities.DropBox2016
             }
             catch (ArgumentException)
             {
-                throw new ArgumentException("Cannot locate the file/s specified. Please confirm that the correct file location has been entered.");
+                throw new ArgumentException(ErrorResource.DropBoxCannotLocateSpecifiedFiles);
             }
             catch (NotSupportedException)
             {
-                throw new NotSupportedException("Path contains a colon (\":\") that is not part of a volume identifier (for example, \"c:\")");
+                throw new NotSupportedException(ErrorResource.DropBoxPathContainsColon);
             }
             catch (PathTooLongException)
             {
-                throw new PathTooLongException("The specified path, file name, or both exceed the system-defined maximum length");
+                throw new PathTooLongException(ErrorResource.DropBoxSpecifiedPathExceedMaxLength);
             }
             catch (SecurityException)
             {
-                throw new SecurityException("The caller does not have the required permissions");
+                throw new SecurityException(ErrorResource.DropBoxCallerHasNoPermission);
             }
         }
 
