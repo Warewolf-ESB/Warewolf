@@ -37,6 +37,7 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
 
         [ExcludeFromCodeCoverage]
         [NotifyPropertyChangedInvocator]
+        // ReSharper disable once UnusedMember.Local
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

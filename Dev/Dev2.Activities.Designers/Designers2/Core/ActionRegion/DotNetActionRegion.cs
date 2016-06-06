@@ -308,11 +308,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set;
         }
 
-        public int GetId()
-        {
-            return SelectedAction.FullName.GetHashCode();
-        }
-
         #endregion
 
         #region Implementation of IActionToolRegion<IPluginAction>

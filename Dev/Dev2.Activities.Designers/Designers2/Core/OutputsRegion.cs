@@ -5,10 +5,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Communication;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Storage;
 
@@ -44,7 +46,9 @@ namespace Dev2.Activities.Designers2.Core
             }
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObject = _modelItem.GetProperty<bool>("IsObject");
+            ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             IsObjectOutputUsed = isObjectOutputUsed;
+            _shellViewModel = CustomContainer.Get<IShellViewModel>();
             
         }
 
@@ -71,6 +75,7 @@ namespace Dev2.Activities.Designers2.Core
         private string _objectName;
         private string _objectResult;
         private bool _isObjectOutputUsed;
+        private IShellViewModel _shellViewModel;
 
         #region Implementation of IToolRegion
 
@@ -251,6 +256,10 @@ namespace Dev2.Activities.Designers2.Core
                     _objectName = string.Empty;
                     _modelItem.SetProperty("ObjectName", _objectName);
                     OnPropertyChanged();
+                }
+                if (DataListUtil.IsFullyEvaluated(_objectName) && IsObject &&!string.IsNullOrEmpty(ObjectResult))
+                {
+                    _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(_objectName), ObjectResult);
                 }
             }
         }
