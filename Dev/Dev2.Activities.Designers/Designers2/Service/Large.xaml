@@ -164,7 +164,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="4" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="15"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
                                                Text="*"
@@ -233,6 +233,10 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock Text="{Binding Path=DisplayName}"
                                                TextTrimming="CharacterEllipsis"
                                                VerticalAlignment="Center"
@@ -241,6 +245,14 @@
                                             <ToolTip Content="{Binding Path=DisplayName}" />
                                         </TextBlock.ToolTip>
                                     </TextBlock>
+                                    <Button Command="{Binding Path=ViewComplexObjectsCommand}"
+                                            Grid.Column="1"
+                                            ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ButtonTransparentStyle}"
+                                            Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                            Template="{StaticResource ViewComplexObjectsTemplate}">
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
