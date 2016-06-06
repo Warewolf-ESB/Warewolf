@@ -618,14 +618,38 @@
   <data name="AssemblyCreationError" xml:space="preserve">
     <value>Compilation Error Creating Assembly</value>
   </data>
+  <data name="ConvertBackNotSupported" xml:space="preserve">
+    <value>ConvertBack not supported.</value>
+  </data>
+  <data name="ConvertersCollectionContainsNull" xml:space="preserve">
+    <value>The Converters collection of the ValueConverterGroup contains a null reference at index: {0}</value>
+  </data>
+  <data name="ElementBeingDraggedIsNull" xml:space="preserve">
+    <value>ElementBeingDragged is null.</value>
+  </data>
+  <data name="GridsplitterOnlyWorksInGrids" xml:space="preserve">
+    <value>Gridsplitter only works in grid</value>
+  </data>
+  <data name="MathConverterAcceptsDoubles" xml:space="preserve">
+    <value>Converter only accepts doubles</value>
+  </data>
+  <data name="RegexValidationRuleShouldHaveOneRule" xml:space="preserve">
+    <value>There should not be more than one RegexValidationRule in a Bindings ValidationRules</value>
+  </data>
   <data name="RegexValidatorUsedWithTexyBoxs" xml:space="preserve">
     <value>The RegexValidator can only be used with a TextBox.</value>
+  </data>
+  <data name="TargetobjectMustBeUIElement" xml:space="preserve">
+    <value>Target object must be a UIElement.</value>
   </data>
   <data name="TexBoxMustBeBoundForRegexValidation" xml:space="preserve">
     <value>The TextBox's Text property must be bound for the RegexValidator to validate it.</value>
   </data>
   <data name="TextBoxTextBindingHasNoParent" xml:space="preserve">
     <value>Unexpected situation: the TextBox.Text binding expression has no parent binding.</value>
+  </data>
+  <data name="ValueMustBeAnEnum" xml:space="preserve">
+    <value>VALUE must be an enum.</value>
   </data>
   <data name="WebServiceDescriptionInvalid" xml:space="preserve">
     <value>Invalid Web Service Description</value>

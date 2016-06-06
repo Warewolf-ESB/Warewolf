@@ -58,13 +58,11 @@ namespace Dev2.Activities.Designers.Tests
             }
         }
 
-        public void HeightChangedNow()
-        {
-        }
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // ReSharper disable once UnusedMember.Global
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

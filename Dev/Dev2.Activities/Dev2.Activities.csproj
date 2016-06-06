@@ -498,12 +498,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activities\DropBox\DownloadActivity\" />
-    <Folder Include="Activities\DropBox\DropboxFiles\" />
-    <Folder Include="Activities\DropBox\Result\" />
-    <Folder Include="Activities\DropBox\UploadActivity\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--
   <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
