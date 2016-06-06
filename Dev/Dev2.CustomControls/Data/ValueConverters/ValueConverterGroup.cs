@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Warewolf.Resource.Errors;
 
 namespace WPF.JoshSmith.Data.ValueConverters
 {
@@ -133,9 +134,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
                 {
                     nextConverter = Converters[converterIndex + 1];
                     if (nextConverter == null)
-                        throw new InvalidOperationException(
-                            "The Converters collection of the ValueConverterGroup contains a null reference at index: "
-                            + (converterIndex + 1));
+                        throw new InvalidOperationException(string.Format(ErrorResource.ConvertersCollectionContainsNull, (converterIndex + 1)));
                 }
             }
             else

@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using Warewolf.Resource.Errors;
 
 namespace WPF.JoshSmith.Data.ValueConverters
 {
@@ -53,7 +54,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         public object ConvertBack(
             object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException("Cannot convert back");
+            throw new NotSupportedException(ErrorResource.ConvertBackNotSupported);
         }
 
         private object FindResource(object resourceKey)
