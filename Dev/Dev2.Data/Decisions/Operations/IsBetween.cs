@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using Dev2.Common;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -77,7 +78,7 @@ namespace Dev2.Data.Decisions.Operations
             }
             else
             {
-                throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
+                throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
             }
 
             return left > 0 && right < 0;

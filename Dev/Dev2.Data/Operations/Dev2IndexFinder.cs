@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Operations
 {
@@ -57,7 +58,7 @@ namespace Dev2.Data.Operations
             startIndex = !string.IsNullOrWhiteSpace(startIndex) ? startIndex : "0";
             if(!int.TryParse(startIndex, out startIdx))
             {
-                throw new Exception("The start index specified was not a number.");
+                throw new Exception(ErrorResource.StartIndexNotANumber);
             }
 
             #endregion
@@ -137,7 +138,7 @@ namespace Dev2.Data.Operations
                     break;
 
                 default:
-                    throw new Exception("Error In Dev2IndexFinder");
+                    throw new Exception(ErrorResource.ErrorInDev2IndexFinder);
 
             }
             return result;
@@ -190,7 +191,7 @@ namespace Dev2.Data.Operations
                     break;
 
                 default:
-                    throw new Exception("Error In Dev2IndexFinder");
+                    throw new Exception(ErrorResource.ErrorInDev2IndexFinder);
 
             }
             return result;

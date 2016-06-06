@@ -22,6 +22,7 @@ using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using Renci.SshNet;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.PathOperations
 {
@@ -151,7 +152,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception)
                 {
-                    throw new Exception("The path is in the incorrect format.");
+                    throw new Exception(ErrorResource.PathIsInIncorrectFormat);
                 }
             }
             return "";
@@ -189,11 +190,11 @@ namespace Dev2.Data.PathOperations
                 }
                 if(e.Message.Contains("timeout"))
                 {
-                    throw new Exception("Connection timed out.");
+                    throw new Exception(ErrorResource.ConnectionTimedOut);
                 }
                 if(e.Message.Contains("Auth failed"))
                 {
-                    throw new Exception(string.Format("Incorrect user name and password for {0}", path.Path));
+                    throw new Exception(string.Format(ErrorResource.IncorrectUsernameAndPassword, path.Path));
                 }
                 if(path.Path.Contains("\\"))
                 {
@@ -217,7 +218,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception)
                 {
-                    throw new Exception("The path is in the incorrect format.");
+                    throw new Exception(ErrorResource.PathIsInIncorrectFormat);
                 }
             }
             return "";
@@ -304,7 +305,7 @@ namespace Dev2.Data.PathOperations
             {
                 if(response.StatusCode != FtpStatusCode.FileActionOK && response.StatusCode != FtpStatusCode.ClosingData)
                 {
-                    throw new Exception("File was not created");
+                    throw new Exception(ErrorResource.FileNotCreated);
                 }
             }
             return result;
@@ -339,7 +340,7 @@ namespace Dev2.Data.PathOperations
                             Dev2Logger.Debug(e.StackTrace);
                             sftp.Disconnect();
                             sftp.Dispose();
-                            throw new Exception("File was not created");
+                            throw new Exception(ErrorResource.FileNotCreated);
                         }
                     }
                 }
@@ -430,7 +431,7 @@ namespace Dev2.Data.PathOperations
                 {
                     if(webResponse.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
                     {
-                        throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
+                        throw new DirectoryNotFoundException(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                     }
                     else
                     {
@@ -479,7 +480,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception)
             {
-                throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
+                throw new DirectoryNotFoundException(string.Format(ErrorResource.DirectoryNotFound, src.Path));
             }
             finally
             {
@@ -809,7 +810,7 @@ namespace Dev2.Data.PathOperations
             {
                 sftp.Dispose();
                 Dev2Logger.Error(this, ex);
-                throw new Exception(string.Format("Path not found {0}. Please ensure that it exists", path));
+                throw new Exception(string.Format(ErrorResource.DirectoryNotFound, path));
             }
             return result.ToString();
         }
@@ -942,7 +943,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception exception)
             {
-                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path), exception);
+                throw new Exception(string.Format(ErrorResource.CouldNotDelete, src.Path), exception);
             }
             finally
             {
@@ -971,7 +972,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception)
             {
-                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));
+                throw new Exception(string.Format(ErrorResource.CouldNotDelete, src.Path));
             }
             finally
             {
