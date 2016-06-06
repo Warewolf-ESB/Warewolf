@@ -16,6 +16,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 // ReSharper disable ReturnValueOfPureMethodIsNotUsed
@@ -39,7 +40,7 @@ namespace Dev2.Activities.WcfEndPoint
             errors = new ErrorResultTO();
             if (Method == null)
             {
-                errors.AddError("No Method Selected.");
+                errors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
             ExecuteService(update, out errors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));

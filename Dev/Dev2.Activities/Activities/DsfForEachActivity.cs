@@ -28,6 +28,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -692,7 +693,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dev2ActivityIOMapping == null)
                 {
-                    error = "Can not execute a For Each with no content";
+                    error = ErrorResource.ForEachWithNoContentError;
                 }
                 else
                 {

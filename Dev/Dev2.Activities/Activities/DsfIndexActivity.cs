@@ -29,6 +29,7 @@ using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -156,11 +157,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var completeResultList = new List<string>();
                 if (String.IsNullOrEmpty(InField))
                 {
-                    allErrors.AddError("'In Field' is blank");
+                    allErrors.AddError(string.Format(ErrorResource.IsBlank, "'In Field'"));
                 }
                 else if (String.IsNullOrEmpty(Characters))
                 {
-                    allErrors.AddError("'Characters' is blank");
+                    allErrors.AddError(string.Format(ErrorResource.IsBlank, "'Characters'"));
                 }
                 else
                 {

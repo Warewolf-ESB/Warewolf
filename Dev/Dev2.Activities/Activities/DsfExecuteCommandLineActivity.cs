@@ -31,6 +31,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Activities
@@ -135,7 +136,7 @@ namespace Dev2.Activities
                         {
                             if(string.IsNullOrEmpty(val))
                             {
-                                throw new Exception("Empty script to execute");
+                                throw new Exception(ErrorResource.EmptyScript);
                             }
 
                             StreamReader errorReader;
@@ -262,7 +263,7 @@ namespace Dev2.Activities
                         }
                         //_process.OutputDataReceived -= a;
                         _process.Kill();
-                        throw new ApplicationException("The process required user input.");
+                        throw new ApplicationException(ErrorResource.UserInputRequired);
                     }
                     Thread.Sleep(10);
                 }
@@ -316,8 +317,8 @@ namespace Dev2.Activities
 
         ProcessStartInfo CreateProcessStartInfo(string val)
         {
-            if(val.StartsWith("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
-            if(val.StartsWith("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
+            if(val.StartsWith("cmd")) throw new ArgumentException(ErrorResource.CannotExecuteCMDFromTool);
+            if(val.StartsWith("explorer")) throw new ArgumentException(ErrorResource.CannotExecuteExplorerFromTool);
             if(val.Contains("explorer"))
             {
                 var directoryName = Path.GetFullPath(val);
@@ -325,7 +326,7 @@ namespace Dev2.Activities
                     var lowerDirectoryName = directoryName.ToLower(CultureInfo.InvariantCulture);
                     if(lowerDirectoryName.EndsWith("explorer.exe"))
                     {
-                        throw new ArgumentException("Cannot execute explorer from tool.");
+                        throw new ArgumentException(ErrorResource.CannotExecuteExplorerFromTool);
                     }
                 }
             }

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -91,14 +92,14 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
-                    return "Failure: Source has been deleted.";
+                    return ErrorResource.RabbitSourceHasBeenDeleted;
                 }
 
                 string queueName, message;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName) ||
                     !evaluatedValues.TryGetValue("Message", out message))
                 {
-                    return "Failure: Queue Name and Message are required.";
+                    return ErrorResource.RabbitQueueNameAndMessageRequired;
                 }
 
                 ConnectionFactory.HostName = RabbitMQSource.HostName;

@@ -12,6 +12,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -61,12 +62,12 @@ namespace Dev2.Activities
             errors = new ErrorResultTO();
             if (Headers == null)
             {
-                errors.AddError("Headers Are Null");
+                errors.AddError(ErrorResource.HeadersAreNull);
                 return;
             }
             if (QueryString == null)
             {
-                errors.AddError("Query is Null");
+                errors.AddError(ErrorResource.QueryIsNull);
                 return;
             }
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
