@@ -9,7 +9,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -300,13 +299,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             //---------------Execute Test ----------------------
             agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
             //---------------Test Result -----------------------
-        }
-
-
-
-        List<IResource> GetSources()
-        {
-            return new List<IResource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
         }
     }
 }
