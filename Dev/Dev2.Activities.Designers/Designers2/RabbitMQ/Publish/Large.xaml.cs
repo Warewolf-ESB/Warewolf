@@ -38,15 +38,5 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             //    ThePassword = viewModel.Password;
             //}
         }
-
-        void OnPasswordChanged(object sender, RoutedEventArgs e)
-        {
-            //var viewModel = ViewModel;
-            //if(viewModel != null)
-            //{
-            //    viewModel.Password = ThePassword;
-            //}
-        }
-
     }
 }
