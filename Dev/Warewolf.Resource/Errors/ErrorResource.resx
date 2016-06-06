@@ -124,7 +124,7 @@
     <value>Directory not found {0}</value>
   </data>
   <data name="DirectoryOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Directory - Invalid expression: opening and closing brackets dont match</value>
+    <value>Directory - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="PasswordEmpty" xml:space="preserve">
     <value>Password cannot be empty or only white space</value>
@@ -133,7 +133,7 @@
     <value>File Name -  {0} does not exist in your variable list</value>
   </data>
   <data name="FilenameOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>File Name - Invalid expression: opening and closing brackets dont match</value>
+    <value>File Name - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>File {0} not found </value>
@@ -151,7 +151,7 @@
     <value>File Name - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="ResultOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Result - Invalid expression: opening and closing brackets dont match</value>
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="SingleResultAllowed" xml:space="preserve">
     <value>The result field only allows a single result</value>
@@ -169,7 +169,7 @@
     <value>Directory - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="ContentOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Contents - Invalid expression: Opening and closing brackets dont match</value>
+    <value>Contents - Invalid expression: Opening and closing brackets don't match</value>
   </data>
   <data name="ContentRecordsetIndexContainsInvalidCharecters" xml:space="preserve">
     <value>Contents - Recordset index {0} contains invalid character(s)</value>
@@ -181,7 +181,7 @@
     <value>Contents - Variable name  {0}  contains invalid character(s)</value>
   </data>
   <data name="UsernameOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Username - Invalid expression: opening and closing brackets dont match</value>
+    <value>Username - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="UsernameVariablenameInvalidCharecters" xml:space="preserve">
     <value>Username - Variable name  {0} contains invalid character(s)</value>
@@ -193,7 +193,7 @@
     <value>Destination cannot be empty or only white space</value>
   </data>
   <data name="DestinationOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Destination - Invalid expression: opening and closing brackets dont match</value>
+    <value>Destination - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="DestinationRecordsetIndexInvalidCharecters" xml:space="preserve">
     <value>Destination - Recordset index {0} contains invalid character(s)</value>
@@ -214,7 +214,7 @@
     <value>File or Folder cannot be empty or only white space</value>
   </data>
   <data name="FileOrFolderOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>File or Folder - Invalid expression: opening and closing brackets dont match</value>
+    <value>File or Folder - Invalid expression: opening and closing brackets don't match</value>
   </data>
   <data name="FileOrFolderRecordsetindexInvalid" xml:space="preserve">
     <value>File or Folder - Recordset index {0} contains invalid character(s)</value>
@@ -656,5 +656,131 @@
   </data>
   <data name="WebServiceNotFound" xml:space="preserve">
     <value>Web Service Not Found</value>
+  </data>
+  <data name="CalculationManagerIsNull" xml:space="preserve">
+    <value>Calculation Manager is currently null</value>
+  </data>
+  <data name="CannotEvaluateEmptyFunction" xml:space="preserve">
+    <value>Unable to evaluate empty function</value>
+  </data>
+  <data name="CannotEvaluateEmptyValueList" xml:space="preserve">
+    <value>Cannot evaluate empty value list</value>
+  </data>
+  <data name="CannotRemoveNullListOfFunctions" xml:space="preserve">
+    <value>Cannot remove null List of functions</value>
+  </data>
+  <data name="CannotSaveNullListOfFunctions" xml:space="preserve">
+    <value>Cannot Save a Null list of functions</value>
+  </data>
+  <data name="ErrorInDev2IndexFinder" xml:space="preserve">
+    <value>Error In Dev2IndexFinder</value>
+  </data>
+  <data name="ExpressionCannotBeNull" xml:space="preserve">
+    <value>Expression cannot be null</value>
+  </data>
+  <data name="FunctionCannotBeNull" xml:space="preserve">
+    <value>Function cannot be null</value>
+  </data>
+  <data name="FunctionEvaluationError" xml:space="preserve">
+    <value>Function evaluation Error</value>
+  </data>
+  <data name="MustBeAchildElementOfTheCanvas" xml:space="preserve">
+    <value>Must be a child element of the Canvas.</value>
+  </data>
+  <data name="NothingToEvaluate" xml:space="preserve">
+    <value>Nothing to Evaluate</value>
+  </data>
+  <data name="StartIndexNotANumber" xml:space="preserve">
+    <value>The start index specified was not a number.</value>
+  </data>
+  <data name="UnableToCreateDefinedFunction" xml:space="preserve">
+    <value>Unable to create the defined function</value>
+  </data>
+  <data name="DestinationDirectoryCannotBeAChild" xml:space="preserve">
+    <value>Destination directory can not be a child of the source directory</value>
+  </data>
+  <data name="DestinationDirectoryExist" xml:space="preserve">
+    <value>Destination directory already exists and overwrite is set to false</value>
+  </data>
+  <data name="DestinationFileAlreadyExists" xml:space="preserve">
+    <value>Destination file already exists and overwrite is set to false</value>
+  </data>
+  <data name="DestinationMustBeADirectory" xml:space="preserve">
+    <value>Destination must be a directory</value>
+  </data>
+  <data name="ErrorInDev2MergeOperations" xml:space="preserve">
+    <value>Error In Dev2MergeOperations</value>
+  </data>
+  <data name="FileExistInDestinationFolder" xml:space="preserve">
+    <value>The following file(s) exist in the destination folder and overwrite is set to false:- {0}</value>
+  </data>
+  <data name="FileWithSameNameExist" xml:space="preserve">
+    <value>A file with the same name exists on the destination and overwrite is set to false</value>
+  </data>
+  <data name="InvalidArchivePassword" xml:space="preserve">
+    <value>Invalid archive password</value>
+  </data>
+  <data name="InvalidCloseRegion" xml:space="preserve">
+    <value>Invalid region detected: An open [[ without a related close ]]</value>
+  </data>
+  <data name="InvalidOpenRegion" xml:space="preserve">
+    <value>Invalid region detected: A close ]] without a related open [[</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system.</value>
+  </data>
+  <data name="RecursiveDirectoryCreateFailed" xml:space="preserve">
+    <value>Recursive Directory Create Failed For [ {0} ]</value>
+  </data>
+  <data name="RoundingDecimalPlaceBetween" xml:space="preserve">
+    <value>Rounding decimal places must be between {0} and {1}.</value>
+  </data>
+  <data name="SourceAndDestinationNOTFilesOrDirectory" xml:space="preserve">
+    <value>Source and destination need to be both files or directories</value>
+  </data>
+  <data name="SourceCannotBeAnEmptyString" xml:space="preserve">
+    <value>Source can not be an empty string</value>
+  </data>
+  <data name="SourceMustBeAFile" xml:space="preserve">
+    <value>Source must be a file</value>
+  </data>
+  <data name="ValueCannotBeNull" xml:space="preserve">
+    <value>The value can not be null.</value>
+  </data>
+  <data name="VariableIsMissing" xml:space="preserve">
+    <value>Variable [[]] is missing a name</value>
+  </data>
+  <data name="XPathProvidedNotValid" xml:space="preserve">
+    <value>The XPath expression provided is not valid</value>
+  </data>
+  <data name="BadResource" xml:space="preserve">
+    <value>Bad Resource. Cannot determine its type.</value>
+  </data>
+  <data name="ConnectionTimedOut" xml:space="preserve">
+    <value>Connection timed out.</value>
+  </data>
+  <data name="CouldNotDelete" xml:space="preserve">
+    <value>Could not delete {0}. Please check the path exists.</value>
+  </data>
+  <data name="CouldnotLocateDataType" xml:space="preserve">
+    <value>could not locate any data of type [ {0} ]</value>
+  </data>
+  <data name="FileNotCreated" xml:space="preserve">
+    <value>File was not created</value>
+  </data>
+  <data name="FormatNameCannotBeNull" xml:space="preserve">
+    <value>formatName cannot be null or empty string.</value>
+  </data>
+  <data name="IncorrectOperandType" xml:space="preserve">
+    <value>Incorrect type of argument or operand.</value>
+  </data>
+  <data name="IncorrectUsernameAndPassword" xml:space="preserve">
+    <value>Incorrect user name and password for {0}</value>
+  </data>
+  <data name="PathIsInIncorrectFormat" xml:space="preserve">
+    <value>The path is in the incorrect format.</value>
+  </data>
+  <data name="RecordsetsHaveDifferntSizes" xml:space="preserve">
+    <value>You appear to have recordsets of differnt sizes</value>
   </data>
 </root>
