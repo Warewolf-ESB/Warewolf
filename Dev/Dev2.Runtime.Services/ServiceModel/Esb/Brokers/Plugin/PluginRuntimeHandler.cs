@@ -75,12 +75,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return pluginResult;
         }
 
-        public IOutputDescription Test(PluginInvokeArgs setupInfo)
+        public IOutputDescription Test(PluginInvokeArgs setupInfo,out string jsonResult)
         {
             try
             {
                 Assembly loadedAssembly;
-
+                jsonResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                 if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
@@ -98,11 +98,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 if (pluginResult != null)
                 {
                     pluginResult = AdjustPluginResult(pluginResult, methodToRun);
-
+                    jsonResult = JsonConvert.SerializeObject(pluginResult);
                     var tmpData = dataBrowser.Map(pluginResult);
                     dataSourceShape.Paths.AddRange(tmpData);
-                }
 
+                }
+                
                 var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                 result.DataSourceShapes.Add(dataSourceShape);
                 return result;
@@ -110,15 +111,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             catch (Exception e)
             {
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
+                jsonResult = null;
                 return null;
             }
         }
 
         private MethodInfo ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
         {
-            var parameters = BuildParameterList(setupInfo.Parameters);
             var typeList = BuildTypeList(setupInfo.Parameters);
-
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var valuedTypeList = new List<object>();
             foreach(var methodParameter in setupInfo.Parameters)
