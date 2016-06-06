@@ -16,6 +16,8 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable CheckNamespace
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -320,7 +322,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return "Source";
             }
-            throw new Exception("Bad Resource. Cannot determine is type.");
+            throw new Exception(ErrorResource.BadResource);
         }
 
         public StringBuilder ToStringBuilder()

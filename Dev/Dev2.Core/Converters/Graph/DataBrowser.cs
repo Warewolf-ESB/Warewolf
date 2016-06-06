@@ -27,7 +27,7 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (mapper == null)
             {
-                throw new Exception(string.Format(ErrorResource.CouldntCreateMapper, data.ToString()));
+                throw new Exception(string.Format(ErrorResource.CouldntCreateMapper, data));
             }
 
             return mapper.Map(data);
@@ -40,7 +40,7 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (navigator == null)
             {
-                throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path.ToString()));
+                throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path));
             }
 
             object value = navigator.SelectScalar(path);
@@ -57,7 +57,7 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (navigator == null)
             {
-                throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path.ToString()));
+                throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path));
             }
 
             IEnumerable<object> values = navigator.SelectEnumerable(path);
@@ -78,7 +78,7 @@ namespace Unlimited.Framework.Converters.Graph
 
                 if (navigator == null)
                 {
-                    throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, paths[0].ToString()));
+                    throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, paths[0]));
                 }
 
                 values = navigator.SelectEnumerablesAsRelated(paths);

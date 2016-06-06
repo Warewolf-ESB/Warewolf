@@ -255,11 +255,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             set;
         }
 
-        public int GetId()
-        {
-            return SelectedNamespace.FullName.GetHashCode();
-        }
-
         #endregion
 
         #region Implementation of INamespaceToolRegion<INamespaceItem>

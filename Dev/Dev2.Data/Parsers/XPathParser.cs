@@ -17,6 +17,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Util;
+using Warewolf.Resource.Errors;
 using Wmhelp.XPath2;
 
 namespace Dev2.Data.Parsers
@@ -167,7 +168,7 @@ namespace Dev2.Data.Parsers
             {
                 if(exception.GetType() == typeof(XPath2Exception))
                 {
-                    throw new Exception("The XPath expression provided is not valid.");
+                    throw new Exception(ErrorResource.XPathProvidedNotValid);
                 }
 
                 Dev2Logger.Error(exception);
