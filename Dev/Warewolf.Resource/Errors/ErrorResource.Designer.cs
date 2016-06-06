@@ -70,6 +70,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation Error Creating Assembly.
+        /// </summary>
+        public static string AssemblyCreationError {
+            get {
+                return ResourceManager.GetString("AssemblyCreationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attachments is not in the valid format: {0}.
         /// </summary>
         public static string AttachmentInvalidFormat {
@@ -1222,6 +1231,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The RegexValidator can only be used with a TextBox..
+        /// </summary>
+        public static string RegexValidatorUsedWithTexyBoxs {
+            get {
+                return ResourceManager.GetString("RegexValidatorUsedWithTexyBoxs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value must be a recordset name.
         /// </summary>
         public static string RequiredRecordSetName {
@@ -1429,6 +1447,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The TextBox&apos;s Text property must be bound for the RegexValidator to validate it..
+        /// </summary>
+        public static string TexBoxMustBeBoundForRegexValidation {
+            get {
+                return ResourceManager.GetString("TexBoxMustBeBoundForRegexValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected situation: the TextBox.Text binding expression has no parent binding..
+        /// </summary>
+        public static string TextBoxTextBindingHasNoParent {
+            get {
+                return ResourceManager.GetString("TextBoxTextBindingHasNoParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Time amount must be numeric.
         /// </summary>
         public static string TimeMustBeNumeric {
@@ -1553,8 +1589,23 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("WebRequestError", resourceCulture);
             }
         }
-        public static string NoOutputs { get; set; }
-        public static string TOAddressRequired { get; set; }
-        public static string SourceInvalid { get; set; }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Web Service Description.
+        /// </summary>
+        public static string WebServiceDescriptionInvalid {
+            get {
+                return ResourceManager.GetString("WebServiceDescriptionInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web Service Not Found.
+        /// </summary>
+        public static string WebServiceNotFound {
+            get {
+                return ResourceManager.GetString("WebServiceNotFound", resourceCulture);
+            }
+        }
     }
 }
