@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System.Activities;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -174,8 +175,11 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             {
                 DataSource = dataSource,
                 Alias = alias,
-               // ApplyActivity = activity
+                
+                //ApplyActivityFunc = activity
             };
+            var handler = activity as Activity;
+            dsfSelectAndApplyActivity.ApplyActivityFunc.Handler = handler;
             TestStartNode = new FlowStep
             {
                 Action = dsfSelectAndApplyActivity
@@ -202,6 +206,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
                 Alias = alias,
                 //ApplyActivity = activity
             };
+            dsfSelectAndApplyActivity.ApplyActivityFunc.Handler = activity as Activity;
             TestStartNode = new FlowStep
             {
                 Action = dsfSelectAndApplyActivity

@@ -288,7 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, string.Format("Queue '{0}' not found", queueName));
+                Assert.AreEqual(ex.Message, string.Format("Queue {0} not found", queueName));
             }
             //------------Assert Results-------------------------            
         }
@@ -330,7 +330,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, string.Format("Queue '{0}' not found", queueName));
+                Assert.AreEqual(ex.Message, string.Format("Queue {0} not found", queueName));
             }
             //------------Assert Results-------------------------            
         }
