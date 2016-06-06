@@ -10,12 +10,17 @@
 */
 
 using System;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.Views;
+using Newtonsoft.Json;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
@@ -213,6 +218,28 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        private void ViewJsonObjects(IComplexObjectItemModel item)
+        {
+            if (item != null)
+            {
+                var window = new JsonObjectsView();
+                window.Height = 280;
+                var contentPresenter = window.FindChild<TextBox>();
+                if (contentPresenter != null)
+                {
+                    var json = item.GetJson();
+                    var obj = JsonConvert.DeserializeObject(json);
+                    if (obj != null)
+                    {
+                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+                    }
+                    contentPresenter.Text = json;
+                }
+
+                window.ShowDialog();
+            }
+        }
+
         #endregion
 
         public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
@@ -244,6 +271,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 DisplayName = RecordSetName + "(*)." + Name;
                 // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
+            ViewComplexObjectsCommand = new RelayCommand(item =>
+            {
+                ViewJsonObjects(item as IComplexObjectItemModel);
+            });
         }
 
 
@@ -251,7 +282,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public IDev2Definition GetGenerationTO()
         {
             IDev2Definition result = DataListFactory.CreateDefinition(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
-
+            result.IsObject = IsObject;
             return result;
         }
 
