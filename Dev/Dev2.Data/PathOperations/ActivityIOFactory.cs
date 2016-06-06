@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
@@ -76,7 +77,7 @@ namespace Dev2.PathOperations
                 // Default to file system
                 type = enActivityIOPathType.FileSystem;
                 if(!Path.IsPathRooted(path))
-                    throw  new IOException("Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system.");
+                    throw  new IOException(ErrorResource.InvalidPath);
             }
 
             return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);

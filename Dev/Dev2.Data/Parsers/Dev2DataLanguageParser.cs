@@ -24,6 +24,7 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Parsers
 {
@@ -398,7 +399,7 @@ namespace Dev2.Data.Parsers
                     }
                     else
                     {
-                        throw new Dev2DataLanguageParseError("Invalid region detected: A close ]] without a related open [[", 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
+                        throw new Dev2DataLanguageParseError(ErrorResource.InvalidOpenRegion, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
                     }
                 }
 
@@ -424,7 +425,7 @@ namespace Dev2.Data.Parsers
 
             if (root.HangingOpen && addCompleteParts) //we have an open region but we evaluating for closed regions
             {
-                throw new Dev2DataLanguageParseError("Invalid region detected: An open [[ without a related close ]]", 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
+                throw new Dev2DataLanguageParseError(ErrorResource.InvalidCloseRegion, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
             }
             return result;
         }
@@ -655,7 +656,7 @@ namespace Dev2.Data.Parsers
                 {
                     if (payload.Child == null)
                     {
-                        result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, "Variable [[]] is missing a name", enIntellisenseErrorCode.SyntaxError, true));
+                        result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, ErrorResource.VariableIsMissing, enIntellisenseErrorCode.SyntaxError, true));
                         return result;
                     }
                 }

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Web;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract
@@ -35,7 +36,7 @@ namespace Dev2.DataList.Contract
         /// <exception cref="System.ArgumentException">formatName cannot be null or empty string.</exception>
         public static DataListFormat CreateFormat(string formatName, EmitionTypes publicFormatName = EmitionTypes.XML, string headerType = "")
         {
-            if(String.IsNullOrEmpty(formatName)) throw new ArgumentException("formatName cannot be null or empty string.");
+            if(String.IsNullOrEmpty(formatName)) throw new ArgumentException(ErrorResource.FormatNameCannotBeNull);
             DataListFormat format;
 
             lock(FormatLock)

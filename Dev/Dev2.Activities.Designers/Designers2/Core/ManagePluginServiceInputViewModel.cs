@@ -411,13 +411,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public void SetInitialVisibility()
-        {
-            IsEnabled = true;
-            InputArea.IsEnabled = true;
-            OutputArea.IsEnabled = false;
-        }
-
         #endregion
 
         #region Implementation of INotifyPropertyChanged
