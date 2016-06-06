@@ -304,13 +304,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        protected void AddTitleBarHelpToggle()
-        {
-            var toggle = ActivityDesignerToggle.Create("Question", "Close Help", "Question", "Open Help", "HelpToggle", this, ShowHelpProperty
-                );
-            TitleBarToggles.Add(toggle);
-        }
-
         protected void AddTitleBarLargeToggle()
         {
             HasLargeView = true;
