@@ -26,6 +26,7 @@ using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
@@ -454,7 +455,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             if(string.IsNullOrWhiteSpace(VariableListString))
             {
                 var doFocused = new Action(() => { IsVariableListFocused = true; });
-                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Variable List String can not be blank/empty" };
+                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = ErrorResource.VariableListStringRequired };
             }
 
             switch(SplitType)

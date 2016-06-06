@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.ExtMethods;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.Interfaces.Enums.Enums
 {
@@ -20,7 +21,7 @@ namespace Dev2.Common.Interfaces.Enums.Enums
         public static IList<TTEnum> GetEnumsToList<TTEnum>() where TTEnum : struct
         {
             Type type = typeof (TTEnum);
-            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+            if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
             return Enum.GetValues(type).Cast<TTEnum>().ToList();
         }
 
@@ -43,14 +44,14 @@ namespace Dev2.Common.Interfaces.Enums.Enums
         public static string ConvertEnumValueToString(Enum value)
         {
             Type type = value.GetType();
-            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+            if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
 
             return value.GetDescription();
         }
 
         public static object GetEnumFromStringDiscription(string discription, Type type)
         {
-            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+            if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
 
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach (object value in Enum.GetValues(type))

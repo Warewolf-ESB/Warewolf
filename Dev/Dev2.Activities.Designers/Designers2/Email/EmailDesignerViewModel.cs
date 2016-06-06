@@ -41,6 +41,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Validation;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Email
 {
@@ -215,7 +216,7 @@ namespace Dev2.Activities.Designers2.Email
             var testEmailAccount = GetTestEmailAccount();
             if(string.IsNullOrEmpty(testEmailAccount))
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please supply a To address in order to Test." } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.ToAddressRequired } };
                 return;
             }
             CanTestEmailAccount = false;

@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 
@@ -41,12 +42,12 @@ namespace Dev2.Common
         {
             if (string.IsNullOrEmpty(ToTokenize))
             {
-                throw new TokenizeError("Null or empty tokenize string!");
+                throw new TokenizeError(ErrorResource.NullTokenzeString);
             }
 
             if (_ops.Count <= 0)
             {
-                throw new TokenizeError("Cant find anything to split on!");
+                throw new TokenizeError(ErrorResource.NothingToSplit);
             }
 
             return new Dev2Tokenizer(ToTokenize, _ops, ReverseOrder);

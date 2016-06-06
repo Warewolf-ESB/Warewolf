@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
@@ -19,7 +20,9 @@ using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
+using RabbitMQ.Client.Framing.Impl;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -140,7 +143,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsEnabled)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Web get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo>()
+                {
+                    new ActionableErrorInfo()
+                    {
+                        Message = string.Format(ErrorResource.ValidateBeforeMinimising, "Web get")
+                    }
+                };
             }
             if (SourceRegion.Errors.Count > 0)
             {
