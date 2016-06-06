@@ -18,6 +18,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Xml;
+using Warewolf.Resource.Errors;
 
 namespace WPF.JoshSmith.Data.ValueConverters
 {
@@ -86,7 +87,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException("ConvertBack not supported.");
+            throw new NotSupportedException(ErrorResource.ConvertBackNotSupported);
         }
 
         #endregion // ConvertBack

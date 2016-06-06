@@ -110,7 +110,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 else
                 {
-                    throw new Exception(ErrorResource.NoOutputs);
+                    throw new Exception(ErrorResource.NoOutPuts);
                 }
                 _viewmodel.OutputsRegion.Description = Description;
                 _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;

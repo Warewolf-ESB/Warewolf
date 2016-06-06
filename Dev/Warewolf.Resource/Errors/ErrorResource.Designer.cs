@@ -70,6 +70,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation Error Creating Assembly.
+        /// </summary>
+        public static string AssemblyCreationError {
+            get {
+                return ResourceManager.GetString("AssemblyCreationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attachments is not in the valid format: {0}.
         /// </summary>
         public static string AttachmentInvalidFormat {
@@ -273,6 +282,24 @@ namespace Warewolf.Resource.Errors {
         public static string ContentVariablenameInvalidCharecters {
             get {
                 return ResourceManager.GetString("ContentVariablenameInvalidCharecters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConvertBack not supported..
+        /// </summary>
+        public static string ConvertBackNotSupported {
+            get {
+                return ResourceManager.GetString("ConvertBackNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Converters collection of the ValueConverterGroup contains a null reference at index: {0}.
+        /// </summary>
+        public static string ConvertersCollectionContainsNull {
+            get {
+                return ResourceManager.GetString("ConvertersCollectionContainsNull", resourceCulture);
             }
         }
         
@@ -556,6 +583,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ElementBeingDragged is null..
+        /// </summary>
+        public static string ElementBeingDraggedIsNull {
+            get {
+                return ResourceManager.GetString("ElementBeingDraggedIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty script to execute.
         /// </summary>
         public static string EmptyScript {
@@ -736,6 +772,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gridsplitter only works in grid.
+        /// </summary>
+        public static string GridsplitterOnlyWorksInGrids {
+            get {
+                return ResourceManager.GetString("GridsplitterOnlyWorksInGrids", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Headers Are Null.
         /// </summary>
         public static string HeadersAreNull {
@@ -912,6 +957,15 @@ namespace Warewolf.Resource.Errors {
         public static string LocalPathRequired {
             get {
                 return ResourceManager.GetString("LocalPathRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter only accepts doubles.
+        /// </summary>
+        public static string MathConverterAcceptsDoubles {
+            get {
+                return ResourceManager.GetString("MathConverterAcceptsDoubles", resourceCulture);
             }
         }
         
@@ -1222,6 +1276,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There should not be more than one RegexValidationRule in a Bindings ValidationRules.
+        /// </summary>
+        public static string RegexValidationRuleShouldHaveOneRule {
+            get {
+                return ResourceManager.GetString("RegexValidationRuleShouldHaveOneRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The RegexValidator can only be used with a TextBox..
+        /// </summary>
+        public static string RegexValidatorUsedWithTexyBoxs {
+            get {
+                return ResourceManager.GetString("RegexValidatorUsedWithTexyBoxs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value must be a recordset name.
         /// </summary>
         public static string RequiredRecordSetName {
@@ -1429,6 +1501,33 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target object must be a UIElement..
+        /// </summary>
+        public static string TargetobjectMustBeUIElement {
+            get {
+                return ResourceManager.GetString("TargetobjectMustBeUIElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TextBox&apos;s Text property must be bound for the RegexValidator to validate it..
+        /// </summary>
+        public static string TexBoxMustBeBoundForRegexValidation {
+            get {
+                return ResourceManager.GetString("TexBoxMustBeBoundForRegexValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected situation: the TextBox.Text binding expression has no parent binding..
+        /// </summary>
+        public static string TextBoxTextBindingHasNoParent {
+            get {
+                return ResourceManager.GetString("TextBoxTextBindingHasNoParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Time amount must be numeric.
         /// </summary>
         public static string TimeMustBeNumeric {
@@ -1519,6 +1618,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VALUE must be an enum..
+        /// </summary>
+        public static string ValueMustBeAnEnum {
+            get {
+                return ResourceManager.GetString("ValueMustBeAnEnum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}..
         /// </summary>
         public static string ValueTimeOutOutOfRange {
@@ -1553,8 +1661,23 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("WebRequestError", resourceCulture);
             }
         }
-        public static string NoOutputs { get; set; }
-        public static string TOAddressRequired { get; set; }
-        public static string SourceInvalid { get; set; }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Web Service Description.
+        /// </summary>
+        public static string WebServiceDescriptionInvalid {
+            get {
+                return ResourceManager.GetString("WebServiceDescriptionInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web Service Not Found.
+        /// </summary>
+        public static string WebServiceNotFound {
+            get {
+                return ResourceManager.GetString("WebServiceNotFound", resourceCulture);
+            }
+        }
     }
 }

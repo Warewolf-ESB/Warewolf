@@ -15,6 +15,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Warewolf.Resource.Errors;
 
 namespace WPF.JoshSmith.Controls.Validation
 {
@@ -125,8 +126,7 @@ namespace WPF.JoshSmith.Controls.Validation
         {
             var textBox = depObj as TextBox;
             if (textBox == null)
-                throw new InvalidOperationException(
-                    "The RegexValidator can only be used with a TextBox.");
+                throw new InvalidOperationException(ErrorResource.RegexValidatorUsedWithTexyBoxs);
 
             VerifyRegexValidationRule(textBox);
         }
@@ -165,14 +165,12 @@ namespace WPF.JoshSmith.Controls.Validation
             // Get the binding expression associated with the TextBox's Text property.
             BindingExpression expression = textBox.GetBindingExpression(TextBox.TextProperty);
             if (expression == null)
-                throw new InvalidOperationException(
-                    "The TextBox's Text property must be bound for the RegexValidator to validate it.");
+                throw new InvalidOperationException(ErrorResource.TexBoxMustBeBoundForRegexValidation);
 
             // Get the binding which owns the binding expression.
             Binding binding = expression.ParentBinding;
             if (binding == null)
-                throw new ApplicationException(
-                    "Unexpected situation: the TextBox.Text binding expression has no parent binding.");
+                throw new ApplicationException(ErrorResource.TextBoxTextBindingHasNoParent);
 
             // Look for an existing instance of the RegexValidationRule class in the
             // binding.  If there is more than one instance in the ValidationRules
@@ -185,8 +183,7 @@ namespace WPF.JoshSmith.Controls.Validation
                     if (regexRule == null)
                         regexRule = rule as RegexValidationRule;
                     else
-                        throw new InvalidOperationException(
-                            "There should not be more than one RegexValidationRule in a Binding's ValidationRules.");
+                        throw new InvalidOperationException(ErrorResource.RegexValidationRuleShouldHaveOneRule);
                 }
             }
 
