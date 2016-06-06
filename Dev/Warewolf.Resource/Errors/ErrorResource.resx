@@ -124,7 +124,7 @@
     <value>Directory not found {0}</value>
   </data>
   <data name="DirectoryOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Directory - Invalid expression: opening and closing brackets don"t match</value>
+    <value>Directory - Invalid expression: opening and closing brackets dont match</value>
   </data>
   <data name="PasswordEmpty" xml:space="preserve">
     <value>Password cannot be empty or only white space</value>
@@ -133,7 +133,7 @@
     <value>File Name -  {0} does not exist in your variable list</value>
   </data>
   <data name="FilenameOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>File Name - Invalid expression: opening and closing brackets don"t match</value>
+    <value>File Name - Invalid expression: opening and closing brackets dont match</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>File {0} not found </value>
@@ -151,7 +151,7 @@
     <value>File Name - Recordset name  {0} contains invalid character(s)</value>
   </data>
   <data name="ResultOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Result - Invalid expression: opening and closing brackets don"t match</value>
+    <value>Result - Invalid expression: opening and closing brackets dont match</value>
   </data>
   <data name="SingleResultAllowed" xml:space="preserve">
     <value>The result field only allows a single result</value>
@@ -169,7 +169,7 @@
     <value>Directory - Variable name  {0} contains invalid character(s)</value>
   </data>
   <data name="ContentOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Contents - Invalid expression: Opening and closing brackets don't match</value>
+    <value>Contents - Invalid expression: Opening and closing brackets dont match</value>
   </data>
   <data name="ContentRecordsetIndexContainsInvalidCharecters" xml:space="preserve">
     <value>Contents - Recordset index {0} contains invalid character(s)</value>
@@ -181,7 +181,7 @@
     <value>Contents - Variable name  {0}  contains invalid character(s)</value>
   </data>
   <data name="UsernameOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Username - Invalid expression: opening and closing brackets don"t match</value>
+    <value>Username - Invalid expression: opening and closing brackets dont match</value>
   </data>
   <data name="UsernameVariablenameInvalidCharecters" xml:space="preserve">
     <value>Username - Variable name  {0} contains invalid character(s)</value>
@@ -193,7 +193,7 @@
     <value>Destination cannot be empty or only white space</value>
   </data>
   <data name="DestinationOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>Destination - Invalid expression: opening and closing brackets don"t match</value>
+    <value>Destination - Invalid expression: opening and closing brackets dont match</value>
   </data>
   <data name="DestinationRecordsetIndexInvalidCharecters" xml:space="preserve">
     <value>Destination - Recordset index {0} contains invalid character(s)</value>
@@ -214,7 +214,7 @@
     <value>File or Folder cannot be empty or only white space</value>
   </data>
   <data name="FileOrFolderOpeningClosingBracketMismatch" xml:space="preserve">
-    <value>File or Folder - Invalid expression: opening and closing brackets don"t match</value>
+    <value>File or Folder - Invalid expression: opening and closing brackets dont match</value>
   </data>
   <data name="FileOrFolderRecordsetindexInvalid" xml:space="preserve">
     <value>File or Folder - Recordset index {0} contains invalid character(s)</value>
@@ -232,7 +232,7 @@
     <value>File or Folder - Variable name [[a&amp;]] contains invalid character(s)</value>
   </data>
   <data name="ResultRecordsetInvalidCharecters" xml:space="preserve">
-    <value>Result - Recordset name [[rec"()"]] contains invalid character(s)</value>
+    <value>Result - Recordset name {0} contains invalid character(s)</value>
   </data>
   <data name="UsernameRecordsetnameInvalidCharecters" xml:space="preserve">
     <value>Username - Recordset name {0} contains invalid character(s)</value>
@@ -294,7 +294,7 @@
   <data name="DataSourceMustBeJSonOrRecordSet" xml:space="preserve">
     <value>DataSource must be a Recordset or JSON array variable.</value>
   </data>
-  <data name="DecimalsNorValid" xml:space="preserve">
+  <data name="DecimalsNotValid" xml:space="preserve">
     <value>Decimals to show is not valid</value>
   </data>
   <data name="DropBoxCallerHasNoPermission" xml:space="preserve">
@@ -519,11 +519,26 @@
   <data name="WebRequestError" xml:space="preserve">
     <value>Error getting web request</value>
   </data>
+  <data name="BrokerConversionInvalid" xml:space="preserve">
+    <value>Base Conversion Broker was expecting [{0}] but the data was not in this format</value>
+  </data>
   <data name="CannotDeleteSystemFiles" xml:space="preserve">
     <value>Not allowed to delete system files/directories. {0}</value>
   </data>
+  <data name="ChannelDisposing" xml:space="preserve">
+    <value>Channel is disposing.</value>
+  </data>
   <data name="CharEnumeratorNotSupported" xml:space="preserve">
     <value>CharEnumerator is not supported for this operation type!</value>
+  </data>
+  <data name="CouldntCreateMapper" xml:space="preserve">
+    <value>Couldn't create a mapper for '{0}'.</value>
+  </data>
+  <data name="CouldntCreateNavigator" xml:space="preserve">
+    <value>Couldn't create a navigator for the path '", path.ToString(), "</value>
+  </data>
+  <data name="DataTypeMismatch" xml:space="preserve">
+    <value>Data of type '{0}' expected, data of type '{1}' received.</value>
   </data>
   <data name="DependencyInormationMalformed" xml:space="preserve">
     <value>Dependency information is malformed</value>
@@ -534,11 +549,20 @@
   <data name="ExpectedEnumerationTypeParameter" xml:space="preserve">
     <value>Generic parameter T must be an enumeration type.</value>
   </data>
+  <data name="FailedToAuthenticateUser" xml:space="preserve">
+    <value>Failed to authenticate with user [ {0} ] for resource [ {1} ] </value>
+  </data>
+  <data name="InvalidLength" xml:space="preserve">
+    <value>Length must be greater than or equal to zero if the type is Letters or LettersAndNumbers</value>
+  </data>
   <data name="InvalidTimeOut" xml:space="preserve">
     <value>Invalid time out. The timeout must be a valid variable or positive integer number.</value>
   </data>
   <data name="LocalPathRequired" xml:space="preserve">
     <value>Please enter local path</value>
+  </data>
+  <data name="MethodNotImplemented" xml:space="preserve">
+    <value>The method or operation is not implemented.</value>
   </data>
   <data name="NoPermissionToExecuteTool" xml:space="preserve">
     <value>You do not have permissions to View or Execute this resource.</value>
@@ -549,8 +573,17 @@
   <data name="NullTokenzeString" xml:space="preserve">
     <value>Null or empty tokenize string!</value>
   </data>
+  <data name="NumberOfResultsMismatch" xml:space="preserve">
+    <value>The number of results for the paths representing the {0}  expression didnt match.</value>
+  </data>
   <data name="OpeningClosingBracketMismatch" xml:space="preserve">
     <value>Invalid expression: opening and closing brackets don't match.</value>
+  </data>
+  <data name="OutputDecriptionInvalid" xml:space="preserve">
+    <value>Invalid output description {0}.</value>
+  </data>
+  <data name="PathMismatch" xml:space="preserve">
+    <value>Path of type '{0}' expected, path of type '{1}' received.</value>
   </data>
   <data name="PropertyMusHaveAValue" xml:space="preserve">
     <value>{0} must have a value</value>

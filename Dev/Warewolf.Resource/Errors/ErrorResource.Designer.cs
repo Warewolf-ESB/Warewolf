@@ -115,6 +115,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Base Conversion Broker was expecting [{0}] but the data was not in this format.
+        /// </summary>
+        public static string BrokerConversionInvalid {
+            get {
+                return ResourceManager.GetString("BrokerConversionInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot be a variable.
         /// </summary>
         public static string CannotBeVariable {
@@ -178,6 +187,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Channel is disposing..
+        /// </summary>
+        public static string ChannelDisposing {
+            get {
+                return ResourceManager.GetString("ChannelDisposing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CharEnumerator is not supported for this operation type!.
         /// </summary>
         public static string CharEnumeratorNotSupported {
@@ -214,7 +232,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets don&apos;t match.
+        ///   Looks up a localized string similar to Contents - Invalid expression: Opening and closing brackets dont match.
         /// </summary>
         public static string ContentOpeningClosingBracketMismatch {
             get {
@@ -268,6 +286,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t create a mapper for &apos;{0}&apos;..
+        /// </summary>
+        public static string CouldntCreateMapper {
+            get {
+                return ResourceManager.GetString("CouldntCreateMapper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t create a navigator for the path &apos;&quot;, path.ToString(), &quot;.
+        /// </summary>
+        public static string CouldntCreateNavigator {
+            get {
+                return ResourceManager.GetString("CouldntCreateNavigator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid characters have been entered in the CSV Numbers.
         /// </summary>
         public static string CSVInvalidCharecters {
@@ -295,11 +331,20 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data of type &apos;{0}&apos; expected, data of type &apos;{1}&apos; received..
+        /// </summary>
+        public static string DataTypeMismatch {
+            get {
+                return ResourceManager.GetString("DataTypeMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decimals to show is not valid.
         /// </summary>
-        public static string DecimalsNorValid {
+        public static string DecimalsNotValid {
             get {
-                return ResourceManager.GetString("DecimalsNorValid", resourceCulture);
+                return ResourceManager.GetString("DecimalsNotValid", resourceCulture);
             }
         }
         
@@ -331,7 +376,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination - Invalid expression: opening and closing brackets don&quot;t match.
+        ///   Looks up a localized string similar to Destination - Invalid expression: opening and closing brackets dont match.
         /// </summary>
         public static string DestinationOpeningClosingBracketMismatch {
             get {
@@ -403,7 +448,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets don&quot;t match.
+        ///   Looks up a localized string similar to Directory - Invalid expression: opening and closing brackets dont match.
         /// </summary>
         public static string DirectoryOpeningClosingBracketMismatch {
             get {
@@ -556,6 +601,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to authenticate with user [ {0} ] for resource [ {1} ] .
+        /// </summary>
+        public static string FailedToAuthenticateUser {
+            get {
+                return ResourceManager.GetString("FailedToAuthenticateUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Name -  {0} does not exist in your variable list.
         /// </summary>
         public static string FileNameNotInVariableList {
@@ -565,7 +619,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Name - Invalid expression: opening and closing brackets don&quot;t match.
+        ///   Looks up a localized string similar to File Name - Invalid expression: opening and closing brackets dont match.
         /// </summary>
         public static string FilenameOpeningClosingBracketMismatch {
             get {
@@ -601,7 +655,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File or Folder - Invalid expression: opening and closing brackets don&quot;t match.
+        ///   Looks up a localized string similar to File or Folder - Invalid expression: opening and closing brackets dont match.
         /// </summary>
         public static string FileOrFolderOpeningClosingBracketMismatch {
             get {
@@ -754,6 +808,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length must be greater than or equal to zero if the type is Letters or LettersAndNumbers.
+        /// </summary>
+        public static string InvalidLength {
+            get {
+                return ResourceManager.GetString("InvalidLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid recordset:.
         /// </summary>
         public static string InvalidRecordset {
@@ -849,6 +912,15 @@ namespace Warewolf.Resource.Errors {
         public static string LocalPathRequired {
             get {
                 return ResourceManager.GetString("LocalPathRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method or operation is not implemented..
+        /// </summary>
+        public static string MethodNotImplemented {
+            get {
+                return ResourceManager.GetString("MethodNotImplemented", resourceCulture);
             }
         }
         
@@ -997,6 +1069,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The number of results for the paths representing the {0}  expression didnt match..
+        /// </summary>
+        public static string NumberOfResultsMismatch {
+            get {
+                return ResourceManager.GetString("NumberOfResultsMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can only accept one variable.
         /// </summary>
         public static string OneVariableAccepted {
@@ -1024,6 +1105,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid output description {0}..
+        /// </summary>
+        public static string OutputDecriptionInvalid {
+            get {
+                return ResourceManager.GetString("OutputDecriptionInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;Padding&apos; must be a single character.
         /// </summary>
         public static string PADDINGMustBeSingleCharecter {
@@ -1038,6 +1128,15 @@ namespace Warewolf.Resource.Errors {
         public static string PasswordEmpty {
             get {
                 return ResourceManager.GetString("PasswordEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path of type &apos;{0}&apos; expected, path of type &apos;{1}&apos; received..
+        /// </summary>
+        public static string PathMismatch {
+            get {
+                return ResourceManager.GetString("PathMismatch", resourceCulture);
             }
         }
         
@@ -1159,7 +1258,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&quot;t match.
+        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets dont match.
         /// </summary>
         public static string ResultOpeningClosingBracketMismatch {
             get {
@@ -1177,7 +1276,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result - Recordset name [[rec&quot;()&quot;]] contains invalid character(s).
+        ///   Looks up a localized string similar to Result - Recordset name {0} contains invalid character(s).
         /// </summary>
         public static string ResultRecordsetInvalidCharecters {
             get {
@@ -1375,7 +1474,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets don&quot;t match.
+        ///   Looks up a localized string similar to Username - Invalid expression: opening and closing brackets dont match.
         /// </summary>
         public static string UsernameOpeningClosingBracketMismatch {
             get {

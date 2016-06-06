@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
+using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph
 {
@@ -26,7 +27,7 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (mapper == null)
             {
-                throw new Exception(string.Concat("Couldn't create a mapper for '", data.ToString(), "'."));
+                throw new Exception(string.Format(ErrorResource.CouldntCreateMapper, data.ToString()));
             }
 
             return mapper.Map(data);
@@ -39,7 +40,7 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (navigator == null)
             {
-                throw new Exception(string.Concat("Couldn't create a navigator for the path '", path.ToString(), "'."));
+                throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path.ToString()));
             }
 
             object value = navigator.SelectScalar(path);
@@ -56,7 +57,7 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (navigator == null)
             {
-                throw new Exception(string.Concat("Couldn't create a navigator for the path '", path.ToString(), "'."));
+                throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path.ToString()));
             }
 
             IEnumerable<object> values = navigator.SelectEnumerable(path);
@@ -77,8 +78,7 @@ namespace Unlimited.Framework.Converters.Graph
 
                 if (navigator == null)
                 {
-                    throw new Exception(string.Concat("Couldn't create a navigator for the path '", paths[0].ToString(),
-                        "'."));
+                    throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, paths[0].ToString()));
                 }
 
                 values = navigator.SelectEnumerablesAsRelated(paths);
