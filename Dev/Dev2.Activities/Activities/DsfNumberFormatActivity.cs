@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out decimalPlacesToShowValue);
                     if (!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
-                        throw new Exception(ErrorResource.DecimalsNorValid);
+                        throw new Exception(ErrorResource.DecimalsNotValid);
                     }
 
                     var tmpDecimalPlaces = colItr.FetchNextValue(roundingDecimalPlacesIterator);
