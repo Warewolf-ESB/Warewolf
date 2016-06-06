@@ -15,64 +15,23 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 {
     public interface IDataListItemModel
     {
-        #region Properties
-
         string DisplayName { get; set; }
-
         string Description { get; set; }
-
         bool Input { get; set; }
-
         bool Output { get; set; }
-
         bool IsVisible { get; set; }
-
         bool IsExpanded { get; set; }
-
         bool IsUsed { get; set; }
-
         bool AllowNotes { get; set; }
-
         bool IsComplexObject { get; set; }
-
         bool IsSelected { get; set; }
-
         bool HasError { get; set; }
-
         string ErrorMessage { get; set; }
-
         bool IsEditable { get; set; }
-
         enDev2ColumnArgumentDirection ColumnIODirection { get; set; }
-
         bool IsBlank { get; }
-
-        #endregion Properties
-
         void SetError(string errorMessage);
-
-        void RemoveError();
-
-
-        // tobe removed
-        //string LastIndexedName { get; set; }
-
+        void RemoveError();        
         string Name { get; set; }
-
-        //bool IsRecordset { get; }
-
-        //bool IsField { get; }
-
-
-        // added to others
-        //string ValidateName(string name);
-
-        //IDataListItemModel Parent { get; set; }
-
-        //ObservableCollection<IDataListItemModel> Children { get; set; }
-
-        //string FilterText { get; set; }
-
-        //void Filter(string searchText);
     }
 }

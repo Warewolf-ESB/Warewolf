@@ -1770,6 +1770,14 @@ namespace Dev2.Studio.ViewModels
                 }
             }
         }
+        
+        public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json)
+        {
+            if(ActiveItem!=null && ActiveItem.DataListViewModel != null)
+            {
+                ActiveItem.DataListViewModel.GenerateComplexObjectFromJson(parentObjectName, json);
+            }
+        }
 
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
@@ -1787,11 +1795,7 @@ namespace Dev2.Studio.ViewModels
             {
                 item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
             }
-            SetActiveEnvironment(item.Environment);
-            if (ExplorerViewModel != null)
-            {
-                //ExplorerViewModel.BringItemIntoView(item);
-            }
+            SetActiveEnvironment(item.Environment);            
         }
 
         void DebugOutputViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)

@@ -194,7 +194,7 @@
       <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Windows.Design.Interaction">
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
+      <HintPath>%vs140comntools%\..\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>

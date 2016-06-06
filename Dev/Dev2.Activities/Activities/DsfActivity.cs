@@ -764,37 +764,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void  GetDebugOutputsFromEnv(IExecutionEnvironment environment, int update)
         {
             var results = new List<DebugItem>();
-            if(Outputs != null && Outputs.Count > 0)
+            if (IsObject)
             {
-                foreach(var serviceOutputMapping in Outputs)
+                if (!string.IsNullOrEmpty(ObjectName))
                 {
-                    try
-                    {
-                        DebugItem itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
-                        results.Add(itemToAdd);
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error(e.Message, e);
-                    }
+                    DebugItem itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(ObjectName, "", environment, update), itemToAdd);
+                    results.Add(itemToAdd);
                 }
             }
             else
             {
-                IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-                IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
-                foreach(IDev2Definition dev2Definition in outputs)
+                if (Outputs != null && Outputs.Count > 0)
                 {
-                    try
+                    foreach (var serviceOutputMapping in Outputs)
                     {
-                        DebugItem itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
-                        results.Add(itemToAdd);
+                        try
+                        {
+                            DebugItem itemToAdd = new DebugItem();
+                            AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
+                            results.Add(itemToAdd);
+                        }
+                        catch (Exception e)
+                        {
+                            Dev2Logger.Error(e.Message, e);
+                        }
                     }
-                    catch(Exception e)
+                }
+                else
+                {
+                    IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
+                    IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                    foreach (IDev2Definition dev2Definition in outputs)
                     {
-                        Dev2Logger.Error(e.Message, e);
+                        try
+                        {
+                            DebugItem itemToAdd = new DebugItem();
+                            AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
+                            results.Add(itemToAdd);
+                        }
+                        catch (Exception e)
+                        {
+                            Dev2Logger.Error(e.Message, e);
+                        }
                     }
                 }
             }

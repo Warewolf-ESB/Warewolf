@@ -422,10 +422,13 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
-            if Seq.isEmpty data then
-                WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+            if Seq.length data = 1 then
+                WarewolfAtomResult(Seq.exactlyOne data)
             else
-                WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
+                if Seq.isEmpty data then
+                    WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+                else
+                    WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent recordset"
     | ComplexExpression _ -> failwith "no current use case please contact the warewolf product owner "
     | WarewolfAtomExpression _ -> failwith "no current use case please contact the warewolf product owner "

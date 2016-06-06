@@ -16,6 +16,7 @@ using Dev2.Data.MathOperations;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.MathOperations;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Operations
 {
@@ -49,12 +50,12 @@ namespace Dev2.Data.Operations
 
             if(formatNumberTO.RoundingDecimalPlaces < -14 || formatNumberTO.RoundingDecimalPlaces > 14)
             {
-                throw new InvalidOperationException("Rounding decimal places must be between -14 and 14.");
+                throw new InvalidOperationException(string.Format(ErrorResource.RoundingDecimalPlaceBetween, "-14", "14"));
             }
 
             if(formatNumberTO.AdjustDecimalPlaces && (formatNumberTO.DecimalPlacesToShow < -14 || formatNumberTO.DecimalPlacesToShow > 14))
             {
-                throw new InvalidOperationException("Decimal places to show must be less between -14 than 14.");
+                throw new InvalidOperationException(string.Format(ErrorResource.RoundingDecimalPlaceBetween, "-14", "14"));
             }
 
             string result = Round(formatNumberTO);
