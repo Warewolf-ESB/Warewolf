@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Network.Execution
 {
@@ -93,7 +94,7 @@ namespace Dev2.Network.Execution
             {
                 if (_isDisposed)
                 {
-                    throw new InvalidOperationException("Channel is disposing.");
+                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
                 }
             }
 
@@ -111,7 +112,7 @@ namespace Dev2.Network.Execution
             {
                 if (_isDisposed)
                 {
-                    throw new InvalidOperationException("Channel is disposing.");
+                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
                 }
             }
 
@@ -131,7 +132,7 @@ namespace Dev2.Network.Execution
             {
                 if (_isDisposed)
                 {
-                    throw new InvalidOperationException("Channel is disposing.");
+                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
                 }
             }
 
@@ -159,7 +160,7 @@ namespace Dev2.Network.Execution
             {
                 if (_isDisposed)
                 {
-                    throw new InvalidOperationException("Channel is disposing.");
+                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
                 }
             }
 
@@ -187,7 +188,7 @@ namespace Dev2.Network.Execution
             {
                 if (_isDisposed)
                 {
-                    throw new InvalidOperationException("Channel is disposing.");
+                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
                 }
             }
 

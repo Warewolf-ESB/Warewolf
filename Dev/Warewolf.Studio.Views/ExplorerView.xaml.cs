@@ -52,12 +52,12 @@ namespace Warewolf.Studio.Views
         }
         public IEnvironmentViewModel OpenEnvironment(string nodeName)
         {
-            return ((IExplorerViewModel)DataContext).Environments.FirstOrDefault(a=>a.DisplayName.Contains(nodeName)) ;
+            return ((IExplorerViewModel)DataContext).Environments.FirstOrDefault(a => a.DisplayName.Contains(nodeName));
         }
 
         public void CloseEnvironmentNode(string nodeName)
         {
-             ExplorerViewTestClass.Close(nodeName);
+            ExplorerViewTestClass.Close(nodeName);
         }
 
         public List<IExplorerTreeItem> GetFoldersVisible()
@@ -192,12 +192,17 @@ namespace Warewolf.Studio.Views
             }
         }
 
+        private Point startPoint;
         void DragSource_OnDragOver(object sender, DragDropMoveEventArgs e)
         {
             var drop = Utilities.GetAncestorFromType(e.DropTarget, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
             var drag = Utilities.GetAncestorFromType(e.DragSource, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
             Cursor grabbingCursor = Application.Current.TryFindResource("CursorGrabbing") as Cursor;
             Mouse.SetCursor(Cursors.Arrow);
+
+            // Get the current mouse position
+            Point mousePos = Mouse.GetPosition(null);
+            Vector diff = startPoint - mousePos;
 
             if (Mouse.LeftButton == MouseButtonState.Released)
             {
@@ -206,61 +211,75 @@ namespace Warewolf.Studio.Views
 
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                if (drag != null && drop != null && drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null)
+                if (drag != null && drag.Node != null && drop != null && drop.Node != null)
                 {
-                    Mouse.SetCursor(!CancelDrag ? grabbingCursor : Cursors.No);
-                    var dragType = drag.Node.Data.GetType();
-                    var dropType = drop.Node.Data.GetType();
-                    var destination = drop.Node.Data as IExplorerItemViewModel;
-                    var source = drag.Node.Data as IExplorerItemViewModel;
-                    if (destination != null && source != null && dragType == dropType && destination.CanDrop)
+                    if (drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null)
                     {
-                        IEnvironmentViewModel vmSource = GetEnv(source);
-                        IEnvironmentViewModel vmDestination = GetEnv(destination);
+                        Mouse.SetCursor(!CancelDrag ? grabbingCursor : Cursors.No);
+                        var dragType = drag.Node.Data.GetType();
+                        var dropType = drop.Node.Data.GetType();
+                        ExplorerTree.ScrollNodeIntoView(drop.Node);
+                        var destination = drop.Node.Data as IExplorerItemViewModel;
+                        var source = drag.Node.Data as IExplorerItemViewModel;
+                        if (destination != null && source != null && dragType == dropType && destination.CanDrop)
+                        {
+                            IEnvironmentViewModel vmSource = GetEnv(source);
+                            IEnvironmentViewModel vmDestination = GetEnv(destination);
 
-                        if (!Equals(vmSource.ResourceName, vmDestination.ResourceName))
-                        {
-                            CancelDrag = true;
-                            return;
-                        }
-                        if ((source.ResourceType == "ServerSource" || source.IsServer) && string.IsNullOrWhiteSpace(source.ResourcePath))
-                        {
-                            CancelDrag = true;
-                            return;
-                        }
-                        if (source.ResourceType == "DbService" || source.ResourceType == "PluginService" || source.ResourceType == "WebService")
-                        {
-                            CancelDrag = true;
-                            return;
-                        }
-
-                        if (!CancelDrag)
-                        {
-                            if (e.GetPosition(e.DropTarget).Y < drop.ActualHeight / 2)
+                            if (!Equals(vmSource.ResourceName, vmDestination.ResourceName))
                             {
+                                CancelDrag = true;
+                                return;
+                            }
+                            if ((source.ResourceType == "ServerSource" || source.IsServer) &&
+                                string.IsNullOrWhiteSpace(source.ResourcePath))
+                            {
+                                CancelDrag = true;
+                                return;
+                            }
+                            if (source.ResourceType == "DbService" || source.ResourceType == "PluginService" ||
+                                source.ResourceType == "WebService")
+                            {
+                                CancelDrag = true;
+                                return;
+                            }
+
+                            if (!CancelDrag)
+                            {
+                                if (e.GetPosition(e.DropTarget).Y < drop.ActualHeight / 2)
+                                {
+                                    if (!destination.CanDrop && !destination.CanDrop)
+                                    {
+                                        Mouse.SetCursor(Cursors.No);
+                                        ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
+                                            Visibility.Collapsed;
+                                        ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
+                                            Visibility.Collapsed;
+                                        return;
+                                    }
+                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
+                                        Visibility.Visible;
+                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
+                                        Visibility.Visible;
+                                    ((Grid)Utilities.GetDescendantFromName(drop, "main")).AllowDrop = true;
+                                    return;
+                                }
                                 if (!destination.CanDrop && !destination.CanDrop)
                                 {
                                     Mouse.SetCursor(Cursors.No);
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility = Visibility.Collapsed;
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility = Visibility.Collapsed;
+                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
+                                        Visibility.Collapsed;
+                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
+                                        Visibility.Collapsed;
                                     return;
                                 }
-                                ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility = Visibility.Visible;
-                                ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility = Visibility.Collapsed;
+                                ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
+                                    Visibility.Visible;
+                                ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
+                                    Visibility.Visible;
                                 ((Grid)Utilities.GetDescendantFromName(drop, "main")).AllowDrop = true;
                                 return;
                             }
-                            if (!destination.CanDrop && !destination.CanDrop)
-                            {
-                                Mouse.SetCursor(Cursors.No);
-                                ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility = Visibility.Collapsed;
-                                ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility = Visibility.Collapsed;
-                                return;
-                            }
-                            ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility = Visibility.Visible;
-                            ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility = Visibility.Collapsed;
-                            ((Grid)Utilities.GetDescendantFromName(drop, "main")).AllowDrop = true;
-                            return;
                         }
                     }
                     Mouse.SetCursor(grabbingCursor);
@@ -317,105 +336,55 @@ namespace Warewolf.Studio.Views
             var drop = Utilities.GetAncestorFromType(e.DropTarget, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
             var drag = Utilities.GetAncestorFromType(e.DragSource, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
 
-            if (drag != null && drop != null && drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null && Mouse.LeftButton == MouseButtonState.Released)
+            if (Mouse.LeftButton == MouseButtonState.Released)
             {
-                if (Equals(drag.Node.Manager.ParentNode, drop.Node))
+                if (drag != null && drag.Node != null && drop != null && drop.Node != null)
                 {
-                    CancelDrag = true;
-                    Reset(drop);
-                    return;
-                }
-                var destination = drop.Node.Data as IExplorerItemViewModel;
-                var source = drag.Node.Data as IExplorerItemViewModel;
-
-                if (source != null && destination != null)
-                {
-                    IEnvironmentViewModel vmSource = GetEnv(source);
-                    IEnvironmentViewModel vmDestination = GetEnv(destination);
-                    if (!Equals(vmDestination.ResourceName, vmSource.ResourceName))
+                    if (drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null)
                     {
-                        CancelDrag = true;
-                        return;
-                    }
-
-                    if (((source.ResourceType == "ServerSource" || source.IsServer) && string.IsNullOrWhiteSpace(source.ResourcePath))
-                        || !destination.CanDrop || !source.CanDrag)
-                    {
-                        CancelDrag = true;
-                        return;
-                    }
-
-                    if (!CancelDrag)
-                    {
-                        vmSource.IsConnecting = true;
-                        if (destination.Children.Count >= 1)
+                        if (Equals(drag.Node.Manager.ParentNode, drop.Node))
                         {
-                            var checkExists = destination.Children.FirstOrDefault(o => o.ResourceId == source.ResourceId);
-                            if (checkExists == null)
-                            {
-                                if (exp != null)
-                                {
-                                    exp.AllowDrag = false;
-                                }
-                                source.Move(destination).ContinueWith(async =>
-                                {
-                                    vmSource.IsConnecting = false;
-                                    if (exp != null)
-                                    {
-                                        exp.AllowDrag = true;
-                                    }
-                                }, TaskScheduler.FromCurrentSynchronizationContext());
-                            }
+                            CancelDrag = true;
+                            Reset(drop);
+                            return;
                         }
-                        else
-                        {
-                            source.Move(destination).ContinueWith(async =>
-                            {
-                                vmSource.IsConnecting = false;
-                                if (exp != null)
-                                {
-                                    exp.AllowDrag = true;
-                                }
-                            }, TaskScheduler.FromCurrentSynchronizationContext());
-                        }
-                    }
-                }
-
-                Reset(drop);
-            }
-            else
-            {
-                if (Mouse.LeftButton == MouseButtonState.Released)
-                {
-                    var target = e.DropTarget as ContentControl;
-                    if (target != null)
-                    {
-                        DragDrop.DoDragDrop(e.DragSource, _dragData, DragDropEffects.Copy);
-                    }
-
-                    if (drop != null && drag != null)
-                    {
-                        Mouse.SetCursor(Application.Current.TryFindResource("CursorGrabbing") as Cursor);
-                        var destination = drop.Node.Data as IEnvironmentViewModel;
+                        var destination = drop.Node.Data as IExplorerItemViewModel;
                         var source = drag.Node.Data as IExplorerItemViewModel;
+
                         if (source != null && destination != null)
                         {
+                            IEnvironmentViewModel vmSource = GetEnv(source);
+                            IEnvironmentViewModel vmDestination = GetEnv(destination);
+                            if (!Equals(vmDestination.ResourceName, vmSource.ResourceName))
+                            {
+                                CancelDrag = true;
+                                return;
+                            }
+
+                            if (((source.ResourceType == "ServerSource" || source.IsServer) &&
+                                 string.IsNullOrWhiteSpace(source.ResourcePath))
+                                || !destination.CanDrop || !source.CanDrag)
+                            {
+                                CancelDrag = true;
+                                return;
+                            }
+
                             if (!CancelDrag)
                             {
-                                IEnvironmentViewModel vm = GetEnv(source);
-                                vm.IsConnecting = true;
-                                if (!source.CanDrag)
-                                {
-                                    return;
-                                }
+                                vmSource.IsConnecting = true;
                                 if (destination.Children.Count >= 1)
                                 {
-                                    var checkExists = destination.Children.FirstOrDefault(o => o.ResourceId == source.ResourceId);
+                                    var checkExists =
+                                        destination.Children.FirstOrDefault(o => o.ResourceId == source.ResourceId);
                                     if (checkExists == null)
                                     {
+                                        if (exp != null)
+                                        {
+                                            exp.AllowDrag = false;
+                                        }
                                         source.Move(destination).ContinueWith(async =>
                                         {
-                                            vm.IsConnecting = false;
+                                            vmSource.IsConnecting = false;
                                             if (exp != null)
                                             {
                                                 exp.AllowDrag = true;
@@ -427,12 +396,71 @@ namespace Warewolf.Studio.Views
                                 {
                                     source.Move(destination).ContinueWith(async =>
                                     {
-                                        vm.IsConnecting = false;
+                                        vmSource.IsConnecting = false;
                                         if (exp != null)
                                         {
                                             exp.AllowDrag = true;
                                         }
                                     }, TaskScheduler.FromCurrentSynchronizationContext());
+                                }
+                            }
+                        }
+
+                        Reset(drop);
+                    }
+                }
+                else
+                {
+                    if (Mouse.LeftButton == MouseButtonState.Released)
+                    {
+                        var target = e.DropTarget as ContentControl;
+                        if (target != null)
+                        {
+                            DragDrop.DoDragDrop(e.DragSource, _dragData, DragDropEffects.Copy);
+                        }
+
+                        if (drag != null && drag.Node != null && drop != null && drop.Node != null)
+                        {
+                            Mouse.SetCursor(Application.Current.TryFindResource("CursorGrabbing") as Cursor);
+                            var destination = drop.Node.Data as IEnvironmentViewModel;
+                            var source = drag.Node.Data as IExplorerItemViewModel;
+                            if (source != null && destination != null)
+                            {
+                                if (!CancelDrag)
+                                {
+                                    IEnvironmentViewModel vm = GetEnv(source);
+                                    vm.IsConnecting = true;
+                                    if (!source.CanDrag)
+                                    {
+                                        return;
+                                    }
+                                    if (destination.Children.Count >= 1)
+                                    {
+                                        var checkExists =
+                                            destination.Children.FirstOrDefault(o => o.ResourceId == source.ResourceId);
+                                        if (checkExists == null)
+                                        {
+                                            source.Move(destination).ContinueWith(async =>
+                                            {
+                                                vm.IsConnecting = false;
+                                                if (exp != null)
+                                                {
+                                                    exp.AllowDrag = true;
+                                                }
+                                            }, TaskScheduler.FromCurrentSynchronizationContext());
+                                        }
+                                    }
+                                    else
+                                    {
+                                        source.Move(destination).ContinueWith(async =>
+                                        {
+                                            vm.IsConnecting = false;
+                                            if (exp != null)
+                                            {
+                                                exp.AllowDrag = true;
+                                            }
+                                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                                    }
                                 }
                             }
                         }
@@ -465,7 +493,7 @@ namespace Warewolf.Studio.Views
             var source = e.DragSource as FrameworkElement;
             e.DragSnapshotElement = null;
             Mouse.SetCursor(Cursors.Arrow);
-
+            startPoint = Mouse.GetPosition(null);
             if (Mouse.LeftButton == MouseButtonState.Released)
             {
                 StopDragging();
@@ -487,7 +515,7 @@ namespace Warewolf.Studio.Views
                 }
                 CancelDrag = false;
 
-                if (((dataContext.ResourceType == "ServerSource" || dataContext.IsServer) && 
+                if (((dataContext.ResourceType == "ServerSource" || dataContext.IsServer) &&
                         string.IsNullOrWhiteSpace(dataContext.ResourcePath)) || dataContext.IsRenaming)
                 {
                     Mouse.SetCursor(Cursors.No);

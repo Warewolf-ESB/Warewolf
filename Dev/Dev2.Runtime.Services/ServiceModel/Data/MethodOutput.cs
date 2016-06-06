@@ -59,6 +59,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public bool EmptyToNull { get; private set; }
         public bool IsTextResponse { get;  set; }
+        public bool IsObject { get; set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 

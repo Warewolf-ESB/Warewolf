@@ -9,6 +9,7 @@
 */
 
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.Data
 {
@@ -28,6 +29,8 @@ namespace Dev2.Common.Interfaces.Data
         string TypeName { get; set; }
         bool IsMapsToFocused { get; set; }
         bool IsValueFocused { get; set; }
+        ICommand ViewComplexObjectsCommand { get; set; }
+        bool IsObject { get; set; }
 
         IDev2Definition GetGenerationTO();
     }

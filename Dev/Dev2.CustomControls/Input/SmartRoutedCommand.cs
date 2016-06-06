@@ -14,6 +14,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Warewolf.Resource.Errors;
 
 namespace WPF.JoshSmith.Input
 {
@@ -69,7 +70,7 @@ namespace WPF.JoshSmith.Input
 
             var sinkElem = depObj as UIElement;
             if (sinkElem == null)
-                throw new ArgumentException("Target object must be a UIElement.");
+                throw new ArgumentException(ErrorResource.TargetobjectMustBeUIElement);
 
             if (isCommandSink)
             {

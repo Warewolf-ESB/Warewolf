@@ -74,6 +74,11 @@ namespace Dev2.DataList.Contract
                     bool isEvaluated = false;
                     string mapsTo = tmp.Attributes[_mapsToAttribute].Value;
 
+                    bool isObject;
+                    if (tmp.Attributes["IsObject"] == null || !bool.TryParse(tmp.Attributes["IsObject"].Value,out isObject))
+                    {
+                        isObject = false;
+                    }
 
                     if(!_defaultValueToMapsTo)
                     { // output
@@ -182,8 +187,9 @@ namespace Dev2.DataList.Contract
                         }
                         else
                         {
-
-                            result.Add(DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                            var dev2Definition = DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull);
+                            dev2Definition.IsObject = isObject;
+                            result.Add(dev2Definition);
                         }
                     }
                 }

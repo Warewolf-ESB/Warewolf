@@ -12,6 +12,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Converters
 {
@@ -32,7 +33,7 @@ namespace Dev2.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new Exception(ErrorResource.MethodNotImplemented);
         }
     }
 }

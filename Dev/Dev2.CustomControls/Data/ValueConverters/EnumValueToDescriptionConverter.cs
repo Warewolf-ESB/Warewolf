@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
+using Warewolf.Resource.Errors;
 
 namespace WPF.JoshSmith.Data.ValueConverters
 {
@@ -36,7 +37,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Enum == false)
-                throw new ArgumentException("'value' must be an enum.");
+                throw new ArgumentException(ErrorResource.ValueMustBeAnEnum);
 
             // Get the field in the enum type which represents the argument value.
             FieldInfo field = value.GetType().GetField(value.ToString());
@@ -64,7 +65,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException("ConvertBack not supported.");
+            throw new NotSupportedException(ErrorResource.ConvertBackNotSupported);
         }
 
         #endregion // ConvertBack

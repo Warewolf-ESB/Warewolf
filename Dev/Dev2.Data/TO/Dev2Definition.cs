@@ -70,6 +70,7 @@ namespace Dev2.DataList.Contract
 
         public bool EmptyToNull { get; set; }
         public bool IsTextResponse { get;  set; }
+        public bool IsObject { get; set; }
 
         #endregion
     }

@@ -155,7 +155,7 @@ namespace Dev2.Activities.Sharepoint
         {
             if (SharepointServerResourceId == Guid.Empty)
             {
-                throw new ArgumentNullException(SharepointServerResourceId.ToString(), ErrorResource.SourceInvalid);
+                throw new ArgumentNullException(SharepointServerResourceId.ToString(), ErrorResource.InvalidSource);
             }
 
             if (string.IsNullOrEmpty(ServerInputPath))

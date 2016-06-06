@@ -6,6 +6,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.String.Json
@@ -50,7 +51,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
                 if (dataAsJObject == null)
                 {
-                    throw new Exception(string.Format("Data of type '{0}' expected, data of type '{1}' received.",
+                    throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
                         typeof (JObject), data.GetType()));
                 }
 

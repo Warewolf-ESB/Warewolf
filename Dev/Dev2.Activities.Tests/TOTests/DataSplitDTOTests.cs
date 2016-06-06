@@ -281,7 +281,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "h]]" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "OutputVariable", "Invalid expression: opening and closing brackets don't match");
+            Verify_RuleSet(dto, "OutputVariable", "Result - Invalid expression: opening and closing brackets don't match");
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
+            Verify_RuleSet(dto, "At", "Result - Invalid expression: opening and closing brackets don't match");
         }
 
         [TestMethod]
@@ -370,7 +370,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
+            Verify_RuleSet(dto, "At", "Result - Invalid expression: opening and closing brackets don't match");
         }
 
         [TestMethod]

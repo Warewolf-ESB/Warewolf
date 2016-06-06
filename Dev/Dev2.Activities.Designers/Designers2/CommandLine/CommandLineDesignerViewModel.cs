@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Validation;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.CommandLine
 {
@@ -52,7 +53,7 @@ namespace Dev2.Activities.Designers2.CommandLine
 
             if(string.IsNullOrWhiteSpace(commandValue))
             {
-                errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Command must have a value" });
+                errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Command") });
             }
 
             // Always assign property otherwise binding does not update!
