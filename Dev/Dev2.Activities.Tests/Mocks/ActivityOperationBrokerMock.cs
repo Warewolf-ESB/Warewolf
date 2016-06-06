@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Dev2.PathOperations;
 
 namespace Dev2.Tests.Activities.Mocks
@@ -30,11 +29,6 @@ namespace Dev2.Tests.Activities.Mocks
             Source = path;
             DeferredRead = deferredRead;
             return "Successful";
-        }
-
-        public Stream GetRaw(IActivityIOOperationsEndPoint path)
-        {
-            throw new NotImplementedException();
         }
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)
