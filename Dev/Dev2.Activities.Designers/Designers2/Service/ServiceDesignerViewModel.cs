@@ -897,24 +897,6 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        void UpdateLastValidationMemoWithDeleteError()
-        {
-
-            var memo = new DesignValidationMemo
-            {
-                InstanceID = UniqueID,
-                IsValid = false,
-            };
-            memo.Errors.Add(new ErrorInfo
-            {
-                InstanceID = UniqueID,
-                ErrorType = ErrorType.Warning,
-                FixType = FixType.Delete,
-                Message = "Resource was not found. This service will not execute."
-            });
-            UpdateLastValidationMemo(memo);
-        }
-
         void UpdateLastValidationMemoWithSourceNotFoundError()
         {
 

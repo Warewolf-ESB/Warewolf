@@ -196,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { @"Title|Fname|LNa", "me|TelNo|", "1.Mr", "|Frank|Williams" };
+            List<string> expected = new List<string> { @"Title|Fname|LNa", "me|TelNo|", "1.Mr|", "Frank|Williams|" };
             List<string> actual = new List<string>();
 
             for(int i = 1; i <= 4; i++)
@@ -209,6 +209,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            Assert.AreEqual(4, actual.Count());
+            Assert.AreEqual(4, expected.Count());
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -539,7 +541,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "via|0724587310"
                                                     , "5.Sir|Richard|"
                                                     , "Branson|0812457"
-                                                    , "896" };
+                                                    };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
 

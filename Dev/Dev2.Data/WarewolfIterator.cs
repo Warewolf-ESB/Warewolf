@@ -4,6 +4,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Dev2.MathOperations;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Data
@@ -131,7 +132,7 @@ namespace Dev2.Data
                 }
                 if (!tryEvaluateFunction)
                 {
-                    if (error == "Incorrect type of argument or operand.")
+                    if (error == ErrorResource.IncorrectOperandType)
                         error += string.Format(" Unable to calculate: '{0}'. Try rewriting the expression.", cleanExpression);
                     throw new Exception(error);
                 }

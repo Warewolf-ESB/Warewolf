@@ -13,6 +13,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, @"res", out actual, out error);
             // remove test datalist ;)
 
-            const string expected = @"Wallis,Buchan
+             string expected = @"Wallis,Buchan
 Barney,Buchan
 Trevor,Williams-Ros
 Travis,Frisigner
@@ -158,6 +159,7 @@ Ashley,Lewis
 Sashen,Naidoo
 Wallis,Buchan
 ";
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -198,7 +200,7 @@ Wallis,Buchan
             GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
 
-            const string expected = @"WBuchan
+             string expected = @"WBuchan
 BBuchan
 TWilliams-Ros
 TFrisigner
@@ -210,6 +212,7 @@ SNaidoo
 WBuchan
 ";
 
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -226,7 +229,7 @@ WBuchan
             GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
 
-            const string expected = @"Wallis0000Buchan
+            string expected = @"Wallis0000Buchan
 Barney0000Buchan
 Trevor0000Williams-Ros
 Travis0000Frisigner
@@ -237,10 +240,15 @@ Ashley0000Lewis
 Sashen0000Naidoo
 Wallis0000Buchan
 ";
-
+           
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         [TestMethod]
         public void Merge_Two_Fields_In_Recordsets_Index_Merge_Char_Padding_Right_Align_Expected_Data_Merged_Together_Success()
         {
@@ -254,7 +262,7 @@ Wallis0000Buchan
             GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
 
-            const string expected = @"0000WallisBuchan
+             string expected = @"0000WallisBuchan
 0000BarneyBuchan
 0000TrevorWilliams-Ros
 0000TravisFrisigner
@@ -266,6 +274,7 @@ Wallis0000Buchan
 0000WallisBuchan
 ";
 
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -283,18 +292,9 @@ Wallis0000Buchan
             GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
             // remove test datalist ;)
 
-            const string expected = @"WallisBuchan
-BarneyBuchan
-TrevorWilliams-Ros
-TravisFrisigner
-Jurie Smit
-BrendoPage
-MassimGuerrera
-AshleyLewis
-SashenNaidoo
-WallisBuchan
-";
+             string expected = "WallisBuchan\nBarneyBuchan\nTrevorWilliams-Ros\nTravisFrisigner\nJurie Smit\nBrendoPage\nMassimGuerrera\nAshleyLewis\nSashenNaidoo\nWallisBuchan\n";
 
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 

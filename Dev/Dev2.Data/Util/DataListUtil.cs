@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -431,7 +432,7 @@ namespace Dev2.Data.Util
 
             if (defs == null || defs.Count == 0)
             {
-                errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
+                errors.AddError(string.Format(ErrorResource.CouldnotLocateDataType, typeOf));
             }
             else
             {

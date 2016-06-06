@@ -121,7 +121,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // login failed
-                        throw new Exception("Failed to authenticate with user [ " + path.Username + " ] for resource [ " + path.Path + " ] ");
+                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser,path.Username, path.Path));
                     }
                 }
                 catch (Exception ex)
@@ -194,7 +194,7 @@ namespace Dev2.PathOperations
                             else
                             {
                                 // login failed
-                                throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                                throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                             }
                         }
                     }
@@ -246,7 +246,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // login failed
-                        throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
+                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
                     }
                 }
 
@@ -310,7 +310,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // login failed
-                        throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                     }
                 }
                 catch (Exception ex)
@@ -376,7 +376,7 @@ namespace Dev2.PathOperations
                         else
                         {
                             // login failed, oh no!
-                            throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                         }
                     }
                     catch (Exception ex)
@@ -424,7 +424,7 @@ namespace Dev2.PathOperations
                         else
                         {
                             // login failed
-                            throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                         }
                     }
                     catch (Exception ex)
@@ -598,7 +598,7 @@ namespace Dev2.PathOperations
                         }
                         else
                         {
-                            throw new Exception("The Directory does not exist.");
+                            throw new Exception(string.Format(ErrorResource.DirectoryDoesNotExist, path));
                         }
                     }
                     else
@@ -620,7 +620,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception)
                 {
-                    throw new Exception("Directory not found [ " + src.Path + " ] ");
+                    throw new Exception(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                 }
             }
             else
@@ -671,7 +671,7 @@ namespace Dev2.PathOperations
                                 }
                                 catch (Exception)
                                 {
-                                    throw new Exception("Directory not found [ " + src.Path + " ] ");
+                                    throw new Exception(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                                 }
 
                                 // remove impersonation now
@@ -683,7 +683,7 @@ namespace Dev2.PathOperations
                     else
                     {
                         // login failed
-                        throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
+                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
                     }
                 }
                 catch (Exception ex)
