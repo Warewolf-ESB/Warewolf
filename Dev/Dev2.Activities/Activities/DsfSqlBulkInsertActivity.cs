@@ -34,6 +34,7 @@ using MySql.Data.MySqlClient;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Activities
@@ -200,7 +201,7 @@ namespace Dev2.Activities
                     if(allErrors.HasErrors())
                     {
                         addExceptionToErrorList = false;
-                        throw new Exception("Problems with Iterators for SQLBulkInsert");
+                        throw new Exception(string.Format(ErrorResource.ProblemsWithIterators,"SQLBulkInsert"));
                     }
 
                     // emit options to debug as per acceptance test ;)
@@ -267,7 +268,7 @@ namespace Dev2.Activities
                     if (allErrors.HasErrors())
                     {
                         addExceptionToErrorList = false;
-                        throw new Exception("Problems with Iterators for SQLBulkInsert");
+                        throw new Exception(string.Format(ErrorResource.ProblemsWithIterators, "SQLBulkInsert"));
                     }
 
                     // emit options to debug as per acceptance test ;)
@@ -478,7 +479,7 @@ namespace Dev2.Activities
                 }
                 catch(Exception)
                 {
-                    errorsResultTo.AddError("Invalid recordset:"+row.InputColumn);
+                    errorsResultTo.AddError(ErrorResource.InvalidRecordset + row.InputColumn);
                 }
                 if(String.IsNullOrEmpty(row.InputColumn)) continue;
                 if(dataObject.IsDebugMode())
@@ -562,7 +563,7 @@ namespace Dev2.Activities
                         if(KeepIdentity)
                         {
                             // no mapping, identity and keep on, this is an issue ;)
-                            throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.");
+                            throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
                         }
 
                         // null, identity and no keep flag active ;)
@@ -570,7 +571,7 @@ namespace Dev2.Activities
                     }
 
                     // Nulls are not ok ;)
-                    throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " does not allow NULL. Please check your mappings to ensure you have mapped data into it.");
+                    throw new Exception(string.Format(ErrorResource.ColumnDoesNotAlloNull, dataColumnMapping.OutputColumn.ColumnName));
                 }
 
                 // more identity checks - this time it has data ;)
@@ -579,7 +580,7 @@ namespace Dev2.Activities
                     if(!KeepIdentity)
                     {
                         // we have data in an identity column and the keep identity option is disabled - oh no!
-                        throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.");
+                        throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
                     }
                 }
 
@@ -627,7 +628,7 @@ namespace Dev2.Activities
                         if (KeepIdentity)
                         {
                             // no mapping, identity and keep on, this is an issue ;)
-                            throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.");
+                            throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
                         }
 
                         // null, identity and no keep flag active ;)
@@ -635,7 +636,7 @@ namespace Dev2.Activities
                     }
 
                     // Nulls are not ok ;)
-                    throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " does not allow NULL. Please check your mappings to ensure you have mapped data into it.");
+                    throw new Exception(string.Format(ErrorResource.ColumnDoesNotAlloNull, dataColumnMapping.OutputColumn.ColumnName));
                 }
 
                 // more identity checks - this time it has data ;)
@@ -644,7 +645,7 @@ namespace Dev2.Activities
                     if (!KeepIdentity)
                     {
                         // we have data in an identity column and the keep identity option is disabled - oh no!
-                        throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.");
+                        throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
                     }
                 }
 

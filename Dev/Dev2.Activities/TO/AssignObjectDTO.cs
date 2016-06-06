@@ -16,6 +16,7 @@ using Dev2.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.TO
 {
@@ -190,18 +191,18 @@ namespace Dev2.TO
         {
             if (propertyName.NodeType != ExpressionType.Lambda)
             {
-                throw new ArgumentException(@"Value must be a lamda expression", "propertyName");
+                throw new ArgumentException(ErrorResource.ExpectedLambdaExpresion, "propertyName");
             }
 
             var body = propertyName.Body as MemberExpression;
 
             if (body == null)
             {
-                throw new ArgumentException("Must have body");
+                throw new ArgumentException(ErrorResource.MustHaveBody);
             }
             if (body.Member == null)
             {
-                throw new ArgumentException("Body must have Member");
+                throw new ArgumentException(ErrorResource.BodyMustHaveMember);
             }
             return body.Member.Name;
         }

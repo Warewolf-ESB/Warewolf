@@ -23,6 +23,7 @@ using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Interfaces;
 using Microsoft.Win32.SafeHandles;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -85,7 +86,8 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    throw new Exception("File not found [ " + path.Path + " ]");
+                    var error = string.Format(ErrorResource.FileNotFound, path.Path);
+                    throw new Exception(error);
                 }
             }
             else

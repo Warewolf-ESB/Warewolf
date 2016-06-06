@@ -20,6 +20,7 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -219,18 +220,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(propertyName.NodeType != ExpressionType.Lambda)
             {
-                throw new ArgumentException(@"Value must be a lamda expression", "propertyName");
+                throw new ArgumentException(ErrorResource.ExpectedLambdaExpresion, "propertyName");
             }
 
             var body = propertyName.Body as MemberExpression;
 
             if(body == null)
             {
-                throw new ArgumentException("Must have body");
+                throw new ArgumentException(ErrorResource.MustHaveBody);
             }
             if(body.Member == null)
             {
-                throw new ArgumentException("Body must have Member");
+                throw new ArgumentException(ErrorResource.BodyMustHaveMember);
             }
             return body.Member.Name;
         }

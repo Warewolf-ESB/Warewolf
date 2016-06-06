@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -229,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             Dev2Logger.Warn(err);
                         }
                     }
-                    if (!res) throw new Exception("Invalid Calculate");
+                    if (!res) throw new Exception(ErrorResource.InvalidCalculate);
                     return new AssignValue(fieldName, eval);
                 }
             }

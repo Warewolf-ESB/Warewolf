@@ -23,6 +23,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Microsoft.VisualBasic.Activities;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBeProtected.Global
@@ -123,7 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(executionID == rootID)
                 {
-                    throw new Exception("Parent and Child DataList IDs are the same, aborting resumption!");
+                    throw new Exception(ErrorResource.SameParentAndChildDataListId);
                 }
 
                 try
@@ -146,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                throw new Exception("Fatal Error : Cannot locate Root DataList for resumption!");
+                throw new Exception(ErrorResource.CannotLocateRootDataList);
             }
         }
 
@@ -180,12 +181,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(string.IsNullOrEmpty(recordsetName))
             {
-                errors.AddError("No recordset given");
+                errors.AddError(ErrorResource.NoRecordSet);
             }
 
             if(DataListCleaningUtils.SplitIntoRegions(recordsetName).Count > 1)
             {
-                errors.AddError("Can only accept one variable");
+                errors.AddError(ErrorResource.OneVariableAccepted);
             }
             else
             {
@@ -193,13 +194,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(DataListUtil.IsValueRecordsetWithFields(recordsetName))
                     {
-                        errors.AddError("Must only be a recordset name");
+                        errors.AddError(ErrorResource.RequiredRecordSetNameONLY);
                     }
 
                 }
                 else
                 {
-                    errors.AddError("Value must be a recordset name");
+                    errors.AddError(ErrorResource.RequiredRecordSetName);
                 }
             }
         }

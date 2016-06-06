@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
 {
@@ -106,7 +107,7 @@ namespace Dev2.Activities
                 {  swi
                 };
             }
-            throw new Exception("Invalid activity");
+            throw new Exception(ErrorResource.InvalidActivity);
           
         }
 
@@ -140,7 +141,7 @@ namespace Dev2.Activities
                 return new List<IDev2Activity>
                 { dec};
             }
-            throw new Exception("Invalid activity");
+            throw new Exception(ErrorResource.InvalidActivity);
         }
 
         IEnumerable<IDev2Activity> ParseFlowStep(FlowStep startNode, List<IDev2Activity> seenActivities)

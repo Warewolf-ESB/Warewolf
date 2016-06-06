@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Validation.Rules;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Validation
 {
@@ -22,7 +23,7 @@ namespace Dev2.Validation
         public IsSingleRecordSetRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "sort field is invalid. You may only sort on a single RecordSet columns";
+            ErrorText = ErrorResource.InvalidSortField;
         }
 
 

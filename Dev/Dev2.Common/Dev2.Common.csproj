@@ -86,6 +86,9 @@
     <Reference Include="Vestris.ResourceLib">
       <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
     </Reference>
+    <Reference Include="Warewolf.Resource">
+      <HintPath>..\Warewolf.Resource\bin\Debug\Warewolf.Resource.dll</HintPath>
+    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>

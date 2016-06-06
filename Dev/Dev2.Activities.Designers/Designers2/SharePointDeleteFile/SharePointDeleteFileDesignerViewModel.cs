@@ -10,6 +10,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 
@@ -50,14 +51,14 @@ namespace Dev2.Activities.Designers2.SharePointDeleteFile
 
             if (SharepointServerResourceId == Guid.Empty)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = ErrorResource.SharepointServerRequired } };
 
                 return Errors;
             }
 
             if (string.IsNullOrEmpty(ServerInputPath))
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please enter SharePoint Server path" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = ErrorResource.SharepointServerPathRequired } };
 
                 return Errors;
             }

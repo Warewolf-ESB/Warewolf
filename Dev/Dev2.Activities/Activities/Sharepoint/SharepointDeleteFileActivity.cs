@@ -14,6 +14,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Activities.Sharepoint
@@ -154,12 +155,12 @@ namespace Dev2.Activities.Sharepoint
         {
             if (SharepointServerResourceId == Guid.Empty)
             {
-                throw new ArgumentNullException(SharepointServerResourceId.ToString(), @"Please select valid source");
+                throw new ArgumentNullException(SharepointServerResourceId.ToString(), ErrorResource.InvalidSource);
             }
 
             if (string.IsNullOrEmpty(ServerInputPath))
             {
-                throw new ArgumentNullException(ServerInputPath, @"Server input path is not set");
+                throw new ArgumentNullException(ServerInputPath, ErrorResource.ServerInputPathEmpty);
             }
         }
 

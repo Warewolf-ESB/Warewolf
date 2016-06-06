@@ -14,6 +14,7 @@ using Dev2.Activities.Debug;
 using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -106,12 +107,12 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             if (string.IsNullOrEmpty(FromPath))
             {
-                dataObject.Environment.AddError("Please confirm that the correct file location has been entered");
+                dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileLocation);
                 return;
             }
             if (string.IsNullOrEmpty(ToPath))
             {
-                dataObject.Environment.AddError("Please confirm that the correct file destination has been entered");
+                dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileDestination);
                 return;
             }
             base.ExecuteTool(dataObject, update);

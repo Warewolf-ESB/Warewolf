@@ -1130,6 +1130,11 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(toolSpecificDebug.All(a=>a.Server==remoteName));
             Assert.IsTrue(debugStates.Where(ds => ds.ParentID == workflowId && !ds.DisplayName.Equals(toolName)).All(a=>a.Server=="localhost"));
         }
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs is")]
+        public void ThenTheInWorkflowDebugOutputsIs(string p0, string p1, Table table)
+        {
+            ThenTheInWorkflowDebugOutputsAs(p0, p1, table);
+        }
 
 
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]

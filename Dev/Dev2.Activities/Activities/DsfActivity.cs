@@ -28,6 +28,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -321,7 +322,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(esbChannel == null)
                     {
-                        throw new Exception("FATAL ERROR : Null ESB channel!!");
+                        throw new Exception(ErrorResource.NullESBChannel);
                     }
                     else
                     {
@@ -546,7 +547,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IEsbChannel esbChannel = dataObject.EsbChannel;
                     if (esbChannel == null)
                     {
-                        throw new Exception("FATAL ERROR : Null ESB channel!!");
+                        throw new Exception(ErrorResource.NullESBChannel);
                     }
                         // NEW EXECUTION MODEL ;)
                         // PBI 7913

@@ -1,4 +1,5 @@
 using System;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
@@ -25,7 +26,7 @@ namespace Dev2.Common
         {
             get
             {
-                return "Server version "+SourceVersionNumber+" is incompatiable with version "+DestVersionNumber;
+                return string.Format(ErrorResource.ServerVersionsIncompatiable,SourceVersionNumber,DestVersionNumber);
             }
         }
 

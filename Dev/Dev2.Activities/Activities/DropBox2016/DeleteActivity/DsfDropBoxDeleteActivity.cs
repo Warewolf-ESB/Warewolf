@@ -11,6 +11,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -91,7 +93,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             if (string.IsNullOrEmpty(DeletePath))
             {
-                dataObject.Environment.AddError("Please confirm that the correct file location has been entered");
+                dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileLocation);
                 return;
             }
             base.ExecuteTool(dataObject, update);

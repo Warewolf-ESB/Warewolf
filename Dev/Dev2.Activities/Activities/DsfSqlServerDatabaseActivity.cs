@@ -4,6 +4,8 @@ using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable ConvertToAutoProperty
 
 namespace Dev2.Activities
@@ -30,7 +32,7 @@ namespace Dev2.Activities
             errors.MergeErrors(execErrors);
             if (string.IsNullOrEmpty(ProcedureName))
             {
-                errors.AddError("The selected database does not contain actions to perform");
+                errors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;

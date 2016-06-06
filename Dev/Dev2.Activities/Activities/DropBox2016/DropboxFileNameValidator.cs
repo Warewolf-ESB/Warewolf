@@ -1,5 +1,6 @@
 using System;
 using Dev2.Common.Interfaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.DropBox2016
 {
@@ -15,7 +16,7 @@ namespace Dev2.Activities.DropBox2016
         public void Validate()
         {
             if (string.IsNullOrEmpty(_dropboxFile))
-                throw new ArgumentException("Please specify a correct dropbox file name");
+                throw new ArgumentException(ErrorResource.DropboxCorrectFileName);
         }
     }
 }

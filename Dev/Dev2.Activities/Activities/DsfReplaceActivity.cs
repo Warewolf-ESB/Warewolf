@@ -31,6 +31,7 @@ using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -173,7 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if (!DataListUtil.IsEvaluated(s))
                                 {
-                                    allErrors.AddError("Please insert only variables into Fields To Search");
+                                    allErrors.AddError(ErrorResource.RequiredVaraibleNameONLY);
                                     return;
                                 }
                                 if (!string.IsNullOrEmpty(findValue))

@@ -22,6 +22,8 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities.Designers2.GetWebRequest
 {
@@ -197,7 +199,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                         new ActionableErrorInfo(() => IsUrlFocused = true)
                             {
                                 ErrorType = ErrorType.Critical,
-                                Message = "Invalid expression: opening and closing brackets don't match."
+                                Message = ErrorResource.OpeningClosingBracketMismatch
                             }
                     };
             }

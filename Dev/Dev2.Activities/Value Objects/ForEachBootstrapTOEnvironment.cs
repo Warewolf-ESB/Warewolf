@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable once CheckNamespace
@@ -49,19 +51,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                 case enForEachType.InRange:
                     if(string.IsNullOrWhiteSpace(@from))
                     {
-                        errors.AddError("The from field can not be left empty.");
+                        errors.AddError(string.Format(ErrorResource.IsRequired, "The FROM field"));
                         break;
                     }
 
                     if(string.IsNullOrWhiteSpace(to))
                     {
-                        errors.AddError("The to field can not be left empty.");
+                        errors.AddError(string.Format(ErrorResource.IsRequired, "The TO field"));
                         break;
                     }
 
                     if(@from.Contains("(*)"))
                     {
-                        errors.AddError("The Star notation is not accepted in the From field.");
+                        errors.AddError(string.Format(ErrorResource.StarNotationNotAllowed, "From field"));
                         break;
                     }
 
@@ -71,13 +73,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     int intFrom;
                     if (!int.TryParse(evalledFrom, out intFrom) || intFrom < 1)
                     {
-                        errors.AddError("From range must be a whole number from 1 onwards.");
+                        errors.AddError(string.Format(ErrorResource.RangeFromOne, "FROM range"));
                         break;
                     }
 
                     if(to.Contains("(*)"))
                     {
-                        errors.AddError("The Star notation is not accepted in the To field.");
+                        errors.AddError(string.Format(ErrorResource.StarNotationNotAllowed, "TO field."));
                         break;
                     }
 
@@ -86,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     int intTo;
                     if (!int.TryParse(evalledTo, out intTo) || intTo < 1)
                     {
-                        errors.AddError("To range must be a whole number from 1 onwards.");
+                        errors.AddError(string.Format(ErrorResource.RangeFromOne, "TO range"));
                         break;
                     }
                     IndexList indexList;
@@ -123,7 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     if(numberOfExecutes != null && numberOfExecutes.Contains("(*)"))
                     {
-                        errors.AddError("The Star notation is not accepted in the Numbers field.");
+                        errors.AddError(string.Format(ErrorResource.StarNotationNotAllowed, "Numbers field."));
                         break;
                     }
 
@@ -132,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     if (!int.TryParse(numOfExItr, out intExNum) || intExNum<1)
                     {
-                        errors.AddError("Number of executes must be a whole number from 1 onwards.");
+                        errors.AddError(string.Format(ErrorResource.RangeFromOne, "Number of executes"));
                     }
                     IndexIterator = new IndexIterator(new HashSet<int>(), intExNum);
                     break;
@@ -156,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     }
                     else
                     {
-                        errors.AddError("Invalid characters have been entered in the CSV Numbers");
+                        errors.AddError(ErrorResource.CSVInvalidCharecters);
                         return result;
                     }
                 }
