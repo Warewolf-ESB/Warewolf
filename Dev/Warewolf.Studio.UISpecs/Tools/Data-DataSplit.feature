@@ -13,7 +13,7 @@ Scenario: DataSplit Small View
 	| # | Result | With  | Using |
 	| 1 |        | Index |       |
 	| 2 |        | Index |       |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario: DataSplit Large View
@@ -58,7 +58,7 @@ Scenario: Passing Variables in Datasplit Small View and inserting row
 	| 2 |         | Index |       |
 	| 3 | [[b]]   | Index | 2     |
 	| 4 |         | Index |       |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario: Deleting rows in Datasplit Small View
@@ -70,7 +70,7 @@ Scenario: Deleting rows in Datasplit Small View
 	| 2 | [[b]]   | Index | 2     |
 	| 3 |         | Index |       |
 	And result is as ""
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 	When I delete Row at "2"
 	Then DataSplit Small View grid has
 	| # | Results | With  | Using |
@@ -88,7 +88,7 @@ Scenario: Passing Variables in Datasplit Large View and inserting row
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
 	| 3 |         | Index |       | Unselected |        |
 	And result is as ""				
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 	When I Insert Row at "2"
 	Then DataSplit Small View grid has
 	| # | Results | With  | Using | Include    | Escape |
@@ -96,7 +96,7 @@ Scenario: Passing Variables in Datasplit Large View and inserting row
 	| 2 |         | Index |       | Unselected |        |
 	| 3 | [[b]]   | Index | 2     | Unselected |        |
 	| 4 |         | Index |       | Unselected |        |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario: Deleting rows in Datasplit Large View
@@ -108,7 +108,7 @@ Scenario: Deleting rows in Datasplit Large View
 	| 2 | [[b]]   | Index | 2     | Unselected |        |
 	| 3 |         | Index |       | Unselected |        |
 	And result is as ""			       
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 	When I delete Row at "2"
 	Then DataSplit Small View grid has
 	| # | Results | With  | Using | Include    | Escape |
@@ -128,7 +128,7 @@ Scenario: Deleting rows in Datasplit is adjusting number sequence correctly
 	| 4 | [[b]]   | Index | 2     | Unselected |        |
 	| 5 |         | Index |       | Unselected |        |
 	And result is as ""			       
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 	When I delete Row at "2"
 	Then DataSplit Small View grid has
 	| # | Results | With  | Using | Include    | Escape |
@@ -136,7 +136,7 @@ Scenario: Deleting rows in Datasplit is adjusting number sequence correctly
 	| 2 | [[a]]   | Index | 1     | Unselected |        |
 	| 3 | [[b]]   | Index | 2     | Unselected |        |
 	| 4 |         | Index |       | Unselected |        |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario Outline: DataSplit Large View is validating incorrect string variable 
@@ -369,7 +369,7 @@ Scenario: Adding DataSplit Variables by using QVI
 	| 2 | [[b]] | Index |       |
 	| 3 | [[c]] | Index |       |
 	| 4 | [[d]] | Index |       |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario: Adding DataSplit Variables by using QVI and split on chars
@@ -402,7 +402,7 @@ Scenario: Adding DataSplit Variables by using QVI and split on chars
 	| 3 | [[c]]   | Index |       | Unselected |        |
 	| 4 | [[d]]   | Index |       | Unselected |        |
 	| 5 |         |       |       |            |        |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 ##This split by using "Tab" is not working because I can"t use tab while entering variable list but I can paste 
@@ -436,7 +436,7 @@ Scenario: Adding DataSplit Variables by using QVI and split on Tab
 	| 3 | [[c]]   | Index |       | Unselected |        |
 	| 4 | [[d]]   | Index |       | Unselected |        |
 	| 5 |         |       |       |            |        |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario: Adding Variables in DataSplit QVI and split on chars
@@ -475,7 +475,7 @@ Scenario: Adding Variables in DataSplit QVI and split on chars
 	| 7 | [[g]]   | Index |       | Unselected |        |
 	| 8 | [[h]]   | Index |       | Unselected |        |
 	| 9 |         |       |       |            |        |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario Outline: DataSplit QVI Prefix and Suffix
@@ -512,7 +512,7 @@ Scenario Outline: DataSplit QVI Prefix and Suffix
 	| No | Prefix | Suffix | Append   | Replace    |
 	| 1  | a      | ""     | Selected | Unselected |
 	| 2  | ""     | a      | Selected | Unselected |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 @ignore
 Scenario:  DataSplit QVI Replace is Replacing Variables
@@ -547,6 +547,6 @@ Scenario:  DataSplit QVI Replace is Replacing Variables
 	| 2 | [[rec().b]] | Index |       | Unselected |        |
 	| 3 | [[c]]       | Index |       | Unselected |        |
 	| 4 |             | Index |       | unselected |        |
-	And Scroll bar is "Enabled"
+	#And Scroll bar is "Enabled"
 
 	 
