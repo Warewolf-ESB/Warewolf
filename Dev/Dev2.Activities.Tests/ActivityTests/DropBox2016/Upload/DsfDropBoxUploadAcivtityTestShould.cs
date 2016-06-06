@@ -363,34 +363,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         #endregion
 
-        public void SetBaseMetadata(FileMetadata metadata)
-        {
-            FileMetadata = metadata;
-        }
-        public string PerfomMockExecution()
-        {
-
-            var mock = new Mock<IDropBoxUpload>();
-            mock.Setup(upload => upload.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-            .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-
-            DropboxSingleExecutor = mock.Object;
-            var dropboxExecutionResult = mock.Object.ExecuteTask(TestConstant.DropboxClientInstance.Value);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
-            if (dropboxSuccessResult != null)
-            {
-                FileMetadata = dropboxSuccessResult.GerFileMetadata();
-                return FileMetadata.PathDisplay;
-            }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
-            {
-                Exception = dropboxFailureResult.GetException();
-            }
-            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
-            throw new Exception(executionError);
-        }
-
         public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
         {
             var perfomBaseExecution = base.PerformExecution(dictionaryValues);
