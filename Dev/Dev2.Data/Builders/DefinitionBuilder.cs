@@ -58,6 +58,8 @@ namespace Dev2.DataList.Contract
                     tmp.SetAttribute(_valueAttribute, def.Value);
                 }
 
+                tmp.SetAttribute("IsObject", def.IsObject.ToString());
+
                 if(def.RecordSetName.Length > 0)
                 {
                     tmp.SetAttribute(_recordsetAttribute, def.RecordSetName);
