@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces.Core.Convertors.Base;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Converters
 {
@@ -38,8 +39,7 @@ namespace Dev2.Converters
             else
             {
                 //throw new ConversionException - wrong base format
-                throw new BaseTypeException("Base Conversion Broker was expecting [ " + _from.HandlesType() +
-                                            " ] but the data was not in this format");
+                throw new BaseTypeException(string.Format(ErrorResource.BrokerConversionInvalid, _from.HandlesType()));
             }
 
             return result;

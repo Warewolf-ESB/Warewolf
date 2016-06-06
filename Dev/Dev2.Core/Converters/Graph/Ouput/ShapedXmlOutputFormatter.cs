@@ -14,6 +14,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
+using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
@@ -165,9 +166,8 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                     //
                     if (selectResults[path].Count != resultCount)
                     {
-                        throw new Exception("The number of results for the paths representing the '" +
-                                            path.OutputExpression + "' expression didn't match.");
-                    }
+                        throw new Exception(string.Format(ErrorResource.NumberOfResultsMismatch, path.OutputExpression));
+                    }                    
 
                     //
                     // Index node name by path
@@ -239,7 +239,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             if (parts.Count <= 0)
             {
-                throw new Exception("Invalid output description '" + outputDescription + "'.");
+                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid,outputDescription));
             }
 
             string key;
@@ -267,7 +267,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             if (parts.Count <= 0)
             {
-                throw new Exception("Invalid output description '" + outputDescription + "'.");
+                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid,outputDescription));
             }
 
             return parts.Last().Option.Field;
@@ -284,7 +284,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             if (parts.Count <= 0)
             {
-                throw new Exception("Invalid output description '" + outputDescription + "'.");
+                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid, outputDescription));
             }
 
             return parts[0].Option.Recordset;
