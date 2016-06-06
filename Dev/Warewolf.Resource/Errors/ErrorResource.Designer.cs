@@ -286,6 +286,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ConvertBack not supported..
+        /// </summary>
+        public static string ConvertBackNotSupported {
+            get {
+                return ResourceManager.GetString("ConvertBackNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Converters collection of the ValueConverterGroup contains a null reference at index: {0}.
+        /// </summary>
+        public static string ConvertersCollectionContainsNull {
+            get {
+                return ResourceManager.GetString("ConvertersCollectionContainsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Convert option does not exist.
         /// </summary>
         public static string ConvertOptionDoesNotExist {
@@ -565,6 +583,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ElementBeingDragged is null..
+        /// </summary>
+        public static string ElementBeingDraggedIsNull {
+            get {
+                return ResourceManager.GetString("ElementBeingDraggedIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty script to execute.
         /// </summary>
         public static string EmptyScript {
@@ -745,6 +772,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gridsplitter only works in grid.
+        /// </summary>
+        public static string GridsplitterOnlyWorksInGrids {
+            get {
+                return ResourceManager.GetString("GridsplitterOnlyWorksInGrids", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Headers Are Null.
         /// </summary>
         public static string HeadersAreNull {
@@ -921,6 +957,15 @@ namespace Warewolf.Resource.Errors {
         public static string LocalPathRequired {
             get {
                 return ResourceManager.GetString("LocalPathRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter only accepts doubles.
+        /// </summary>
+        public static string MathConverterAcceptsDoubles {
+            get {
+                return ResourceManager.GetString("MathConverterAcceptsDoubles", resourceCulture);
             }
         }
         
@@ -1231,6 +1276,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There should not be more than one RegexValidationRule in a Bindings ValidationRules.
+        /// </summary>
+        public static string RegexValidationRuleShouldHaveOneRule {
+            get {
+                return ResourceManager.GetString("RegexValidationRuleShouldHaveOneRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The RegexValidator can only be used with a TextBox..
         /// </summary>
         public static string RegexValidatorUsedWithTexyBoxs {
@@ -1447,6 +1501,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target object must be a UIElement..
+        /// </summary>
+        public static string TargetobjectMustBeUIElement {
+            get {
+                return ResourceManager.GetString("TargetobjectMustBeUIElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The TextBox&apos;s Text property must be bound for the RegexValidator to validate it..
         /// </summary>
         public static string TexBoxMustBeBoundForRegexValidation {
@@ -1551,6 +1614,15 @@ namespace Warewolf.Resource.Errors {
         public static string ValidateBeforeMinimising {
             get {
                 return ResourceManager.GetString("ValidateBeforeMinimising", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VALUE must be an enum..
+        /// </summary>
+        public static string ValueMustBeAnEnum {
+            get {
+                return ResourceManager.GetString("ValueMustBeAnEnum", resourceCulture);
             }
         }
         

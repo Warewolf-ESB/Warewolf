@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.CustomControls.Converters
 {
@@ -58,7 +59,7 @@ namespace Dev2.CustomControls.Converters
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Converter only accepts doubles", e);
+                    throw new Exception(ErrorResource.MathConverterAcceptsDoubles, e);
                 }
             }
 

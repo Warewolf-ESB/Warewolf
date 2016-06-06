@@ -7,7 +7,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
 using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -227,11 +226,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
 
             mockVM.Sources = mockVM.LoadOAuthSources();
             Assert.AreEqual(2, mockVM.Sources.Count);
-        }
-
-        List<IResource> GetSources()
-        {
-            return new List<IResource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
         }
     }
 }

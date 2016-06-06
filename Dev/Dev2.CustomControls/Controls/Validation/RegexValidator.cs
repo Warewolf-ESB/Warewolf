@@ -183,8 +183,7 @@ namespace WPF.JoshSmith.Controls.Validation
                     if (regexRule == null)
                         regexRule = rule as RegexValidationRule;
                     else
-                        throw new InvalidOperationException(
-                            "There should not be more than one RegexValidationRule in a Binding's ValidationRules.");
+                        throw new InvalidOperationException(ErrorResource.RegexValidationRuleShouldHaveOneRule);
                 }
             }
 

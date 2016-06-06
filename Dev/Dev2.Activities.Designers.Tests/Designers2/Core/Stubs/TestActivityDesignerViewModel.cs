@@ -33,16 +33,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
         {
         }
 
-        public void TestAddTitleBarHelpToggle()
-        {
-            AddTitleBarHelpToggle();
-        }
-
-        public void TestAddTitleBarLargeToggle()
-        {
-            AddTitleBarLargeToggle();
-        }
-
         #region Overrides of ActivityDesignerViewModel
 
         public override void UpdateHelpDescriptor(string helpText)
