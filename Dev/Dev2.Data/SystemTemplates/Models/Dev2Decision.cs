@@ -17,6 +17,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Data.SystemTemplates.Models
@@ -171,7 +172,7 @@ namespace Dev2.Data.SystemTemplates.Models
                         }
                         catch(IndexOutOfRangeException)
                         {
-                            errors.AddError("You appear to have recordsets of differnt sizes");
+                            errors.AddError(ErrorResource.RecordsetsHaveDifferntSizes);
                             allErrors.MergeErrors(errors);
                         }
                     }
