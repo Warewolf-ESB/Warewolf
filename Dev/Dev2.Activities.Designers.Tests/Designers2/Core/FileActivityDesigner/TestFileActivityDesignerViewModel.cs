@@ -65,16 +65,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             base.ValidateOutputPath();
         }
 
-        public void TestValidateFileContent(string content, string label)
-        {
-            ValidateFileContent(content, label);
-        }
-
-        public void TestValidateArchivePassword(string password, string label)
-        {
-            ValidateArchivePassword(password, label);
-        }
-
         public void TestValidateInputAndOutputPaths()
         {
             ValidateInputAndOutputPaths();
