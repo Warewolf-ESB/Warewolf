@@ -170,8 +170,7 @@ namespace WPF.JoshSmith.Controls.Validation
             // Get the binding which owns the binding expression.
             Binding binding = expression.ParentBinding;
             if (binding == null)
-                throw new ApplicationException(ErrorResource.TextBoxTextBindingHasNoParent
-                    "");
+                throw new ApplicationException(ErrorResource.TextBoxTextBindingHasNoParent);
 
             // Look for an existing instance of the RegexValidationRule class in the
             // binding.  If there is more than one instance in the ValidationRules

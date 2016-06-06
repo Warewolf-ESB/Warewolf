@@ -1231,6 +1231,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The RegexValidator can only be used with a TextBox..
+        /// </summary>
+        public static string RegexValidatorUsedWithTexyBoxs {
+            get {
+                return ResourceManager.GetString("RegexValidatorUsedWithTexyBoxs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value must be a recordset name.
         /// </summary>
         public static string RequiredRecordSetName {
@@ -1434,6 +1443,24 @@ namespace Warewolf.Resource.Errors {
         public static string SupplySourceName {
             get {
                 return ResourceManager.GetString("SupplySourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TextBox&apos;s Text property must be bound for the RegexValidator to validate it..
+        /// </summary>
+        public static string TexBoxMustBeBoundForRegexValidation {
+            get {
+                return ResourceManager.GetString("TexBoxMustBeBoundForRegexValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected situation: the TextBox.Text binding expression has no parent binding..
+        /// </summary>
+        public static string TextBoxTextBindingHasNoParent {
+            get {
+                return ResourceManager.GetString("TextBoxTextBindingHasNoParent", resourceCulture);
             }
         }
         
