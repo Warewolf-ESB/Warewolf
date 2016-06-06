@@ -27,6 +27,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 // ReSharper disable UnusedMember.Global
@@ -267,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             if(!res)
             {
-                throw new Exception("Invalid Calculate");
+                throw new Exception(ErrorResource.InvalidCalculate);
             }
             return eval;
         }

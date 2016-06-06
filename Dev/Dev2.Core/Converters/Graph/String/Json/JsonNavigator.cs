@@ -17,6 +17,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Converters.Graph;
 using Newtonsoft.Json.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
@@ -45,7 +46,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             if (jsonPath == null)
             {
-                throw new Exception(string.Format("Path of type '{0}' expected, path of type '{1}' received.",
+                throw new Exception(string.Format(ErrorResource.PathMismatch,
                     typeof (JsonPath), path.GetType()));
             }
 
@@ -53,7 +54,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             if (currentData == null)
             {
-                throw new Exception(string.Format("Type of {0} was expected for data, type of {1} was found instead.",
+                throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
                     typeof (JToken), Data.GetType()));
             }
 
@@ -129,7 +130,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             if (jsonPath == null)
             {
-                throw new Exception(string.Format("Path of type '{0}' expected, path of type '{1}' received.",
+                throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
                     typeof (JsonPath), path.GetType()));
             }
 

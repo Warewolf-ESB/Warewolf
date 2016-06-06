@@ -23,6 +23,7 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Activities
@@ -94,27 +95,27 @@ namespace Dev2.Activities
                 PreExecution(dataObject, fromFields, update);
                 if(String.IsNullOrEmpty(InFields))
                 {
-                    throw new Exception("Invalid In fields");
+                    throw new Exception(string.Format(ErrorResource.Invalid, "In fields"));
                 }
                 if(String.IsNullOrEmpty(ResultFields))
                 {
-                    throw new Exception("Invalid from fields");
+                    throw new Exception(string.Format(ErrorResource.Invalid, "from fields"));
                 }
                 if(toresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
                 {
-                    throw new Exception("invalid result");
+                    throw new Exception(string.Format(ErrorResource.Invalid, "result"));
                 }
                 if(fromFields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
                 {
-                    throw new Exception("invalid from");
+                    throw new Exception(string.Format(ErrorResource.Invalid, "from"));
                 }
                 if(fromResultFieldresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
                 {
-                    throw new Exception("invalid selected fields");
+                    throw new Exception(string.Format(ErrorResource.Invalid, "selected fields"));
                 }
                 if(toresultfields.Any(ExecutionEnvironment.IsScalar))
                 {
-                    throw new Exception("'Result' cannot be a scalar. Please use a recordset instead.");
+                    throw new Exception(string.Format(ErrorResource.ScalarsNotAllowed, "'Result'"));
                 }
                 dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields, update);
             }

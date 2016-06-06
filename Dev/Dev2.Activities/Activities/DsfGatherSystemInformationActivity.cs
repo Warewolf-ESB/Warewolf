@@ -27,6 +27,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -141,7 +142,7 @@ namespace Dev2.Activities
                             var regions = DataListCleaningUtils.SplitIntoRegions(expression);
                             if(regions.Count > 1)
                             {
-                                allErrors.AddError("Multiple variables in result field.");
+                                allErrors.AddError(ErrorResource.MultipleVariablesInResultField);
                             }
                             else
                             {

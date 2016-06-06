@@ -28,6 +28,7 @@ using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable FunctionComplexityOverflow
@@ -261,12 +262,12 @@ namespace Dev2.Activities
             double fromNum;
             if (string.IsNullOrEmpty(fromValue))
             {
-                errors.AddError("Please ensure that you have entered an integer or decimal number for Start.");
+                errors.AddError(ErrorResource.IntegerOrDecimaExpectedForStart);
                 return -1;
             }
             if (!double.TryParse(fromValue, out fromNum))
             {
-                errors.AddError(string.Format("Please ensure that the Start is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue));
+                errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForStart + "from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
             }
             return fromNum;
@@ -278,12 +279,12 @@ namespace Dev2.Activities
             double toNum;
             if (string.IsNullOrEmpty(toValue))
             {
-                errors.AddError("Please ensure that you have entered an integer or decimal number for End.");
+                errors.AddError(ErrorResource.IntegerOrDecimaExpectedForEnd);
                 return -1;
             }
             if (!double.TryParse(toValue, out toNum))
             {
-                errors.AddError(string.Format("Please ensure that the End is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue));
+                errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForEnd + " from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
             }
             return toNum;
@@ -295,19 +296,19 @@ namespace Dev2.Activities
             int lengthNum;
             if (string.IsNullOrEmpty(lengthValue))
             {
-                errors.AddError("Please ensure that you have entered an integer for Length.");
+                errors.AddError(string.Format(ErrorResource.PositiveIntegerRequired, "Length."));
                 return -1;
             }
 
             if (!int.TryParse(lengthValue, out lengthNum))
             {
-                errors.AddError("Please ensure that the Length is an integer value.");
+                errors.AddError(string.Format(ErrorResource.EnsureValueIsInteger, "Length"));
                 return -1;
             }
 
             if (lengthNum < 1)
             {
-                errors.AddError("Please enter a positive integer for the Length.");
+                errors.AddError(string.Format(ErrorResource.PositiveIntegerRequired, "Length."));
                 return -1;
             }
 

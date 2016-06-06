@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Dev2.Activities.Designers2.Core
@@ -124,7 +126,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 else
                 {
-                    throw new Exception("No Outputs detected");
+                    throw new Exception(ErrorResource.NoOutPuts);
                 }
 
                 _viewmodel.OutputsRegion.ObjectResult = TestResults;

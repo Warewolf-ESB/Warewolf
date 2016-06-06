@@ -17,6 +17,7 @@ using Dev2.Activities.Debug;
 using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -108,12 +109,12 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             if (string.IsNullOrEmpty(FromPath))
             {
-                dataObject.Environment.AddError("Please confirm that the correct file location has been entered");
+                dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileLocation);
                 return;
             }
             if (string.IsNullOrEmpty(ToPath))
             {
-                dataObject.Environment.AddError("Please confirm that the correct file destination has been entered");
+                dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileDestination);
                 return;
             }
             base.ExecuteTool(dataObject, update);
@@ -138,7 +139,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
                     if (fileExist && !OverwriteFile)
-                        throw new Exception("Destination File already exists and overwrite is set to false");
+                        throw new Exception(ErrorResource.DropBoxDestinationFileAlreadyExist);
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }
                 return GlobalConstants.DropBoxSucces;
@@ -151,7 +152,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
             if (executionError.Contains("not_file"))
             {
-                executionError = "Please specify the path of file in Dropbox";
+                executionError = ErrorResource.DropBoxFilePathMissing;
             }
             throw new Exception(executionError);
         }

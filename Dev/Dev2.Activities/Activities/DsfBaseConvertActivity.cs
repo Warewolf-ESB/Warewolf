@@ -29,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Validation;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -184,7 +185,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var value = a.ToString();
                     if(a.IsNothing)
                     {
-                        throw new Exception(string.Format("Scalar value {{{0}}} is NULL", item.FromExpression));
+                        throw new Exception(string.Format(ErrorResource.NullScalarValue, item.FromExpression));
                     }
                     if (String.IsNullOrEmpty(value))
                     {

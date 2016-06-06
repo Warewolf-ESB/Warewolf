@@ -16,6 +16,7 @@ using System.Windows;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
@@ -39,7 +40,7 @@ namespace Dev2.Common
 
             if(xmlData == null || xmlData.Length == 0)
             {
-                return new Graph("Dependency information could not be retrieved");
+                return new Graph(ErrorResource.DependencyMissing);
             }
 
             XElement xe = xmlData.ToXElement();
@@ -48,7 +49,7 @@ namespace Dev2.Common
             var graphElem = xe.AncestorsAndSelf("graph").FirstOrDefault();
             if(graphElem == null)
             {
-                return new Graph("Dependency information is malformed");
+                return new Graph(ErrorResource.DependencyInormationMalformed);
             }
 
             try
@@ -121,7 +122,7 @@ namespace Dev2.Common
             }
             catch
             {
-                return new Graph("Dependency information is malformed");
+                return new Graph(ErrorResource.DependencyInormationMalformed);
             }
         }
 

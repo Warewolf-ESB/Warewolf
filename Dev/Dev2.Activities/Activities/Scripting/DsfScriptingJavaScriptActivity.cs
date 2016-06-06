@@ -20,6 +20,7 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -107,7 +108,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                allErrors.AddError(e.GetType() == typeof(NullReferenceException) ? "There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result" : e.Message);
+                allErrors.AddError(e.GetType() == typeof(NullReferenceException) ? ErrorResource.ScriptingErrorReturningValue : e.Message);
             }
             finally
             {

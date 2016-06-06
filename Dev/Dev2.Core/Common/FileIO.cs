@@ -19,6 +19,7 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using Dev2.Common;
 using Microsoft.Win32.SafeHandles;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 
@@ -146,8 +147,7 @@ namespace Dev2
                 else
                 {
                     // login failed
-                    throw new Exception("Failed to authenticate with user [ " + userAndDomain + " ] for resource [ " +
-                                        path + " ] ");
+                    throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, userAndDomain, path));                    
                 }
             }
             catch (Exception ex)

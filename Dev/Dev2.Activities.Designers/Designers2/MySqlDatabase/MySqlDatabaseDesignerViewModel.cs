@@ -33,6 +33,7 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable UnusedMember.Local
@@ -193,7 +194,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsEnabled)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = string.Format(ErrorResource.ValidateBeforeMinimising, "Database get") } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
