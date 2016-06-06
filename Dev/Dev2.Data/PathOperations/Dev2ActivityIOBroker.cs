@@ -22,6 +22,7 @@ using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
 using Ionic.Zlib;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
@@ -425,7 +426,7 @@ namespace Dev2.PathOperations
                         }
                         catch(BadPasswordException bpe)
                         {
-                            throw new Exception("Invalid archive password", bpe);
+                            throw new Exception(ErrorResource.InvalidArchivePassword, bpe);
                         }
                     }
                 }
@@ -771,9 +772,7 @@ namespace Dev2.PathOperations
                         var fileNames = commonFiles.Aggregate("",
                                                                  (current, commonFile) =>
                                                                  current + "\r\n" + commonFile);
-                        throw new Exception(
-                            "The following file(s) exist in the destination folder and overwrite is set to false:- " +
-                            fileNames);
+                        throw new Exception(string.Format(ErrorResource.FileExistInDestinationFolder, fileNames));
                     }
                 }
             }
@@ -855,8 +854,7 @@ namespace Dev2.PathOperations
                 // destination is a file
                 if(dst.PathIs(dst.IOPath) == enPathType.File)
                 {
-                    throw new Exception(
-                        "A file with the same name exists on the destination and overwrite is set to false");
+                    throw new Exception(ErrorResource.FileWithSameNameExist);
                 }
 
                 //destination is a folder
@@ -866,9 +864,7 @@ namespace Dev2.PathOperations
 
                 if(destinationFileNames.Contains(sourceFile))
                 {
-                    throw new Exception(
-                        "The following file(s) exist in the destination folder and overwrite is set to false :- " +
-                        sourceFile);
+                    throw new Exception(string.Format(ErrorResource.FileExistInDestinationFolder,sourceFile));
                 }
             }
         }
@@ -1070,7 +1066,7 @@ namespace Dev2.PathOperations
             //ensures that the source and destination locations are of the same type
             if(src.PathIs(src.IOPath) != dst.PathIs(dst.IOPath))
             {
-                throw new Exception("Source and destination need to be both files or directories");
+                throw new Exception(ErrorResource.SourceAndDestinationNOTFilesOrDirectory);
             }
 
             //Rename Tool if the file/folder exists then delete it and put the source there
@@ -1078,7 +1074,7 @@ namespace Dev2.PathOperations
             {
                 if(!args.Overwrite)
                 {
-                    throw new Exception("Destination directory already exists and overwrite is set to false");
+                    throw new Exception(ErrorResource.DestinationDirectoryExist);
                 }
 
                 //Clear the existing folder
@@ -1100,7 +1096,7 @@ namespace Dev2.PathOperations
             var opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
             if(!opStatus.Equals("Success"))
             {
-                throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
+                throw new Exception(string.Format(ErrorResource.RecursiveDirectoryCreateFailed, dst.IOPath.Path));
             }
 
             //transfer contents to destination when the source is a directory
@@ -1142,17 +1138,17 @@ namespace Dev2.PathOperations
 
             if(dst.PathIs(dst.IOPath) != enPathType.Directory)
             {
-                throw new Exception("Destination must be a directory");
+                throw new Exception(ErrorResource.DestinationMustBeADirectory);
             }
 
             if(src.PathIs(src.IOPath) != enPathType.File)
             {
-                throw new Exception("Source must be a file");
+                throw new Exception(ErrorResource.SourceMustBeAFile);
             }
 
             if(!args.Overwrite && dst.PathExist(dst.IOPath))
             {
-                throw new Exception("Destination directory already exists and overwrite is set to false");
+                throw new Exception(ErrorResource.DestinationDirectoryExist);
             }
 
             return performAfterValidation();
@@ -1192,7 +1188,7 @@ namespace Dev2.PathOperations
 
             if(!args.Overwrite && dst.PathExist(dst.IOPath))
             {
-                throw new Exception("Destination file already exists and overwrite is set to false");
+                throw new Exception(ErrorResource.DestinationFileAlreadyExists);
             }
 
             //ensures destination folder structure exists
@@ -1200,7 +1196,7 @@ namespace Dev2.PathOperations
                                              dst.PathIs(dst.IOPath) == enPathType.Directory);
             if(!opStatus.Equals("Success"))
             {
-                throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
+                throw new Exception(string.Format(ErrorResource.RecursiveDirectoryCreateFailed, dst.IOPath.Path));
             }
 
             return performAfterValidation();
@@ -1211,7 +1207,7 @@ namespace Dev2.PathOperations
         {
             if(src.IOPath.Path.Trim().Length == 0)
             {
-                throw new Exception("Source can not be an empty string");
+                throw new Exception(ErrorResource.SourceCannotBeAnEmptyString);
             }
             var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
                                                     StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -1268,7 +1264,7 @@ namespace Dev2.PathOperations
         {
             if(src.IOPath.Path.Trim().Length == 0)
             {
-                throw new Exception("Source can not be an empty string");
+                throw new Exception(ErrorResource.SourceCannotBeAnEmptyString);
             }
 
             var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
@@ -1303,7 +1299,7 @@ namespace Dev2.PathOperations
             if(destinationParts.OrderBy(i => i).SequenceEqual(
                  sourceParts.OrderBy(i => i)))
             {
-                throw new Exception("Destination directory can not be a child of the source directory");
+                throw new Exception(ErrorResource.DestinationDirectoryCannotBeAChild);
             }
         }
 
@@ -1311,14 +1307,13 @@ namespace Dev2.PathOperations
         {
             if(endPoint.IOPath.Path.Trim().Length == 0)
             {
-                throw new Exception("Source can not be an empty string");
+                throw new Exception(ErrorResource.SourceCannotBeAnEmptyString);
             }
 
             if(endPoint.PathExist(endPoint.IOPath) && !args.Overwrite)
             {
                 var type = endPoint.PathIs(endPoint.IOPath) == enPathType.Directory ? "Directory" : "File";
-                throw new Exception(string.Format("Destination {0} already exists and overwrite is set to false",
-                                                  type));
+                throw new Exception(ErrorResource.DestinationDirectoryExist);
             }
         }
 

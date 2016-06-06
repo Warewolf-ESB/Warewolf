@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
@@ -61,7 +62,7 @@ namespace Dev2.MathOperations
                 return _functions.AsQueryable().Where(expression).ToList();
             }
 // ReSharper disable NotResolvedInText
-            throw new ArgumentNullException(@"Expression cannot be null");
+            throw new ArgumentNullException(ErrorResource.ExpressionCannotBeNull);
 // ReSharper restore NotResolvedInText
         }
 
@@ -120,7 +121,7 @@ namespace Dev2.MathOperations
             else
             {
 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("Cannot remove null List of functions");
+                throw new ArgumentNullException(ErrorResource.CannotRemoveNullListOfFunctions);
 // ReSharper restore NotResolvedInText
             }
         }
@@ -138,7 +139,7 @@ namespace Dev2.MathOperations
             else
             {
 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("Function cannot be null");
+                throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
 // ReSharper restore NotResolvedInText
             }
         }
@@ -156,7 +157,7 @@ namespace Dev2.MathOperations
             else
             {
 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("Cannot Save a Null list of functions");
+                throw new ArgumentNullException(ErrorResource.CannotSaveNullListOfFunctions);
 // ReSharper restore NotResolvedInText
             }
         }
@@ -173,7 +174,7 @@ namespace Dev2.MathOperations
             else
             {
 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("Function cannot be null");
+                throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
 // ReSharper restore NotResolvedInText
             }
             return "Saved";

@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.CustomControls.Panels
 {
@@ -440,7 +441,7 @@ namespace Dev2.CustomControls.Panels
         private Rect CalculateDragElementRect(double newHorizOffset, double newVertOffset)
         {
             if (ElementBeingDragged == null)
-                throw new InvalidOperationException("ElementBeingDragged is null.");
+                throw new InvalidOperationException("");
 
             Size elemSize = ElementBeingDragged.RenderSize;
 
@@ -534,7 +535,7 @@ namespace Dev2.CustomControls.Panels
                 throw new ArgumentNullException("element");
 
             if (!Children.Contains(element))
-                throw new ArgumentException(@"Must be a child element of the Canvas.", "element");
+                throw new ArgumentException(ErrorResource.MustBeAchildElementOfTheCanvas, "element");
 
             #endregion // Safety Check
 

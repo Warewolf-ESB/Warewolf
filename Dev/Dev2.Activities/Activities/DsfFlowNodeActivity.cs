@@ -333,18 +333,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        // BUG 9304 - 2013.05.08 - TWR - Added for testing purposes
-        public CodeActivity<TResult> GetTheExpression()
-        {
-            return _expression;
-        }
-
-        // BUG 9304 - 2013.05.08 - TWR - Added for testing purposes
-        public string GetTheResult()
-        {
-            return _theResult.ToString();
-        }
-
         #region Overrides of DsfNativeActivity<TResult>
 
         /// <summary>
