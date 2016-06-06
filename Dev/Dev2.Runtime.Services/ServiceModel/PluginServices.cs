@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ServiceModel
 {
     public interface IPluginServices
     {
-        RecordsetList Test(string args, Guid workspaceId, Guid dataListId);
+        RecordsetList Test(string args, out string serializedResult);
 
         NamespaceList Namespaces(PluginSource args, Guid workspaceId, Guid dataListId);
 
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/PluginServices/Test
-        public RecordsetList Test(string args, Guid workspaceId, Guid dataListId)
+        public RecordsetList Test(string args, out string serializedResult)
         {
             try
             {
@@ -70,11 +70,14 @@ namespace Dev2.Runtime.ServiceModel
             {
                 TypeNameHandling = TypeNameHandling.Objects
             });
-                return FetchRecordset(service, true);
+                var fetchRecordset = FetchRecordset(service, true);
+                serializedResult = service.SerializedResult;
+                return fetchRecordset;
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
+                serializedResult = null;
                 return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
             }
         }

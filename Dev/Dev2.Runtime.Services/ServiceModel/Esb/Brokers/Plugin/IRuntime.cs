@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     {
         object Run(PluginInvokeArgs setupInfo);
 
-        IOutputDescription Test(PluginInvokeArgs setupInfo);
+        IOutputDescription Test(PluginInvokeArgs setupInfo,out string serializedResult);
 
         List<string> ListNamespaces(string assemblyLocation, string assemblyName);
 
