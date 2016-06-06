@@ -40,6 +40,7 @@ using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 
@@ -1218,6 +1219,46 @@ namespace Dev2.Studio.ViewModels.DataList
             if (mainViewModel != null)
             {
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+        }
+
+        public void GenerateComplexObjectFromJson(string parentObjectName, string json)
+        {
+            var parentObj = ComplexObjectCollection.FirstOrDefault(model => model.Name == parentObjectName);
+            if (parentObj == null)
+            {
+                parentObj = new ComplexObjectItemModel(parentObjectName);
+                ComplexObjectCollection.Add(parentObj);
+            }
+            var objToProcess = JsonConvert.DeserializeObject(json) as JContainer;
+            if (objToProcess != null)
+            {
+                ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
+            }
+        }
+
+        private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JContainer objToProcess)
+        {
+            var properties = objToProcess.Descendants().Where(token => token.Type==JTokenType.Property);
+            foreach(var property in properties)
+            {
+                var prop = property as JProperty;
+                bool isArray = prop.IsEnumerable();
+                if(prop != null)
+                {
+                    var displayname = prop.Name;
+                    displayname = isArray ? displayname + "()" : displayname;
+                    var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
+                    if (childObj == null)
+                    {
+                        childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = isArray };
+                        parentObj.Children.Add(childObj);
+                    }
+                    if (property.IsObject())
+                    {
+                        ProcessObjectForComplexObjectCollection(childObj,property as JContainer);
+                    }
+                }
             }
         }
 

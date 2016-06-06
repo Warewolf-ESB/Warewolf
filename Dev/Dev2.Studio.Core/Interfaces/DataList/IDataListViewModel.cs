@@ -121,5 +121,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         void ClearCollections();
 
         void UpdateHelpDescriptor(string helpText);
+
+        void GenerateComplexObjectFromJson(string parentObjectName, string json);
     }
 }
