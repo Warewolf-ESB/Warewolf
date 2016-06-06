@@ -70,6 +70,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation Error Creating Assembly.
+        /// </summary>
+        public static string AssemblyCreationError {
+            get {
+                return ResourceManager.GetString("AssemblyCreationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attachments is not in the valid format: {0}.
         /// </summary>
         public static string AttachmentInvalidFormat {
@@ -1553,8 +1562,23 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("WebRequestError", resourceCulture);
             }
         }
-        public static string NoOutputs { get; set; }
-        public static string TOAddressRequired { get; set; }
-        public static string SourceInvalid { get; set; }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Web Service Description.
+        /// </summary>
+        public static string WebServiceDescriptionInvalid {
+            get {
+                return ResourceManager.GetString("WebServiceDescriptionInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web Service Not Found.
+        /// </summary>
+        public static string WebServiceNotFound {
+            get {
+                return ResourceManager.GetString("WebServiceNotFound", resourceCulture);
+            }
+        }
     }
 }

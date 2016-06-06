@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Web.Services.Description;
 using System.Xml;
 using System.Xml.Serialization;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.DynamicServices
 {
@@ -126,7 +127,7 @@ namespace Dev2.DynamicServices
         {
             // make sure xml describes a valid wsdl
             if (!ServiceDescription.CanRead(xmlreader))
-                throw new Exception("Invalid Web Service Description");
+                throw new Exception(ErrorResource.WebServiceDescriptionInvalid);
 
             // parse wsdl
             ServiceDescription serviceDescription = ServiceDescription.Read(xmlreader);
@@ -170,7 +171,7 @@ namespace Dev2.DynamicServices
 
                 if (results.Errors.Cast<CompilerError>().Any())
                 {
-                    throw new Exception("Compilation Error Creating Assembly");
+                    throw new Exception(ErrorResource.AssemblyCreationError);
                 }
 
                 // all done....
@@ -194,7 +195,7 @@ namespace Dev2.DynamicServices
         private Assembly BuildAssemblyFromWSDL(Uri webServiceUri)
         {
             if (String.IsNullOrEmpty(webServiceUri.ToString()))
-                throw new Exception("Web Service Not Found");
+                throw new Exception(ErrorResource.WebServiceNotFound);
 
             using (var xmlreader = new XmlTextReader(webServiceUri + "?wsdl"))
             {

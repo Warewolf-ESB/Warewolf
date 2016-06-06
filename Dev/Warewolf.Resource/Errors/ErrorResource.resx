@@ -615,4 +615,13 @@
   <data name="VariableListStringRequired" xml:space="preserve">
     <value>Variable List String can not be blank/empty</value>
   </data>
+  <data name="AssemblyCreationError" xml:space="preserve">
+    <value>Compilation Error Creating Assembly</value>
+  </data>
+  <data name="WebServiceDescriptionInvalid" xml:space="preserve">
+    <value>Invalid Web Service Description</value>
+  </data>
+  <data name="WebServiceNotFound" xml:space="preserve">
+    <value>Web Service Not Found</value>
+  </data>
 </root>
