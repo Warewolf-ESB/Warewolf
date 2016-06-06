@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
@@ -31,6 +32,7 @@ namespace Dev2.Studio.ViewModels.DataList
         string _typeName;
         bool _isMapsToFocused;
         bool _isValueFocused;
+        private bool _isObject;
 
         #region Properties
 
@@ -196,6 +198,18 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 _isValueFocused = value;
                 NotifyOfPropertyChange(() => IsValueFocused);
+            }
+        }
+
+        public ICommand ViewComplexObjectsCommand { get; set; }
+
+        public bool IsObject
+        {
+            get { return _isObject; }
+            set
+            {
+                _isObject = value; 
+                NotifyOfPropertyChange(() => IsObject);
             }
         }
 

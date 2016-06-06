@@ -1671,7 +1671,9 @@ namespace Dev2.Data.Util
                         {
                             // scalar value, make it as such
                             var name = jsonAttribute ? "@"+tmpNode.Name:tmpNode.Name;
-                            result.Add(DataListFactory.CreateDefinition(name, "", "", false, "", false, ""));
+                            var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
+                            dev2Definition.IsObject = jsonAttribute;
+                            result.Add(dev2Definition);
                         }
                     }
                 }
