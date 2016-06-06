@@ -40,11 +40,5 @@ namespace Dev2.Activities.Designers.Tests.Replace
         {
             return ModelItemUtils.CreateModelItem(new DsfReplaceActivity());
         }
-
-        static ReplaceDesignerViewModel CreateViewModel()
-        {
-            var viewModel = new ReplaceDesignerViewModel(ModelItemUtils.CreateModelItem(CreateModelItem()));
-            return viewModel;
-        }
     }
 }
