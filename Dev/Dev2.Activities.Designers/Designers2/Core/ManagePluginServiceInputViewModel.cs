@@ -137,7 +137,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 else
                 {
-                    throw new Exception(ErrorResource.NoOutputs);
+                    throw new Exception(ErrorResource.NoOutPuts);
                 }
                 _viewmodel.OutputsRegion.ObjectResult = TestResults;
                 _viewmodel.OutputsRegion.Description = Description;
