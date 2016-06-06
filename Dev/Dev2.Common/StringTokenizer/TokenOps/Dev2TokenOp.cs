@@ -11,6 +11,7 @@
 using System;
 using System.Text;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 
@@ -140,7 +141,7 @@ namespace Dev2.Common
             }
             else
             {
-                throw new Exception("CharEnumerator is not supported for this operation type!");
+                throw new Exception(ErrorResource.CharEnumeratorNotSupported);
             }
 
             return result.ToString();

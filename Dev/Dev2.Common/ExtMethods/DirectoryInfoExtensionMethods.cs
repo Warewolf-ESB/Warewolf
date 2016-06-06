@@ -9,6 +9,7 @@
 */
 
 using System.IO;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.ExtMethods
 {
@@ -25,9 +26,7 @@ namespace Dev2.Common.ExtMethods
 
             if (!dir.Exists)
             {
-                throw new DirectoryNotFoundException(string.Format(
-                    "Source directory does not exist or could not be found: "
-                    + dir.FullName));
+                throw new DirectoryNotFoundException(string.Format(ErrorResource.SourceDirectoryDoesNotExist, dir.FullName));
             }
 
             if (!Directory.Exists(destDirectory))

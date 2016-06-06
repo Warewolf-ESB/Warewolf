@@ -20,7 +20,9 @@ using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
+using RabbitMQ.Client.Framing.Impl;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable UnusedMember.Global
 
@@ -143,7 +145,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.IsEnabled)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Web Delete must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo>
+                {
+                    new ActionableErrorInfo()
+                    {
+                        Message = string.Format(ErrorResource.ValidateBeforeMinimising, "Web Delete")
+                    }
+                };
             }
             if (SourceRegion.Errors.Count > 0)
             {

@@ -133,6 +133,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not allowed to delete system files/directories. {0}.
+        /// </summary>
+        public static string CannotDeleteSystemFiles {
+            get {
+                return ResourceManager.GetString("CannotDeleteSystemFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot execute CMD from tool..
         /// </summary>
         public static string CannotExecuteCMDFromTool {
@@ -165,6 +174,15 @@ namespace Warewolf.Resource.Errors {
         public static string CCAddressInvalidFormat {
             get {
                 return ResourceManager.GetString("CCAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CharEnumerator is not supported for this operation type!.
+        /// </summary>
+        public static string CharEnumeratorNotSupported {
+            get {
+                return ResourceManager.GetString("CharEnumeratorNotSupported", resourceCulture);
             }
         }
         
@@ -282,6 +300,24 @@ namespace Warewolf.Resource.Errors {
         public static string DecimalsNorValid {
             get {
                 return ResourceManager.GetString("DecimalsNorValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependency information is malformed.
+        /// </summary>
+        public static string DependencyInormationMalformed {
+            get {
+                return ResourceManager.GetString("DependencyInormationMalformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependency information could not be retrieved.
+        /// </summary>
+        public static string DependencyMissing {
+            get {
+                return ResourceManager.GetString("DependencyMissing", resourceCulture);
             }
         }
         
@@ -489,6 +525,15 @@ namespace Warewolf.Resource.Errors {
         public static string EnsureValueIsInteger {
             get {
                 return ResourceManager.GetString("EnsureValueIsInteger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generic parameter T must be an enumeration type..
+        /// </summary>
+        public static string ExpectedEnumerationTypeParameter {
+            get {
+                return ResourceManager.GetString("ExpectedEnumerationTypeParameter", resourceCulture);
             }
         }
         
@@ -736,6 +781,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select valid source.
+        /// </summary>
+        public static string InvalidSource {
+            get {
+                return ResourceManager.GetString("InvalidSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid time out. The timeout must be a valid variable or positive integer number..
+        /// </summary>
+        public static string InvalidTimeOut {
+            get {
+                return ResourceManager.GetString("InvalidTimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value {0} for TimeoutSecondsText could not be interpreted as a numeric value..
         /// </summary>
         public static string InvalidTimeOutSecondsText {
@@ -777,6 +840,15 @@ namespace Warewolf.Resource.Errors {
         public static string LocalInputPathEmpty {
             get {
                 return ResourceManager.GetString("LocalInputPathEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter local path.
+        /// </summary>
+        public static string LocalPathRequired {
+            get {
+                return ResourceManager.GetString("LocalPathRequired", resourceCulture);
             }
         }
         
@@ -835,6 +907,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You do not have permissions to View or Execute this resource..
+        /// </summary>
+        public static string NoPermissionToExecuteTool {
+            get {
+                return ResourceManager.GetString("NoPermissionToExecuteTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No process found matching the search criteria.
         /// </summary>
         public static string NoProcessFound {
@@ -849,6 +930,15 @@ namespace Warewolf.Resource.Errors {
         public static string NoRecordSet {
             get {
                 return ResourceManager.GetString("NoRecordSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cant find anything to split on!.
+        /// </summary>
+        public static string NothingToSplit {
+            get {
+                return ResourceManager.GetString("NothingToSplit", resourceCulture);
             }
         }
         
@@ -898,6 +988,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Null or empty tokenize string!.
+        /// </summary>
+        public static string NullTokenzeString {
+            get {
+                return ResourceManager.GetString("NullTokenzeString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can only accept one variable.
         /// </summary>
         public static string OneVariableAccepted {
@@ -912,6 +1011,15 @@ namespace Warewolf.Resource.Errors {
         public static string OnlyScalarRecordsetCommaSeperated {
             get {
                 return ResourceManager.GetString("OnlyScalarRecordsetCommaSeperated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid expression: opening and closing brackets don&apos;t match..
+        /// </summary>
+        public static string OpeningClosingBracketMismatch {
+            get {
+                return ResourceManager.GetString("OpeningClosingBracketMismatch", resourceCulture);
             }
         }
         
@@ -948,6 +1056,15 @@ namespace Warewolf.Resource.Errors {
         public static string ProblemsWithIterators {
             get {
                 return ResourceManager.GetString("ProblemsWithIterators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} must have a value.
+        /// </summary>
+        public static string PropertyMusHaveAValue {
+            get {
+                return ResourceManager.GetString("PropertyMusHaveAValue", resourceCulture);
             }
         }
         
@@ -1123,6 +1240,51 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server source not found. This service will not execute..
+        /// </summary>
+        public static string ServerSourceNotFound {
+            get {
+                return ResourceManager.GetString("ServerSourceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server version {0} is incompatiable with version {1}.
+        /// </summary>
+        public static string ServerVersionsIncompatiable {
+            get {
+                return ResourceManager.GetString("ServerVersionsIncompatiable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter SharePoint Server path From.
+        /// </summary>
+        public static string SharepointServerPathRequired {
+            get {
+                return ResourceManager.GetString("SharepointServerPathRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter SharePoint Server path To.
+        /// </summary>
+        public static string SharepointServerPathToRequired {
+            get {
+                return ResourceManager.GetString("SharepointServerPathToRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select a SharePoint Server.
+        /// </summary>
+        public static string SharepointServerRequired {
+            get {
+                return ResourceManager.GetString("SharepointServerRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The result field only allows a single result.
         /// </summary>
         public static string SingleResultAllowed {
@@ -1132,11 +1294,11 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select valid source.
+        ///   Looks up a localized string similar to Source directory does not exist or could not be found: {0}.
         /// </summary>
-        public static string SourceInvalid {
+        public static string SourceDirectoryDoesNotExist {
             get {
-                return ResourceManager.GetString("SourceInvalid", resourceCulture);
+                return ResourceManager.GetString("SourceDirectoryDoesNotExist", resourceCulture);
             }
         }
         
@@ -1182,6 +1344,15 @@ namespace Warewolf.Resource.Errors {
         public static string ToAddressInvalidFormat {
             get {
                 return ResourceManager.GetString("ToAddressInvalidFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please supply a To address in order to Test..
+        /// </summary>
+        public static string ToAddressRequired {
+            get {
+                return ResourceManager.GetString("ToAddressRequired", resourceCulture);
             }
         }
         
@@ -1240,6 +1411,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} must be validated before minimising.
+        /// </summary>
+        public static string ValidateBeforeMinimising {
+            get {
+                return ResourceManager.GetString("ValidateBeforeMinimising", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}..
         /// </summary>
         public static string ValueTimeOutOutOfRange {
@@ -1254,6 +1434,15 @@ namespace Warewolf.Resource.Errors {
         public static string VariableInputError {
             get {
                 return ResourceManager.GetString("VariableInputError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable List String can not be blank/empty.
+        /// </summary>
+        public static string VariableListStringRequired {
+            get {
+                return ResourceManager.GetString("VariableListStringRequired", resourceCulture);
             }
         }
         

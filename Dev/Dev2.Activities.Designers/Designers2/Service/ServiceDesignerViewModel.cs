@@ -50,6 +50,7 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -234,7 +235,7 @@ namespace Dev2.Activities.Designers2.Service
                     InstanceID = UniqueID,
                     ErrorType = ErrorType.Critical,
                     FixType = FixType.InvalidPermissions,
-                    Message = "You do not have permissions to View or Execute this resource."
+                    Message = ErrorResource.NoPermissionToExecuteTool
                 });
                 UpdateLastValidationMemo(memo);
             }
@@ -610,7 +611,7 @@ namespace Dev2.Activities.Designers2.Service
                     ErrorType = ErrorType.Critical,
                     FixType = FixType.None,
                     InstanceID = uniqueId,
-                    Message = "Server source not found. This service will not execute."
+                    Message = ErrorResource.ServerSourceNotFound
                 });
             }
 
