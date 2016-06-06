@@ -12,6 +12,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
@@ -22,7 +23,7 @@ namespace Dev2.Common
             int seed = DateTime.Now.Millisecond;
             if (length < 0 && type != enRandomType.Guid && type != enRandomType.Numbers)
             {
-                throw new ArgumentException("length must be greater than or equal to zero if the type is Letters or LettersAndNumbers");
+                throw new ArgumentException(ErrorResource.InvalidLength);
             }
 
             switch (type)

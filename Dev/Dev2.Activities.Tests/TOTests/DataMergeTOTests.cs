@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { Padding = "h]]", At = "1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "Padding", "Invalid expression: opening and closing brackets don't match");
+            Verify_RuleSet(dto, "Padding", "Result - Invalid expression: opening and closing brackets don't match");
         }
 
         [TestMethod]
@@ -294,9 +294,9 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "h]]" };
-
+            
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
+            Verify_RuleSet(dto, "At", "Result - Invalid expression: opening and closing brackets don't match");
         }
 
         [TestMethod]

@@ -23,6 +23,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
 {
@@ -97,7 +98,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                     {
                         Errors = new List<IActionableErrorInfo>
                         {
-                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
+                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = ErrorResource.InvalidTimeOut }};
 
                     }
                 }
@@ -107,7 +108,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                     {
                         Errors = new List<IActionableErrorInfo>
                         {
-                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = "Invalid time out. The timeout must be a valid variable or positive integer number. " }};
+                         new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = ErrorResource.InvalidTimeOut}};
                     }
                 }
             }
@@ -234,7 +235,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                         new ActionableErrorInfo(() => IsUrlFocused = true)
                             {
                                 ErrorType = ErrorType.Critical,
-                                Message = "Invalid expression: opening and closing brackets don't match."
+                                Message = ErrorResource.OpeningClosingBracketMismatch
                             }
                     };
             }

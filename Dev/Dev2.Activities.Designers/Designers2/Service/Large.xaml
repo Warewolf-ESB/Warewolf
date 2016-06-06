@@ -29,9 +29,25 @@
             <ResourceDictionary.MergedDictionaries>
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <ControlTemplate x:Key="ViewComplexObjectsTemplate" TargetType="{x:Type Button}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="ViewObjects" Visibility="Visible" Source="{StaticResource Scripting-CreateJSON-Normal}" Height="14" Width="14" />
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="False">
+                        <Setter TargetName="ViewObjects" Property="Source" Value="{StaticResource Scripting-CreateJSON-Normal}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="ViewObjects" Property="Source" Value="{StaticResource Scripting-CreateJSON}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-    
+
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="{Binding ButtonDisplayValue}"
@@ -98,7 +114,6 @@
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                         VerticalAlignment="Center"
                                                         WrapInBrackets="False"
-                                                        ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
@@ -120,7 +135,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ui:IntellisenseTextBox.Style>
-                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource IntellisenseComplexObjectsTextboxStyle}">
+                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                                                     <Setter Property="Control.BorderThickness" Value="1" />
@@ -149,6 +164,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="4" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
                                                Text="*"
@@ -165,6 +181,14 @@
                                             <ToolTip Content="{Binding Path=DisplayName}" />
                                         </TextBlock.ToolTip>
                                     </TextBlock>
+                                    <Button Command="{Binding Path=ViewComplexObjectsCommand}"
+                                            Grid.Column="2"
+                                            ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ButtonTransparentStyle}"
+                                            Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                            Template="{StaticResource ViewComplexObjectsTemplate}">
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -209,6 +233,10 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock Text="{Binding Path=DisplayName}"
                                                TextTrimming="CharacterEllipsis"
                                                VerticalAlignment="Center"
@@ -217,6 +245,14 @@
                                             <ToolTip Content="{Binding Path=DisplayName}" />
                                         </TextBlock.ToolTip>
                                     </TextBlock>
+                                    <Button Command="{Binding Path=ViewComplexObjectsCommand}"
+                                            Grid.Column="1"
+                                            ToolTip="{x:Static languages:Core.ViewJsonObjectTooltip}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ButtonTransparentStyle}"
+                                            Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                            Template="{StaticResource ViewComplexObjectsTemplate}">
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

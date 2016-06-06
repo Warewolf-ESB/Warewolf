@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Studio.AppResources.ExtensionMethods;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 
@@ -54,7 +55,7 @@ namespace Dev2.CustomControls
                 _containingGrid = Parent as Grid;
 
                 if (_containingGrid == null)
-                    throw new InvalidOperationException("Gridsplitter only works in grid");
+                    throw new InvalidOperationException(ErrorResource.GridsplitterOnlyWorksInGrids);
             }
 
             SetCursor();

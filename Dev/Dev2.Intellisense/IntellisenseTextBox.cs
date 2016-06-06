@@ -620,42 +620,6 @@ namespace Dev2.UI
 
         #endregion IsOpen
 
-        #region ViewComplexObjects
-        public static DependencyProperty ViewComplexObjectsCommandProperty =
-            DependencyProperty.Register(
-                "ViewComplexObjectsCommand",
-                typeof(ICommand),
-                typeof(IntellisenseTextBox));
-
-        public ICommand ViewComplexObjectsCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(ViewComplexObjectsCommandProperty);
-            }
-            set
-            {
-                if (IsComplexObject)
-                {
-                    SetValue(ViewComplexObjectsCommandProperty, value);
-                }
-            }
-        }
-
-        public static DependencyProperty IsComplexObjectProperty =
-            DependencyProperty.Register(
-                "IsComplexObject",
-                typeof(bool),
-                typeof(IntellisenseTextBox));
-
-        public bool IsComplexObject
-        {
-            get { return (bool)GetValue(IsComplexObjectProperty); }
-            set { SetValue(IsComplexObjectProperty, value); }
-        }
-
-        #endregion
-
         #endregion Dependency Properties
 
         #region Instance Fields

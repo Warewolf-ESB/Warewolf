@@ -24,6 +24,8 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.Validation;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable NotAccessedField.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UseNullPropagation
@@ -226,13 +228,13 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             if (string.IsNullOrEmpty(To))
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please supply a To address in order to Test." } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.ToAddressRequired} };
                 return;
             }
             if (SourceRegion.SelectedSource == null)
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please select a Source to Test." } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.InvalidSource } };
                 return;
             }
         

@@ -12,6 +12,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.Source
@@ -273,7 +275,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             get
             {
-                return SelectedSource == null ? new List<string> { "Invalid Source Selected" } : new List<string>();
+                return SelectedSource == null ? new List<string> { ErrorResource.InvalidSource } : new List<string>();
             }
         }
 

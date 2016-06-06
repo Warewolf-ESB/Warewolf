@@ -36,6 +36,8 @@ namespace Dev2.Common.Interfaces.Data
         bool EmptyToNull { get; }
 
         bool IsTextResponse { get; }
+        bool IsObject { get; set; }
+
         #endregion
     }
 }

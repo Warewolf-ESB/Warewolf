@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -109,7 +110,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 else
                 {
-                    throw new Exception("No Outputs detected");
+                    throw new Exception(ErrorResource.NoOutPuts);
                 }
                 _viewmodel.OutputsRegion.Description = Description;
                 _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
