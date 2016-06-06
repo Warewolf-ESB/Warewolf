@@ -100,11 +100,6 @@ namespace Dev2.Activities.AttachedProperties
             return (bool)dp.GetValue(BindPassword);
         }
 
-        public static string GetBoundPassword(DependencyObject dp)
-        {
-            return (string)dp.GetValue(BoundPassword);
-        }
-
         public static void SetBoundPassword(DependencyObject dp, string value)
         {
             dp.SetValue(BoundPassword, value);

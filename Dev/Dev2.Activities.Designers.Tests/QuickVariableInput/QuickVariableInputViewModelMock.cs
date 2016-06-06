@@ -42,11 +42,6 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 
         public int DoPreviewHitCount { get; private set; }
 
-        public void DoPreview()
-        {
-            DoPreview(this, new PreviewRequestedEventArgs());
-        }
-
         protected override void DoPreview(object sender, PreviewRequestedEventArgs args)
         {
             DoPreviewHitCount++;
