@@ -284,6 +284,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS.Tests", "AutoComplete\WpfControls.CS.Tests\WpfControls.CS.Tests.csproj", "{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -670,6 +672,10 @@ Global
 		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96E3D271-6627-4BAE-8DBC-5C7DF0C41DDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
