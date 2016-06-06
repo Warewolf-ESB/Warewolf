@@ -8,11 +8,13 @@
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         xmlns:diagnostics="clr-namespace:Dev2.Studio.ViewModels.Diagnostics"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+        xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
         Title="An unhandled exception has been encountered"
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         WindowStartupLocation="CenterOwner"
-        Height="420"
+        Height="520"
         Width="680"
         Icon="{Binding ErrorIcon}"
         mc:Ignorable="d" 
@@ -39,33 +41,76 @@
         </HierarchicalDataTemplate>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot" cal:Bind.Model="{Binding .}">
+    <Grid x:Name="LayoutRoot" cal:Bind.Model="{Binding .}" Margin="{StaticResource ElementBorder}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" 
+                   Text="{x:Static languages:Core.ExceptionViewStepsLabel}" 
+                   Margin="{StaticResource ControlBorderTop}"
+                   VerticalAlignment="Top"/>
+        <TextBox TextWrapping="Wrap" 
+                 Grid.Column="1"
+                 Grid.Row="0" 
+                 x:Name="StepsTextbox"
+                 Height="Auto" 
+                 MinHeight="60"
+                 MaxHeight="75"
+                 Text="{Binding StepsToFollow}"
+                 Margin="{StaticResource ControlBorderTop}"
+                 AcceptsReturn="True" 
+                 customControls:WatermarkTextBox.Watermark="{x:Static languages:Core.ExceptionViewStepsWatermark}"
+                 VerticalContentAlignment="Top"
+                 SnapsToDevicePixels="True" 
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto" >
+        </TextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Error" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
         <TreeView ItemTemplate="{DynamicResource ExceptionItemTemplate}"
                   ItemsSource="{Binding Exception}"
+                  Grid.Column="1"
+                  Margin="{StaticResource ControlBorderTop}"
                   VerticalContentAlignment="Stretch"
-                  Margin="10"
+                  Grid.Row="1" BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}"
                   HorizontalContentAlignment="Stretch"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" />
 
-        <Expander Grid.Row="1" Margin="10,5" Header="View Trace">
-            <ScrollViewer MaxHeight="250" VerticalScrollBarVisibility="Auto">
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Stack Trace" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
+
+        <Border BorderThickness="1" 
+                BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
+                Grid.Column="1" Grid.Row="2"
+                Margin="{StaticResource ControlBorderTop}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" >
                 <TextBlock Text="{Binding StackTrace}" TextWrapping="WrapWithOverflow" ScrollViewer.CanContentScroll="True" />
             </ScrollViewer>
-        </Expander>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,10">
+        </Border>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static languages:Core.EmailAddressLabel}" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBox Grid.Column="1" Grid.Row="3" 
+                 Margin="{StaticResource ControlBorderTop}"
+                 customControls:WatermarkTextBox.Watermark="{x:Static languages:Core.ExceptionViewEmailAddressWatermark}" 
+                 Text="{Binding EmailAddress}"/>
+
+        <StackPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="{StaticResource ControlBorderTop}"
+                    Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
             <views:CircularProgressBar Width="16"
                                    Height="16"
                                    Margin="{StaticResource ControlBorderRight}" 
                                    Visibility="{Binding Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button x:Name="SendReport"
-                Content="Send Report"
-                MinWidth="100"
-                Command="{Binding SendErrorCommand}" />
+                    Content="Send Report"
+                    MinWidth="100"
+                    Command="{Binding SendErrorCommand}" />
         </StackPanel>
     </Grid>
 </Window>
