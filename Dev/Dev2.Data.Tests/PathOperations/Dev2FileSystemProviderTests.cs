@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -38,7 +39,7 @@ namespace Dev2.Data.Tests.PathOperations
             }
             catch(Exception ex)
             {
-                Assert.AreEqual("File not found [ C:/dadsdascasxxxacvaawqf ]", ex.Message);
+                Assert.AreEqual("File C:/dadsdascasxxxacvaawqf not found ", ex.Message);
                 pass = true;
             }
             if(!pass)
@@ -61,7 +62,7 @@ namespace Dev2.Data.Tests.PathOperations
             }
             catch(Exception ex)
             {
-                Assert.AreEqual("Directory not found [ C:/dadsdascasxxxacvaawqf ] ", ex.Message);
+                Assert.AreEqual("Directory not found C:/dadsdascasxxxacvaawqf", ex.Message);
                 pass = true;
             }
             if(!pass)

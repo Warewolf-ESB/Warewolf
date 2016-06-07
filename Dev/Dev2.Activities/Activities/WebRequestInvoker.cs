@@ -19,11 +19,6 @@ namespace Dev2.Activities
 {
     public class WebRequestInvoker : IWebRequestInvoker
     {
-        public string ExecuteRequest(string method, string url)
-        {
-            return ExecuteRequest(method, url, new List<Tuple<string, string>>());
-        }
-
         public string ExecuteRequest(string method, string url, List<Tuple<string, string>> headers)
         {
             return ExecuteRequest(method, url, null, headers);

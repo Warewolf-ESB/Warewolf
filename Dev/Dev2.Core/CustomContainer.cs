@@ -123,17 +123,6 @@ namespace Dev2
             RegisterdPerRequestTypes.Add(typeof(T), constructorFunc);
         }
 
-        public static object GetInstancePerRequestType(Type type)
-        {
-            var requestedType = type;
-            if (RegisterdPerRequestTypes.ContainsKey(requestedType))
-            {
-                var registerdType = RegisterdPerRequestTypes[requestedType];
-                return registerdType.Invoke();
-            }
-            return null;
-        }
-
         public static T GetInstancePerRequestType<T>() where T : class
         {
             var requestedType = typeof(T);

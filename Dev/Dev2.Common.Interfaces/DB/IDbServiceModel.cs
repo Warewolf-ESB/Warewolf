@@ -23,8 +23,6 @@ namespace Dev2.Common.Interfaces.DB
         void CreateNewSource();
         void EditSource(IDbSource selectedSource);
         DataTable TestService(IDatabaseService inputValues);
-        IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action);
-        void SaveService(IDatabaseService toModel);
 
         IStudioUpdateManager UpdateRepository { get; }
     }

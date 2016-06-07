@@ -39,17 +39,5 @@ namespace Dev2.Activities.Designers2.Core.Adorners
             var adorners = layer.GetAdorners(parentUi);
             return adorners ?? Empty;
         }
-
-        public static void SetConnectorVisibility(this ActivityDesigner designer, Visibility visibility)
-        {
-            var adorners = GetConnectors(designer);
-            foreach(var adorner in adorners)
-            {
-                //if(adorner.GetType().Name.Contains("FlowchartConnectionPointsAdorner"))
-                //{
-                //}
-                adorner.Visibility = visibility;
-            }
-        }
     }
 }
