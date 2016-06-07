@@ -252,7 +252,7 @@ namespace Dev2.Tests.Activities.TOTests
             var activityDTO = new ActivityDTO();
 
             //------------Execute Test---------------------------
-            var convertToOutputTO = activityDTO.ConvertToOutputTO();
+            var convertToOutputTO = activityDTO.ConvertToOutputTo();
             //------------Assert Results-------------------------
             Assert.IsNotNull(convertToOutputTO);
         }

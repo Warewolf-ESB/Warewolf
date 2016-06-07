@@ -16,6 +16,7 @@ namespace Dev2.Activities
 {
     public interface IWebRequestInvoker
     {
+        // ReSharper disable once UnusedMember.Global
         string ExecuteRequest(string method, string url);
 
         string ExecuteRequest(string method, string url, List<Tuple<string, string>> headers);
