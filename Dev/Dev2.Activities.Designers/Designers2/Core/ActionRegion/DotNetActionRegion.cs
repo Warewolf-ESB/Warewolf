@@ -167,7 +167,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
-                    if (!String.IsNullOrEmpty(_selectedAction.Method))
+                    if (!string.IsNullOrEmpty(_selectedAction.Method))
                         StorePreviousValues(_selectedAction.GetIdentifier());
                 }
                 if(Dependants != null)
@@ -177,8 +177,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     if (region != null)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                        region.RecordsetName = String.Empty;
-
+                        region.RecordsetName = string.Empty;
+                        region.ObjectResult = string.Empty;
+                        region.IsObject = false;
+                        region.ObjectName = string.Empty;
                     }
                 }
                 RestoreIfPrevious(value);

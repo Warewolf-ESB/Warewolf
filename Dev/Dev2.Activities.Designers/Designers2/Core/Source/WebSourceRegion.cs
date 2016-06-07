@@ -177,7 +177,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             get
             {
-                return _sourceChangedAction??(()=>{});
+                return _sourceChangedAction ?? (() => { });
             }
             set
             {
@@ -241,18 +241,20 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
                 if (!Equals(value, _selectedSource) && _selectedSource != null)
                 {
-                    if(! String.IsNullOrEmpty(_selectedSource.HostName))
+                    if (!string.IsNullOrEmpty(_selectedSource.HostName))
                         StorePreviousValues(_selectedSource.Id);
                 }
-                if(Dependants != null)
+                if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
                     var region = outputs as OutputsRegion;
                     if (region != null)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                        region.RecordsetName = String.Empty;
-
+                        region.RecordsetName = string.Empty;
+                        region.ObjectResult = string.Empty;
+                        region.IsObject = false;
+                        region.ObjectName = string.Empty;
                     }
                 }
                 RestoreIfPrevious(value);
