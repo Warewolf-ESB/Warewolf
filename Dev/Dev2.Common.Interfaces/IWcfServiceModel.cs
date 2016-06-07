@@ -11,8 +11,6 @@ namespace Dev2.Common.Interfaces
         void CreateNewSource();
         void EditSource(IWcfServerSource selectedSource);
         string TestService(IWcfService inputValues);
-        IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IWcfAction action);
-        void SaveService(IWcfService model);
         IStudioUpdateManager UpdateRepository { get; }
     }
 }
