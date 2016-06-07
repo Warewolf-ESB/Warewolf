@@ -224,9 +224,6 @@
     <Compile Include="Designers2\Comment\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Comment\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
@@ -234,7 +231,6 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
-    <Compile Include="Designers2\Core\CloneInputRegion\ExchangeInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
@@ -251,7 +247,6 @@
     </Compile>
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
-    <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
@@ -464,12 +459,10 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
-    <Compile Include="Designers2\Core\Adorners\AdornerUtils.cs" />
     <Compile Include="Designers2\Core\Controls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\Core\Controls\Dev2DataGridMouseScrollBehavior.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
       <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
     </Compile>
@@ -1133,10 +1126,6 @@
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
-      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
-      <Name>Warewolf.Studio.Themes.Luna</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
@@ -1152,6 +1141,10 @@
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
@@ -1238,10 +1231,6 @@
     <Page Include="Designers2\Comment\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\Comment\Small.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Core\CustomToolDesignerRegions.xaml">
       <Generator>MSBuild:Compile</Generator>

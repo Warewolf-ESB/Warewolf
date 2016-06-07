@@ -97,12 +97,12 @@ namespace Dev2.Activities
             var webRequestResult = PerformWebPostRequest(head, query, url, postData);
 
 
-            WebResponseManager = new WebResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
-            WebResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
+            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
 
         }
 
-        public IWebResponseManager WebResponseManager { get; set; }
+        public IResponseManager ResponseManager { get; set; }
 
         
 

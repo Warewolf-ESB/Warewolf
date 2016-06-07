@@ -59,6 +59,7 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion()
         {
             ToolRegionName = "OutputsRegion";
+            _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
 
         void OutputsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
