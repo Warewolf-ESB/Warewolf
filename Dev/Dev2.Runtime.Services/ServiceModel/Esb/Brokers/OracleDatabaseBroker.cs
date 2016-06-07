@@ -176,7 +176,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
 
-        public override void UpdateServiceOutParameters(DbService dbService, DbSource dbSource)
+        public virtual void UpdateServiceOutParameters(DbService dbService, DbSource dbSource)
         {
             dbService.Method.OutParameters = new List<MethodParameter>();
             using (var server = CreateDbServer(dbSource))
