@@ -64,7 +64,14 @@ namespace Dev2.Common
                     result = Math.Round(rand.NextDouble() * (to - @from) + @from).ToString(CultureInfo.InvariantCulture);
 
             }
-
+            if (result == double.PositiveInfinity.ToString(CultureInfo.InvariantCulture))
+            {
+                return double.MaxValue.ToString(CultureInfo.InvariantCulture);
+            }
+            if (result == double.NegativeInfinity.ToString(CultureInfo.InvariantCulture))
+            {
+                return double.MinValue.ToString(CultureInfo.InvariantCulture);
+            }
             return result;
         }
 
