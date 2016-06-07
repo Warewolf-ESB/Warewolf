@@ -47,12 +47,6 @@ namespace Dev2.Common.Interfaces.Data.TO
         ///     Makes the error collection user ready.
         /// </summary>
         /// <returns></returns>
-        string MakeUserReady();
-
-        /// <summary>
-        ///     Makes the error collection user ready.
-        /// </summary>
-        /// <returns></returns>
         string MakeDisplayReady();
 
         /// <summary>
