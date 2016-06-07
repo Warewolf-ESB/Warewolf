@@ -38,7 +38,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // ReSharper disable MaximumChainedReferences
                 var parameters = src.Inputs == null ? new List<MethodParameter>() : src.Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList();
                 // ReSharper restore MaximumChainedReferences
-
+                var requestHeaders = src.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList();
+                var requestHeader = string.Join(";", requestHeaders).TrimEnd(':',';');
                 var res = new WebService
                 {
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), "test"),
@@ -48,6 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Headers = src.Headers,
+                    RequestHeaders = requestHeader,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response,
                     Source = new WebSource

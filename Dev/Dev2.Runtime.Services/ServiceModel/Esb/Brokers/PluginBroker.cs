@@ -82,8 +82,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                                         Parameters = pluginService.Method.Parameters
                                     };
 
-            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args);
-
+            string serializedResult;
+            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args,out serializedResult);
+            pluginService.SerializedResult = serializedResult;
             return pluginResult;
         }
     }

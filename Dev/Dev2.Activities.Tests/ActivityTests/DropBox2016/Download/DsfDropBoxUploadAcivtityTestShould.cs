@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
-using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.DataList.Contract;
@@ -54,33 +53,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         #endregion
-
-        public void SetBaseMetadata(IDownloadResponse<FileMetadata> metadata)
-        {
-            Response = metadata;
-        }
-        public string PerfomMockExecution()
-        {
-
-            var mock = new Mock<IDropBoxUpload>();
-            mock.Setup(upload => upload.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-            .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-
-            var dropboxExecutionResult = mock.Object.ExecuteTask(TestConstant.DropboxClientInstance.Value);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
-            if (dropboxSuccessResult != null)
-            {
-                Response = dropboxSuccessResult.GetDownloadResponse();
-                return Response.Response.PathDisplay;
-            }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
-            {
-                Exception = dropboxFailureResult.GetException();
-            }
-            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
-            throw new Exception(executionError);
-        }
 
         public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
         {

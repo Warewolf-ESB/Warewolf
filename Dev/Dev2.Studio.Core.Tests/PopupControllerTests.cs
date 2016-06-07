@@ -94,6 +94,42 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowExceptionViewAppreciation")]
+        public void PopupController_ShowExceptionViewAppreciation_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+
+            string expectedDescription = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
+                "in the Community to keep updated on the progress.";
+
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowExceptionViewAppreciation();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("We’ve got your feedback!", header);
+            Assert.AreEqual(expectedDescription, description);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("PopupController_ShowNameChangedConflict")]
         public void PopupController_ShowNameChangedConflict_SetProperties_AllPropertiesDisplayed()
