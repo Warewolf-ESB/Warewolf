@@ -119,6 +119,9 @@ namespace Dev2.Activities.Designers2.Core
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
                 IsEnabled = toRestore.IsEnabled;
+                ObjectResult = region.ObjectResult;
+                ObjectName = region.ObjectName;
+                IsObject = region.IsObject;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
