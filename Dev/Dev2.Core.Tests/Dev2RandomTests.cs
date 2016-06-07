@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Dev2.Common;
@@ -121,13 +122,23 @@ namespace Dev2.Tests
             Assert.IsTrue(result >= LessThanMinInt, "Dev2Random generated a number below the specified range");
         }
 
+        //http://www.hanselman.com/blog/WhyYouCantDoubleParseDoubleMaxValueToStringOrSystemOverloadExceptionsWhenUsingDoubleParse.aspx
         [TestMethod]
         public void GenerateWithNumbersExpectedNumbersMaximumDoubleRange()
         {
             const double MinDouble = double.MinValue;
             const double MaxDouble = double.MaxValue;
             var random = _dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble);
-            double result = double.Parse(random);
+            if(random.ToString(CultureInfo.InvariantCulture) == "1.79769313486232E+308")
+            {
+                random = "1.79769313486231E+308";
+            }
+            if (random.ToString(CultureInfo.InvariantCulture) == "-1.79769313486232E+308")
+            {
+                random = "-1.79769313486231E+308";
+            }
+           
+            var result = Convert.ToDouble(random);
             Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
         }
