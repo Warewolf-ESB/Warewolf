@@ -1408,6 +1408,10 @@ namespace Dev2.UI
             {
                 result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
             }
+            if (FilterType == enIntellisensePartType.JsonObject && !result.Contains("@"))
+            {
+                result = result.Insert(2, "@");
+            }
 
             return result;
         }
