@@ -12,9 +12,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.IO;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Dev2.Studio.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -175,22 +173,6 @@ namespace Dev2.Core.Tests.AppResources.Converters
             byte[] pixels = new byte[4];
             bitmapImage.CopyPixels(pixels, nStride, 0);
             return Color.FromArgb(pixels[0], pixels[1], pixels[2], pixels[3]);
-        }
-
-        private byte[] BytesFromBitmapSource(BitmapSource bitmapImage)
-        {
-            MemoryStream ms = new MemoryStream();
-
-            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-            encoder.Save(ms);
-
-            return ms.ToArray();
-        }
-
-        private byte[] BytesFromIcon(Icon icon)
-        {
-            return BytesFromBitmapSource(Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()));
         }
 
         #endregion Helper Methods
