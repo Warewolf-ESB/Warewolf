@@ -701,6 +701,7 @@ namespace Dev2.Common.Reflection
         /// <param name="pszAssemblyName"></param>
         /// <returns></returns>
         [PreserveSig]
+        // ReSharper disable once UnusedMember.Global
         int CreateAssemblyCacheItem(
             uint dwFlags,
             IntPtr pvReserved,
@@ -730,6 +731,7 @@ namespace Dev2.Common.Reflection
         /// </param>
         /// <returns></returns>
         [PreserveSig]
+        // ReSharper disable once UnusedMember.Global
         int InstallAssembly(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszManifestFilePath,

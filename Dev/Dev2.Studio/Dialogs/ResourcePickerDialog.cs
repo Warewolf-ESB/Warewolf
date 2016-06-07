@@ -67,11 +67,6 @@ namespace Dev2.Dialogs
             _activityType = activityType;
         }
 
-        public static Task<IResourcePickerDialog> CreateAsync(enDsfActivityType activityType, IEnvironmentViewModel environmentViewModel, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton)
-        {
-            var ret = new ResourcePickerDialog(activityType,environmentViewModel,eventPublisher,asyncWorker,isFromDrop,studioResourceRepository,connectControlSingleton);
-            return ret.InitializeAsync(environmentViewModel);
-        }
         public static Task<IResourcePickerDialog> CreateAsync(enDsfActivityType activityType, IEnvironmentViewModel source)
         {
             var ret = new ResourcePickerDialog(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), false, StudioResourceRepository.Instance, ConnectControlSingleton.Instance);
@@ -166,22 +161,6 @@ namespace Dev2.Dialogs
             }
 
             return enDsfActivityType.All;
-        }
-
-        public static bool ShowDropDialog<T>(ref T picker, string typeName, out DsfActivityDropViewModel dropViewModel)
-     where T : ResourcePickerDialog
-        {
-            var activityType = DetermineDropActivityType(typeName);
-            if (activityType != enDsfActivityType.All)
-            {
-                if (picker == null)
-                {
-                    picker = (T)Activator.CreateInstance(typeof(T), activityType);
-                }
-                return picker.ShowDialog(out dropViewModel);
-            }
-            dropViewModel = null;
-            return false;
         }
     }
 }

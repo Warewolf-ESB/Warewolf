@@ -15,7 +15,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
-using Dev2.Providers.Logs;
 using Ionic.Zip;
 
 // ReSharper disable once CheckNamespace
@@ -124,64 +123,7 @@ namespace Dev2.Studio.Core.Helpers
         }
 
 
-        /// <summary>
-        /// Gets the app data path.
-        /// </summary>
-        /// <param name="uri">The URI.</param>
-        /// <returns></returns>
-        public static string GetAppDataPath(string uri)
-        {
-            var result = Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                uri
-            });
-
-            return result;
-        }
-
-        public static string GetStudioLogTempPath()
-        {
-            var studioLog = CustomTextWriter.LoggingFileName;
-
-            if(File.Exists(studioLog))
-            {
-
-                string fileContent;
-                using(var fs = new FileStream(studioLog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    using(var sr = new StreamReader(fs, Encoding.Default))
-                    {
-                        fileContent = sr.ReadToEnd();
-                    }
-                }
-
-                string uniqueOutputPath = GetUniqueOutputPath(".txt");
-                return CreateATemporaryFile(fileContent, uniqueOutputPath);
-            }
-            return null;
-        }
-
         public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
-        {
-            CreateTextFile(fileContent, uniqueOutputPath);
-            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            if(sourceDirectoryName != null)
-            {
-                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-                using(var zip = new ZipFile())
-                {
-                    zip.AddFile(uniqueOutputPath, ".");
-                    zip.Save(destinationArchiveFileName);
-                }
-                return destinationArchiveFileName;
-            }
-            return null;
-        }
-
-        public static string CreateATemporaryFile(string fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);
             string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);

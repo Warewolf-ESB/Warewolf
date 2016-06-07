@@ -46,21 +46,6 @@ namespace Dev2.Network.Execution
         public ExecutionStatusCallbackMessageType MessageType { get; set; }
 
         #endregion Properties
-
-        #region INetworkMessage
-
-        public void Read(IByteReaderBase reader)
-        {
-            CallbackID = reader.ReadGuid();
-            MessageType = (ExecutionStatusCallbackMessageType) reader.ReadInt32();
-        }
-
-        public void Write(IByteWriterBase writer)
-        {
-            writer.Write(CallbackID);
-            writer.Write((int) MessageType);
-        }
-
-        #endregion INetworkMessage
+        
     }
 }

@@ -13,8 +13,6 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-using System.Collections;
-using System.Collections.ObjectModel;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Utils
@@ -72,29 +70,6 @@ namespace Dev2.Studio.Core.Activities.Utils
             return CreateModelItem(new object());
         }
 
-        public static ModelItemCollection CreateModelItemCollection(ICollection objectToMakeModelItem)
-        {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-
-            mtm.Load(objectToMakeModelItem);
-
-            return mtm.Root as ModelItemCollection;
-        }
-
-        public static ModelItemCollection CreateModelItemCollection(object parent, object objectToMakeModelItem)
-        {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-
-            return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem) as ModelItemCollection;
-        }
-
-        public static ModelItemCollection CreateModelItemCollection()
-        {
-            return CreateModelItemCollection(new Collection<object>());
-        }
-
         public static T GetProperty<T>(this ModelItem modelItem, string propertyName)
         {
             var modelProperty = modelItem.Properties[propertyName];
@@ -136,23 +111,6 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static object GetProperty(this ModelItem modelItem, string propertyName)
         {
             return GetProperty(propertyName, modelItem);
-        }
-
-        /// <summary>
-        /// Determines whether [is local service] [the specified URI].
-        /// </summary>
-        /// <param name="uri">The URI.</param>
-        /// <returns>
-        ///   <c>true</c> if [is local service] [the specified URI]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsLocalService(string uri)
-        {
-            if(uri.IndexOf("localhost:", StringComparison.Ordinal) >= 0 || uri.IndexOf("127.0.0.1:", StringComparison.Ordinal) >= 0)
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public static Guid GetUniqueID(ModelItem modelItem)

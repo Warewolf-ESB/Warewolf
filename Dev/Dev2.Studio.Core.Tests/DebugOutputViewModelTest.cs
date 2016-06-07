@@ -24,11 +24,9 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -42,7 +40,6 @@ namespace Dev2.Core.Tests
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();
         private static Mock<IEnvironmentModel> _environmentModel;
         private static IEnvironmentRepository _environmentRepo;
-        private static Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
         private static Mock<IContextualResourceModel> _firstResource;
         const string _resourceName = "TestResource";
         const string _displayName = "test2";
@@ -493,20 +490,6 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources))));
 
             return connection;
-        }
-
-        public static Mock<IWorkspaceItemRepository> GetworkspaceItemRespository()
-        {
-            _mockWorkspaceRepo = new Mock<IWorkspaceItemRepository>();
-            var list = new List<IWorkspaceItem>();
-            var item = new Mock<IWorkspaceItem>();
-            item.SetupGet(i => i.WorkspaceID).Returns(_workspaceID);
-            item.SetupGet(i => i.ServerID).Returns(_serverID);
-            item.SetupGet(i => i.ServiceName).Returns(_resourceName);
-            list.Add(item.Object);
-            _mockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
-            _mockWorkspaceRepo.Setup(c => c.Remove(_firstResource.Object)).Verifiable();
-            return _mockWorkspaceRepo;
         }
 
         [TestMethod]

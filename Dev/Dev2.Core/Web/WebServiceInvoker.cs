@@ -60,64 +60,6 @@ namespace Dev2.DynamicServices
         }
 
         /// <summary>
-        ///     Gets a list of all methods available for the specified service.
-        /// </summary>
-        /// <param name="serviceName"></param>
-        /// <returns></returns>
-        public List<string> EnumerateServiceMethods(string serviceName)
-        {
-            var methods = new List<string>();
-
-            if (!availableTypes.ContainsKey(serviceName))
-                throw new Exception("Service Not Available");
-
-            Type type = availableTypes[serviceName];
-
-            // only find methods of this object type (the one we generated)
-            // we don't want inherited members (this type inherited from SoapHttpClientProtocol)
-            methods.AddRange(
-                type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-                    .Select(minfo => minfo.Name));
-
-            return methods;
-        }
-
-        /// <summary>
-        ///     Invokes the specified method of the named service.
-        /// </summary>
-        /// <typeparam name="T">The expected return type.</typeparam>
-        /// <param name="serviceName">The name of the service to use.</param>
-        /// <param name="methodName">The name of the method to call.</param>
-        /// <param name="args">The arguments to the method.</param>
-        /// <returns>The return value from the web service method.</returns>
-        public T InvokeMethod<T>(string serviceName, string methodName, params object[] args)
-        {
-            // create an instance of the specified service
-            // and invoke the method
-            object obj = webServiceAssembly.CreateInstance(serviceName);
-
-            if (obj != null)
-            {
-                Type type = obj.GetType();
-
-                var typedArgs = new List<object>();
-
-                type.GetMethod(methodName).GetParameters().ToList().ForEach(par =>
-                {
-                    Type paramType = par.ParameterType;
-                    if (paramType.IsEnum)
-                    {
-                        typedArgs.Add(Enum.Parse(paramType, args[0].ToString()));
-                    }
-                });
-
-                return (T) type.InvokeMember(methodName, BindingFlags.InvokeMethod, null, obj, args);
-            }
-
-            return default(T);
-        }
-
-        /// <summary>
         ///     Builds the web service description importer, which allows us to generate a proxy class based on the
         ///     content of the WSDL described by the XmlTextReader.
         /// </summary>

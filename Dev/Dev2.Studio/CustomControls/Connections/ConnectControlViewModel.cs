@@ -384,12 +384,6 @@ namespace Dev2.CustomControls.Connections
             return true;
         }
 
-        IEnvironmentModel Get(int selectedIndex)
-        {
-            var selectedServer = Servers[selectedIndex];
-            return selectedServer.EnvironmentModel;
-        }
-
         public ICommand ConnectCommand
         {
             get
