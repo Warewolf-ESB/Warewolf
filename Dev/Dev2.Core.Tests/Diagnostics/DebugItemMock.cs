@@ -23,26 +23,6 @@ namespace Dev2.Tests.Diagnostics
 
         #region Implementation of IDebugItem
 
-        public new bool Contains(string filterText)
-        {
-            return false;
-        }
-
-
-
-        public void AddRange(IList<IDebugItemResult> itemsToAdd)
-        {
-        }
-
-        public new IList<IDebugItemResult> FetchResultsList()
-        {
-            return null;
-        }
-
-        public new void FlushStringBuilder()
-        {
-        }        
-
         public override string SaveFile(string contents, string fileName)
         {
             SaveFileHitCount++;

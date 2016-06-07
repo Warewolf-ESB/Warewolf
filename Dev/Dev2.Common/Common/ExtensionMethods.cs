@@ -514,10 +514,5 @@ namespace Dev2.Common.Common
             return new[] {"<" + tag + ">", "</" + tag + ">"};
         }
 
-        public static string GetPropertyName<T, TReturn>(this Expression<Func<T, TReturn>> expression)
-        {
-            var body = (MemberExpression) expression.Body;
-            return body.Member.Name;
-        }
     }
 }
