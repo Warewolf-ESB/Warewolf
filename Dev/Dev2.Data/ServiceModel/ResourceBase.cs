@@ -259,6 +259,34 @@ namespace Dev2.Runtime.ServiceModel.Data
             return "Unknown";
         }
 
+        public bool IsUserInAuthorRoles(string userRoles)
+        {
+            if(string.IsNullOrEmpty(userRoles))
+            {
+                return false;
+            }
+
+            if(string.IsNullOrEmpty(AuthorRoles))
+            {
+                return true;
+            }
+
+            var user = userRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            var res = AuthorRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if(user.Contains("Domain Admins"))
+            {
+                return true;
+            }
+
+            if(!user.Any())
+            {
+                return false;
+            }
+
+            return res.Any() && user.Intersect(res).Any();
+        }
+
         public virtual XElement ToXml()
         {
             var rootElement = GetRootElement();
