@@ -33,6 +33,7 @@ using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Specs.Scheduler
 {
