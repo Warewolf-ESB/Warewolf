@@ -20,16 +20,7 @@ namespace Dev2.CustomControls.Behavior
             DependencyProperty.RegisterAttached("BehaviorType", typeof (Type),
                 typeof (object), new PropertyMetadata(null, PropertyChangedCallback));
 
-        public static Type GetBehaviorType(DependencyObject obj)
-        {
-            return (Type) obj.GetValue(BehaviorTypeProperty);
-        }
-
-        public static void SetBehaviorType(DependencyObject obj, Type value)
-        {
-            obj.SetValue(BehaviorTypeProperty, value);
-        }
-
+        
         private static void PropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == null)

@@ -57,26 +57,8 @@ namespace WPF.JoshSmith.Controls.Validation
         /// </summary>
         public static readonly DependencyProperty ErrorMessageProperty;
 
-        /// <summary>
-        ///     Returns the error message used when validation fails for the
-        ///     specified TextBox.
-        /// </summary>
-        /// <param name="textBox">The TextBox whose error message is returned.</param>
-        public static string GetErrorMessage(TextBox textBox)
-        {
-            return textBox.GetValue(ErrorMessageProperty) as string;
-        }
 
-        /// <summary>
-        ///     Sets the error message used when validation fails for the
-        ///     specified TextBox.
-        /// </summary>
-        /// <param name="textBox">The TextBox being validated.</param>
-        /// <param name="value">The error message.</param>
-        public static void SetErrorMessage(TextBox textBox, string value)
-        {
-            textBox.SetValue(ErrorMessageProperty, value);
-        }
+
 
         #endregion // ErrorMessage
 
@@ -88,25 +70,8 @@ namespace WPF.JoshSmith.Controls.Validation
         /// </summary>
         public static readonly DependencyProperty RegexTextProperty;
 
-        /// <summary>
-        ///     Returns the regular expression used to validate the specified TextBox.
-        /// </summary>
-        /// <param name="textBox">The TextBox whose regular expression is returned.</param>
-        public static string GetRegexText(TextBox textBox)
-        {
-            return textBox.GetValue(RegexTextProperty) as string;
-        }
 
-        /// <summary>
-        ///     Sets the regular expression used to validate the
-        ///     specified TextBox.
-        /// </summary>
-        /// <param name="textBox">The TextBox being validated.</param>
-        /// <param name="value">The regular expression.</param>
-        public static void SetRegexText(TextBox textBox, string value)
-        {
-            textBox.SetValue(RegexTextProperty, value);
-        }
+
 
         #endregion // RegexText
 

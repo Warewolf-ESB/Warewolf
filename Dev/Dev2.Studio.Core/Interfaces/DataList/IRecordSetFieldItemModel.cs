@@ -4,8 +4,5 @@
     {
         IRecordSetItemModel Parent { get; set; }
 
-        //string DisplayName { get; set; }
-
-        string ValidateName(string name);
     }
 }

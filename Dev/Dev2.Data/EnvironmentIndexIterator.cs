@@ -41,29 +41,6 @@ namespace Dev2.Data
             return _indexes.Last();
         }
 
-        public int MinIndex()
-        {
-            return _indexes[0];
-        }
-
-        public void AddGap(int idx)
-        {
-        }
-
-        public void RemoveGap(int idx)
-        {
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            return null;
-        }
-
-        public IIndexIterator Clone()
-        {
-            return null;
-        }
-
         #endregion
     }
 }
