@@ -26,6 +26,5 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         int VersionNo { get; set; }
         bool Compile();
         void WriteCompileError(string traceMsg);
-        void WriteCompileWarning(string traceMsg);
     }
 }
