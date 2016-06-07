@@ -18,7 +18,9 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         #region Locals
 
+#pragma warning disable 649
         private enTestObjectBehaviourChangeType _behaviourType;
+#pragma warning restore 649
 
         #endregion Locals
 
