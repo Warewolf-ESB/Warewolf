@@ -42,12 +42,6 @@ namespace Dev2.Core.Tests.ModelTests
 
         }
 
-        private IRecordSetItemModel CreateRecordSetItemModel(string name)
-        {
-            return new RecordSetItemModel(name);
-        }
-
-
         #endregion Private Test Methods
 
         #region CTOR Tests

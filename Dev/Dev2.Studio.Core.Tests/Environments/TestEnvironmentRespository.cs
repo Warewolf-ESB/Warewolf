@@ -70,10 +70,5 @@ namespace Dev2.Core.Tests.Environments
             }
             return new List<Guid>();
         }
-
-        public void AddMockEnvironment(IEnvironmentModel environmentToAdd)
-        {
-            Environments.Add(environmentToAdd);
-        }
     }
 }

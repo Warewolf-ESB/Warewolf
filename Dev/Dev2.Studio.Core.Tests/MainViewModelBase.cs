@@ -33,7 +33,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 
@@ -255,42 +254,6 @@ namespace Dev2.Core.Tests
 
             succesResponse.SetMessage(@"<DataList>Success</DataList>");
             ResourceRepo.Setup(s => s.DeleteResource(FirstResource.Object)).Returns(succesResponse);
-        }
-
-        protected Mock<IEnvironmentRepository> SetupForDeleteServer()
-        {
-            CreateResourceRepo();
-            var models = new List<IEnvironmentModel> { EnvironmentModel.Object };
-            var mock = new Mock<IEnvironmentRepository>();
-            mock.Setup(s => s.All()).Returns(models);
-            mock.Setup(s => s.Get(It.IsAny<Guid>())).Returns(EnvironmentModel.Object);
-            mock.Setup(s => s.Source).Returns(EnvironmentModel.Object);
-            mock.Setup(s => s.ReadSession()).Returns(new[] { EnvironmentModel.Object.ID });
-            mock.Setup(s => s.Remove(It.IsAny<IEnvironmentModel>()))
-                .Callback<IEnvironmentModel>(s =>
-                    Assert.AreEqual(EnvironmentModel.Object, s))
-                .Verifiable();
-            PopupController = new Mock<IPopupController>();
-            EventAggregator = new Mock<IEventAggregator>();
-            EventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()))
-                .Callback<object>(m =>
-                {
-                    var removeMsg = (EnvironmentDeletedMessage)m;
-                    Assert.AreEqual(EnvironmentModel.Object, removeMsg.EnvironmentModel);
-                })
-                .Verifiable();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false);
-            SetupForDelete();
-            FirstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
-            FirstResource.Setup(r => r.ServerResourceType).Returns("Server");
-            FirstResource.Setup(r => r.ConnectionString)
-                .Returns(TestResourceStringsTest.ResourceToHydrateConnectionString1);
-            EnvironmentConnection = new Mock<IEnvironmentConnection>();
-            EnvironmentConnection.Setup(c => c.AppServerUri)
-                .Returns(new Uri(TestResourceStringsTest.ResourceToHydrateActualAppUri));
-            EnvironmentModel.Setup(r => r.Connection).Returns(EnvironmentConnection.Object);
-            return mock;
         }
 
         #endregion Methods used by tests
