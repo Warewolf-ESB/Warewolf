@@ -98,17 +98,6 @@ namespace Dev2.CustomControls.Panels
             return (bool) uiElement.GetValue(CanBeDraggedProperty);
         }
 
-        /// <summary>
-        ///     Sets the CanBeDragged attached property for the specified UIElement.
-        /// </summary>
-        /// <param name="uiElement">The UIElement to set the property for.</param>
-        /// <param name="value">Pass true if the element can be dragged, else false.</param>
-        public static void SetCanBeDragged(UIElement uiElement, bool value)
-        {
-            if (uiElement != null)
-                uiElement.SetValue(CanBeDraggedProperty, value);
-        }
-
         #endregion // CanBeDragged
 
         #endregion // Attached Properties
@@ -155,39 +144,6 @@ namespace Dev2.CustomControls.Panels
 
         #endregion // AllowDragOutOfView
 
-        #region BringToFront / SendToBack
-
-        /// <summary>
-        ///     Assigns the element a z-index which will ensure that
-        ///     it is in front of every other element in the Canvas.
-        ///     The z-index of every element whose z-index is between
-        ///     the element's old and new z-index will have its z-index
-        ///     decremented by one.
-        /// </summary>
-        /// <param name="element">
-        ///     The element to be sent to the front of the z-order.
-        /// </param>
-        public void BringToFront(UIElement element)
-        {
-            UpdateZOrder(element, true);
-        }
-
-        /// <summary>
-        ///     Assigns the element a z-index which will ensure that
-        ///     it is behind every other element in the Canvas.
-        ///     The z-index of every element whose z-index is between
-        ///     the element's old and new z-index will have its z-index
-        ///     incremented by one.
-        /// </summary>
-        /// <param name="element">
-        ///     The element to be sent to the back of the z-order.
-        /// </param>
-        public void SendToBack(UIElement element)
-        {
-            UpdateZOrder(element, false);
-        }
-
-        #endregion // BringToFront / SendToBack
 
         #region ElementBeingDragged
 
