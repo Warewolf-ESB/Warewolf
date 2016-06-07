@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common.ExtMethods;
 using Warewolf.Resource.Errors;
 
@@ -18,12 +17,6 @@ namespace Dev2.Common.Interfaces.Enums.Enums
 {
     public static class Dev2EnumConverter
     {
-        public static IList<TTEnum> GetEnumsToList<TTEnum>() where TTEnum : struct
-        {
-            Type type = typeof (TTEnum);
-            if (!type.IsEnum) throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
-            return Enum.GetValues(type).Cast<TTEnum>().ToList();
-        }
 
         public static IList<string> ConvertEnumsTypeToStringList<tEnum>() where tEnum : struct
         {
