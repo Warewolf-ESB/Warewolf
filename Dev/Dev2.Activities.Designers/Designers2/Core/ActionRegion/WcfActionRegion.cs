@@ -150,7 +150,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                     region.RecordsetName = String.Empty;
-
+                    region.ObjectResult = string.Empty;
+                    region.IsObject = false;
+                    region.ObjectName = string.Empty;
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
