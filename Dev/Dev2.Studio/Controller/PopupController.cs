@@ -104,9 +104,9 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowExceptionViewAppreciation()
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Thank you for being an awesome customer";
-            Description = "Thank you for taking the time to provide us with feedback. " + Environment.NewLine + 
-                "We will attend tho this issue and keep you updated on the progress.";
+            Header = "We’ve got your feedback!";
+            Description = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine + 
+                "in the Community to keep updated on the progress.";
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
