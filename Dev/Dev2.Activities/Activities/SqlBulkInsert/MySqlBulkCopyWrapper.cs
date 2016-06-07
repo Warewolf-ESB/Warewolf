@@ -58,36 +58,6 @@ namespace Dev2.Activities.SqlBulkInsert
             }
         }
 
-        public bool WriteToServer(IDataReader dataTableToInsert)
-        {
-            if (_sbc == null)
-            {
-                throw new ArgumentException("_sbc");
-            }
-            var filename = Path.GetTempFileName();
-            try
-            {
-
-
-                _sbc.Connection.Open();
-
-                WriteDataTable(dataTableToInsert, File.CreateText(filename));
-                _sbc.LineTerminator = Environment.NewLine;
-                _sbc.FileName = filename;
-                _sbc.Local = true;
-                var res = _sbc.Load();
-
-
-                return res > 0;
-            }
-            finally
-            {
-
-                _sbc.Connection.Close();
-                File.Delete(filename);
-            }
-        }
-
         public static void WriteDataTable(DataTable sourceTable, StreamWriter writer)
         {
 
@@ -96,20 +66,6 @@ namespace Dev2.Activities.SqlBulkInsert
             {
                 string[] items = row.ItemArray.Select(o => QuoteValue(o.ToString())).ToArray();
                 writer.WriteLine(String.Join(",", items));
-            }
-
-            writer.Flush();
-            writer.Close();
-        }
-        
-        public static void WriteDataTable(IDataReader sourceTable, StreamWriter writer)
-        {
-            while (sourceTable.Read())
-            {
-                object[] items = {};
-                sourceTable.GetValues(items);
-                var actualItems = items.Select(o => QuoteValue(o.ToString())).ToArray();
-                writer.WriteLine(String.Join(",", actualItems));
             }
 
             writer.Flush();
