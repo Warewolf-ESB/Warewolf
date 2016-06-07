@@ -167,26 +167,6 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        static Guid GetServerID(XmlDocument doc)
-        {
-            if (doc.DocumentElement != null)
-            {
-                var attr = doc.DocumentElement.Attributes["ServerID"];
-                if (attr != null)
-                {
-                    if (!string.IsNullOrEmpty(attr.Value))
-                    {
-                        Guid id;
-                        if (Guid.TryParse(attr.Value, out id))
-                        {
-                            return id;
-                        }
-                    }
-                }
-            }
-            return Guid.Empty;
-        }
-
         #endregion
 
         #region EnsureSSL
@@ -217,23 +197,6 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
-        public void EnsureAccessToPort(string url)
-        {
-            var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
-            try
-            {
-                bool invoke = ProcessHost.Invoke(null, "netsh.exe", args);
-                if (!invoke)
-                {
-                    Dev2Logger.Error(string.Format("There was an error adding url: {0}", url));
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e);
-            }
-            
-        }
         #endregion
     }
 }

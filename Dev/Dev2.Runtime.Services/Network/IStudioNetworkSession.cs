@@ -17,7 +17,6 @@ namespace Dev2.DynamicServices
 {
     public interface IStudioNetworkSession : INetworkOperator, IHostContext
     {
-        void Kill();
         Version Version { get; }
         PlatformID Platform { get; }
         string ServicePack { get; }

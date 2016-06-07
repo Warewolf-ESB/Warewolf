@@ -481,45 +481,6 @@ namespace Dev2.Runtime.ESB.Control
         }
 
 
-        /// <summary>
-        /// Finds the service shape.
-        /// </summary>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="resourceId">Name of the service.</param>
-        /// <returns></returns>
-        public StringBuilder FindServiceShape(Guid workspaceId, Guid resourceId)
-        {
-            var result = new StringBuilder();
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-
-            if(resource == null)
-            {
-                return EmptyDataList;
-            }
-
-            if(resource.DataList != null)
-            {
-                result = resource.DataList;
-            }
-
-            // Handle services ;)
-            if(result.ToString() == "<DataList />" && resource.ResourceType != "WorkflowService")
-            {
-                ErrorResultTO errors;
-                result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
-            }
-
-
-            if(string.IsNullOrEmpty(result.ToString()))
-            {
-                return EmptyDataList;
-            }
-            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
-            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
-            return result;
-        } 
-      
-
         static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
 
 

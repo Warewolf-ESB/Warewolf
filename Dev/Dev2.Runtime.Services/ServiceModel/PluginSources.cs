@@ -16,7 +16,6 @@ using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
@@ -99,31 +98,5 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region ValidateAssemblyImageFormat
-
-        // POST: Service/PluginSources/ValidateAssemblyImageFormat
-        public string ValidateAssemblyImageFormat(string args, Guid workspaceId, Guid dataListId)
-        {
-            // ReSharper disable RedundantAssignment
-            var toJson = @"{""validationresult"":""failure""}";
-            // ReSharper restore RedundantAssignment
-
-            var broker = new PluginBroker();
-
-            string errorMsg;
-
-            if(broker.ValidatePlugin(args, out errorMsg))
-            {
-                toJson = @"{""validationresult"":""success""}";
-            }
-            else
-            {
-                toJson = @"{""validationresult"":""" + errorMsg + @"""}";
-            }
-
-            return toJson;
-        }
-
-        #endregion
     }
 }

@@ -9,10 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Runtime.ServiceModel.Data;
-
 namespace Dev2.Runtime.ServiceModel.Esb
 {
     /// <summary>
@@ -20,7 +16,5 @@ namespace Dev2.Runtime.ServiceModel.Esb
     /// </summary>
     public interface IExecutableEsbEnpoint
     {
-        IOutputDescription TestServiceMethod(Resource resource, ServiceMethod serviceMethod);
-        Guid ExecuteServiceMethod(Resource resource, ServiceMethod serviceMethod);
     }
 }

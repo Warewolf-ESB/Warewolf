@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Network.Execution
@@ -120,28 +119,6 @@ namespace Dev2.Network.Execution
             return _callbacks.TryRemove(callbackID, out tmpCallback);
         }
 
-
-        /// <summary>
-        ///     Removes a range of callback IDs range.
-        /// </summary>
-        /// <param name="callbackID">The callback ID.</param>
-        /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
-        public void RemoveRange(IList<Guid> callbackID)
-        {
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
-                }
-            }
-
-            foreach (var item in _callbacks)
-            {
-                Action<ExecutionStatusCallbackMessage> tmpCallback;
-                _callbacks.TryRemove(item.Key, out tmpCallback);
-            }
-        }
 
         /// <summary>
         ///     Posts the specified message (Asynchronously).

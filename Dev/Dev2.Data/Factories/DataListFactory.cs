@@ -10,11 +10,9 @@
 */
 
 using System.Collections.Generic;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
-using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
@@ -70,11 +68,6 @@ namespace Dev2.DataList.Contract
             return RecordSetCollection(parsedOutput, isOutput, false);
         }
 
-        public static IRecordSetCollection CreateRecordSetCollectionForDbService(IList<IDev2Definition> parsedOutput, bool isOutput)
-        {
-            return RecordSetCollection(parsedOutput, isOutput, true);
-        }
-
         static IRecordSetCollection RecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput, bool isDbService)
         {
             RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
@@ -126,34 +119,11 @@ namespace Dev2.DataList.Contract
         }
 
 
-        public static ISystemTag CreateSystemTag(enSystemTag tag)
-        {
-            return new SystemTag(tag.ToString());
-        }
-
-        public static IInputLanguageDefinition CreateInputDefinition(string name, string mapsTo, bool isEvaluated)
-        {
-            return new InputDefinition(name, mapsTo, isEvaluated);
-        }
-
         public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
         {
             DefinitionBuilder b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
 
             return b.Generate();
-        }
-
-        public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList)
-        {
-            DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder();
-
-            IntellisenseFilterOpsTO ifot = new IntellisenseFilterOpsTO { FilterType = enIntellisensePartType.All };
-
-            dlib.FilterTO = ifot;
-
-            IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
-
-            return result;
         }
 
         public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IntellisenseFilterOpsTO fiterTo)
@@ -188,49 +158,6 @@ namespace Dev2.DataList.Contract
         public static OutputTO CreateOutputTO(string outputDescription, string outputString)
         {
             return new OutputTO(outputDescription, new List<string> { outputString });
-        }
-
-        /// <summary>
-        /// Creating a new SearchTO object
-        /// </summary>
-        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string result)
-        {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria, result);
-        }
-
-
-        /// <summary>
-        /// Creating a new SearchTO object
-        /// </summary>
-        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, string from, string to)
-        {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, false, from, to);
-        }
-
-        /// <summary>
-        /// Creating a new SearchTO object
-        /// </summary>
-        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase, bool requireAllFieldsToMatch = false, string from = "", string to = "")
-        {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase, from, to, requireAllFieldsToMatch);
-        }
-
-
-
-        /// <summary>
-        /// Creates a new Dev2Column object for a recordset
-        /// </summary>
-        public static Dev2Column CreateDev2Column(string columnName, string columnDescription)
-        {
-            return new Dev2Column(columnName, columnDescription);
-        }
-
-        /// <summary>
-        /// Creates a new Dev2Column object for a recordset
-        /// </summary>
-        public static Dev2Column CreateDev2Column(string columnName, string columnDescription, bool isEditable)
-        {
-            return new Dev2Column(columnName, columnDescription, isEditable);
         }
 
         /// <summary>

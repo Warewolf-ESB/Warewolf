@@ -153,10 +153,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             return result;
         }
-        public virtual void UpdateServiceOutParameters(DbService service, DbSource dbSource)
-        {
-            
-        }
+
         protected virtual TDbServer CreateDbServer(DbSource dbSource)
         {
             return new TDbServer();

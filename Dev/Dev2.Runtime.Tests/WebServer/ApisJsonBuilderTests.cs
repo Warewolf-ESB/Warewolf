@@ -302,64 +302,6 @@ namespace Dev2.Tests.Runtime.WebServer
             return exceptedApisJsonForServerNoSecurity;
         }
 
-        static ApisJson GetExceptedApisJsonForServerSecurityWithPublic()
-        {
-            var exceptedApisJsonForServerNoSecurity = new ApisJson
-            {
-                Name = EnvironmentVariables.PublicWebServerUri,
-                Created = DateTime.Today.Date,
-                Modified = DateTime.Today.Date,
-                Description = "",
-                Url = EnvironmentVariables.PublicWebServerUri + "apis.json",
-                SpecificationVersion = "0.15",
-                Apis = new List<SingleApi>()
-            };
-            var singleApi1 = new SingleApi
-            {
-                Name = "Hello World",
-                Description = "",
-                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.json",
-                Properties = new List<PropertyApi>()
-            };
-            var swagger1 = new PropertyApi
-            {
-                Type = "Swagger",
-                Value = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.api"
-            };
-            singleApi1.Properties.Add(swagger1);
-            
-            var singleApi2 = new SingleApi
-            {
-                Name = "Execution Engine Test",
-                Description = "",
-                BaseUrl = EnvironmentVariables.PublicWebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
-                Properties = new List<PropertyApi>()
-            };
-            var swagger2 = new PropertyApi
-            {
-                Type = "Swagger",
-                Value = EnvironmentVariables.PublicWebServerUri + "public/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
-            };
-            singleApi2.Properties.Add(swagger2);
-            var singleApi3 = new SingleApi
-            {
-                Name = "9139Local",
-                Description = "",
-                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
-                Properties = new List<PropertyApi>()
-            };
-            var swagger3 = new PropertyApi
-            {
-                Type = "Swagger",
-                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
-            };
-            singleApi3.Properties.Add(swagger3);
-            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
-            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
-            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
-            return exceptedApisJsonForServerNoSecurity;
-        }
-        
         static ApisJson GetExceptedApisJsonForServerSecurity()
         {
             var exceptedApisJsonForServerNoSecurity = new ApisJson

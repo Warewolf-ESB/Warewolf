@@ -749,15 +749,6 @@ namespace Dev2.CustomControls.ServiceProviders.UI
                 new UIPropertyMetadata(false));
 
         /// <summary>
-        ///     Returns true if the specified ListViewItem is being dragged, else false.
-        /// </summary>
-        /// <param name="item">The ListViewItem to check.</param>
-        public static bool GetIsBeingDragged(ListViewItem item)
-        {
-            return (bool) item.GetValue(IsBeingDraggedProperty);
-        }
-
-        /// <summary>
         ///     Sets the IsBeingDragged attached property for the specified ListViewItem.
         /// </summary>
         /// <param name="item">The ListViewItem to set the property on.</param>
@@ -781,16 +772,6 @@ namespace Dev2.CustomControls.ServiceProviders.UI
                 typeof (bool),
                 typeof (ListViewItemDragState),
                 new UIPropertyMetadata(false));
-
-        /// <summary>
-        ///     Returns true if the specified ListViewItem is currently underneath the cursor
-        ///     during a drag-drop operation, else false.
-        /// </summary>
-        /// <param name="item">The ListViewItem to check.</param>
-        public static bool GetIsUnderDragCursor(ListViewItem item)
-        {
-            return (bool) item.GetValue(IsUnderDragCursorProperty);
-        }
 
         /// <summary>
         ///     Sets the IsUnderDragCursor attached property for the specified ListViewItem.

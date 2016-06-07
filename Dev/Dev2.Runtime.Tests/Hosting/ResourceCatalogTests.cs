@@ -2609,17 +2609,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region SaveResources
 
-        public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources, Guid[] sourceIDs, Guid[] serviceIDs)
-        {
-            lock(syncRoot)
-            {
-                var sourceWorkspacePath = SaveResources(sourceWorkspaceID, versionNo, injectID, signXml, sources,
-                                                        services, out resources, sourceIDs, serviceIDs);
-                var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(copyToWorkspaceID);
-                DirectoryHelper.Copy(sourceWorkspacePath, targetWorkspacePath, true);
-            }
-        }
-
         public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources, Guid[] sourceIDs, Guid[] serviceIDs, bool loadws = false)
         {
             lock(syncRoot)

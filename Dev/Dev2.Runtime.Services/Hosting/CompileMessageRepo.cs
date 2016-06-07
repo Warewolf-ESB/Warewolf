@@ -91,18 +91,7 @@ namespace Dev2.Runtime.Hosting
         {
             return true;
         }
-
-        public int MessageCount(Guid wId)
-        {
-            IList<ICompileMessageTO> messages;
-
-            if(_messageRepo.TryGetValue(wId, out messages))
-            {
-                return messages.Count;
-            }
-
-            return -1;
-        }
+        
 
         #region Private Methods
 
@@ -337,39 +326,7 @@ namespace Dev2.Runtime.Hosting
 
             return new CompileMessageList { MessageList = result, ServiceID = serviceId };
         }
-
-        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<string> dependants, CompileMessageType[] filter = null)
-        {
-            IList<ICompileMessageTO> result = new List<ICompileMessageTO>();
-
-            lock(Lock)
-            {
-                IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
-                {
-
-                    var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
-                    var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
-                                            candidateMessage.ToList();
-
-                    foreach(var msg in compileMessageTos)
-                    {
-                        if(filter != null)
-                        {
-                            // TODO : Apply filter logic ;)
-                        }
-                        else
-                        {
-                            result.Add(msg);
-                        }
-                    }
-                }
-            }
-            var compileMessageList = new CompileMessageList { MessageList = result, ServiceID = serviceId, Dependants = dependants };
-            RemoveMessages(workspaceId, serviceId);
-            return compileMessageList;
-        }
-
+        
         public IObservable<IList<ICompileMessageTO>> AllMessages
         {
             get
