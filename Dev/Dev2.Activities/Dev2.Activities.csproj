@@ -209,6 +209,7 @@
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
+    <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
     <Compile Include="Activities\DsfODBCDatabaseActivity.cs" />
@@ -306,8 +307,8 @@
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
     <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
-    <Compile Include="Activities\WebResponseManager.cs" />
-    <Compile Include="Activities\IWebResponseManager.cs" />
+    <Compile Include="Activities\ResponseManager.cs" />
+    <Compile Include="Activities\IResponseManager.cs" />
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
     <Compile Include="BussinessLogic\RsOpIsBinary.cs" />

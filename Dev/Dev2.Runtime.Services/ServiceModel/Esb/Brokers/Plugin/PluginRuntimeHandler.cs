@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return formater.Format(pluginResult).ToString();
             }
-
+            pluginResult = JsonConvert.SerializeObject(pluginResult);
             return pluginResult;
         }
 
