@@ -222,9 +222,9 @@ namespace WpfControls.CS.Test
                 Process.Start(SelectedPath);
                 Application.Current.Shutdown();
             }
-            catch (Exception)
+            catch(Exception)
             {
-
+                // ignored
             }
         }
 
