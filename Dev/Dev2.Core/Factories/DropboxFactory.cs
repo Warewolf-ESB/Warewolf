@@ -8,11 +8,6 @@ namespace Dev2.Factories
 {
     public class DropboxFactory : IDropboxFactory
     {
-        public DropboxClient Create()
-        {
-            //return new DropboxClient(GlobalConstants.DropBoxApiKey);       
-            return new DropboxClient("31qf750f1vzffhu", new DropboxClientConfig(GlobalConstants.UserAgentString));
-        }
         public DropboxClient CreateWithSecret(string secret)
         {
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })

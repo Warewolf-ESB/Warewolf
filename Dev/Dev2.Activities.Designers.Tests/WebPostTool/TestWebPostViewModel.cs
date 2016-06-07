@@ -339,14 +339,6 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
     public class InputViewForTest : ManageWebServiceInputViewModel
     {
-        #region Overrides of ManageWebServiceInputViewModel
-        [ExcludeFromCodeCoverage]
-        public override void ShowView()
-        {
-
-        }
-
-        #endregion
 
         public InputViewForTest(IWebServicePostViewModel model, IWebServiceModel serviceModel)
             : base(model, serviceModel)

@@ -320,16 +320,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public string TestHeader { get; set; }
 
-        [ExcludeFromCodeCoverage]
-        public void ShowView()
-        {
-        }
-
-        [ExcludeFromCodeCoverage]
-        public void CloseView()
-        {
-        }
-
         #endregion Implementation of IManageServiceInputViewModel<IWcfService>
 
         public ICollection<IServiceInput> Inputs { get; set; }
