@@ -101,6 +101,19 @@ namespace Dev2.Studio.Controller
             IsQuestion = false;
             return Show();
         }
+        public MessageBoxResult ShowExceptionViewAppreciation()
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "We’ve got your feedback!";
+            Description = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine + 
+                "in the Community to keep updated on the progress.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            return Show();
+        }
         public MessageBoxResult ShowCorruptTaskResult(string errorMessage)
         {
             Buttons = MessageBoxButton.OK;

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -23,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Dev2.Studio.Controller;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -42,6 +44,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private ICommand _sendErrorCommand;
         private bool _testing;
         private IAsyncWorker _asyncWorker;
+        private string _emailAddress;
+        private string _stepsToFollow;
 
         #endregion private fields
 
@@ -158,6 +162,26 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
+        public string EmailAddress
+        {
+            get { return _emailAddress; }
+            set
+            {
+                _emailAddress = value;
+                NotifyOfPropertyChange(() => EmailAddress);
+            }
+        }
+
+        public string StepsToFollow
+        {
+            get { return _stepsToFollow; }
+            set
+            {
+                _stepsToFollow = value;
+                NotifyOfPropertyChange(() => StepsToFollow);
+            }
+        }
+
         #region public methods
 
         private void Cancel()
@@ -181,6 +205,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 Testing = false;
                 RequestClose();
+                var popupController = new PopupController();
+                popupController.ShowExceptionViewAppreciation();
             });
         }
 
@@ -190,7 +216,22 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 Testing = true;
             });
-            WebServer.SendErrorOpenInBrowser(messageList, StackTrace, url);
+
+            string email = "No Email Provided";
+            if (!string.IsNullOrWhiteSpace(EmailAddress))
+            {
+                email = EmailAddress;
+            }
+            string steps = "No Steps Provided";
+            if (!string.IsNullOrWhiteSpace(StepsToFollow))
+            {
+                steps = StepsToFollow;
+            }
+            string description = "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +
+                                 "Steps to follow : " + steps + Environment.NewLine + " " + Environment.NewLine +
+                                 StackTrace;
+
+            WebServer.SendErrorOpenInBrowser(messageList, description, url);
         }
 
         /// <summary>

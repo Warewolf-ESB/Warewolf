@@ -27,5 +27,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
        public  RecordsetList RecordsetList { get; set; }
        public  IOutputDescription Description { get; set; }
+
+       public string SerializedResult { get; set; }
     }
 }
