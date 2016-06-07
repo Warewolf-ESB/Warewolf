@@ -86,6 +86,6 @@ Scenario: Schedule with ErrorInDebug
 	  And "ScheduleWithError" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
 	  And "ScheduleWithError" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
-	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
+	  | On a schedule | Daily    | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
 	  When the "ScheduleWithError" is executed "1" times
 	  Then the schedule status is "Failure"
