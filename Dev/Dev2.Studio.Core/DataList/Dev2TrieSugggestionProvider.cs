@@ -215,10 +215,5 @@ namespace Dev2
         }
 
         #endregion Implementation of ISuggestionProvider
-
-        public System.Collections.IEnumerable GetSuggestions(string filter)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

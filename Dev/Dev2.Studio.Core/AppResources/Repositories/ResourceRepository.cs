@@ -1008,36 +1008,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public async void LoadResourceFromWorkspaceAsync(Guid resourceId, string resourceType, Guid? serverWorkspaceID)
-        {
-            var con = _environmentModel.Connection;
-            var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            var name = Enum.GetName(typeof(string), resourceType);
-            comsController.AddPayloadArgument("ResourceType", name);
-            var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
-            var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
-            foreach (var serializableResource in toReloadResources)
-            {
-                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
-
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                }
-                else
-                {
-                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
-                    ResourceModels.Add(resource);
-                    if (ItemAdded != null)
-                    {
-                        ItemAdded(resource, null);
-                    }
-                }
-            }
-        }
-
         public void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
             if (targetEnvironment == null)

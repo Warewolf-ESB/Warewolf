@@ -132,27 +132,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
         }
 
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("WorkSurfaceContextViewModel_HandleDebugOutputMessage")]
-        public void WorkSurfaceContextViewModel_DebugOutputMessage_DebugStateHasNoData_RootItemsIsZero()
-        {
-            //------------Setup for test--------------------------
-            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
-            //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Handle(new DebugOutputMessage(new List<IDebugState>()));
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, workSurfaceContextViewModel.DebugOutputViewModel.RootItems.Count);
-        }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

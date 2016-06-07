@@ -10,15 +10,11 @@
 */
 
 using System;
-using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -117,16 +113,6 @@ namespace Dev2.Core.Tests.Workflows
             WdOnModelChanged(null, new EventArgs());
         }
 
-        public string FetchDesignerText()
-        {
-            return _wd.Text;
-        }
-
-        public void VerifyLoadCalled()
-        {
-            _moq.Verify(w => w.Load(It.IsAny<ActivityBuilder>()), Times.Once());
-        }
-
         public void LoadXaml()
         {
 
@@ -184,11 +170,6 @@ namespace Dev2.Core.Tests.Workflows
         {
             BringIntoViewHitCount++;
             base.BringIntoView(selectedModelItem);
-        }
-
-        public void TestHandleMouseClick(DependencyObject dp, DesignerView dv)
-        {
-            HandleMouseClick(MouseButtonState.Pressed, 2, dp, dv);
         }
 
         public ModelItem TestPerformAddItems(ModelItem modelItems)

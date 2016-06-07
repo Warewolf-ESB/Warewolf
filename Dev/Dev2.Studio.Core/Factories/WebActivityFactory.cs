@@ -36,13 +36,6 @@ namespace Dev2.Studio.Core.Factories
             return webActivity;
         }
 
-        public static IWebActivity CreateWebActivity(object webActivityWrappingObject)
-        {
-            IWebActivity activity = CreateWebActivity();
-            activity.WebActivityObject = webActivityWrappingObject;
-            return activity;
-        }
-
         public static IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel, string serviceName)
         {
             IWebActivity activity = CreateWebActivity();
