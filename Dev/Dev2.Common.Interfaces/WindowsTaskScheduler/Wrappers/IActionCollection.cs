@@ -41,12 +41,5 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// </returns>
         bool ContainsType(Type actionType);
 
-        /// <summary>
-        ///     Returns a <see cref="System.String" /> that represents the actions in this collection.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="System.String" /> that represents the actions in this collection.
-        /// </returns>
-        string ToString();
     }
 }
