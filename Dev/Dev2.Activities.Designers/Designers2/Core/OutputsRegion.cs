@@ -14,7 +14,6 @@ using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Storage;
-using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Activities.Designers2.Core
 {

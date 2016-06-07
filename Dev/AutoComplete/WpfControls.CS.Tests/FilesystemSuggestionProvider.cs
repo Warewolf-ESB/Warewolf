@@ -3,9 +3,7 @@
 
     using System.Collections.Generic;
     using System.IO;
-    using WpfControls.Editors;
-    using System.Linq;
-    using System.Threading;
+    using Editors;
 
     public class FilesystemSuggestionProvider : ISuggestionProvider
     {
