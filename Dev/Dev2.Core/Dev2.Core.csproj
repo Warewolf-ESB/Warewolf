@@ -188,11 +188,9 @@
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
-    <Compile Include="Interfaces\IFrameworkDataFormatter.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexCallbackChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexDataChannel.cs" />
     <Compile Include="Interfaces\IFrameworkFileIO.cs" />
-    <Compile Include="Interfaces\IFrameworkPluginComponent.cs" />
     <Compile Include="Isolated.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackMessage.cs" />

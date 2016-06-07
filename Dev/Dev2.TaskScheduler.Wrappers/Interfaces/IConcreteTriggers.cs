@@ -195,8 +195,4 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         /// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
         bool RunOnLastDayOfMonth { get; }
     }
-
-    public interface IRegistrationTrigger : ITrigger, ITriggerDelay, IWrappedObject<RegistrationTrigger>
-    {
-    }
 }

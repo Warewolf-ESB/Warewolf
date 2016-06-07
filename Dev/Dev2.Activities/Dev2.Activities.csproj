@@ -209,6 +209,7 @@
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
+    <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
     <Compile Include="Activities\DsfODBCDatabaseActivity.cs" />
@@ -264,7 +265,6 @@
     <Compile Include="Activities\FindRecordsTO.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
     <Compile Include="Activities\HttpClientCredentialManager.cs" />
-    <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Consume\DsfConsumeRabbitMQActivity.cs" />
@@ -306,8 +306,8 @@
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
     <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
-    <Compile Include="Activities\WebResponseManager.cs" />
-    <Compile Include="Activities\IWebResponseManager.cs" />
+    <Compile Include="Activities\ResponseManager.cs" />
+    <Compile Include="Activities\IResponseManager.cs" />
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
     <Compile Include="BussinessLogic\RsOpIsBinary.cs" />
@@ -363,7 +363,6 @@
     <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
-    <Compile Include="Interfaces\IWizardEditable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TO\AssignObjectDTO.cs" />
     <Compile Include="TO\ActivityDTO.cs" />

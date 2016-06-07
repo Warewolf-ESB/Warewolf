@@ -935,11 +935,6 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             
         }
 
-        public void SaveService(IExchangeSource model)
-        {
-            
-        }
-
         public IStudioUpdateManager UpdateRepository { get; set; }
     }
 }

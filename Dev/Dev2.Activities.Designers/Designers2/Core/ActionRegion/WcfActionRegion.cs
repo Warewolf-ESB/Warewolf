@@ -432,6 +432,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #endregion
 
+        // ReSharper disable once UnusedMember.Global
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
@@ -441,6 +442,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

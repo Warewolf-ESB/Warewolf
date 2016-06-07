@@ -86,12 +86,6 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
   }";
         }
 
-        internal string GivenPrimitiveRecordset()
-        {
-            return @"[
-      ""RandomData"",
-      ""RandomData1""]";
-        }
 
         #region SelectScalar Tests
 
