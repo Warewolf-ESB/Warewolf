@@ -9,14 +9,10 @@
 */
 
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.TO
 {
@@ -126,11 +122,6 @@ namespace Dev2.TO
 
         public List<string> OutList { get; set; }
 
-        public OutputTO ConvertToOutputTO()
-        {
-            return DataListFactory.CreateOutputTO(FieldName, OutList);
-        }
-
         public bool CanRemove()
         {
             bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
@@ -161,50 +152,6 @@ namespace Dev2.TO
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
             // ReSharper restore ExplicitCallerInfoArgument
-        }
-
-        /// <summary>
-        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
-        /// </summary>
-        /// <param name="property"></param>
-        /// <param name="datalist"></param>
-        /// <returns></returns>
-        public bool Validate(Expression<Func<string>> property, string datalist)
-        {
-            var propertyName = GetPropertyName(property);
-            return Validate(propertyName, datalist);
-        }
-
-        /// <summary>
-        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
-        /// </summary>
-        /// <param name="property">Property to validate</param>
-        /// <param name="ruleSet">Ruleset to use during validation</param>
-        /// <returns></returns>
-        public bool Validate(Expression<Func<string>> property, RuleSet ruleSet)
-        {
-            var propertyName = GetPropertyName(property);
-            return Validate(propertyName, ruleSet);
-        }
-
-        private static string GetPropertyName<TU>(Expression<Func<TU>> propertyName)
-        {
-            if (propertyName.NodeType != ExpressionType.Lambda)
-            {
-                throw new ArgumentException(ErrorResource.ExpectedLambdaExpresion, "propertyName");
-            }
-
-            var body = propertyName.Body as MemberExpression;
-
-            if (body == null)
-            {
-                throw new ArgumentException(ErrorResource.MustHaveBody);
-            }
-            if (body.Member == null)
-            {
-                throw new ArgumentException(ErrorResource.BodyMustHaveMember);
-            }
-            return body.Member.Name;
         }
     }
 }

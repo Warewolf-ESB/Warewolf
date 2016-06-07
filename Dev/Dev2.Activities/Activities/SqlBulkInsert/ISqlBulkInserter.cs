@@ -17,6 +17,7 @@ namespace Dev2.Activities.SqlBulkInsert
     {
         bool Insert(ISqlBulkCopy sqlBulkCopy, DataTable dataTableToInsert);
 
+        // ReSharper disable once UnusedMember.Global
         bool Insert(ISqlBulkCopy sqlBulkCopy, IDataReader dataTableToInsert);
     }
 }

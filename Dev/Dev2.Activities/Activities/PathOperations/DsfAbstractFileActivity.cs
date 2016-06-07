@@ -151,14 +151,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        /// <summary>
-        /// Makes the deferred action.
-        /// </summary>
-        public void MakeDeferredAction(string deferredLoc)
-        {
-            // Do nothing ;)
-        }
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         protected string DecryptedPassword
         {
@@ -277,11 +269,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
 
-        internal void AddDebugOutputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
-        {
-            AddDebugOutputItem(new DebugEvalResult(expression, labelText, environment, update));
-        }
-
         #endregion
 
         protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment, int update)
@@ -299,11 +286,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void AddDebugInputItemPassword(string label, string password)
         {
             AddDebugInputItem(new DebugItemStaticDataParams(GetBlankedOutPassword(password), label));
-        }
-
-        protected void AddDebugInputItemOverwrite(Guid executionId, bool overWrite)
-        {
-            AddDebugInputItem(new DebugItemStaticDataParams(overWrite ? "True" : "False", "Overwrite"));
         }
 
         static string GetBlankedOutPassword(string password)
