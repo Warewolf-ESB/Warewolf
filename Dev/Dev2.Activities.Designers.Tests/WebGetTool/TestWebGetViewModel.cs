@@ -407,7 +407,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
     {
         #region Overrides of ManageWebServiceInputViewModel
         [ExcludeFromCodeCoverage]
-        public override void ShowView()
+        public void ShowView()
         {
 
         }

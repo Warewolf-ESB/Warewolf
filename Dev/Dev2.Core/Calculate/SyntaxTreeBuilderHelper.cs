@@ -40,10 +40,7 @@ namespace Dev2.Calculate
 
         public SyntaxTreeBuilder Builder { get; private set; }
 
-        public Node[] Build(string inputText, out Token[] tokens)
-        {
-            return Builder.Build(inputText, out tokens);
-        }
+
 
         public Node[] Build(string inputText, bool expectedPartialTokens, out Token[] tokens)
         {
