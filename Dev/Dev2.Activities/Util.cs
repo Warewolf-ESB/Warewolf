@@ -10,10 +10,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using Dev2.Data.Decisions.Operations;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.TO;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -34,11 +30,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DateTime date;
             return DateTime.TryParse(value, out date);
-        }
-
-        public static bool IsEmpty(string value)
-        {
-            return string.IsNullOrEmpty(value);
         }
 
         public static bool Eq(string value, object comparisonValue)
@@ -282,67 +273,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return false;
-        }
-
-        public static bool Cnt(string value, string comparisonValue)
-        {
-            if(string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            if(string.IsNullOrEmpty(comparisonValue))
-            {
-                return false;
-            }
-
-            return value.Contains(comparisonValue);
-
-
-        }
-
-        public static bool StWt(string value, string comparisonValue)
-        {
-            if(string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            if(string.IsNullOrEmpty(comparisonValue))
-            {
-                return false;
-            }
-
-            return value.StartsWith(comparisonValue);
-        }
-
-        public static bool EnWt(string value, string comparisonValue)
-        {
-
-            if(string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            if(string.IsNullOrEmpty(comparisonValue))
-            {
-                return false;
-            }
-
-            return value.EndsWith(comparisonValue);
-
-        }
-
-        public static List<DecisionTO> BuildDecisionListFromStack(IList<Dev2Decision> dev2Decisions)
-        {
-            var returnList = new List<DecisionTO>();
-            var i = 1;
-            foreach(var dev2Decision in dev2Decisions)
-            {
-                returnList.Add(new DecisionTO(dev2Decision.Col1, dev2Decision.Col2, DecisionDisplayHelper.GetDisplayValue(dev2Decision.EvaluationFn), i, false, dev2Decision.Col2, dev2Decision.Col3));
-                i++;
-            }
-            return returnList;
         }
     }
 }

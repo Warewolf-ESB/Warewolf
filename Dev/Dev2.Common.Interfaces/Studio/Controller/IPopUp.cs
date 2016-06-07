@@ -49,9 +49,6 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 
         void ShowInvalidCharacterMessage(string invalidText);
 
-        MessageBoxResult ShowItemCloseCloseConfirmation(string nameOfItem);
-        MessageBoxResult ShowItemSourceCloseConfirmation(string nameOfItem);
-
         MessageBoxResult ShowDeployNameConflict(string message);
 
         MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion);

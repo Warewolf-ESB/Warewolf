@@ -22,8 +22,6 @@ namespace Dev2.Common.Interfaces
         event DownloadProgressChangedEventHandler DownloadProgressChanged;
         event AsyncCompletedEventHandler DownloadFileCompleted;
         bool IsBusy { get; }
-        void DownloadFileAsync(Uri address, string fileName, string userToken);
-        void CancelAsync();
 
         Task<string> DownloadStringAsync(string address);
     }

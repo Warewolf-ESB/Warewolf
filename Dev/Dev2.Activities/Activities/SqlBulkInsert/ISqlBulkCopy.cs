@@ -17,7 +17,5 @@ namespace Dev2.Activities.SqlBulkInsert
     public interface ISqlBulkCopy : IDisposable
     {
         bool WriteToServer(DataTable dt);
-
-        bool WriteToServer(IDataReader dataTableToInsert);
     }
 }

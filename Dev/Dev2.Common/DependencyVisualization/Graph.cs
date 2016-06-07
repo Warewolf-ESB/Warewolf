@@ -102,37 +102,6 @@ namespace Dev2.Common.DependencyVisualization
             }
         }
 
-        public List<Node> GetAllUniqueNodesRecirsively()
-        {
-            return GetAllUniqueNodesRecirsively(new Stack<Node>(), Nodes);
-        }
-
-        public List<Node> GetAllUniqueNodesRecirsively(Stack<Node> nodeStack, List<Node> childNodes)
-        {
-            List<Node> nodes = new List<Node>();
-
-            if (nodeStack == null || childNodes == null)
-            {
-                return nodes;
-            }
-
-            nodes.AddRange(childNodes.Where(childNode => !nodes.Any(n => childNode.ID == n.ID)));
-
-            foreach (Node node in childNodes)
-            {
-                if (nodeStack.Contains(node))
-                {
-                    continue;
-                }
-
-                nodeStack.Push(node);
-                nodes.AddRange(GetAllUniqueNodesRecirsively(nodeStack, node.NodeDependencies).Where(childNode => !nodes.Any(n => childNode.ID == n.ID)));
-                nodeStack.Pop();
-            }
-
-            return nodes;
-        }
-
         #endregion Methods
     }
 }

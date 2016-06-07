@@ -43,7 +43,6 @@ NOTE: CoInitialize(Ex) must be called before you use any of the functions and in
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -247,28 +246,6 @@ namespace Dev2.Common.Reflection
         #region DLL Entries
 
         /// <summary>
-        ///     The key entry point for reading the assembly cache.
-        /// </summary>
-        /// <param name="ppAsmCache">Pointer to return IAssemblyCache</param>
-        /// <param name="dwReserved">must be 0</param>
-        [DllImport("fusion.dll", SetLastError = true, PreserveSig = false)]
-        private static extern void CreateAssemblyCache(out IAssemblyCache ppAsmCache, uint dwReserved);
-
-        /// <summary>
-        ///     An instance of IAssemblyName is obtained by calling the CreateAssemblyNameObject API.
-        /// </summary>
-        /// <param name="ppAssemblyNameObj">Pointer to a memory location that receives the IAssemblyName pointer that is created.</param>
-        /// <param name="szAssemblyName">
-        ///     A string representation of the assembly name or of a full assembly reference that is
-        ///     determined by dwFlags. The string representation can be null.
-        /// </param>
-        /// <param name="dwFlags">Zero or more of the bits that are defined in the CREATE_ASM_NAME_OBJ_FLAGS enumeration.</param>
-        /// <param name="pvReserved"> Must be null.</param>
-        [DllImport("fusion.dll", SetLastError = true, CharSet = CharSet.Unicode, PreserveSig = false)]
-        private static extern void CreateAssemblyNameObject(out IAssemblyName ppAssemblyNameObj, string szAssemblyName,
-            uint dwFlags, IntPtr pvReserved);
-
-        /// <summary>
         ///     To obtain an instance of the CreateAssemblyEnum API, call the CreateAssemblyNameObject API.
         /// </summary>
         /// <param name="pEnum">Pointer to a memory location that contains the IAssemblyEnum pointer.</param>
@@ -290,6 +267,7 @@ namespace Dev2.Common.Reflection
         /// <param name="pwzCachePath">Pointer to a buffer that is to receive the path of the GAC as a Unicode string.</param>
         /// <param name="pcchPath">Length of the pwszCachePath buffer, in Unicode characters.</param>
         [DllImport("fusion.dll", SetLastError = true, CharSet = CharSet.Unicode, PreserveSig = false)]
+        // ReSharper disable once UnusedMember.Local
         private static extern void GetCachePath(ASM_CACHE_FLAGS dwCacheFlags,
             [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwzCachePath,
             ref uint pcchPath);
@@ -340,36 +318,9 @@ namespace Dev2.Common.Reflection
 
         #region Public Functions for DLL - Assembly Cache
 
-        /// <summary>
-        ///     Use this method as a start for the GAC API
-        /// </summary>
-        /// <returns>IAssemblyCache COM interface</returns>
-        public static IAssemblyCache CreateAssemblyCache()
-        {
-            IAssemblyCache ac;
-
-            CreateAssemblyCache(out ac, 0);
-
-            return ac;
-        }
-
         #endregion
 
         #region Public Functions for DLL - AssemblyName
-
-        /// <summary>
-        ///     Creates the name of the assembly.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static IAssemblyName CreateAssemblyName(string name)
-        {
-            IAssemblyName an;
-
-            CreateAssemblyNameObject(out an, name, 2, (IntPtr) 0);
-
-            return an;
-        }
 
         /// <summary>
         ///     Gets the display name.
@@ -383,86 +334,6 @@ namespace Dev2.Common.Reflection
             var buffer = new StringBuilder((int) bufferSize);
             name.GetDisplayName(buffer, ref bufferSize, which);
             return buffer.ToString();
-        }
-
-        /// <summary>
-        ///     Gets the name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static String GetName(IAssemblyName name)
-        {
-            uint bufferSize = 255;
-            var buffer = new StringBuilder((int) bufferSize);
-            name.GetName(ref bufferSize, buffer);
-            return buffer.ToString();
-        }
-
-        /// <summary>
-        ///     Gets the version.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static Version GetVersion(IAssemblyName name)
-        {
-            uint major;
-            uint minor;
-            name.GetVersion(out major, out minor);
-            return new Version((int) major >> 16, (int) major & 0xFFFF, (int) minor >> 16, (int) minor & 0xFFFF);
-        }
-
-        /// <summary>
-        ///     Gets the public key token.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static byte[] GetPublicKeyToken(IAssemblyName name)
-        {
-            var result = new byte[8];
-            uint bufferSize = 8;
-            IntPtr buffer = Marshal.AllocHGlobal((int) bufferSize);
-            name.GetProperty(ASM_NAME.ASM_NAME_PUBLIC_KEY_TOKEN, buffer, ref bufferSize);
-            for (int i = 0; i < 8; i++)
-                result[i] = Marshal.ReadByte(buffer, i);
-            Marshal.FreeHGlobal(buffer);
-            return result;
-        }
-
-        /// <summary>
-        ///     Gets the public key.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static byte[] GetPublicKey(IAssemblyName name)
-        {
-            uint bufferSize = 512;
-            IntPtr buffer = Marshal.AllocHGlobal((int) bufferSize);
-            name.GetProperty(ASM_NAME.ASM_NAME_PUBLIC_KEY, buffer, ref bufferSize);
-            var result = new byte[bufferSize];
-            for (int i = 0; i < bufferSize; i++)
-                result[i] = Marshal.ReadByte(buffer, i);
-            Marshal.FreeHGlobal(buffer);
-            return result;
-        }
-
-        /// <summary>
-        ///     Gets the culture.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        public static CultureInfo GetCulture(IAssemblyName name)
-        {
-            uint bufferSize = 255;
-            IntPtr buffer = Marshal.AllocHGlobal((int) bufferSize);
-            name.GetProperty(ASM_NAME.ASM_NAME_CULTURE, buffer, ref bufferSize);
-            string result = Marshal.PtrToStringAuto(buffer);
-            Marshal.FreeHGlobal(buffer);
-            if (result != null)
-            {
-                return new CultureInfo(result);
-            }
-
-            return null;
         }
 
         #endregion
@@ -491,42 +362,6 @@ namespace Dev2.Common.Reflection
         public static int GetNextAssembly(IAssemblyEnum enumerator, out IAssemblyName name)
         {
             return enumerator.GetNextAssembly((IntPtr) 0, out name, 0);
-        }
-
-        /// <summary>
-        ///     Gets the GAC path.
-        /// </summary>
-        /// <returns></returns>
-        public static String GetGACPath()
-        {
-            uint bufferSize = 255;
-            var buffer = new StringBuilder((int) bufferSize);
-            GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_GAC, buffer, ref bufferSize);
-            return buffer.ToString();
-        }
-
-        /// <summary>
-        ///     Gets the zap path.
-        /// </summary>
-        /// <returns></returns>
-        public static String GetZapPath()
-        {
-            uint bufferSize = 255;
-            var buffer = new StringBuilder((int) bufferSize);
-            GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_ZAP, buffer, ref bufferSize);
-            return buffer.ToString();
-        }
-
-        /// <summary>
-        ///     Gets the download path.
-        /// </summary>
-        /// <returns></returns>
-        public static String GetDownloadPath()
-        {
-            uint bufferSize = 255;
-            var buffer = new StringBuilder((int) bufferSize);
-            GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_DOWNLOAD, buffer, ref bufferSize);
-            return buffer.ToString();
         }
 
         #endregion
@@ -840,6 +675,7 @@ namespace Dev2.Common.Reflection
         ///     in the GAC.
         /// </remarks>
         [PreserveSig]
+        // ReSharper disable once UnusedMember.Global
         int UninstallAssembly(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszAssemblyName,
@@ -860,6 +696,7 @@ namespace Dev2.Common.Reflection
         /// <param name="pAsmInfo"></param>
         /// <returns></returns>
         [PreserveSig]
+        // ReSharper disable once UnusedMember.Global
         int QueryAssemblyInfo(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszAssemblyName,
@@ -879,15 +716,6 @@ namespace Dev2.Common.Reflection
             IntPtr pvReserved,
             out IAssemblyCacheItem ppAsmItem,
             [MarshalAs(UnmanagedType.LPWStr)] string pszAssemblyName);
-
-        /// <summary>
-        ///     Undocumented
-        /// </summary>
-        /// <param name="ppAsmScavenger"></param>
-        /// <returns></returns>
-        [PreserveSig]
-        int CreateAssemblyScavenger(
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppAsmScavenger);
 
         /// <summary>
         ///     The IAssemblyCache::InstallAssembly method adds a new assembly to the GAC. The assembly must be persisted in the
@@ -928,51 +756,6 @@ namespace Dev2.Common.Reflection
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAssemblyName
     {
-        /// <summary>
-        ///     The IAssemblyName::SetProperty method adds a name-value pair to the assembly name, or, if a name-value pair
-        ///     with the same name already exists, modifies or deletes the value of a name-value pair.
-        /// </summary>
-        /// <param name="PropertyId">
-        ///     The ID that represents the name part of the name-value pair that is to be
-        ///     added or to be modified. Valid property IDs are defined in the ASM_NAME enumeration.
-        /// </param>
-        /// <param name="pvProperty">A pointer to a buffer that contains the value of the property.</param>
-        /// <param name="cbProperty">
-        ///     The length of the pvProperty buffer in bytes. If cbProperty is zero, the name-value pair
-        ///     is removed from the assembly name.
-        /// </param>
-        /// <returns></returns>
-        [PreserveSig]
-        int SetProperty(
-            ASM_NAME PropertyId,
-            IntPtr pvProperty,
-            uint cbProperty);
-
-        /// <summary>
-        ///     The IAssemblyName::GetProperty method retrieves the value of a name-value pair in the assembly name that specifies
-        ///     the name.
-        /// </summary>
-        /// <param name="PropertyId">
-        ///     The ID that represents the name of the name-value pair whose value is to be retrieved.
-        ///     Specified property IDs are defined in the ASM_NAME enumeration.
-        /// </param>
-        /// <param name="pvProperty">A pointer to a buffer that is to contain the value of the property.</param>
-        /// <param name="pcbProperty">The length of the pvProperty buffer, in bytes.</param>
-        /// <returns></returns>
-        [PreserveSig]
-        int GetProperty(
-            ASM_NAME PropertyId,
-            IntPtr pvProperty,
-            ref uint pcbProperty);
-
-        /// <summary>
-        ///     The IAssemblyName::Finalize method freezes an assembly name. Additional calls to IAssemblyName::SetProperty are
-        ///     unsuccessful after this method has been called.
-        /// </summary>
-        /// <returns></returns>
-        [PreserveSig]
-#pragma warning disable 465
-        int Finalize();
 #pragma warning restore 465
 
         //		*_VERSION - Includes the version number as part of the display name.
@@ -1003,75 +786,6 @@ namespace Dev2.Common.Reflection
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder szDisplayName,
             ref uint pccDisplayName,
             ASM_DISPLAY_FLAGS dwDisplayFlags);
-
-        /// <summary>
-        ///     Undocumented
-        /// </summary>
-        /// <param name="refIID"></param>
-        /// <param name="pUnkSink"></param>
-        /// <param name="pUnkContext"></param>
-        /// <param name="szCodeBase"></param>
-        /// <param name="llFlags"></param>
-        /// <param name="pvReserved"></param>
-        /// <param name="cbReserved"></param>
-        /// <param name="ppv"></param>
-        /// <returns></returns>
-        [PreserveSig]
-        int BindToObject(
-            ref Guid refIID,
-            [MarshalAs(UnmanagedType.IUnknown)] object pUnkSink,
-            [MarshalAs(UnmanagedType.IUnknown)] object pUnkContext,
-            [MarshalAs(UnmanagedType.LPWStr)] string szCodeBase,
-            long llFlags,
-            IntPtr pvReserved,
-            uint cbReserved,
-            out IntPtr ppv);
-
-        /// <summary>
-        ///     The IAssemblyName::GetName method returns the name part of the assembly name.
-        /// </summary>
-        /// <param name="lpcwBuffer">Size of the pwszName buffer (on input). Length of the name (on return).</param>
-        /// <param name="pwzName">Pointer to the buffer that is to contain the name part of the assembly name.</param>
-        /// <returns></returns>
-        /// <remarks>http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpguide/html/cpcondefaultmarshalingforstrings.asp</remarks>
-        [PreserveSig]
-        int GetName(
-            ref uint lpcwBuffer,
-            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwzName);
-
-        /// <summary>
-        ///     The IAssemblyName::GetVersion method returns the version part of the assembly name.
-        /// </summary>
-        /// <param name="pdwVersionHi">Pointer to a DWORD that contains the upper 32 bits of the version number.</param>
-        /// <param name="pdwVersionLow">Pointer to a DWORD that contain the lower 32 bits of the version number.</param>
-        /// <returns></returns>
-        [PreserveSig]
-        int GetVersion(
-            out uint pdwVersionHi,
-            out uint pdwVersionLow);
-
-        /// <summary>
-        ///     The IAssemblyName::IsEqual method compares the assembly name to another assembly names.
-        /// </summary>
-        /// <param name="pName">The assembly name to compare to.</param>
-        /// <param name="dwCmpFlags">
-        ///     Indicates which part of the assembly name to use in the comparison.
-        ///     Values are one or more of the bits defined in the ASM_CMP_FLAGS enumeration.
-        /// </param>
-        /// <returns></returns>
-        [PreserveSig]
-        int IsEqual(
-            IAssemblyName pName,
-            ASM_CMP_FLAGS dwCmpFlags);
-
-        /// <summary>
-        ///     The IAssemblyName::Clone method creates a copy of an assembly name.
-        /// </summary>
-        /// <param name="pName"></param>
-        /// <returns></returns>
-        [PreserveSig]
-        int Clone(
-            out IAssemblyName pName);
     }
 
 
@@ -1097,22 +811,6 @@ namespace Dev2.Common.Reflection
             IntPtr pvReserved,
             out IAssemblyName ppName,
             uint dwFlags);
-
-        /// <summary>
-        ///     Undocumented. Best guess: reset the enumeration to the first assembly.
-        /// </summary>
-        /// <returns></returns>
-        [PreserveSig]
-        int Reset();
-
-        /// <summary>
-        ///     Undocumented. Create a copy of the assembly enum that is independently enumerable.
-        /// </summary>
-        /// <param name="ppEnum"></param>
-        /// <returns></returns>
-        [PreserveSig]
-        int Clone(
-            out IAssemblyEnum ppEnum);
     }
 
 
@@ -1124,23 +822,6 @@ namespace Dev2.Common.Reflection
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInstallReferenceItem
     {
-        /// <summary>
-        ///     The IInstallReferenceItem::GetReference method returns a FUSION_INSTALL_REFERENCE structure.
-        /// </summary>
-        /// <param name="ppRefData">
-        ///     A pointer to a FUSION_INSTALL_REFERENCE structure. The memory is allocated by the GetReference
-        ///     method and is freed when IInstallReferenceItem is released. Callers must not hold a reference to this buffer after
-        ///     the
-        ///     IInstallReferenceItem object is released.
-        /// </param>
-        /// <param name="dwFlags">Must be zero.</param>
-        /// <param name="pvReserved">Must be null.</param>
-        /// <returns></returns>
-        [PreserveSig]
-        int GetReference(
-            [MarshalAs(UnmanagedType.LPArray)] out FUSION_INSTALL_REFERENCE[] ppRefData,
-            uint dwFlags,
-            IntPtr pvReserved);
     }
 
 
@@ -1152,18 +833,6 @@ namespace Dev2.Common.Reflection
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInstallReferenceEnum
     {
-        /// <summary>
-        ///     IInstallReferenceEnum::GetNextInstallReferenceItem returns the next reference information for an assembly.
-        /// </summary>
-        /// <param name="ppRefItem">Pointer to a memory location that receives the IInstallReferenceItem pointer.</param>
-        /// <param name="dwFlags">Must be zero.</param>
-        /// <param name="pvReserved">Must be null.</param>
-        /// <returns></returns>
-        [PreserveSig]
-        int GetNextInstallReferenceItem(
-            out IInstallReferenceItem ppRefItem,
-            uint dwFlags,
-            IntPtr pvReserved);
     }
 
 
@@ -1175,19 +844,6 @@ namespace Dev2.Common.Reflection
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAssemblyCacheItem
     {
-        /// <summary>
-        ///     Undocumented.
-        /// </summary>
-        /// <param name="dwFlags"></param>
-        /// <param name="pulDisposition"></param>
-        void Commit(
-            uint dwFlags,
-            out long pulDisposition);
-
-        /// <summary>
-        ///     Undocumented.
-        /// </summary>
-        void AbortItem();
     }
 
     #endregion

@@ -322,14 +322,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         public string TestHeader { get; set; }
-        [ExcludeFromCodeCoverage]
-        public void ShowView()
-        {
-        }
-        [ExcludeFromCodeCoverage]
-        public void CloseView()
-        {
-        }
 
         #endregion
 

@@ -533,14 +533,6 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             return _updateRepository.TestDbService(inputValues);
         }
 
-        public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
-        {
-            yield break;
-        }
-        [ExcludeFromCodeCoverage]
-        public void SaveService(IDatabaseService toModel)
-        {
-        }
         [ExcludeFromCodeCoverage]
         public IStudioUpdateManager UpdateRepository
         {

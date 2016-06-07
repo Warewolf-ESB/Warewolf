@@ -341,7 +341,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
     {
         #region Overrides of ManageWebServiceInputViewModel
         [ExcludeFromCodeCoverage]
-        public override void ShowView()
+        public void ShowView()
         {
 
         }

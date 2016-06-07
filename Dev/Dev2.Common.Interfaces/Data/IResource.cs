@@ -102,15 +102,6 @@ namespace Dev2.Common.Interfaces.Data
         StringBuilder ToStringBuilder();
 
         /// <summary>
-        ///     Determines whether the given user roles are in the <see cref="AuthorRoles" />.
-        /// </summary>
-        /// <param name="userRoles">The user roles to be queried.</param>
-        /// <returns>
-        ///     <c>true</c> if the user roles are in the <see cref="AuthorRoles" />; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsUserInAuthorRoles(string userRoles);
-
-        /// <summary>
         ///     If this instance <see cref="IsUpgraded" /> then sets the ID, Version, Name and ResourceType attributes on the given
         ///     XML.
         /// </summary>

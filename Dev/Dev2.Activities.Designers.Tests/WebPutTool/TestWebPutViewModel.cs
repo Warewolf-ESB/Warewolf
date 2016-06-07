@@ -347,7 +347,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
     {
         #region Overrides of ManageWebServiceInputViewModel
         [ExcludeFromCodeCoverage]
-        public override void ShowView()
+        public void ShowView()
         {
 
         }

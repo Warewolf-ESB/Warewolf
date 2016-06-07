@@ -52,10 +52,6 @@ namespace Dev2.Common.Wrappers
             File.Copy(source, destination);
         }
 
-        public byte[] ReadAllBytes(string path)
-        {
-            return File.ReadAllBytes(path);
-        }
 
         public void WriteAllBytes(string path, byte[] contents)
         {

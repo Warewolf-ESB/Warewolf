@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests
             Assert.IsNull(complexObjectItemModel.Parent);
             Assert.IsTrue(complexObjectItemModel.IsParentObject);
             Assert.AreEqual("TestItem",complexObjectItemModel.DisplayName);
-            Assert.AreEqual("TestItem",complexObjectItemModel.Name);
+            Assert.AreEqual("@TestItem",complexObjectItemModel.Name);
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace Dev2.Core.Tests
             complexObjectItemModel.Parent = new ComplexObjectItemModel("ParentItem");
             //------------Assert Results-------------------------
             Assert.IsNotNull(complexObjectItemModel.Parent);
-            Assert.AreEqual("ParentItem.TestItem",complexObjectItemModel.Name);
+            Assert.AreEqual("@ParentItem.TestItem",complexObjectItemModel.Name);
             Assert.AreEqual("TestItem",complexObjectItemModel.DisplayName);
             Assert.IsFalse(complexObjectItemModel.IsParentObject);
         }

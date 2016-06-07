@@ -253,13 +253,19 @@ namespace Dev2.Core.Tests
             if (firstOrDefault != null)
             {
                 var wfResult = firstOrDefault.ToString(SaveOptions.None);
-                StringAssert.Contains(result, wfResult);
+                FixBreaks(ref result, ref wfResult);
+                Assert.AreEqual(result, wfResult);
                 Assert.IsTrue(eventWasFired);
             }
             else
             {
                 Assert.Fail();
             }
+        }
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
 
         [TestMethod]
