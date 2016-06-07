@@ -9,8 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 // ReSharper disable CheckNamespace
 
@@ -24,7 +26,48 @@ namespace Dev2.DataList
 
         private static Dictionary<string, IFindRecsetOptions> _options = new Dictionary<string, IFindRecsetOptions>();
 
+        /// <summary>
+        /// A static constructor is used to initialize any static data,
+        ///  or to perform a particular action that needs to be performed once only.
+        ///  It is called automatically before the first instance is created or any static members are referenced.
+        /// </summary>
+        static FindRecsetOptions()
+        {
+            var type = typeof(IFindRecsetOptions);
 
+            List<Type> types = typeof(IFindRecsetOptions).Assembly.GetTypes()
+                   .Where(t => type.IsAssignableFrom(t)).ToList();
+
+            foreach (Type t in types)
+            {
+                if (!t.IsAbstract && !t.IsInterface)
+                {
+                    IFindRecsetOptions item = Activator.CreateInstance(t, true) as IFindRecsetOptions;
+                    if (item != null)
+                    {
+                        _options.Add(item.HandlesType(), item);
+                    }
+                }
+            }
+            SortRecordsetOptions();
+        }
+
+        private static void SortRecordsetOptions()
+        {
+            Dictionary<string, IFindRecsetOptions> tmpDictionary = new Dictionary<string, IFindRecsetOptions>();
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach (string findRecordsOperation in GlobalConstants.FindRecordsOperations)
+            // ReSharper restore LoopCanBeConvertedToQuery
+            {
+                KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType() == findRecordsOperation);
+                if (!string.IsNullOrEmpty(firstOrDefault.Key))
+                {
+                    tmpDictionary.Add(firstOrDefault.Key, firstOrDefault.Value);
+                }
+            }
+
+            _options = tmpDictionary;
+        }
         /// <summary>
         /// Find the matching search object
         /// </summary>
@@ -47,8 +90,10 @@ namespace Dev2.DataList
         /// <returns></returns>
         public static IList<IFindRecsetOptions> FindAll()
         {
-            return _options.Values.Where(a=>a.ArgumentCount>0).ToList();
+            var findRecsetOptionses = _options.Values.Where(a=>a.ArgumentCount>0).ToList();
+            return findRecsetOptionses;
         }
+
         /// <summary>
         /// Find all AbstractRecsetSearchValidation objects
         /// </summary>
