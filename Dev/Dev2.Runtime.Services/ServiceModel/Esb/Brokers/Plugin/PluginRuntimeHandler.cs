@@ -63,13 +63,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             object pluginResult;
             var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-            // do formating here to avoid object serialization issues ;)
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
             {
                 pluginResult = AdjustPluginResult(pluginResult, methodToRun);
-
-                return formater.Format(pluginResult).ToString();
+                return formater.Format(pluginResult).ToString(); 
             }
             pluginResult = JsonConvert.SerializeObject(pluginResult);
             return pluginResult;
@@ -265,7 +263,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(PluginSource pluginSource)
         {
-            // BUG 9500 - 2013.05.31 - TWR : added check to avoid nulling AssemblyLocation/Name in tests 
             if (string.IsNullOrEmpty(pluginSource.AssemblyLocation))
             {
                 pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);

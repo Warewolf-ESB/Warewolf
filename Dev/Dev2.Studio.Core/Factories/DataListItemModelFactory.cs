@@ -19,26 +19,7 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class DataListItemModelFactory
     {
-        public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, IDataListItemModel parent)
-        {
-            return CreateDataListItemViewModel(dataListViewModel, string.Empty, string.Empty, parent, true);
-        }
-
-        public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, string name, string description, IDataListItemModel parent)
-        {
-            return CreateDataListItemViewModel(dataListViewModel, name, description, parent, true);
-        }
-
         // ReSharper disable MethodOverloadWithOptionalParameter
-        public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, string name, string description, IDataListItemModel parent, bool isEditable = true, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
-        // ReSharper restore MethodOverloadWithOptionalParameter
-        {
-            IDataListItemModel dataListModel = CreateDataListModel(name);
-            dataListModel.Description = description;
-            dataListModel.IsExpanded = true;
-            dataListModel.IsEditable = isEditable;
-            return dataListModel;
-        }
 
         public static IRecordSetFieldItemModel CreateDataListModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
         {

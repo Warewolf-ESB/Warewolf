@@ -101,24 +101,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         }
 
-        public async Task<ExecuteMessage> SaveResourceAsync(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
-        {
-
-
-
-            var comsController = GetCommunicationController("SaveResourceService");
-
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
-            message.SetMessage(resourceDefinition.ToString());
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
-            comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
-
-            var con = targetEnvironment.Connection;
-            return await comsController.ExecuteCommandAsync<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-        }
-
-
 
         public async void LoadResourceFromWorkspaceAsync(Guid resourceId, Enums.ResourceType resourceType, Guid? serverWorkspaceID)
         {
@@ -129,36 +111,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("ResourceType", name);
             var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
             var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
-            foreach (var serializableResource in toReloadResources)
-            {
-                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
-
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                }
-                else
-                {
-                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
-                    ResourceModels.Add(resource);
-                    if (ItemAdded != null)
-                    {
-                        ItemAdded(resource, null);
-                    }
-                }
-            }
-        }
-
-        public void LoadResourceFromWorkspace(Guid resourceId, Enums.ResourceType resourceType, Guid? serverWorkspaceID)
-        {
-            var con = _environmentModel.Connection;
-            var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            var name = Enum.GetName(typeof(Enums.ResourceType), resourceType);
-            comsController.AddPayloadArgument("ResourceType", name);
-            var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
-            var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
             {
                 var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
@@ -233,20 +185,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
             var effectedResources = FindAffectedResources(new List<Guid> { resourceId }, resourceType, equalityComparer, fetchXaml);
-
-            return effectedResources;
-        }
-
-        public async Task<List<IResourceModel>> ReloadResourceAsync(Guid resourceId, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
-        {
-            var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
-            comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
-
-            var con = _environmentModel.Connection;
-            await comsController.ExecuteCommandAsync<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-
-            var effectedResources = await FindAffectedResourcesAsync(new List<Guid> { resourceId }, resourceType, equalityComparer, fetchXaml);
 
             return effectedResources;
         }
@@ -415,11 +353,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             Func<IResourceModel, bool> func = expression.Compile();
             return ResourceModels.FindAll(func.Invoke);
-        }
-
-        public IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression)
-        {
-            return FindSingle(expression, true);
         }
 
         public IContextualResourceModel LoadContextualResourceModel(Guid resourceID)
@@ -615,23 +548,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void Remove(IResourceModel instanceObj)
         {
             DeleteResource(instanceObj);
-        }
-
-        public void RefreshResource(Guid resourceId)
-        {
-            _cachedServices.Remove(resourceId);
-        }
-
-        public bool ResourceExist(IResourceModel resource)
-        {
-            int index = ResourceModels.IndexOf(resource);
-
-            if (index != -1)
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public Func<IStudioResourceRepository> GetStudioResourceRepository = () => Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
@@ -1006,36 +922,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var result = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
             return result;
-        }
-
-        public async void LoadResourceFromWorkspaceAsync(Guid resourceId, string resourceType, Guid? serverWorkspaceID)
-        {
-            var con = _environmentModel.Connection;
-            var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            var name = Enum.GetName(typeof(string), resourceType);
-            comsController.AddPayloadArgument("ResourceType", name);
-            var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
-            var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
-            foreach (var serializableResource in toReloadResources)
-            {
-                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
-
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                }
-                else
-                {
-                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
-                    ResourceModels.Add(resource);
-                    if (ItemAdded != null)
-                    {
-                        ItemAdded(resource, null);
-                    }
-                }
-            }
         }
 
         public void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)

@@ -106,63 +106,6 @@ namespace Dev2.DynamicServices.Objects.Base
             WriteOutput(traceMsg);
         }
 
-        public virtual void WriteCompileWarning(string traceMsg)
-        {
-            WriteOutput(traceMsg);
-        }
-
-        public bool IsUserInRole(string userRoles, string resourceRoles)
-        {
-            if (string.IsNullOrEmpty(userRoles))
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(resourceRoles))
-            {
-                return true;
-            }
-
-            string[] user = userRoles.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
-            string[] res = resourceRoles.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
-
-            if (user.Contains("Domain Admins"))
-            {
-                return true;
-            }
-
-            if (!user.Any())
-            {
-                return false;
-            }
-
-            if (!res.Any())
-            {
-                return false;
-            }
-
-            return user.Intersect(res).Any();
-        }
-
-        public virtual string GetCompilerErrors()
-        {
-            var result = new StringBuilder();
-
-            if (CompilerErrors.Count > 0)
-            {
-                CompilerErrors.ToList().ForEach(c =>
-                {
-                    string errorData = string.Format("<CompilerError>{0}</CompilerError>", c);
-                    result.Append(errorData);
-                });
-            }
-            else
-            {
-                result.Append(string.Format("<CompilerMessage>Build of {0} '{1}' Succeeded</CompilerMessage>",
-                    Enum.GetName(typeof (enDynamicServiceObjectType), ObjectType), Name));
-            }
-            return result.ToString();
-        }
 
         #endregion
 

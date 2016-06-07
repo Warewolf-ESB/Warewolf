@@ -46,17 +46,5 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             return _workspaceRepository.GetWorkspaceID(identity as WindowsIdentity);
         }
-
-        public void SendMemo(string memo, string connectionID = null)
-        {
-            if (string.IsNullOrEmpty(connectionID))
-            {
-                _clients.All.SendMemo(memo);
-            }
-            else
-            {
-                _clients.Client(connectionID).SendMemo(memo);
-            }
-        }
     }
 }

@@ -65,16 +65,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region TitleBarBackground
 
-        public static Brush GetTitleBarBackground(DependencyObject obj)
-        {
-            return (Brush)obj.GetValue(TitleBarBackgroundProperty);
-        }
-
-        public static void SetTitleBarBackground(DependencyObject obj, Brush value)
-        {
-            obj.SetValue(TitleBarBackgroundProperty, value);
-        }
-
         public static readonly DependencyProperty TitleBarBackgroundProperty =
             DependencyProperty.RegisterAttached("TitleBarBackground", typeof(Brush), 
             typeof(ActivityDesignerAugmentationBehavior), 

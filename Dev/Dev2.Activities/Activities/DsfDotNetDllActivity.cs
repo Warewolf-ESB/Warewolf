@@ -92,7 +92,7 @@ namespace Dev2.Activities
                         pos++;
                     }
                     var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
-                    ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+                    ResponseManager = new ResponseManager { OutputDescription = null, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
                     ResponseManager.PushResponseIntoEnvironment(result, update, dataObject);
                 }
             }

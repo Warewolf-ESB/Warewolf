@@ -36,26 +36,5 @@ namespace Dev2.Studio.Core.ViewModels.Base
         {
             ValidationErrors.Remove(key);
         }
-
-        protected string ValidateStringCannotBeNullOrEmpty(string parameterName, string parameterValue)
-        {
-            string error = null;
-
-
-            if(string.IsNullOrEmpty(parameterValue))
-            {
-                error = string.Format("{0} is required", parameterName);
-                AddError(parameterName, error);
-            }
-
-            if(error == null)
-            {
-                RemoveError(parameterName);
-            }
-
-            return error;
-
-        }
-
     }
 }

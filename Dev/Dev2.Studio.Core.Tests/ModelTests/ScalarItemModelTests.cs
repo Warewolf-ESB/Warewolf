@@ -40,12 +40,6 @@ namespace Dev2.Core.Tests.ModelTests
 
         }
 
-        private IScalarItemModel CreateScalarItemModel(string name)
-        {
-            return new ScalarItemModel(name);
-        }
-
-
         #endregion Private Test Methods
 
         #region CTOR Tests

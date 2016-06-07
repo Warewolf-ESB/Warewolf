@@ -12,13 +12,11 @@
 // Copyright (C) Josh Smith - August 2006 
 
 using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.CustomControls.Panels
 {
@@ -98,17 +96,6 @@ namespace Dev2.CustomControls.Panels
             return (bool) uiElement.GetValue(CanBeDraggedProperty);
         }
 
-        /// <summary>
-        ///     Sets the CanBeDragged attached property for the specified UIElement.
-        /// </summary>
-        /// <param name="uiElement">The UIElement to set the property for.</param>
-        /// <param name="value">Pass true if the element can be dragged, else false.</param>
-        public static void SetCanBeDragged(UIElement uiElement, bool value)
-        {
-            if (uiElement != null)
-                uiElement.SetValue(CanBeDraggedProperty, value);
-        }
-
         #endregion // CanBeDragged
 
         #endregion // Attached Properties
@@ -155,39 +142,6 @@ namespace Dev2.CustomControls.Panels
 
         #endregion // AllowDragOutOfView
 
-        #region BringToFront / SendToBack
-
-        /// <summary>
-        ///     Assigns the element a z-index which will ensure that
-        ///     it is in front of every other element in the Canvas.
-        ///     The z-index of every element whose z-index is between
-        ///     the element's old and new z-index will have its z-index
-        ///     decremented by one.
-        /// </summary>
-        /// <param name="element">
-        ///     The element to be sent to the front of the z-order.
-        /// </param>
-        public void BringToFront(UIElement element)
-        {
-            UpdateZOrder(element, true);
-        }
-
-        /// <summary>
-        ///     Assigns the element a z-index which will ensure that
-        ///     it is behind every other element in the Canvas.
-        ///     The z-index of every element whose z-index is between
-        ///     the element's old and new z-index will have its z-index
-        ///     incremented by one.
-        /// </summary>
-        /// <param name="element">
-        ///     The element to be sent to the back of the z-order.
-        /// </param>
-        public void SendToBack(UIElement element)
-        {
-            UpdateZOrder(element, false);
-        }
-
-        #endregion // BringToFront / SendToBack
 
         #region ElementBeingDragged
 
@@ -517,74 +471,6 @@ namespace Dev2.CustomControls.Panels
         #endregion // ResolveOffset
 
         #region UpdateZOrder
-
-        /// <summary>
-        ///     Helper method used by the BringToFront and SendToBack methods.
-        /// </summary>
-        /// <param name="element">
-        ///     The element to bring to the front or send to the back.
-        /// </param>
-        /// <param name="bringToFront">
-        ///     Pass true if calling from BringToFront, else false.
-        /// </param>
-        private void UpdateZOrder(UIElement element, bool bringToFront)
-        {
-            #region Safety Check
-
-            if (element == null)
-                throw new ArgumentNullException("element");
-
-            if (!Children.Contains(element))
-                throw new ArgumentException(ErrorResource.MustBeAchildElementOfTheCanvas, "element");
-
-            #endregion // Safety Check
-
-            #region Calculate Z-Indici And Offset
-
-            // Determine the Z-Index for the target UIElement.
-            int elementNewZIndex = -1;
-            if (bringToFront)
-            {
-                elementNewZIndex += Children.Cast<UIElement>().Count(elem => elem.Visibility != Visibility.Collapsed);
-            }
-            else
-            {
-                elementNewZIndex = 0;
-            }
-
-            // Determine if the other UIElements' Z-Index 
-            // should be raised or lowered by one. 
-            int offset = elementNewZIndex == 0 ? +1 : -1;
-
-            int elementCurrentZIndex = GetZIndex(element);
-
-            #endregion // Calculate Z-Indici And Offset
-
-            #region Update Z-Indici
-
-            // Update the Z-Index of every UIElement in the Canvas.
-            foreach (UIElement childElement in Children)
-            {
-// ReSharper disable PossibleUnintendedReferenceComparison
-                if (childElement == element)
-// ReSharper restore PossibleUnintendedReferenceComparison
-                    SetZIndex(element, elementNewZIndex);
-                else
-                {
-                    int zIndex = GetZIndex(childElement);
-
-                    // Only modify the z-index of an element if it is  
-                    // in between the target element's old and new z-index.
-                    if (bringToFront && elementCurrentZIndex < zIndex ||
-                        !bringToFront && zIndex < elementCurrentZIndex)
-                    {
-                        SetZIndex(childElement, zIndex + offset);
-                    }
-                }
-            }
-
-            #endregion // Update Z-Indici
-        }
 
         #endregion // UpdateZOrder
 

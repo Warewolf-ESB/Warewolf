@@ -33,54 +33,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             _dockManager = dockManager;
         }
 
-        public void ShowDockedWindow(object viewModel, object context = null, bool selectWhenShown = true, InitialPaneLocation dockstate = InitialPaneLocation.DockedLeft)
-        {
-            ContentPane dockableWindow = CreateDockable(viewModel, context);
-            SplitPane pane = XamDockManagerHelper.FindSplitPaneWithLocationOrCreate(GetDockingManager(_window), dockstate);
-
-            pane.Panes.Add(dockableWindow);
-            //If this is a new dockable location (there are no split panes for it)
-            //we need to add it to the XamDockManager
-            if(pane.Parent == null)
-            {
-                DockManager.Panes.Add(pane);
-            }
-
-            if(selectWhenShown)
-            {
-                dockableWindow.Activate();
-            }
-
-        }
-
-        public void ShowFloatingWindow(object viewModel, object context = null, bool selectWhenShown = true)
-        {
-            ContentPane dockableWindow = CreateDockable(viewModel, context);
-            SplitPane pane = new SplitPane();
-            XamDockManager.SetInitialLocation(pane, InitialPaneLocation.DockableFloating);
-
-            pane.Panes.Add(dockableWindow);
-            DockManager.Panes.Add(pane);
-
-            if(selectWhenShown)
-            {
-                dockableWindow.Activate();
-            }
-        }
-
-        public void ShowDocumentWindow(object viewModel, object context = null, bool selectWhenShown = true)
-        {
-            ContentPane dockableWindow = CreateDockable(viewModel, context);
-            TabGroupPane host = XamDockManagerHelper.FindTabGroupPane(GetDockingManager());
-
-            host.Items.Add(dockableWindow);
-
-            if(selectWhenShown)
-            {
-                dockableWindow.Activate();
-            }
-        }
-
         public XamDockManager DockManager
         {
             get { return GetDockingManager(); }
