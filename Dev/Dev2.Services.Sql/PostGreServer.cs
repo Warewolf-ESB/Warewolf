@@ -155,12 +155,6 @@ namespace Dev2.Services.Sql
 
         #region FetchDataSet
 
-        public DataSet FetchDataSet(params SqlParameter[] parameters)
-        {
-            VerifyConnection();
-            return FetchDataSet(_command, parameters);
-        }
-
         public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
         {
             VerifyArgument.IsNotNull("command", command);
