@@ -26,8 +26,6 @@ namespace Dev2.Common.Interfaces
         string TestHeader { get; set; }
         ICollection<IServiceInput> Inputs { get; set; }
         DataTable TestResults { get; set; }
-        void ShowView();
-        void CloseView();
     }
 
     public interface IManageServiceInputViewModel<T>
@@ -45,9 +43,6 @@ namespace Dev2.Common.Interfaces
         Action CloseAction { get; set; }
         T Model { get; set; }
         string TestHeader { get; set; }
-
-        void ShowView();
-        void CloseView();
     }
 
     public interface IManageDatabaseInputViewModel : IToolRegion, IManageServiceInputViewModel<IDatabaseService>

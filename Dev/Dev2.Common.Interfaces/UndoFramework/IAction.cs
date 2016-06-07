@@ -14,10 +14,5 @@ namespace Dev2.Common.Interfaces.UndoFramework
     public interface IAction
     {
         bool AllowToMergeWithPrevious { get; set; }
-        bool CanExecute();
-        bool CanUnExecute();
-        void Execute();
-        bool TryToMerge(IAction followingAction);
-        void UnExecute();
     }
 }
