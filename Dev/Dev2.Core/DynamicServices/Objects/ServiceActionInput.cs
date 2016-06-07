@@ -106,43 +106,8 @@ namespace Dev2.DynamicServices
             return IsCompiled;
         }
 
-
-        /// <summary>
-        ///     Runs all the validators in the validator list against the input value
-        /// </summary>
-        /// <returns>Boolean indicating whether the validation was successful</returns>
-        public virtual bool Validate()
-        {
-            bool isValid = !Validators.Any();
-            foreach (Validator validator in Validators)
-            {
-                switch (validator.ValidatorType)
-                {
-                    case enValidationType.Required:
-                        isValid = ValidateRequired();
-                        break;
-                }
-            }
-
-            return isValid;
-        }
-
         #endregion
 
-        #region Private Methods
-
-        /// <summary>
-        ///     Validates a required field against an input value
-        /// </summary>
-        /// <returns>Boolean indicating whether the field passed required field validation</returns>
-        private bool ValidateRequired()
-        {
-            bool isValid = !string.IsNullOrEmpty(Value.ToString());
-
-            return isValid;
-        }
-
-        #endregion
     }
 
     #endregion
