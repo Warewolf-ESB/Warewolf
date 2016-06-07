@@ -796,6 +796,10 @@ namespace Dev2.UI
                     }
 
                     Height = adjustedHeight;
+                    if (IsPaste)
+                    {
+                        Height = ExtentHeight;
+                    }
                 }
 
                 if (!_suppressChangeOpen)
@@ -1615,7 +1619,13 @@ namespace Dev2.UI
             {
                 CloseDropDown(true);
             }
+            else if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            {
+                IsPaste = true;
+            }
         }
+
+        public bool IsPaste { get; set; }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
