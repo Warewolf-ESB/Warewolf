@@ -41,27 +41,6 @@ namespace Dev2.Common.Interfaces.PopupController
         bool IsActive { get; set; }
 
         /// <summary>
-        /// commands touted to go here if ok clicked
-        /// </summary>
-        void OkClicked();
-        /// <summary>
-        /// commands touted to go here if yes clicked
-        /// </summary>
-        void YesClicked();
-        /// <summary>
-        /// commands touted to go here if no clicked
-        /// </summary>
-        void NoClicked();
-        /// <summary>
-        /// commands touted to go here if cancel clicked
-        /// </summary>
-        void CancelClicked();
-        /// <summary>
-        /// commands touted to go here if closed clicked
-        /// </summary>
-        void ClosedClicked();
-
-        /// <summary>
         /// show thy self
         /// </summary>
         /// <returns></returns>

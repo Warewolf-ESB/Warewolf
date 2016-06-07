@@ -92,15 +92,6 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// </summary>
         TaskState State { get; }
 
-        /// <summary>
-        ///     Updates the task with any changes made to the <see cref="Definition" /> by calling
-        ///     <see
-        ///         cref="TaskFolder.RegisterTaskDefinition(string, TaskDefinition)" />
-        ///     from the currently registered folder using the currently registered name.
-        /// </summary>
-        /// <exception cref="System.Security.SecurityException">Thrown if task was previously registered with a password.</exception>
-        void RegisterChanges();
-
         #region Additional methods
 
         IAction Action { get; }

@@ -44,27 +44,5 @@ namespace Dev2.Common.DB
                 }
             }
         }
-
-        /// <summary>
-        ///     Fetch the type to be handled, then generate a concerte instance
-        /// </summary>
-        /// <param name="typeOf"></param>
-        /// <returns></returns>
-        public static IDataProviderSanitizer GenerateNewSanitizer(enSupportedDBTypes typeOf)
-        {
-            IDataProviderSanitizer result;
-            Type outType;
-
-            if (!Options.TryGetValue(typeOf, out outType))
-            {
-                result = null;
-            }
-            else
-            {
-                result = Activator.CreateInstance(outType, true) as IDataProviderSanitizer;
-            }
-
-            return result;
-        }
     }
 }
