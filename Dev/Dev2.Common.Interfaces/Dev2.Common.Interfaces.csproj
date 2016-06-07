@@ -163,7 +163,6 @@
     <Compile Include="DB\IDbAction.cs" />
     <Compile Include="DB\IDBHelper.cs" />
     <Compile Include="DB\IDbServiceModel.cs" />
-    <Compile Include="DB\IManageDbServiceViewModel.cs" />
     <Compile Include="DB\IServiceInput.cs" />
     <Compile Include="DB\IServiceMappings.cs" />
     <Compile Include="DB\IServiceOutputMapping.cs" />
@@ -179,7 +178,6 @@
     <Compile Include="Diagnostics\Debug\IDebugOutputFilterStrategy.cs" />
     <Compile Include="Diagnostics\Debug\IDebugProvider.cs" />
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
-    <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
     <Compile Include="enIntellisensePartType.cs" />
@@ -212,9 +210,7 @@
     <Compile Include="IExecutionEnvironment.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
-    <Compile Include="IExchangeServiceSource.cs" />
     <Compile Include="IExecutionToken.cs" />
-    <Compile Include="IExplorerHelpDescriptorBuilder.cs" />
     <Compile Include="IExplorerItemNodeViewModel.cs" />
     <Compile Include="IExplorerItemViewModel.cs" />
     <Compile Include="IExplorerRepository.cs" />
@@ -242,10 +238,8 @@
     <Compile Include="IManageServiceInputViewModel.cs" />
     <Compile Include="IManageSharePointSourceViewModel.cs" />
     <Compile Include="IManageWcfServiceInputViewModel.cs" />
-    <Compile Include="IManageWcfSourceModel.cs" />
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
-    <Compile Include="IManageWebServiceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
     <Compile Include="INamespaceItem.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
@@ -279,7 +273,6 @@
     <Compile Include="IPluginAction.cs" />
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginServiceModel.cs" />
-    <Compile Include="IPluginServiceViewModel.cs" />
     <Compile Include="IPluginSource.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IQueryManager.cs" />
@@ -308,7 +301,6 @@
     <Compile Include="IWcfService.cs" />
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
-    <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
     <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
@@ -327,7 +319,6 @@
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="PopupController\IPopupController.cs" />
     <Compile Include="PopupController\IPopupMessageBoxFactory.cs" />
-    <Compile Include="PopupController\IPopupMessages.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
@@ -342,7 +333,6 @@
     <Compile Include="Scheduler\Interfaces\IScheduleTrigger.cs" />
     <Compile Include="Scheduler\Interfaces\ISecurityWrapper.cs" />
     <Compile Include="Scheduler\Interfaces\IServerSchedulerFactory.cs" />
-    <Compile Include="Scheduler\Interfaces\IWorkflowExecutor.cs" />
     <Compile Include="Scheduler\Interfaces\SchedulerStatus.cs" />
     <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
@@ -358,9 +348,7 @@
     <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />
-    <Compile Include="Studio\Core\Activities\IServiceXmlTranslator.cs" />
     <Compile Include="Studio\Core\Enums.cs" />
-    <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
@@ -373,10 +361,8 @@
     <Compile Include="ToolBase\ExchangeEmail\IExchangeSource.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
-    <Compile Include="ToolBase\IErrorRegion.cs" />
     <Compile Include="ToolBase\IGenerateInputArea.cs" />
     <Compile Include="ToolBase\IGenerateOutputArea.cs" />
-    <Compile Include="ToolBase\IInputsToolRegion.cs" />
     <Compile Include="ToolBase\IOutputsToolRegion.cs" />
     <Compile Include="ToolBase\ISourceToolRegion.cs" />
     <Compile Include="ToolBase\IToolRegion.cs" />
@@ -398,9 +384,7 @@
     <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
     <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
-    <Compile Include="UndoFramework\IActionHistory.cs" />
     <Compile Include="UndoFramework\IMultiAction.cs" />
-    <Compile Include="UndoFramework\ITransaction.cs" />
     <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
     <Compile Include="WarewolfException.cs" />
     <Compile Include="WebRequestMethod.cs" />
@@ -440,6 +424,7 @@
     <Folder Include="Email\" />
     <Folder Include="Infrastructure\Services\" />
     <Folder Include="Runtime\ServiceModel\" />
+    <Folder Include="Studio\Core\Activities\" />
     <Folder Include="Studio\Core\AppResources\Enums\" />
     <Folder Include="Studio\Core\DataList\" />
   </ItemGroup>

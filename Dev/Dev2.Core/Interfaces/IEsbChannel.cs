@@ -66,8 +66,4 @@ namespace Dev2
     public interface IEsbWorkspaceChannel : IEsbChannel
     {
     }
-
-    public interface IEsbActivityChannel
-    {
-    }
 }
