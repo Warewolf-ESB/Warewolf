@@ -27,8 +27,6 @@ namespace Dev2.Utilities
 
         void CompileExpressions(DynamicActivity dynamicActivity, Guid resourceID);
 
-        void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity,Guid resourceId);
-
         StringBuilder SanitizeXaml(StringBuilder workflowXaml);
     }
 }

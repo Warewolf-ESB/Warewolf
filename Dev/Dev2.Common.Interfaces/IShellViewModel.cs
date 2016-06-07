@@ -44,7 +44,6 @@ namespace Dev2.Common.Interfaces
 
         void ShowDependencies(Guid resourceId, IServer server);
 
-        void ShowDependencies(Guid resourceId, bool dependsOnMe);
 
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources);
 

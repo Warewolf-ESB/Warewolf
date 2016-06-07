@@ -13,7 +13,6 @@ namespace Dev2.Common.Interfaces
     public interface IServer:IResource
     {
         //Task<bool> Connect();
-        List<IResource> Load();
         Task<IExplorerItem> LoadExplorer();
         IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
@@ -27,7 +26,6 @@ namespace Dev2.Common.Interfaces
         bool AllowEdit { get; }
         void ReloadTools();
         void Disconnect();
-        void Edit();
         List<IWindowsGroupPermission> Permissions { get; set; }
         Guid EnvironmentID { get; set; }
         Guid? ServerID { get; }
@@ -36,7 +34,6 @@ namespace Dev2.Common.Interfaces
         event ItemAddedEvent ItemAddedEvent;
 
         string GetServerVersion();
-        string GetServerInformationalVersion();
 
         void Connect();
         Task<bool> ConnectAsync();
@@ -44,8 +41,6 @@ namespace Dev2.Common.Interfaces
         bool HasLoaded { get;  }
         bool CanDeployTo { get; }
         bool CanDeployFrom { get; }
-
-        IServer Clone();
 
         string GetMinSupportedVersion();
     }

@@ -19,11 +19,6 @@ namespace Dev2.Tests.Weave
         readonly List<dynamic> _values = new List<dynamic>();
         int _current;
 
-        public void Reset()
-        {
-            _values.Clear();
-            _current = 0;
-        }
 
         #region Implementation of IDisposable
 

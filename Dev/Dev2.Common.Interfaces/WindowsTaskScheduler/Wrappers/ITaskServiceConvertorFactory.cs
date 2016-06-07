@@ -24,8 +24,6 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         IDev2TaskDefinition CreateTaskDefinition(TaskDefinition taskDefinition);
 
-        IDev2TaskService CreateTaskService(TaskService taskService);
-
         IActionCollection CreateActionCollection(ActionCollection actionCollection);
 
         ITriggerCollection CreateTriggerCollection(TriggerCollection triggerCollection);
@@ -52,8 +50,6 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         ITaskEvent CreateTaskEvent(TaskEvent currentEvent);
 
         ITaskEventLog CreateTaskEventLog(string taskPath);
-
-        ITaskEventLog CreateTaskEventLog(string taskPath, DateTime date);
 
         ITrigger SanitiseTrigger(ITrigger resource);
     }
