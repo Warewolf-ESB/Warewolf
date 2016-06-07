@@ -18,12 +18,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <returns>the resource versions. N configured versions are stored on a server</returns>
         IList<IExplorerItem> GetVersions(Guid resourceId);
         /// <summary>
-        /// Get the heavy weight resource
-        /// </summary>
-        /// <param name="version">the version to fetch</param>
-        /// <returns>a resource that can be displayed on the design surface</returns>
-        StringBuilder GetVersion(IVersionInfo version);
-        /// <summary>
         /// rollback to a specific version 
         /// </summary>
         /// <param name="resourceId">the resource</param>
