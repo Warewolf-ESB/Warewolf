@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Windows;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Dialogs;
@@ -109,7 +110,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         // ReSharper disable InconsistentNaming
         public void SetDontShowAgainOptionExpectedPersistedToXML()
         {
-            const string expected = @"<root>
+            string expected = @"<root>
   <Option Key=""1"" Value=""OK"" />
 </root>";
             string actual = null;
@@ -126,10 +127,14 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
             Dev2MessageBoxViewModel.SetDontShowAgainOption("1", MessageBoxResult.OK);
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual, "Serialization resulted in an unexpected format.");
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         [TestMethod]
         public void GetDontShowAgainOptionExpectedPersistedToXML()
         {

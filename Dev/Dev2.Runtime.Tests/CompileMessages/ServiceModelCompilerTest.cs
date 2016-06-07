@@ -42,7 +42,10 @@ namespace Dev2.Tests.Runtime.CompileMessages
 
             Assert.AreEqual(1, msgs.Count);
             Assert.AreEqual(CompileMessageType.MappingChange, msgs[0].MessageType);
-            Assert.AreEqual(@"<Args><Input>[{""Name"":""a"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false},{""Name"":""b"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false}]</Input><Output>[{""Name"":""a"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false},{""Name"":""b"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false}]</Output></Args>", msgs[0].MessagePayload);
+            var expected = @"<Args><Input>[{""Name"":""a"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false},{""Name"":""b"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false}]</Input><Output>[{""Name"":""a"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false},{""Name"":""b"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false}]</Output></Args>";
+            var actual = msgs[0].MessagePayload;
+            FixBreaks(ref expected, ref actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -60,8 +63,10 @@ namespace Dev2.Tests.Runtime.CompileMessages
 
             Assert.AreEqual(1, msgs.Count);
             Assert.AreEqual(CompileMessageType.MappingChange, msgs[0].MessageType);
-            Assert.AreEqual(@"<Args><Input>[{""Name"":""A"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false}]</Input><Output>[{""Name"":""A"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false}]</Output></Args>",
-                msgs[0].MessagePayload);
+            var expected = @"<Args><Input>[{""Name"":""A"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false}]</Input><Output>[{""Name"":""A"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false}]</Output></Args>";
+            var actual = msgs[0].MessagePayload;
+            FixBreaks(ref expected, ref actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -79,7 +84,16 @@ namespace Dev2.Tests.Runtime.CompileMessages
 
             Assert.AreEqual(1, msgs.Count);
             Assert.AreEqual(CompileMessageType.MappingChange, msgs[0].MessageType);
-            Assert.AreEqual(@"<Args><Input>[{""Name"":""a"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false},{""Name"":""b"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false}]</Input><Output>[]</Output></Args>", msgs[0].MessagePayload);
+            var expected = @"<Args><Input>[{""Name"":""a"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false},{""Name"":""b"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false,""IsTextResponse"":false,""IsObject"":false}]</Input><Output>[]</Output></Args>";
+            var actual = msgs[0].MessagePayload;
+            FixBreaks(ref expected, ref actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
 
     }

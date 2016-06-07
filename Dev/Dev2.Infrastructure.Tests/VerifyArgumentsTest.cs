@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Infrastructure.Tests
 {
@@ -39,15 +41,21 @@ namespace Dev2.Infrastructure.Tests
             }
             catch(Exception e)
             {
-                Assert.AreEqual(@"The following arguments are not allowed to be null: c
-d
-", e.Message);
+                var message = e.Message;
+
+                var expected = @"The following arguments are not allowed to be null: cd";
+                FixBreaks(ref expected, ref message);
+                Assert.AreEqual(expected, message);
                 throw;
             }
 
         }
 
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").ToString();
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
