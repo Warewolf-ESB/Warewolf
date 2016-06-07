@@ -27,6 +27,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         // BUG 9500 - 2013.05.31 - TWR : added
         public string Namespace { get; set; }
+        public string SerializedResult { get; set; }
 
         #region CTOR
 

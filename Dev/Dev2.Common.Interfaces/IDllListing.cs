@@ -14,7 +14,7 @@ namespace Dev2.Common.Interfaces
     public interface IDllListingModel : IFileListing
     {
         void Filter(string searchTerm);
-        ObservableCollection<IDllListingModel> Children { get; set; }
+        new ObservableCollection<IDllListingModel> Children { get; set; }
         bool IsExpanded { get; set; }
         bool IsExpanderVisible { get; }
         bool IsVisible { get; set; }
@@ -28,7 +28,7 @@ namespace Dev2.Common.Interfaces
     public interface IFileListingModel : IFileListing
     {
         void Filter(string searchTerm);
-        ObservableCollection<IFileListingModel> Children { get; set; }
+        new ObservableCollection<IFileListingModel> Children { get; set; }
         bool IsExpanded { get; set; }
         bool IsExpanderVisible { get; }
         bool IsVisible { get; set; }

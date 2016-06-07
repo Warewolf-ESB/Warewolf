@@ -12,9 +12,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using Dev2.Activities.Designers2.SharepointListRead;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
-using Dev2.Providers.Validation.Rules;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Threading;
@@ -34,13 +32,7 @@ namespace Dev2.Activities.Designers2.SharepointListDelete
 
         public override string CollectionName { get { return "FilterCriteria"; } }
 
-        public ObservableCollection<string> WhereOptions { get; private set; }       
-
-        public IRuleSet GetRuleSet(string propertyName)
-        {
-            var ruleSet = new RuleSet();
-            return ruleSet;
-        }
+        public ObservableCollection<string> WhereOptions { get; private set; }
 
         #region Overrides of ActivityCollectionDesignerViewModel<SharepointSearchTo>
 
