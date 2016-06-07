@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.DataList.Contract;
 
 // ReSharper disable once CheckNamespace
@@ -35,10 +34,5 @@ namespace Dev2.DataList
         }
 
         public abstract string HandlesType();
-
-        public virtual  Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, bool all)
-        {
-            return values.Contains;
-        }
     }
 }

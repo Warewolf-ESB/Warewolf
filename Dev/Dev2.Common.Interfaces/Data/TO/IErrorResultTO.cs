@@ -41,19 +41,7 @@ namespace Dev2.Common.Interfaces.Data.TO
         /// </returns>
         bool HasErrors();
 
-        /// <summary>
-        ///     Merges the errors.
-        /// </summary>
-        /// <param name="toMerge">To merge.</param>
-        void MergeErrors(IErrorResultTO toMerge);
-
         void ClearErrors();
-
-        /// <summary>
-        ///     Makes the error collection user ready.
-        /// </summary>
-        /// <returns></returns>
-        string MakeUserReady();
 
         /// <summary>
         ///     Makes the error collection user ready.

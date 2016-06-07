@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -18,8 +17,6 @@ namespace Dev2.Activities
 {
     public class DsfWebserviceActivity : DsfActivity
     {
-        ErrorResultTO _errorsTo;
-
         #region Overrides of DsfActivity
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors,int update)
@@ -43,11 +40,6 @@ namespace Dev2.Activities
         #endregion
 
         #region Protected Helper Functions
-
-        protected virtual Guid ExecuteWebservice(WebserviceExecution container,int update)
-        {
-            return container.Execute(out _errorsTo, update);
-        }
 
         protected virtual WebserviceExecution GetNewWebserviceExecution(IDSFDataObject context)
         {

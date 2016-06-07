@@ -17,6 +17,5 @@ namespace Dev2.Activities.SqlBulkInsert
     {
         bool Insert(ISqlBulkCopy sqlBulkCopy, DataTable dataTableToInsert);
 
-        bool Insert(ISqlBulkCopy sqlBulkCopy, IDataReader dataTableToInsert);
     }
 }

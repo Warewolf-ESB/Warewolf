@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Security.Specs</RootNamespace>
-    <AssemblyName>Warewolf.Security.Specs</AssemblyName>
+    <AssemblyName>Warewolf.SecuritySpecs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -104,6 +104,10 @@
     <ProjectReference Include="..\Warewolf.AcceptanceTesting.Explorer\Warewolf.AcceptanceTesting.Explorer.csproj">
       <Project>{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}</Project>
       <Name>Warewolf.AcceptanceTesting.Explorer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

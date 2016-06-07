@@ -18,7 +18,6 @@ namespace Dev2.Calculate
         ParseEventLog EventLog { get; }
         bool HasEventLogs { get; }
         SyntaxTreeBuilder Builder { get; }
-        Node[] Build(string inputText, out Token[] tokens);
         Node[] Build(string inputText, bool expectedPartialTokens, out Token[] tokens);
     }
 

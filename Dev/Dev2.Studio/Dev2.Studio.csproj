@@ -922,10 +922,6 @@
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
-      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
-      <Name>Warewolf.Studio.Themes.Luna</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
@@ -965,6 +961,10 @@
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>

@@ -9,9 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Json;
@@ -84,12 +86,6 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
   }";
         }
 
-        internal string GivenPrimitiveRecordset()
-        {
-            return @"[
-      ""RandomData"",
-      ""RandomData1""]";
-        }
 
         #region SelectScalar Tests
 
@@ -293,12 +289,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            const string expected = "Dev2|Dev2|Dev2|Dev2^Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe^RandomData\r\n    ,\r\n        RandomData1|||";
+             string expected = "Dev2|Dev2|Dev2|Dev2^Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe^RandomData\r\n    ,\r\n        RandomData1|||";
             string actual = string.Join("|", data[path3].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path2].Select(s => s.ToString().Trim()));
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         /// <summary>
         /// Selects enumerable values as related using enumerable path from json where paths contain a single 
         /// path which is enumerable expected flattened data with values from enumerable path.

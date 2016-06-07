@@ -17,16 +17,11 @@ namespace Dev2.Common.Interfaces.Infrastructure
     public interface IExplorerServerResourceRepository : IExplorerResourceRepository
     {
         IExplorerItem Load(string type, string filter);
-        IExplorerItem Load(string filter);
         void MessageSubscription(IExplorerRepositorySync sync);
 
         IExplorerItem UpdateItem(IResource resource);
 
         IExplorerItem Find(Guid id);
         IExplorerItem Find(Func<IExplorerItem,bool> predicate);
-
-        IExplorerItem Reload(Guid workSpaceId);
-
-        void RemoveItemFromCollection(IExplorerItem serverExplorerItem);
     }
 }
