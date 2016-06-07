@@ -80,9 +80,6 @@ internal sealed class Win32Sec
 
     [DllImport("advapi32")]
     internal static extern int LsaClose(LSA_HANDLE PolicyHandle);
-
-    [DllImport("advapi32")]
-    internal static extern int LsaFreeMemory(LSA_HANDLE Buffer);
 }
 
 

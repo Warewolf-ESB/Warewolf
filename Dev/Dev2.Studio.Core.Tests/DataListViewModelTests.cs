@@ -1932,63 +1932,6 @@ namespace Dev2.Core.Tests
             return part;
         }
 
-        //IEnumerable<IDataListItemModel> CreateDataListItems(IDataListViewModel viewModel, IEnumerable<IDataListVerifyPart> parts, bool isAdd)
-        //{
-        //    var results = new List<IDataListItemModel>();
-
-        //    foreach(var part in parts)
-        //    {
-        //        IDataListItemModel item;
-        //        if(part.IsScalar)
-        //        {
-        //            item = DataListItemModelFactory.CreateDataListItemViewModel
-        //                (viewModel, part.Field, part.Description, null);
-
-        //            results.Add(item);
-        //        }
-        //        else if(string.IsNullOrEmpty(part.Field))
-        //        {
-        //            AddRecordSetItem(viewModel, part, results);
-        //        }
-        //        else
-        //        {
-        //            IDataListItemModel recset
-        //                = results.FirstOrDefault(c => c.IsRecordset && c.DisplayName == part.Recordset) ?? viewModel.DataList.FirstOrDefault(c => c.IsRecordset && c.DisplayName == part.Recordset);
-
-        //            if(recset == null && isAdd)
-        //            {
-        //                AddRecordSetItem(viewModel, part, results);
-        //            }
-
-        //            if(recset != null)
-        //            {
-        //                if(isAdd)
-        //                {
-        //                    item = DataListItemModelFactory.CreateDataListItemViewModel(viewModel, part.Field, part.Description, recset);
-
-        //                    recset.Children.Add(item);
-        //                }
-        //                else
-        //                {
-        //                    IDataListItemModel removeItem = recset.Children.FirstOrDefault(c => c.Name == part.Field);
-        //                    if(removeItem != null)
-        //                    {
-        //                        if(recset.Children.Count == 1)
-        //                        {
-        //                            recset.Children[0].DisplayName = "";
-        //                            recset.Children[0].Description = "";
-        //                        }
-        //                        else
-        //                        {
-        //                            recset.Children.Remove(removeItem);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return results;
-        //}
 
         private IEnumerable<IScalarItemModel> CreateScalarListItems(IEnumerable<IDataListVerifyPart> parts)
         {
@@ -2004,57 +1947,6 @@ namespace Dev2.Core.Tests
             return results;
         }
 
-        private IEnumerable<IRecordSetItemModel> CreateRecordSetListItems(IEnumerable<IDataListVerifyPart> parts, bool isAdd)
-        {
-            var results = new List<IRecordSetItemModel>();
 
-            foreach (var part in parts)
-            {
-                if (string.IsNullOrEmpty(part.Field))
-                {
-                    results.Add(DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description));
-                }
-                else
-                {
-                    IRecordSetItemModel recset = results.FirstOrDefault(c => c.DisplayName == part.Recordset);
-
-                    if (recset == null && isAdd)
-                    {
-                        results.Add(DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description));
-                    }
-
-                    if (recset != null)
-                    {
-                        if (isAdd)
-                        {
-                            recset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recset));
-                        }
-                        else
-                        {
-                            IRecordSetFieldItemModel removeItem = recset.Children.FirstOrDefault(c => c.DisplayName == part.Field);
-                            if (removeItem != null)
-                            {
-                                if (recset.Children.Count == 1)
-                                {
-                                    recset.Children[0].DisplayName = "";
-                                    recset.Children[0].Description = "";
-                                }
-                                else
-                                {
-                                    recset.Children.Remove(removeItem);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return results;
-        }
-
-        //private void AddRecordSetItem(IDataListViewModel viewModel, IDataListVerifyPart part, List<IDataListItemModel> results)
-        //{
-        //    IDataListItemModel item = DataListItemModelFactory.CreateDataListItemViewModel(viewModel, part.Recordset, part.Description, null, true);
-        //    results.Add(item);
-        //}
     }
 }

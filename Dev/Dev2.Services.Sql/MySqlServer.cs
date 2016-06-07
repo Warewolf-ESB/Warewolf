@@ -151,12 +151,6 @@ namespace Dev2.Services.Sql
 
         #region FetchDataSet
 
-        public DataSet FetchDataSet(params SqlParameter[] parameters)
-        {
-            VerifyConnection();
-            return FetchDataSet(_command, parameters);
-        }
-
         public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
         {
             VerifyArgument.IsNotNull("command", command);
@@ -413,37 +407,6 @@ namespace Dev2.Services.Sql
             }
             command.CommandText = originalCommandText;
             return parameters;
-        }
-
-
-        public static bool IsStoredProcedure(DataRow row, DataColumn procedureTypeColumn)
-        {
-            if (row == null || procedureTypeColumn == null)
-            {
-                return false;
-            }
-            return row[procedureTypeColumn].ToString().Equals("SQL_STORED_PROCEDURE") ||
-                   row[procedureTypeColumn].ToString().Equals("CLR_STORED_PROCEDURE");
-        }
-
-        public static bool IsFunction(DataRow row, DataColumn procedureTypeColumn)
-        {
-            if (row == null || procedureTypeColumn == null)
-            {
-                return false;
-            }
-
-            return row[procedureTypeColumn].ToString().Equals("SQL_SCALAR_FUNCTION");
-        }
-
-        public static bool IsTableValueFunction(DataRow row, DataColumn procedureTypeColumn)
-        {
-            if (row == null || procedureTypeColumn == null)
-            {
-                return false;
-            }
-
-            return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
         #region IDisposable

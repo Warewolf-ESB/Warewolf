@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlTypes;
 using System.Net;
 using System.Xml.Linq;
 using Microsoft.SqlServer.Server;
@@ -24,34 +23,8 @@ namespace Warewolf.Sql
     /// <date>2013/02/21</date>
     public class Workflows
     {
-        #region RunWorkflowForXml
 
-        [SqlFunction]
-        public static SqlXml RunWorkflowForXml(SqlString serverUri, SqlString rootName)
-        {
-            XElement xml = new Workflows().RunWorkflowForXmlImpl(
-                serverUri.IsNull ? null : serverUri.Value,
-                rootName.IsNull ? null : rootName.Value
-                );
-            return new SqlXml(xml.CreateReader());
-        }
-
-        #endregion
-
-        #region RunWorkflowForSql
-
-        [SqlProcedure]
-        public static void RunWorkflowForSql(SqlString serverUri, SqlString recordsetName)
-        {
-            new Workflows().RunWorkflowForSqlImpl(new SqlCtx(),
-                serverUri.IsNull ? null : serverUri.Value,
-                recordsetName.IsNull ? null : recordsetName.Value
-                );
-        }
-
-        #endregion
-
-        #region RunWorkflowForXmlImpl
+  #region RunWorkflowForXmlImpl
 
         public XElement RunWorkflowForXmlImpl(string serverUri, string rootName = null)
         {
