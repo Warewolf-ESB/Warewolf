@@ -385,14 +385,6 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         }
 
-        public IEnumerable<IServiceOutputMapping> GetDbOutputMappings(IDbAction action)
-        {
-            yield break;
-        }
-        [ExcludeFromCodeCoverage]
-        public void SaveService(IDatabaseService toModel)
-        {
-        }
         [ExcludeFromCodeCoverage]
         public IStudioUpdateManager UpdateRepository
         {

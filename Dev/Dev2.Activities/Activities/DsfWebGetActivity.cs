@@ -82,11 +82,11 @@ namespace Dev2.Activities
                 AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
             }
             var webRequestResult = PerformWebRequest(head, query, url);
-            ResponseManager = new WebResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
+            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
-        public IWebResponseManager ResponseManager { get; set; }
+        public IResponseManager ResponseManager { get; set; }
 
         protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
         {
