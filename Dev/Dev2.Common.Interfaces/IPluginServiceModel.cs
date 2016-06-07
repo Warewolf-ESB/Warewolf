@@ -23,8 +23,6 @@ namespace Dev2.Common.Interfaces
         void CreateNewSource();
         void EditSource(IPluginSource selectedSource);
         string TestService(IPluginService inputValues);
-        IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IPluginAction action);
-        void SaveService(IPluginService model);
 
         IStudioUpdateManager UpdateRepository { get; }
     }
