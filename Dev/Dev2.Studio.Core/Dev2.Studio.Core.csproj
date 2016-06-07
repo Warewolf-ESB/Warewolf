@@ -340,8 +340,6 @@
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingEventArgs.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingParticipant.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
-    <Compile Include="Interfaces\IDecisionType.cs" />
-    <Compile Include="Interfaces\IDev2StudioView.cs" />
     <Compile Include="Interfaces\IEnvironmentModel.cs" />
     <Compile Include="Interfaces\ILayoutObjectViewModel.cs" />
     <Compile Include="Interfaces\IResourceModel.cs" />
@@ -382,10 +380,8 @@
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\RefreshExplorerMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
-    <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
-    <Compile Include="Messages\IDeployMessage.cs" />
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
@@ -439,7 +435,6 @@
     <Compile Include="SelectModelItemMessage.cs" />
     <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
-    <Compile Include="Services\Communication\IAsynCommService.cs" />
     <Compile Include="Services\Communication\MapiEmailCommService.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
@@ -480,7 +475,6 @@
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
-    <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
@@ -489,7 +483,6 @@
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
     <Compile Include="Interfaces\ILayoutGridViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
-    <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
     <Compile Include="ViewModelUtils.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepository.cs" />
