@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,7 +57,7 @@ namespace Dev2.Scheduler.Test
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object,a=>a.WorkflowName);
+                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
             Assert.AreEqual(_convertorFactory.Object, model.ConvertorFactory);
             Assert.AreEqual(_folderId, model.WarewolfFolderPath);
             Assert.AreEqual(_agentPath, model.WarewolfAgentPath);
@@ -75,22 +76,30 @@ namespace Dev2.Scheduler.Test
             try
             {
                 // ReSharper disable ObjectCreationAsStatement
-                new ScheduledResourceModel(null, null, null, null, null, null,null);
+                new ScheduledResourceModel(null, null, null, null, null, null, null);
                 // ReSharper restore ObjectCreationAsStatement
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Assert.AreEqual(e.Message, @"The following arguments are not allowed to be null: taskService
+                var actual = e.Message;
+                var expected = @"The following arguments are not allowed to be null: taskService
 warewolfFolderId
 warewolfAgentPath
 taskServiceFactory
 debugHistoryPath
 securityWrapper
-");
+";
+                FixBreaks(ref expected, ref actual);
+                Assert.AreEqual(expected, actual);
                 throw;
             }
 
 
+        }
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
 
         [TestMethod]
@@ -102,7 +111,7 @@ securityWrapper
             SetupSingleTask();
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\", _wrapper.Object,a=>a.WorkflowName);
+                                                   _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
 
             Assert.AreEqual(1,
                             model.ScheduledResources.Count);
@@ -114,7 +123,7 @@ securityWrapper
         public void ScheduledResourceModel_Constructor_ShouldSelectedCorrectResourcesWithId()
         {
             //setup
-            SetupSingleTaskWithId();;
+            SetupSingleTaskWithId(); ;
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
                                                    _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
@@ -263,7 +272,7 @@ securityWrapper
             //test
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                // ReSharper restore UseObjectOrCollectionInitializer
+                                                   // ReSharper restore UseObjectOrCollectionInitializer
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -307,7 +316,7 @@ securityWrapper
             //test
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                // ReSharper restore UseObjectOrCollectionInitializer
+                                                   // ReSharper restore UseObjectOrCollectionInitializer
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -317,7 +326,7 @@ securityWrapper
             Assert.AreEqual(new DateTime(2003, 1, 1), history.First().TaskHistoryOutput.StartDate);
             Assert.AreEqual(new DateTime(2000, 1, 1), history.Last().TaskHistoryOutput.EndDate);
             Assert.AreEqual(history.Last().DebugOutput.Count, 0);
-            Assert.AreEqual(ScheduleRunStatus.Unknown,history.Last().TaskHistoryOutput.Success);
+            Assert.AreEqual(ScheduleRunStatus.Unknown, history.Last().TaskHistoryOutput.Success);
         }
 
 
@@ -350,7 +359,7 @@ securityWrapper
             //test
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                // ReSharper restore UseObjectOrCollectionInitializer
+                                                   // ReSharper restore UseObjectOrCollectionInitializer
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -391,7 +400,7 @@ securityWrapper
             //test
             // ReSharper disable UseObjectOrCollectionInitializer
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                // ReSharper restore UseObjectOrCollectionInitializer
+                                                   // ReSharper restore UseObjectOrCollectionInitializer
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
@@ -606,7 +615,7 @@ Please contact your Warewolf System Administrator.", errorMessage);
             task2.Setup(a => a.IsValidDev2Task()).Returns(false);
             task1.Setup(a => a.Action).Returns(action1.Object);
             task1.Setup(a => a.Trigger).Returns(trigger1.Object);
-            action1.Setup(a => a.Arguments).Returns("\"Workflow:a\" \"TaskName:b\" \"ResourceId:"+Guid.NewGuid()+"\"");
+            action1.Setup(a => a.Arguments).Returns("\"Workflow:a\" \"TaskName:b\" \"ResourceId:" + Guid.NewGuid() + "\"");
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
     }
