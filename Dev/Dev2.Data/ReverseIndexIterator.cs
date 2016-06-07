@@ -79,35 +79,5 @@ namespace Dev2.Data.Binary_Objects
         {
             return IndexList.GetMaxIndex();
         }
-
-        public int MinIndex()
-        {
-            return IndexList.GetMinIndex();
-        }
-
-        public void AddGap(int idx)
-        {
-            IndexList.Gaps.Add(idx);
-        }
-
-        public void RemoveGap(int idx)
-        {
-            IndexList.Gaps.Remove(idx);
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            return IndexList.Gaps;
-        }
-
-        public IIndexIterator Clone()
-        {
-            HashSet<int> gaps = new HashSet<int>();
-            foreach(int g in IndexList.Gaps)
-            {
-                gaps.Add(g);
-            }
-            return new IndexIterator(gaps, IndexList.MaxValue);
-        }
     }
 }

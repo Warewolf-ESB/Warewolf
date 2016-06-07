@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -155,24 +154,6 @@ namespace Dev2.PathOperations
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// convert a list of directory paths into XML
-        /// </summary>
-        /// <param name="pathList"></param>
-        /// <returns></returns>
-        public static string ConvertDirectoryListToXML(IList<IActivityIOPath> pathList)
-        {
-
-            StringBuilder result = new StringBuilder();
-
-            foreach(IActivityIOPath p in pathList)
-            {
-                result.Append(p.ToXML());
-            }
-
-            return result.ToString();
         }
 
         public static enActivityIOPathType ExtractPathType(string path)

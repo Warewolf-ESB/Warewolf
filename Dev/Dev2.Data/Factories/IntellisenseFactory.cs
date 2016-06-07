@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 
@@ -22,11 +21,6 @@ namespace Dev2.DataList.Contract {
 
         public static IIntellisenseResult CreateSelectableResult(int start, int end, IDataListVerifyPart opt, string msg) {
             return new IntellisenseResult(start, end, opt, msg, enIntellisenseResultType.Selectable, enIntellisenseErrorCode.None, true);
-        }
-
-        public static IIntellisenseResult CreateCalculateIntellisenseResult(int start, int end, string displayName, string description, string errorMessage)
-        {
-          return new IntellisenseResult(start, end, new DateTimeVerifyPart(displayName, description), errorMessage, String.IsNullOrEmpty(errorMessage) ? enIntellisenseResultType.Selectable : enIntellisenseResultType.Error, String.IsNullOrEmpty(errorMessage) ? enIntellisenseErrorCode.None : enIntellisenseErrorCode.SyntaxError, true);
         }
 
         public static IIntellisenseResult CreateDateTimeResult(IDataListVerifyPart opt)

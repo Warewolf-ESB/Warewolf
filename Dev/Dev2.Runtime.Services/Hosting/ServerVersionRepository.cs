@@ -162,11 +162,7 @@ namespace Dev2.Runtime.Hosting
                 return resource.ResourcePath.Substring(0, resource.ResourcePath.LastIndexOf('\\'));
             return "";
         }
-        
-        public IExplorerItem GetLatestVersionNumber(Guid resourceId)
-        {
-            return null;
-        }
+       
 
         public IRollbackResult RollbackTo(Guid resourceId, string versionNumber)
         {

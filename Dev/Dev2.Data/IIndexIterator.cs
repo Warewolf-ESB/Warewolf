@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
-
 namespace Dev2.Data.Binary_Objects
 {
     public interface IIndexIterator
@@ -25,15 +23,5 @@ namespace Dev2.Data.Binary_Objects
         int FetchNextIndex();
 
         int MaxIndex();
-
-        int MinIndex();
-
-        void AddGap(int idx);
-
-        void RemoveGap(int idx);
-
-        HashSet<int> FetchGaps();
-
-        IIndexIterator Clone();
     }
 }

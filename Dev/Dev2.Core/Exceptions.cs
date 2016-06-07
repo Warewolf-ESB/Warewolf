@@ -21,18 +21,6 @@ namespace Dev2
                 throw new ArgumentNullException(objectName, FrameworkResources.Exception_ArgumentCannotBeNull);
             }
         }
-
-        public static void ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString(string objectName, object objectValue)
-        {
-            ThrowArgumentNullExceptionIfObjectIsNull(objectName, objectValue);
-
-            if (objectValue is string)
-            {
-                if (string.IsNullOrEmpty(objectValue.ToString()))
-                {
-                    throw new ArgumentException(FrameworkResources.Exception_ArgumentCannotBeNullOrEmpty, objectName);
-                }
-            }
-        }
+        
     }
 }

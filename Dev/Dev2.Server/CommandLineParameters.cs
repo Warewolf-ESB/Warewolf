@@ -9,7 +9,6 @@
 */
 
 using CommandLine;
-using CommandLine.Text;
 
 namespace Dev2
 {
@@ -29,11 +28,5 @@ namespace Dev2
 
         [Option("t", "standalone", HelpText = "Standalone Mode", DefaultValue = false)]
         public bool IntegrationTestMode { get; set; }
-
-        [HelpOption]
-        public string GetUsage()
-        {
-            return HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
-        }
     }
 }

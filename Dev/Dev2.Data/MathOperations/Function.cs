@@ -79,34 +79,6 @@ namespace Dev2.MathOperations
 
         #region Public Methods
 
-        public void CreateCustomFunction(string functionName, List<string> args, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
-        {
-            CustomCalculationFunction calcFunction;
-            if(CreateCustomFunction(functionName, function, out calcFunction))
-            {
-                if(calcManager != null)
-                {
-                    calcManager.RegisterUserDefinedFunction(calcFunction);
-                    _functionName = functionName;
-                    _arguments = args;
-                    _argumentDescriptions = new List<string>();
-                    _description = description;
-                }
-                else
-                {
-                    throw new NullReferenceException(ErrorResource.CalculationManagerIsNull);
-                }
-            }
-
-            else
-            {
-                throw new InvalidOperationException(ErrorResource.UnableToCreateDefinedFunction);
-            }
-
-
-
-        }
-
         public void CreateCustomFunction(string functionName, List<string> args, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
             CustomCalculationFunction calcFunction;
