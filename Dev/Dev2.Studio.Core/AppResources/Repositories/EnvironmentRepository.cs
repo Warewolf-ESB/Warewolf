@@ -161,12 +161,6 @@ namespace Dev2.Studio.Core
             LoadInternal();
         }
 
-        public void Remove(Guid id)
-        {
-            var toRemove = Get(id);
-            Remove(toRemove);
-        }
-
         public IEnvironmentModel Get(Guid id)
         {
             return All().FirstOrDefault(e => e.ID == id);

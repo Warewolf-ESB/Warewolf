@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 
 // ReSharper disable CheckNamespace
@@ -51,26 +50,6 @@ namespace Dev2.Studio.Core.Network
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
             }, () => { });
-        }
-
-        public static bool IsServerUp(IContextualResourceModel resourceModel)
-        {
-            string host = resourceModel.Environment.Connection.WebServerUri.AbsoluteUri;
-            int port = resourceModel.Environment.Connection.WebServerUri.Port;
-            try
-            {
-                // Do NOT use TcpClient(ip, port) else it causes a 1 second delay when you initially resolve to an IPv6 IP
-                // http://msdn.microsoft.com/en-us/library/115ytk56.aspx - Remarks
-                using (TcpClient client = new TcpClient())
-                {
-                    client.Connect(host, port);
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)

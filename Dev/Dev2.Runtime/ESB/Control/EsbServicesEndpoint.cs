@@ -16,7 +16,6 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -483,64 +482,6 @@ namespace Dev2.Runtime.ESB.Control
 
         static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
 
-
-        /// <summary>
-        /// Glues the input and output mapping segments.
-        /// </summary>
-        /// <param name="inputFragment">The input fragment.</param>
-        /// <param name="outputFragment">The output fragment.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        StringBuilder GlueInputAndOutputMappingSegments(string inputFragment, string outputFragment, out ErrorResultTO errors)
-        {
-
-            errors = new ErrorResultTO();
-            if(!string.IsNullOrEmpty(outputFragment))
-            {
-                try
-                {
-                    // finally glue the two together ;)
-                    XmlDocument oDLXDoc = new XmlDocument();
-                    oDLXDoc.LoadXml(outputFragment);
-
-                    if(oDLXDoc.DocumentElement != null)
-                    {
-                        outputFragment = oDLXDoc.DocumentElement.InnerXml;
-                    }
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                    errors.AddError(e.Message);
-                }
-            }
-
-            if(!string.IsNullOrEmpty(inputFragment))
-            {
-
-                try
-                {
-                    // finally glue the two together ;)
-                    XmlDocument iDLXDoc = new XmlDocument();
-                    iDLXDoc.LoadXml(inputFragment);
-
-                    if(iDLXDoc.DocumentElement != null)
-                    {
-                        inputFragment = iDLXDoc.DocumentElement.InnerXml;
-                    }
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-            }
-            StringBuilder result = new StringBuilder();
-            result.Append("<DataList>");
-            result.Append(outputFragment);
-            result.Append(inputFragment);
-            result.Append("</DataList>");
-            return result;
-        }
 
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {

@@ -246,11 +246,6 @@ namespace Dev2.Studio.Core.Models
 
         #region LoadResources
 
-        public void RaiseResourcesLoaded()
-        {
-            RaiseLoadedResources();
-        }
-
         public void LoadResources()
         {
             if(Connection.IsConnected && CanStudioExecute)

@@ -308,46 +308,6 @@ namespace Dev2.Studio.Controller
             IsQuestion = false;
             return Show();
         }
-        
-        public MessageBoxResult ShowItemCloseCloseConfirmation(string nameOfItem)
-        {
-            Header = string.Format("{0} Changes not saved", nameOfItem);
-            var description = nameOfItem+" has not been saved." + Environment.NewLine
-                              + "Would you like to save the Task? " + Environment.NewLine +
-                              "-----------------------------------------------------------------" +
-                              Environment.NewLine +
-                              "Yes - Save "+ nameOfItem +"." + Environment.NewLine +
-                              "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to "+nameOfItem+".";
-            Description = description;
-            Buttons = MessageBoxButton.YesNoCancel;
-            ImageType = MessageBoxImage.Information;
-            IsDependenciesButtonVisible = false;
-            IsInfo = true;
-            IsError = false;
-            IsQuestion = false;
-            return Show();
-        }
-
-        public MessageBoxResult ShowItemSourceCloseConfirmation(string nameOfItem)
-        {
-            Header = "Changes not saved";
-            var description = "Your changes have not been saved." + Environment.NewLine
-                              + "Would you like to save? " + Environment.NewLine +
-                              "-----------------------------------------------------------------" +
-                              Environment.NewLine +
-                              "Yes - Save your changes." + Environment.NewLine +
-                              "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to the tab.";
-            Description = description;
-            Buttons = MessageBoxButton.YesNoCancel;
-            ImageType = MessageBoxImage.Information;
-            IsDependenciesButtonVisible = false;
-            IsInfo = true;
-            IsError = false;
-            IsQuestion = false;
-            return Show();
-        }
 
         public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
         {

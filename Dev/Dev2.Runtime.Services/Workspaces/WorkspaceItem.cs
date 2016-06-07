@@ -108,7 +108,6 @@ namespace Dev2.Workspaces
 
         /// <summary>
         /// Gets or sets the type of the service.
-        /// <remarks>Must map to a <see cref="enDynamicServiceObjectType"/> value</remarks>
         /// </summary>
         public string ServiceType
         {
