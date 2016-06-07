@@ -49,8 +49,8 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6,data.Count);
-            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
+            Assert.AreEqual(6, data.Count);
+            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />", data[1]);
         }
 
         [TestMethod]
@@ -179,7 +179,7 @@ namespace Dev2.Data.Tests
             #endregion
 
             const string xPath = "//UnitTest/@name";
-            
+
             //------------Execute Test---------------------------
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
@@ -189,7 +189,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("SortActivity_MultipleRecordSetContainingSameSortValue_DateTime_SortedWithTheRecordSetAppearingMultipleTimes", dataList[10]);
         }
 
- 
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
@@ -320,7 +320,7 @@ namespace Dev2.Data.Tests
             //------------Execute Test---------------------------
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
-            const string expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
+            string expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
   <DeploymentItem filename=""ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe"" />
   <DeploymentItem filename=""Binaries\IronPython.Modules.dll"" />
   <DeploymentItem filename=""Binaries\Microsoft.Scripting.dll"" />
@@ -334,8 +334,15 @@ namespace Dev2.Data.Tests
 
             var dataList = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(1, dataList.Count);
-            Assert.AreEqual(expected, dataList[0]);
-           
+            var actual = dataList[0];
+            FixBreaks(ref expected, ref actual);
+            Assert.AreEqual(expected, actual);
+
+        }
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
 
         [TestMethod]
@@ -516,7 +523,7 @@ namespace Dev2.Data.Tests
             //------------Execute Test---------------------------
             var result = _xPathParser.ExecuteXPath(data, xPath).ToList();
             //------------Assert Results-------------------------
-            
+
             Assert.AreEqual(4241, result.Count);
             Assert.AreEqual("ActivityCollectionDesignerViewModel_ExecuteShowErrorsCommand_ShowErrorsIsTrue_ShowErrorsIsSetToFalse", result[0]);
             Assert.AreEqual("Instantiate_Where_MessageBrokerIsNull_Expected_ArgumentNullException", result[4240]);
@@ -531,10 +538,10 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath("<x><a>1</a></x>", XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(1,data.Count);
-            Assert.AreEqual("1",data[0]);
+            Assert.AreEqual(1, data.Count);
+            Assert.AreEqual("1", data[0]);
         }
-        
+
         [TestMethod]
         public void ExecutePathWhereGivenXMLDataExpectXMLReturned()
         {
@@ -544,8 +551,8 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6,data.Count);
-            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
+            Assert.AreEqual(6, data.Count);
+            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />", data[1]);
         }
 
         [TestMethod]
@@ -557,8 +564,8 @@ namespace Dev2.Data.Tests
             IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
-            Assert.AreEqual(6,data.Count);
-            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />",data[1]);
+            Assert.AreEqual(6, data.Count);
+            Assert.AreEqual("<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />", data[1]);
         }
 
         [TestMethod]
@@ -597,7 +604,7 @@ namespace Dev2.Data.Tests
         public void ExecuteXPathWhereNullXmlDataExpectExceptionThrown()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             _xPathParser.ExecuteXPath(null, "//");
             //------------Assert Results-------------------------
@@ -608,7 +615,7 @@ namespace Dev2.Data.Tests
         public void ExecuteXPathWhereEmptyXmlDataExpectExceptionThrown()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             _xPathParser.ExecuteXPath("", "//");
             //------------Assert Results-------------------------
@@ -619,7 +626,7 @@ namespace Dev2.Data.Tests
         public void ExecuteXPathWhereNullPathExpectExceptionThrown()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             _xPathParser.ExecuteXPath("//", null);
             //------------Assert Results-------------------------
@@ -630,7 +637,7 @@ namespace Dev2.Data.Tests
         public void ExecuteXPathWhereEmptyPathExpectExceptionThrown()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             _xPathParser.ExecuteXPath("//", "");
             //------------Assert Results-------------------------
@@ -644,24 +651,24 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             var xPathParser = new XPathParser();
             const string xmlData = "<wsdl:definitions xmlns:tm=\"http://microsoft.com/wsdl/mime/textMatching/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:mime=\"http://schemas.xmlsoap.org/wsdl/mime/\" xmlns:tns=\"http://www.webserviceX.NET/\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xmlns:s=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://schemas.xmlsoap.org/wsdl/soap12/\" xmlns:http=\"http://schemas.xmlsoap.org/wsdl/http/\" targetNamespace=\"http://www.webserviceX.NET/\" xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\"><wsdl:types><s:schema elementFormDefault=\"qualified\" targetNamespace=\"http://www.webserviceX.NET/\"><s:element name=\"GetQuote\"><s:complexType><s:sequence><s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"symbol\" type=\"s:string\" /></s:sequence></s:complexType></s:element><s:element name=\"GetQuoteResponse\"><s:complexType><s:sequence><s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"GetQuoteResult\" type=\"s:string\" /></s:sequence></s:complexType></s:element><s:element name=\"string\" nillable=\"true\" type=\"s:string\" /></s:schema></wsdl:types><wsdl:message name=\"GetQuoteSoapIn\"><wsdl:part name=\"parameters\" element=\"tns:GetQuote\" /></wsdl:message><wsdl:message name=\"GetQuoteSoapOut\"><wsdl:part name=\"parameters\" element=\"tns:GetQuoteResponse\" /></wsdl:message><wsdl:message name=\"GetQuoteHttpGetIn\"><wsdl:part name=\"symbol\" type=\"s:string\" /></wsdl:message><wsdl:message name=\"GetQuoteHttpGetOut\"><wsdl:part name=\"Body\" element=\"tns:string\" /></wsdl:message><wsdl:message name=\"GetQuoteHttpPostIn\"><wsdl:part name=\"symbol\" type=\"s:string\" /></wsdl:message><wsdl:message name=\"GetQuoteHttpPostOut\"><wsdl:part name=\"Body\" element=\"tns:string\" /></wsdl:message><wsdl:portType name=\"StockQuoteSoap\"><wsdl:operation name=\"GetQuote\"><wsdl:documentation xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\">Get Stock quote for a company Symbol</wsdl:documentation><wsdl:input message=\"tns:GetQuoteSoapIn\" /><wsdl:output message=\"tns:GetQuoteSoapOut\" /></wsdl:operation></wsdl:portType><wsdl:portType name=\"StockQuoteHttpGet\"><wsdl:operation name=\"GetQuote\"><wsdl:documentation xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\">Get Stock quote for a company Symbol</wsdl:documentation><wsdl:input message=\"tns:GetQuoteHttpGetIn\" /><wsdl:output message=\"tns:GetQuoteHttpGetOut\" /></wsdl:operation></wsdl:portType><wsdl:portType name=\"StockQuoteHttpPost\"><wsdl:operation name=\"GetQuote\"><wsdl:documentation xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\">Get Stock quote for a company Symbol</wsdl:documentation><wsdl:input message=\"tns:GetQuoteHttpPostIn\" /><wsdl:output message=\"tns:GetQuoteHttpPostOut\" /></wsdl:operation></wsdl:portType><wsdl:binding name=\"StockQuoteSoap\" type=\"tns:StockQuoteSoap\"><soap:binding transport=\"http://schemas.xmlsoap.org/soap/http\" /><wsdl:operation name=\"GetQuote\"><soap:operation soapAction=\"http://www.webserviceX.NET/GetQuote\" style=\"document\" /><wsdl:input><soap:body use=\"literal\" /></wsdl:input><wsdl:output><soap:body use=\"literal\" /></wsdl:output></wsdl:operation></wsdl:binding><wsdl:binding name=\"StockQuoteSoap12\" type=\"tns:StockQuoteSoap\"><soap12:binding transport=\"http://schemas.xmlsoap.org/soap/http\" /><wsdl:operation name=\"GetQuote\"><soap12:operation soapAction=\"http://www.webserviceX.NET/GetQuote\" style=\"document\" /><wsdl:input><soap12:body use=\"literal\" /></wsdl:input><wsdl:output><soap12:body use=\"literal\" /></wsdl:output></wsdl:operation></wsdl:binding><wsdl:binding name=\"StockQuoteHttpGet\" type=\"tns:StockQuoteHttpGet\"><http:binding verb=\"GET\" /><wsdl:operation name=\"GetQuote\"><http:operation location=\"/GetQuote\" /><wsdl:input><http:urlEncoded /></wsdl:input><wsdl:output><mime:mimeXml part=\"Body\" /></wsdl:output></wsdl:operation></wsdl:binding><wsdl:binding name=\"StockQuoteHttpPost\" type=\"tns:StockQuoteHttpPost\"><http:binding verb=\"POST\" /><wsdl:operation name=\"GetQuote\"><http:operation location=\"/GetQuote\" /><wsdl:input><mime:content type=\"application/x-www-form-urlencoded\" /></wsdl:input><wsdl:output><mime:mimeXml part=\"Body\" /></wsdl:output></wsdl:operation></wsdl:binding><wsdl:service name=\"StockQuote\"><wsdl:port name=\"StockQuoteSoap\" binding=\"tns:StockQuoteSoap\"><soap:address location=\"http://www.webservicex.net/stockquote.asmx\" /></wsdl:port><wsdl:port name=\"StockQuoteSoap12\" binding=\"tns:StockQuoteSoap12\"><soap12:address location=\"http://www.webservicex.net/stockquote.asmx\" /></wsdl:port><wsdl:port name=\"StockQuoteHttpGet\" binding=\"tns:StockQuoteHttpGet\"><http:address location=\"http://www.webservicex.net/stockquote.asmx\" /></wsdl:port><wsdl:port name=\"StockQuoteHttpPost\" binding=\"tns:StockQuoteHttpPost\"><http:address location=\"http://www.webservicex.net/stockquote.asmx\" /></wsdl:port></wsdl:service></wsdl:definitions>";
-            const string xPath = "//wsdl:definitions/wsdl:types/s:schema/@targetNamespace"; 
-            
+            const string xPath = "//wsdl:definitions/wsdl:types/s:schema/@targetNamespace";
+
             //------------Execute Test---------------------------
             var ret = xPathParser.ExecuteXPath(xmlData, xPath);
             //------------Assert Results-------------------------
             Assert.IsNotNull(ret);
-            Assert.AreEqual(1,ret.Count());
-            Assert.AreEqual("http://www.webserviceX.NET/",ret.ToList()[0]);
+            Assert.AreEqual(1, ret.Count());
+            Assert.AreEqual("http://www.webserviceX.NET/", ret.ToList()[0]);
         }
 
         private string LoadFile(string name)
         {
 
-            
+
 
             var resourceName = string.Format("Dev2.Data.Tests.TestingResources.{0}", name);
             var assembly = Assembly.GetExecutingAssembly();
-            using(var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream != null)
                 {
