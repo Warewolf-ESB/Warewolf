@@ -365,7 +365,7 @@ and languageExpressionToJPath (lang : LanguageExpression) =
         | Last -> "[-1:]"
         | _ -> failwith "not supported for JSON types"
     | ComplexExpression _ -> failwith "not supported for JSON types"
-    | JsonIdentifierExpression a -> jsonIdentifierToJsonPathLevel1 a
+    | JsonIdentifierExpression a -> jsonIdentifierToJsonPath a ""
 ///Convert a jsonIdentifierExpression to jsonPath
 and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) = 
     let acc = 
@@ -388,7 +388,16 @@ and jsonIdentifierToJsonPathLevel1 (a : JsonIdentifierExpression) =
     match a with
     | NameExpression x -> x.Name
     | NestedNameExpression x -> (jsonIdentifierToJsonPath x.Next "")
-    | IndexNestedNameExpression x -> (jsonIdentifierToJsonPath x.Next "")
+    | IndexNestedNameExpression x ->
+                                    match x.Next with
+                                        | Terminal -> let index = 
+                                                                match x.Index with
+                                                                    | IntIndex i -> sprintf "[%i]" (i - 1)
+                                                                    | Star -> "[*]"
+                                                                    | Last -> "[-1:]"
+                                                                    | _ -> failwith "not supported for JSON types"
+                                                      (jsonIdentifierToJsonPath x.Next (x.ObjectName + "." + index))
+                                        | _ -> (jsonIdentifierToJsonPath x.Next "")
     | Terminal -> ""
 /// get the name of the object from an expression
 and jsonIdentifierToName (a : JsonIdentifierExpression) = 

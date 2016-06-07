@@ -798,9 +798,14 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
 let addToJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
     let jsonNameExp = parseLanguageExpressionWithoutUpdate name
     match jsonNameExp with
-        | JsonIdentifierExpression a -> let correctName = languageExpressionToStringNoBrackets jsonNameExp
-                                        let rem = Map.remove correctName env.JsonObjects |> Map.add correctName value
-                                        { env with JsonObjects = rem }
+        | JsonIdentifierExpression a -> 
+                                        match a with
+                                            | IndexNestedNameExpression b-> let correctName = b.ObjectName
+                                                                            let rem = Map.remove correctName env.JsonObjects |> Map.add correctName value
+                                                                            { env with JsonObjects = rem }                                                                    
+                                            | _ -> let correctName = languageExpressionToStringNoBrackets jsonNameExp
+                                                   let rem = Map.remove correctName env.JsonObjects |> Map.add correctName value
+                                                   { env with JsonObjects = rem }
         | _ -> let rem = Map.remove name env.JsonObjects |> Map.add name value
                { env with JsonObjects = rem }
 
