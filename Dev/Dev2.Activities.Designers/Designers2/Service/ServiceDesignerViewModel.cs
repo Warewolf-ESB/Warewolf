@@ -31,6 +31,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
@@ -198,12 +199,7 @@ namespace Dev2.Activities.Designers2.Service
                 if (contentPresenter != null)
                 {
                     var json = item.GetJson();
-                    var obj = JsonConvert.DeserializeObject(json);
-                    if (obj != null)
-                    {
-                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
-                    }
-                    contentPresenter.Text = json;
+                    contentPresenter.Text = JSONUtils.Format(json);
                 }
 
                 window.ShowDialog();

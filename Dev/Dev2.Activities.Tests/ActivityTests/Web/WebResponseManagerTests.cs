@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             try
             {
                 // ReSharper disable once ObjectCreationAsStatement
-                new WebResponseManager()
+                new ResponseManager()
                 {
                     OutputDescription = It.IsAny<IOutputDescription>()
                     ,
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void UnescapeRawXml_GivenEscapedXml_ShouldUnescapeXml()
         {
             //---------------Set up test pack-------------------
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 OutputDescription = It.IsAny<IOutputDescription>()
                     ,
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void UnescapeRawXml_GivenUnEscapedXml_ShouldUnescapeXml()
         {
             //---------------Set up test pack-------------------
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 OutputDescription = It.IsAny<IOutputDescription>()
                     ,
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void PushResponseIntoEnvironment_GivenNoDataObject_ShouldCatchObjectNullException()
         {
             //---------------Set up test pack-------------------
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 OutputDescription = It.IsAny<IOutputDescription>()
                     ,
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             var outPutDesc = service.GetOutputDescription();
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 OutputDescription = outPutDesc,
                 Outputs = serviceOutputs
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                  "}";
             var environment = new ExecutionEnvironment();
             
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 IsObject = true,
                 ObjectName = "[[@weather]]"
@@ -225,7 +225,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             var outPutDesc = service.GetOutputDescription();
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 OutputDescription = outPutDesc,
                 Outputs = serviceOutputs
@@ -274,7 +274,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             const string errorWasThrown = "Error was Thrown";
             var mockoutPutDesc = new Mock<IOutputDescription>();
             mockoutPutDesc.SetupGet(description => description.DataSourceShapes).Throws(new Exception(errorWasThrown));
-            var responseManager = new WebResponseManager()
+            var responseManager = new ResponseManager()
             {
                 OutputDescription = mockoutPutDesc.Object
                 ,
