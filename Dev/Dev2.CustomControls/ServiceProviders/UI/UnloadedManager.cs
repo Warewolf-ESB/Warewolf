@@ -60,16 +60,6 @@ namespace WPF.JoshSmith.ServiceProviders.UI
                 new UIPropertyMetadata(false, OnIsManagedChanged));
 
         /// <summary>
-        ///     Returns true if the specified FrameworkElement's Unloaded event will cause the UnloadedManager to
-        ///     unload its associated data object, else false
-        /// </summary>
-        /// <param name="element">The FrameworkElement to check if it is managed or not.</param>
-        public static bool GetIsManaged(FrameworkElement element)
-        {
-            return (bool) element.GetValue(IsManagedProperty);
-        }
-
-        /// <summary>
         ///     Sets the IsManaged attached property for the specified FrameworkElement.
         /// </summary>
         /// <param name="element">The FrameworkElement to be managed or unmanaged.</param>
