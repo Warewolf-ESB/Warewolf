@@ -224,9 +224,6 @@
     <Compile Include="Designers2\Comment\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Comment\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
@@ -234,7 +231,6 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
-    <Compile Include="Designers2\Core\CloneInputRegion\ExchangeInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
@@ -251,7 +247,6 @@
     </Compile>
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
-    <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
@@ -464,12 +459,10 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
-    <Compile Include="Designers2\Core\Adorners\AdornerUtils.cs" />
     <Compile Include="Designers2\Core\Controls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\Core\Controls\Dev2DataGridMouseScrollBehavior.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
       <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
     </Compile>
@@ -1238,10 +1231,6 @@
     <Page Include="Designers2\Comment\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\Comment\Small.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Core\CustomToolDesignerRegions.xaml">
       <Generator>MSBuild:Compile</Generator>
