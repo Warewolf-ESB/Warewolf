@@ -9,8 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph;
@@ -269,6 +271,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
     ],
   }";
         }
+
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         #endregion Private/Internal Methods
 
         #region Scalar Tests
@@ -288,12 +296,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Name>Dev2</Name>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -313,12 +321,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <CakeName></CakeName>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -338,12 +346,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Name>Dev2</Name>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -363,12 +371,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <CakeName></CakeName>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -388,12 +396,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Name>Brendon</Name>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -413,12 +421,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <CakeName />
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
         #endregion Scalar Tests
@@ -440,7 +448,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Departments>
     <Name>Dev</Name>
   </Departments>
@@ -450,7 +458,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected,ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -470,14 +478,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Departments>
     <CakeName></CakeName>
   </Departments>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -499,7 +507,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -523,7 +531,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -545,7 +553,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -569,7 +577,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -591,7 +599,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <EmployeeName>Brendon</EmployeeName>
@@ -619,7 +627,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -642,7 +650,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -674,7 +682,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -694,7 +702,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Departments>
     <Name>Dev</Name>
   </Departments>
@@ -704,7 +712,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -724,14 +732,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Departments>
     <CakeName></CakeName>
   </Departments>
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -753,7 +761,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -777,7 +785,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -799,7 +807,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -813,7 +821,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -835,7 +843,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <EmployeeName>Brendon</EmployeeName>
@@ -863,7 +871,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -886,7 +894,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
@@ -918,7 +926,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -938,7 +946,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <Name>Mo</Name>
   </Names>
@@ -948,7 +956,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -968,7 +976,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <CakeName />
   </Names>
@@ -978,7 +986,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1000,7 +1008,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1>Mo</NameAtLevel1>
@@ -1024,7 +1032,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1046,7 +1054,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1>Mo</NameAtLevel1>
@@ -1070,7 +1078,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1092,7 +1100,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1a>Mo</NameAtLevel1a>
@@ -1121,7 +1129,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1144,7 +1152,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <Names>
     <RootName>Brendon</RootName>
     <NameAtLevel1a>Mo</NameAtLevel1a>
@@ -1178,7 +1186,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
         #endregion Enumerable Tests
@@ -1203,7 +1211,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <ScalarName>Dev2</ScalarName>
   <Names>
     <DepartmentName>Dev</DepartmentName>
@@ -1234,7 +1242,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1257,7 +1265,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <ScalarNames>Dev2</ScalarNames>
   <Names>
     <DepartmentName>Dev</DepartmentName>
@@ -1288,7 +1296,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -1311,7 +1319,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 
             ShapedXmlOutputFormatter outputFormatter = new ShapedXmlOutputFormatter(outputDescription) { RootNodeName = "ADL" };
 
-            const string expected = @"<ADL>
+             string expected = @"<ADL>
   <ScalarName>Brendon</ScalarName>
   <Names>
     <NameAtLevel1a>Mo</NameAtLevel1a>
@@ -1347,7 +1355,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
 </ADL>";
 
             string actual = outputFormatter.Format(testData).ToString();
-
+            FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
         #endregion Multiple Output Tests  

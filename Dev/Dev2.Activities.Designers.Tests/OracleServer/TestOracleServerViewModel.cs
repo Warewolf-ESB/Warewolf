@@ -15,7 +15,9 @@ using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.OracleServer
 {
@@ -118,7 +120,7 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
         {
             var model = GetViewModel();
             Assert.IsTrue(model.SourceRegion.IsEnabled);
-            Assert.IsTrue(model.ActionRegion.IsEnabled);
+            Assert.IsFalse(model.ActionRegion.IsEnabled);
             Assert.IsFalse(model.InputArea.IsEnabled);
             Assert.IsTrue(model.ErrorRegion.IsEnabled);
             model.ValidateTestComplete();
@@ -250,8 +252,10 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
             model.ActionRegion.SelectedAction = model.ActionRegion.Actions.First();
             model.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));
 #pragma warning disable 4014
+
             model.TestInputCommand.Execute();
             model.ManageServiceInputViewModel.TestCommand.Execute(null);
+
             model.ManageServiceInputViewModel.IsEnabled = true;
             model.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             model.ManageServiceInputViewModel.OkCommand.Execute(null);
@@ -273,12 +277,15 @@ namespace Dev2.Activities.Designers.Tests.OracleServer
         public void Oracle_TestActionSetSourceAndTestClickOkHasQueryStringAndHeaders()
         {
             //------------Setup for test--------------------------
-            var mod = new OracleModel();
+            //var mod = new OracleModel();
             var act = new DsfOracleDatabaseActivity();
-
+            var dbServiceModel = new Mock<IDbServiceModel>();
+            dbServiceModel.Setup(serviceModel => serviceModel.TestService(It.IsAny<IDatabaseService>())).Returns(new DataTable());
+            dbServiceModel.Setup(serviceModel => serviceModel.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() {new DbSourceDefinition()  });
+            //dbServiceModel.Setup(serviceModel => serviceModel./*/*RetrieveSources*/*/()).Returns(new ObservableCollection<IDbSource>());
             //------------Execute Test---------------------------
-            var model = new OracleDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
+            var model = new OracleDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), dbServiceModel.Object);
+            model.ManageServiceInputViewModel = new InputViewForTest(model, dbServiceModel.Object);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
             model.ActionRegion.SelectedAction = model.ActionRegion.Actions.First();
             model.InputArea.Inputs.Add(new ServiceInput("[[a]]", "asa"));

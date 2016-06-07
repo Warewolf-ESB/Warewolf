@@ -22,6 +22,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Exchange.Email
 {
