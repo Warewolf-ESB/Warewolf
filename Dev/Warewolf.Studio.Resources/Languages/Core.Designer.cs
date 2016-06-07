@@ -2603,6 +2603,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string EmailAddressLabel {
+            get {
+                return ResourceManager.GetString("EmailAddressLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the path to the attachments you want to send, separated by a semicolon ;
         ///
         ///Allowed:
@@ -3027,6 +3036,34 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string EmailToolTipTo {
             get {
                 return ResourceManager.GetString("EmailToolTipTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email to respond to.
+        /// </summary>
+        public static string ExceptionViewEmailAddressWatermark {
+            get {
+                return ResourceManager.GetString("ExceptionViewEmailAddressWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steps to follow.
+        /// </summary>
+        public static string ExceptionViewStepsLabel {
+            get {
+                return ResourceManager.GetString("ExceptionViewStepsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide us with the necessary steps to follow in order to reproduce this issue. 
+        ///The more information you can provide us with, the faster we can track the issue and resolve it..
+        /// </summary>
+        public static string ExceptionViewStepsWatermark {
+            get {
+                return ResourceManager.GetString("ExceptionViewStepsWatermark", resourceCulture);
             }
         }
         

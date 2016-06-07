@@ -9,11 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Core.Tests;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
@@ -81,7 +85,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_AllFieldsPopulatedOverWriteFalse_CorrectPreviewOutput()
         {
-            const string Expected = @"1 [[Customer().Fname]]
+             string Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
 
@@ -97,7 +101,10 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
 
-            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+
+            var output = qviViewModel.PreviewViewModel.Output;
+            AllignStringBreaks(ref Expected, ref output);
+            Assert.AreEqual(Expected, output);
         }
 
         [TestMethod]
@@ -105,10 +112,10 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_AllFieldsPopulatedOverWriteTrue_CorrectPreviewOutput()
         {
-            const string Expected = @"1 [[Customer().Fname]]
+             string Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
-
+            
             var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
@@ -119,16 +126,21 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
                 Overwrite = true
             };
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
-
-            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+            var output = qviViewModel.PreviewViewModel.Output;
+            AllignStringBreaks(ref Expected, ref output);
+            Assert.AreEqual(Expected, output);
         }
-
+        public static void AllignStringBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_MoreThenThreeItemsBeingAdded_CorrectPreviewOutput()
         {
-            const string Expected = @"1 [[Customer().Fname]]
+             string Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]
 ...";
@@ -144,8 +156,10 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
-
-            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+            
+            var output = qviViewModel.PreviewViewModel.Output;
+            AllignStringBreaks(ref Expected, ref output);
+            Assert.AreEqual(Expected, output);
         }
 
         [TestMethod]
@@ -168,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_RemoveEmptyEntriesFalse_CorrectPreviewOutput()
         {
-            const string Expected = @"1 [[Customer().Fname]]
+             string Expected = @"1 [[Customer().Fname]]
 2 
 3 [[Customer().TelNo]]";
 
@@ -185,8 +199,10 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 
            
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
-
-            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+            
+            var output = qviViewModel.PreviewViewModel.Output;
+            AllignStringBreaks(ref Expected, ref output);
+            Assert.AreEqual(Expected, output);
         }
 
         [TestMethod]
@@ -194,7 +210,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_RemoveEmptyEntriesTrue_CorrectPreviewOutput()
         {
-            const string Expected = @"1 [[Customer().Fname]]
+             string Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
 
@@ -209,8 +225,10 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
                 RemoveEmptyEntries = true
             };
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
-
-            Assert.AreEqual(Expected, qviViewModel.PreviewViewModel.Output);
+            
+            var output = qviViewModel.PreviewViewModel.Output;
+            AllignStringBreaks(ref Expected, ref output);
+            Assert.AreEqual(Expected, output);
         }
     }
 }

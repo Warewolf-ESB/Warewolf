@@ -51,11 +51,6 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public List<DebugItem> GetDebugInputs()
-        {
-            return DebugItem.EmptyList;
-        }
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             return DebugItem.EmptyList;
@@ -193,13 +188,6 @@ namespace Dev2.Activities
                DispatchDebugState(dataObject, StateType.Duration,update);
            }
             OnCompleted(dataObject);
-        }
-
-        void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance, int update)
-        {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            OnCompleted(dataObject);
-            DoErrorHandling(dataObject,update);
         }
 
         void OnCompleted(IDSFDataObject dataObject)

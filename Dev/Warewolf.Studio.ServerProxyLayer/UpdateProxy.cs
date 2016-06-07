@@ -177,7 +177,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         }
 
         /// <exception cref="WarewolfSaveException">Thrown when an error occurs saving the Webservice Source.</exception>
-        public void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceID)
+        public void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceId)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveWebserviceSource");

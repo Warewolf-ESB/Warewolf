@@ -1,10 +1,8 @@
-﻿using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
+﻿using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.WebServices;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
@@ -14,25 +12,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     /// </summary>
     public interface IUpdateManager
     {
-        /// <summary>
-        /// Deploy a resource. order of execution is gauranteed
-        /// </summary>
-        /// <param name="resource"></param>
-        void DeployItem(IResource resource);
-
-        /// <summary>
-        /// Save a resource to the server
-        /// </summary>
-        /// <param name="resource">resource to save</param>
-        /// <param name="workspaceId">the workspace to save to</param>
-        void SaveResource(StringBuilder resource, Guid workspaceId);
-
-        /// <summary>
-        /// Save a resource to the server
-        /// </summary>
-        /// <param name="resource">resource to save</param>
-        /// <param name="workspaceId">the workspace to save to</param>
-        void SaveResource(IResource resource, Guid workspaceId);
 
         /// <summary>
         /// Save a resource to the server
@@ -61,7 +40,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         DataTable TestDbService(IDatabaseService inputValues);
 
-        void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceID);
+        void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceId);
 
         void TestConnection(IWebServiceSource resource);
 

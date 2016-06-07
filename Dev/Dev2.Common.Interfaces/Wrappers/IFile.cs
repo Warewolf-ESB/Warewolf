@@ -22,8 +22,6 @@ namespace Dev2.Common.Interfaces.Wrappers
         void WriteAllText(string p1, string p2);
         void Copy(string source, string destination);
 
-        byte[] ReadAllBytes(string path);
-
         void WriteAllBytes(string path, byte[] contents);
     }
 }

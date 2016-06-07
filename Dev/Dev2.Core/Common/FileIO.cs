@@ -65,10 +65,6 @@ namespace Dev2
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
             int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public static extern bool CloseHandle(IntPtr handle);
-
-
         /// <summary>
         ///     Extracts the name of the user.
         /// </summary>

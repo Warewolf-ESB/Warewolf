@@ -152,8 +152,6 @@ namespace Dev2.Common.Interfaces
         readonly ObservableCollection<INameValue> _sourceCollection;
         readonly Action<string> _update;
 
-        ICommand _removeRowCommand;
-        ICommand _addRowCommand;
         public ObservableAwareNameValue(ObservableCollection<INameValue> sourceCollection, Action<string> update)
         {
             _sourceCollection = sourceCollection;
@@ -162,8 +160,8 @@ namespace Dev2.Common.Interfaces
             Name = "";
 
             Value = "";
-            _addRowCommand = new DelegateCommand(AddRow);
-            _removeRowCommand = new DelegateCommand(RemoveRow);
+            AddRowCommand = new DelegateCommand(AddRow);
+            RemoveRowCommand = new DelegateCommand(RemoveRow);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
@@ -190,7 +188,7 @@ namespace Dev2.Common.Interfaces
             }
             set
             {
-                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && _sourceCollection.Last() == this)
+                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
                 {
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
@@ -212,7 +210,7 @@ namespace Dev2.Common.Interfaces
             }
             set
             {
-                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && _sourceCollection.Last() == this)
+                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
                 {
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
@@ -223,28 +221,8 @@ namespace Dev2.Common.Interfaces
                 }
             }
         }
-        public ICommand RemoveRowCommand
-        {
-            get
-            {
-                return _removeRowCommand;
-            }
-            set
-            {
-                _removeRowCommand = value;
-            }
-        }
-        public ICommand AddRowCommand
-        {
-            get
-            {
-                return _addRowCommand;
-            }
-            set
-            {
-                _addRowCommand = value;
-            }
-        }
+        public ICommand RemoveRowCommand { get; set; }
+        public ICommand AddRowCommand { get; set; }
 
         #endregion
 

@@ -1,14 +1,12 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Annotations;
-using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-using Warewolf.Core;
+
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
@@ -31,38 +29,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
          
             var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
             Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
-        }
-
-        public IToolRegion CloneRegion()
-        {
-            var inputs2 = new List<IServiceInput>(Inputs.Select(a => new ServiceInput(a.Name, a.Value)
-            {
-                EmptyIsNull = a.EmptyIsNull,
-                TypeName = a.TypeName
-            }));
-            return new ExchangeInputRegionClone()
-            {
-                Inputs = inputs2,
-                IsEnabled = IsEnabled
-            };
-        }
-
-        public void RestoreRegion(IToolRegion toRestore)
-        {
-            var region = toRestore as ExchangeInputRegionClone;
-            if (region != null)
-            {
-                Inputs.Clear();
-                if (region.Inputs != null)
-                {
-                    var inp = region.Inputs.ToList();
-
-                    Inputs = inp;
-                }
-                // ReSharper disable once ExplicitCallerInfoArgument
-                OnPropertyChanged("Inputs");
-                IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
-            }
         }
 
         public bool IsInputsEmptyRows

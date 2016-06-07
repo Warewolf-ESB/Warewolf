@@ -175,7 +175,7 @@ namespace Dev2.Activities.Designers2.Core
                         var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                         throw new Exception(errorMessage);
                     }
-                    TestResults = testResult;
+                    TestResults = responseService.SerializedResult;
                     _recordsetList = responseService.RecordsetList;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
