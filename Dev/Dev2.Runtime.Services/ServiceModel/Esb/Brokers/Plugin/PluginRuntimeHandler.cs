@@ -326,24 +326,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        /// <summary>
-        /// Builds the parameter list.
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
-        private object[] BuildParameterList(List<MethodParameter> parameters)
-        {
-
-            if (parameters.Count == 0) return new object[] { };
-            var parameterValues = new object[parameters.Count];
-            int pos = 0;
-            parameters.ForEach(parameter =>
-            {
-                parameterValues[pos] = DeriveType(parameter.TypeName);
-                pos++;
-            });
-            return parameterValues;
-        }
         private Type DeriveType(string typename)
         {
             var type = Type.GetType(typename, true);

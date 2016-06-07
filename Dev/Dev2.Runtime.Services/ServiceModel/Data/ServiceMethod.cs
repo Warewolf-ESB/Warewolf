@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json;
 
@@ -25,16 +24,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CTOR
 
         public ServiceMethod()
-            : this(string.Empty, string.Empty, null, null, null,null)
+            : this(string.Empty, string.Empty, null, null, null, null)
         {
         }
 
         public ServiceMethod(string error, string stackTrace)
-            : this("Error : " + error, stackTrace, null, null, null,null)
+            : this("Error : " + error, stackTrace, null, null, null, null)
         {
         }
 
-        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs,string executeAction)
+        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters,
+            IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs, string executeAction)
         {
             Name = name;
             SourceCode = sourceCode;
@@ -43,16 +43,17 @@ namespace Dev2.Runtime.ServiceModel.Data
             OutParameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
             ExecuteAction = executeAction;
-            if(parameters != null)
+            if (parameters != null)
             {
                 Parameters.AddRange(parameters);
             }
 
-            if(outputs != null)
+            if (outputs != null)
             {
                 Outputs.AddRange(outputs);
             }
         }
+
         [DataMember]
         public List<MethodParameter> OutParameters { get; set; }
 
@@ -86,15 +87,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
-        }
-
-        #endregion
-
-        #region ToXml
-
-        public XElement ToXml()
-        {
-            return new XElement("ServiceMethod");
         }
 
         #endregion

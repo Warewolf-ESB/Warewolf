@@ -182,6 +182,7 @@ namespace Dev2.MathOperations
 
         public event EventHandler ItemAdded;
 
+        // ReSharper disable once UnusedMember.Global
         protected void OnItemAdded()
         {
             if(ItemAdded != null)

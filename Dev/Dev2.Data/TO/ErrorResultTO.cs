@@ -73,23 +73,6 @@ namespace Dev2.DataList.Contract
         /// Merges the errors.
         /// </summary>
         /// <param name="toMerge">To merge.</param>
-        public void MergeErrors(IErrorResultTO toMerge)
-        {
-            if(toMerge != null && toMerge.HasErrors())
-            {
-                // Flipping Union does not appear to work
-                foreach(string wtf in toMerge.FetchErrors())
-                {
-                    _errorList.Add(wtf);
-                }
-
-                toMerge.ClearErrors();
-            }
-        }
-        /// <summary>
-        /// Merges the errors.
-        /// </summary>
-        /// <param name="toMerge">To merge.</param>
         public void MergeErrors(ErrorResultTO toMerge)
         {
             if (toMerge != null && toMerge.HasErrors())
@@ -106,26 +89,6 @@ namespace Dev2.DataList.Contract
         public void ClearErrors()
         {
             _errorList.Clear();
-        }
-
-        /// <summary>
-        /// Makes the error collection user ready.
-        /// </summary>
-        /// <returns></returns>
-        public string MakeUserReady()
-        {
-            StringBuilder result = new StringBuilder("<Error>");
-
-            foreach(string e in _errorList)
-            {
-                result.Append(GlobalConstants.InnerErrorTag);
-                result.Append(e);
-                result.Append(GlobalConstants.InnerErrorTagEnd);
-            }
-
-            result.Append("</Error>");
-
-            return result.ToString();
         }
 
         /// <summary>
