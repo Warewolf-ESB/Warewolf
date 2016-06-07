@@ -310,6 +310,7 @@
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />
+    <Compile Include="Value Objects\Dev2TokenConverter.cs" />
     <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
   <ItemGroup>
