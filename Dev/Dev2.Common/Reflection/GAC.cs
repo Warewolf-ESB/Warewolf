@@ -146,16 +146,6 @@ namespace Dev2.Common.Reflection
         IASSEMBLYCACHE_INSTALL_FLAG_FORCE_REFRESH = 2
     }
 
-    /// <summary>
-    ///     The CREATE_ASM_NAME_OBJ_FLAGS enumeration contains the following values:
-    ///     CANOF_PARSE_DISPLAY_NAME - If this flag is specified, the szAssemblyName parameter is a full assembly name and is
-    ///     parsed to
-    ///     the individual properties. If the flag is not specified, szAssemblyName is the "Name" portion of the assembly name.
-    ///     CANOF_SET_DEFAULT_VALUES - If this flag is specified, certain properties, such as processor architecture, are set
-    ///     to
-    ///     their default values.
-    ///     <see cref="GAC.CreateAssemblyNameObject" />
-    /// </summary>
     public enum CREATE_ASM_NAME_OBJ_FLAGS
     {
         CANOF_PARSE_DISPLAY_NAME = 0x1,
