@@ -22,6 +22,7 @@ using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Utils;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
@@ -272,12 +273,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (contentPresenter != null)
                 {
                     var json = item.GetJson();
-                    var obj = JsonConvert.DeserializeObject(json);
-                    if (obj != null)
-                    {
-                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
-                    }
-                    contentPresenter.Text = json;
+                    contentPresenter.Text = JSONUtils.Format(json);
                 }
 
                 window.ShowDialog();
@@ -353,6 +349,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     SetRecordSetPartIsUsed(part, isUsed);
                 }
+                if (part.IsJson)
+                {
+                    SetComplexObjectSetPartIsUsed(part,isUsed);
+                }
             }
 
             EventPublisher.Publish(new UpdateIntellisenseMessage());
@@ -362,6 +362,15 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             var recsetsToRemove = RecsetCollection.Where(c => c.DisplayName == part.Recordset);
             recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
+        }
+
+        void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
+        {
+            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue);
+            objects.ForEach(model =>
+            {
+                model.IsUsed = isUsed;
+            });
         }
 
         static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)

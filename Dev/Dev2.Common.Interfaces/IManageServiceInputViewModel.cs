@@ -5,7 +5,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Exchange;
 using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Common.Interfaces
@@ -55,19 +54,6 @@ namespace Dev2.Common.Interfaces
     {
         ICollection<IServiceInput> Inputs { get; set; }
         DataTable TestResults { get; set; }
-        bool OkSelected { get; set; }
-        IGenerateOutputArea OutputArea { get; set; }
-        IOutputDescription Description { get; set; }
-        IGenerateInputArea InputArea { get; set; }
-        bool OutputCountExpandAllowed { get; set; }
-        bool InputCountExpandAllowed { get; set; }
-        bool IsGenerateInputsEmptyRows { get; set; }
-    }
-
-    public interface IManageExchangeInputViewModel : IToolRegion, IManageServiceInputViewModel<IExchangeService>
-    {
-        ICollection<IServiceInput> Inputs { get; set; }
-        string TestResults { get; set; }
         bool OkSelected { get; set; }
         IGenerateOutputArea OutputArea { get; set; }
         IOutputDescription Description { get; set; }

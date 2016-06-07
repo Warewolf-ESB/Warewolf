@@ -63,18 +63,26 @@ namespace Dev2.Utilities
         public StringBuilder GetXamlDefinition(ActivityBuilder builder)
         {
             StringBuilder text = new StringBuilder();
-            if(builder != null)
+            try
             {
-                var sb = new StringBuilder();
-                using(var sw = new StringWriter(sb))
+                if(builder != null)
                 {
-                    var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
-                   XamlServices.Save(xw, builder);
-
-                    text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
+                    var sb = new StringBuilder();
+                    using(var sw = new StringWriter(sb))
+                    {
+                        var xamlXmlWriterSettings = new XamlXmlWriterSettings();
+                        xamlXmlWriterSettings.AssumeValidInput = true;
+                        var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext(),xamlXmlWriterSettings));                    
+                        XamlServices.Save(xw, builder);
+                        text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
+                    }
                 }
+                text = SanitizeXaml(text);
             }
-            text = SanitizeXaml(text);
+            catch(Exception e)
+            {
+                Dev2Logger.Error("Error loading XAML: ",e);
+            }
             return text;
         }
 

@@ -2,7 +2,7 @@
 using Infragistics.Controls.Grids;
 using Infragistics.Controls.Menus;
 
-namespace Warewolf.Studio.Views.XamGrid
+namespace Warewolf.Studio.Themes.Luna.XamGrid
 {
     public class ContextMenuOpeningEventArgs
     {

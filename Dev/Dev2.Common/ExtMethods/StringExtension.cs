@@ -121,18 +121,6 @@ namespace Dev2.Common.ExtMethods
             return false;
         }
 
-        /// <summary>
-        ///     Determines whether [is real number] [the specified payload].
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <returns>
-        ///     <c>true</c> if [is real number] [the specified payload]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsRealNumber(this string payload)
-        {
-            int value;
-            return IsRealNumber(payload, out value);
-        }
 
         /// <summary>
         ///     Determines whether [is real number] [the specified payload].
