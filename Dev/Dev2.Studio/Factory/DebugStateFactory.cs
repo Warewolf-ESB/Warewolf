@@ -34,16 +34,5 @@ namespace Dev2.Factory
 
             return state;
         }
-
-        public static IDebugState Create(Guid serverID, Guid resourceID, StateType stateType, string message)
-        {
-            return new DebugState
-                {
-                    ServerID = serverID,
-                    OriginatingResourceID = resourceID,
-                    StateType = stateType,
-                    Message = message
-                };
-        }
     }
 }

@@ -55,16 +55,6 @@ namespace Dev2.Data.Binary_Objects
             }
             return result;
         }
-        public int GetMinIndex()
-        {
-            int result = MinValue;
-            while(Gaps.Contains(result))
-            {
-                result++;
-            }
-
-            return result;
-        }
 
         public bool Contains(int idx)
         {

@@ -13,7 +13,6 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-using System.Collections;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Utils
@@ -69,16 +68,6 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
-        }
-
-        public static ModelItemCollection CreateModelItemCollection(ICollection objectToMakeModelItem)
-        {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-
-            mtm.Load(objectToMakeModelItem);
-
-            return mtm.Root as ModelItemCollection;
         }
 
         public static T GetProperty<T>(this ModelItem modelItem, string propertyName)

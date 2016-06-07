@@ -251,34 +251,6 @@ namespace Dev2.Runtime.Hosting
         }
 
         /// <summary>
-        /// Removes the message.
-        /// </summary>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="serviceId">The service ID.</param>
-        /// <returns></returns>
-        public bool RemoveMessages(Guid workspaceId, Guid serviceId)
-        {
-            lock(Lock)
-            {
-                IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
-                {
-                    var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
-
-                    var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ?? candidateMessage.ToList();
-                    foreach(var msg in compileMessageTos)
-                    {
-                        messages.Remove(msg);
-                    }
-
-                    return compileMessageTos.Count > 0;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Fetches the messages.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>

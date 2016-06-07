@@ -40,13 +40,6 @@ namespace Dev2.Studio.Controller
 {
     public interface IFlowController
     {
-        void Handle(ConfigureDecisionExpressionMessage message);
-
-        void Handle(ConfigureSwitchExpressionMessage message);
-
-        void Handle(ConfigureCaseExpressionMessage message);
-
-        void Handle(EditCaseExpressionMessage message);
     }
 
     public class FlowController : IHandle<ConfigureDecisionExpressionMessage>, IHandle<ConfigureSwitchExpressionMessage>,
