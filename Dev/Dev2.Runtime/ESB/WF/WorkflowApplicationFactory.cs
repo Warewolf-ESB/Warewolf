@@ -380,31 +380,6 @@ namespace Dev2.Runtime.ESB.WF
                 Dispose();
             }
 
-            public void Terminate(Exception exception)
-            {
-                try
-                {
-                    // signal user termination ;)
-                    _executionToken.IsUserCanceled = true;
-
-                    // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(exception);
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-                finally
-                {
-
-                    ExecutableServiceRepository.Instance.Remove(this);
-                    AssociatedServices.ForEach(s => s.Terminate());
-                    Dispose();
-                }
-
-
-            }
-
             public void Resume(IDSFDataObject dataObject)
             {
                 var instanceID = dataObject.WorkflowInstanceId;

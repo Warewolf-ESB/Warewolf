@@ -21,7 +21,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         NamespaceList GetNamespaces(PluginSource pluginSource);
         ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName);
         IOutputDescription TestPlugin(PluginService pluginService);
-        bool ValidatePlugin(string toLoad, out string error);
     }
 
     /// <summary>
