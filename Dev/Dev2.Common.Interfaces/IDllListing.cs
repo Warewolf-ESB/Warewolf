@@ -27,7 +27,6 @@ namespace Dev2.Common.Interfaces
 
     public interface IFileListingModel : IFileListing
     {
-        void Filter(string searchTerm);
         new ObservableCollection<IFileListingModel> Children { get; set; }
         bool IsExpanded { get; set; }
         bool IsExpanderVisible { get; }

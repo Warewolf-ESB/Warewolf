@@ -24,7 +24,6 @@ namespace Dev2.Common.Interfaces
 
         Task<IExplorerItem> LoadExplorer();
 
-        IExplorerItem FindItem(Func<IExplorerItem, bool> searchCriteria);
         IExplorerItem FindItemByID(Guid id);
     }
 }
