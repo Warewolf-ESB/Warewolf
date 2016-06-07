@@ -471,50 +471,10 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(expectedPayload, actualPayload);
         }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("WorkflowInputDataViewModel_Save")]
-        public void WorkflowInputDataViewModel_Save_WithScalarVariable_ExpectNewDataListInputViewModelItems()
-        {
-            //------------Setup for test--------------------------
-            var rm = new Mock<IContextualResourceModel>();
-            rm.Setup(r => r.ServerID).Returns(_serverID);
-            rm.Setup(r => r.ResourceName).Returns(ResourceName);
-            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
-            rm.Setup(r => r.ID).Returns(_resourceID);
-            rm.Setup(r => r.DataList).Returns("<DataList><rs Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><val Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rs></DataList>");
-
-            var serviceDebugInfoModel = new ServiceDebugInfoModel
-            {
-                DebugModeSetting = DebugMode.DebugInteractive,
-                RememberInputs = true,
-                ResourceModel = rm.Object,
-                ServiceInputData = "<DataList><rs><val>1</val></rs></DataList>"
-            };
-
-            var debugOutputViewModel = CreateDebugOutputViewModel();
-            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
-            workflowInputDataViewModel.LoadWorkflowInputs();
-
-
-            //------------Execute Test---------------------------
-            workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex = "2" });
-            workflowInputDataViewModel.Save();
-
-            //------------Assert Results-------------------------
-            const string expectedPayload = @"<DataList>
-  <rs>
-    <val>1</val>
-  </rs>
-  <rs>
-    <val>2</val>
-  </rs>
-</DataList>";
-            Assert.AreEqual(expectedPayload, workflowInputDataViewModel.DebugTo.XmlData);
-        }
+       
 
         #region Private Methods
-
+       
         private OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
         {
             const int numberOfRecords = 6;

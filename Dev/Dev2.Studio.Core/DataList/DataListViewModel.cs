@@ -349,6 +349,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     SetRecordSetPartIsUsed(part, isUsed);
                 }
+                if (part.IsJson)
+                {
+                    SetComplexObjectSetPartIsUsed(part,isUsed);
+                }
             }
 
             EventPublisher.Publish(new UpdateIntellisenseMessage());
@@ -358,6 +362,15 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             var recsetsToRemove = RecsetCollection.Where(c => c.DisplayName == part.Recordset);
             recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
+        }
+
+        void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
+        {
+            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue);
+            objects.ForEach(model =>
+            {
+                model.IsUsed = isUsed;
+            });
         }
 
         static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)

@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests.Workflows
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
+            Assert.AreEqual("[[scalar]]", actual[0], "Find missing found an invalid variable in a decision");
 
         }
 
@@ -325,7 +325,7 @@ namespace Dev2.Core.Tests.Workflows
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            Assert.AreEqual("RecSet().f1", actual[0], "Find missing found an invalid variable in a decision");
+            Assert.AreEqual("[[RecSet().f1]]", actual[0], "Find missing found an invalid variable in a decision");
         }
 
         [TestMethod]
@@ -350,9 +350,17 @@ namespace Dev2.Core.Tests.Workflows
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
+            //var expected = "{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}";
+            var expected = "[[a]]";
+            var actualResult = actual[0];
+            FixBreaks(ref expected, ref actualResult);
+            Assert.AreEqual(expected, actualResult, "Find missing found an invalid variable in a decision");
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         [TestMethod]
         public void GetDecisionElementsWhenItemAlreadyInDataListShouldNotReturnRecsetIfScalarNonExistent()
         {
@@ -375,7 +383,8 @@ namespace Dev2.Core.Tests.Workflows
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
+            //Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
+            Assert.AreEqual("[[a]]", actual[0], "Find missing found an invalid variable in a decision");
         }
 
 
@@ -1184,6 +1193,7 @@ namespace Dev2.Core.Tests.Workflows
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
             DataListSingleton.SetDataList(dataListViewModel);
             dataListViewModel.AddBlankRow(null);
             //------------Execute Test---------------------------
@@ -1191,7 +1201,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             var dataListItemModels = DataListSingleton.ActiveDataList.DataList;
             workflowDesigner.Dispose();
-            Assert.AreEqual(5, dataListItemModels.Count);
+            Assert.AreEqual(10, dataListItemModels.Count);
         }
 
         [TestMethod]
@@ -1206,18 +1216,29 @@ namespace Dev2.Core.Tests.Workflows
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
             DataListSingleton.SetDataList(dataListViewModel);
             dataListViewModel.AddBlankRow(null);
             //------------Execute Test---------------------------
-            workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().s*et]]", "[[test**()]]", "[[1scalar]]" }));
-            workflowDesigner.Dispose();
+            try
+            {
+                workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().s*et]]", "[[test**()]]", "[[1scalar]]" }));
+                
+            }
+            catch(Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            finally
+            {
+                workflowDesigner.Dispose();
+            }
             //------------Assert Results--------------------------
             var dataListItemModels = DataListSingleton.ActiveDataList.RecsetCollection;
-            Assert.AreEqual(3, dataListItemModels.Count);
-            Assert.AreEqual("", dataListItemModels[0].DisplayName);
-            Assert.AreEqual("rec()", dataListItemModels[1].DisplayName);
-            Assert.AreEqual("", dataListItemModels[1].Children[0].DisplayName);
-            Assert.AreEqual("", dataListItemModels[2].DisplayName);
+            Assert.AreEqual(4, dataListItemModels.Count);
+            Assert.AreEqual("", dataListItemModels[3].DisplayName);
+            Assert.AreEqual("rec()", dataListItemModels[2].Name);
+            Assert.AreEqual("", dataListItemModels[3].Children[0].DisplayName);
         }
 
         #endregion

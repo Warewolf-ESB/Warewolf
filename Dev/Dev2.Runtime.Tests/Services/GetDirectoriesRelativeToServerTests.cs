@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
@@ -104,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder("Resources") } }, null);
             //----------------Assert Results-----------------------------------------
             Assert.AreNotEqual(string.Empty, actual);
-            const string expected = @"<JSON>{
+             string expected = @"<JSON>{
   ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",
   ""title"": ""Root"",
   ""isFolder"": true,
@@ -140,9 +141,16 @@ namespace Dev2.Tests.Runtime.Services
 }</JSON>
 ";
             var actuals = actual.ToString().Trim();
-            Assert.AreEqual(expected.Trim(), actuals);
+            
+             expected = expected.Trim();
+            FixBreaks(ref expected, ref actuals);
+            Assert.AreEqual(expected, actuals);
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
         #endregion
 
         #region HandlesType

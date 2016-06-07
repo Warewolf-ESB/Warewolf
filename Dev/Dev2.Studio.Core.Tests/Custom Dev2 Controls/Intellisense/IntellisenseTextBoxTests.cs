@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
@@ -205,7 +206,16 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+                .Returns(default(IList<IntellisenseProviderResult>));
+
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, IntellisenseProvider = intellisenseProvider.Object };
+            textBox.Text = "[[var]]";
             textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBox.HasError);
         }
@@ -351,7 +361,17 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.ScalarsOnly };
+
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+                .Returns(default(IList<IntellisenseProviderResult>));
+            var textBox = new IntellisenseTextBox
+            {
+                FilterType = enIntellisensePartType.ScalarsOnly,
+                Text = "[[var()]]",
+                IntellisenseProvider = intellisenseProvider.Object
+            };
             textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBox.HasError);
 
@@ -370,7 +390,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
             //------------Execute Test---------------------------
 
-            foreach(var c in chars)
+            foreach (var c in chars)
             {
                 mockIntellisenseTextBox.Text = c.ToString(CultureInfo.InvariantCulture);
                 Thread.Sleep(50);
@@ -408,7 +428,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 //------------Assert Results-------------------------
                 Thread.Sleep(100);
                 counter += mockIntellisenseTextBox.TextChangedCounter;
-                
+
             }
             Assert.IsTrue(counter > 38);
         }
