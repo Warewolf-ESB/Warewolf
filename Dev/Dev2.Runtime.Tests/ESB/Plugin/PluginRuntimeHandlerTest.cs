@@ -443,14 +443,5 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     }
     public class Main
     {
-        public Person GETPerson(Car car)
-        {
-            return new Person()
-            {
-                Name = "Micky",
-                Age = 1,
-                SurName = "Mouse " + car.Make + car.Model
-            };
-        }
     }
 }

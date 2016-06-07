@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
 using System.Text;
-using System.Xml.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -42,30 +41,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion CTOR
-
-        #region Get
-
-        // POST: Service/WebSources/Get
-        public RabbitMQSource Get(string resourceId, Guid workspaceId, Guid dataListId)
-        {
-            var result = new RabbitMQSource();
-            try
-            {
-                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if (!string.IsNullOrEmpty(xmlStr))
-                {
-                    var xml = XElement.Parse(xmlStr);
-                    result = new RabbitMQSource(xml);
-                }
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-            }
-            return result;
-        }
-
-        #endregion Get
 
         #region Save
 

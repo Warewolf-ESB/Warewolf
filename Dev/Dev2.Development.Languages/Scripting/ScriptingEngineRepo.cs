@@ -18,13 +18,6 @@ namespace Dev2.Development.Languages.Scripting
 {
     public class ScriptingEngineRepo : SpookyAction<IScriptingContext,enScriptType>
     {
-
-        public IScriptingContext CreateFindMissingStrategy(enScriptType typeOf)
-        {
-            return FindMatch(typeOf);
-        }
-
-
         public IScriptingContext CreateEngine(enScriptType ScriptType)
         {
             switch(ScriptType)
