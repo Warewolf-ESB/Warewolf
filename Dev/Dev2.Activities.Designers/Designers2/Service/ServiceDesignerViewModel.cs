@@ -50,7 +50,6 @@ using Dev2.Studio.Core.Views;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
-using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.Designers2.Service

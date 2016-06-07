@@ -19,7 +19,6 @@ using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
-using RabbitMQ.Client.Framing.Impl;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 

@@ -82,7 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             bulkCopy.Setup(b => b.WriteToServer(It.IsAny<DataTable>())).Returns(false);
 
             //------------Execute Test---------------------------
-            var result = bulkInserter.Insert(bulkCopy.Object, (DataTable)null);
+            var result = bulkInserter.Insert(bulkCopy.Object, null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
