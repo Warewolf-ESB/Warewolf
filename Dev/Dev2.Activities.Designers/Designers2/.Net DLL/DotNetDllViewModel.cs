@@ -33,7 +33,6 @@ using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -306,6 +305,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(DotNetDllViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
+        private ServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -536,11 +536,12 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 Action = ActionRegion.SelectedAction,
                 Inputs = new List<IServiceInput>()
             };
+            var dt = new List<IServiceInput>();
             foreach (var serviceInput in InputArea.Inputs)
             {
-                var exp = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(serviceInput.Value);
-                var value = FsInteropFunctions.LanguageExpressionToString(exp);
-                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, value)
+                _builder = _builder ?? new ServiceInputBuilder();
+                _builder.GetValue(serviceInput.Value, dt);
+                pluginServiceDefinition.Inputs.Add(new ServiceInput(serviceInput.Name, serviceInput.Value)
                 {
                     TypeName = serviceInput.TypeName
                 });
