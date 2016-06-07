@@ -52,11 +52,6 @@ namespace Dev2.Data.Decisions.Operations
             return (from object value in values let mi = typeof(enDecisionType).GetField(Enum.GetName(typeof(enDecisionType), value)) let attr = (DecisionTypeDisplayValue)Attribute.GetCustomAttribute(mi, typeof(DecisionTypeDisplayValue)) where attr.DisplayValue.Equals(displayValue) select value as enDecisionType? ?? enDecisionType.Choose).FirstOrDefault();
         }
 
-        public static IEnumerable<string> GetValues()
-        {
-            var values = Enum.GetValues(typeof(enDecisionType));
-            return from object value in values let mi = typeof(enDecisionType).GetField(Enum.GetName(typeof(enDecisionType), value)) let attr = (DecisionTypeDisplayValue)Attribute.GetCustomAttribute(mi, typeof(DecisionTypeDisplayValue)) select attr.DisplayValue;
-        }
     }
 
     /// <summary>

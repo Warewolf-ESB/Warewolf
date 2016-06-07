@@ -17,7 +17,6 @@ namespace Dev2.Network.Execution
     {
         bool Add(Guid callbackID, Action<ExecutionStatusCallbackMessage> callback);
         bool Remove(Guid callbackID);
-        void RemoveRange(IList<Guid> callbackIDs);
 
         void Post(ExecutionStatusCallbackMessage message);
         void Send(ExecutionStatusCallbackMessage message);

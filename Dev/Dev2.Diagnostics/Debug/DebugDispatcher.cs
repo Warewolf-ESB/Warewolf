@@ -259,17 +259,5 @@ namespace Dev2.Diagnostics.Debug
         }
 
         #endregion WriteLoop
-
-        public void Flush()
-        {
-            lock(WaitHandleGuard)
-            {
-                while(WriterQueue.Count > 0)
-                {
-                    IDebugState debugState;
-                    WriterQueue.TryDequeue(out debugState);
-                }
-            }
-        }
     }
 }

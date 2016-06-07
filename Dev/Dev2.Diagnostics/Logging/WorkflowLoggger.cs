@@ -4,8 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Configuration.Settings;
 
 namespace Dev2.Diagnostics.Logging
@@ -58,18 +56,6 @@ namespace Dev2.Diagnostics.Logging
                 }
 
             });
-        }
-
-        [ExcludeFromCodeCoverage] // wf debug logging
-        public static bool ShouldLog(IDebugState iDebugState)
-        {
-            var debugState = iDebugState as DebugState;
-            if (debugState == null)
-            {
-                return false;
-            }
-
-            return ShouldLog(debugState.OriginatingResourceID);
         }
 
         [ExcludeFromCodeCoverage] // wf debug logging
