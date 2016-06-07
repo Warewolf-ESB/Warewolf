@@ -23,12 +23,10 @@ namespace Dev2.Common.Interfaces.WebService
         void CreateNewSource();
         void EditSource(IWebServiceSource selectedSource);
         string TestService(IWebService inputValues);
-        void SaveService(IWebService toModel);
 
         IStudioUpdateManager UpdateRepository { get; }
         IQueryManager QueryProxy { get; }
         ObservableCollection<IWebServiceSource> Sources { get; }
 
-        string HandlePasteResponse(string current);
     }
 }
