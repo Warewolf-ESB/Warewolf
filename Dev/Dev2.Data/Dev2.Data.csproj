@@ -257,7 +257,6 @@
     <Compile Include="Interfaces\IRecordSetCollection.cs" />
     <Compile Include="Interfaces\IRecordSetDefinition.cs" />
     <Compile Include="Interfaces\IRecordsetScopingObject.cs" />
-    <Compile Include="Interfaces\IRecordsetTO.cs" />
     <Compile Include="Interfaces\IRecsetSearch.cs" />
     <Compile Include="Interfaces\ISystemTag.cs" />
     <Compile Include="MathOperations\EvaluationFunctionTO.cs" />
@@ -369,12 +368,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Audit\" />
-    <Folder Include="Compilers\" />
-    <Folder Include="DataListCache\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Network\" />
-    <Folder Include="Server\" />
     <Folder Include="Storage\Binary Objects\" />
     <Folder Include="Storage\ProtocolBuffers\" />
   </ItemGroup>
