@@ -52,11 +52,6 @@ namespace Dev2.Common.Utils
             return replaceSlashes;
         }
 
-        public static string Format(object obj)
-        {
-            var text = JsonConvert.SerializeObject(obj,Formatting.Indented);
-            return text;
-        }
 
         public static string Format(string text)
         {

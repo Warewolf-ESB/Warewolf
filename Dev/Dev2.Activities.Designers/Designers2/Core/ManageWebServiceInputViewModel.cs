@@ -374,14 +374,8 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         public IOutputDescription Description { get; set; }
-        [ExcludeFromCodeCoverage]
-        public virtual void ShowView()
-        {
-        }
-        [ExcludeFromCodeCoverage]
-        public void CloseView()
-        {
-        }
+
+        
 
         #region Implementation of IToolRegion
 
