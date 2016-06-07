@@ -57,14 +57,6 @@ namespace Dev2.Runtime.ESB
 
         static readonly ConcurrentDictionary<Guid, ServiceAction> Cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
-        public static void RemoveFromCache(Guid resourceID)
-        {
-            if (Cache != null)
-            {
-                ServiceAction sa;
-                Cache.TryRemove(resourceID, out sa);
-            }
-        }
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
         public bool IsLoggingEnabled
