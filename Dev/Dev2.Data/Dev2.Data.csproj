@@ -206,7 +206,6 @@
     <Compile Include="PathOperations\Interfaces\IPathInput.cs" />
     <Compile Include="PathOperations\Interfaces\IPathOutput.cs" />
     <Compile Include="PathOperations\Interfaces\IPathOverwrite.cs" />
-    <Compile Include="PathOperations\Interfaces\IPathRead.cs" />
     <Compile Include="PathOperations\Interfaces\IRepository.cs" />
     <Compile Include="PathOperations\Interfaces\IRepositoryItem.cs" />
     <Compile Include="PathOperations\Interfaces\IUnZip.cs" />
@@ -243,10 +242,8 @@
     <Compile Include="Factories\Dev2OperationsFactory.cs" />
     <Compile Include="Factories\IntellisenseFactory.cs" />
     <Compile Include="Interfaces\IDataListCompiler.cs" />
-    <Compile Include="Interfaces\IDataListInjectionContents.cs" />
     <Compile Include="Interfaces\IDataListVerifyPart.cs" />
     <Compile Include="Interfaces\IDataListVerifyPartDuplicationParser.cs" />
-    <Compile Include="Interfaces\IDataValue.cs" />
     <Compile Include="Interfaces\IDev2DataLangaugeParseError.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageIntellisensePart.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />

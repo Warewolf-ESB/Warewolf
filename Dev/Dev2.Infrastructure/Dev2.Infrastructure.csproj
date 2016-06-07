@@ -158,9 +158,7 @@
     <Compile Include="ServerCompileMessageType.cs" />
     <Compile Include="Services\DesignValidationService.cs" />
     <Compile Include="Services\IDesignValidationService.cs" />
-    <Compile Include="Services\IEsbService.cs" />
     <Compile Include="Services\IMemoSubscriptionService.cs" />
-    <Compile Include="Services\IResourceService.cs" />
     <Compile Include="Services\MemoSubscriptionService.cs" />
     <Compile Include="Services\IPushService.cs" />
     <Compile Include="Communication\Memo.cs" />
