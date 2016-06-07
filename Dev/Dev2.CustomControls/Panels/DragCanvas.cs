@@ -12,13 +12,11 @@
 // Copyright (C) Josh Smith - August 2006 
 
 using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.CustomControls.Panels
 {
@@ -473,74 +471,6 @@ namespace Dev2.CustomControls.Panels
         #endregion // ResolveOffset
 
         #region UpdateZOrder
-
-        /// <summary>
-        ///     Helper method used by the BringToFront and SendToBack methods.
-        /// </summary>
-        /// <param name="element">
-        ///     The element to bring to the front or send to the back.
-        /// </param>
-        /// <param name="bringToFront">
-        ///     Pass true if calling from BringToFront, else false.
-        /// </param>
-        private void UpdateZOrder(UIElement element, bool bringToFront)
-        {
-            #region Safety Check
-
-            if (element == null)
-                throw new ArgumentNullException("element");
-
-            if (!Children.Contains(element))
-                throw new ArgumentException(ErrorResource.MustBeAchildElementOfTheCanvas, "element");
-
-            #endregion // Safety Check
-
-            #region Calculate Z-Indici And Offset
-
-            // Determine the Z-Index for the target UIElement.
-            int elementNewZIndex = -1;
-            if (bringToFront)
-            {
-                elementNewZIndex += Children.Cast<UIElement>().Count(elem => elem.Visibility != Visibility.Collapsed);
-            }
-            else
-            {
-                elementNewZIndex = 0;
-            }
-
-            // Determine if the other UIElements' Z-Index 
-            // should be raised or lowered by one. 
-            int offset = elementNewZIndex == 0 ? +1 : -1;
-
-            int elementCurrentZIndex = GetZIndex(element);
-
-            #endregion // Calculate Z-Indici And Offset
-
-            #region Update Z-Indici
-
-            // Update the Z-Index of every UIElement in the Canvas.
-            foreach (UIElement childElement in Children)
-            {
-// ReSharper disable PossibleUnintendedReferenceComparison
-                if (childElement == element)
-// ReSharper restore PossibleUnintendedReferenceComparison
-                    SetZIndex(element, elementNewZIndex);
-                else
-                {
-                    int zIndex = GetZIndex(childElement);
-
-                    // Only modify the z-index of an element if it is  
-                    // in between the target element's old and new z-index.
-                    if (bringToFront && elementCurrentZIndex < zIndex ||
-                        !bringToFront && zIndex < elementCurrentZIndex)
-                    {
-                        SetZIndex(childElement, zIndex + offset);
-                    }
-                }
-            }
-
-            #endregion // Update Z-Indici
-        }
 
         #endregion // UpdateZOrder
 

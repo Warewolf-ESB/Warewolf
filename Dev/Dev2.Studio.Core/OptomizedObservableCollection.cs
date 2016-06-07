@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
@@ -58,36 +57,6 @@ namespace Dev2.Studio.Core
                 {
                     SuppressOnCollectionChanged = false;
                     OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this));
-                }
-            }
-        }
-
-        public void RemoveRange(IEnumerable<T> itemsToRemove)
-        {
-            if(null == itemsToRemove)
-            {
-                // ReSharper disable once NotResolvedInText
-                throw new ArgumentNullException("items");
-            }
-
-            IEnumerable<T> toRemove = itemsToRemove as IList<T> ?? itemsToRemove.ToList();
-            if(toRemove.Any())
-            {
-                try
-                {
-                    SuppressOnCollectionChanged = true;
-                    List<T> listOfT = toRemove.ToList();
-
-                    foreach(var item in listOfT)
-                    {
-                        Remove(item);
-                    }
-
-                }
-                finally
-                {
-                    SuppressOnCollectionChanged = false;
-                    //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this));
                 }
             }
         }

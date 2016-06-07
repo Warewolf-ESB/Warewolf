@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -24,16 +23,6 @@ namespace SendFileTo
             return AddRecipient(email, HowTo.MAPI_TO);
         }
 
-        public bool AddRecipientCC(string email)
-        {
-            return AddRecipient(email, HowTo.MAPI_TO);
-        }
-
-        public bool AddRecipientBCC(string email)
-        {
-            return AddRecipient(email, HowTo.MAPI_TO);
-        }
-
         public void AddAttachment(string strAttachmentFileName)
         {
             m_attachments.Add(strAttachmentFileName);
@@ -42,11 +31,6 @@ namespace SendFileTo
         public int SendMailPopup(string strSubject, string strBody)
         {
             return SendMail(strSubject, strBody, MAPI_LOGON_UI | MAPI_DIALOG);
-        }
-
-        public int SendMailDirect(string strSubject, string strBody)
-        {
-            return SendMail(strSubject, strBody, MAPI_LOGON_UI);
         }
 
 
@@ -154,13 +138,6 @@ namespace SendFileTo
             m_recipients.Clear();
             m_attachments.Clear();
             m_lastError = 0;
-        }
-
-        public string GetLastError()
-        {
-            if(m_lastError <= 26)
-                return errors[m_lastError];
-            return "MAPI error [" + m_lastError.ToString(CultureInfo.InvariantCulture) + "]";
         }
 
         readonly string[] errors =

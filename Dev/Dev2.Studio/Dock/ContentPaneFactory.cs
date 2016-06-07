@@ -635,26 +635,6 @@ namespace Dev2.Studio.Dock
         public static readonly RoutedEvent InitializeContentPaneEvent = EventManager.RegisterRoutedEvent("InitializeContentPane",
             RoutingStrategy.Direct, typeof(EventHandler<InitializeContentPaneEventArgs>), typeof(ContentPaneFactory));
 
-        /// <summary>
-        /// Adds a handler for the InitializeContentPane attached event
-        /// </summary>
-        /// <param name="element">UIElement or ContentElement that listens to the event</param>
-        /// <param name="handler">Event handler to be added</param>
-        public static void AddInitializeContentPaneHandler(DependencyObject element, EventHandler<InitializeContentPaneEventArgs> handler)
-        {
-            UiElementHelper.AddHandler(element, InitializeContentPaneEvent, handler);
-        }
-
-        /// <summary>
-        /// Removes a handler for the InitializeContentPane attached event
-        /// </summary>
-        /// <param name="element">UIElement or ContentElement that listens to the event</param>
-        /// <param name="handler">Event handler to be removed</param>
-        public static void RemoveInitializeContentPaneHandler(DependencyObject element, EventHandler<InitializeContentPaneEventArgs> handler)
-        {
-            UiElementHelper.RemoveHandler(element, InitializeContentPaneEvent, handler);
-        }
-
         #endregion //InitializeContentPane
 
         #endregion //Events

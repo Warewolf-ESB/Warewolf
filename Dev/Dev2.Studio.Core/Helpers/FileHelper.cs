@@ -141,24 +141,6 @@ namespace Dev2.Studio.Core.Helpers
             return null;
         }
 
-        public static string CreateATemporaryFile(string fileContent, string uniqueOutputPath)
-        {
-            CreateTextFile(fileContent, uniqueOutputPath);
-            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            if(sourceDirectoryName != null)
-            {
-                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-                using(var zip = new ZipFile())
-                {
-                    zip.AddFile(uniqueOutputPath, ".");
-                    zip.Save(destinationArchiveFileName);
-                }
-                return destinationArchiveFileName;
-            }
-            return null;
-        }
-
         public static string GetDebugItemTempFilePath(string uri)
         {
             Dev2Logger.Info("");
