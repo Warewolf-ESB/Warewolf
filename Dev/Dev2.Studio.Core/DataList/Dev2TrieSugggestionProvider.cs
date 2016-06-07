@@ -12,7 +12,7 @@ namespace Dev2
     {
         #region Implementation of ISuggestionProvider
 
-        private readonly char[] _tokenisers = "!@#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
+        private readonly char[] _tokenisers = "!#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
         public ITrie<string> PatriciaTrie { get; private set; }
         private ObservableCollection<string> _variableList;
         private IntellisenseStringProvider.FilterOption all;
@@ -119,7 +119,14 @@ namespace Dev2
         {
             if (currentVar != null)
             {
+
                 var namedExpression = currentVar as LanguageAST.JsonIdentifierExpression.NameExpression;
+                if (namedExpression != null && !namedExpression.Item.Name.StartsWith("@") && string.IsNullOrEmpty(parentName))
+                {
+                    var jsonIdentifier = new LanguageAST.JsonIdentifier("@" + namedExpression.Item.Name);
+                    currentVar = LanguageAST.JsonIdentifierExpression.NewNameExpression(jsonIdentifier);
+                    namedExpression = currentVar as LanguageAST.JsonIdentifierExpression.NameExpression;
+                }
                 if (namedExpression != null)
                 {
                     PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(parentName + "." + namedExpression.Item.Name), DataListUtil.AddBracketsToValueIfNotExist(parentName + "." + namedExpression.Item.Name));
@@ -191,13 +198,16 @@ namespace Dev2
                         trie = PatriciaTrieRecsets;
                     break;
 
-                case enIntellisensePartType.ScalarsOnly: trie = PatriciaTrieScalars;
+                case enIntellisensePartType.ScalarsOnly:
+                    trie = PatriciaTrieScalars;
                     break;
 
-                case enIntellisensePartType.JsonObject: trie = PatriciaTrieJsonObjects;
+                case enIntellisensePartType.JsonObject:
+                    trie = PatriciaTrieJsonObjects;
                     break;
 
-                case enIntellisensePartType.RecordsetFields: if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretIndex)
+                case enIntellisensePartType.RecordsetFields:
+                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretIndex)
                         trie = PatriciaTrie;
                     else
                         trie = PatriciaTrieRecsetsFields;
@@ -211,7 +221,8 @@ namespace Dev2
             {
                 return new string[0];
             }
-            return trie.Retrieve(filter);
+            var suggestions = trie.Retrieve(filter);
+            return suggestions;
         }
 
         #endregion Implementation of ISuggestionProvider
