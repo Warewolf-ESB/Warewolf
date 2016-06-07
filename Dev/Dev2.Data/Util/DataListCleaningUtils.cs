@@ -160,22 +160,6 @@ namespace Dev2.DataList.Contract
 
         #region Private Method
 
-        private static bool IsDoubleBracketCanidate(string canidate)
-        {
-            bool result = false;
-            char[] tokens = { ']' };
-
-            string[] parts = canidate.Split(tokens);
-
-            if(parts.Length == 3)
-            {
-                result = true;
-            }
-
-
-            return result;
-        }
-
         #endregion
     }
 }
