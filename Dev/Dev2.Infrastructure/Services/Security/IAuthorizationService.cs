@@ -29,8 +29,6 @@ namespace Dev2.Services.Security
 
         void Remove(Guid resourceId);
 
-        string JsonPermissions();
-
         List<WindowsGroupPermission> GetPermissions(IPrincipal user);
     }
 }

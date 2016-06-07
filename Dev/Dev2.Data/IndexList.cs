@@ -66,19 +66,6 @@ namespace Dev2.Data.Binary_Objects
             return result;
         }
 
-        public void AddGap(int idx)
-        {
-            if(idx > 0)
-            {
-                Gaps.Add(idx);
-            }
-        }
-
-        public void RemoveGap(int idx)
-        {
-            Gaps.Remove(idx);
-        }
-
         public bool Contains(int idx)
         {
             bool result = idx <= MaxValue && idx >= 0 && !Gaps.Contains(idx);
@@ -123,16 +110,6 @@ namespace Dev2.Data.Binary_Objects
                 }
             }
 
-        }
-
-        public void SetGapsCollection(HashSet<int> myGaps)
-        {
-            Gaps = new HashSet<int>(myGaps);
-        }
-
-        public IIndexIterator FetchIterator()
-        {
-            return new IndexIterator(Gaps, MaxValue, MinValue);
         }
     }
 }

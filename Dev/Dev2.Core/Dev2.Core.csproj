@@ -184,13 +184,11 @@
     <Compile Include="IActivityParser.cs" />
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
-    <Compile Include="InterfaceImplementors\FileSystem.cs" />
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexCallbackChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexDataChannel.cs" />
-    <Compile Include="Interfaces\IFrameworkFileIO.cs" />
     <Compile Include="Isolated.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackMessage.cs" />

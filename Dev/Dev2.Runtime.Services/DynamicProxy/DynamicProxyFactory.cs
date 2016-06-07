@@ -311,10 +311,6 @@ namespace Dev2.Runtime.DynamicProxy
             }
         }
 
-        public ServiceEndpoint GetEndpoint(string contractName)
-        {
-            return GetEndpoint(contractName, null);
-        }
 
         public ServiceEndpoint GetEndpoint(string contractName,
                 string contractNamespace)

@@ -24,6 +24,6 @@ namespace Dev2.Runtime.Execution
         void Run();
         void Terminate();
         void Resume(IDSFDataObject dataObject);
-        void Terminate(Exception exception);
+
     }
 }

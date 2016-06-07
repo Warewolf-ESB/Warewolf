@@ -16,7 +16,6 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
 
@@ -393,18 +392,6 @@ namespace Dev2.Services.Security
                     groupPermissions.Remove(adminGroup);
                 }
             }
-        }
-        public string JsonPermissions()
-        {
-            var result = new StringBuilder();
-            result.AppendLine("{{");
-            foreach(var permission in _securityService.Permissions)
-            {
-                result.AppendFormat("\t{{ ResourceID:{0},\tWindowsGroup:{1},\tPermissions:{2} }}", permission.ResourceID, permission.WindowsGroup, permission.Permissions);
-                result.AppendLine();
-            }
-            result.AppendLine("}}");
-            return result.ToString();
         }
     }
 }

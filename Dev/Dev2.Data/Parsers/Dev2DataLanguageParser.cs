@@ -264,32 +264,6 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        public IList<ParseTO> MakePartsWithOutRecsetIndex(string payload)
-        {
-            if (string.IsNullOrEmpty(payload))
-            {
-                return new List<ParseTO>();
-            }
-
-            //remove index
-            var recordSetIndex = DataListUtil.ExtractIndexRegionFromRecordset(payload);
-            IList<ParseTO> results;
-            if (!string.IsNullOrEmpty(recordSetIndex))
-            {
-                results = MakeParts(payload);
-                foreach (ParseTO t in results.Where(t => t.Child != null && !string.IsNullOrEmpty(t.Child.Payload)))
-                {
-                    //replace index
-                    t.Child.Payload = recordSetIndex;
-                }
-            }
-            else
-            {
-                results = MakeParts(payload);
-            }
-            return results;
-        }
-
         /// <summary>
         /// Used to extract a syntax tree - Creates a list of trees for parsing
         /// </summary>

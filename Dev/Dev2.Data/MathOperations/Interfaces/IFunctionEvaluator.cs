@@ -18,7 +18,6 @@ namespace Dev2.MathOperations
 
     public interface IFunctionEvaluator
     {
-        bool TryEvaluateFunction(IEvaluationFunction expressionTO, out string evaluation, out string error);
         bool TryEvaluateFunction(string expression, out string evaluation, out string error);
         bool TryEvaluateFunction<T>(List<T> value, string expression, out string evaluation, out string error) where T : IConvertible;
     }

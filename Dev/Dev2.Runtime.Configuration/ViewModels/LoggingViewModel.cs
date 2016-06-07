@@ -228,13 +228,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         #region public methods
 
-        public void RefreshData()
-        {
-            IsRefreshing = true;
-            LoadWorkflows();
-            IsRefreshing = false;
-        }
-
         public void UpdateSearchFilter(string filter)
         {
             SearchText = filter;

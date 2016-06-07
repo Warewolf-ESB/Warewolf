@@ -265,11 +265,6 @@ namespace Dev2.PathOperations
             return ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
         }
 
-        public string ExtendedDirList(string path, string user, string pass, bool ssl, bool isNotCertVerifiable)
-        {
-            return "";
-        }
-
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool PathExist(IActivityIOPath dst)
         {
@@ -516,9 +511,6 @@ namespace Dev2.PathOperations
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
             int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public extern static bool CloseHandle(IntPtr handle);
 
         private string ExtractUserName(IPathAuth path)
         {
