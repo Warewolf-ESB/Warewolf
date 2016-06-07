@@ -38,17 +38,13 @@ using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.Help;
 using Warewolf.Studio.ViewModels.ToolBox;
 // ReSharper disable RedundantUsingDirective
-using Dev2.Interfaces;
 using Dev2.Utils;
 using log4net.Config;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-using Dev2.Views.Dialogs;
 
 
 // ReSharper restore RedundantUsingDirective
