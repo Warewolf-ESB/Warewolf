@@ -36,28 +36,6 @@ namespace Dev2.Threading
         /// <summary>
         /// Starts the specified background action and continues with the UI action 
         /// on the thread this was invoked from (typically the UI thread).
-        /// </summary>
-        /// <param name="backgroundAction">The background action.</param>
-        /// <param name="uiAction">The UI action.</param>
-        /// <param name="cancellationTokenSource">Allows the task to be cancelled.</param>
-        /// <returns></returns>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/08/08</date>
-        public Task Start(Action backgroundAction, Action uiAction, CancellationTokenSource cancellationTokenSource)
-        {
-            var scheduler = GetTaskScheduler();
-            return Task.Factory.StartNew(backgroundAction,cancellationTokenSource.Token).ContinueWith(_ =>
-            {
-                if(!cancellationTokenSource.IsCancellationRequested)
-                {
-                    uiAction();
-                }
-            }, scheduler);
-        }
-
-        /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
         /// calls an error handler should an exception occur
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
@@ -193,28 +171,6 @@ namespace Dev2.Threading
                     {
                         uiAction(task.Result);
                     }
-                }
-            }, scheduler);
-        }
-        
-        /// <summary>
-        /// Starts the specified background function and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
-        /// </summary>
-        /// <param name="backgroundFunc">The background function - returns the result to be processed on the UI thread.</param>
-        /// <param name="uiAction">The UI action to be taken on the given background result.</param>
-        /// <param name="cancellationTokenSource">Allows the task to be cancelled.</param>
-        /// <returns></returns>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/10/12</date>
-        public Task Start<TBackgroundResult>(Func<TBackgroundResult> backgroundFunc, Action<TBackgroundResult> uiAction, CancellationTokenSource cancellationTokenSource)
-        {
-            var scheduler = GetTaskScheduler();
-            return Task.Factory.StartNew(backgroundFunc, cancellationTokenSource.Token).ContinueWith(task =>
-            {
-                if(!cancellationTokenSource.IsCancellationRequested)
-                {
-                    uiAction(task.Result);
                 }
             }, scheduler);
         }

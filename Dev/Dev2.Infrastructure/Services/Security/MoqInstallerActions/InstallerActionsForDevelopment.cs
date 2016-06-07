@@ -9,9 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Security.Principal;
-
 namespace Dev2.Services.Security.MoqInstallerActions
 {
     public class InstallerActionsForDevelopment : IMoqInstallerActions
@@ -45,21 +42,6 @@ namespace Dev2.Services.Security.MoqInstallerActions
         {
             IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             wso.AddAdministratorsGroupToWarewolf();
-        }
-
-        /// <summary>
-        /// Creates the warewolf group and adds the current user.
-        /// </summary>
-        private void AddCurrentUserToWarewolfGroup()
-        {
-            IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
-
-            // Get the current executing user ;)
-            var currentUser = WindowsIdentity.GetCurrent(false);
-            var machineName = Environment.MachineName;
-            var userAddString = wso.FormatUserForInsert(currentUser.Name, machineName);
-
-            wso.AddUserToWarewolf(userAddString);
         }
 
         #endregion
