@@ -25,30 +25,6 @@ namespace Dev2.DataList.Contract
     {
 
         // ReSharper disable InconsistentNaming
-        public static string stripDoubleBracketsAndRecordsetNotation(string canidate)
-        // ReSharper restore InconsistentNaming
-        {
-            string result = canidate;
-            bool isCanidate = IsDoubleBracketCanidate(canidate);
-
-
-            if(canidate.Contains("[[") && isCanidate)
-            {
-                result = result.Replace("[[", "");
-            }
-
-            if(canidate.Contains("]]") && isCanidate)
-            {
-                result = result.Replace("]]", "");
-            }
-
-            if(result.Contains("(") && result.Contains(")") && isCanidate)
-            {
-                result = result.Remove(result.IndexOf("(", StringComparison.Ordinal));
-            }
-
-            return result;
-        }
 
         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
         public static List<string> SplitIntoRegions(string result)
@@ -183,22 +159,6 @@ namespace Dev2.DataList.Contract
         }
 
         #region Private Method
-
-        private static bool IsDoubleBracketCanidate(string canidate)
-        {
-            bool result = false;
-            char[] tokens = { ']' };
-
-            string[] parts = canidate.Split(tokens);
-
-            if(parts.Length == 3)
-            {
-                result = true;
-            }
-
-
-            return result;
-        }
 
         #endregion
     }

@@ -31,11 +31,5 @@ namespace Dev2.PathOperations
         /// The string version of the path
         /// </summary>
         string Path { get; set; }
-
-        /// <summary>
-        /// Convert this object into XML
-        /// </summary>
-        /// <returns></returns>
-        string ToXML();
     }
 }

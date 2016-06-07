@@ -48,22 +48,7 @@ namespace Dev2.Data.Decision
         {
             _environments.Remove(id);
         }
-        /// <summary>
-        /// Fetches the switch data.
-        /// </summary>
-        /// <param name="variableName">Name of the variable.</param>
-        /// <param name="oldAmbientData">The old ambient data.</param>
-        /// <returns></returns>
-        public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
-        {
-       
-            Guid dlId = FetchDataListID(oldAmbientData);
-            var env = _environments[dlId];
-            var output = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(variableName, 0));
-        
-            return output;
 
-        }
 
         // Guid dlID
         /// <summary>

@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -67,32 +65,6 @@ namespace Dev2.Data.Binary_Objects
         public int MaxIndex()
         {
             return IndexList.GetMaxIndex();
-        }
-
-        public int MinIndex()
-        {
-            return IndexList.GetMinIndex();
-        }
-
-        public void AddGap(int idx)
-        {
-            IndexList.Indexes.Add(idx);
-        }
-
-        public void RemoveGap(int idx)
-        {
-            IndexList.Indexes.Remove(idx);
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IIndexIterator Clone()
-        {
-            List<int> indexes = IndexList.Indexes.ToList();
-            return new ListIndexIterator(indexes);
         }
     }
 }

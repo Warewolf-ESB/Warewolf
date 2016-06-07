@@ -78,15 +78,6 @@ namespace Dev2.Runtime.Configuration
 
         public Settings.Configuration Configuration { get; private set; }
 
-        #region ProcessMessage
-
-        public virtual void ProcessMessage()
-        {
-
-        }
-
-        #endregion
-
         #region ProcessRead
 
         #endregion

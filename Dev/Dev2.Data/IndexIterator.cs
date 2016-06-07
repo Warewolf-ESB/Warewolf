@@ -133,49 +133,6 @@ namespace Dev2.Data
         {
             return IndexList.GetMaxIndex();
         }
-
-        /// <summary>
-        /// Minimums the index.
-        /// </summary>
-        /// <returns></returns>
-        public int MinIndex()
-        {
-            return IndexList.GetMinIndex();
-        }
-
-        /// <summary>
-        /// Adds the gap.
-        /// </summary>
-        /// <param name="idx">The index.</param>
-        public void AddGap(int idx)
-        {
-            IndexList.Gaps.Add(idx);
-        }
-
-        /// <summary>
-        /// Removes the gap.
-        /// </summary>
-        /// <param name="idx">The index.</param>
-        public void RemoveGap(int idx)
-        {
-            IndexList.Gaps.Remove(idx);
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            return IndexList.Gaps;
-        }
-
-        public IIndexIterator Clone()
-        {
-            HashSet<int> gaps = new HashSet<int>();
-            foreach(int g in IndexList.Gaps)
-            {
-                gaps.Add(g);
-            }
-            return new IndexIterator(gaps, IndexList.MaxValue);
-        }
-
     }
 
     public class IndexListIndexIterator:IIndexIterator
@@ -215,31 +172,6 @@ namespace Dev2.Data
         public int MaxIndex()
         {
             return _values.Max();
-        }
-
-        public int MinIndex()
-        {
-            return _values.Min();
-        }
-
-        public void AddGap(int idx)
-        {
-            
-        }
-
-        public void RemoveGap(int idx)
-        {
-          
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            return  new HashSet<int>();
-        }
-
-        public IIndexIterator Clone()
-        {
-            return new IndexListIndexIterator(_values);
         }
     }
 }
