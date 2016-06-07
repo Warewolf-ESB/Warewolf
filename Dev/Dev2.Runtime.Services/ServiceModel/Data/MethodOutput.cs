@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -64,16 +63,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion
-
-        #region Methods
-
-        public XElement ToXml()
-        {
-            return new XElement("");
-        }
-
-        #endregion
-
 
     }
 }

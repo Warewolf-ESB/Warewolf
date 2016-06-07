@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Security;
-using ServiceStack.Common.Extensions;
 
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable MemberCanBePrivate.Global
@@ -94,15 +93,6 @@ namespace Dev2.Runtime.Hosting
 
             var root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
             return root;
-        }
-        public IExplorerItem Reload(Guid workSpaceId)
-        {
-            var root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-            return root;
-        }
-
-        public void RemoveItemFromCollection(IExplorerItem serverExplorerItem)
-        {
         }
 
         public IExplorerItem Load(string type, Guid workSpaceId)
@@ -185,14 +175,6 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        
-
-        string GetNameFromPath(string path)
-        {
-            if (path.Contains("\\"))
-                return path.Substring(path.LastIndexOf("\\", StringComparison.Ordinal) + 1);
-            return path;
-        }
 
         void MoveVersionFolder(string path, string newPath)
         {
@@ -225,20 +207,6 @@ namespace Dev2.Runtime.Hosting
         }
 
 
-
-
-
-        IExplorerItem FindParent(string resourcePath, IExplorerItem rooItem)
-        {
-            if (resourcePath.Contains("\\"))
-            {
-                string name = resourcePath.Substring(0, resourcePath.IndexOf("\\", StringComparison.Ordinal));
-                var next = rooItem.Children.FirstOrDefault(a => a.DisplayName == name);
-                return FindParent(resourcePath.Substring(1 + resourcePath.IndexOf("\\", StringComparison.Ordinal)), next);
-            }
-            return rooItem;
-        }
-
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
         {
             if (item.ResourceId == itemToFind)
@@ -262,20 +230,6 @@ namespace Dev2.Runtime.Hosting
             return item.Children.Select(child => Find(child, predicate)).FirstOrDefault(found => found != null);
         }
 
-
-        public void Apply(IExplorerItem item, Func<IExplorerItem, bool> predicate, Action<IExplorerItem> action)
-        {
-            if (item != null && predicate(item))
-                action( item);
-            if (item != null && (item.Children == null || item.Children.Count == 0))
-            {
-                return;
-            }
-            if(item != null)
-            {
-                item.Children.ForEach(child => Apply( child, predicate,action));
-            }
-        }
 
         public void MessageSubscription(IExplorerRepositorySync sync)
         {
@@ -450,9 +404,5 @@ namespace Dev2.Runtime.Hosting
             return ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
         }
 
-        public IExplorerItem Load(string filter)
-        {
-            return ExplorerItemFactory.CreateRootExplorerItem(Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
-        }
     }
 }
