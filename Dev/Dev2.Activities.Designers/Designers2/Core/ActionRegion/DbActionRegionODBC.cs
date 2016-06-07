@@ -225,11 +225,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set;
         }
 
-        public int GetId()
-        {
-            return SelectedAction.Name.GetHashCode();
-        }
-
         #endregion
 
         #region Implementation of IActionToolRegion<IDbAction>

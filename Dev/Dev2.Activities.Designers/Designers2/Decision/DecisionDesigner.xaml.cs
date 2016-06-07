@@ -26,16 +26,5 @@ namespace Dev2.Activities.Designers2.Decision
 
             return largeView != null && largeView.LargeDataGrid.IsEnabled;
         }
-
-        public void DoneAction()
-        {
-            var largeView = DataContext as Large;
-            if(largeView != null)
-            {
-                largeView.DoneButton.Command.Execute(null);
-            }
-        }
-
-
     }
 }

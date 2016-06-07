@@ -13,7 +13,6 @@ namespace Warewolf.Studio.Core
 {
     public static class RegionNames
     {
-        static string _help;
         public static string Explorer
         {
             get

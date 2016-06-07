@@ -311,7 +311,10 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     foreach (var header in headers)
                     {
-                        source.Client.Headers.Add(header.Trim());
+                        if (header != ":")
+                        {
+                            source.Client.Headers.Add(header.Trim());
+                        }
                     }
                 }
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; }; 

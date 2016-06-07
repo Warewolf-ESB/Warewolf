@@ -64,9 +64,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = pluginsrc
                 };
 
-                var result = PluginServices.Test(serializer.SerializeToBuilder(res).ToString(), Guid.Empty, Guid.Empty);
+                string serializedResult;
+                var result = PluginServices.Test(serializer.SerializeToBuilder(res).ToString(),out serializedResult);
                 msg.HasError = false;
-                msg.Message = serializer.SerializeToBuilder(new RecordsetListWrapper(){Description = result.Description,RecordsetList = result});
+                msg.Message = serializer.SerializeToBuilder(new RecordsetListWrapper{Description = result.Description,RecordsetList = result,SerializedResult = serializedResult});
             }
             catch (Exception err)
             {

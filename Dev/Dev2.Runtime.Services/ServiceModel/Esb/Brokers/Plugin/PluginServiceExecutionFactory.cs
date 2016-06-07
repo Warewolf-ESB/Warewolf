@@ -47,12 +47,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         #region Public Interface
 
-        public static IOutputDescription TestPlugin(PluginInvokeArgs args)
+        public static IOutputDescription TestPlugin(PluginInvokeArgs args,out string serializedResult)
         {
 
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.Test(args);
+                return runtime.Value.Test(args,out serializedResult);
             }
 
         }
