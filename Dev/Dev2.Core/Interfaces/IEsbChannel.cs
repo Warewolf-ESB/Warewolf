@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Text;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Warewolf.Storage;
@@ -56,14 +55,6 @@ namespace Dev2
         /// <returns></returns>
         IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool b);
 
-        /// <summary>
-        ///     Finds the service shape.
-        /// </summary>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="resourceId">Name of the service.</param>
-        /// <returns></returns>
-        StringBuilder FindServiceShape(Guid workspaceId, Guid resourceId);
-
         void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update);
 
 
@@ -78,15 +69,5 @@ namespace Dev2
 
     public interface IEsbActivityChannel
     {
-        bool ExecuteParallel(IEsbActivityInstruction[] instructions);
-    }
-
-    public interface IEsbActivityInstruction
-    {
-        string Instruction { get; }
-        string Result { get; set; }
-        // ReSharper disable InconsistentNaming
-        Guid DataListID { get; set; }
-        // ReSharper restore InconsistentNaming
     }
 }
