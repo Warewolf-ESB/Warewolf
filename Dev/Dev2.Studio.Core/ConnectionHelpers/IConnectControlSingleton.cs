@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using Dev2.Common.Interfaces;
 
 namespace Dev2.ConnectionHelpers
 {
@@ -26,8 +25,6 @@ namespace Dev2.ConnectionHelpers
         event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         ObservableCollection<IConnectControlEnvironment> Servers { get; set; }
         void Remove(Guid environmentId);
-
-        void AddServerAndConnect(IServerSource serverSource);
 
         void ReloadServer();
 

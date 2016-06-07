@@ -67,46 +67,6 @@ namespace Dev2
 
         #endregion
 
-        #region Public Methods
-
-        public string ParseValue(string value)
-        {
-            if (Padding == PaddingDirection.Left && PaddingCharacter != '\0')
-            {
-                value = value.TrimStart(PaddingCharacter);
-            }
-
-            if (Padding == PaddingDirection.Right && PaddingCharacter != '\0')
-            {
-                value = value.TrimEnd(PaddingCharacter);
-            }
-
-            if (Length > 0 && Length < value.Length)
-            {
-                return SecurityElement.Escape(value.Substring(0, Length));
-            }
-
-            return SecurityElement.Escape(value);
-        }
-
-        public string FormatValue(string value)
-        {
-            if (PaddingCharacter != '\0' && Length > 0)
-            {
-                switch (Padding)
-                {
-                    case PaddingDirection.Left:
-                        value = value.PadLeft(Length, PaddingCharacter);
-                        break;
-                    case PaddingDirection.Right:
-                        value = value.PadRight(Length, PaddingCharacter);
-                        break;
-                }
-            }
-
-            return value;
-        }
-
-        #endregion
+      
     }
 }

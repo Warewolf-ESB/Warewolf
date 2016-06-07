@@ -43,10 +43,5 @@ namespace Dev2.Core.Tests.ProperMoqs {
         }
 
         #endregion Some Freaky Property and Method Changing
-
-        internal virtual void ChangeReturnValue(string Name, enTestObjectBehaviourChangeType behaviourType, object ReturnValue) {
-            _behaviourType = behaviourType;
-            this[Name] = ReturnValue;
-        }
     }
 }

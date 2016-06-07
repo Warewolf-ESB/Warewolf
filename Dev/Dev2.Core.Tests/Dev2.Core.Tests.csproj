@@ -152,7 +152,6 @@
     <Compile Include="Logging\DummyDebugProvider.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
     <Compile Include="StringExtensionTests.cs" />
-    <Compile Include="TestHelper.cs" />
     <Compile Include="TestModelItemFactory.cs" />
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="TestUtils.cs" />

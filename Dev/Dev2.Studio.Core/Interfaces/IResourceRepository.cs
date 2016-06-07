@@ -32,12 +32,10 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IResourceRepository : IDisposable
     {
         List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
-        Task<List<IResourceModel>> ReloadResourceAsync(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         void Rename(string resourceId, string newName);
         void DeployResource(IResourceModel resource);
         ExecuteMessage DeleteResource(IResourceModel resource);
-        bool ResourceExist(IResourceModel resource);
         bool IsReservedService(string resourceName);
         bool IsWorkflow(string resourceName);
         void Add(IResourceModel resource);
@@ -45,7 +43,6 @@ namespace Dev2.Studio.Core.Interfaces
         Task<bool> ForceLoadAsync();
 
         bool IsLoaded { get; set; }
-        void RefreshResource(Guid resourceId);
         bool IsInCache(Guid id);
         bool DoesResourceExistInRepo(IResourceModel resource);
         void RemoveFromCache(Guid resourceID);
@@ -76,7 +73,6 @@ namespace Dev2.Studio.Core.Interfaces
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
-        IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression);
         ExecuteMessage Save(IResourceModel instanceObj);
         ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory);
 
@@ -90,10 +86,7 @@ namespace Dev2.Studio.Core.Interfaces
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
-        Task<ExecuteMessage> SaveResourceAsync(IEnvironmentModel environmentModel, StringBuilder source, Guid serverWorkspaceID);
-
         void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
-        void LoadResourceFromWorkspace(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
 
         IContextualResourceModel LoadContextualResourceModel(Guid resourceID);
 

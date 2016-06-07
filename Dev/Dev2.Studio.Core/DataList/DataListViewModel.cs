@@ -1405,15 +1405,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        static void AddColumnsToRecordSet(IEnumerable<IRecordSetFieldItemModel> cols, IRecordSetItemModel recset)
-        {
-            foreach (var col in cols)
-            {
-                col.Parent = recset;
-                recset.Children.Add(col);
-            }
-        }
-
         IRecordSetItemModel CreateRecordSet(XmlNode c)
         {
             IRecordSetItemModel recset;

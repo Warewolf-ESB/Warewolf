@@ -44,22 +44,6 @@ namespace WPF.JoshSmith.Input
                 new UIPropertyMetadata(false, OnIsCommandSinkChanged));
 
         /// <summary>
-        ///     Gets the value of the attached IsCommandSink property for the specified object.
-        /// </summary>
-        public static bool GetIsCommandSink(DependencyObject obj)
-        {
-            return (bool) obj.GetValue(IsCommandSinkProperty);
-        }
-
-        /// <summary>
-        ///     Sets the value of the attached IsCommandSink property for the specified object.
-        /// </summary>
-        public static void SetIsCommandSink(DependencyObject obj, bool value)
-        {
-            obj.SetValue(IsCommandSinkProperty, value);
-        }
-
-        /// <summary>
         ///     Invoked when the IsCommandSink attached property is set on an element.
         /// </summary>
         /// <param name="depObj">The element on which the property was set.</param>

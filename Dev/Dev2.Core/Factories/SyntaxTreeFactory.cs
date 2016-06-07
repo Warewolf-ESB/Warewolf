@@ -14,15 +14,6 @@ namespace Dev2
 {
     public static class SyntaxTreeFactory
     {
-        public static SyntaxTreeBuilder CreateDatalistTreeBuilder()
-        {
-            var builder = new SyntaxTreeBuilder();
-
-            builder.RegisterGrammer(new DatalistGrammer());
-
-            return builder;
-        }
-
         public static SyntaxTreeBuilder CreateInfrigistsTreeBuilder()
         {
             var builder = new SyntaxTreeBuilder();
@@ -44,10 +35,6 @@ namespace Dev2
             return builder;
         }
 
-
-        public static SyntaxTreeBuilder CreateActivityDataItemTreeBuilder()
-        {
-            return CreateInfrigistsAndDatalistTreeBuilder();
-        }
+        
     }
 }
