@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(error);
-            Assert.AreEqual("Invalid expression: opening and closing brackets don't match.", error.Message);
+            Assert.AreEqual("Result - Invalid expression: opening and closing brackets don't match", error.Message);
         }
 
         [TestMethod]

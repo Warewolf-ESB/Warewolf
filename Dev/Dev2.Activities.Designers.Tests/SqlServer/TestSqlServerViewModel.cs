@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
             //------------Assert Results-------------------------
             Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
-            Assert.IsFalse(sqlServer.ActionRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.ActionRegion.IsEnabled);
             Assert.IsTrue(sqlServer.InputArea.IsEnabled);
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             sqlServer.ValidateTestComplete();

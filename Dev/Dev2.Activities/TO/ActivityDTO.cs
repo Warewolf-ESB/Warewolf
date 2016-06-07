@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.DataList.Contract;
@@ -39,7 +38,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         bool _isFieldNameFocused;
         private bool _isFieldValueFocused;
-        private string _errorMessage;
 
         public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)
@@ -141,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public List<string> OutList { get; set; }
 
-        public OutputTO ConvertToOutputTO()
+        public OutputTO ConvertToOutputTo()
         {
             return DataListFactory.CreateOutputTO(FieldName, OutList);
         }
@@ -156,40 +154,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var propertyName = GetPropertyName(property);
             return Validate(propertyName, datalist);
-        }
-
-        /// <summary>
-        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
-        /// </summary>
-        /// <param name="property">Property to validate</param>
-        /// <param name="ruleSet">Ruleset to use during validation</param>
-        /// <returns></returns>
-        public bool Validate(Expression<Func<string>> property, RuleSet ruleSet)
-        {
-            var propertyName = GetPropertyName(property);
-            return Validate(propertyName, ruleSet);
-        }
-
-        public string ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool HasError
-        {
-            get
-            {
-                var errorCount = Errors.SelectMany(pair => pair.Value).Count();
-                return errorCount != 0;
-            }
         }
 
         public bool IsFieldNameFocused

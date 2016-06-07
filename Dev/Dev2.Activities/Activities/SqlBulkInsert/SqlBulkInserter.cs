@@ -22,14 +22,5 @@ namespace Dev2.Activities.SqlBulkInsert
                 return sqlBulkCopy.WriteToServer(dataTableToInsert);
             }
         }
-
-        public bool Insert(ISqlBulkCopy sqlBulkCopy, IDataReader dataTableToInsert)
-        {
-            using (sqlBulkCopy)
-            {
-                return sqlBulkCopy.WriteToServer(dataTableToInsert);
-            }
-        }
-
     }
 }

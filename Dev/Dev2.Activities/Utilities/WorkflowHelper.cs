@@ -153,17 +153,6 @@ namespace Dev2.Utilities
             }
         }
 
-        /// <summary>
-        /// Only invoke from the server!
-        /// </summary>
-        public void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity, Guid resourceID)
-        {
-            if(dynamicActivity != null)
-            {
-                FixAndCompileExpressions(dynamicActivity,resourceID);
-            }
-        }
-
         void FixAndCompileExpressions(Activity dynamicActivity, Guid resourceID)
         {
             // NOTE: DO NOT set properties or variables!
