@@ -575,9 +575,9 @@ namespace Dev2.Studio.ViewModels.DataList
             for (int index = 0; index < paths.Length; index++)
             {
                 string path = paths[index];
+                path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
                 var isArray = false;
-             
 
                 if (path.Contains("()") || path.Contains("(*)"))
                 {
@@ -1544,7 +1544,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             result.Append("<");
             var name = complexObjectItemModel.DisplayName;
-            if (complexObjectItemModel.IsArray)
+            if (complexObjectItemModel.IsArray || name.EndsWith("()"))
             {
                 name = name.Replace("()", "");
             }
@@ -1719,7 +1719,7 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
-                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed);
+                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed) || complexObjectItemModel.IsUsed;
             }
         }
 
