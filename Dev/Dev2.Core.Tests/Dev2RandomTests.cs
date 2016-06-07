@@ -126,7 +126,8 @@ namespace Dev2.Tests
         {
             const double MinDouble = double.MinValue;
             const double MaxDouble = double.MaxValue;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
+            var random = _dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble);
+            double result = double.Parse(random);
             Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
         }
