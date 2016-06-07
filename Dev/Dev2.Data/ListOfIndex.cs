@@ -45,6 +45,30 @@ namespace Dev2.Data.Binary_Objects
             return result;
         }
 
+        public int GetMinIndex()
+        {
+            int result = -1;
+
+            if(Indexes != null)
+            {
+                result = Indexes.Min();
+            }
+
+            return result;
+        }
+
+        public bool Contains(int idx)
+        {
+            bool result = false;
+
+            if(Indexes != null)
+            {
+                result = Indexes.Contains(idx);
+            }
+
+            return result;
+        }
+
         public int Count()
         {
             int result = -1;
@@ -53,6 +77,11 @@ namespace Dev2.Data.Binary_Objects
                 result = Indexes.Count;
             }
             return result;
+        }
+
+        public IIndexIterator FetchIterator()
+        {
+            return new ListIndexIterator(Indexes);
         }
     }
 }
