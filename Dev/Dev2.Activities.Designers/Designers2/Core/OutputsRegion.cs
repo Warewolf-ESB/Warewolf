@@ -9,10 +9,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Storage;
+using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -274,7 +276,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (value != null)
                 {
-                    _objectResult = value;
+                    _objectResult = JSONUtils.Format(value);
                     _modelItem.SetProperty("ObjectResult", value);
                     OnPropertyChanged();
                 }
