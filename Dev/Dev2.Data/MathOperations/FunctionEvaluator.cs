@@ -40,48 +40,6 @@ namespace Dev2.MathOperations
         #endregion Ctor
 
         #region Public Methods
-        
-
-        
-        /// <summary>
-        /// Evaluate the expression according to the operation specified and pass this to the CalculationManager
-        //  If something goes wrong during the execution, the error field will be populated and the method will
-        //  return false.
-        /// </summary>
-        /// <param name="expressionTO">The expression automatic.</param>
-        /// <param name="evaluation">The evaluation.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        public bool TryEvaluateFunction(IEvaluationFunction expressionTO, out string evaluation, out string error)
-        {
-            bool isSuccessfulEvaluation;
-            error = string.Empty;
-            evaluation = string.Empty;
-
-            if(!string.IsNullOrEmpty(expressionTO.Function))
-            {
-                try
-                {
-                    CalculationValue calcVal = _manager.CalculateFormula(expressionTO.Function);
-                    evaluation = calcVal.GetResolvedValue().ToString();
-                    isSuccessfulEvaluation = true;
-                }
-                catch(Exception ex)
-                {
-                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
-                    error = ex.Message;
-                    isSuccessfulEvaluation = false;
-                }
-            }
-            else
-            {
-                error = ErrorResource.CannotEvaluateEmptyFunction;
-                isSuccessfulEvaluation = false;
-            }
-
-            return isSuccessfulEvaluation;
-        }
-
 
         /// <summary>
         /// Evaluate the expression according to the operation specified and pass this to the CalculationManager
