@@ -66,7 +66,6 @@ Scenario: Change Source on Existing tool
 	And Validate iz Enable
 
 #Spec to be modified once test results section is included in tool window
-@ignore
  Scenario: Editing DB Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
