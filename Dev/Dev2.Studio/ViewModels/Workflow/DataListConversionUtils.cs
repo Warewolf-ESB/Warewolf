@@ -49,7 +49,10 @@ namespace Dev2.ViewModels.Workflow
                 var listOfComplexObject = dataList.ComplexObjects;
                 foreach(var complexObject in listOfComplexObject)
                 {
-                    result.AddRange(ConvertToIDataListItem(complexObject));
+                    if (complexObject.IODirection == enDev2ColumnArgumentDirection.Both || complexObject.IODirection == enDev2ColumnArgumentDirection.Input)
+                    {
+                        result.AddRange(ConvertToIDataListItem(complexObject,null));
+                    }
                 }
             }
 
@@ -107,14 +110,13 @@ namespace Dev2.ViewModels.Workflow
             return result;
         }
 
-        IList<IDataListItem> ConvertToIDataListItem(IComplexObject complexObject)
+        IList<IDataListItem> ConvertToIDataListItem(IComplexObject complexObject, IDataListItem parentItem)
         {
             List<IDataListItem> result = new List<IDataListItem>();
             var dataListEntry = complexObject;
-
             foreach (var column in dataListEntry.Children)
             {
-                var fields = column.Value.Where(c => c.IODirection == enDev2ColumnArgumentDirection.Both || c.IODirection == enDev2ColumnArgumentDirection.Input).ToList();
+                var fields = column.Value;
                 foreach (var col in fields)
                 {
                     IDataListItem singleRes = new DataListItem();
@@ -128,8 +130,19 @@ namespace Dev2.ViewModels.Workflow
                     }
                     else
                     {
-                        singleRes.Field = complexObject.Name;
-                        singleRes.DisplayValue = complexObject.Name;
+                        //if (col.Children == null || col.Children.Count == 0)
+                        {
+                            if (parentItem == null)
+                            {
+                                singleRes.Field = complexObject.Name + "." + col.Name;
+                                singleRes.DisplayValue = complexObject.Name + "." + col.Name;
+                            }
+                            else
+                            {
+                                singleRes.Field = parentItem.Field + "." + col.Name;
+                                singleRes.DisplayValue = parentItem.DisplayValue + "." + col.Name;
+                            }
+                        }
                     }
                     singleRes.Value = col.Value;
                     singleRes.Description = col.Description;
@@ -139,15 +152,46 @@ namespace Dev2.ViewModels.Workflow
                         {
                             foreach(var obj in child.Value)
                             {
-                                var childRes = ConvertToIDataListItem(obj);
+                                var childRes = ConvertToIDataListItem(obj,singleRes);
                                 result.AddRange(childRes);
                             }
                         }
                     }
-                    result.Add(singleRes);
-                }                
+                    if (col.Children == null || col.Children.Count == 0)
+                    {
+                        result.Add(singleRes);
+                    }
+                }
             }
+            if(complexObject.Children.Count==0)
+            {
+                IDataListItem singleRes = new DataListItem();
 
+                if (parentItem == null)
+                {
+                    singleRes.Field = complexObject.Name + "." + complexObject.Name;
+                    singleRes.DisplayValue = complexObject.Name + "." + complexObject.Name;
+                }
+                else
+                {
+                    singleRes.Field = parentItem.Field + "." + complexObject.Name;
+                    singleRes.DisplayValue = parentItem.DisplayValue + "." + complexObject.Name;
+                }
+                singleRes.Value = complexObject.Value;
+                singleRes.Description = complexObject.Description;
+                if (complexObject.Children != null && complexObject.Children.Count > 0)
+                {
+                    foreach (var child in complexObject.Children)
+                    {
+                        foreach (var obj in child.Value)
+                        {
+                            var childRes = ConvertToIDataListItem(obj, singleRes);
+                            result.AddRange(childRes);
+                        }
+                    }
+                }
+                result.Add(singleRes);
+            }       
             return result;
         }
     }
