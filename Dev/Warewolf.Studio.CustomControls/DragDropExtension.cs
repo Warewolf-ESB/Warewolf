@@ -16,7 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Dev2.Views.Explorer
+namespace Warewolf.Studio.CustomControls
 {
     /// <summary>
     /// Provides extended support for drag drop operation
