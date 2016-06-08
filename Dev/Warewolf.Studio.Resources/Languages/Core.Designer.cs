@@ -4761,7 +4761,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key..
+        ///   Looks up a localized string similar to The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key.&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
+        ///Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
+        ///https://www.dropbox.com/1/oauth2/redirect_receiver/.
         /// </summary>
         public static string ManageOAuthKeyHelp {
             get {
