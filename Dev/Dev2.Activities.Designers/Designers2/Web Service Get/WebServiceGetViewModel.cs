@@ -143,7 +143,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             {
                 Errors = new List<IActionableErrorInfo>()
                 {
-                    new ActionableErrorInfo()
+                    new ActionableErrorInfo
                     {
                         Message = string.Format(ErrorResource.ValidateBeforeMinimising, "Web get")
                     }
