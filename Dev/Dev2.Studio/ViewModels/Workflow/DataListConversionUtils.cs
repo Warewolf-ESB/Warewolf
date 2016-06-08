@@ -45,6 +45,12 @@ namespace Dev2.ViewModels.Workflow
                 {
                     result.AddRange(ConvertToIDataListItem(entry));
                 }
+
+                var listOfComplexObject = dataList.ComplexObjects;
+                foreach(var complexObject in listOfComplexObject)
+                {
+                    result.AddRange(ConvertToIDataListItem(complexObject));
+                }
             }
 
             return result;
@@ -98,6 +104,50 @@ namespace Dev2.ViewModels.Workflow
                 }      
             }
                                  
+            return result;
+        }
+
+        IList<IDataListItem> ConvertToIDataListItem(IComplexObject complexObject)
+        {
+            List<IDataListItem> result = new List<IDataListItem>();
+            var dataListEntry = complexObject;
+
+            foreach (var column in dataListEntry.Children)
+            {
+                var fields = column.Value.Where(c => c.IODirection == enDev2ColumnArgumentDirection.Both || c.IODirection == enDev2ColumnArgumentDirection.Input).ToList();
+                foreach (var col in fields)
+                {
+                    IDataListItem singleRes = new DataListItem();
+                    singleRes.IsRecordset = complexObject.IsArray;
+                    if (complexObject.IsArray)
+                    {
+                        singleRes.Recordset = complexObject.Name;
+                        singleRes.Field = col.Name;
+                        singleRes.RecordsetIndex = column.Key.ToString();
+                        singleRes.DisplayValue = DataListUtil.CreateRecordsetDisplayValue(complexObject.Name, col.Name, column.Key.ToString());
+                    }
+                    else
+                    {
+                        singleRes.Field = complexObject.Name;
+                        singleRes.DisplayValue = complexObject.Name;
+                    }
+                    singleRes.Value = col.Value;
+                    singleRes.Description = col.Description;
+                    if (col.Children != null && col.Children.Count > 0)
+                    {
+                        foreach(var child in col.Children)
+                        {
+                            foreach(var obj in child.Value)
+                            {
+                                var childRes = ConvertToIDataListItem(obj);
+                                result.AddRange(childRes);
+                            }
+                        }
+                    }
+                    result.Add(singleRes);
+                }                
+            }
+
             return result;
         }
     }

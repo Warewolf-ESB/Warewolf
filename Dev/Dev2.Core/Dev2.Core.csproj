@@ -115,7 +115,6 @@
     </Compile>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2Random.cs" />
-    <Compile Include="Common\Field.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />
     <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
