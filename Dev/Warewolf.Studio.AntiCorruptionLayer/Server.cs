@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Toolbox;
@@ -113,20 +112,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return _version;
         }
 
-        public string GetServerInformationalVersion()
-        {
-            if (_informationalVersion == null)
-            {
-                if (!EnvironmentConnection.IsConnected)
-                {
-                    EnvironmentConnection.Connect(Guid.Empty);
-                }
-                _informationalVersion = ProxyLayer.AdminManagerProxy.GetServerInformationalVersion();
-            }
-
-            return _informationalVersion;
-        }
-
         public string GetMinSupportedVersion()
         {
             if (_minversion == null)
@@ -209,19 +194,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
 
-        public IServer Clone()
-        {
-            return new Server(_environmentModel)
-            {
-                Permissions = Permissions
-            };
-        }
-
-        public List<IResource> Load()
-        {
-            return null;
-        }
-
         public async Task<IExplorerItem> LoadExplorer()
         {
             var result = await ProxyLayer.LoadExplorer();
@@ -278,10 +250,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             EnvironmentConnection.Disconnect();
             OnPropertyChanged("IsConnected");
             OnPropertyChanged("DisplayName");
-        }
-
-        public void Edit()
-        {
         }
 
         public List<IWindowsGroupPermission> Permissions

@@ -31,10 +31,6 @@ namespace Dev2.Webs.Callbacks
         {
         }
 
-        public void NavigateTo(string uri, string args, string returnUri)
-        {
-        }
-
         public void OpenPropertyEditor()
         {
 
@@ -81,14 +77,6 @@ namespace Dev2.Webs.Callbacks
         }
 
         public event NavigateRequestedEventHandler NavigateRequested;
-
-        protected void OnNavigateRequested(string uri)
-        {
-            if(NavigateRequested != null)
-            {
-                NavigateRequested(uri);
-            }
-        }
 
         public string FetchData(string args)
         {
