@@ -22,6 +22,7 @@ using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.Views;
 using Dev2.Util.ExtensionMethods;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
@@ -455,7 +456,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 {
                     if(!WorkflowNames.Contains(PostWorkflowName))
                     {
-                        result = "Invalid workflow selected";
+                        result = ErrorResource.InvalidWorkflow;
                     }
                 }
 

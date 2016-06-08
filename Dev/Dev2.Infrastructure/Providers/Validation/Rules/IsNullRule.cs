@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -19,7 +20,7 @@ namespace Dev2.Providers.Validation.Rules
         public IsNullRule(Func<object> getValue)
             : base(getValue)
         {
-            ErrorText = "cannot be null";
+            ErrorText = ErrorResource.CannotBeNull;
         }
 
         public override IActionableErrorInfo Check()

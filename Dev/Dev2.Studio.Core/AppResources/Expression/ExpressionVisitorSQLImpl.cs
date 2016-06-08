@@ -13,6 +13,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Expression
@@ -49,7 +50,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                 Visit(lambda.Body);
                 return m;
             }
-            throw new NotSupportedException(string.Format("The method '{0}' is not supported", m.Method.Name));
+            throw new NotSupportedException(string.Format(ErrorResource.MethodNotSupported, m.Method.Name));
         }
 
         protected override System.Linq.Expressions.Expression VisitUnary(UnaryExpression u)
@@ -61,7 +62,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                     Visit(u.Operand);
                     break;
                 default:
-                    throw new NotSupportedException(string.Format("The unary operator '{0}' is not supported", u.NodeType));
+                    throw new NotSupportedException(string.Format(ErrorResource.UnaryOperatorNotSupported, u.NodeType));
             }
             return u;
         }
@@ -99,7 +100,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                     _sb.Append(" >= ");
                     break;
                 default:
-                    throw new NotSupportedException(string.Format("The binary operator '{0}' is not supported", b.NodeType));
+                    throw new NotSupportedException(string.Format(ErrorResource.BinaryOperatorNotSupported, b.NodeType));
             }
             Visit(b.Right);
             _sb.Append(")");
@@ -132,7 +133,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                         _sb.Append("'");
                         break;
                     case TypeCode.Object:
-                        throw new NotSupportedException(string.Format("The constant for '{0}' is not supported", c.Value));
+                        throw new NotSupportedException(string.Format(ErrorResource.ConstantNotSupported, c.Value));
                     default:
                         _sb.Append(c.Value);
                         break;
@@ -148,7 +149,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                 _sb.Append(m.Member.Name);
                 return m;
             }
-            throw new NotSupportedException(string.Format("The member '{0}' is not supported", m.Member.Name));
+            throw new NotSupportedException(string.Format(ErrorResource.MemberNotSupported, m.Member.Name));
         }
     }
 }

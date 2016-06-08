@@ -44,6 +44,7 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 using Warewolf.ResourceManagement;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -468,7 +469,7 @@ namespace Dev2.Runtime.Hosting
         {
             if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
             {
-                throw new InvalidDataContractException("ResourceName and Type are missing from the request");
+                throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
             }
 
             if(string.IsNullOrEmpty(resourceName) || resourceName == "*")
@@ -538,7 +539,7 @@ namespace Dev2.Runtime.Hosting
         {
             if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
             {
-                throw new InvalidDataContractException("ResourceName and Type are missing from the request");
+                throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
             }
 
             if(string.IsNullOrEmpty(resourceName) || resourceName == "*")
@@ -827,7 +828,7 @@ namespace Dev2.Runtime.Hosting
 
                 if(string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
                 {
-                    throw new InvalidDataContractException("ResourceName or Type is missing from the request");
+                    throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
                 }
 
                 var workspaceResources = GetResources(workspaceID);
@@ -866,7 +867,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
                     {
-                        throw new InvalidDataContractException("ResourceID or Type is missing from the request");
+                        throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
                     }
 
                     var workspaceResources = GetResources(workspaceID);
@@ -1780,7 +1781,7 @@ namespace Dev2.Runtime.Hosting
 
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId)
         {
-            if(resourceId == null) throw new ArgumentNullException("resourceId", @"No resource name given.");
+            if(resourceId == null) throw new ArgumentNullException("resourceId", ErrorResource.NoResourceName);
 
             var resources = GetResources(workspaceID);
             var dependants = new List<Guid>();

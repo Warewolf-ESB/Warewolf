@@ -10,6 +10,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -22,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(values == null)
             {
-                throw new InvalidDataException("Empty values passed.");
+                throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
             StringBuilder loggingSettingsBuilder;

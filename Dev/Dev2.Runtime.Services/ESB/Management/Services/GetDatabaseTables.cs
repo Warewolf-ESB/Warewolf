@@ -25,6 +25,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using MySql.Data.MySqlClient;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -54,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(values == null)
             {
-                throw new InvalidDataContractException("No parameter values provided.");
+                throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string database = null;
             StringBuilder tmp;

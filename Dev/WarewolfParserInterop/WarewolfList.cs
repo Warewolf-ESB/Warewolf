@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Common;
+using Warewolf.Resource.Errors;
 
 namespace WarewolfParserInterop
 {
@@ -161,7 +162,7 @@ namespace WarewolfParserInterop
                     _values[i] = value;
                 else if (i == Count)
                     AddSomething(value);
-                else throw new NullValueInVariableException("the recordset does not have the row" + i, "");
+                else throw new NullValueInVariableException(ErrorResource.RecordsetDoesNotHaveRow + i, "");
                 
             }
         }

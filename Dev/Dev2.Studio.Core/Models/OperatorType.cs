@@ -12,6 +12,7 @@
 using System;
 using System.ComponentModel;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
@@ -97,7 +98,7 @@ namespace Dev2.Studio.Core.Models
                         break;
 
                     default:
-                        throw new ArgumentException(@"Unexpected property name encountered", columnName);
+                        throw new ArgumentException(ErrorResource.UnexpectedPropertyName, columnName);
                 }
 
                 return error;
@@ -112,7 +113,7 @@ namespace Dev2.Studio.Core.Models
             {
                 if(string.IsNullOrEmpty(value))
                 {
-                    error = string.Format("{0} is required", propertyName);
+                    error = string.Format(ErrorResource.IsRequired, propertyName);
 
                 }
 

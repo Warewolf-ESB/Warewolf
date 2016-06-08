@@ -23,6 +23,7 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -151,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             // Clear out the Recordset.Fields list because the sequence and
@@ -184,7 +185,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -203,7 +204,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -221,7 +222,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -239,7 +240,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
