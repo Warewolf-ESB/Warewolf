@@ -630,7 +630,6 @@ namespace Dev2.UI
         int _caretPositionOnPopup;
         string _defaultToolTip;
         IntellisenseDesiredResultSet _desiredResultSet;
-        bool _expectOpen;
         bool _forcedOpen;
 
         bool _lastResultHasError;
@@ -818,7 +817,6 @@ namespace Dev2.UI
                     {
                         if (!wasOpen && _listBox != null && _listBox.HasItems)
                         {
-                            _expectOpen = true;
                             _desiredResultSet = (IntellisenseDesiredResultSet)4;
                             IsOpen = true;
                         }
@@ -896,59 +894,6 @@ namespace Dev2.UI
 
         protected virtual void OnIsInCalculateModeChanged(bool oldValue, bool newValue)
         {
-        }
-
-        protected virtual void OnIsOpenChanged(bool oldValue, bool newValue)
-        {
-            if (newValue)
-            {
-                if (DesignerProperties.GetIsInDesignMode(this))
-                {
-                    IsOpen = false;
-                    if (_toolTip != null)
-                    {
-                        _toolTip.IsOpen = false;
-                    }
-                }
-                else
-                {
-                    if (_listBox != null)
-                    {
-                        if (_expectOpen)
-                        {
-                            _expectOpen = false;
-                            if ((int)_desiredResultSet < 4)
-                            {
-                                EnsureIntellisenseResults(Text, true, _desiredResultSet);
-                            }
-                        }
-                        else
-                        {
-                            EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
-                        }
-
-                        if (_listBox.HasItems)
-                        {
-                            _caretPositionOnPopup = CaretIndex;
-                            _textOnPopup = Text;
-                            RaiseRoutedEvent(OpenedEvent);
-                        }
-                        else
-                        {
-                            IsOpen = false;
-                        }
-                    }
-                    else
-                    {
-                        IsOpen = false;
-                    }
-                }
-            }
-            else
-            {
-                EnsureErrorStatus();
-                RaiseRoutedEvent(ClosedEvent);
-            }
         }
 
         void RaiseRoutedEvent(RoutedEvent routedEvent)
@@ -1608,7 +1553,6 @@ namespace Dev2.UI
             {
                 if (!isOpen)
                 {
-                    _expectOpen = true;
                     _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
                     IsOpen = true;
                 }

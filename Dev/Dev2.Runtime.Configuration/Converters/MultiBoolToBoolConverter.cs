@@ -13,6 +13,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Configuration.Converters
 {
@@ -30,7 +31,7 @@ namespace Dev2.Runtime.Configuration.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if(Operator == LogicalOperator.None)
-                throw new Exception("Operator need to be specified");
+                throw new Exception(ErrorResource.OperatorNeedToBeSpecified);
 
             var list = values.ToList().Cast<bool>();
 

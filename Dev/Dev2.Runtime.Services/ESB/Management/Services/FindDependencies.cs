@@ -22,6 +22,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -55,12 +56,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 if (string.IsNullOrEmpty(resourceId))
                 {
-                    throw new InvalidDataContractException("ResourceId is empty or null");
+                    throw new InvalidDataContractException(ErrorResource.ResourceIdIsNull);
                 }
                 Guid resId;
                 if (!Guid.TryParse(resourceId, out resId))
                 {
-                    throw new InvalidDataContractException("ResourceId is not a GUID");
+                    throw new InvalidDataContractException(ErrorResource.ResourceIdNotAGUID);
                 }
                 var resource = ResourceCatalog.GetResource(theWorkspace.ID, resId);
                 if (!string.IsNullOrEmpty(dependsOnMeString))
@@ -110,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if (resourceID == null)
             {
-                throw new ArgumentNullException("resourceID", @"Resource not found");
+                throw new ArgumentNullException("resourceID", ErrorResource.ResourceNotFound);
             }
             var dependants = ResourceCatalog.GetDependants(Guid.Empty, resourceID) ?? new List<Guid>();
             dependants.AddRange(ResourceCatalog.GetDependants(workspaceId, resourceID) ?? new List<Guid>());

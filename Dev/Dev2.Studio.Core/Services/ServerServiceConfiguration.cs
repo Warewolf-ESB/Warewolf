@@ -13,6 +13,7 @@ using System;
 using System.Windows;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core.Services;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services
 {
@@ -68,7 +69,7 @@ namespace Dev2.Services
         {
             if(ServiceManager == null)
             {
-                throw new Exception("Null Service Manager");
+                throw new Exception(ErrorResource.NullServiceManager);
             }
 
             if(!ServiceManager.IsRunning())

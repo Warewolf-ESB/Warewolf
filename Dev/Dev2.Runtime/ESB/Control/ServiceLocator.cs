@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Control
 {
@@ -39,7 +40,7 @@ namespace Dev2.Runtime.ESB.Control
 
             if(string.IsNullOrEmpty(serviceName))
             {
-                throw new InvalidDataException("Empty or null service passed in");
+                throw new InvalidDataException(ErrorResource.ServiceIsNull);
             }
 
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.ESB.Control
 
             if(serviceID == Guid.Empty)
             {
-                throw new InvalidDataException("Empty or null service passed in");
+                throw new InvalidDataException(ErrorResource.ServiceIsNull);
             }
 
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceID);
@@ -92,7 +93,7 @@ namespace Dev2.Runtime.ESB.Control
 
             if(string.IsNullOrEmpty(sourceName))
             {
-                throw new InvalidDataException("Empty or null service passed in");
+                throw new InvalidDataException(ErrorResource.ServiceIsNull);
             }
 
             var sources = ResourceCatalog.Instance.GetDynamicObjects<Source>(workspaceID, sourceName);

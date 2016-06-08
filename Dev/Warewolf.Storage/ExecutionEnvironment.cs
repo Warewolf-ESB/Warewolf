@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Warewolf.Resource.Errors;
 using WarewolfParserInterop;
 
 namespace Warewolf.Storage
@@ -167,7 +168,7 @@ namespace Warewolf.Storage
                 // ReSharper restore PossibleNullReferenceException
                 return x.Select(WarewolfAtomToString).ToList();
             }
-            throw new Exception(string.Format("Could not retrieve list of strings from expression {0}", expression));
+            throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
 
         public static string WarewolfAtomToString(DataStorage.WarewolfAtom a)
@@ -192,7 +193,7 @@ namespace Warewolf.Storage
             }
             if (a.IsNothing)
             {
-                throw new NullValueInVariableException("Variable is null", "");
+                throw new NullValueInVariableException(ErrorResource.VariableIsNull, "");
             }
             return a.ToString();
         }

@@ -10,6 +10,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -87,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Error enumerating directory.", e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
             }
             return null;
         }
@@ -102,7 +103,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Error enumerating directory.", e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
             }
             return dllListing;
         }

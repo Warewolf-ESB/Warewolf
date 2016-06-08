@@ -12,6 +12,7 @@
 using System;
 using System.Xml;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -20,7 +21,7 @@ namespace Dev2.Providers.Validation.Rules
         public IsValidXmlRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "is not a valid expression";
+            ErrorText = ErrorResource.InvalidExpression;
         }
 
         public override IActionableErrorInfo Check()
