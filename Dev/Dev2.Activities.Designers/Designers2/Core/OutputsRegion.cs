@@ -13,6 +13,7 @@ using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 namespace Dev2.Activities.Designers2.Core
@@ -307,7 +308,12 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return Outputs.Where(a => FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                var errors = Outputs.Where(a => FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                if(IsObject && string.IsNullOrEmpty(ObjectName))
+                {
+                    errors.Add(ErrorResource.NoObjectName);
+                }
+                return errors;
             }
         }
 
