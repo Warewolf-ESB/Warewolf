@@ -748,7 +748,7 @@
     <value>The value can not be null.</value>
   </data>
   <data name="VariableIsMissing" xml:space="preserve">
-    <value>Variable [[]] is missing a name</value>
+    <value>Variable [[{0}]] is missing a name</value>
   </data>
   <data name="XPathProvidedNotValid" xml:space="preserve">
     <value>The XPath expression provided is not valid</value>
@@ -789,6 +789,9 @@
   <data name="CannotBeNull" xml:space="preserve">
     <value>Cannot be null</value>
   </data>
+  <data name="CannotDeleteFileWithoutFilename" xml:space="preserve">
+    <value>Can't delete a file if no filename is passed.</value>
+  </data>
   <data name="CannotFindGroup" xml:space="preserve">
     <value>Cannot find group</value>
   </data>
@@ -801,14 +804,50 @@
   <data name="CannotHaveScalars" xml:space="preserve">
     <value>Cannot have any scalars in this field</value>
   </data>
+  <data name="CanOnlyExecuteWorkflowsFromWebBrowser" xml:space="preserve">
+    <value>Can only execute workflows from web browser</value>
+  </data>
   <data name="CopyToFailedArrayTooSmall" xml:space="preserve">
     <value>CopyTo() failed:  supplied array was too small</value>
+  </data>
+  <data name="CouldNotCreateWorkflowExecutionWrapper" xml:space="preserve">
+    <value>Internal System Error : Could not create workflow execution wrapper</value>
+  </data>
+  <data name="CouldNotLocateAssembly" xml:space="preserve">
+    <value>Could not locate Assembly [{0}]</value>
+  </data>
+  <data name="CouldNotLocateManagementService" xml:space="preserve">
+    <value>Could not locate management service [{0}]</value>
+  </data>
+  <data name="CouldNotLocateService" xml:space="preserve">
+    <value>Could not locate service with ID [{0}]</value>
+  </data>
+  <data name="DirectoryIsRequired" xml:space="preserve">
+    <value>Directory is required and not provided</value>
+  </data>
+  <data name="DomainOrUsernameOrPasswordMissing" xml:space="preserve">
+    <value>Domain or Username or Password is missing</value>
+  </data>
+  <data name="EmptyValuesPassed" xml:space="preserve">
+    <value>Empty values passed.</value>
   </data>
   <data name="EnumeratorNotStarted" xml:space="preserve">
     <value>The enumerator has not been started.</value>
   </data>
   <data name="EnumeratorReachedTheEnd" xml:space="preserve">
     <value>The enumerator has reached the end of the collection.</value>
+  </data>
+  <data name="ErrorEnumeratingDirectory" xml:space="preserve">
+    <value>Error enumerating directory.</value>
+  </data>
+  <data name="ErrorRetrievingShapeFromServiceOutput" xml:space="preserve">
+    <value>Error retrieving shape from service output.</value>
+  </data>
+  <data name="FailedToLoadManagementService" xml:space="preserve">
+    <value>Failed to load management service [{0}]</value>
+  </data>
+  <data name="FilePathOrUsernameOrPasswordMissing" xml:space="preserve">
+    <value>FilePath or Username or Password is missing</value>
   </data>
   <data name="InvalidExpression" xml:space="preserve">
     <value>Is not a valid expression</value>
@@ -819,11 +858,26 @@
   <data name="InvalidRequestID" xml:space="preserve">
     <value>Invalid RequestID</value>
   </data>
+  <data name="InvalidResourceID" xml:space="preserve">
+    <value>Invalid ResourceID</value>
+  </data>
+  <data name="InvalidUrl" xml:space="preserve">
+    <value>Invalid Url to execute for logging</value>
+  </data>
   <data name="InvalidUser" xml:space="preserve">
     <value>Invalid User</value>
   </data>
   <data name="InvalidValue" xml:space="preserve">
     <value>Value is invalid.</value>
+  </data>
+  <data name="InvalidVersion" xml:space="preserve">
+    <value>Invalid Version found</value>
+  </data>
+  <data name="InvalidWorkflow" xml:space="preserve">
+    <value>Invalid workflow selected</value>
+  </data>
+  <data name="MalformedService" xml:space="preserve">
+    <value>Malformed Service [{0}] it contains multiple actions</value>
   </data>
   <data name="MustBeRealNumber" xml:space="preserve">
     <value>Must be a real number</value>
@@ -834,10 +888,52 @@
   <data name="MustBeWholeNumber" xml:space="preserve">
     <value>Must be a whole number</value>
   </data>
+  <data name="NoContractFound" xml:space="preserve">
+    <value>No contract found for end point</value>
+  </data>
+  <data name="NoParameter" xml:space="preserve">
+    <value>No parameter values provided.</value>
+  </data>
+  <data name="NoResourceIdInTheIncomingData" xml:space="preserve">
+    <value>No resourceId was found in the incoming data</value>
+  </data>
+  <data name="NoResourceName" xml:space="preserve">
+    <value>No resource name given</value>
+  </data>
+  <data name="NullServiceIDOrWorkspaceID" xml:space="preserve">
+    <value>Null or empty ServiceID or WorkspaceID</value>
+  </data>
+  <data name="OperatorNeedToBeSpecified" xml:space="preserve">
+    <value>Operator need to be specified</value>
+  </data>
+  <data name="ResourceIdIsNull" xml:space="preserve">
+    <value>ResourceId is empty or null</value>
+  </data>
+  <data name="ResourceIdNotAGUID" xml:space="preserve">
+    <value>ResourceId is not a GUID</value>
+  </data>
+  <data name="ResourceNameAndTypeMissing" xml:space="preserve">
+    <value>ResourceName and Type are missing from the request</value>
+  </data>
+  <data name="ResourceNotFound" xml:space="preserve">
+    <value>Resource {0} not found</value>
+  </data>
+  <data name="ResourcePassedNotWorkflowService" xml:space="preserve">
+    <value>Resource Type passed not WorkflowService</value>
+  </data>
+  <data name="ServiceIsNull" xml:space="preserve">
+    <value>Empty or null service passed in</value>
+  </data>
+  <data name="ServiceNotFound" xml:space="preserve">
+    <value>Service not found</value>
+  </data>
   <data name="SupplyAtLeastOne" xml:space="preserve">
     <value>Please supply at least one of the following: {0}</value>
   </data>
   <data name="UserDoesNotExistOnTheMachine" xml:space="preserve">
     <value>User {0} does not exist on the machine.</value>
+  </data>
+  <data name="WorkflowNotFound" xml:space="preserve">
+    <value>Workflow not found.</value>
   </data>
 </root>

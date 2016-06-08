@@ -28,6 +28,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -247,7 +248,7 @@ namespace Dev2.Runtime.ESB.WF
             }
             else
             {
-                errors.AddError("Internal System Error : Could not create workflow execution wrapper");
+                errors.AddError(ErrorResource.CouldNotCreateWorkflowExecutionWrapper);
             }
 
             return dataTransferObject;
