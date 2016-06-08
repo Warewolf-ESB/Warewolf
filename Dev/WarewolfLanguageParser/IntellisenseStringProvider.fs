@@ -12,7 +12,7 @@ open Microsoft.FSharp.Text.Lexing
 open System
 open System.Diagnostics.CodeAnalysis
 
-let Tokenisers = "!@#$%^&*()-=_+{}|:\"?><`~<>?:'{}| ".ToCharArray()
+let Tokenisers = "!#$%^&*()-=_+{}|:\"?><`~<>?:'{}| ".ToCharArray()
 
 let Tokenisers2 = "[]".ToCharArray()
 
