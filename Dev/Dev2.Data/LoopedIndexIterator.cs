@@ -9,9 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-
 namespace Dev2.Data.Binary_Objects
 {
     public class LoopedIndexIterator : IIndexIterator
@@ -49,30 +46,6 @@ namespace Dev2.Data.Binary_Objects
             return _loopedIdx;
         }
 
-        public int MinIndex()
-        {
-            return _loopedIdx;
-        }
-
-        public void AddGap(int idx)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveGap(int idx)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IIndexIterator Clone()
-        {
-            return new LoopedIndexIterator(_curPos, _itrCnt);
-        }
 
     }
 }

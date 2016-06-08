@@ -1721,6 +1721,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
                 complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed) || complexObjectItemModel.IsUsed;
             }
+            
         }
 
         private List<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
@@ -1873,7 +1874,7 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
             ShowUnusedDataListVariables(resourceModel, removeParts, workflowFields);
-
+            ViewModelUtils.RaiseCanExecuteChanged(DeleteCommand);
             if (resourceModel == Resource)
             {
                 AddMissingDataListItems(filteredDataListParts);

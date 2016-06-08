@@ -34,16 +34,5 @@ namespace Dev2.PathOperations.Interfaces
         /// <returns>The item with specified key; or <code>null</code> if not found.</returns>
         TItem Get(TKey key, bool force = false);
 
-        /// <summary>
-        /// Saves the specified item to the repository.
-        /// </summary>
-        /// <param name="item">The item to be saved.</param>
-        void Save(TItem item);
-
-        /// <summary>
-        /// Deletes the specified item from the repository.
-        /// </summary>
-        /// <param name="item">The item to be deleted.</param>
-        void Delete(TItem item);
     }
 }

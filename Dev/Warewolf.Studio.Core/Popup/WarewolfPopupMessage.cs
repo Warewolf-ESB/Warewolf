@@ -72,40 +72,6 @@ namespace Warewolf.Studio.Core.Popup
         /// </summary>
         public bool IsActive { get; set; }
 
-        public void OkClicked()
-        {
-            Result = MessageBoxResult.OK;
-            TryClose();
-        }
-
-        public void YesClicked()
-        {
-            Result = MessageBoxResult.Yes;
-            TryClose();
-        }
-
-        public void NoClicked()
-        {
-            Result = MessageBoxResult.No;
-            TryClose();
-        }
-
-        public void CancelClicked()
-        {
-            Result = MessageBoxResult.Cancel;
-            TryClose();
-        }
-
-        void TryClose()
-        {
-        }
-
-        public void ClosedClicked()
-        {
-        
-            TryClose();
-        }
-
         #endregion
 
         public MessageBoxResult Show()

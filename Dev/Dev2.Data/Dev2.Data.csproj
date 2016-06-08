@@ -259,7 +259,6 @@
     <Compile Include="Interfaces\IRecordSetCollection.cs" />
     <Compile Include="Interfaces\IRecordSetDefinition.cs" />
     <Compile Include="Interfaces\IRecordsetScopingObject.cs" />
-    <Compile Include="Interfaces\IRecordsetTO.cs" />
     <Compile Include="Interfaces\IRecsetSearch.cs" />
     <Compile Include="Interfaces\ISystemTag.cs" />
     <Compile Include="MathOperations\EvaluationFunctionTO.cs" />
@@ -313,7 +312,6 @@
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />
-    <Compile Include="Value Objects\Dev2TokenConverter.cs" />
     <Compile Include="WarewolfIterator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -374,10 +372,9 @@
     <Folder Include="Audit\" />
     <Folder Include="Compilers\" />
     <Folder Include="DataListCache\" />
-    <Folder Include="Network\" />
-    <Folder Include="Server\" />
     <Folder Include="Storage\Binary Objects\" />
     <Folder Include="Storage\ProtocolBuffers\" />
+    <Folder Include="Value Objects\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

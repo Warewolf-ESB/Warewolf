@@ -534,18 +534,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ShowDependencies(Guid resourceId, bool dependsOnMe)
-        {
-            var environmentModel = EnvironmentRepository.Get(ActiveServer.EnvironmentID);
-            if (environmentModel != null)
-            {
-                environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
-                var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
-                var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
-                contextualResourceModel.Update(resource);
-                ShowDependencies(dependsOnMe, contextualResourceModel, ActiveServer);
-            }
-        }
         void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server)
         {
             var vm = new DependencyVisualiserViewModel(new DependencyVisualiserView(), server, dependsOnMe)
@@ -1036,13 +1024,6 @@ namespace Dev2.Studio.ViewModels
                     DeactivateItem(wfscvm, true);
                 }
             }
-        }
-
-        public void CloseResource(IEnvironmentModel environmentModel, Guid resourceId)
-        {
-            var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == resourceId) as IContextualResourceModel;
-            var wfscvm = FindWorkSurfaceContextViewModel(resource);
-            DeactivateItem(wfscvm, true);
         }
 
         public async void OpenResourceAsync(Guid resourceId, IServer server)

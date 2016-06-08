@@ -21,6 +21,7 @@ namespace Dev2
 {
     public static class StringExtension
     {
+        // ReSharper disable once UnusedMember.Global
         public static bool IsDate(this string payload)
         {
             bool result = false;
