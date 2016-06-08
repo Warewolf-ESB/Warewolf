@@ -661,7 +661,6 @@ Scenario: Assign a Variable That Does Not Exist
 	And the execution has "Scalar value { var } is NULL" error
 
 
-@ignore
 #Complex types WOLF-1042
 Scenario Outline:  Assigning value to a complex type
 	Given I assign the value "<value>" to a variable "<object>"	
