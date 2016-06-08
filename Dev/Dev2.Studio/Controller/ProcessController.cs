@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Diagnostics;
-using System.Management;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Controller
@@ -40,20 +38,6 @@ namespace Dev2.Studio.Controller
         public ProcessController(Process process)
         {
             UtilityProcess = process;
-        }
-
-        void CheckChildProcesses(int id)
-        {
-            var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
-
-            var managementObjectCollection = searcher.Get();
-            foreach(var o in managementObjectCollection)
-            {
-                var queryObj = (ManagementObject)o;
-                var pid = Convert.ToInt32(queryObj["ProcessId"]);
-                var processById = Process.GetProcessById(pid);
-                processById.Kill();
-            }
         }
     }
 }

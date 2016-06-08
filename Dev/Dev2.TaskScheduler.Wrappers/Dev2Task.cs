@@ -81,11 +81,6 @@ namespace Dev2.TaskScheduler.Wrappers
             get { return _nativeObject.State; }
         }
 
-        public void RegisterChanges()
-        {
-            _nativeObject.RegisterChanges();
-        }
-
 
         public bool IsValidDev2Task()
         {

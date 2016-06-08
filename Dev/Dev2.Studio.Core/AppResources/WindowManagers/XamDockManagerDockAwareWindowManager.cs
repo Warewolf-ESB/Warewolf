@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -34,24 +33,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
         public XamDockManager DockManager
         {
             get { return GetDockingManager(); }
-        }
-
-        private static ContentPane EnsureDockWindow(object view)
-        {
-            var window = view as ContentPane;
-
-            if(window == null)
-            {
-                window = new ContentPane
-                {
-                    CloseAction = PaneCloseAction.RemovePane,
-                    Content = view as UIElement
-                };
-
-                window.SetValue(View.IsGeneratedProperty, true);
-            }
-
-            return window;
         }
 
         /// <summary>
@@ -88,32 +69,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
                 throw new InvalidOperationException("Unable to retrieve a docking manager");
 
             return dockSite;
-        }
-
-        private static class XamDockManagerHelper
-        {
-            static PaneLocation GetSplitPaneLocation(SplitPane pane)
-            {
-                return XamDockManager.GetPaneLocation(pane);
-            }
-
-            static SplitPane FindSplitPaneWithLocation(XamDockManager dockManager, PaneLocation location)
-            {
-                return dockManager.Panes.FirstOrDefault(p => GetSplitPaneLocation(p) == location);
-            }
-
-            static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, PaneLocation location)
-            {
-                SplitPane pane = FindSplitPaneWithLocation(dockManager, location);
-
-                if(pane != null)
-                    return pane;
-
-                pane = new SplitPane();
-                XamDockManager.SetInitialLocation(pane, location.ToInitialPaneLocation());
-
-                return pane;
-            }
         }
 
         /// <summary>
