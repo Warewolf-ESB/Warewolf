@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-using System.Windows.Data;
-using Dev2.Common.Interfaces;
+﻿using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
@@ -17,17 +14,7 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-        #region Implementation of IComponentConnector
 
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
-        {
-        }
-
-        #endregion
 
         #region Implementation of ICheckControlEnabledView
 
@@ -45,44 +32,5 @@ namespace Warewolf.Studio.Views
         }
 
         #endregion
-
-        public string GetHeaderText()
-        {
-            BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
-            return HeaderTextBlock.Text;
-        }
-
-        public string GetInputValue(string controlName)
-        {
-            switch (controlName)
-            {
-                case "EndpointUrlTextBox":
-                    return EndpointUrlTextBox.Text;
-            }
-            return String.Empty;
-        }
-
-        public void TestSend()
-        {
-            TestSendCommand.Command.Execute(null);
-        }
-
-        public void PerformSave()
-        {
-            var viewModel = DataContext as ManageEmailSourceViewModel;
-            if (viewModel != null)
-            {
-                viewModel.OkCommand.Execute(null);
-            }
-        }
-
-        public void EnterHostName(string hostname)
-        {
-            EndpointUrlTextBox.Text = hostname;
-        }
     }
 }

@@ -54,16 +54,6 @@ namespace Warewolf.Studio.Views
             PasswordTextBox.Password = password;
         }
 
-        public string GetProtocol()
-        {
-            return ProtocolItems.SelectedItem.ToString();
-        }
-
-        public string GetAddress()
-        {
-            return AddressTextBox.SelectedItem.ToString();
-        }
-
         public string GetPort()
         {
             return PortTextBox.Text;
@@ -174,14 +164,6 @@ namespace Warewolf.Studio.Views
                 be.UpdateTarget();
             }
             return ErrorTextBlock.Text;
-        }
-
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
-        {
         }
 
         #region Implementation of ICheckControlEnabledView

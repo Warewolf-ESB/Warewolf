@@ -37,23 +37,6 @@ namespace Warewolf.Studio.Views
 
         #region Implementation of IToolboxView
 
-        public void EnterSearch(string searchTerm)
-        {
-            SearchTextBox.Text = searchTerm;
-            BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-            if (be != null)
-            {
-                be.UpdateSource();
-            }
-        }
-
-        public bool CheckToolIsVisible(string toolName)
-        {
-            var tools = GetTools();
-            var tool = tools.FirstOrDefault(model => toolName.Contains(model.Tool.Name));
-            return tool!=null;
-        }
-
         IEnumerable<IToolDescriptorViewModel> GetTools()
         {
             var collectionViewSource = Resources["ToolViewSource"] as CollectionViewSource;
@@ -72,22 +55,6 @@ namespace Warewolf.Studio.Views
             return null;
         }
 
-        public bool CheckAllToolsNotVisible()
-        {
-            var toolCount = GetToolCount();
-            return toolCount == 0;
-        }
-
-        public void ClearFilter()
-        {
-            SearchTextBox.Text = string.Empty;
-            BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-            if (be != null)
-            {
-                be.UpdateSource();
-            }
-        }
-
         public int GetToolCount()
         {
             var tools = GetTools();
@@ -99,44 +66,14 @@ namespace Warewolf.Studio.Views
 
         #region Implementation of IComponentConnector
 
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
-        {
-        }
-
         #endregion
 
         private Cursor _customCursor;
-
-        void UIElement_OnGiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-            if (e.Effects == DragDropEffects.Copy)
-            {
-                if (_customCursor == null)
-                    _customCursor = Application.Current.TryFindResource("CursorGrabbing") as Cursor;
-
-                e.UseDefaultCursors = false;
-                Mouse.SetCursor(_customCursor);
-            }
-            else
-                e.UseDefaultCursors = true;
-
-            e.Handled = true;
-        }
 
         void UIElement_OnDragEnter(object sender, DragEventArgs e)
         {
             var Source = e.Source;
             var originalSource = e.OriginalSource;
-        }
-
-        void ToolGrid_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Cursor grabCursor = Application.Current.TryFindResource("CursorGrabbing") as Cursor;
-            Mouse.SetCursor(grabCursor);
         }
     }
 }

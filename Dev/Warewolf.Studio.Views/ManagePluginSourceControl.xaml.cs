@@ -40,18 +40,6 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        #region Implementation of IComponentConnector
-
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
-        {
-        }
-
-        #endregion
-
         public IDllListingModel SelectItem(string itemName)
         {
             
