@@ -26,6 +26,7 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
@@ -314,7 +315,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
-                        errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                 
                         return null;
                     }
@@ -341,7 +342,7 @@ namespace Dev2.Runtime.ESB.Control
                         errors.MergeErrors(invokeErrors);                        
                         return env;
                     }
-                    errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                    errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                 }
             }
             return new ExecutionEnvironment();
@@ -414,7 +415,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 else
                 {
-                    var message = string.Format("Remote Execution Failed. Service: {0} not found.", dataObject.ServiceName);
+                    var message = string.Format(ErrorResource.ServiceNotFound, dataObject.ServiceName);
                     errors.AddError(message);
                 }
             }
@@ -461,7 +462,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             else
             {
-                invokeErrors.AddError("Asynchronous execution failed: Resource not found");
+                invokeErrors.AddError(ErrorResource.ResourceNotFound);
             }
 
         }

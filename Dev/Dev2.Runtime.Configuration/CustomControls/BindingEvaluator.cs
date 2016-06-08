@@ -97,26 +97,6 @@ namespace System.Windows.Controls
         /// updated binding value.
         /// </summary>
         /// <param name="o">The object to use as the data context.</param>
-        /// <param name="clearDataContext">If set to true, this parameter will
-        /// clear the data context immediately after retrieving the value.</param>
-        /// <returns>Returns the evaluated T value of the bound dependency
-        /// property.</returns>
-        public T GetDynamicValue(object o, bool clearDataContext)
-        {
-            DataContext = o;
-            T value = Value;
-            if (clearDataContext)
-            {
-                DataContext = null;
-            }
-            return value;
-        }
-
-        /// <summary>
-        /// Updates the data context of the framework element and returns the 
-        /// updated binding value.
-        /// </summary>
-        /// <param name="o">The object to use as the data context.</param>
         /// <returns>Returns the evaluated T value of the bound dependency
         /// property.</returns>
         public T GetDynamicValue(object o)
