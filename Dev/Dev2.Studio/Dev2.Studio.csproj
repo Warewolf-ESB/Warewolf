@@ -432,7 +432,6 @@
       <DependentUpon>DropBoxSource.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DropBox2016\IDropBoxHelper.cs" />
-    <Compile Include="Views\Explorer\DragDropExtension.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
@@ -979,7 +978,9 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Explorer\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
