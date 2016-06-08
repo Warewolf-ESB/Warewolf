@@ -20,8 +20,8 @@ foreach ($file in Get-ChildItem -recurse $WarewolfGitRepoDirectory) {
 
         # Check for invalid.
         if ($ReadVersion.StartsWith("0.0.") -or $ReadVersion.EndsWith(".0")) {
-	        Write-Host ERROR! Invalid version! $file`t$ReadVersion
-	        throw "ERROR! `"$file $ReadVersion`" is an invalid version! All Warewolf assembly versions in `"$WarewolfGitRepoDirectory`" must conform to strict version regulations for build to pass."
+	        Write-Host ERROR! Invalid version! $file.FullName $ReadVersion
+	        throw "ERROR! `"$file.FullName $ReadVersion`" is an invalid version! All Warewolf assembly versions in `"$WarewolfGitRepoDirectory`" must conform to strict version regulations for build to pass."
         }
 	}
 }
