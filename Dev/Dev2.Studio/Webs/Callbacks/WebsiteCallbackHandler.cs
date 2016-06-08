@@ -41,10 +41,8 @@ namespace Dev2.Webs.Callbacks
             EventPublisher = eventPublisher;
 
             CurrentEnvironmentRepository = currentEnvironmentRepository;
-            ShowDependencyProvider = showDependencyProvider ?? new ShowDependencyProvider();
         }
 
-        IShowDependencyProvider ShowDependencyProvider { get; set; }
 
         #region Properties
 
@@ -215,13 +213,7 @@ namespace Dev2.Webs.Callbacks
                                 workspace.WorkspaceItems != null &&
                                 workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
                     {
-                        return;
                     }
-                }
-                //2013.07.29: Ashley Lewis for bug 10199 - Don't show dependancy viewer dialog on source type callback
-                if(resource.ResourceType != ResourceType.Source)
-                {
-                    ShowDependencyProvider.ShowDependencyViewer(resource, compileMessageList.Dependants);
                 }
             }
         }
