@@ -13,6 +13,7 @@ using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scripting;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Development.Languages.Scripting
 {
@@ -28,7 +29,7 @@ namespace Dev2.Development.Languages.Scripting
                     return new Dev2PythonContext();
                 case enScriptType.Ruby:
                     return new RubyContext();
-                default : throw new Exception("Invalid scripting context");
+                default : throw new Exception(ErrorResource.InvalidScriptingContext);
 
 
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Dev2.Common;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -136,7 +137,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             else
             {
-                throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
+                throw new Exception(String.Format(ErrorResource.CouldNotLocateAssembly, assemblyLocation));
             }
         }
 

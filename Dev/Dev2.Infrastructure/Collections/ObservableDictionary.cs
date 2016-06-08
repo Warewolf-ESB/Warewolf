@@ -17,6 +17,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Collections
 {
@@ -132,9 +133,34 @@ namespace Dev2.Collections
 
         #region public
 
+        public void Add(TKey key, TValue value)
+        {
+            DoAddEntry(key, value);
+        }
+
+        public void Clear()
+        {
+            DoClearEntries();
+        }
+
+        public bool ContainsKey(TKey key)
+        {
+            return KeyedEntryCollection.Contains(key);
+        }
+
+        public bool ContainsValue(TValue value)
+        {
+            return TrueDictionary.ContainsValue(value);
+        }
+
         public IEnumerator GetEnumerator()
         {
             return new Enumerator<TKey, TValue>(this, false);
+        }
+
+        public bool Remove(TKey key)
+        {
+            return DoRemoveEntry(key);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
@@ -436,7 +462,7 @@ namespace Dev2.Collections
             }
             if(array.Length - index < KeyedEntryCollection.Count)
             {
-                throw new ArgumentException("CopyTo() failed:  supplied array was too small");
+                throw new ArgumentException(ErrorResource.CopyToFailedArrayTooSmall);
             }
 
             foreach(var entry in KeyedEntryCollection)
@@ -648,11 +674,11 @@ namespace Dev2.Collections
             {
                 if(_index == -1)
                 {
-                    throw new InvalidOperationException("The enumerator has not been started.");
+                    throw new InvalidOperationException(ErrorResource.EnumeratorNotStarted);
                 }
                 if(_index == -2)
                 {
-                    throw new InvalidOperationException("The enumerator has reached the end of the collection.");
+                    throw new InvalidOperationException(ErrorResource.EnumeratorReachedTheEnd);
                 }
             }
 

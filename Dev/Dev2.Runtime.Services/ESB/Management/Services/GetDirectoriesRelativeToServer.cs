@@ -23,6 +23,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -67,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             if(String.IsNullOrEmpty(directory))
             {
-                throw new InvalidDataContractException("No value provided for Directory parameter.");
+                throw new InvalidDataContractException(ErrorResource.DirectoryIsRequired);
             }
             Dev2Logger.Info("Get Directories Relative to Server. "+directory);
             result.Append("<JSON>");

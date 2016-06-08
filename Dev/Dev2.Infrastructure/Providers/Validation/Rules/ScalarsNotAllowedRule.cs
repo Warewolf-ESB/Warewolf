@@ -1,5 +1,6 @@
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -9,7 +10,7 @@ namespace Dev2.Providers.Validation.Rules
         public ScalarsNotAllowedRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "Cannot have any scalars in this field";
+            ErrorText = ErrorResource.CannotHaveScalars;
         }
 
         public override IActionableErrorInfo Check()

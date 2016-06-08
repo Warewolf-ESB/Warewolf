@@ -20,6 +20,7 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -79,7 +80,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    errors.AddError("Could not locate management service [ " + ServiceAction.ServiceName + " ]");
+                    errors.AddError(string.Format(ErrorResource.CouldNotLocateManagementService, ServiceAction.ServiceName));
                 }
             }
             catch(Exception ex)

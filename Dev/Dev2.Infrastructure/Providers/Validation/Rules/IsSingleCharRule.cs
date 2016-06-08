@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -19,7 +20,7 @@ namespace Dev2.Providers.Validation.Rules
         public IsSingleCharRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "must be a single character";
+            ErrorText = ErrorResource.MustBeSingleCharacter;
         }
 
         public override IActionableErrorInfo Check()

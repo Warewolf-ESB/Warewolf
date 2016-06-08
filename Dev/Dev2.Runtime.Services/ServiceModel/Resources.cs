@@ -24,6 +24,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -82,7 +83,7 @@ namespace Dev2.Runtime.ServiceModel
                 }
                 else
                 {
-                    throw new ArgumentException("Resource Type passed not WorkflowService");
+                    throw new ArgumentException(ErrorResource.ResourcePassedNotWorkflowService);
                 }
             }
             catch(Exception ex)
@@ -214,13 +215,13 @@ namespace Dev2.Runtime.ServiceModel
             Guid rsId;
             if(!Guid.TryParse(resourceId, out rsId))
             {
-                RaiseError(new ArgumentException("Invalid ResouceID."));
+                RaiseError(new ArgumentException(ErrorResource.InvalidResourceID));
                 return "";
             }
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, rsId);
             if(resource == null)
             {
-                RaiseError(new ArgumentException("Workflow not found."));
+                RaiseError(new ArgumentException(ErrorResource.WorkflowNotFound));
                 return "";
             }
             var services = ResourceCatalog.Instance.GetDynamicObjects(resource);
