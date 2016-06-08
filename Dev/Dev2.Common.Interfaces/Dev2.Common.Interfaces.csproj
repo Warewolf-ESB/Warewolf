@@ -164,7 +164,6 @@
     <Compile Include="DB\IDBHelper.cs" />
     <Compile Include="DB\IDbServiceModel.cs" />
     <Compile Include="DB\IServiceInput.cs" />
-    <Compile Include="DB\IServiceMappings.cs" />
     <Compile Include="DB\IServiceOutputMapping.cs" />
     <Compile Include="DB\ISourceBase.cs" />
     <Compile Include="Deploy\IDeployDestinationExplorerViewModel.cs" />
@@ -384,7 +383,6 @@
     <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
     <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
-    <Compile Include="UndoFramework\IMultiAction.cs" />
     <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
     <Compile Include="WarewolfException.cs" />
     <Compile Include="WebRequestMethod.cs" />
