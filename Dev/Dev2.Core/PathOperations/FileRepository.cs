@@ -114,61 +114,6 @@ namespace Dev2.PathOperations
 
         #endregion
 
-        #region Save
-
-        /// <summary>
-        ///     Saves the specified item to the repository.
-        /// </summary>
-        /// <param name="item">The item to be saved.</param>
-        public void Save(TItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            _fileLock.EnterWriteLock();
-            try
-            {
-                Write(item);
-                _items[item.Key] = item;
-            }
-            finally
-            {
-                _fileLock.ExitWriteLock();
-            }
-        }
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        ///     Deletes the specified item from the repository.
-        /// </summary>
-        /// <param name="item">The item to be deleted.</param>
-        public void Delete(TItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            _fileLock.EnterWriteLock();
-            try
-            {
-                TItem result;
-                _items.TryRemove(item.Key, out result);
-                Delete(item.Key);
-            }
-            finally
-            {
-                _fileLock.ExitWriteLock();
-            }
-        }
-
-        #endregion
-
         #region Read
 
         /// <summary>
