@@ -9,7 +9,6 @@
 */
 
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Interactivity;
 
 namespace Dev2.CustomControls.Behavior
@@ -92,43 +91,5 @@ namespace Dev2.CustomControls.Behavior
             ActualWidth = AssociatedObject.ActualWidth - HorizontalOffset;
         }
 
-        /// <summary>
-        ///     Gets a multibinding that determines the max size of the two behaviors passed in
-        /// </summary>
-        /// <param name="actualSizeBehavior">The actual size behavior.</param>
-        /// <param name="overlaySizeBindingBehavior">The overlay size binding behavior.</param>
-        /// <param name="converter">The converter.</param>
-        /// <returns></returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/07/24</date>
-        public static MultiBinding GetWidthMultiBinding(ActualSizeBindingBehavior actualSizeBehavior,
-            ActualSizeBindingBehavior overlaySizeBindingBehavior,
-            IMultiValueConverter converter)
-        {
-            var maxBinding = new MultiBinding
-            {
-                Converter = converter
-            };
-
-            var actualWidthBinding = new Binding
-            {
-                Source = actualSizeBehavior,
-                Path = new PropertyPath("ActualWidth"),
-                Mode = BindingMode.TwoWay
-            };
-            maxBinding.Bindings.Add(actualWidthBinding);
-
-            if (overlaySizeBindingBehavior != null)
-            {
-                var overlayWidthBinding = new Binding
-                {
-                    Source = overlaySizeBindingBehavior,
-                    Path = new PropertyPath("ActualWidth"),
-                    Mode = BindingMode.TwoWay
-                };
-                maxBinding.Bindings.Add(overlayWidthBinding);
-            }
-            return maxBinding;
-        }
     }
 }

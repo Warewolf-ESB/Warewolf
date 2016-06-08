@@ -232,6 +232,11 @@ Scenario Outline: Ensure delete variables of different types produce desired res
 	And I delete a record "<variable>"
 	When the delete tool is executed
 	Then the delete result should be "<Message>"
+	And the debug inputs as  	
+	| Records |	
+	And the debug output as  
+	|                      |
+	| [[result]] = Failure |
 	And the execution has "<Error>" error
 	Examples: 
 	| variable             | value | Error | Message |
@@ -240,8 +245,3 @@ Scenario Outline: Ensure delete variables of different types produce desired res
 	| [[q]]                |       | An    | Failure |
 	| Test                 | Test  | An    | Failure |
 	| [[Rec([[var]]).set]] |       | An    | Failure |
-	And the debug inputs as  	
-	| Records |	
-	And the debug output as  
-	|                      |
-	| [[result]] = Failure |

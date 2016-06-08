@@ -9,10 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.ConnectionHelpers;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.CustomControls.Connections
@@ -66,37 +64,6 @@ namespace Dev2.CustomControls.Connections
 
         #endregion
 
-        public IConnectControlEnvironment SelectServer(string server)
-        {
-            foreach(var item in TheServerComboBox.Items)
-            {
-                var env = item as IConnectControlEnvironment;
-                if (env != null && env.DisplayName == server)
-                    try
-                    {
-                        TheServerComboBox.SelectedItem = env;
-                        return env;
-                    }
-                    catch(Exception)
-                    {
-                        return env;
-                       
-                    }
-                  
-            }
-            return null;
-        }
 
-        #region Implementation of IComponentConnector
-
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
-        {
-        }
-
-        #endregion
     }
 }

@@ -166,30 +166,5 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             return result;
         }
-
-        public override void UpdateServiceOutParameters(DbService dbService, DbSource dbSource)
-        {
-            dbService.Method.OutParameters = new List<MethodParameter>();
-            using (var server = CreateDbServer(dbSource))
-            {
-                server.Connect(dbSource.ConnectionString);
-                server.BeginTransaction();
-                try
-                {
-                    CommandFromServiceMethod(server, dbService.Method);
-                    // ReSharper disable PossibleNullReferenceException
-                    var outParams = server.GetProcedureOutParams(dbService.Method.Name, dbSource.DatabaseName);
-                    // ReSharper restore PossibleNullReferenceException
-                    foreach (var dbDataParameter in outParams)
-                    {
-                        dbService.Method.OutParameters.Add(new MethodParameter { Name = dbDataParameter.ParameterName, Value = dbDataParameter.Value.ToString() });
-                    }
-                }
-                finally
-                {
-                    server.RollbackTransaction();
-                }
-            }
-        }
     }
 }

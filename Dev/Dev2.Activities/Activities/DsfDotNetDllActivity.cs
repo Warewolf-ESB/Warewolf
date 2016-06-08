@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -46,15 +47,11 @@ namespace Dev2.Activities
                 return;
             }
 
-            IOutputFormatter outputFormatter = null;
-            if (!IsObject)
-            {
-                outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-            }
-            ExecuteService(update, out errors, Method, Namespace, dataObject, outputFormatter);
+                
+            ExecuteService(update, out errors, Method, Namespace, dataObject);
         }
 
-        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject, IOutputFormatter formater = null)
+        protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
         {
             errors = new ErrorResultTO();
             var itrs = new List<IWarewolfIterator>(5);
@@ -67,8 +64,7 @@ namespace Dev2.Activities
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 Method = method.Method,
-                Parameters = methodParameters,
-                OutputFormatter = formater
+                Parameters = methodParameters
             };
 
             try
@@ -90,10 +86,21 @@ namespace Dev2.Activities
                             : injectVal;
 
                         pos++;
+                    }                    
+                    if (!IsObject)
+                    {
+                        int i = 0;
+                        foreach (var serviceOutputMapping in Outputs)
+                        {
+                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                            i++;
+                        }
+                        var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+                        args.OutputFormatter = outputFormatter;
                     }
                     var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
                     ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject);
+                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject,false);
                 }
             }
             catch (Exception e)

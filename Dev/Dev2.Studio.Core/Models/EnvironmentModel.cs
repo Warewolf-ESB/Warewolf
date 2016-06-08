@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Network;
 using System.Threading.Tasks;
 using Dev2.AppResources.Repositories;
@@ -246,11 +247,6 @@ namespace Dev2.Studio.Core.Models
 
         #region LoadResources
 
-        public void RaiseResourcesLoaded()
-        {
-            RaiseLoadedResources();
-        }
-
         public void LoadResources()
         {
             if(Connection.IsConnected && CanStudioExecute)
@@ -274,6 +270,8 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsConnected");
             // ReSharper restore ExplicitCallerInfoArgument
         }
+        // ReSharper disable once ArrangeTypeMemberModifiers
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         void RaiseLoadedResources()
         {
             if(ResourcesLoaded != null)

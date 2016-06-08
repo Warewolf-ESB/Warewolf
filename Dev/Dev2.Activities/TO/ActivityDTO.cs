@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.DataList.Contract;
@@ -20,6 +21,7 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -38,6 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         bool _isFieldNameFocused;
         private bool _isFieldValueFocused;
+        private string _errorMessage;
 
         public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)
@@ -156,6 +159,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return Validate(propertyName, datalist);
         }
 
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HasError
+        {
+            get
+            {
+                var errorCount = Errors.SelectMany(pair => pair.Value).Count();
+                return errorCount != 0;
+            }
+        }
         public bool IsFieldNameFocused
         {
             get

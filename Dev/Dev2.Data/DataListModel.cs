@@ -9,15 +9,13 @@ namespace Dev2.Data
 {
     public class DataListModel : IDataListModel
     {
-        #region Implementation of IDataListModel
 
         public List<IScalar> Scalars { get; set; }
         public List<IScalar> ShapeScalars { get; set; }
         public List<IRecordSet> RecordSets { get; set; }
         public List<IRecordSet> ShapeRecordSets { get; set; }
-
-        #endregion
-
+        public List<IComplexObject> ShapeComplexObjects { get; set; }
+        public List<IComplexObject> ComplexObjects { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
@@ -25,9 +23,13 @@ namespace Dev2.Data
         {
             Scalars = new List<IScalar>();
             RecordSets = new List<IRecordSet>();
+            ComplexObjects = new List<IComplexObject>();
             ShapeScalars = new List<IScalar>();
             ShapeRecordSets = new List<IRecordSet>();
+            ShapeComplexObjects = new List<IComplexObject>();
         }
+
+        
 
         public void Create(string data, string shape)
         {
@@ -140,6 +142,20 @@ namespace Dev2.Data
                     {
                         if(c.HasChildNodes)
                         {
+                            var jsonAttribute = false;
+                            if (c.Attributes != null)
+                            {
+                                var xmlAttribute = c.Attributes["IsJson"];
+                                if (xmlAttribute != null)
+                                {
+                                    bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+                                }
+                            }
+                            if (jsonAttribute)
+                            {
+                                //AddComplexObjectFromXmlNode(c, null);
+                            }
+
                             var cols = new List<IScalar>();
                             foreach(XmlNode subc in c.ChildNodes)
                             {
@@ -206,5 +222,36 @@ namespace Dev2.Data
                 }
             }
         }
+
+        private bool ParseBoolAttribute(XmlAttribute attr)
+        {
+            var result = true;
+            if (attr != null)
+            {
+                bool.TryParse(attr.Value, out result);
+            }
+            return result;
+        }
+        private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
+        // ReSharper restore InconsistentNaming
+        {
+            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+
+            if (attr == null)
+            {
+                return result;
+            }
+            if (!Enum.TryParse(attr.Value, true, out result))
+            {
+                result = enDev2ColumnArgumentDirection.None;
+            }
+            return result;
+        }
+        private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        {
+            var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
+            return name;
+        }
+
     }
 }

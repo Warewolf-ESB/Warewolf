@@ -10,11 +10,9 @@
 */
 
 using System.Collections.Generic;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
-using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;

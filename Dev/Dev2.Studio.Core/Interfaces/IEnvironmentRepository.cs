@@ -36,8 +36,6 @@ namespace Dev2.Studio.Core.Interfaces
 
         ICollection<IEnvironmentModel> ReloadServers();
 
-        void Remove(Guid id);
-
         IEnvironmentModel Get(Guid id);
 
         /// <summary>

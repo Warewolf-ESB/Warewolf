@@ -29,6 +29,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Explorer;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -143,7 +144,7 @@ namespace Dev2.Runtime.Hosting
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
             if(parts.Length != 4)
-                throw new Exception("Invalid Version found");
+                throw new Exception(ErrorResource.InvalidVersion);
             return new VersionInfo(new DateTime(long.Parse(parts[2])), parts[3], "", parts[1], resourceId, Guid.Parse(parts[0]));
         }
 
@@ -152,7 +153,7 @@ namespace Dev2.Runtime.Hosting
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
             if(parts.Length != 4)
-                throw new Exception("Invalid Version found");
+                throw new Exception(ErrorResource.InvalidVersion);
             return String.Format("v.{0}  {1}  {2}", parts[1], new DateTime(long.Parse(parts[2])), parts[3].Replace(".xml", ""));
         }
 
@@ -162,11 +163,7 @@ namespace Dev2.Runtime.Hosting
                 return resource.ResourcePath.Substring(0, resource.ResourcePath.LastIndexOf('\\'));
             return "";
         }
-        
-        public IExplorerItem GetLatestVersionNumber(Guid resourceId)
-        {
-            return null;
-        }
+       
 
         public IRollbackResult RollbackTo(Guid resourceId, string versionNumber)
         {

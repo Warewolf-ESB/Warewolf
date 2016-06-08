@@ -19,6 +19,5 @@ namespace Dev2.Studio.Core.Services
         bool Exists();
         bool IsRunning();
         bool Start();
-        bool Stop();
     }
 }

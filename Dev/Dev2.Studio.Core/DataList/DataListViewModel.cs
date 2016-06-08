@@ -33,6 +33,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -43,6 +44,7 @@ using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable UseNullPropagation
@@ -575,36 +577,43 @@ namespace Dev2.Studio.ViewModels.DataList
             for (int index = 0; index < paths.Length; index++)
             {
                 string path = paths[index];
+                path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
-                var isArray = false;
-             
+                if (!string.IsNullOrEmpty(pathToMatch))
+                {
+                    var isArray = false;
 
-                if (path.Contains("()") || path.Contains("(*)"))
-                {
-                    isArray = true;
-                    path = path.Replace("(*)", "()");
-                }
-                if (itemModel == null)
-                {
-                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
-                }
-                if (itemModel == null)
-                {
-                    itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
-                    ComplexObjectCollection.Add(itemModel);
+                    if (path.Contains("()") || path.Contains("(*)"))
+                    {
+                        isArray = true;
+                        path = path.Replace("(*)", "()");
+                    }
+                    if (itemModel == null)
+                    {
+                        itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
+                    }
+                    if (itemModel == null)
+                    {
+                        itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
+                        ComplexObjectCollection.Add(itemModel);
+                    }
+                    else
+                    {
+                        if (itemModel.DisplayName != pathToMatch)
+                        {
+                            var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
+                            if (item == null)
+                            {
+                                item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
+                                itemModel.Children.Add(item);
+                            }
+                            itemModel = item;
+                        }
+                    }
                 }
                 else
                 {
-                    if (itemModel.DisplayName != pathToMatch)
-                    {
-                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
-                        if (item == null)
-                        {
-                            item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
-                            itemModel.Children.Add(item);
-                        }
-                        itemModel = item;
-                    }
+                    return;
                 }
             }
         }
@@ -1181,7 +1190,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 catch (Exception)
                 {
-                    errors.AddError("Invalid variable list. Please ensure that your variable list has valid entries");
+                    errors.AddError(ErrorResource.InvalidVariableList);
                 }
             }
             else
@@ -1233,6 +1242,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void GenerateComplexObjectFromJson(string parentObjectName, string json)
         {
+            if (parentObjectName.Contains("."))
+            {
+                var parts = parentObjectName.Split('.');
+                parentObjectName = parts[0];
+            }
             var parentObj = ComplexObjectCollection.FirstOrDefault(model => model.Name == parentObjectName);
             if (parentObj == null)
             {
@@ -1405,15 +1419,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        static void AddColumnsToRecordSet(IEnumerable<IRecordSetFieldItemModel> cols, IRecordSetItemModel recset)
-        {
-            foreach (var col in cols)
-            {
-                col.Parent = recset;
-                recset.Children.Add(col);
-            }
-        }
-
         IRecordSetItemModel CreateRecordSet(XmlNode c)
         {
             IRecordSetItemModel recset;
@@ -1553,7 +1558,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             result.Append("<");
             var name = complexObjectItemModel.DisplayName;
-            if (complexObjectItemModel.IsArray)
+            if (complexObjectItemModel.IsArray || name.EndsWith("()"))
             {
                 name = name.Replace("()", "");
             }
@@ -1705,10 +1710,9 @@ namespace Dev2.Studio.ViewModels.DataList
             var models = items as IList<IComplexObjectItemModel> ?? items.ToList();
             var unusedItems =
                 from itemModel in models
-                where !(
-                    from part in partsToVerify
-                    select part.DisplayValue
-                    ).Contains(itemModel.Name)
+                where !(from part in partsToVerify
+                        select part.DisplayValue
+                       ).Contains(itemModel.Name)
                 select itemModel;
             foreach (var complexObjectItemModel in unusedItems)
             {
@@ -1716,10 +1720,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             var usedItems =
                 from itemModel in models
-                where (
-                    from part in partsToVerify
-                    select part.DisplayValue
-                    ).Contains(itemModel.Name)
+                where (from part in partsToVerify
+                        select part.DisplayValue
+                      ).Contains(itemModel.Name)
                 select itemModel;
             foreach (var complexObjectItemModel in usedItems)
             {
@@ -1728,8 +1731,9 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
-                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed);
+                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed) || complexObjectItemModel.IsUsed;
             }
+            
         }
 
         private List<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
@@ -1882,7 +1886,7 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
             ShowUnusedDataListVariables(resourceModel, removeParts, workflowFields);
-
+            ViewModelUtils.RaiseCanExecuteChanged(DeleteCommand);
             if (resourceModel == Resource)
             {
                 AddMissingDataListItems(filteredDataListParts);

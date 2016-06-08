@@ -187,7 +187,6 @@
     <Compile Include="DynamicProxy\DynamicProxyException.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactory.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactoryOptions.cs" />
-    <Compile Include="DynamicProxy\IDynamicProxy.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
@@ -313,7 +312,6 @@
     <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
     <Compile Include="ESB\Management\Services\GetLatest.cs" />
     <Compile Include="ESB\Management\Services\Ping.cs" />
-    <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
     <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
     <Compile Include="ESB\Management\Services\ReloadResource.cs" />
     <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
@@ -380,7 +378,6 @@
     <Compile Include="ServiceModel\Data\DbService.cs" />
     <Compile Include="ServiceModel\Data\DbSource.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBroker.cs" />
-    <Compile Include="ServiceModel\Esb\Controllers\EsbController.cs" />
     <Compile Include="ServiceModel\Esb\IDiscoverableEsbEnpoint.cs" />
     <Compile Include="ServiceModel\Esb\IEsbEndpoint.cs" />
     <Compile Include="ServiceModel\Data\MethodOutput.cs" />
@@ -474,6 +471,10 @@
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
       <Name>Warewolf.ResourceManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

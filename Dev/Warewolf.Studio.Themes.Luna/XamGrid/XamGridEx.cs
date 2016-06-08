@@ -1,6 +1,4 @@
-﻿using Infragistics.Controls.Grids;
-
-namespace Warewolf.Studio.Themes.Luna.XamGrid
+﻿namespace Warewolf.Studio.Themes.Luna.XamGrid
 {
     public class XamGridEx : Infragistics.Controls.Grids.XamGrid
     {

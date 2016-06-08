@@ -66,7 +66,7 @@ namespace System.Windows.Controls
         /// Gets a value indicating whether the read-only property is set.
         /// </summary>
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Linked file.")]
-        public bool IsReadOnly { get; private set; }
+        public bool IsReadOnly { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the mouse button is pressed down
@@ -92,7 +92,7 @@ namespace System.Windows.Controls
         /// <summary>
         /// Gets the number of times the control was clicked.
         /// </summary>
-        public int ClickCount { get; private set; }
+        public int ClickCount { get; set; }
 
         /// <summary>
         /// Reference used to call UpdateVisualState on the base class.

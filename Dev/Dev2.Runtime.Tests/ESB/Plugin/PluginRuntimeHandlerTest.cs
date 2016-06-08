@@ -19,6 +19,7 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin
 {
@@ -288,9 +289,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
+                PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = source.AssemblyName, Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
                 var result = isolated.Value.Run(args);
-                var castResult = result as DummyClassForPluginTest;
+                var castResult = JsonConvert.DeserializeObject<DummyClassForPluginTest>(result.ToString());
                 //------------Assert Results-------------------------
                 if (castResult != null)
                 {
@@ -339,7 +340,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_Run")]
-        [ExpectedException(typeof(NullReferenceException))]
         public void PluginRuntimeHandler_Run_WhenInvalidMethod_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -349,7 +349,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-                isolated.Value.Run(args);
+                var run = isolated.Value.Run(args);
+                Assert.IsNotNull(run);
             }
         }
 
@@ -443,14 +444,5 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     }
     public class Main
     {
-        public Person GETPerson(Car car)
-        {
-            return new Person()
-            {
-                Name = "Micky",
-                Age = 1,
-                SurName = "Mouse " + car.Make + car.Model
-            };
-        }
     }
 }

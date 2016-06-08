@@ -112,6 +112,7 @@ namespace Warewolf.Studio.ViewModels
                     SetupHeaderTextFromExisting();
                 }
             );
+            FromModel(_serverSource);
         }
 
         void SetupHeaderTextFromExisting()
@@ -129,18 +130,35 @@ namespace Warewolf.Studio.ViewModels
             ResourceName = source.Name;
             AuthenticationType = source.AuthenticationType;
             UserName = source.UserName;
-            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(source.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            if (ComputerNames != null)
+            {
+                ServerName = ComputerNames.FirstOrDefault(name => string.Equals(source.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            }
             if (ServerName != null)
             {
                 EmptyServerName = ServerName.Name ?? source.ServerName;
             }
 
             Protocol = source.Address.Contains("https") ? Protocols[0] : Protocols[1];
-            SelectedPort = source.Address.Contains("3143") ? Ports[0] : Ports[1];
-
-            Address = GetAddressName();
+            int portIndex = GETSpecifiedIndexOf(source.Address, ':', 2);
+            var ports = source.Address.Substring(portIndex + 1).Split('/');
+            if (ports.Any())
+                SelectedPort = ports[0];
+            Address = source.Address;
             Password = source.Password;
             Header = ResourceName;
+        }
+
+        public static int GETSpecifiedIndexOf(string str, char ch, int index)
+        {
+            int i = 0, o = 1;
+            while ((i = str.IndexOf(ch, i)) != -1)
+            {
+                if (o == index) return i;
+                o++;
+                i++;
+            }
+            return 0;
         }
 
         public override string Name
@@ -614,7 +632,7 @@ namespace Warewolf.Studio.ViewModels
                 if (_protocol != value)
                 {
                     _protocol = value;
-                    
+
                     Reset();
                     if (Protocol == "https" && SelectedPort == "3142")
                     {

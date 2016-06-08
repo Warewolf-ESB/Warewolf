@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Infragistics.Controls.Menus;
+using Warewolf.Resource.Errors;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -162,11 +163,11 @@ namespace Warewolf.Studio.Views
                             explorerItemViewModel.IsRenaming = false;
                         }
                         else
-                            throw new Exception("Folder was not found after adding");
+                            throw new Exception(ErrorResource.FolderWasNotFound);
                     }
                 }
                 else
-                    throw new Exception("Server Not found in explorer");
+                    throw new Exception(ErrorResource.ServiceNotFound);
             }
             else
             {
@@ -185,11 +186,11 @@ namespace Warewolf.Studio.Views
                             explorerItemViewModel.IsRenaming = false;
                         }
                         else
-                            throw new Exception("Folder was not found after adding");
+                            throw new Exception(ErrorResource.FolderWasNotFound);
                     }
                 }
                 else
-                    throw new Exception("Server Not found in explorer");
+                    throw new Exception(ErrorResource.ServiceNotFound);
             }
         }
 

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common.Interfaces;
 using Dev2.Intellisense;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -31,7 +30,6 @@ namespace Dev2.Studio.InterfaceImplementors
     {
         #region Implementation of IDisposable
 
-        readonly ISuggestionProvider _trieSugggestionProvider;
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -41,14 +39,6 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public DefaultIntellisenseProvider()
         {
-            if (DataListSingleton.ActiveDataList != null)
-            {
-                _trieSugggestionProvider = DataListSingleton.ActiveDataList.Provider;
-            }
-            else
-            {
-                _trieSugggestionProvider = new Dev2TrieSugggestionProvider();
-            }
             HandlesResultInsertion = true;
             IntellisenseProviderType = IntellisenseProviderType.Default;
             EventPublishers.Aggregator.Subscribe(this);
@@ -69,7 +59,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 return context.InputText;
             }
             var resbuilder = new IntellisenseStringResultBuilder();
-            var editorText = context.InputText; ;
+            var editorText = context.InputText; 
             var originalText = context.InputText;
             var originalCaret = context.CaretPosition;
             if (originalText == String.Empty || input.StartsWith(originalText))

@@ -965,49 +965,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
-        //2013.06.11: Ashley Lewis for bug 8759 - intellisense for partial field
-        public void GetIntellisenseResultsWithPartialFieldAndScalarsInIndexExpectedVarInResultIndices()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 22,
-                InputText = "[[City([[Scalar]]).Nam",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual("[[City([[Scalar]]).Name]]", getResults[0].ToString());
-        }
-        public void GetIntellisenseResultsWithPartialFieldAndScalarsInIndexExpectedNoVarInResultIndices()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 22,
-                InputText = "[[City([[Scalar]]).Name]], [[City().Nam",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual("[[City().Name]]", getResults[0].ToString());
-        }
-        public void GetIntellisenseResultsWithTrailingCommaExpectedNoResults()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 27,
-                InputText = "[[City([[Scalar]]).Name]], ",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(0, getResults.Count);
-        }
-
+  
         //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
         [TestMethod]
         public void PerformResultInsertionWithRecordsetFilterAndNoRegionExpectedCompleteResult()

@@ -12,7 +12,6 @@
 using System;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Workspaces
@@ -108,7 +107,6 @@ namespace Dev2.Workspaces
 
         /// <summary>
         /// Gets or sets the type of the service.
-        /// <remarks>Must map to a <see cref="enDynamicServiceObjectType"/> value</remarks>
         /// </summary>
         public string ServiceType
         {

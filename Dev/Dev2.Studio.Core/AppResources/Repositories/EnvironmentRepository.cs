@@ -76,11 +76,6 @@ namespace Dev2.Studio.Core
 
         #endregion
 
-        public static EnvironmentRepository Create(IEnvironmentModel source)
-        {
-            return new EnvironmentRepository(source);
-        }
-
         #region CTOR
 
         // Singleton instance only
@@ -164,12 +159,6 @@ namespace Dev2.Studio.Core
         {
             IsLoaded = false;
             LoadInternal();
-        }
-
-        public void Remove(Guid id)
-        {
-            var toRemove = Get(id);
-            Remove(toRemove);
         }
 
         public IEnvironmentModel Get(Guid id)

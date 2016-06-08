@@ -16,7 +16,6 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -27,6 +26,7 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming
@@ -315,7 +315,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
-                        errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                 
                         return null;
                     }
@@ -342,7 +342,7 @@ namespace Dev2.Runtime.ESB.Control
                         errors.MergeErrors(invokeErrors);                        
                         return env;
                     }
-                    errors.AddError(string.Format("Resource {0} not found.", dataObject.ServiceName));
+                    errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                 }
             }
             return new ExecutionEnvironment();
@@ -415,7 +415,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 else
                 {
-                    var message = string.Format("Remote Execution Failed. Service: {0} not found.", dataObject.ServiceName);
+                    var message = string.Format(ErrorResource.ServiceNotFound, dataObject.ServiceName);
                     errors.AddError(message);
                 }
             }
@@ -462,7 +462,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             else
             {
-                invokeErrors.AddError("Asynchronous execution failed: Resource not found");
+                invokeErrors.AddError(ErrorResource.ResourceNotFound);
             }
 
         }
@@ -481,105 +481,8 @@ namespace Dev2.Runtime.ESB.Control
         }
 
 
-        /// <summary>
-        /// Finds the service shape.
-        /// </summary>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="resourceId">Name of the service.</param>
-        /// <returns></returns>
-        public StringBuilder FindServiceShape(Guid workspaceId, Guid resourceId)
-        {
-            var result = new StringBuilder();
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-
-            if(resource == null)
-            {
-                return EmptyDataList;
-            }
-
-            if(resource.DataList != null)
-            {
-                result = resource.DataList;
-            }
-
-            // Handle services ;)
-            if(result.ToString() == "<DataList />" && resource.ResourceType != "WorkflowService")
-            {
-                ErrorResultTO errors;
-                result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
-            }
-
-
-            if(string.IsNullOrEmpty(result.ToString()))
-            {
-                return EmptyDataList;
-            }
-            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
-            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
-            return result;
-        } 
-      
-
         static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
 
-
-        /// <summary>
-        /// Glues the input and output mapping segments.
-        /// </summary>
-        /// <param name="inputFragment">The input fragment.</param>
-        /// <param name="outputFragment">The output fragment.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        StringBuilder GlueInputAndOutputMappingSegments(string inputFragment, string outputFragment, out ErrorResultTO errors)
-        {
-
-            errors = new ErrorResultTO();
-            if(!string.IsNullOrEmpty(outputFragment))
-            {
-                try
-                {
-                    // finally glue the two together ;)
-                    XmlDocument oDLXDoc = new XmlDocument();
-                    oDLXDoc.LoadXml(outputFragment);
-
-                    if(oDLXDoc.DocumentElement != null)
-                    {
-                        outputFragment = oDLXDoc.DocumentElement.InnerXml;
-                    }
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                    errors.AddError(e.Message);
-                }
-            }
-
-            if(!string.IsNullOrEmpty(inputFragment))
-            {
-
-                try
-                {
-                    // finally glue the two together ;)
-                    XmlDocument iDLXDoc = new XmlDocument();
-                    iDLXDoc.LoadXml(inputFragment);
-
-                    if(iDLXDoc.DocumentElement != null)
-                    {
-                        inputFragment = iDLXDoc.DocumentElement.InnerXml;
-                    }
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-            }
-            StringBuilder result = new StringBuilder();
-            result.Append("<DataList>");
-            result.Append(outputFragment);
-            result.Append(inputFragment);
-            result.Append("</DataList>");
-            return result;
-        }
 
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {

@@ -8,8 +8,10 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.PerformanceCounters.Counters;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Resource.Errors;
 
 #pragma warning disable 1998
 namespace Warewolf.Studio.ViewModels
@@ -201,19 +203,19 @@ namespace Warewolf.Studio.ViewModels
         {
             if (String.IsNullOrEmpty(Name))
             {
-                ErrorMessage = "'Name' cannot be empty.";
+                ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'Name'");
             }
             else if (NameHasInvalidCharacters(Name))
             {
-                ErrorMessage = "'Name' contains invalid characters.";
+                ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'Name'");
             }
             else if (Name.Trim() != Name)
             {
-                ErrorMessage = "'Name' contains leading or trailing whitespace characters.";
+                ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'Name'");
             }
             else if (HasDuplicateName(Name))
             {
-                ErrorMessage = string.Format("An item with name '{0}' already exists in this folder.", Name);
+                ErrorMessage = string.Format(ErrorResource.ItemWithNameAlreadyExists, Name);
             }
             else
             {

@@ -24,7 +24,6 @@ namespace Dev2.Common.Interfaces
         IQueryManager QueryProxy { get; }
         bool IsConnected{get;}
         bool AllowEdit { get; }
-        void ReloadTools();
         void Disconnect();
         List<IWindowsGroupPermission> Permissions { get; set; }
         Guid EnvironmentID { get; set; }
