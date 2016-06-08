@@ -44,10 +44,6 @@ namespace Dev2.DynamicServices
         #endregion
 
         #region [Get/Set] Handling
-        public void SetPassword(string password)
-        {
-            SetPassword(GetPasswordBytes(password));
-        }
 
         protected override void SetPassword(byte[] value)
         {

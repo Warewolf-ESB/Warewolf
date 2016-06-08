@@ -148,46 +148,6 @@ namespace Dev2.PathOperations
 
         #endregion
 
-        #region Write
-
-        /// <summary>
-        ///     Writes the specified item to the file system.
-        /// </summary>
-        /// <param name="item">The item to be written.</param>
-        private void Write(TItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            string filePath = GetFileName(item.Key);
-            using (FileStream stream = File.Open(filePath, FileMode.OpenOrCreate))
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, item);
-            }
-        }
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        ///     Deletes the item with specified key from the file system.
-        /// </summary>
-        /// <param name="key">The key of the item to be deleted.</param>
-        private void Delete(TKey key)
-        {
-            string filePath = GetFileName(key);
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
-
-        #endregion
-
         #region GetFileName
 
         /// <summary>

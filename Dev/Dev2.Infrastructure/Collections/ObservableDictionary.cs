@@ -132,34 +132,9 @@ namespace Dev2.Collections
 
         #region public
 
-        public void Add(TKey key, TValue value)
-        {
-            DoAddEntry(key, value);
-        }
-
-        public void Clear()
-        {
-            DoClearEntries();
-        }
-
-        public bool ContainsKey(TKey key)
-        {
-            return KeyedEntryCollection.Contains(key);
-        }
-
-        public bool ContainsValue(TValue value)
-        {
-            return TrueDictionary.ContainsValue(value);
-        }
-
         public IEnumerator GetEnumerator()
         {
             return new Enumerator<TKey, TValue>(this, false);
-        }
-
-        public bool Remove(TKey key)
-        {
-            return DoRemoveEntry(key);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
