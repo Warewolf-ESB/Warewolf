@@ -12,8 +12,6 @@
 using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
@@ -36,24 +34,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
         public XamDockManager DockManager
         {
             get { return GetDockingManager(); }
-        }
-
-        private static ContentPane CreateDockable(object rootModel, object context)
-        {
-            var view = EnsureDockWindow(ViewLocator.LocateForModel(rootModel, null, context));
-            ViewModelBinder.Bind(rootModel, view, context);
-
-            var haveDisplayName = rootModel as IHaveDisplayName;
-            if(haveDisplayName != null && !ConventionManager.HasBinding(view, HeaderedContentControl.HeaderProperty))
-            {
-                Binding binding = new Binding("DisplayName") { Mode = BindingMode.TwoWay };
-                view.SetBinding(HeaderedContentControl.HeaderProperty, binding);
-            }
-
-            // ReSharper disable once ObjectCreationAsStatement
-            new DockableWindowConductor(rootModel, view);
-
-            return view;
         }
 
         private static ContentPane EnsureDockWindow(object view)
@@ -122,11 +102,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
                 return dockManager.Panes.FirstOrDefault(p => GetSplitPaneLocation(p) == location);
             }
 
-            public static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, InitialPaneLocation location)
-            {
-                return FindSplitPaneWithLocationOrCreate(dockManager, location.ToPaneLocation());
-            }
-
             static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, PaneLocation location)
             {
                 SplitPane pane = FindSplitPaneWithLocation(dockManager, location);
@@ -139,16 +114,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
 
                 return pane;
             }
-
-            public static TabGroupPane FindTabGroupPane(XamDockManager dockManager)
-            {
-                TabGroupPane tabs;
-
-                dockManager.TryFindChild(out tabs);
-
-                return tabs;
-            }
-
         }
 
         /// <summary>
