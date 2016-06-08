@@ -44,6 +44,7 @@ using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable UseNullPropagation
@@ -1182,7 +1183,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 catch (Exception)
                 {
-                    errors.AddError("Invalid variable list. Please ensure that your variable list has valid entries");
+                    errors.AddError(ErrorResource.InvalidVariableList);
                 }
             }
             else

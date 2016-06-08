@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -28,7 +29,7 @@ namespace Dev2.Studio.Core.Helpers
             if (source == null)
             {
                 if (!cases.ToList().Any(c => c.IsDefault))
-                    throw new Exception("Can not do switch on null type argument if no default implementation provided");
+                    throw new Exception(ErrorResource.CannotDoSwitchOnNullType);
 
                 foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault))
                 {

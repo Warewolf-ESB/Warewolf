@@ -11,6 +11,7 @@
 
 using System;
 using Infragistics.Windows.DockManager;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
@@ -39,7 +40,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
                 case PaneLocation.Unpinned: //Not
                 case PaneLocation.Document: //Not
                 case PaneLocation.Unknown: //Not
-                    throw new InvalidOperationException("Can not convert PaneLocation to InitialPaneLocation");
+                    throw new InvalidOperationException(ErrorResource.CannotConvertPaneLocation);
 
                 default:
                     throw new ArgumentOutOfRangeException("location");

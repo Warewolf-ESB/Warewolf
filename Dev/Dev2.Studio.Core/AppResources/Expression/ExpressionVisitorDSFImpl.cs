@@ -12,6 +12,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Text;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Expression
@@ -46,7 +47,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                     _sb.Append("\"");
                     break;
                 case TypeCode.Object:
-                    throw new NotSupportedException(string.Format("The constant for '{0}' is not supported", c.Value));
+                    throw new NotSupportedException(string.Format(ErrorResource.ConstantNotSupported, c.Value));
                 default:
                     _sb.Append(c.Value);
                     break;
@@ -96,7 +97,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                     _sb.Append(" Operand=\"GreaterThanOrEqualTo\"");
                     break;
                 default:
-                    throw new NotSupportedException(string.Format("The binary operator '{0}' is not supported", b.NodeType));
+                    throw new NotSupportedException(string.Format(ErrorResource.BinaryOperatorNotSupported, b.NodeType));
             }
             Visit(b.Right);
             return b;
@@ -111,7 +112,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
                 _sb.Append("\"");
                 return m;
             }
-            throw new NotSupportedException(string.Format("The member '{0}' is not supported", m.Member.Name));
+            throw new NotSupportedException(string.Format(ErrorResource.MemberNotSupported, m.Member.Name));
         }
     }
 }
