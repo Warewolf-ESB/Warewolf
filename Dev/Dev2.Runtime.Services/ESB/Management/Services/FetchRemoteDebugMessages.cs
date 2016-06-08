@@ -20,6 +20,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -47,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(invokerId))
             {
-                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
+                throw new InvalidDataContractException(ErrorResource.NullServiceIDOrWorkspaceID);
             }
 
             Guid iGuid;

@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -23,7 +24,7 @@ namespace Dev2.Providers.Validation.Rules
         {
             VerifyArgument.IsNotNull("otherValue", otherValue);
             _otherValue = otherValue;
-            ErrorText = "cannot be empty";
+            ErrorText = ErrorResource.CannotBeNull;
         }
 
         public override IActionableErrorInfo Check()

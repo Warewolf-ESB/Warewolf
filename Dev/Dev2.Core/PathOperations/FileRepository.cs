@@ -114,61 +114,6 @@ namespace Dev2.PathOperations
 
         #endregion
 
-        #region Save
-
-        /// <summary>
-        ///     Saves the specified item to the repository.
-        /// </summary>
-        /// <param name="item">The item to be saved.</param>
-        public void Save(TItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            _fileLock.EnterWriteLock();
-            try
-            {
-                Write(item);
-                _items[item.Key] = item;
-            }
-            finally
-            {
-                _fileLock.ExitWriteLock();
-            }
-        }
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        ///     Deletes the specified item from the repository.
-        /// </summary>
-        /// <param name="item">The item to be deleted.</param>
-        public void Delete(TItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            _fileLock.EnterWriteLock();
-            try
-            {
-                TItem result;
-                _items.TryRemove(item.Key, out result);
-                Delete(item.Key);
-            }
-            finally
-            {
-                _fileLock.ExitWriteLock();
-            }
-        }
-
-        #endregion
-
         #region Read
 
         /// <summary>
@@ -199,46 +144,6 @@ namespace Dev2.PathOperations
             }
 
             return null;
-        }
-
-        #endregion
-
-        #region Write
-
-        /// <summary>
-        ///     Writes the specified item to the file system.
-        /// </summary>
-        /// <param name="item">The item to be written.</param>
-        private void Write(TItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            string filePath = GetFileName(item.Key);
-            using (FileStream stream = File.Open(filePath, FileMode.OpenOrCreate))
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, item);
-            }
-        }
-
-        #endregion
-
-        #region Delete
-
-        /// <summary>
-        ///     Deletes the item with specified key from the file system.
-        /// </summary>
-        /// <param name="key">The key of the item to be deleted.</param>
-        private void Delete(TKey key)
-        {
-            string filePath = GetFileName(key);
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
         }
 
         #endregion

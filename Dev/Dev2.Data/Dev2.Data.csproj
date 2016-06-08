@@ -301,7 +301,6 @@
     <Compile Include="TO\RecordSetCollection.cs" />
     <Compile Include="TO\RecordSetDefinition.cs" />
     <Compile Include="TO\SearchTO.cs" />
-    <Compile Include="TO\StringSegments.cs" />
     <Compile Include="TO\SystemTag.cs" />
     <Compile Include="TO\UpsertTO.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />

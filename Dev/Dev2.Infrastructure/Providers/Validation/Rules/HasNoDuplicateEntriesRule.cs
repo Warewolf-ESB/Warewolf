@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -21,7 +22,7 @@ namespace Dev2.Providers.Validation.Rules
         public HasNoDuplicateEntriesRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "Cannot have duplicate fields to search";
+            ErrorText = ErrorResource.CannotHaveDuplicateFields;
         }
 
         public override IActionableErrorInfo Check()

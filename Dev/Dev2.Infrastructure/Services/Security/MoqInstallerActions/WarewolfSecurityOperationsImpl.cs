@@ -15,6 +15,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using Dev2.Common;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -121,7 +122,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                         }
                         catch(Exception)
                         {
-                            Dev2Logger.Error(string.Format("User {0} does not exist on the machine.", currentUser));
+                            Dev2Logger.Error(string.Format(ErrorResource.UserDoesNotExistOnTheMachine, currentUser));
                         }
                     }
                 }

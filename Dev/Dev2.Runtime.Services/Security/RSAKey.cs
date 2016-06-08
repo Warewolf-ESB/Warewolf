@@ -96,41 +96,5 @@ namespace Dev2.Runtime.Security
                                 new XElement("Public", Public),
                                 new XElement("Private", Private));
         }
-
-        /// <summary>
-        /// Creates an <see cref="RSACryptoServiceProvider"/> from this instance.
-        /// </summary>
-        /// <param name="usePrivate">If <c>true</c> uses the <see cref="Private"/> key; otherwise uses the <see cref="Public"/> key.</param>
-        /// <returns>
-        /// An <see cref="RSACryptoServiceProvider"/>.
-        /// </returns>
-        public RSACryptoServiceProvider ToCSP(bool usePrivate)
-        {
-            var cspBlob = Convert.FromBase64String(usePrivate ? Private : Public);
-            var csp = new RSACryptoServiceProvider();
-            csp.ImportCspBlob(cspBlob);
-            return csp;
-        }
-
-        /// <summary>
-        /// Saves this key to the specified file path.
-        /// </summary>
-        /// <param name="filePath">The file path to be used.</param>
-        public void Save(string filePath)
-        {
-            var xml = ToXml();
-            xml.Save(filePath);
-        }
-
-        /// <summary>
-        /// Loads an <see cref="RSAKey"/> from a file.
-        /// </summary>
-        /// <param name="filePath">The file path referencing the file to load into a new <see cref="RSAKey"/>.</param>
-        /// <returns>An <see cref="RSAKey"/> that contains the contents of the specified file.</returns>
-        public static RSAKey Load(string filePath)
-        {
-            var xml = XElement.Load(filePath);
-            return new RSAKey(xml);
-        }
     }
 }
