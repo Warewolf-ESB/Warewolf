@@ -17,6 +17,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Collections
 {
@@ -461,7 +462,7 @@ namespace Dev2.Collections
             }
             if(array.Length - index < KeyedEntryCollection.Count)
             {
-                throw new ArgumentException("CopyTo() failed:  supplied array was too small");
+                throw new ArgumentException(ErrorResource.CopyToFailedArrayTooSmall);
             }
 
             foreach(var entry in KeyedEntryCollection)
@@ -673,11 +674,11 @@ namespace Dev2.Collections
             {
                 if(_index == -1)
                 {
-                    throw new InvalidOperationException("The enumerator has not been started.");
+                    throw new InvalidOperationException(ErrorResource.EnumeratorNotStarted);
                 }
                 if(_index == -2)
                 {
-                    throw new InvalidOperationException("The enumerator has reached the end of the collection.");
+                    throw new InvalidOperationException(ErrorResource.EnumeratorReachedTheEnd);
                 }
             }
 

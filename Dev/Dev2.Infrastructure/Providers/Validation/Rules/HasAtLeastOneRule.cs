@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -37,7 +38,7 @@ namespace Dev2.Providers.Validation.Rules
 
             return values.Any(value => !string.IsNullOrEmpty(value)) ? null : new ActionableErrorInfo(DoError)
             {
-                Message = string.Format("Please supply at least one of the following: {0}", LabelText)
+                Message = string.Format(ErrorResource.SupplyAtLeastOne, LabelText)
             };
         }
     }
