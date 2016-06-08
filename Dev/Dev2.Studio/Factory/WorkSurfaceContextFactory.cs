@@ -72,26 +72,6 @@ namespace Dev2.Studio.Factory
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
 
-        /// <summary>
-        /// Creates the work surface context view model, only use for surfaces that are unique per server.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="vm">The vm.</param>
-        /// <param name="workSurfaceContext">The work surface context.</param>
-        /// <param name="serverID">The server ID.</param>
-        /// <returns></returns>
-        /// <date>3/6/2013</date>
-        /// <author>
-        /// Jurie.smit
-        /// </author>
-        public static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModelForServer<T>
-            (T vm, WorkSurfaceContext workSurfaceContext, Guid serverID)
-            where T : IWorkSurfaceViewModel
-        {
-            var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext, serverID);
-            return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
-        }
-
         private static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel<T>(T vm,
                                                                                         WorkSurfaceContext workSurfaceContext,
                                                                                         WorkSurfaceKey key)

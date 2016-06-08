@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -52,14 +51,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             SelectedExplorerItemModel = e;
             OkCommand.RaiseCanExecuteChanged();
-        }
-
-        void CheckIfSelectedItemChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            if (propertyChangedEventArgs.PropertyName == "SelectedItem")
-            {
-                OkCommand.RaiseCanExecuteChanged();
-            }
         }
 
         void Init()
