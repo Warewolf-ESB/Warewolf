@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
@@ -33,16 +32,6 @@ namespace Warewolf.Studio.ServerProxyLayer
             controller.AddPayloadArgument("resourceId", resourceId.ToString());
             var items = controller.ExecuteCommand<IList<IExplorerItem>>(_connection, workSpaceId);
             return items;
-        }
-
-        /// <summary>
-        /// Get the heavy weight resource
-        /// </summary>
-        /// <param name="version">the version to fetch</param>
-        /// <returns>a resource that can be displayed on the design surface</returns>
-        public StringBuilder GetVersion(IVersionInfo version)
-        {
-            return null;
         }
 
         /// <summary>

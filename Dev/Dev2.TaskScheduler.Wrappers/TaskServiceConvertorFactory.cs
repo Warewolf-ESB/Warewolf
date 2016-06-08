@@ -33,11 +33,6 @@ namespace Dev2.TaskScheduler.Wrappers
             return new Dev2TaskDefinition(this, taskDefinition);
         }
 
-        public IDev2TaskService CreateTaskService(TaskService taskService)
-        {
-            return new Dev2TaskService(this, taskService);
-        }
-
         public IActionCollection CreateActionCollection(ActionCollection actionCollection)
         {
             return new Dev2ActionCollection(this, actionCollection);
@@ -100,11 +95,6 @@ namespace Dev2.TaskScheduler.Wrappers
         {
             return new Dev2TaskEventLog(this,
                 new TaskEventLog(DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0)), taskPath));
-        }
-
-        public ITaskEventLog CreateTaskEventLog(string taskPath, DateTime startDate)
-        {
-            return new Dev2TaskEventLog(this, new TaskEventLog(startDate, taskPath));
         }
 
         public TaskService CreateTaskService()
@@ -220,11 +210,6 @@ namespace Dev2.TaskScheduler.Wrappers
                 ExtractDelay(resource.Instance as ITriggerDelay, trigger.Instance as ITriggerDelay);
             }
             return trigger;
-        }
-
-        public ITaskFolder CreateRootFolder()
-        {
-            throw new NotImplementedException();
         }
 
         private static void ExtractDelay(ITriggerDelay resource, ITriggerDelay trigger)

@@ -226,42 +226,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return effectedResources;
         }
 
-        public async Task<List<IResourceModel>> FindAffectedResourcesAsync(IList<Guid> resourceId, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
-        {
-            CommunicationController comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            var resourceIds = resourceId.Select(a => a.ToString() + ",").Aggregate((a, b) => a + b);
-            resourceIds = resourceIds.EndsWith(",") ? resourceIds.Substring(0, resourceIds.Length - 1) : resourceIds;
-
-            comsController.AddPayloadArgument("GuidCsv", resourceIds);
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
-
-            var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
-            var effectedResources = new List<IResourceModel>();
-
-            foreach (var serializableResource in toReloadResources)
-            {
-                IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
-
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                    effectedResources.Add(resourceToUpdate);
-                }
-                else
-                {
-                    effectedResources.Add(resource);
-                    ResourceModels.Add(resource);
-                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
-                    if (ItemAdded != null)
-                    {
-                        ItemAdded(resource, null);
-                    }
-                }
-                UpdateResourceRepositoryWithDeploy(resource);
-            }
-            return effectedResources;
-        }
+ 
         public void UpdateResourceRepositoryWithDeploy(IResourceModel resource)
         {
             var x = GetStudioResourceRepository().FindItem(a => a.ResourceId == resource.ID && a.EnvironmentId == _environmentModel.ID);
