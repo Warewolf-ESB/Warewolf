@@ -46,53 +46,5 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             return _workspaceRepository.GetWorkspaceID(identity as WindowsIdentity);
         }
-
-        public void SendMemo(string memo, string connectionID = null)
-        {
-            if (string.IsNullOrEmpty(connectionID))
-            {
-                _clients.All.SendMemo(memo);
-            }
-            else
-            {
-                _clients.Client(connectionID).SendMemo(memo);
-            }
-        }
-
-        public void SendDebugState(string debugState, string connectionID = null)
-        {
-            if (string.IsNullOrEmpty(connectionID))
-            {
-                _clients.All.SendDebugState(debugState);
-            }
-            else
-            {
-                _clients.Client(connectionID).SendDebugState(debugState);
-            }
-        }
-
-        public void SendWorkspaceID(Guid workspaceID, string connectionID = null)
-        {
-            if (string.IsNullOrEmpty(connectionID))
-            {
-                _clients.All.SendWorkspaceID(workspaceID);
-            }
-            else
-            {
-                _clients.Client(connectionID).SendWorkspaceID(workspaceID);
-            }
-        }
-
-        public void SendServerID(Guid serverID, string connectionID = null)
-        {
-            if (string.IsNullOrEmpty(connectionID))
-            {
-                _clients.All.SendServerID(serverID);
-            }
-            else
-            {
-                _clients.Client(connectionID).SendServerID(serverID);
-            }
-        }
     }
 }

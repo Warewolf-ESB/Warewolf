@@ -9,15 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Activities.Presentation.Model;
 
 namespace Dev2.Tests
 {
     public static class TestModelItemFactory
     {
-        public static ModelItem CreateModelItem(object objectToMakeModelItem)
-        {
-            return TestModelItemUtil.CreateModelItem(objectToMakeModelItem);
-        }
+ 
     }
 }

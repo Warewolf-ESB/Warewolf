@@ -108,40 +108,6 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         }
 
         /// <summary>
-        /// Use this overload if the child you're looking may not exist.
-        /// </summary>
-        /// <typeparam name="T">The type of child you're looking for</typeparam>
-        /// <param name="parent">The dependency object whose children you wish to scan</param>
-        /// <param name="foundChild">out param - the found child dependencyobject, null if the method returns false</param>
-        /// <returns>True if a child was found, else false</returns>
-        public static bool TryFindChild<T>(this DependencyObject parent, out T foundChild)
-            where T : DependencyObject
-        {
-            return parent.TryFindChild(child => true, out foundChild);
-        }
-
-        /// <summary>
-        /// Use this overload if the child you're looking may not exist.
-        /// </summary>
-        /// <typeparam name="T">The type of child you're looking for</typeparam>
-        /// <param name="parent">The dependency object whose children you wish to scan</param>
-        /// <param name="predicate">The child object is selected if the predicate evaluates to true</param>
-        /// <param name="foundChild">out param - the found child dependencyobject, null if the method returns false</param>
-        /// <returns>True if a child was found, else false</returns>
-        public static bool TryFindChild<T>(this DependencyObject parent, Func<T, bool> predicate, out T foundChild)
-            where T : DependencyObject
-        {
-            foundChild = null;
-            var results = parent.FindChildren(predicate);
-            IEnumerable<T> enumerable = results as IList<T> ?? results.ToList();
-            if(!enumerable.Any())
-                return false;
-
-            foundChild = enumerable.First();
-            return true;
-        }
-
-        /// <summary>
         /// Get a list of descendant dependencyobjects of the specified type and which meet the criteria
         /// as specified by the predicate
         /// </summary>

@@ -26,46 +26,49 @@ namespace Dev2.Activities
         public IOutputDescription OutputDescription { get; set; }
         public ICollection<IServiceOutputMapping> Outputs { get; set; }
 
-        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj)
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj,bool formatResult = true)
         {
             try
             {
                 if (IsObject)
                 {
-                    var jContainer = JsonConvert.DeserializeObject(input) as JObject;
+                    var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
                     dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
                 }
                 else
                 {
+                    IOutputFormatter formater = null;
+                    if (OutputDescription != null)
+                    {
 
-                    if (OutputDescription == null)
-                    {
-                        dataObj.Environment.AddError(ErrorResource.NoOutPuts);
-                        return;
+                        int i = 0;
+                        foreach (var serviceOutputMapping in Outputs)
+                        {
+                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                            i++;
+                        }
+                        if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+                        {
+                            dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
+                            return;
+                        }
+                        formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                     }
-                    int i = 0;
-                    foreach (var serviceOutputMapping in Outputs)
-                    {
-                        OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
-                        i++;
-                    }
-                    if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
-                    {
-                        dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
-                        return;
-                    }
-                    var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-                    if (string.IsNullOrEmpty(input))
+                    if (input == null)
                     {
                         dataObj.Environment.AddError(ErrorResource.NoWebResponse);
                     }
                     else
                     {
-                        input = formater.Format(input).ToString();
+                        var formattedInput = input;
+                        if (formater != null && formatResult)
+                        {
+                            formattedInput = formater.Format(input).ToString();
+                        }
 
                         XmlDocument xDoc = new XmlDocument();
-                        input = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), input);
-                        xDoc.LoadXml(input);
+                        formattedInput = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), formattedInput);
+                        xDoc.LoadXml(formattedInput);
 
                         if (xDoc.DocumentElement != null)
                         {
@@ -99,33 +102,42 @@ namespace Dev2.Activities
 
         public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0)
         {
-            // spin through each element in the XML
             foreach (XmlNode c in children)
             {
-                // scalars and recordset fetch
                 if (level > 0)
                 {
                     var c1 = c;
-
-                    var nameToMatch = c1.Name;
-                    var useValue = false;
-                    if (c.Name == GlobalConstants.NaughtyTextNode)
+                    var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
+                    var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
+                    if (dev2Definitions.Length != 0)
                     {
-                        if (c1.ParentNode != null)
+                        int fetchIdx;
+                        var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
+                        var nl = c.ChildNodes;
+                        foreach (XmlNode subc in nl)
                         {
-                            nameToMatch = c1.ParentNode.Name;
-                            useValue = true;
+                            foreach (var definition in dev2Definitions)
+                            {
+                                if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
+                                {
+                                    if (update == 0)
+                                    {
+                                        update = fetchIdx;
+                                    }
+                                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
+                                }
+                            }
                         }
+                        dataObj.Environment.CommitAssign();
+                        indexCache[c.Name] = ++idx;
                     }
-                    var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == nameToMatch);
-                    if (scalarName != null)
+                    else
                     {
-                        var value = UnescapeRawXml(c1.InnerXml);
-                        if (useValue)
+                        var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
+                        if (scalarName != null)
                         {
-                            value = UnescapeRawXml(c1.Value);
+                            dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml)), update);
                         }
-                        dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.MapsTo), value), update);
                     }
                 }
                 else

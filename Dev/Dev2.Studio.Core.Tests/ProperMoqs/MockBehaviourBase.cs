@@ -18,7 +18,9 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         #region Locals
 
+#pragma warning disable 649
         private enTestObjectBehaviourChangeType _behaviourType;
+#pragma warning restore 649
 
         #endregion Locals
 
@@ -43,10 +45,5 @@ namespace Dev2.Core.Tests.ProperMoqs {
         }
 
         #endregion Some Freaky Property and Method Changing
-
-        internal virtual void ChangeReturnValue(string Name, enTestObjectBehaviourChangeType behaviourType, object ReturnValue) {
-            _behaviourType = behaviourType;
-            this[Name] = ReturnValue;
-        }
     }
 }

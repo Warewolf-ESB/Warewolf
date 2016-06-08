@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Text;
 
 namespace Dev2.PathOperations
 {
@@ -32,24 +31,6 @@ namespace Dev2.PathOperations
             Password = pass;
             IsNotCertVerifiable = isNotCertVerifiable;
             PrivateKeyFile = privateKeyFile;
-        }
-
-        /// <summary>
-        /// Convert the object to XML
-        /// </summary>
-        /// <returns></returns>
-        public string ToXML()
-        {
-            StringBuilder result = new StringBuilder("<AcitivityIOPath>");
-
-            result.Append("<TypeOf>" + PathType + "</TypeOf>");
-            result.Append("<Path>" + Path + "</Path>");
-            result.Append("<Username>" + Username + "</Username>");
-            result.Append("<Password>" + Password + "</Password>");
-
-            result.Append("</AcitivityIOPath>");
-
-            return result.ToString();
         }
 
         public enActivityIOPathType PathType

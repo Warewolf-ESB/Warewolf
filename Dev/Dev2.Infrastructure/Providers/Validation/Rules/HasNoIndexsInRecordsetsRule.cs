@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -20,7 +21,7 @@ namespace Dev2.Providers.Validation.Rules
         public HasNoIndexsInRecordsetsRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "Cannot have index's for recordsets in this field";
+            ErrorText = ErrorResource.CannotHaveIndexsForRecordsets;
         }
 
         public override IActionableErrorInfo Check()

@@ -2212,52 +2212,6 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
         }
-
-        [TestCategory("MainViewModel_IsDownloading")]
-        [Owner("Tshepo Ntlhokoa")]
-        public void MainViewModel_IsDownloading_IsBusyDownloadingInstallerReturnsTrue_True()
-        {
-            //------------Setup for test--------------------------
-            var localhost = new Mock<IEnvironmentModel>();
-            localhost.Setup(e => e.ID).Returns(Guid.Empty);
-            localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
-            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
-            var eventPublisher = new Mock<IEventAggregator>();
-            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var versionChecker = new Mock<IVersionChecker>();
-            var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
-            //------------Execute Test---------------------------
-            var isDownloading = viewModel.IsDownloading();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isDownloading);
-        }
-
-        [TestCategory("MainViewModel_SetActiveEnvironment")]
-        [Owner("Tshepo Ntlhokoa")]
-        public void MainViewModel_SetActiveEnvironment_ActiveEnvironmentIsUpdated()
-        {
-            //------------Setup for test--------------------------
-            var localhost = new Mock<IEnvironmentModel>();
-            localhost.Setup(e => e.ID).Returns(Guid.Empty);
-            localhost.Setup(e => e.IsConnected).Returns(true);
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
-            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
-            var eventPublisher = new Mock<IEventAggregator>();
-            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var versionChecker = new Mock<IVersionChecker>();
-            var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
-            //------------Execute Test---------------------------
-            var newEnvironment = new Mock<IEnvironmentModel>();
-            viewModel.SetActiveEnvironment(newEnvironment.Object);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(newEnvironment, viewModel.ActiveEnvironment);
-        }
-      
     }
 
     public class SchedulerViewModelForTesting : SchedulerViewModel

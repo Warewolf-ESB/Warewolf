@@ -24,6 +24,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Util;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (!values.ContainsKey("versionInfo"))
                 {
 // ReSharper disable NotResolvedInText
-                    throw new ArgumentNullException("No resourceId was found in the incoming data");
+                    throw new ArgumentNullException(ErrorResource.NoResourceIdInTheIncomingData);
 // ReSharper restore NotResolvedInText
                 }
                

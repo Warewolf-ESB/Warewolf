@@ -114,7 +114,7 @@ namespace Dev2.Activities.SelectAndApply
             }
             if (string.IsNullOrEmpty(Alias))
             {
-                allErrors.AddError(ErrorResource.AliasEmpty);
+                allErrors.AddError(string.Format(ErrorResource.CanNotBeEmpty, "Alias"));
             }
             if (!DataSource.Contains("(*)") && !DataSource.Contains("()"))
             {

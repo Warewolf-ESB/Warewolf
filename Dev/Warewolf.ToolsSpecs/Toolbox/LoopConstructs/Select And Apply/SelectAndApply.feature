@@ -197,7 +197,6 @@ Scenario: Execute a selectAndApply over a tool null value
 	When the selectAndApply tool is executed
 	Then the execution has "AN" error
 
-@ignore
 #Double stars not support at this stage
 Scenario: Number Format tool with complext object multi array
 	Given There is a complexobject in the datalist with this shape

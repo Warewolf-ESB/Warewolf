@@ -115,7 +115,6 @@
     </Compile>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2Random.cs" />
-    <Compile Include="Common\Field.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />
     <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
@@ -178,7 +177,6 @@
     </Compile>
     <Compile Include="ExtMethods\TaskExtensions.cs" />
     <Compile Include="Factories\DropboxFactory.cs" />
-    <Compile Include="Factories\SyntaxTreeFactory.cs" />
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
     <Compile Include="IActivityParser.cs" />
@@ -219,7 +217,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Exceptions.cs" />
     <Compile Include="FrameworkResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
 {
@@ -92,7 +93,7 @@ namespace Dev2.Services.Security
                     }
                 }
             }
-            throw new Exception("Cannot find group");
+            throw new Exception(ErrorResource.CannotFindGroup);
         }
         public event EventHandler PermissionsChanged;
         private EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;

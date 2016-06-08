@@ -8,15 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
 using System.Text;
-using System.Xml.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -42,56 +39,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion CTOR
-
-        #region Get
-
-        // POST: Service/WebSources/Get
-        public RabbitMQSource Get(string resourceId, Guid workspaceId, Guid dataListId)
-        {
-            var result = new RabbitMQSource();
-            try
-            {
-                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if (!string.IsNullOrEmpty(xmlStr))
-                {
-                    var xml = XElement.Parse(xmlStr);
-                    result = new RabbitMQSource(xml);
-                }
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-            }
-            return result;
-        }
-
-        #endregion Get
-
-        #region Save
-
-        // POST: Service/WebSources/Save
-        public string Save(string args, Guid workspaceId, Guid dataListId)
-        {
-            try
-            {
-                var source = JsonConvert.DeserializeObject<RabbitMQSource>(args);
-
-                _resourceCatalog.SaveResource(workspaceId, source);
-                if (workspaceId != GlobalConstants.ServerWorkspaceID)
-                {
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
-                }
-
-                return source.ToString();
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
-            }
-        }
-
-        #endregion Save
 
         #region Test
 

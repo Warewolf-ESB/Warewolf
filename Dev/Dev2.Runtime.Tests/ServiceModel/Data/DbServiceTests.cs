@@ -15,7 +15,6 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
@@ -26,20 +25,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [ExcludeFromCodeCoverage]
     public class DbServiceTests
     {
-        static Service DeserializeService(string args)
-        {
-            var service = JsonConvert.DeserializeObject<Service>(args);
-            switch (service.ResourceType)
-            {
-                case "DbService":
-                    return JsonConvert.DeserializeObject<DbService>(args);
-
-                case "PluginService":
-                    return JsonConvert.DeserializeObject<PluginService>(args);
-            }
-            return service;
-        }
-
         private void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();

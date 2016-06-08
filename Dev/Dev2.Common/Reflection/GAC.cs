@@ -429,94 +429,6 @@ namespace Dev2.Common.Reflection
         }
 
         /// <summary>
-        ///     Tries the resolve GAC assembly.
-        /// </summary>
-        /// <param name="displayName">The display name.</param>
-        /// <returns></returns>
-        public static GACAssemblyName TryResolveGACAssembly(string displayName)
-        {
-            if (displayName.StartsWith(GlobalConstants.GACPrefix)) displayName = displayName.Substring(4);
-
-            string[] split = displayName.Split(',');
-
-            string culture = null, version = null, publicKeyToken = null, name = null;
-
-            foreach (string part in split)
-            {
-                int index = part.IndexOf("=", StringComparison.OrdinalIgnoreCase);
-                if (name == null && index == -1)
-                    name = part.Trim();
-                else
-                {
-                    if (culture == null && (index = part.IndexOf("Culture=", StringComparison.OrdinalIgnoreCase)) != -1)
-                        culture = part.Substring(index + 8).Trim();
-                    else if (version == null &&
-                             (index = part.IndexOf("Version=", StringComparison.OrdinalIgnoreCase)) != -1)
-                        version = part.Substring(index + 8).Trim();
-                    else if (publicKeyToken == null &&
-                             (index = part.IndexOf("PublicKeyToken=", StringComparison.OrdinalIgnoreCase)) != -1)
-                        publicKeyToken = part.Substring(index + 15).Trim();
-                }
-            }
-
-            if (String.IsNullOrEmpty(name)) return null;
-            GACAssemblyName[] matchingName = GetGACAssemblies(name);
-            if (matchingName.Length == 0) return null;
-
-            if (!String.IsNullOrEmpty(publicKeyToken))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (
-                        !String.Equals(matchingName[i].PublicKeyToken, publicKeyToken,
-                            StringComparison.OrdinalIgnoreCase))
-                        matchingName[i] = null;
-
-            if (!String.IsNullOrEmpty(culture))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null &&
-                        !String.Equals(matchingName[i].Culture, culture, StringComparison.OrdinalIgnoreCase))
-                        matchingName[i] = null;
-
-            GACAssemblyName winner = null;
-
-            if (!String.IsNullOrEmpty(version))
-            {
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null)
-                    {
-                        if (!String.Equals(matchingName[i].Version, version, StringComparison.OrdinalIgnoreCase))
-                            matchingName[i] = null;
-                        else winner = matchingName[i];
-                    }
-            }
-            else
-            {
-                Version latest = null;
-
-                foreach (GACAssemblyName t in matchingName)
-                    if (t != null)
-                    {
-                        if (latest == null)
-                        {
-                            winner = t;
-                            latest = new Version(winner.Version);
-                        }
-                        else
-                        {
-                            var compare = new Version(t.Version);
-
-                            if (latest < compare)
-                            {
-                                winner = t;
-                                latest = compare;
-                            }
-                        }
-                    }
-            }
-
-            return winner;
-        }
-
-        /// <summary>
         ///     Gets the GAC assemblies.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -701,6 +613,7 @@ namespace Dev2.Common.Reflection
         /// <param name="pszAssemblyName"></param>
         /// <returns></returns>
         [PreserveSig]
+        // ReSharper disable once UnusedMember.Global
         int CreateAssemblyCacheItem(
             uint dwFlags,
             IntPtr pvReserved,
@@ -730,6 +643,7 @@ namespace Dev2.Common.Reflection
         /// </param>
         /// <returns></returns>
         [PreserveSig]
+        // ReSharper disable once UnusedMember.Global
         int InstallAssembly(
             uint dwFlags,
             [MarshalAs(UnmanagedType.LPWStr)] string pszManifestFilePath,

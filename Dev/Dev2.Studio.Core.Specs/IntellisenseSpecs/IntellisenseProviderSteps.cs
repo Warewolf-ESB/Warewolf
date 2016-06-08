@@ -21,6 +21,7 @@ using Dev2.Intellisense;
 using Dev2.Intellisense.Helper;
 using Dev2.Intellisense.Provider;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;

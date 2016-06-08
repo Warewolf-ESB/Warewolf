@@ -11,7 +11,6 @@
 
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Services.Execution
@@ -48,11 +47,6 @@ namespace Dev2.Services.Execution
         #endregion
 
         #region Exposed Functions
-
-        public void MockCreateService(ResourceCatalog catalog)
-        {
-            CreateService(catalog);
-        }
 
         #region Overrides of ServiceExecutionAbstract<TService,TSource>
 

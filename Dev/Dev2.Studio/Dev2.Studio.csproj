@@ -464,9 +464,7 @@
     </Compile>
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\NetworkHelper.cs" />
-    <Compile Include="Webs\Callbacks\ShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
-    <Compile Include="Webs\Callbacks\SourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
     <Compile Include="Webs\SaveDialogHelper.cs" />
     <Compile Include="Webs\WebHelper.cs" />

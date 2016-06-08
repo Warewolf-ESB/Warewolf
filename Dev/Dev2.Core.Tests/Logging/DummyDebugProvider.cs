@@ -12,8 +12,6 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Diagnostics;
-using Dev2.Diagnostics.Debug;
 
 namespace Dev2.Tests.Logging
 {
@@ -61,123 +59,6 @@ namespace Dev2.Tests.Logging
         {
             get { return _assign3ID; }
             set { _assign3ID = value; }
-        }
-
-        public IEnumerable<IDebugState> GetDebugStates(string serverWebUri, DirectoryPath directory, FilePath path)
-        {
-            var list = new List<DebugState>
-            {
-                new DebugState
-                {
-                    StateType = StateType.Before,
-                    ServerID = ServerID,
-                    ParentID = Guid.Empty,
-                    ID = Workflow1ID,
-                    DisplayName = "Workflow1",
-                    HasError = false,
-                    Name = "DsfActivity",
-                    ActivityType = ActivityType.Workflow,
-                    StartTime = _startDate,
-                    EndTime = _startDate.AddMinutes(1)
-                },
-                new DebugState
-                {
-                    StateType = StateType.All,
-                    ServerID = ServerID,
-                    ParentID = Workflow1ID,
-                    ID = Assign1ID,
-                    DisplayName = "Assign1",
-                    HasError = false,
-                    Name = "Assign",
-                    ActivityType = ActivityType.Step,
-                    StartTime = _startDate.AddMinutes(1),
-                    EndTime = _startDate.AddMinutes(2)
-                },
-                new DebugState
-                {
-                    StateType = StateType.Before,
-                    ServerID = ServerID,
-                    ParentID = Workflow1ID,
-                    ID = Workflow2ID,
-                    DisplayName = "Workflow2",
-                    HasError = false,
-                    Name = "DsfActivity",
-                    ActivityType = ActivityType.Step,
-                    StartTime = _startDate.AddMinutes(2),
-                    EndTime = _startDate.AddMinutes(3)
-                },
-                new DebugState
-                {
-                    StateType = StateType.All,
-                    ServerID = ServerID,
-                    ParentID = Workflow2ID,
-                    ID = Assign2ID,
-                    DisplayName = "Assign2",
-                    HasError = false,
-                    Name = "Assign",
-                    ActivityType = ActivityType.Step,
-                    StartTime = _startDate.AddMinutes(3),
-                    EndTime = _startDate.AddMinutes(4)
-                },
-                new DebugState
-                {
-                    StateType = StateType.After,
-                    ServerID = ServerID,
-                    ParentID = Workflow1ID,
-                    ID = Workflow2ID,
-                    DisplayName = "Workflow2",
-                    HasError = false,
-                    Name = "DsfActivity",
-                    ActivityType = ActivityType.Step,
-                    StartTime = _startDate.AddMinutes(4),
-                    EndTime = _startDate.AddMinutes(5)
-                },
-                new DebugState
-                {
-                    StateType = StateType.After,
-                    ServerID = ServerID,
-                    ParentID = Guid.Empty,
-                    ID = Workflow1ID,
-                    DisplayName = "Workflow1",
-                    HasError = false,
-                    Name = "DsfActivity",
-                    ActivityType = ActivityType.Workflow,
-                    StartTime = _startDate.AddMinutes(5),
-                    EndTime = _startDate.AddMinutes(6)
-                },
-                new DebugState
-                {
-                    StateType = StateType.All,
-                    ServerID = ServerID,
-                    ParentID = Guid.Empty,
-                    ID = Assign3ID,
-                    DisplayName = "Assign3",
-                    HasError = false,
-                    Name = "Assign",
-                    ActivityType = ActivityType.Step,
-                    StartTime = _startDate.AddMinutes(6),
-                    EndTime = _startDate.AddMinutes(7)
-                }
-            };
-            return list;
-        }
-
-        public DebugState GetDebugState()
-        {
-            return new DebugState
-                {
-                    StateType = StateType.Before,
-                    ServerID = ServerID,
-                    ParentID = Guid.Empty,
-                    ID = Workflow1ID,
-                    OriginatingResourceID = Workflow1ID,
-                    DisplayName = "TestWorkflow",
-                    HasError = false,
-                    Name = "DsfActivity",
-                    ActivityType = ActivityType.Workflow,
-                    StartTime = _startDate,
-                    EndTime = _startDate.AddMinutes(1)
-                };
         }
 
         #region Implementation of IDebugProvider

@@ -10,11 +10,11 @@
 */
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -23,6 +23,7 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -98,89 +99,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Save
-
-        // POST: Service/Services/Save
-        public string Save(string args, Guid workspaceId, Guid dataListId)
-        {
-            try
-            {
-                var service = DeserializeService(args);
-                _resourceCatalog.SaveResource(workspaceId, service);
-
-                if (workspaceId != GlobalConstants.ServerWorkspaceID)
-                {
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, service);
-                }
-
-                return service.ToString();
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
-            }
-        }
-
-        #endregion
-
-        #region DbMethods
-
-        // POST: Service/Services/DbMethods
-        public ServiceMethodList DbMethods(string args, Guid workspaceId, Guid dataListId)
-        {
-            var result = new ServiceMethodList();
-            if (!string.IsNullOrEmpty(args))
-            {
-                try
-                {
-                    Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-                    var source = serialiser.Deserialize<DbSource>(args);
-                    var actualSource = _resourceCatalog.GetResource<DbSource>(workspaceId, source.ResourceID);
-                    actualSource.ReloadActions = source.ReloadActions;
-                    var serviceMethods = FetchMethods(actualSource);
-                    result.AddRange(serviceMethods);
-                }
-                catch (Exception ex)
-                {
-                    RaiseError(ex);
-                    result.Add(new ServiceMethod(ex.Message, ex.StackTrace));
-                }
-            }
-            return result;
-        }
-
-        #endregion
-
         #region DbTest
 
         // POST: Service/Services/DbTest
-        public Recordset DbTest(string args, Guid workspaceId, Guid dataListId)
-        {
-            try
-            {
-                var service = JsonConvert.DeserializeObject<DbService>(args);
-                service.Source = _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
-                if (string.IsNullOrEmpty(service.Recordset.Name))
-                {
-                    service.Recordset.Name = service.Method.Name;
-                }
-
-                var addFields = service.Recordset.Fields.Count == 0;
-                if (addFields)
-                {
-                    service.Recordset.Fields.Clear();
-                }
-                service.Recordset.Records.Clear();
-
-                return FetchRecordset(service, addFields);
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-                return new Recordset { HasErrors = true, ErrorMessage = ex.Message };
-            }
-        }
         // POST: Service/Services/DbTest
         public Recordset DbTest(DbService args, Guid workspaceId, Guid dataListId)
         {
@@ -231,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             // Clear out the Recordset.Fields list because the sequence and
@@ -264,7 +185,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -283,7 +204,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -301,7 +222,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -319,7 +240,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
                             {
-                                throw new Exception("Error retrieving shape from service output.");
+                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
 
                             dbService.Recordset.Fields.Clear();
@@ -380,7 +301,16 @@ namespace Dev2.Runtime.ServiceModel
                         if (path != null)
                         {
                             path.OutputExpression = value;
-                            dataSourceShape.Paths.Add(path);
+                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
+                            if (foundPath == null)
+                            {
+                                dataSourceShape.Paths.Add(path);
+                            }
+                            else
+                            {
+                                foundPath.OutputExpression = path.OutputExpression;
+                            }                            
+
                         }
                     }
                 }

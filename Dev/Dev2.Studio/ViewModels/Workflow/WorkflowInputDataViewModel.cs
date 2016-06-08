@@ -399,7 +399,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             RememberInputs = DebugTo.RememberInputs;
             DataList = DebugTo.BinaryDataList;
 
-            // Flipping Jurie....
             var myList = _dataListConversionUtils.CreateListToBindTo(DebugTo.BinaryDataList);
 
             WorkflowInputs.AddRange(myList);

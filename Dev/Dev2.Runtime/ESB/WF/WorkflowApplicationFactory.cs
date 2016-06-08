@@ -28,6 +28,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -247,7 +248,7 @@ namespace Dev2.Runtime.ESB.WF
             }
             else
             {
-                errors.AddError("Internal System Error : Could not create workflow execution wrapper");
+                errors.AddError(ErrorResource.CouldNotCreateWorkflowExecutionWrapper);
             }
 
             return dataTransferObject;
@@ -378,31 +379,6 @@ namespace Dev2.Runtime.ESB.WF
                 ExecutableServiceRepository.Instance.Remove(this);
                 AssociatedServices.ForEach(s => s.Terminate());
                 Dispose();
-            }
-
-            public void Terminate(Exception exception)
-            {
-                try
-                {
-                    // signal user termination ;)
-                    _executionToken.IsUserCanceled = true;
-
-                    // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(exception);
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Error(e);
-                }
-                finally
-                {
-
-                    ExecutableServiceRepository.Instance.Remove(this);
-                    AssociatedServices.ForEach(s => s.Terminate());
-                    Dispose();
-                }
-
-
             }
 
             public void Resume(IDSFDataObject dataObject)

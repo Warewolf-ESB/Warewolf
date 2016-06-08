@@ -35,6 +35,7 @@ using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
 using ServiceStack.Net30.Collections.Concurrent;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ESB
@@ -57,14 +58,6 @@ namespace Dev2.Runtime.ESB
 
         static readonly ConcurrentDictionary<Guid, ServiceAction> Cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
-        public static void RemoveFromCache(Guid resourceID)
-        {
-            if (Cache != null)
-            {
-                ServiceAction sa;
-                Cache.TryRemove(resourceID, out sa);
-            }
-        }
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
         public bool IsLoggingEnabled
@@ -148,7 +141,7 @@ namespace Dev2.Runtime.ESB
 
                         if(theService == null)
                         {
-                            errors.AddError("Service [ " + serviceName + " ] not found.");
+                            errors.AddError(string.Format(ErrorResource.ServiceNotFound,serviceName));
                         }
                         else if(theService.Actions.Count <= 1)
                         {
@@ -157,7 +150,7 @@ namespace Dev2.Runtime.ESB
                             var theStart = theService.Actions.FirstOrDefault();
                             if(theStart != null && theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService && theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.Workflow && dataObject.IsFromWebServer)
                             {
-                                throw new Exception("Can only execute workflows from web browser");
+                                throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
                             }
                             Dev2Logger.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart, sl);
@@ -176,7 +169,7 @@ namespace Dev2.Runtime.ESB
                         }
                         else
                         {
-                            errors.AddError("Malformed Service [ " + serviceId + " ] it contains multiple actions");
+                            errors.AddError(string.Format(ErrorResource.MalformedService, serviceId));
                         }
                     }
                     catch(Exception e)

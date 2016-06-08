@@ -1,11 +1,9 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using Infragistics.Documents.RichText;
-using Infragistics.Documents.RichText.Html;
 
 namespace Warewolf.Studio.Views
 {
@@ -29,20 +27,7 @@ namespace Warewolf.Studio.Views
             };
             XamRichTextEditor.CaretColor = colorInfo;
         }
-        public string GetCurrentHelpText()
-        {
-            string currentHelpText;
-            using (var memoryStream = new MemoryStream())
-            {
-                XamRichTextEditor.Document.Save(new HtmlSerializationProvider(), memoryStream);
-                memoryStream.Position = 0;
-                using (var reader = new StreamReader(memoryStream))
-                {
-                    currentHelpText = reader.ReadToEnd();
-                }
-            }
-            return currentHelpText;
-        }
+
         public void HideScriptErrors(WebBrowser wb, bool Hide)
         {
             FieldInfo fiComWebBrowser = typeof(WebBrowser)
@@ -73,16 +58,5 @@ namespace Warewolf.Studio.Views
             document.head.appendChild(script);
         }
 
-        #region Implementation of IComponentConnector
-
-        /// <summary>
-        /// Attaches events and names to compiled content. 
-        /// </summary>
-        /// <param name="connectionId">An identifier token to distinguish calls.</param><param name="target">The target to connect events and names to.</param>
-        public void Connect(int connectionId, object target)
-        {
-        }
-
-        #endregion
     }
 }

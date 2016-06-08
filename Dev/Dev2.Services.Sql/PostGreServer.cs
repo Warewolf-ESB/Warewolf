@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -152,23 +151,6 @@ namespace Dev2.Services.Sql
         }
 
         #endregion FetchDataTable
-
-        #region FetchDataSet
-
-        public DataSet FetchDataSet(params SqlParameter[] parameters)
-        {
-            VerifyConnection();
-            return FetchDataSet(_command, parameters);
-        }
-
-        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
-        {
-            VerifyArgument.IsNotNull("command", command);
-            AddParameters(command, parameters);
-            return _factory.FetchDataSet(command);
-        }
-
-        #endregion FetchDataSet
 
         #region FetchStoredProcedures
 

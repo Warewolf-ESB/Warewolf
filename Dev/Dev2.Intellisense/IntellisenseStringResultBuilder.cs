@@ -5,7 +5,7 @@ namespace Dev2.Intellisense
 {
     public class IntellisenseStringResultBuilder : IIntellisenseStringResultBuilder
     {
-        readonly char[] _tokenisers = "!@#$%^&*()_+_+{}|:\"?><`~<>?:'{}| ".ToCharArray();
+        readonly char[] _tokenisers = "!#$%^&*()_+_+{}|:\"?><`~<>?:'{}| ".ToCharArray();
         readonly char[] _tokeniserswithbrackets = "!@#$%^&*()_+_+{}|:\"?><`~<>?:'{}| ".ToCharArray();
         #region Implementation of IIntellisenseStringResultBuilder
 

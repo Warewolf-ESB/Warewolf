@@ -63,13 +63,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             object pluginResult;
             var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-            // do formating here to avoid object serialization issues ;)
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
             {
                 pluginResult = AdjustPluginResult(pluginResult, methodToRun);
-
-                return formater.Format(pluginResult).ToString();
+                return formater.Format(pluginResult).ToString(); 
             }
             pluginResult = JsonConvert.SerializeObject(pluginResult);
             return pluginResult;
@@ -130,10 +128,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
             }
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
+            if(methodToRun==null && typeList.Count == 0)
+            {
+                methodToRun = type.GetMethod(setupInfo.Method);
+            }
             object instance = Activator.CreateInstance(type);
 
-            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-            return methodToRun;
+            if(methodToRun != null)
+            {
+                pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return methodToRun;
+            }
+            pluginResult = null;
+            return null;
         }
 
         // ReSharper disable once InconsistentNaming
@@ -265,7 +272,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(PluginSource pluginSource)
         {
-            // BUG 9500 - 2013.05.31 - TWR : added check to avoid nulling AssemblyLocation/Name in tests 
             if (string.IsNullOrEmpty(pluginSource.AssemblyLocation))
             {
                 pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);
@@ -326,24 +332,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        /// <summary>
-        /// Builds the parameter list.
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
-        private object[] BuildParameterList(List<MethodParameter> parameters)
-        {
-
-            if (parameters.Count == 0) return new object[] { };
-            var parameterValues = new object[parameters.Count];
-            int pos = 0;
-            parameters.ForEach(parameter =>
-            {
-                parameterValues[pos] = DeriveType(parameter.TypeName);
-                pos++;
-            });
-            return parameterValues;
-        }
         private Type DeriveType(string typename)
         {
             var type = Type.GetType(typename, true);

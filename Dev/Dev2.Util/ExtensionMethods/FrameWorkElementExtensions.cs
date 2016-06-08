@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -36,26 +35,6 @@ namespace Dev2.Util.ExtensionMethods
             }
             int max = maxZ.Max();
             Panel.SetZIndex(element, max + 1);
-        }
-
-        public static void BringToMaxFront(this FrameworkElement element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-
-            Panel.SetZIndex(element, Int32.MaxValue);
-        }
-
-        public static void SendToBack(this FrameworkElement element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-
-            Panel.SetZIndex(element, Int32.MinValue);
         }
     }
 }

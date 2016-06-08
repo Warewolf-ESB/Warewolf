@@ -13,7 +13,6 @@ using System;
 using System.Activities.XamlIntegration;
 using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Windows.Controls;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
@@ -133,11 +132,6 @@ namespace Dev2.Runtime.Configuration.Settings
             return result;
         }
 
-        public void IncrementVersion()
-        {
-            Version = Version == null ? new Version(1, 0) : new Version(Version.Major, Version.Minor + 1);
-        }
-
         #endregion
 
         #region Private Methods
@@ -188,20 +182,6 @@ namespace Dev2.Runtime.Configuration.Settings
         #endregion
 
         #region Static Methods
-
-        public static UserControl EntryPoint(XElement configurationXML, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
-        {
-            MainView settingsView = new MainView();
-            MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
-            settingsView.DataContext = mainViewModel;
-
-            if(mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
-            {
-                mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
-            }
-
-            return settingsView;
-        }
 
         #endregion
     }
