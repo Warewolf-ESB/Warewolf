@@ -76,7 +76,6 @@
     <Compile Include="Debug\DebugState.cs" />
     <Compile Include="Debug\DirectoryPath.cs" />
     <Compile Include="Debug\FilePath.cs" />
-    <Compile Include="Debug\ProfilingUtil.cs" />
     <Compile Include="Debug\RemoteDebugMessageRepo.cs" />
     <Compile Include="Debug\Workflow.cs" />
     <Compile Include="Extensions.cs" />
