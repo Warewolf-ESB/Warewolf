@@ -379,7 +379,6 @@
     <Compile Include="ServiceModel\Data\DbService.cs" />
     <Compile Include="ServiceModel\Data\DbSource.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBroker.cs" />
-    <Compile Include="ServiceModel\Esb\Controllers\EsbController.cs" />
     <Compile Include="ServiceModel\Esb\IDiscoverableEsbEnpoint.cs" />
     <Compile Include="ServiceModel\Esb\IEsbEndpoint.cs" />
     <Compile Include="ServiceModel\Data\MethodOutput.cs" />

@@ -1017,4 +1017,7 @@
   <data name="WorkflowNotFound" xml:space="preserve">
     <value>Workflow not found.</value>
   </data>
+  <data name="NoObjectName" xml:space="preserve">
+    <value>Please enter an 'Object Name' as 'Is Object' has been selected.</value>
+  </data>
 </root>

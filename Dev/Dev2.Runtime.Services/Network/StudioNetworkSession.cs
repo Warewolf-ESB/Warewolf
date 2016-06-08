@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Network;
 
 namespace Dev2.DynamicServices
@@ -41,6 +42,7 @@ namespace Dev2.DynamicServices
             _account = account as StudioAccount;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal Guid NotifyAuxiliaryConnectionRequested()
         {
             Guid result;

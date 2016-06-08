@@ -1762,6 +1762,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter an &apos;Object Name&apos; as &apos;Is Object&apos; has been selected..
+        /// </summary>
+        public static string NoObjectName {
+            get {
+                return ResourceManager.GetString("NoObjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no outputs.
         /// </summary>
         public static string NoOutPuts {
