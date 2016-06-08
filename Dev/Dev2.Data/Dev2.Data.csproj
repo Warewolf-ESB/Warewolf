@@ -259,7 +259,6 @@
     <Compile Include="Interfaces\IRecordSetCollection.cs" />
     <Compile Include="Interfaces\IRecordSetDefinition.cs" />
     <Compile Include="Interfaces\IRecordsetScopingObject.cs" />
-    <Compile Include="Interfaces\IRecordsetTO.cs" />
     <Compile Include="Interfaces\IRecsetSearch.cs" />
     <Compile Include="Interfaces\ISystemTag.cs" />
     <Compile Include="MathOperations\EvaluationFunctionTO.cs" />
