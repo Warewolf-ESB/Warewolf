@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Gma.DataStructures.StringSearch
 {
@@ -31,9 +32,9 @@ namespace Gma.DataStructures.StringSearch
         public StringPartition(string origin, int startIndex, int partitionLength)
         {
             if (origin == null) throw new ArgumentNullException("origin");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex", "The value must be non negative.");
+            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex", ErrorResource.PositiveNumberRequired);
             if (partitionLength < 0)
-                throw new ArgumentOutOfRangeException("partitionLength", "The value must be non negative.");
+                throw new ArgumentOutOfRangeException("partitionLength", ErrorResource.PositiveNumberRequired);
             m_Origin = string.Intern(origin);
             m_StartIndex = startIndex;
             int availableLength = m_Origin.Length - startIndex;

@@ -9,6 +9,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.DynamicProxy;
 using Dev2.Runtime.Interfaces;
 using Unlimited.Framework.Converters.Graph;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -23,7 +24,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             if (contract == null)
             {
-                throw new DynamicProxyException("No contract found for end point");
+                throw new DynamicProxyException(ErrorResource.NoContractFound);
             }
 
             var proxy = factory.CreateProxy(contract.Name);
@@ -60,7 +61,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             if (contract == null)
             {
-                throw new DynamicProxyException("No contract found for end point");
+                throw new DynamicProxyException(ErrorResource.NoContractFound);
             }
 
             var proxy = factory.CreateProxy(contract.Name);
@@ -120,7 +121,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             if (contract == null)
             {
-                throw new DynamicProxyException("No contract found for end point");
+                throw new DynamicProxyException(ErrorResource.NoContractFound);
             }
 
             var proxy = factory.CreateProxy(contract.Name);

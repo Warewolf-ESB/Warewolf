@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -57,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(domain) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                throw new InvalidDataContractException("Domain or Username or Password is missing");
+                throw new InvalidDataContractException(ErrorResource.DomainOrUsernameOrPasswordMissing);
             }
 
             var result = new ExecuteMessage { HasError = false };

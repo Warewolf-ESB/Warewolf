@@ -45,6 +45,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Network
 {
@@ -648,7 +649,7 @@ namespace Dev2.Network
                 var popupController = CustomContainer.Get<IPopupController>();
                 if (popupController != null)
                 {
-                    popupController.Show("Error connecting to server. Please check your network connection.","Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+                    popupController.Show(ErrorResource.ErrorConnectingToServer, "Error connecting",MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
                 }
                 return result;
             }
@@ -726,7 +727,7 @@ namespace Dev2.Network
                 var popupController = CustomContainer.Get<IPopupController>();
                 if (popupController != null)
                 {
-                    popupController.Show("Error connecting to server. Please check your network connection.", "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
+                    popupController.Show(ErrorResource.ErrorConnectingToServer, "Error connecting", MessageBoxButton.OK, MessageBoxImage.Information, null, false, false, true, false);
                 }
             }
             return result;
