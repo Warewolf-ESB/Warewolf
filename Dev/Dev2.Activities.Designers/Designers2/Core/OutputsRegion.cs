@@ -308,7 +308,18 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                var errors = Outputs.Where(a => FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                var errors = new List<string>();
+                try
+                {
+                    if (Outputs != null && Outputs.Count > 0 && !IsObject)
+                    {
+                        errors = Outputs.Where(a => FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                    }
+                }
+                catch(Exception e)
+                {
+                    errors.Add(e.Message);
+                }
                 if(IsObject && string.IsNullOrEmpty(ObjectName))
                 {
                     errors.Add(ErrorResource.NoObjectName);
