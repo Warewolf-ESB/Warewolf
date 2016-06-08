@@ -456,7 +456,6 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	| 1 | [[rec(1).a]] = 1         |
 	| 2 | [[rec(1).b]] = rec(1).a* |
 
-@ignore
 #failing - person.name = bob, person.age = 25, staff = person -> is this valid?
 Scenario: Assign a populated json object to a new json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
@@ -471,7 +470,6 @@ Scenario: Assign a populated json object to a new json object
 	And the debug output as
 	| # |								|
 
-@ignore
 #failing - person.name = bob, person.age = 25, staff.subordinate = person -> is this valid?
 Scenario: Assign a populated json object to a child of a new json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
@@ -486,7 +484,6 @@ Scenario: Assign a populated json object to a child of a new json object
 	And the debug output as
 	| # |											|
 
-@ignore
 #failing - person.name = bob, person.age = 25, staff(1) = person -> is this valid?
 Scenario: Assign a populated json object to a new json object array
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
@@ -501,7 +498,6 @@ Scenario: Assign a populated json object to a new json object array
 	And the debug output as
 	| # |											|
 
-@ignore
 #failing - staff(1) = Bob, staff(2) = OtherBob, staff(3) = OtherOtherBob, hitList = staff -> is this valid?
 Scenario: Assign a json object array to a new json object
 	Given I assign the value "11" to a json object "[[Person.Score(1)]]"
