@@ -1696,10 +1696,9 @@ namespace Dev2.Studio.ViewModels.DataList
             var models = items as IList<IComplexObjectItemModel> ?? items.ToList();
             var unusedItems =
                 from itemModel in models
-                where !(
-                    from part in partsToVerify
-                    select part.DisplayValue
-                    ).Contains(itemModel.Name)
+                where !(from part in partsToVerify
+                        select part.DisplayValue
+                       ).Contains(itemModel.Name)
                 select itemModel;
             foreach (var complexObjectItemModel in unusedItems)
             {
@@ -1707,10 +1706,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             var usedItems =
                 from itemModel in models
-                where (
-                    from part in partsToVerify
-                    select part.DisplayValue
-                    ).Contains(itemModel.Name)
+                where (from part in partsToVerify
+                        select part.DisplayValue
+                      ).Contains(itemModel.Name)
                 select itemModel;
             foreach (var complexObjectItemModel in usedItems)
             {
