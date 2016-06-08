@@ -109,44 +109,6 @@ namespace Dev2.Utils
         }
 
         /// <summary>
-        /// Determines whether [is loaded information focus loss catalog] [the specified work surface key].
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        /// <returns></returns>
-        public static bool IsLoadedInFocusLossCatalog(WorkSurfaceKey workSurfaceKey)
-        {
-            return _resourcesCurrentlyWaitingForFirstFocusLoss.ContainsKey(workSurfaceKey.ToString());
-        }
-
-        /// <summary>
-        /// Adds the workflow waiting for water mark updates.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void AddWorkflowWaitingForWaterMarkUpdates(WorkSurfaceKey workSurfaceKey)
-        {
-            _resourceCurrentlyWaitingForWaterMarkUpdates.Add(workSurfaceKey);
-        }
-
-        /// <summary>
-        /// Removes the workflow waiting for water mark updates.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void RemoveWorkflowWaitingForWaterMarkUpdates(WorkSurfaceKey workSurfaceKey)
-        {
-            _resourceCurrentlyWaitingForWaterMarkUpdates.Remove(workSurfaceKey);
-        }
-
-        /// <summary>
-        /// Determines whether [is workflow waiting for water mark updates] [the specified work surface key].
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        /// <returns></returns>
-        public static bool IsWorkflowWaitingForWaterMarkUpdates(WorkSurfaceKey workSurfaceKey)
-        {
-            return _resourceCurrentlyWaitingForWaterMarkUpdates.Contains(workSurfaceKey);
-        }
-
-        /// <summary>
         /// Prunes the workflow from caches.
         /// </summary>
         /// <param name="workSurfaceKey">The work surface key.</param>

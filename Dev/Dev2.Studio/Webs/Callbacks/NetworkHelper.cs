@@ -17,7 +17,6 @@ namespace Dev2.Webs.Callbacks
 {
     public interface INetworkHelper
     {
-        bool HasConnection(string uri);
         Task<bool> HasConnectionAsync(string uri);
     }
 
