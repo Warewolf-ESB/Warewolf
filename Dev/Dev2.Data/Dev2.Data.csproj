@@ -121,6 +121,7 @@
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="EnvironmentIndexIterator.cs" />
+    <Compile Include="IComplexObject.cs" />
     <Compile Include="IDataListModel.cs" />
     <Compile Include="IIndexIterator.cs" />
     <Compile Include="IndexIterator.cs" />

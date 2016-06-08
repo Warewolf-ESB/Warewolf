@@ -1,22 +1,22 @@
-using Dev2.Common.Interfaces;
-using Dev2.Data.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2.Common.Interfaces;
+using Dev2.Data.Util;
 using Gma.DataStructures.StringSearch;
 
-namespace Dev2
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+namespace Dev2.Studio.Core.DataList
 {
     public class Dev2TrieSugggestionProvider : ISuggestionProvider
     {
         #region Implementation of ISuggestionProvider
 
         private readonly char[] _tokenisers = "!#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
-        public ITrie<string> PatriciaTrie { get; private set; }
+        private ITrie<string> PatriciaTrie { get; set; }
         private ObservableCollection<string> _variableList;
-        private IntellisenseStringProvider.FilterOption all;
-        private int level;
 
         public ObservableCollection<string> VariableList
         {
@@ -32,22 +32,20 @@ namespace Dev2
                 PatriciaTrie = new SuffixTrie<string>(1);
 
                 PatriciaTrieScalars = new SuffixTrie<string>(1);
-#pragma warning disable 618
-                var vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsScalarExpression);
-#pragma warning restore 618
-                foreach (var @var in vars)
+                var vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsScalarExpression);
+                foreach (var var in vars)
                 {
-                    var currentVar = @var as LanguageAST.LanguageExpression.ScalarExpression;
+                    var currentVar = var as LanguageAST.LanguageExpression.ScalarExpression;
                     if (currentVar != null)
                     {
                         PatriciaTrieScalars.Add(DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item), DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item));
                     }
                 }
                 PatriciaTrieRecsets = new SuffixTrie<string>(1);
-                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
-                foreach (var @var in vars)
+                vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
+                foreach (var var in vars)
                 {
-                    var currentVar = @var as LanguageAST.LanguageExpression.RecordSetNameExpression;
+                    var currentVar = var as LanguageAST.LanguageExpression.RecordSetNameExpression;
                     if (currentVar != null)
                     {
                         var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(currentVar.Item.Name, Equals(currentVar.Item.Index, LanguageAST.Index.Star)));
@@ -55,10 +53,10 @@ namespace Dev2
                     }
                 }
                 PatriciaTrieRecsetsFields = new SuffixTrie<string>(1);
-                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression);
-                foreach (var @var in vars)
+                vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression);
+                foreach (var var in vars)
                 {
-                    var currentVar = @var as LanguageAST.LanguageExpression.RecordSetExpression;
+                    var currentVar = var as LanguageAST.LanguageExpression.RecordSetExpression;
                     if (currentVar != null)
                     {
                         var index = "";
@@ -71,19 +69,19 @@ namespace Dev2
                     }
                 }
                 PatriciaTrieJsonObjects = new SuffixTrie<string>(1);
-                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsJsonIdentifierExpression);
-                foreach (var @var in vars)
+                vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsJsonIdentifierExpression);
+                foreach (var var in vars)
                 {
-                    var jsonIdentifierExpression = @var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+                    var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
                     if (jsonIdentifierExpression != null)
                     {
                         AddJsonVariables(jsonIdentifierExpression.Item, null);
                     }
                 }
-                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a);
-                foreach (var @var in vars)
+                vars = _variableList.Select(ParseExpression).OrderBy(a => a);
+                foreach (var var in vars)
                 {
-                    var recordSetExpression = @var as LanguageAST.LanguageExpression.RecordSetExpression;
+                    var recordSetExpression = var as LanguageAST.LanguageExpression.RecordSetExpression;
                     if (recordSetExpression != null)
                     {
                         var index = "";
@@ -96,7 +94,7 @@ namespace Dev2
                     }
                     else
                     {
-                        var recordSetNameExpression = @var as LanguageAST.LanguageExpression.RecordSetNameExpression;
+                        var recordSetNameExpression = var as LanguageAST.LanguageExpression.RecordSetNameExpression;
                         if (recordSetNameExpression != null)
                         {
                             var name = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(recordSetNameExpression.Item.Name, Equals(recordSetNameExpression.Item.Index, LanguageAST.Index.Star)));
@@ -104,7 +102,7 @@ namespace Dev2
                         }
                         else
                         {
-                            var scalarExpression = @var as LanguageAST.LanguageExpression.ScalarExpression;
+                            var scalarExpression = var as LanguageAST.LanguageExpression.ScalarExpression;
                             if (scalarExpression != null)
                             {
                                 PatriciaTrie.Add(DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item), DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
@@ -113,6 +111,20 @@ namespace Dev2
                     }
                 }
             }
+        }
+
+        private static LanguageAST.LanguageExpression ParseExpression(string a)
+        {
+            try
+            {
+                var languageExpression = EvaluationFunctions.parseLanguageExpression(a, 0);
+                return languageExpression;
+            }
+            catch(Exception)
+            {
+                //
+            }
+            return LanguageAST.LanguageExpression.NewWarewolfAtomExpression(DataStorage.WarewolfAtom.Nothing);
         }
 
         private LanguageAST.JsonIdentifierExpression AddJsonVariables(LanguageAST.JsonIdentifierExpression currentVar, string parentName)
@@ -161,12 +173,7 @@ namespace Dev2
             PatriciaTrie = new PatriciaTrie<string>();
         }
 
-        public Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption all, int level)
-        {
-            this.all = all;
-            this.level = level;
-        }
-
+      
         public IEnumerable<string> GetSuggestions(string orignalText, int caretIndex, bool tokenise, enIntellisensePartType type)
         {
             if (caretIndex < 0) return new List<string>();

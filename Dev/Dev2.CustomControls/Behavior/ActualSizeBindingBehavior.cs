@@ -9,7 +9,6 @@
 */
 
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Interactivity;
 
 namespace Dev2.CustomControls.Behavior

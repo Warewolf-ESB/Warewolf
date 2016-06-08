@@ -33,6 +33,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -1696,10 +1697,9 @@ namespace Dev2.Studio.ViewModels.DataList
             var models = items as IList<IComplexObjectItemModel> ?? items.ToList();
             var unusedItems =
                 from itemModel in models
-                where !(
-                    from part in partsToVerify
-                    select part.DisplayValue
-                    ).Contains(itemModel.Name)
+                where !(from part in partsToVerify
+                        select part.DisplayValue
+                       ).Contains(itemModel.Name)
                 select itemModel;
             foreach (var complexObjectItemModel in unusedItems)
             {
@@ -1707,10 +1707,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             var usedItems =
                 from itemModel in models
-                where (
-                    from part in partsToVerify
-                    select part.DisplayValue
-                    ).Contains(itemModel.Name)
+                where (from part in partsToVerify
+                        select part.DisplayValue
+                      ).Contains(itemModel.Name)
                 select itemModel;
             foreach (var complexObjectItemModel in usedItems)
             {
