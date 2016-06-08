@@ -49,33 +49,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             dropBoxUpload.Object.ExecuteTask(It.IsAny<DropboxClient>());
             dropBoxUpload.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
         }
-        
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateNewDropboxUpload_GivenParameters_ShouldBeValid()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxUpload = new DropBoxUpload(WriteMode.Add.Instance, "random.txt", "random.txt");
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxUpload);
-            //---------------Execute Test ----------------------
-            dropBoxUpload.Validate();
-            //---------------Test Result -----------------------
-            Assert.IsTrue(dropBoxUpload.IsValid);
-        }
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateNewDropboxUpload_GivenMissingWriteMode_ShouldBeInValid()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxUpload = new DropBoxUpload(null, "random.txt", "random.txt");
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxUpload);
-            //---------------Execute Test ----------------------
-            dropBoxUpload.Validate();
-            //---------------Test Result -----------------------
-            Assert.IsFalse(dropBoxUpload.IsValid);
-        }  
+
+  
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
@@ -87,19 +62,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Test Result -----------------------
         } 
         
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateNewDropboxUpload_GivenMissingToPath_ShouldBeInValid()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxUpload = new DropBoxUpload(null, "", "random.txt");
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxUpload);
-            //---------------Execute Test ----------------------
-            dropBoxUpload.Validate();
-            //---------------Test Result -----------------------
-            Assert.IsFalse(dropBoxUpload.IsValid);
-        } 
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

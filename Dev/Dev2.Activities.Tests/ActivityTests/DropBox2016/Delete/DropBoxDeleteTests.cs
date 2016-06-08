@@ -52,20 +52,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
             dropBoxDelete.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
         }
 
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("DropboxDelete_CreateDropboxActivity")]
-        public void DropboxDelete_CreateDropboxActivity_GivenParameters_ShouldBeValid()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxDelete = new DropboxDelete("random.txt");
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDelete);
-            //---------------Execute Test ----------------------
-            dropBoxDelete.Validate();
-            //---------------Test Result -----------------------
-            Assert.IsTrue(dropBoxDelete.IsValid);
-        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
