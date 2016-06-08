@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Toolbox;
 using Warewolf.Studio.ViewModels.ToolBox;
 
 namespace Warewolf.Studio.Views
@@ -34,31 +31,6 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        #region Implementation of IToolboxView
-
-        IEnumerable<IToolDescriptorViewModel> GetTools()
-        {
-            var collectionViewSource = Resources["ToolViewSource"] as CollectionViewSource;
-            if (collectionViewSource != null)
-            {
-                var binding = BindingOperations.GetBindingExpression(collectionViewSource, CollectionViewSource.SourceProperty);
-                if(binding != null)
-                {
-                    binding.UpdateTarget();
-                }
-                var listBoxCollection = collectionViewSource.Source;
-                var tools = listBoxCollection as IEnumerable<IToolDescriptorViewModel>;
-                return tools;
-            }
-            
-            return null;
-        }
-
-        #endregion
-
-        #region Implementation of IComponentConnector
-
-        #endregion
 
         private Cursor _customCursor;
 
