@@ -25,6 +25,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -59,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
             {
-                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
+                throw new InvalidDataContractException(ErrorResource.NullServiceIDOrWorkspaceID);
             }
 
             Guid wGuid;
@@ -105,7 +106,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                result.Message.Append("Could not locate service with ID [ " + sGuid + " ]");
+                result.Message.Append(ErrorResource.CouldNotLocateService, sGuid);
             }
 
             return serializer.SerializeToBuilder(msgs);

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.DynamicServices;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management
 {
@@ -56,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management
                 }
                 else
                 {
-                    Dev2Logger.Error("EsbManagementServiceLocator", new Exception("Failed to load management service [ " + endpoint.HandlesType() + " ]"));
+                    Dev2Logger.Error("EsbManagementServiceLocator", new Exception(ErrorResource.FailedToLoadManagementService, endpoint.HandlesType()));
                 }
             }
 

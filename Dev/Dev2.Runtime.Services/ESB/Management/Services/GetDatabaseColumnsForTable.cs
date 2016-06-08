@@ -26,6 +26,7 @@ using Dev2.Workspaces;
 using MySql.Data.MySqlClient;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -53,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(values == null)
             {
-                throw new InvalidDataContractException("No parameter values provided.");
+                throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string database = null;
             string tableName = null;
