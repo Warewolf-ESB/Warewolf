@@ -1501,39 +1501,37 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a populated json object to a new json object")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void AssignAPopulatedJsonObjectToANewJsonObject()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a populated json object to a new json object", new string[] {
-                        "ignore"});
-#line 461
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a populated json object to a new json object", ((string[])(null)));
+#line 460
 this.ScenarioSetup(scenarioInfo);
-#line 462
+#line 461
  testRunner.Given("I assign the value \"Bob\" to a json object \"[[Person.FirstName]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 463
+#line 462
  testRunner.And("I assign the value \"Smith\" to a json object \"[[Person.Surname]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 464
+#line 463
  testRunner.And("I assign the json object \"[[Person]]\" to a json object \"[[Staff]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 465
+#line 464
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 466
+#line 465
  testRunner.Then("the json object \"[[Staff.Person.FirstName]]\" equals \"Bob\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 467
+#line 466
  testRunner.And("the json object \"[[Staff.Person.Surname]]\" equals \"Smith\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 468
+#line 467
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-#line 469
+#line 468
  testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 471
+#line 470
  testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1542,39 +1540,37 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a populated json object to a child of a new json object")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void AssignAPopulatedJsonObjectToAChildOfANewJsonObject()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a populated json object to a child of a new json object", new string[] {
-                        "ignore"});
-#line 476
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a populated json object to a child of a new json object", ((string[])(null)));
+#line 474
 this.ScenarioSetup(scenarioInfo);
-#line 477
+#line 475
  testRunner.Given("I assign the value \"Bob\" to a json object \"[[Person.FirstName]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 478
+#line 476
  testRunner.And("I assign the value \"Smith\" to a json object \"[[Person.Surname]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 479
+#line 477
  testRunner.And("I assign the json object \"[[Person]]\" to a json object \"[[Staff.Subordinate]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 480
+#line 478
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 481
+#line 479
  testRunner.Then("the json object \"[[Staff.Subordinate.Person.FirstName]]\" equals \"Bob\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 482
+#line 480
  testRunner.And("the json object \"[[Staff.Subordinate.Person.Surname]]\" equals \"Smith\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 483
+#line 481
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-#line 484
+#line 482
  testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 486
+#line 484
  testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1583,39 +1579,37 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a populated json object to a new json object array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void AssignAPopulatedJsonObjectToANewJsonObjectArray()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a populated json object to a new json object array", new string[] {
-                        "ignore"});
-#line 491
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a populated json object to a new json object array", ((string[])(null)));
+#line 488
 this.ScenarioSetup(scenarioInfo);
-#line 492
+#line 489
  testRunner.Given("I assign the value \"Bob\" to a json object \"[[Person.FirstName]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 493
+#line 490
  testRunner.And("I assign the value \"Smith\" to a json object \"[[Person.Surname]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 494
+#line 491
  testRunner.And("I assign the json object \"[[Person]]\" to a json object \"[[Staff(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 495
+#line 492
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 496
+#line 493
  testRunner.Then("the json object \"[[Staff(1).Person.FirstName]]\" equals \"Bob\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 497
+#line 494
  testRunner.And("the json object \"[[Staff(1).Person.Surname]]\" equals \"Smith\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 498
+#line 495
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-#line 499
+#line 496
  testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 501
+#line 498
  testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1624,31 +1618,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a json object array to a new json object")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void AssignAJsonObjectArrayToANewJsonObject()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json object array to a new json object", new string[] {
-                        "ignore"});
-#line 506
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json object array to a new json object", ((string[])(null)));
+#line 502
 this.ScenarioSetup(scenarioInfo);
-#line 507
+#line 503
  testRunner.Given("I assign the value \"11\" to a json object \"[[Person.Score(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 508
+#line 504
  testRunner.And("I assign the value \"22\" to a json object \"[[Person.Score(2)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 509
+#line 505
  testRunner.And("I assign the value \"33\" to a json object \"[[Person.Score(3)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 510
+#line 506
  testRunner.And("I assign the value \"[[Person.Score(*)]]\" to a json object \"\"[[Person.CurrentScore" +
                     "]]\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 511
+#line 507
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 512
+#line 508
  testRunner.Then("the json object \"[[Person.CurrentScore(1)]]\" equals \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 513
+#line 509
  testRunner.And("the json object \"[[Person.CurrentScore(2)]]\" equals \"22\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 514
+#line 510
  testRunner.And("the json object \"[[Person.CurrentScore(3)]]\" equals \"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 515
+#line 511
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1667,7 +1659,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[Person.Score(3)]] =",
                         "33"});
-#line 516
+#line 512
  testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1682,7 +1674,7 @@ this.ScenarioSetup(scenarioInfo);
             table56.AddRow(new string[] {
                         "3",
                         "[[Person.Score(3)]] = 33"});
-#line 521
+#line 517
  testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
