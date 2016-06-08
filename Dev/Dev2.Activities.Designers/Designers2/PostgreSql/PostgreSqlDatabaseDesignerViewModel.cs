@@ -497,11 +497,6 @@ namespace Dev2.Activities.Designers2.PostgreSql
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
         }
 
-        public void ValidateTestComplete()
-        {
-            OutputsRegion.IsEnabled = true;
-        }
-
         public void SetDisplayName(string outputFieldName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
