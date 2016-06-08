@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -109,7 +110,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<IList<string>>(result.Message.ToString());
@@ -127,7 +128,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<IList<IDbSource>>(result.Message.ToString());
@@ -145,7 +146,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<IList<IExchangeSource>>(result.Message.ToString());
@@ -164,7 +165,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             return serializer.Deserialize<IList<IDbAction>>(payload.Message);
         }
@@ -181,7 +182,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             List<IWebServiceSource> fetchWebServiceSources = serializer.Deserialize<List<IWebServiceSource>>(result.Message.ToString());
@@ -203,7 +204,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             var dllListings = serializer.Deserialize<List<IFileListing>>(result.Message.ToString());
             return dllListings;
@@ -222,7 +223,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             return serializer.Deserialize<List<INamespaceItem>>(payload.Message);
         }
@@ -312,7 +313,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<List<IPluginSource>>(result.Message.ToString());
@@ -333,7 +334,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
 
 
@@ -352,7 +353,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             // ReSharper disable once InconsistentNaming
@@ -372,7 +373,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<List<IWcfServerSource>>(result.Message.ToString());
@@ -391,7 +392,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
                 }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
 
             return serializer.Deserialize<IList<IWcfAction>>(payload.Message);

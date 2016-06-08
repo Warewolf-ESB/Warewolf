@@ -72,12 +72,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         #endregion Implementation of IDropboxSingleExecutor
 
-        public void Validate()
-        {
-            if (_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
-                IsValid = true;
-        }
-
         [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -25,7 +26,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
             {
-                throw new Exception("Error retrieving shape from service output.");
+                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
             }
 
             var result = currentList ?? new RecordsetList();

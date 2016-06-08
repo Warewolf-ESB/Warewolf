@@ -26,34 +26,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
     [TestClass]
     public class TestSqlServerViewModel
     {
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SqlServer_Ctor")]
-        public void SqlServer_Ctor_AssertCorrectSetup()
-        {
-            //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
-            var mod = new SqlServerModel();
-            var act = new DsfSqlServerDatabaseActivity
-            {
-                SourceId = mod.Sources[0].Id,
-                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") },
-                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
-                ServiceName = "dsfBob",
-               ProcedureName = "mob"
-            };
 
-            //------------Execute Test---------------------------
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
-            Assert.IsTrue(sqlServer.ActionRegion.IsEnabled);
-            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
-            sqlServer.ValidateTestComplete();
-            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
-        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

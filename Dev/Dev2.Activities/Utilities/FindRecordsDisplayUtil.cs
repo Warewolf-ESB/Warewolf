@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.Utilities
 {
@@ -30,19 +29,6 @@ namespace Dev2.Utilities
             }
 
             return value;
-        }
-
-        public static string ConvertForWriting(string key)
-        {
-            InitDictionary();            
-
-            KeyValuePair<string, string> firstOrDefault = _changedOptions.FirstOrDefault(c => c.Value == key);
-            if(firstOrDefault.Key != null && firstOrDefault.Value!= null)
-            {
-                return firstOrDefault.Key;
-            }
-
-            return key;
         }
 
         private static void InitDictionary()

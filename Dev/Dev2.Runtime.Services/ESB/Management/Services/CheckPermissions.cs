@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -53,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(path))
             {
-                throw new InvalidDataContractException("FilePath or Username or Password is missing");
+                throw new InvalidDataContractException(ErrorResource.FilePathOrUsernameOrPasswordMissing);
             }
 
             if(username == string.Empty)

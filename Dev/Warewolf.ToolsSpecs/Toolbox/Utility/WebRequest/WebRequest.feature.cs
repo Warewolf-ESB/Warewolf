@@ -682,7 +682,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 183
  testRunner.And("I have a web request variable \"[[results().res]]\" equal to \"res1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 184
- testRunner.And("I have the url \"[[urls(*).url]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have the url \"[[urls(*).url]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
  testRunner.And("I have web request result as \"[[results(*).res]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 186

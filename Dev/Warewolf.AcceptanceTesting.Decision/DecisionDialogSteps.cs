@@ -67,63 +67,6 @@ namespace Warewolf.AcceptanceTesting.Decision
            tos.Add(new DecisionTO(left,op,right,tos.Count));
         }
 
-        [Given(@"""(.*)"" is selected")]
-        public void GivenIsSelected(string name)
-        {
-            var view = FeatureContext.Current["view"] as Large;
-            view.DoneAction();
-        }
-
-        [Given(@"""(.*)"" is ""(.*)""")]
-        public void GivenIs(string p0, string p1)
-        {
-            var view = FeatureContext.Current["view"] as Large;
-            view.SetAllTrue(p1=="True");
-        }
-
-        [Then(@"""(.*)"" has a value of ""(.*)""")]
-        public void ThenHasAValueOf(string p0, string p1)
-        {
-            var view = FeatureContext.Current["view"] as Large;
-            bool b =  view.GetAllTrue();
-            Assert.AreEqual(p1 == "True",b);
-        }
-
-        bool GetAllTrue()
-        {
-            return false;
-        }
-
-        [Given(@"Match Type has ""(.*)"" visible")]
-        public void GivenMatchTypeHasVisible(string option)
-        {
-            var view = (Large)FeatureContext.Current["view"];
-            view.VerifyOption(option);
-        }
-
-        [When(@"""(.*)"" is selected")]
-        public void WhenIsSelected(string action)
-        {
-            if(action == "Done")
-            {
-                var view = (Large)FeatureContext.Current["view"];
-                view.ClickDone();
-            }
-        }
-
-        [Then(@"""(.*)"" fields are ""(.*)""")]
-        public void ThenFieldsAre(string name, string state)
-        {
-            var view = (Large) FeatureContext.Current["view"];
-            view.VerifyInputsAvailable();
-        }
-
-        [Then(@"an empty row has been added")]
-        public void ThenAnEmptyRowHasBeenAdded()
-        {
-            var view = (Large)FeatureContext.Current["view"];
-            view.VerifyEmptyRow();
-        }
 
        
         [Then(@"the decision match variables ""(.*)""and match ""(.*)"" and to match""(.*)""")]
@@ -171,14 +114,6 @@ namespace Warewolf.AcceptanceTesting.Decision
             }
         }
 
-        [Then(@"""(.*)"" is visible in tool")]
-        public void ThenIsVisibleInTool(string var)
-        {
-            var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
-            var view = (Large)FeatureContext.Current["view"];
-            string disp = view.GetDisplayName();
-            Assert.IsTrue(disp.Contains(var));
-        }
 
         [Then(@"decision variable ""(.*)"" is not visible")]
         public void ThenDecisionVariableIsNotVisible(string var)
