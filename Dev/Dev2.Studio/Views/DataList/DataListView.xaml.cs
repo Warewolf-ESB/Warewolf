@@ -154,21 +154,6 @@ namespace Dev2.Studio.Views.DataList
 
         #endregion Private Methods
 
-        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if(vm != null)
-            {
-                Button btn = sender as Button;
-                if(btn != null)
-                {
-                    IDataListItemModel itemThatChanged = btn.DataContext as IDataListItemModel;
-                    vm.RemoveDataListItem(itemThatChanged);
-                    WriteToResourceModel();
-                }
-            }
-        }
-
         private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             var vm = DataContext as IDataListViewModel;

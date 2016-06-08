@@ -11,12 +11,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return versionResource.FileVersion;
         }
 
-        public static string FetchInformationalVersionInfo()
-        {
-            var versionResource = GetFileVersionInfo();
-            return versionResource.ProductVersion;
-        }
-
         private static FileVersionInfo GetFileVersionInfo()
         {
             var asm = Assembly.GetExecutingAssembly();

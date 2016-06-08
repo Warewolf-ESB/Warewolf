@@ -10,8 +10,6 @@ namespace Warewolf.ResourceManagement
 
         void RemoveFromCache(Guid resourceID);
 
-        void ClearCache();
-
         bool HasActivityInCache(Guid resourceIdGuid);
 
         IDev2Activity GetActivity(Guid resourceIdGuid);

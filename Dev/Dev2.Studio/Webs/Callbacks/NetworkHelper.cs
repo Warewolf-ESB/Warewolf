@@ -17,28 +17,11 @@ namespace Dev2.Webs.Callbacks
 {
     public interface INetworkHelper
     {
-        bool HasConnection(string uri);
         Task<bool> HasConnectionAsync(string uri);
     }
 
     public class NetworkHelper : INetworkHelper
     {
-        public bool HasConnection(string uri)
-        {
-            try
-            {
-                using(var client = new WebClient())
-                using(client.OpenRead(uri))
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        
         public async Task<bool> HasConnectionAsync(string uri)
         {
             try

@@ -121,10 +121,5 @@ namespace Warewolf.AcceptanceTesting.Core
             currentViewModel.Name = newViewModel.Header;
             currentViewModel.Item = currentViewModel.ToModel();
         }
-
-        public static void ShowTheViewForTesting(object view)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
