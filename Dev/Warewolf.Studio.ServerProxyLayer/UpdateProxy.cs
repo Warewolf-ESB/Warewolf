@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -94,7 +95,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfSaveException("Unable to contact server", null);
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
@@ -112,7 +113,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
         }
@@ -131,7 +132,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return serialiser.Deserialize<List<string>>(output.Message);
@@ -170,7 +171,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return serialiser.Deserialize<DataTable>(output.Message);
@@ -197,7 +198,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
         }
@@ -236,7 +237,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 {
                     throw new WarewolfTestException("No Test Response returned", null);
                 }
-                throw new WarewolfTestException("Unable to contact Server: " + output.TestMessage, null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer +" : " + output.TestMessage, null);
             }
             resource.IsSharepointOnline = output.IsSharepointOnline;
         }
@@ -249,7 +250,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("WebService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
@@ -296,7 +297,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
@@ -321,7 +322,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
@@ -335,7 +336,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
@@ -383,7 +384,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMQServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
@@ -408,7 +409,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(wcfServerSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
@@ -422,7 +423,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("wcfService", serialiser.SerializeToBuilder(wcfService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("Unable to contact Server", null);
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();

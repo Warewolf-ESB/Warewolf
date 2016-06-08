@@ -14,6 +14,7 @@ using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels
@@ -112,7 +113,7 @@ namespace Dev2.Studio.Core.ViewModels
                     break;
 
                 default:
-                    throw new ArgumentException("Unexpected Resource Type");
+                    throw new ArgumentException(ErrorResource.UnexpectedResourceType);
 
             }
 

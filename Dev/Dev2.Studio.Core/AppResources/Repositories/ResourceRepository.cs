@@ -46,6 +46,8 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable RedundantNameQualifier
 
 // ReSharper disable CheckNamespace
@@ -370,7 +372,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Error("Multiple Resources found for Resource ID: " + resourceID);
+            Dev2Logger.Error(ErrorResource.MultipleResourcesFound + resourceID);
             return null;
         }
 
@@ -389,7 +391,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Error("Multiple Resources found for Resource ID: " + resourceID);
+            Dev2Logger.Error(ErrorResource.MultipleResourcesFound + resourceID);
             return null;
         }
 
@@ -743,7 +745,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             if (resourceList == null)
             {
-                throw new Exception("Failed to fetch resoure list as JSON model");
+                throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
             }
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
@@ -763,7 +765,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             if (resourceList == null)
             {
-                throw new Exception("Failed to fetch resoure list as JSON model");
+                throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
             }
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);

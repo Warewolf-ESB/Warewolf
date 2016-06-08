@@ -18,6 +18,7 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.WindowManagers
@@ -105,7 +106,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             }
 
             if(dockSite == null)
-                throw new InvalidOperationException("Unable to retrieve a docking manager");
+                throw new InvalidOperationException(ErrorResource.UnableToRetrieveDockingManager);
 
             return dockSite;
         }
