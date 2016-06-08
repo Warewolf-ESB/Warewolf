@@ -27,11 +27,6 @@ namespace Dev2.Webs
     public static class SaveDialogHelper
     {
 
-        #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
-
-
-        #endregion
-
         #region ShowSaveDialog
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId = null, bool addToTabManager = true)

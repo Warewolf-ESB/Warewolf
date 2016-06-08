@@ -16,7 +16,7 @@ namespace Dev2.Tests.Diagnostics
     public class DebugStateMock : DebugState
     {
         public int SaveFileHitCount { get; set; }
-        public string SaveFileContents { get; private set; }
+        public string SaveFileContents { get; set; }
 
 
     }
