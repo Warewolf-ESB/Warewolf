@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                result.Message.Append(ErrorResource.CouldNotLocateService,sGuid);
+                result.Message.Append(string.Format(ErrorResource.CouldNotLocateService,sGuid));
                 result.HasError = true;
             }
 
