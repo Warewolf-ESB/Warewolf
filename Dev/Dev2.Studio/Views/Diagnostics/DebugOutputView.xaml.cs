@@ -12,10 +12,6 @@
 
 // ReSharper disable CheckNamespace
 
-using System.Windows;
-using System.Windows.Automation;
-using System.Windows.Controls;
-
 namespace Dev2.Studio.Views.Diagnostics
 {
     /// <summary>
@@ -26,15 +22,6 @@ namespace Dev2.Studio.Views.Diagnostics
         public DebugOutputView()
         {
             InitializeComponent();
-        }
-
-        void DebugOutputGrid_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var grid = sender as Grid;
-            if(grid != null)
-            {
-                grid.Parent.SetValue(AutomationProperties.AutomationIdProperty, "UI_DebugOutputGrid_AutoID");
-            }
         }
     }
 }

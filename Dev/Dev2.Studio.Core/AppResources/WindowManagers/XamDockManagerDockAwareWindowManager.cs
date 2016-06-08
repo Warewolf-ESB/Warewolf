@@ -10,15 +10,11 @@
 */
 
 using System;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
-using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.WindowManagers
@@ -37,42 +33,6 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
         public XamDockManager DockManager
         {
             get { return GetDockingManager(); }
-        }
-
-        private static ContentPane CreateDockable(object rootModel, object context)
-        {
-            var view = EnsureDockWindow(ViewLocator.LocateForModel(rootModel, null, context));
-            ViewModelBinder.Bind(rootModel, view, context);
-
-            var haveDisplayName = rootModel as IHaveDisplayName;
-            if(haveDisplayName != null && !ConventionManager.HasBinding(view, HeaderedContentControl.HeaderProperty))
-            {
-                Binding binding = new Binding("DisplayName") { Mode = BindingMode.TwoWay };
-                view.SetBinding(HeaderedContentControl.HeaderProperty, binding);
-            }
-
-            // ReSharper disable once ObjectCreationAsStatement
-            new DockableWindowConductor(rootModel, view);
-
-            return view;
-        }
-
-        private static ContentPane EnsureDockWindow(object view)
-        {
-            var window = view as ContentPane;
-
-            if(window == null)
-            {
-                window = new ContentPane
-                {
-                    CloseAction = PaneCloseAction.RemovePane,
-                    Content = view as UIElement
-                };
-
-                window.SetValue(View.IsGeneratedProperty, true);
-            }
-
-            return window;
         }
 
         /// <summary>
@@ -106,50 +66,9 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             }
 
             if(dockSite == null)
-                throw new InvalidOperationException(ErrorResource.UnableToRetrieveDockingManager);
+                throw new InvalidOperationException("Unable to retrieve a docking manager");
 
             return dockSite;
-        }
-
-        private static class XamDockManagerHelper
-        {
-            static PaneLocation GetSplitPaneLocation(SplitPane pane)
-            {
-                return XamDockManager.GetPaneLocation(pane);
-            }
-
-            static SplitPane FindSplitPaneWithLocation(XamDockManager dockManager, PaneLocation location)
-            {
-                return dockManager.Panes.FirstOrDefault(p => GetSplitPaneLocation(p) == location);
-            }
-
-            public static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, InitialPaneLocation location)
-            {
-                return FindSplitPaneWithLocationOrCreate(dockManager, location.ToPaneLocation());
-            }
-
-            static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, PaneLocation location)
-            {
-                SplitPane pane = FindSplitPaneWithLocation(dockManager, location);
-
-                if(pane != null)
-                    return pane;
-
-                pane = new SplitPane();
-                XamDockManager.SetInitialLocation(pane, location.ToInitialPaneLocation());
-
-                return pane;
-            }
-
-            public static TabGroupPane FindTabGroupPane(XamDockManager dockManager)
-            {
-                TabGroupPane tabs;
-
-                dockManager.TryFindChild(out tabs);
-
-                return tabs;
-            }
-
         }
 
         /// <summary>

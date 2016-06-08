@@ -11,7 +11,6 @@
 
 using System;
 using Infragistics.Windows.DockManager;
-using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
@@ -40,40 +39,13 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
                 case PaneLocation.Unpinned: //Not
                 case PaneLocation.Document: //Not
                 case PaneLocation.Unknown: //Not
-                    throw new InvalidOperationException(ErrorResource.CannotConvertPaneLocation);
+                    throw new InvalidOperationException("Can not convert PaneLocation to InitialPaneLocation");
 
                 default:
                     throw new ArgumentOutOfRangeException("location");
             }
 
             return initialPaneLocation;
-        }
-
-        public static PaneLocation ToPaneLocation(this InitialPaneLocation location)
-        {
-            PaneLocation paneLocation;
-
-            switch(location)
-            {
-                case InitialPaneLocation.DockedLeft:
-                case InitialPaneLocation.DockedTop:
-                case InitialPaneLocation.DockedRight:
-                case InitialPaneLocation.DockedBottom:
-                case InitialPaneLocation.FloatingOnly:
-
-                    paneLocation = (PaneLocation)Enum.Parse(typeof(PaneLocation), location.ToString());
-
-                    break;
-                case InitialPaneLocation.DockableFloating:
-
-                    paneLocation = (PaneLocation)Enum.Parse(typeof(PaneLocation), "Floating");
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("location");
-            }
-
-            return paneLocation;
         }
     }
 }

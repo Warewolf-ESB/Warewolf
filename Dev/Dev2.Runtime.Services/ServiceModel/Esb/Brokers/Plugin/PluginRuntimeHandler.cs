@@ -128,10 +128,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
             }
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
+            if(methodToRun==null && typeList.Count == 0)
+            {
+                methodToRun = type.GetMethod(setupInfo.Method);
+            }
             object instance = Activator.CreateInstance(type);
 
-            pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-            return methodToRun;
+            if(methodToRun != null)
+            {
+                pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return methodToRun;
+            }
+            pluginResult = null;
+            return null;
         }
 
         // ReSharper disable once InconsistentNaming

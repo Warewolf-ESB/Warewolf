@@ -58,12 +58,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return PluginServiceExecutionFactory.GetMethods(assemblyLocation, assemblyName, fullName);
         }
 
-        public bool ValidatePlugin(string toLoad, out string error)
-        {
-            error = PluginServiceExecutionFactory.ValidatePlugin(toLoad);
 
-            return error == string.Empty;
-        }
 
         /// <summary>
         /// Tests the plugin.
