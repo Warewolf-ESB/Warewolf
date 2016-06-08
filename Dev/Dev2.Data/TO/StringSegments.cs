@@ -27,11 +27,6 @@ namespace Dev2.Data.TO
             BoundrySize = MAX_SIZE_FOR_STRING;
         }
 
-        public bool IsEmpty()
-        {
-            return Length() == 0;
-        }
-
         public int Length()
         {
             int result = 0;
@@ -39,11 +34,6 @@ namespace Dev2.Data.TO
             Segments.ForEach(s=> result += s.Length);
 
             return result;
-        }
-        
-        public void AddSegment(string segment)
-        {
-            
         }
     }
 }
