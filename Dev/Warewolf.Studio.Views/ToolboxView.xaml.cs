@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -53,13 +52,6 @@ namespace Warewolf.Studio.Views
             }
             
             return null;
-        }
-
-        public int GetToolCount()
-        {
-            var tools = GetTools();
-            var toolCount = tools.Count();
-            return toolCount;
         }
 
         #endregion
