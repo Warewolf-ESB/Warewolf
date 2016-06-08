@@ -13,7 +13,7 @@ namespace Dev2.Activities
         IOutputDescription OutputDescription { get; set; }
         ICollection<IServiceOutputMapping> Outputs { get; set; }
 
-        void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj);
+        void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj,bool formatResult = true);
         string UnescapeRawXml(string innerXml);
         void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0);
     }

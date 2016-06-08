@@ -26,7 +26,7 @@ namespace Dev2.Activities
         public IOutputDescription OutputDescription { get; set; }
         public ICollection<IServiceOutputMapping> Outputs { get; set; }
 
-        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj)
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj,bool formatResult = true)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Dev2.Activities
                         int i = 0;
                         foreach (var serviceOutputMapping in Outputs)
                         {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
+                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
                             i++;
                         }
                         if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
@@ -61,7 +61,7 @@ namespace Dev2.Activities
                     else
                     {
                         var formattedInput = input;
-                        if (formater != null)
+                        if (formater != null && formatResult)
                         {
                             formattedInput = formater.Format(input).ToString();
                         }

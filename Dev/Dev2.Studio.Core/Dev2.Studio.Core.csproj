@@ -481,7 +481,6 @@
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
-    <Compile Include="Interfaces\ILayoutGridViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="ViewModelUtils.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />

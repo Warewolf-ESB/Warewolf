@@ -135,7 +135,13 @@ namespace Dev2.Studio.Core.DataList
                 var namedExpression = currentVar as LanguageAST.JsonIdentifierExpression.NameExpression;
                 if (namedExpression != null)
                 {
-                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(parentName + "." + namedExpression.Item.Name), DataListUtil.AddBracketsToValueIfNotExist(parentName + "." + namedExpression.Item.Name));
+                    var name = namedExpression.Item.Name;
+                    var objectName = parentName == null ? name : parentName + "." + name;
+                    if (!objectName.Contains("@"))
+                    {
+                        objectName = "@" + objectName;
+                    }
+                    PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     return null;
                 }
 
@@ -144,6 +150,10 @@ namespace Dev2.Studio.Core.DataList
                 {
                     var name = Equals(indexNestedExpression.Item.Index, LanguageAST.Index.Star) ? indexNestedExpression.Item.ObjectName + "(*)" : indexNestedExpression.Item.ObjectName + "()";
                     var objectName = parentName == null ? name : parentName + "." + name;
+                    if (!objectName.Contains("@"))
+                    {
+                        objectName = "@" + objectName;
+                    }
                     PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     return AddJsonVariables(indexNestedExpression.Item.Next, objectName);
                 }
@@ -152,8 +162,11 @@ namespace Dev2.Studio.Core.DataList
                 if (nestedNameExpression != null)
                 {
                     var objectName = parentName == null ? nestedNameExpression.Item.ObjectName : parentName + "." + nestedNameExpression.Item.ObjectName;
+                    if (!objectName.Contains("@"))
+                    {
+                        objectName = "@" + objectName;
+                    }
                     PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(objectName), DataListUtil.AddBracketsToValueIfNotExist(objectName));
-
                     var next = nestedNameExpression.Item.Next;
                     return AddJsonVariables(next, objectName);
                 }
