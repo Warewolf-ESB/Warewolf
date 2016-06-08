@@ -72,10 +72,6 @@ namespace Warewolf.Studio.Core.Popup
         /// </summary>
         public bool IsActive { get; set; }
 
-        void TryClose()
-        {
-        }
-
         #endregion
 
         public MessageBoxResult Show()

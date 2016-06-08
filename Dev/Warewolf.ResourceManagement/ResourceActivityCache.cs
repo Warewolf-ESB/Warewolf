@@ -62,11 +62,5 @@ namespace Warewolf.ResourceManagement
             IDev2Activity act;
             _cache.TryRemove(resourceID, out act);
         }
-
-        public void ClearCache()
-        {
-            _cache.Clear();
-        }
-
     }
 }
