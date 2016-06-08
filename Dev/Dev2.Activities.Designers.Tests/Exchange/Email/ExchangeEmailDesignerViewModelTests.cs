@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new ExchangeEmailDesignerViewModel(CreateModelItem());
+            new ExchangeEmailDesignerViewModel(CreateModelItem(), null, (IEnvironmentModel)null, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------

@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -299,7 +300,16 @@ namespace Dev2.Runtime.ServiceModel
                         if (path != null)
                         {
                             path.OutputExpression = value;
-                            dataSourceShape.Paths.Add(path);
+                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
+                            if (foundPath == null)
+                            {
+                                dataSourceShape.Paths.Add(path);
+                            }
+                            else
+                            {
+                                foundPath.OutputExpression = path.OutputExpression;
+                            }                            
+
                         }
                     }
                 }

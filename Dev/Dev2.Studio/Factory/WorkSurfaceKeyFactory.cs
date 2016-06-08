@@ -81,24 +81,6 @@ namespace Dev2.Factory
         }
 
         /// <summary>
-        /// Creates a key used for worksurfaces unique to a specific server
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="serverID">The server ID.</param>
-        /// <returns></returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2/28/2013</date>
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid serverID)
-        {
-            return new WorkSurfaceKey
-            {
-                WorkSurfaceContext = context,
-                ResourceID = Guid.Empty,
-                ServerID = serverID
-            };
-        }
-
-        /// <summary>
         /// Creates the for a specific Contextual Resource
         /// </summary>
         /// <param name="resourceModel">The resource model.</param>

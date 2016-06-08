@@ -19,7 +19,7 @@
 ##Calculate using Recordset ([[val]]) input in an agregate function like SUM
 
 
-Scenario: Calculate using a given formula
+Scenario: Aggregate Calculate using a given formula
 	Given I have the formula "mod(sqrt(49), 7)"	
 	When the aggregate calculate tool is executed
 	Then the calculate result should be "0"
@@ -31,7 +31,7 @@ Scenario: Calculate using a given formula
 	|                 |
 	| [[result]] = 0 |
 
-Scenario: Calculate using multiple scalars and recordset inputs
+Scenario: Aggregate Calculate using multiple scalars and recordset inputs
 	Given I have a calculate variable "[[var]]" equal to "1"
 	And I have a calculate variable "[[var2]]" equal to "20"
 	And I have the formula "((([[var]]+[[var]])/[[var2]])+[[var2]]*[[var]])"
@@ -45,7 +45,7 @@ Scenario: Calculate using multiple scalars and recordset inputs
 	|                   |
 	| [[result]] = 20.1 |
 
-Scenario: Calculate with new lines should concatenate values
+Scenario: Aggregate Calculate with new lines should concatenate values
 	Given I have a calculate variable "[[var]]" equal to "1"
 	And I have a calculate variable "[[var2]]" equal to "20"
 	And I have the formula "[[var]]\r\n[[var2]]"
@@ -59,7 +59,7 @@ Scenario: Calculate with new lines should concatenate values
 	|                  |
 	| [[result]] = 120 |
 
-Scenario: Calculate using Recordset (*) input in an agregate function like SUM
+Scenario: Aggregate Calculate using Recordset (*) input in an agregate function like SUM
 	Given I have a calculate variable "[[var().int]]" equal to 
 	| var().int	|
 	| 1			|
@@ -76,7 +76,7 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	|                |
 	| [[result]] = 6 |
 
-Scenario: Calculate using Recordset (*) input in an agregate function like SUM and output recordset star
+Scenario: Aggregate Calculate using Recordset (*) input in an agregate function like SUM and output recordset star
 	Given I have a calculate variable "[[var().int]]" equal to 
 	| var().int	|
 	| 1			|
@@ -98,7 +98,7 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM a
 	| [[rs(1).val]] = 6  |
 	| [[rs(2).val]] = 23 |
 
-Scenario: Calculate using Recordset (*) input in an agregate function like SUM and output recordset star complex
+Scenario: Aggregate Calculate using Recordset (*) input in an agregate function like SUM and output recordset star complex
 	Given I have a calculate variable "[[var().int]]" equal to 
 	| var().int	|
 	| 1			|
@@ -120,7 +120,7 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM a
 	| [[rs(1).val]] = 21 |
 	| [[rs(2).val]] = 23 |
 
-Scenario: Calculate using incorrect formula
+Scenario: Aggregate Calculate using incorrect formula
 	Given I have the formula "asdf"
 	When the aggregate calculate tool is executed
 	Then the calculate result should be ""
@@ -133,7 +133,7 @@ Scenario: Calculate using incorrect formula
 	| [[result]] = |
 
 
-Scenario: Calculate using variable as full calculation
+Scenario: Aggregate Calculate using variable as full calculation
 	Given I have a calculate variable "[[var]]" equal to "SUM(1,2,3)-5"
 	And I have the formula "[[var]]"
 	When the aggregate calculate tool is executed
@@ -146,7 +146,7 @@ Scenario: Calculate using variable as full calculation
 	|                 |
 	| [[result]] = 1 |
 
-Scenario: Calculate using a negative index recordset value
+Scenario: Aggregate Calculate using a negative index recordset value
 	Given I have the formula "[[my(-1).formula]]"
 	When the aggregate calculate tool is executed
 	Then the execution has "Recordset index [ -1 ] is not greater than zero" error
@@ -157,7 +157,7 @@ Scenario: Calculate using a negative index recordset value
 	|              |
 	| [[result]] = |
 
-Scenario: Calculate using isnumber and blank
+Scenario: Aggregate Calculate using isnumber and blank
     Given I have the formula "if(isnumber(""),"Is number","Not number")"
 	When the calculate tool is executed
 	Then the calculate result should be "Not number"
@@ -167,7 +167,7 @@ Scenario: Calculate using isnumber and blank
 	And the execution has "NO" error
 
 #This scenario should pass after the bug 11871 is fixed
-Scenario: Calculate Assign by evaluating a variable inside a variable
+Scenario: Aggregate Calculate Assign by evaluating a variable inside a variable
 	Given I have a calculate variable "[[a]]" equal to "b"
 	And I have a calculate variable "[[b]]" equal to "20"
 	And I have the formula "[[[[a]]]]+1"
@@ -181,7 +181,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable
 	|                 |
 	| [[result]] = 21 |
 
-Scenario: Calculate Assign by evaluating a variable inside a variable with function
+Scenario: Aggregate Calculate Assign by evaluating a variable inside a variable with function
 	Given I have a calculate variable "[[a]]" equal to "b"
 	And I have a calculate variable "[[b]]" equal to "20"
 	And I have the formula "SUM([[[[a]]]],[[b]])"
@@ -395,7 +395,7 @@ Scenario Outline: Calculate using Recordset input in an agregate function like S
 		| 2  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) |  6     |
 		| 3  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) |  6     |
 
-Scenario: Calculate using variables with a null value
+Scenario: Aggregate Calculate using variables with a null value
 	Given I have a calculate variable "[[a]]" equal to "NULL"
 	And I have a calculate variable "[[b]]" equal to "NULL"
 	And I have the formula "SUM([[a]],[[b]])"
@@ -417,7 +417,7 @@ Scenario: Variable that does not exist
 		And the debug output as 
 	|                |
 	| [[rs().a]] = 3 |
-Scenario: Calculate using variables with a no existent value
+Scenario: Aggregate Calculate using variables with a no existent value
 	Given I have the formula "SUM([[a]],[[b]])"
 	When the aggregate calculate tool is executed
 	Then the execution has "An" error
