@@ -8,12 +8,14 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
@@ -31,7 +33,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         private string _deletePath;
         private string _result;
 
-
+        [ExcludeFromCodeCoverage]
+        // ReSharper disable once UnusedMember.Global
+        public DropBoxDeleteViewModel(ModelItem modelItem)
+           : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
+        {
+            this.RunViewSetup();
+        }
         public DropBoxDeleteViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
             : base(modelItem, "File Or Folder", String.Empty)
         {
