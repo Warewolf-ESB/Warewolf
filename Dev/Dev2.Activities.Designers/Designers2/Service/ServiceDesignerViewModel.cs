@@ -617,14 +617,21 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (environmentModel != null)
             {
-                if (!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
+                if (!environmentModel.IsLocalHost && environmentModel.IsConnected)
                 {
-                    ResourceModel = ResourceModelFactory.CreateResourceModel(environmentModel);
-                    ResourceModel.Inputs = InputMapping;
-                    ResourceModel.Outputs = OutputMapping;
-                    environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError, false);
-
-                    environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
+                    var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(ResourceID);
+                    if (contextualResourceModel != null)
+                    {
+                        ResourceModel = contextualResourceModel;
+                    }
+                    else
+                    {
+                        ResourceModel = ResourceModelFactory.CreateResourceModel(environmentModel);
+                        ResourceModel.Inputs = InputMapping;
+                        ResourceModel.Outputs = OutputMapping;
+                        environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError, false);
+                        environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
+                    }
                     return true;
                 }
 
