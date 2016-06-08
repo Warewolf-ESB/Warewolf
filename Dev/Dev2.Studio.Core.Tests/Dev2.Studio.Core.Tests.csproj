@@ -232,7 +232,6 @@
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelBase.cs" />
     <Compile Include="MainViewModelMock.cs" />
-    <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
