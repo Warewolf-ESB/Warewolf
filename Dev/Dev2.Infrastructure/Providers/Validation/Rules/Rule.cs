@@ -13,6 +13,7 @@ using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Errors;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -32,7 +33,7 @@ namespace Dev2.Providers.Validation.Rules
         protected RuleBase()
         {
             LabelText = "The";
-            ErrorText = "value is invalid.";
+            ErrorText = ErrorResource.InvalidValue;
         }
 
         public string LabelText { get; set; }

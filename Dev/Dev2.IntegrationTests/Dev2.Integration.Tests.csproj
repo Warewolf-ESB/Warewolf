@@ -181,7 +181,6 @@
     <Compile Include="Server Test\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Server Test\RelativeUriResourceTest.cs" />
     <Compile Include="Server Test\TimeZoneChanges.cs" />
-    <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\StudioServerCommsTests.cs" />
     <Compile Include="Enums\Activities.cs" />
@@ -210,7 +209,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Test utils\Browser.cs" />
     <Compile Include="Test utils\DataListValueInjector.cs" />
     <Compile Include="Test utils\StopWatch.cs" />
     <Compile Include="Test utils\WebTester\AssemblyReference.cs" />

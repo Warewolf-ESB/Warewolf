@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Text;
 using Dev2.Common;
 using Ionic.Zip;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Helpers
@@ -97,7 +98,7 @@ namespace Dev2.Studio.Core.Helpers
 
             if(path.Directory == null)
             {
-                throw new IOException("Output path is invalid.");
+                throw new IOException(ErrorResource.InvalidOutputPath);
             }
 
             if(!path.Directory.Exists)
