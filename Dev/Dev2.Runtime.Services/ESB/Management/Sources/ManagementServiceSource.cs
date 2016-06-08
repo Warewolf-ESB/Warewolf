@@ -9,9 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.DynamicServices;
-
 namespace Dev2.Runtime.ESB.Management.Sources
 {
     /// <summary>
@@ -20,15 +17,6 @@ namespace Dev2.Runtime.ESB.Management.Sources
     /// </summary>
     public class ManagementServiceSource 
     {
-        public Source CreateSourceEntry()
-        {
-            Source s = new Source();
-            s.Name = HandlesType();
-            s.Type = enSourceType.ManagementDynamicService;
-
-            return s;
-        }
-
         public string HandlesType()
         {
             return "ManagementDynamicService";
