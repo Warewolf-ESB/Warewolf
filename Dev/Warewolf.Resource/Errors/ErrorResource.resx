@@ -783,4 +783,7 @@
   <data name="RecordsetsHaveDifferntSizes" xml:space="preserve">
     <value>You appear to have recordsets of differnt sizes</value>
   </data>
+  <data name="NoObjectName" xml:space="preserve">
+    <value>Please enter an 'Object Name' as 'Is Object' has been selected.</value>
+  </data>
 </root>

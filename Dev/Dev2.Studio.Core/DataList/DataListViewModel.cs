@@ -578,34 +578,41 @@ namespace Dev2.Studio.ViewModels.DataList
                 string path = paths[index];
                 path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
-                var isArray = false;
+                if (!string.IsNullOrEmpty(pathToMatch))
+                {
+                    var isArray = false;
 
-                if (path.Contains("()") || path.Contains("(*)"))
-                {
-                    isArray = true;
-                    path = path.Replace("(*)", "()");
-                }
-                if (itemModel == null)
-                {
-                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
-                }
-                if (itemModel == null)
-                {
-                    itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
-                    ComplexObjectCollection.Add(itemModel);
+                    if (path.Contains("()") || path.Contains("(*)"))
+                    {
+                        isArray = true;
+                        path = path.Replace("(*)", "()");
+                    }
+                    if (itemModel == null)
+                    {
+                        itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
+                    }
+                    if (itemModel == null)
+                    {
+                        itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
+                        ComplexObjectCollection.Add(itemModel);
+                    }
+                    else
+                    {
+                        if (itemModel.DisplayName != pathToMatch)
+                        {
+                            var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
+                            if (item == null)
+                            {
+                                item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
+                                itemModel.Children.Add(item);
+                            }
+                            itemModel = item;
+                        }
+                    }
                 }
                 else
                 {
-                    if (itemModel.DisplayName != pathToMatch)
-                    {
-                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
-                        if (item == null)
-                        {
-                            item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
-                            itemModel.Children.Add(item);
-                        }
-                        itemModel = item;
-                    }
+                    return;
                 }
             }
         }
@@ -1234,6 +1241,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void GenerateComplexObjectFromJson(string parentObjectName, string json)
         {
+            if (parentObjectName.Contains("."))
+            {
+                var parts = parentObjectName.Split('.');
+                parentObjectName = parts[0];
+            }
             var parentObj = ComplexObjectCollection.FirstOrDefault(model => model.Name == parentObjectName);
             if (parentObj == null)
             {
