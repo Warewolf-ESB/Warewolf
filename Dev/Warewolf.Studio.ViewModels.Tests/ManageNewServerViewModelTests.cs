@@ -18,6 +18,9 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
+// ReSharper disable MethodSupportsCancellation
+// ReSharper disable ConvertToConstant.Local
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -954,6 +957,33 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedHeader, _targetRequestServiceViewModel.Header);
         }
 
+
+        [TestMethod]
+        public void OnCreation_GivenAddress_ShouldSetCorrectBindingValues()
+        {
+            //---------------Set up test pack-------------------
+            var expectedAddress = "http://example.com:8080";
+            var sourceId = Guid.NewGuid();
+            var serverSourceModel = new Mock<IManageServerSourceModel>();
+            var evtAggregator = new Mock<IEventAggregator>();
+            var serverSource = new Mock<IServerSource>();
+            serverSource.SetupGet(source => source.Address).Returns(expectedAddress);
+            serverSource.SetupGet(source => source.ID).Returns(sourceId);
+            serverSource.SetupGet(source => source.AuthenticationType).Returns(AuthenticationType.Public);
+            var asyncWorker = new Mock<IAsyncWorker>();
+            var executor = new Mock<IExternalProcessExecutor>();
+            var vm = new ManageNewServerViewModel(serverSourceModel.Object, evtAggregator.Object, serverSource.Object, asyncWorker.Object, executor.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            Assert.IsNotNull(vm.Item);
+            //---------------Execute Test ----------------------
+            Assert.AreEqual("http", vm.Protocol);
+            Assert.AreEqual(expectedAddress, vm.Address);
+            Assert.IsTrue(string.IsNullOrEmpty(vm.Password));
+            Assert.IsTrue(string.IsNullOrEmpty(vm.UserName));
+            Assert.AreEqual(AuthenticationType.Public, vm.AuthenticationType);
+            Assert.AreEqual("8080", vm.SelectedPort);
+        }
         [TestMethod]
         public void TestGetLoadComputerNamesTask()
         {
