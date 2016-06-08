@@ -121,12 +121,6 @@ namespace Dev2
             {
 
                 var namedExpression = currentVar as LanguageAST.JsonIdentifierExpression.NameExpression;
-                if (namedExpression != null && !namedExpression.Item.Name.StartsWith("@") && string.IsNullOrEmpty(parentName))
-                {
-                    var jsonIdentifier = new LanguageAST.JsonIdentifier("@" + namedExpression.Item.Name);
-                    currentVar = LanguageAST.JsonIdentifierExpression.NewNameExpression(jsonIdentifier);
-                    namedExpression = currentVar as LanguageAST.JsonIdentifierExpression.NameExpression;
-                }
                 if (namedExpression != null)
                 {
                     PatriciaTrieJsonObjects.Add(DataListUtil.AddBracketsToValueIfNotExist(parentName + "." + namedExpression.Item.Name), DataListUtil.AddBracketsToValueIfNotExist(parentName + "." + namedExpression.Item.Name));

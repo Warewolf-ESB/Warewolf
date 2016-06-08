@@ -1499,15 +1499,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@P")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]],[[@Person]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_1()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("1", "[[@Person]],[[@Person.name]]", "JsonObject", "@P", "1", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("1", "[[@Person]],[[@Person.name]]", "JsonObject", "@P", "2", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1519,15 +1519,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]],[[@Person]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_2()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("2", "[[@Person]],[[@Person.name]]", "JsonObject", "[[", "2", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("2", "[[@Person]],[[@Person.name]]", "JsonObject", "[[", "3", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1539,15 +1539,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@Person.")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_3()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("3", "[[@Person]],[[@Person.name]]", "JsonObject", "@Person.", "7", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("3", "[[@Person]],[[@Person.name]]", "JsonObject", "@Person.", "8", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1559,15 +1559,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@Person.")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_4()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("4", "[[@Person]],[[@Person.name]]", "JsonObject", "[[@Person.", "9", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("4", "[[@Person]],[[@Person.name]]", "JsonObject", "[[@Person.", "10", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1579,15 +1579,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@Person.name")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_5()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("5", "[[@Person]],[[@Person.name]]", "JsonObject", "[[@Person.name", "14", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("5", "[[@Person]],[[@Person.name]]", "JsonObject", "[[@Person.name", "15", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1604,10 +1604,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_6()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("6", "[[@Person]],[[@Person.name]]", "JsonObject", "name", "4", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("6", "[[@Person]],[[@Person.name]]", "JsonObject", "name", "4", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1624,10 +1624,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_7()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("7", "[[@Person]],[[@Person.name]]", "JsonObject", "[", "1", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("7", "[[@Person]],[[@Person.name]]", "JsonObject", "[", "1", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1644,10 +1644,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_8()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("8", "[[@Person]],[[@Person.name]]", "JsonObject", "rson", "3", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("8", "[[@Person]],[[@Person.name]]", "JsonObject", "rson", "3", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1659,15 +1659,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@P")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Age]],[[@Person.name]],[[@Person]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_9()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("9", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@P", "1", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("9", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@P", "2", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1679,15 +1679,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@P")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Age]],[[@Person.name]],[[@Person]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_10()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("10", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@P", "1", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "14", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("10", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@P", "2", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "15", ((string[])(null)));
 #line hidden
         }
         
@@ -1704,10 +1704,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_11()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("11", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[", "2", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "14", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("11", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[", "2", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "15", ((string[])(null)));
 #line hidden
         }
         
@@ -1724,10 +1724,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_12()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("12", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[", "2", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("12", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[", "2", "[[@Person.Age]],[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1739,15 +1739,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@Person.")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Age]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_14()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("14", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@Person.", "7", "[[@Person.Age]],[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("14", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@Person.", "8", "[[@Person.Age]],[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1759,15 +1759,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@Person.")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Age]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_15()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("15", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@Person.", "7", "[[@Person.Age]],[[@Person.name]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "14", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("15", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "@Person.", "8", "[[@Person.Age]],[[@Person.name]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "15", ((string[])(null)));
 #line hidden
         }
         
@@ -1779,15 +1779,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@Person.")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Age]],[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_16()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("16", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.", "9", "[[@Person.Age]],[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("16", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.", "10", "[[@Person.Age]],[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1799,15 +1799,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@Person.")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_17()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("17", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.", "9", "[[@Person.name]],[[@Person.Age]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "14", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("17", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.", "10", "[[@Person.name]],[[@Person.Age]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "15", ((string[])(null)));
 #line hidden
         }
         
@@ -1819,15 +1819,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@Person.name")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_18()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("18", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.name", "14", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("18", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.name", "15", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1839,15 +1839,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]],[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@Person.Age")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_19()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("19", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.Age", "9", "[[@Person.Age]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "14", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("19", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "[[@Person.Age", "10", "[[@Person.Age]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "15", ((string[])(null)));
 #line hidden
         }
         
@@ -1864,10 +1864,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_20()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("20", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "name", "4", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "15", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("20", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "name", "4", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
 #line hidden
         }
         
@@ -1884,10 +1884,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Age]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_21()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("21", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "Age", "3", "[[@Person.Age]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "14", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("21", "[[@Person]],[[@Person.name]],[[@Person.Age]]", "JsonObject", "Age", "3", "[[@Person.Age]]", "[[@Person.Age]]", "[[@Person.Age]]", "Default", "15", ((string[])(null)));
 #line hidden
         }
         
@@ -1904,10 +1904,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_22()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("22", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "Name", "4", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "Default", "21", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("22", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "Name", "4", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "Default", "22", ((string[])(null)));
 #line hidden
         }
         
@@ -1924,10 +1924,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_23()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("23", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "Name", "1", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "Default", "21", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("23", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "Name", "1", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "Default", "22", ((string[])(null)));
 #line hidden
         }
         
@@ -1944,10 +1944,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Junk [[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "27")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_25()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("25", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "Junk P", "6", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "Junk [[@Person.Child.Name]]", "Default", "26", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("25", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "Junk P", "6", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "Junk [[@Person.Child.Name]]", "Default", "27", ((string[])(null)));
 #line hidden
         }
         
@@ -1964,10 +1964,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[Junk]] [[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "31")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_26()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("26", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "[[Junk]] P", "10", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "[[Junk]] [[@Person.Child.Name]]", "Default", "30", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("26", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "[[Junk]] P", "10", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "[[Junk]] [[@Person.Child.Name]]", "Default", "31", ((string[])(null)));
 #line hidden
         }
         
@@ -1984,10 +1984,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "]] [[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_28()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("28", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "]] P", "4", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "]] [[@Person.Child.Name]]", "Default", "24", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("28", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "]] P", "4", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "]] [[@Person.Child.Name]]", "Default", "25", ((string[])(null)));
 #line hidden
         }
         
@@ -2004,10 +2004,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "( [[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "24")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_29()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("29", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "( P", "3", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "( [[@Person.Child.Name]]", "Default", "23", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("29", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", "( P", "3", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", "( [[@Person.Child.Name]]", "Default", "24", ((string[])(null)));
 #line hidden
         }
         
@@ -2024,10 +2024,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", ") [[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "24")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_30()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("30", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", ") P", "3", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", ") [[@Person.Child.Name]]", "Default", "23", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("30", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", ") P", "3", "[[@Person.Age]],[[@Person.name]],[[@Person]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", ") [[@Person.Child.Name]]", "Default", "24", ((string[])(null)));
 #line hidden
         }
         
@@ -2044,10 +2044,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", ". [[@Person.Child.Name]] [[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_35()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("35", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", ". P [[", "3", "[[@Person.Age]],[[@Person.name]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", ". [[@Person.Child.Name]] [[", "Default", "24", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("35", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", ". P [[", "3", "[[@Person.Age]],[[@Person.name]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", ". [[@Person.Child.Name]] [[", "Default", "25", ((string[])(null)));
 #line hidden
         }
         
@@ -2064,10 +2064,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Childs(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Childs(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "26")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_39()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("39", "[[@Person]],[[@Person.Childs(*).name]]", "JsonObject", "[[P", "3", "[[@Person]],[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "Default", "25", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("39", "[[@Person]],[[@Person.Childs(*).name]]", "JsonObject", "[[P", "3", "[[@Person]],[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "Default", "26", ((string[])(null)));
 #line hidden
         }
         
@@ -2076,7 +2076,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "41")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[Person.Childs(*")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "18")]
@@ -2084,10 +2084,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Childs(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Childs(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "26")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_41()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("41", "[[@Person]],[[@Person.Childs(*).name]],[[Person.Childs().name]]", "JsonObject", "[[Person.Childs(*", "18", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "Default", "25", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("41", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "JsonObject", "[[Person.Childs(*", "18", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "Default", "26", ((string[])(null)));
 #line hidden
         }
         
@@ -2096,7 +2096,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "42")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[Person.Childs([[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "18")]
@@ -2104,10 +2104,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Childs([[@Person]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "27")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_42()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("42", "[[@Person]],[[@Person.Childs(*).name]],[[Person.Childs().name]]", "JsonObject", "[[Person.Childs([[", "18", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "[[@Person]]", "[[@Person.Childs([[@Person]]", "Default", "26", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("42", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "JsonObject", "[[Person.Childs([[", "18", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "[[@Person]]", "[[@Person.Childs([[@Person]]", "Default", "27", ((string[])(null)));
 #line hidden
         }
         
@@ -2116,7 +2116,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "43")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[Person.Childs([[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "18")]
@@ -2124,33 +2124,73 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Childs(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Childs([[@Person.Childs(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "42")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_43()
         {
-            this.InsertForJsonFilterTypeAndDefaultProvider("43", "[[@Person]],[[@Person.Childs(*).name]],[[Person.Childs().name]]", "JsonObject", "[[Person.Childs([[", "18", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs([[@Person.Childs(*).name]]", "Default", "41", ((string[])(null)));
+            this.InsertForJsonFilterTypeAndDefaultProvider("43", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "JsonObject", "[[Person.Childs([[", "18", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs([[@Person.Childs(*).name]]", "Default", "42", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider: 44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Childs(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Childs(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "42")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProvider_44()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProvider("44", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "JsonObject", "@", "1", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "Default", "42", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider: 45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Childs(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.Childs(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "42")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProvider_45()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProvider("45", "[[@Person]],[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "JsonObject", "[[@", "3", "[[@Person.Childs(*).name]],[[@Person.Childs().name]]", "[[@Person.Childs(*).name]]", "[[@Person.Childs(*).name]]", "Default", "42", ((string[])(null)));
 #line hidden
         }
         
         public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetFields FilterType and Default Provider", exampleTags);
-#line 189
-this.ScenarioSetup(scenarioInfo);
-#line 190
- testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 191
-  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 192
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 193
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
- testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 196
- testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 197
+ testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 198
+ testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 199
  testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
