@@ -269,6 +269,7 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsConnected");
             // ReSharper restore ExplicitCallerInfoArgument
         }
+        // ReSharper disable once ArrangeTypeMemberModifiers
         void RaiseLoadedResources()
         {
             if(ResourcesLoaded != null)

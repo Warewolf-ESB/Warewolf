@@ -241,10 +241,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             get { return EnvironmentConnection!=null&& !EnvironmentConnection.IsLocalHost; }
         }
 
-        public void ReloadTools()
-        {
-        }
-
         public void Disconnect()
         {
             EnvironmentConnection.Disconnect();

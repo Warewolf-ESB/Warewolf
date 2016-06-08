@@ -511,9 +511,5 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
-
-        public void Close(string nodeName)
-        {
-        }
     }
 }
