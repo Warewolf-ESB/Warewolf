@@ -53,12 +53,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public IQueryManager QueryManagerProxy { get; set; }
         public ExplorerUpdateManagerProxy UpdateManagerProxy { get; set; }
 
-        public IExplorerItem FindItem(Func<IExplorerItem, bool> searchCriteria)
-        {
-            var explorerItemModels = ExplorerItems.Descendants().ToList();
-            return searchCriteria == null ? null : explorerItemModels.FirstOrDefault(searchCriteria);
-        }
-
         public IExplorerItem FindItemByID(Guid id)
         {
             var explorerItemModels = ExplorerItems.Descendants().ToList();
@@ -149,20 +143,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 IExplorerItem node = nodes.Pop();
                 yield return node;
                 if(node.Children != null)
-                {
-                    foreach (var n in node.Children) nodes.Push(n);
-                }
-            }
-        }
-
-        public static IEnumerable<IExplorerItemViewModel> Descendants(this IExplorerItemViewModel root)
-        {
-            var nodes = new Stack<IExplorerItemViewModel>(new[] { root });
-            while (nodes.Any())
-            {
-                IExplorerItemViewModel node = nodes.Pop();
-                yield return node;
-                if (node.Children != null)
                 {
                     foreach (var n in node.Children) nodes.Push(n);
                 }

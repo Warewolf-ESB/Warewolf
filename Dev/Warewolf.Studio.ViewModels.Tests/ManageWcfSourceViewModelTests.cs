@@ -42,10 +42,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
         }
 
-        public async Task<IRequestServiceNameViewModel> GetRequestModel()
-        {
-            return await RequestServiceNameViewModel.CreateAsync(new EnvironmentViewModel(new Mock<IServer>().Object, new Mock<IShellViewModel>().Object), "test", "test");
-        }
         public ManageWcfSourceViewModel TestModel()
         {
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();

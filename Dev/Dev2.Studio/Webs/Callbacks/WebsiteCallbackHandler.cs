@@ -13,19 +13,11 @@ using System;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Common.Utils;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
-using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Webs.Callbacks
@@ -56,36 +48,9 @@ namespace Dev2.Webs.Callbacks
 
         #region Navigate
 
-        protected virtual void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
-        {
-        }
-
         #endregion
 
         #region ReloadResource
-
-        protected void ReloadResource(IEnvironmentModel environmentModel, Guid resourceId, ResourceType resourceType)
-        {
-            if(environmentModel == null || environmentModel.ResourceRepository == null)
-            {
-                return;
-            }
-
-            var getWorksurfaceItemRepo = WorkspaceItemRepository.Instance;
-
-            CheckForServerMessages(environmentModel, resourceId, getWorksurfaceItemRepo);
-            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceId, resourceType, ResourceModelEqualityComparer.Current, true);
-            if(effectedResources != null)
-            {
-                foreach(var resource in effectedResources)
-                {
-                    var resourceWithContext = new ResourceModel(environmentModel);
-                    resourceWithContext.Update(resource);
-                    Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
-                    EventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
-                }
-            }
-        }
 
         #endregion
 
@@ -167,14 +132,6 @@ namespace Dev2.Webs.Callbacks
 
         public event NavigateRequestedEventHandler NavigateRequested;
 
-        protected void Navigate(string uri)
-        {
-            if(NavigateRequested != null)
-            {
-                NavigateRequested(uri);
-            }
-        }
-
         #endregion
 
         #region GetJsonIntellisenseResults
@@ -188,34 +145,5 @@ namespace Dev2.Webs.Callbacks
         }
 
         #endregion
-
-        protected void CheckForServerMessages(IEnvironmentModel environmentModel, Guid resourceId, IWorkspaceItemRepository workspace)
-        {
-            var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId);
-            if(resourceModel != null)
-            {
-                var resource = new ResourceModel(environmentModel);
-                resource.Update(resourceModel);
-                var compileMessageList = new StudioCompileMessageRepo().GetCompileMessagesFromServer(resource);
-
-                if(compileMessageList == null || compileMessageList.Count == 0)
-                {
-                    return;
-                }
-
-                var numberOfDependants = compileMessageList.Dependants.Count;
-                //2013.07.29: Ashley Lewis for bug 9640 - If only dependancy is open right now, don't notify of change
-                if(numberOfDependants == 1)
-                {
-                    if(
-                        compileMessageList.Dependants.Any(
-                            dep =>
-                                workspace.WorkspaceItems != null &&
-                                workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
-                    {
-                    }
-                }
-            }
-        }
     }
 }
