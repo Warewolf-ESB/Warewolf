@@ -13,6 +13,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -140,12 +141,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         [Then(@"the merged result is ""(.*)""")]
         public void ThenTheMergedResultIs(string value)
         {
+
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
-            if(string.IsNullOrEmpty(value))
+            FixBreaks(ref value, ref actualValue);
+            if (string.IsNullOrEmpty(value))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
@@ -153,6 +156,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             {
                 Assert.AreEqual(value, actualValue);
             }
+        }
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
 
         [Then(@"the merged result is the same as file ""(.*)""")]
@@ -167,6 +175,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
+            FixBreaks(ref value, ref actualValue);
             Assert.AreEqual(value, actualValue);
         }
     }
