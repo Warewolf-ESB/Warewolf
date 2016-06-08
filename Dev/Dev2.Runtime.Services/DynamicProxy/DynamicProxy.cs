@@ -38,10 +38,5 @@ namespace Dev2.Runtime.DynamicProxy
                 return ObjectInstance;
             }
         }
-
-        public void Close()
-        {
-            CallMethod("Close");
-        }
     }
 }
