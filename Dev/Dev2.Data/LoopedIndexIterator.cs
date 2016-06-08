@@ -49,30 +49,6 @@ namespace Dev2.Data.Binary_Objects
             return _loopedIdx;
         }
 
-        public int MinIndex()
-        {
-            return _loopedIdx;
-        }
-
-        public void AddGap(int idx)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveGap(int idx)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HashSet<int> FetchGaps()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IIndexIterator Clone()
-        {
-            return new LoopedIndexIterator(_curPos, _itrCnt);
-        }
 
     }
 }

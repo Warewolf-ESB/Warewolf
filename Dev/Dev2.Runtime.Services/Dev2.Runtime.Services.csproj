@@ -187,7 +187,6 @@
     <Compile Include="DynamicProxy\DynamicProxyException.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactory.cs" />
     <Compile Include="DynamicProxy\DynamicProxyFactoryOptions.cs" />
-    <Compile Include="DynamicProxy\IDynamicProxy.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />

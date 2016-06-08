@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Network;
 using System.Threading.Tasks;
 using Dev2.AppResources.Repositories;
@@ -270,6 +271,7 @@ namespace Dev2.Studio.Core.Models
             // ReSharper restore ExplicitCallerInfoArgument
         }
         // ReSharper disable once ArrangeTypeMemberModifiers
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         void RaiseLoadedResources()
         {
             if(ResourcesLoaded != null)
