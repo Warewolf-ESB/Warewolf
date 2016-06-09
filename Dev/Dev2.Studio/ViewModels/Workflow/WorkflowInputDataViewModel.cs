@@ -507,47 +507,48 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void AddBlankComplexObjectRow(IDataListItem itemToAdd,IComplexObject parentItem, int indexToInsertAt, int indexNum)
         {
-            var complexObjects = parentItem.Children[indexNum-1];
-            foreach(var complexObject in complexObjects)
+            var key = 1;
+            if (indexNum > 1)
             {
-                WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
-                    {
-                        DisplayValue = string.Concat(itemToAdd.Recordset.TrimEnd('(',')'), "(", indexNum, ").", complexObject.Name),
-                        Value = string.Empty,
-                        CanHaveMutipleRows = itemToAdd.CanHaveMutipleRows,
-                        Recordset = itemToAdd.Recordset,
-                        Field = complexObject.Name,
-                        Description = complexObject.Description,
-                        Index = indexNum.ToString(CultureInfo.InvariantCulture)
-                    });
-                    indexToInsertAt++;
-                if (complexObject.Children.Count > 0)
+                var possibleKey = indexNum - 1;
+                if (parentItem.Children.ContainsKey(possibleKey))
                 {
-                    AddBlankComplexObjectRow(itemToAdd,complexObject, indexToInsertAt,indexNum);
+                    key = possibleKey;
                 }
             }
-            //
-            //
-            //            foreach (var col in parentItem..Distinct(new ScalarNameComparer()))
-            //            {
-            //                if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
-            //                {
-            //                    WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
-            //                    {
-            //                        DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
-            //                        Value = string.Empty,
-            //                        CanHaveMutipleRows = dlItem.CanHaveMutipleRows,
-            //                        Recordset = dlItem.Recordset,
-            //                        Field = col.Name,
-            //                        Description = col.Description,
-            //                        Index = indexNum.ToString(CultureInfo.InvariantCulture)
-            //                    });
-            //                    indexToInsertAt++;
-            //                }
-            //                colName = col.Name;
-            //                itemsAdded = true;
-            //
-            //            }
+            var complexObjects = parentItem.Children[key];
+            foreach(var complexObject in complexObjects)
+            {
+                var recordset = itemToAdd.Recordset;
+                if (recordset != parentItem.Name)
+                {
+                    recordset = itemToAdd.DisplayValue;
+                }                
+                var displayName = recordset.TrimEnd('(',')');
+
+                var values = parentItem.IsArray? "("+indexNum+").":".";
+                var displayValue = string.Concat(displayName, values, complexObject.Name);
+                var dataListItem = new DataListItem
+                {
+                    DisplayValue = displayValue,
+                    Value = string.Empty,
+                    CanHaveMutipleRows = itemToAdd.CanHaveMutipleRows,
+                    Recordset = parentItem.Name,
+                    Field = complexObject.Name,
+                    Description = complexObject.Description,
+                    Index = indexNum.ToString(CultureInfo.InvariantCulture)
+                };
+                
+                if (complexObject.Children.Count > 0)
+                {
+                    AddBlankComplexObjectRow(dataListItem, complexObject, indexToInsertAt,1);
+                }
+                else
+                {
+                    WorkflowInputs.Insert(indexToInsertAt + 1, dataListItem);
+                    indexToInsertAt++;
+                }
+            }           
         }
 
         /// <summary>
