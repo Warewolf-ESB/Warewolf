@@ -46,9 +46,9 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
             }
-            ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
+            ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
             
@@ -251,21 +251,34 @@ namespace Dev2.Activities.Designers2.Core
             get { return _objectName; }
             set
             {
-                if (value != null)
+               
+                if (IsObject &&!string.IsNullOrEmpty(ObjectResult))
                 {
-                    _objectName = value;
-                    _modelItem.SetProperty("ObjectName", value);
-                    OnPropertyChanged();
-                }
-                else
-                {
-                    _objectName = string.Empty;
-                    _modelItem.SetProperty("ObjectName", _objectName);
-                    OnPropertyChanged();
-                }
-                if (DataListUtil.IsFullyEvaluated(_objectName) && IsObject &&!string.IsNullOrEmpty(ObjectResult))
-                {
-                    _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(_objectName), ObjectResult);
+                    try
+                    {
+                        if (value != null)
+                        {
+                            _objectName = value;
+                            OnPropertyChanged();
+                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
+                            if (language.IsJsonIdentifierExpression)
+                            {
+                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+                            }                            
+                            _modelItem.SetProperty("ObjectName", value);                            
+                        }
+                        else
+                        {
+                            _objectName = string.Empty;
+                            _modelItem.SetProperty("ObjectName", _objectName);
+                            OnPropertyChanged();
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        //Is not an object identifier
+                    }
+                    
                 }
             }
         }

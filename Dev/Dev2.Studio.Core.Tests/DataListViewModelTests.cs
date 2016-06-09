@@ -95,7 +95,7 @@ namespace Dev2.Core.Tests
         //    parts.Add(part.Object);
 
         //    _dataListViewModel.AddMissingDataListItems(parts, false);
-        //    Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
+        //    Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].CanHaveMutipleRows);
         //}
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts, false);
-            //Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].IsRecordset);
+            //Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].CanHaveMutipleRows);
             Assert.AreEqual("Province",_dataListViewModel.ScalarCollection[0].DisplayName);
             Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[1].DisplayName);
             Assert.AreEqual(string.Empty,_dataListViewModel.ScalarCollection[2].DisplayName);
