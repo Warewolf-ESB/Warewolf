@@ -49,7 +49,7 @@
                                                                   ExpandAllCommand="{Binding ExpandAllCommand}" />
                 </i:Interaction.Behaviors>
                 <ig:DragDropManager.DropTarget >
-                    <ig:DropTarget IsDropTarget="True" DropChannels="1" />
+                    <ig:DropTarget IsDropTarget="True" />
                 </ig:DragDropManager.DropTarget>
             </ContentControl>
         </Grid>
