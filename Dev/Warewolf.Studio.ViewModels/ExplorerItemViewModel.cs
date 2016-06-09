@@ -1140,54 +1140,38 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> Move(IExplorerTreeItem destination)
         {
-            if (destination.Children.Any(a => a.ResourceName == ResourceName) && !IsFolder)
+            try
             {
-                var a = new PopupMessage
-                {
-                    Buttons = MessageBoxButton.OK,
-                    Description = "The destination folder has a resource with the same name",
-                    Header = "Move Not allowed",
-                    Image = MessageBoxImage.Error
-                };
-                ShellViewModel.ShowPopup(a);
-                return false;
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                try
-                {
-                    if (Equals(this, destination))
-                    {
-                        return false;
-                    }
-                    if (Parent != null && destination.Parent != null)
-                    {
-                        if (Equals(Parent, destination))
-                        {
-                            return false;
-                        }
-                    }
-                    RemoveChildFromParent();
-                    await _explorerRepository.Move(this, destination);
-                }
-                catch (Exception)
+                if (Equals(this, destination))
                 {
                     return false;
                 }
-                finally
+                if (Parent != null && destination.Parent != null)
                 {
-                    Server.UpdateRepository.FireItemSaved();
+                    if (Equals(Parent, destination))
+                    {
+                        return false;
+                    }
+                }
+                var moveResult = await _explorerRepository.Move(this, destination);
+                if (!moveResult)
+                {
+                    var a = new PopupMessage
+                    {
+                        Buttons = MessageBoxButton.OK,
+                        Description = "The destination folder has a resource with the same name",
+                        Header = "Move Not allowed",
+                        Image = MessageBoxImage.Error
+                    };
+                    ShellViewModel.ShowPopup(a);
+                    return false;
                 }
             }
-            return true;
-        }
-        private void RemoveChildFromParent()
-        {
-            if (Parent != null)
+            catch (Exception)
             {
-                Parent.RemoveChild(this);
+                return false;
             }
+            return true;
         }
 
         public bool CanDrop

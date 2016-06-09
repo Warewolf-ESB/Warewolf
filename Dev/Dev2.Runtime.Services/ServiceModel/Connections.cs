@@ -28,6 +28,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -69,13 +70,13 @@ namespace Dev2.Runtime.ServiceModel
             {
 
                 var contents = ResourceCatalog.Instance.GetResourceContents(workspaceID, Guid.Parse(resourceID));
-                if (contents != null && contents.Length > 0)
+                if(contents != null && contents.Length > 0)
                 {
                     var xml = contents.ToXElement();
                     result = new Dev2.Data.ServiceModel.Connection(xml);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
             }
@@ -95,14 +96,14 @@ namespace Dev2.Runtime.ServiceModel
 
                 Uri actualUri;
 
-                if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out actualUri))
+                if(Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out actualUri))
                 {
                     var port = actualUri.Port;
                     connection.WebServerPort = port;
                 }
 
                 // convert public user and pass to proper ntlm user and pass ;)
-                if (connection.AuthenticationType == AuthenticationType.Public)
+                if(connection.AuthenticationType == AuthenticationType.Public)
                 {
                     connection.UserName = GlobalConstants.PublicUsername;
                     connection.Password = string.Empty;
@@ -111,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel
                 ResourceCatalog.Instance.SaveResource(workspaceID, connection);
                 return connection.ToString();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
@@ -125,7 +126,7 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Connections/Search
         public string Search(string term, Guid workspaceID, Guid dataListID)
         {
-            if (term == null)
+            if(term == null)
             {
                 term = "";
             }
@@ -140,7 +141,7 @@ namespace Dev2.Runtime.ServiceModel
         public List<string> GetNames()
         {
             return _fetchComputers.Invoke();
-        }
+        } 
         #endregion
 
         #region Test
@@ -151,20 +152,20 @@ namespace Dev2.Runtime.ServiceModel
             var result = new ValidationResult
             {
                 IsValid = false,
-                ErrorMessage = "Unknown connection type."
+                ErrorMessage = ErrorResource.UnknownConnectionType
             };
 
             try
             {
                 var connection = JsonConvert.DeserializeObject<Dev2.Data.ServiceModel.Connection>(args);
-                switch (connection.ResourceType)
+                switch(connection.ResourceType)
                 {
                     case "Server":
                         result = CanConnectToServer(connection);
                         break;
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
                 result.ErrorMessage = ex.Message;
@@ -189,9 +190,9 @@ namespace Dev2.Runtime.ServiceModel
                 // ReSharper restore ObjectCreationAsStatement
 
                 var connectResult = ConnectToServer(connection);
-                if (!string.IsNullOrEmpty(connectResult))
+                if(!string.IsNullOrEmpty(connectResult))
                 {
-                    if (connectResult.Contains("FatalError"))
+                    if(connectResult.Contains("FatalError"))
                     {
                         var error = XElement.Parse(connectResult);
                         result.IsValid = false;
@@ -199,10 +200,10 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 var hex = ex.InnerException as HttpClientException;
-                if (hex != null)
+                if(hex != null)
                 {
                     result.IsValid = false;  // This we know how to handle this
                     result.ErrorMessage = "Connection Error : " + hex.Response.ReasonPhrase;
@@ -211,14 +212,14 @@ namespace Dev2.Runtime.ServiceModel
 
                 result.IsValid = false;
                 // get something more relevant ;)
-                if (ex.Message == "One or more errors occurred." && ex.InnerException != null)
+                if(ex.Message == "One or more errors occurred." && ex.InnerException != null)
                 {
                     result.ErrorMessage = "Connection Error : " + ex.InnerException.Message;
                 }
                 else
                 {
                     var msg = ex.Message;
-                    if (msg.IndexOf("Connection Error : ", StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
+                    if(msg.IndexOf("Connection Error : ", StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
                     {
                         result.ErrorMessage = ex.Message;
                     }
@@ -242,14 +243,14 @@ namespace Dev2.Runtime.ServiceModel
 
             try
             {
-                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
+                if(identity != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context = identity.Impersonate();
                 }
 
-                using (var client = new WebClient())
+                using(var client = new WebClient())
                 {
-                    if (connection.AuthenticationType == AuthenticationType.Windows)
+                    if(connection.AuthenticationType == AuthenticationType.Windows)
                     {
                         client.UseDefaultCredentials = true;
                     }
@@ -258,7 +259,7 @@ namespace Dev2.Runtime.ServiceModel
                         client.UseDefaultCredentials = false;
 
                         //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                        if (connection.AuthenticationType == AuthenticationType.Public)
+                        if(connection.AuthenticationType == AuthenticationType.Public)
                         {
                             connection.UserName = GlobalConstants.PublicUsername;
                             connection.Password = string.Empty;
@@ -273,7 +274,7 @@ namespace Dev2.Runtime.ServiceModel
                     {
                         // Credentials = client.Credentials 
                         hub = new HubConnection(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
-                        hub.Error += exception => { };
+                        hub.Error +=exception => {};
                         ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 #pragma warning disable 168
                         var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
@@ -285,7 +286,7 @@ namespace Dev2.Runtime.ServiceModel
                     }
                     finally
                     {
-                        if (hub != null)
+                        if(hub != null)
                         {
                             hub.Stop();
                             hub.Dispose();
@@ -295,7 +296,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             finally
             {
-                if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
+                if(context != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context.Undo();
                 }
@@ -315,15 +316,15 @@ namespace Dev2.Runtime.ServiceModel
             proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).Wait();
             Task<string> fragmentInvoke = proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
             var serverVersion = fragmentInvoke.Result;
-            if (!string.IsNullOrEmpty(serverVersion))
+            if(!string.IsNullOrEmpty(serverVersion))
             {
                 Version sourceVersionNumber;
                 Version.TryParse(serverVersion, out sourceVersionNumber);
                 Version destVersionNumber;
                 Version.TryParse("0.0.0.6", out destVersionNumber);
-                if (sourceVersionNumber != null && destVersionNumber != null)
+                if(sourceVersionNumber != null && destVersionNumber != null)
                 {
-                    if (sourceVersionNumber < destVersionNumber)
+                    if(sourceVersionNumber < destVersionNumber)
                     {
                         throw new VersionConflictException(sourceVersionNumber, destVersionNumber);
                     }

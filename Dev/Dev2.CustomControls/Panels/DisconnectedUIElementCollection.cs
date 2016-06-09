@@ -45,6 +45,8 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 
@@ -251,10 +253,7 @@ namespace WPF.JoshSmith.Panels
 
             // check whether the owner is an items host for an ItemsControl
             if (_ownerPanel.IsItemsHost && ItemsControl.GetItemsOwner(_ownerPanel) != null)
-                throw new InvalidOperationException("Disconnected children cannot be explicitly added to this "
-                                                    +
-                                                    "collection while the panel is serving as an items host. However, visual children can "
-                                                    + "be added by simply calling the AddVisualChild method.");
+                throw new InvalidOperationException(ErrorResource.CannotImplicitlyAddDisconnectedChildren);
         }
 
         #endregion

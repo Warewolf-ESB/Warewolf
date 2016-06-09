@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(loggingSettingsBuilder == null || loggingSettingsBuilder.Length == 0)
             {
-                throw new InvalidDataException("Empty Logging Settings passed.");
+                throw new InvalidDataException(ErrorResource.EmptyLoggingSettingsPassed);
             }
 
             var serializer = new Dev2JsonSerializer();

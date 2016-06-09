@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    result.Message.Append("No Resource Selected");
+                    result.Message.Append(ErrorResource.NoResourceSelected);
                     result.HasError = true;
                 }
             }

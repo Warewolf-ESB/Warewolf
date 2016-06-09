@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Controller
 {
@@ -133,7 +134,7 @@ namespace Dev2.Controller
                             var popupController = CustomContainer.Get<IPopupController>();
                             if (popupController != null)
                             {
-                                popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                                popupController.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
                                                      "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
                             }
                         }
@@ -161,7 +162,7 @@ namespace Dev2.Controller
                     var popupController = CustomContainer.Get<IPopupController>();
                     if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
-                        popupController.Show("Server connection has dropped during execution of command." + Environment.NewLine + "Please ensure that your server is still and your network connection is working."
+                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still and your network connection is working."
                                             , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
                     }
                 }
@@ -190,7 +191,7 @@ namespace Dev2.Controller
                         var popupController = CustomContainer.Get<IPopupController>();
                         if (popupController != null)
                         {
-                            popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                            popupController.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
                                                                          "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
                         }
                     }
@@ -229,7 +230,7 @@ namespace Dev2.Controller
                         var popupController = CustomContainer.Get<IPopupController>();
                         if (popupController != null)
                         {
-                            popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                            popupController.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
                                                                            "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
                         }
                     }
@@ -278,7 +279,7 @@ namespace Dev2.Controller
                         var popupController = CustomContainer.Get<IPopupController>();
                         if (popupController != null)
                         {
-                            popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                            popupController.Show(string.Format(ErrorResource.ServerDissconnected, connection.DisplayName) + Environment.NewLine +
                                                                           "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false);
                         }
                     }

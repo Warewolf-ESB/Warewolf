@@ -16,6 +16,7 @@ using System.Reflection;
 using Dev2;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Converters.Graph;
+using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
@@ -44,7 +45,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
             if (pocoPath == null)
             {
-                throw new Exception(string.Format("Path of type '{0}' expected, path of type '{1}' received.",
+                throw new Exception(string.Format(ErrorResource.PathMismatch,
                     typeof (PocoPath), path.GetType()));
             }
 
@@ -121,7 +122,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
             if (pocoPath == null)
             {
-                throw new Exception(string.Format("Path of type '{0}' expected, path of type '{1}' received.",
+                throw new Exception(string.Format(ErrorResource.PathMismatch,
                     typeof (PocoPath), path.GetType()));
             }
 

@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(values == null)
             {
-                throw new InvalidDataException("Empty values passed.");
+                throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
             StringBuilder securitySettings;
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                throw new InvalidDataException(string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
+                throw new InvalidDataException(string.Format(ErrorResource.PermissionsPassedNotValid, e.Message));
             }
         }
 

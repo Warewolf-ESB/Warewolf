@@ -21,6 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -52,14 +53,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(!values.ContainsKey("resourceId"))
             {
                 execMessage.HasError = true;
-                execMessage.Message = new StringBuilder( "No resourceId sent to server");
-                Dev2Logger.Debug("No resourceId sent to server");
+                execMessage.Message = new StringBuilder(ErrorResource.NoResourceIdSentToServer);
+                Dev2Logger.Debug(ErrorResource.NoResourceIdSentToServer);
             }
             else if(!values.ContainsKey("versionNumber") )
             {
                 execMessage.HasError = true;
-                execMessage.Message = new StringBuilder("No versionNumber sent to server");
-                Dev2Logger.Debug("No versionNumber sent to server");
+                execMessage.Message = new StringBuilder(ErrorResource.NoVersionNumberSentToServer);
+                Dev2Logger.Debug(ErrorResource.NoVersionNumberSentToServer);
             }
             else
             {

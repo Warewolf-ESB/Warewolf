@@ -1,14 +1,12 @@
-﻿using System;
-using System.Activities.Presentation;
+﻿using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using Dev2.Common.Interfaces;
-using Dev2.Services.Security;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Infragistics.Controls.Menus;
 using Infragistics.DragDrop;
@@ -24,16 +22,13 @@ namespace Warewolf.Studio.Views
     public partial class ExplorerView : IExplorerView
     {
         private readonly ExplorerViewTestClass _explorerViewTestClass;
-        DataObject _dragData;
 
         public ExplorerView()
         {
             InitializeComponent();
             _explorerViewTestClass = new ExplorerViewTestClass(this);
         }
-
-
-
+        
         public ExplorerViewTestClass ExplorerViewTestClass
         {
             get { return _explorerViewTestClass; }
@@ -179,282 +174,299 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private Point startPoint;
-        void DragSource_OnDragOver(object sender, DragDropMoveEventArgs e)
+        void ExplorerTree_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            var drop = Utilities.GetAncestorFromType(e.DropTarget, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
-            var drag = Utilities.GetAncestorFromType(e.DragSource, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
-            Cursor grabbingCursor = Application.Current.TryFindResource("CursorGrabbing") as Cursor;
-            Mouse.SetCursor(Cursors.Arrow);
+            ResetDragEvents();
+            e.Handled = true;
+        }
 
-            // Get the current mouse position
-            Point mousePos = Mouse.GetPosition(null);
-            Vector diff = startPoint - mousePos;
+        public bool CancelDrag { get; set; }
 
-            if (Mouse.LeftButton == MouseButtonState.Released)
+        void ExplorerView_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Released)
             {
-                StopDragging();
+                ResetDragEvents();
+                e.Handled = true;
             }
+        }
 
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+        private void ExplorerTree_OnNodeDraggingStart(object sender, DragDropStartEventArgs e)
+        {
+            var xamDataTreeNodeControl = e.DragSource as XamDataTreeNodeControl;
+            if (xamDataTreeNodeControl != null &&
+                xamDataTreeNodeControl.Node.Data.GetType() == typeof(ExplorerItemViewModel))
             {
-                if (drag != null && drag.Node != null && drop != null && drop.Node != null)
+                DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
+                dragSource.DragEnter += src_DragEnter;
+                dragSource.DragLeave += src_DragLeave;
+                dragSource.DragOver += SrcOnDragOver;
+                dragSource.Drop += src_Drop;
+            }
+        }
+
+        private void SrcOnDragOver(object sender, DragDropMoveEventArgs e)
+        {
+            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
+            var dragSource = e.DragSource as XamDataTreeNodeControl;
+            if (dropTarget != null && dragSource != null)
+            {
+                var dropNodeData = dropTarget.Node.Data;
+                var sourceNodeData = dragSource.Node.Data;
+                if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
                 {
-                    if (drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null)
+                    var destination = dropNodeData as IExplorerItemViewModel;
+                    var source = sourceNodeData as IExplorerItemViewModel;
+
+                    if (destination != null && source != null)
                     {
-                        Mouse.SetCursor(!CancelDrag ? grabbingCursor : Cursors.No);
-                        var dragType = drag.Node.Data.GetType();
-                        var dropType = drop.Node.Data.GetType();
-                        ExplorerTree.ScrollNodeIntoView(drop.Node);
-                        var destination = drop.Node.Data as IExplorerItemViewModel;
-                        var source = drag.Node.Data as IExplorerItemViewModel;
-                        if (destination != null && source != null && dragType == dropType && destination.CanDrop)
+                        IEnvironmentViewModel vmDestination = GetEnv(destination);
+
+                        if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
                         {
-                            IEnvironmentViewModel vmSource = GetEnv(source);
-                            IEnvironmentViewModel vmDestination = GetEnv(destination);
-
-                            if (!Equals(vmSource.ResourceName, vmDestination.ResourceName))
-                            {
-                                CancelDrag = true;
-                                return;
-                            }
-                            if ((source.ResourceType == "ServerSource" || source.IsServer) &&
-                                string.IsNullOrWhiteSpace(source.ResourcePath))
-                            {
-                                CancelDrag = true;
-                                return;
-                            }
-                            if (source.ResourceType == "DbService" || source.ResourceType == "PluginService" ||
-                                source.ResourceType == "WebService")
-                            {
-                                CancelDrag = true;
-                                return;
-                            }
-
-                            if (!CancelDrag)
-                            {
-                                if (e.GetPosition(e.DropTarget).Y < drop.ActualHeight / 2)
-                                {
-                                    if (!destination.CanDrop && !destination.CanDrop)
-                                    {
-                                        Mouse.SetCursor(Cursors.No);
-                                        ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
-                                            Visibility.Collapsed;
-                                        ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
-                                            Visibility.Collapsed;
-                                        return;
-                                    }
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
-                                        Visibility.Visible;
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
-                                        Visibility.Visible;
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "main")).AllowDrop = true;
-                                    return;
-                                }
-                                if (!destination.CanDrop && !destination.CanDrop)
-                                {
-                                    Mouse.SetCursor(Cursors.No);
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
-                                        Visibility.Collapsed;
-                                    ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
-                                        Visibility.Collapsed;
-                                    return;
-                                }
-                                ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility =
-                                    Visibility.Visible;
-                                ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility =
-                                    Visibility.Visible;
-                                ((Grid)Utilities.GetDescendantFromName(drop, "main")).AllowDrop = true;
-                                return;
-                            }
+                            e.DropNotAllowedCursorTemplate = null;
+                            e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
+                            e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
+                            e.OperationType = OperationType.Move;
+                            DropAllowedStyle(e.DropTarget);
+                        }
+                        else
+                        {
+                            e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                            e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                            e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                            e.OperationType = OperationType.DropNotAllowed;
+                            DropNotAllowedStyle(e.DropTarget);
                         }
                     }
-                    Mouse.SetCursor(grabbingCursor);
-                    return;
                 }
+                else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
+                {
+                    var destination = dropNodeData as IEnvironmentViewModel;
+                    var source = sourceNodeData as IExplorerItemViewModel;
 
+                    if (destination != null && source != null)
+                    {
+                        if (!ValidateDragDrop(source, destination))
+                        {
+                            e.DropNotAllowedCursorTemplate = null;
+                            e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
+                            e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
+                            e.OperationType = OperationType.Move;
+                            DropAllowedStyle(e.DropTarget);
+                        }
+                        else
+                        {
+                            e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                            e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                            e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                            e.OperationType = OperationType.DropNotAllowed;
+                            DropNotAllowedStyle(e.DropTarget);
+                        }
+                    }
+                }
+            }
+            else
+            {
                 var dropActivity = Utilities.GetAncestorFromType(e.DropTarget, typeof(ContentControl), false) as ContentControl;
-                var dragTool = Utilities.GetAncestorFromType(e.DragSource, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
-
-                if (dropActivity == null || dragTool == null)
+                if (dropActivity == null || dragSource == null)
                 {
                     return;
                 }
-                var dragData = new DataObject();
-                var context = dragTool.DataContext as XamDataTreeNodeDataContext;
-                if (context != null)
+                var sourceNodeData = dragSource.Node.Data as IExplorerItemViewModel;
+                if (sourceNodeData != null && sourceNodeData.ResourceType == "WorkflowService")
                 {
-                    Mouse.SetCursor(!CancelDrag ? grabbingCursor : Cursors.No);
-                    var dataContext = context.Data as ExplorerItemViewModel;
+                    var dragData = new DataObject();
+                    var context = dragSource.DataContext as XamDataTreeNodeDataContext;
+                    if (context != null)
+                    {
+                        var dataContext = context.Data as ExplorerItemViewModel;
 
-                    if (dataContext != null)
-                    {
-                        dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dataContext.ActivityName);
-                        dragData.SetData(dataContext);
-                    }
-                    if (!CancelDrag)
-                    {
-                        try
+                        if (dataContext != null)
                         {
-                            DragDropManager.EndDrag(true);
+                            dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dataContext.ActivityName);
+                            dragData.SetData(dataContext);
                         }
-                        catch
+                        if (!CancelDrag)
                         {
-                            //Something
+                            try
+                            {
+                                DragDropManager.EndDrag(true);
+                            }
+                            catch
+                            {
+                                //Something
+                            }
                         }
+                        DragDrop.DoDragDrop(e.DragSource, dragData, DragDropEffects.Copy);
                     }
-                    _dragData = dragData;
-                    Mouse.SetCursor(grabbingCursor);
-                    DragDrop.DoDragDrop(e.DragSource, dragData, DragDropEffects.Copy);
                 }
             }
         }
 
-        void DragSource_OnDragLeave(object sender, DragDropEventArgs e)
+        void src_DragEnter(object sender, DragDropCancelEventArgs e)
         {
-            var drop = Utilities.GetAncestorFromType(e.DropTarget, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
-            Reset(drop);
+            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
+            var dragSource = e.DragSource as XamDataTreeNodeControl;
+            if (dropTarget != null && dragSource != null)
+            {
+                var dataType = dropTarget.Node.Data.GetType();
+                if (dataType == typeof(ExplorerItemViewModel))
+                {
+                    var dropNodeData = dropTarget.Node.Data;
+                    var sourceNodeData = dragSource.Node.Data;
+                    if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
+                    {
+                        var destination = dropNodeData as IExplorerItemViewModel;
+                        var source = sourceNodeData as IExplorerItemViewModel;
+
+                        if (destination != null && source != null)
+                        {
+                            IEnvironmentViewModel vmDestination = GetEnv(destination);
+
+                            if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
+                            {
+                                e.DropNotAllowedCursorTemplate = null;
+                                e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
+                                e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
+                                e.OperationType = OperationType.Move;
+                                DropAllowedStyle(e.DropTarget);
+                            }
+                            else
+                            {
+                                e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                                e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                                e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                                e.OperationType = OperationType.DropNotAllowed;
+                                DropNotAllowedStyle(e.DropTarget);
+                            }
+                        }
+                    }
+                    else if (dataType == typeof(EnvironmentViewModel))
+                    {
+                        var destination = dropNodeData as IEnvironmentViewModel;
+                        var source = sourceNodeData as IExplorerItemViewModel;
+
+                        if (destination != null && source != null)
+                        {
+                            if (!ValidateDragDrop(source, destination))
+                            {
+                                e.DropNotAllowedCursorTemplate = null;
+                                e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
+                                e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
+                                e.OperationType = OperationType.Move;
+                                DropAllowedStyle(e.DropTarget);
+                            }
+                            else
+                            {
+                                e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                                e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                                e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
+                                e.OperationType = OperationType.DropNotAllowed;
+                                DropNotAllowedStyle(e.DropTarget);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void src_DragLeave(object sender, DragDropEventArgs e)
+        {
+            // Reset the cursor template
+            ResetDragDropTemplate(e);
+        }
+
+        private static void ResetDragDropTemplate(DragDropEventArgs e)
+        {
+            e.DropNotAllowedCursorTemplate = null;
+            e.CopyCursorTemplate = null;
+            e.MoveCursorTemplate = null;
+            DropNotAllowedStyle(e.DropTarget);
+        }
+
+        void src_Drop(object sender, DropEventArgs e)
+        {
+            // Disconnect the events for memory reasons.
+            var src = DragDropManager.GetDragSource(e.DragSource);
+            src.DragEnter -= src_DragEnter;
+            src.DragLeave -= src_DragLeave;
+            src.DragOver -= SrcOnDragOver;
+            src.Drop -= src_Drop;
+
+            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
+            var dragSource = e.DragSource as XamDataTreeNodeControl;
+            if (dropTarget != null && dragSource != null)
+            {
+                var dropNodeData = dropTarget.Node.Data;
+                var sourceNodeData = dragSource.Node.Data;
+                if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
+                {
+                    var destination = dropNodeData as IExplorerItemViewModel;
+                    var source = sourceNodeData as IExplorerItemViewModel;
+
+                    if (destination != null && source != null)
+                    {
+                        IEnvironmentViewModel vmDestination = GetEnv(destination);
+
+                        if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
+                        {
+                            source.Move(destination);
+                        }
+                        else
+                        {
+                            e.OperationType = OperationType.DropNotAllowed;
+                        }
+                    }
+                    ResetDragDropTemplate(e);
+                }
+                else if (dropNodeData.GetType() == typeof(EnvironmentViewModel))
+                {
+                    var destination = dropNodeData as IEnvironmentViewModel;
+                    var source = sourceNodeData as IExplorerItemViewModel;
+
+                    if (destination != null && source != null)
+                    {
+                        if (!ValidateDragDrop(source, destination))
+                        {
+                            source.Move(destination);
+                        }
+                        else
+                        {
+                            e.OperationType = OperationType.DropNotAllowed;
+                        }
+                    }
+                    ResetDragDropTemplate(e);
+                }
+            }
+        }
+
+        private bool ValidateDragDrop(IExplorerItemViewModel source, IEnvironmentViewModel vmDestination)
+        {
+            CancelDrag = false;
+            IEnvironmentViewModel vmSource = GetEnv(source);
+            
+            if (!Equals(vmSource.ResourceName, vmDestination.ResourceName))
+            {
+                CancelDrag = true;
+            }
+            if ((source.ResourceType == "ServerSource" || source.IsServer) &&
+                string.IsNullOrWhiteSpace(source.ResourcePath))
+            {
+                CancelDrag = true;
+            }
+            return CancelDrag;
+        }
+
+        private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
+        {
             ResetDragEvents();
         }
 
-        void DragSource_OnDrop(object sender, DropEventArgs e)
+        void ResetDragEvents()
         {
-            var exp = DataContext as ExplorerViewModelBase;
-            var drop = Utilities.GetAncestorFromType(e.DropTarget, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
-            var drag = Utilities.GetAncestorFromType(e.DragSource, typeof(XamDataTreeNodeControl), false) as XamDataTreeNodeControl;
-
-            if (Mouse.LeftButton == MouseButtonState.Released)
-            {
-                if (drag != null && drag.Node != null && drop != null && drop.Node != null)
-                {
-                    if (drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null)
-                    {
-                        if (Equals(drag.Node.Manager.ParentNode, drop.Node))
-                        {
-                            CancelDrag = true;
-                            Reset(drop);
-                            return;
-                        }
-                        var destination = drop.Node.Data as IExplorerItemViewModel;
-                        var source = drag.Node.Data as IExplorerItemViewModel;
-
-                        if (source != null && destination != null)
-                        {
-                            IEnvironmentViewModel vmSource = GetEnv(source);
-                            IEnvironmentViewModel vmDestination = GetEnv(destination);
-                            if (!Equals(vmDestination.ResourceName, vmSource.ResourceName))
-                            {
-                                CancelDrag = true;
-                                return;
-                            }
-
-                            if (((source.ResourceType == "ServerSource" || source.IsServer) &&
-                                 string.IsNullOrWhiteSpace(source.ResourcePath))
-                                || !destination.CanDrop || !source.CanDrag)
-                            {
-                                CancelDrag = true;
-                                return;
-                            }
-
-                            if (!CancelDrag)
-                            {
-                                vmSource.IsConnecting = true;
-                                if (destination.Children.Count >= 1)
-                                {
-                                    var checkExists =
-                                        destination.Children.FirstOrDefault(o => o.ResourceId == source.ResourceId);
-                                    if (checkExists == null)
-                                    {
-                                        if (exp != null)
-                                        {
-                                            exp.AllowDrag = false;
-                                        }
-                                        source.Move(destination).ContinueWith(async =>
-                                        {
-                                            vmSource.IsConnecting = false;
-                                            if (exp != null)
-                                            {
-                                                exp.AllowDrag = true;
-                                            }
-                                        }, TaskScheduler.FromCurrentSynchronizationContext());
-                                    }
-                                }
-                                else
-                                {
-                                    source.Move(destination).ContinueWith(async =>
-                                    {
-                                        vmSource.IsConnecting = false;
-                                        if (exp != null)
-                                        {
-                                            exp.AllowDrag = true;
-                                        }
-                                    }, TaskScheduler.FromCurrentSynchronizationContext());
-                                }
-                            }
-                        }
-
-                        Reset(drop);
-                    }
-                }
-                else
-                {
-                    if (Mouse.LeftButton == MouseButtonState.Released)
-                    {
-                        var target = e.DropTarget as ContentControl;
-                        if (target != null)
-                        {
-                            DragDrop.DoDragDrop(e.DragSource, _dragData, DragDropEffects.Copy);
-                        }
-
-                        if (drag != null && drag.Node != null && drop != null && drop.Node != null)
-                        {
-                            Mouse.SetCursor(Application.Current.TryFindResource("CursorGrabbing") as Cursor);
-                            var destination = drop.Node.Data as IEnvironmentViewModel;
-                            var source = drag.Node.Data as IExplorerItemViewModel;
-                            if (source != null && destination != null)
-                            {
-                                if (!CancelDrag)
-                                {
-                                    IEnvironmentViewModel vm = GetEnv(source);
-                                    vm.IsConnecting = true;
-                                    if (!source.CanDrag)
-                                    {
-                                        return;
-                                    }
-                                    if (destination.Children.Count >= 1)
-                                    {
-                                        var checkExists =
-                                            destination.Children.FirstOrDefault(o => o.ResourceId == source.ResourceId);
-                                        if (checkExists == null)
-                                        {
-                                            source.Move(destination).ContinueWith(async =>
-                                            {
-                                                vm.IsConnecting = false;
-                                                if (exp != null)
-                                                {
-                                                    exp.AllowDrag = true;
-                                                }
-                                            }, TaskScheduler.FromCurrentSynchronizationContext());
-                                        }
-                                    }
-                                    else
-                                    {
-                                        source.Move(destination).ContinueWith(async =>
-                                        {
-                                            vm.IsConnecting = false;
-                                            if (exp != null)
-                                            {
-                                                exp.AllowDrag = true;
-                                            }
-                                        }, TaskScheduler.FromCurrentSynchronizationContext());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                Mouse.SetCursor(Cursors.Arrow);
-            }
+            CancelDrag = false;
+            Mouse.SetCursor(Cursors.Arrow);
         }
 
         IEnvironmentViewModel GetEnv(IExplorerTreeItem source)
@@ -466,179 +478,20 @@ namespace Warewolf.Studio.Views
             return GetEnv(x.Parent);
         }
 
-        private void Reset(XamDataTreeNodeControl drop)
+        private static void DropNotAllowedStyle(UIElement element)
         {
-            if (drop != null)
-            {
-                ((Grid)Utilities.GetDescendantFromName(drop, "DropBeforeElem")).Visibility = Visibility.Collapsed;
-                ((Grid)Utilities.GetDescendantFromName(drop, "DropAfterElem")).Visibility = Visibility.Collapsed;
-            }
+            Rectangle rect = (Rectangle)Utilities.GetDescendantFromName((XamDataTreeNodeControl)element, "DropOntoElem");
+            rect.Stroke = Application.Current.TryFindResource("TransparentBrush") as SolidColorBrush;
+            rect.Opacity = 0.0;
+            element.AllowDrop = false;
         }
 
-        void DragSource_OnDragStart(object sender, DragDropStartEventArgs e)
+        private static void DropAllowedStyle(UIElement element)
         {
-            var source = e.DragSource as FrameworkElement;
-            e.DragSnapshotElement = null;
-            Mouse.SetCursor(Cursors.Arrow);
-            startPoint = Mouse.GetPosition(null);
-            if (Mouse.LeftButton == MouseButtonState.Released)
-            {
-                StopDragging();
-            }
-            if (source != null && Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                var context = source.DataContext as XamDataTreeNodeDataContext;
-                if (context == null)
-                {
-                    StopDragging();
-                    return;
-                }
-
-                var dataContext = context.Data as ExplorerItemViewModel;
-                if (dataContext == null)
-                {
-                    StopDragging();
-                    return;
-                }
-                CancelDrag = false;
-
-                if (((dataContext.ResourceType == "ServerSource" || dataContext.IsServer) &&
-                        string.IsNullOrWhiteSpace(dataContext.ResourcePath)) || dataContext.IsRenaming)
-                {
-                    Mouse.SetCursor(Cursors.No);
-                    return;
-                }
-                if (dataContext.ResourceType == "DbService" || dataContext.ResourceType == "PluginService" || dataContext.ResourceType == "WebService")
-                {
-                    Mouse.SetCursor(Cursors.No);
-                    return;
-                }
-                var dragData = new DataObject();
-
-                var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == dataContext.Server.EnvironmentID);
-                var hasPermissionToDrag = true;
-                if (environmentModel != null && environmentModel.AuthorizationService != null)
-                {
-                    var canExecute = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.Execute, dataContext.ResourceId.ToString());
-                    var canView = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.View, dataContext.ResourceId.ToString());
-                    hasPermissionToDrag = canExecute && canView;
-                }
-                if (hasPermissionToDrag)
-                {
-                    if (dataContext.IsService && dataContext.ResourceType != "Version"
-                        && !dataContext.IsReservedService && dataContext.ResourceType != "Unknown")
-                    {
-                        dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dataContext.ActivityName);
-                        dragData.SetData(dataContext);
-                    }
-                    dragData.SetData(dataContext);
-                }
-                Mouse.SetCursor(Application.Current.TryFindResource("CursorGrabbing") as Cursor);
-                _dragData = dragData;
-            }
-        }
-
-        void StopDragging()
-        {
-            CancelDrag = true;
-            try
-            {
-                DragDropManager.EndDrag(true);
-            }
-            catch (Exception e)
-            {
-                //aaa
-            }
-        }
-
-        private Cursor _customCursor;
-        void ExplorerTree_OnGiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-            if (e.Effects == DragDropEffects.Copy)
-            {
-                if (_customCursor == null)
-                    _customCursor = Application.Current.TryFindResource("CursorGrabbing") as Cursor;
-
-                e.UseDefaultCursors = false;
-                Mouse.SetCursor(_customCursor);
-            }
-            else
-                e.UseDefaultCursors = true;
-            e.Handled = true;
-        }
-
-        void ExplorerTree_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            ResetDragEvents();
-            e.Handled = true;
-        }
-
-        void ExplorerTree_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = false;
-            var source = e.Source as FrameworkElement;
-            if (source != null && e.ButtonState == MouseButtonState.Pressed)
-            {
-                var dataContext = source.DataContext as IExplorerViewModel;
-                if (dataContext != null)
-                {
-                    var selectedItem = dataContext.SelectedItem;
-                    if (dataContext.SelectedDataItems != null && dataContext.SelectedDataItems.Any() && selectedItem == null)
-                    {
-                        selectedItem = dataContext.SelectedDataItems[0] as IExplorerTreeItem;
-                        dataContext.SelectedItem = selectedItem;
-                    }
-                    if (selectedItem != null)
-                    {
-                        if (!selectedItem.CanDrag)
-                        {
-                            StopDragging();
-                            ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
-                            e.Handled = true;
-                        }
-                        else
-                        {
-                            CancelDrag = false;
-                            ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
-                        }
-                    }
-                }
-            }
-        }
-
-        public bool CancelDrag { get; set; }
-
-        void ExplorerTreeOnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
-        {
-            if (e.EscapePressed || CancelDrag)
-            {
-                e.Action = DragAction.Cancel;
-            }
-            else
-            {
-                e.Action = DragAction.Continue;
-            }
-        }
-
-        void ExplorerTree_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ResetDragEvents();
-            e.Handled = true;
-        }
-
-        void ExplorerView_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ButtonState == MouseButtonState.Released)
-            {
-                ResetDragEvents();
-                e.Handled = true;
-            }
-        }
-
-        void ResetDragEvents()
-        {
-            CancelDrag = false;
-            Mouse.SetCursor(Cursors.Arrow);
+            Rectangle rect = (Rectangle)Utilities.GetDescendantFromName((XamDataTreeNodeControl)element, "DropOntoElem");
+            rect.Stroke = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
+            rect.Opacity = 0.5;
+            element.AllowDrop = true;
         }
     }
 }

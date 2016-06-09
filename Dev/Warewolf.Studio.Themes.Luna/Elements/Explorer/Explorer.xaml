@@ -514,21 +514,21 @@
                             </Grid.RenderTransform>
                             <Rectangle x:Name="bar"
                                        Height="1"
-                                       Fill="{StaticResource DropIndicatorBackgroundBrush}"
+                                       Fill="{StaticResource TransparentBrush}"
                                        StrokeThickness="0" />
                             <Path x:Name="arrowLeft"
                                   Width="6"
                                   Height="7"
                                   HorizontalAlignment="Left"
                                   Data="M 166,184 C166,184 166,194 166,194 166,194 171,189 171,189 171,189 166,184 166,184 z"
-                                  Fill="{StaticResource DropIndicatorBackgroundBrush}"
+                                  Fill="{StaticResource TransparentBrush}"
                                   Stretch="Fill" />
                             <Path x:Name="arrowRight"
                                   Width="6"
                                   Height="7"
                                   HorizontalAlignment="Right"
                                   Data="M 178,194 C178,194 178,184 178,184 178,184 173,189 173,189 173,189 178,194 178,194 z"
-                                  Fill="{StaticResource DropIndicatorBackgroundBrush}"
+                                  Fill="{StaticResource TransparentBrush}"
                                   Stretch="Fill" />
                         </Grid>
                         <Grid x:Name="DropAfterElem"
@@ -545,21 +545,21 @@
                             </Grid.RenderTransform>
                             <Rectangle x:Name="bar1"
                                        Height="1"
-                                       Fill="{StaticResource DropIndicatorBackgroundBrush}"
+                                       Fill="{StaticResource TransparentBrush}"
                                        StrokeThickness="0" />
                             <Path x:Name="arrowLeft1"
                                   Width="6"
                                   Height="7"
                                   HorizontalAlignment="Left"
                                   Data="M 166,184 C166,184 166,194 166,194 166,194 171,189 171,189 171,189 166,184 166,184 z"
-                                  Fill="{StaticResource DropIndicatorBackgroundBrush}"
+                                  Fill="{StaticResource TransparentBrush}"
                                   Stretch="Fill" />
                             <Path x:Name="arrowRight1"
                                   Width="6"
                                   Height="7"
                                   HorizontalAlignment="Right"
                                   Data="M 178,194 C178,194 178,184 178,184 178,184 173,189 173,189 173,189 178,194 178,194 z"
-                                  Fill="{StaticResource DropIndicatorBackgroundBrush}"
+                                  Fill="{StaticResource TransparentBrush}"
                                   Stretch="Fill" />
                         </Grid>
                         <Rectangle x:Name="DropOntoElem"
@@ -568,7 +568,7 @@
                                    RadiusX="2"
                                    RadiusY="2"
                                    Stroke="{StaticResource DropIndicatorBorderBrush}"
-                                   StrokeThickness="2" />
+                                   StrokeThickness="1" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
