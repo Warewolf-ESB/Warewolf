@@ -7,6 +7,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Controller;
@@ -24,7 +25,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public StudioServerProxy(ICommunicationControllerFactory controllerFactory,IEnvironmentConnection environmentConnection)
+        public StudioServerProxy(ICommunicationControllerFactory controllerFactory, IEnvironmentConnection environmentConnection)
         {
             if (controllerFactory == null)
             {
@@ -35,10 +36,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 throw new ArgumentNullException("environmentConnection");
             }
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
-            UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory,environmentConnection);
+            UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory, environmentConnection);
             VersionManager = new VersionManagerProxy(environmentConnection, controllerFactory); //todo:swap
             AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection); //todo:swap
-            
+
         }
 
         public async Task<IExplorerItem> LoadExplorer()
@@ -65,34 +66,40 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, newName, vm.ResourceId);
             else
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
-            return true;            
+            return true;
         }
 
         public async Task<bool> Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination)
         {
-                await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId,destination.ResourcePath,explorerItemViewModel.ResourcePath);
-                return true;
+            await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath);
+            return true;
         }
 
-        public bool Delete(IExplorerItemViewModel explorerItemViewModel)
+        public IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel)
         {
             if (explorerItemViewModel != null)
             {
-                var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-                var graphGenerator = new DependencyGraphGenerator();
 
+                var graphGenerator = new DependencyGraphGenerator();
+                if (explorerItemViewModel.ResourceType == "Folder")
+                {
+                    var explorerItemViewModels = explorerItemViewModel.AsList();
+                    // ReSharper disable once LoopCanBeConvertedToQuery
+                    foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
+                    {
+                        var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
+                        if (!HasDependencies(itemViewModel, graphGenerator, dependants))
+                        {
+
+                            return new DeletedFileMetadata() { IsDeleted = false, ResourceId = itemViewModel.ResourceId };
+                        }
+                    }
+                }
                 if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
                 {
-                    var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
-                    _popupController = CustomContainer.Get<IPopupController>();
-
-                    if (graph.Nodes.Count > 1)
-                    {
-                        _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
-                                              StringResources.Delete_Error_Title,
-                                              MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
-                        return false;
-                    }
+                    var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
+                    if (!HasDependencies(explorerItemViewModel, graphGenerator, dep))
+                        return new DeletedFileMetadata() { IsDeleted = false, ResourceId = explorerItemViewModel.ResourceId };
                 }
                 if (explorerItemViewModel.ResourceType == "Version")
                 {
@@ -110,10 +117,23 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
                 }
             }
-            return true;
+            return new DeletedFileMetadata() { IsDeleted = true };
         }
 
+        private bool HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
+        {
+            var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
+            _popupController = CustomContainer.Get<IPopupController>();
 
+            if (graph.Nodes.Count > 1)
+            {
+                _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
+                    StringResources.Delete_Error_Title,
+                    MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
+                return false;
+            }
+            return true;
+        }
 
         public ICollection<IVersionInfo> GetVersions(Guid id)
         {
@@ -122,15 +142,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IRollbackResult Rollback(Guid resourceId, string version)
         {
-           return  VersionManager.RollbackTo(resourceId,version);
+            return VersionManager.RollbackTo(resourceId, version);
         }
 
         public void CreateFolder(string parentPath, string name, Guid id)
         {
             UpdateManagerProxy.AddFolder(parentPath, name, id);
         }
-//
-//        #endregion
+        //
+        //        #endregion
     }
 
     public static class StudioServerProxyHelper
@@ -142,7 +162,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 IExplorerItem node = nodes.Pop();
                 yield return node;
-                if(node.Children != null)
+                if (node.Children != null)
                 {
                     foreach (var n in node.Children) nodes.Push(n);
                 }

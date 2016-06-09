@@ -36,8 +36,11 @@ using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
+
     public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
     {
+        private IDeletedFileMetadata _fileMetadata;
+
         #region Equality members
 
         /// <summary>
@@ -49,11 +52,11 @@ namespace Warewolf.Studio.ViewModels
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(ExplorerItemViewModel other)
         {
-            if(ReferenceEquals(null, other))
+            if (ReferenceEquals(null, other))
             {
                 return false;
             }
-            if(ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -69,15 +72,15 @@ namespace Warewolf.Studio.ViewModels
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -107,7 +110,7 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
-        public Action<IExplorerItemViewModel> SelectAction { get;  set; }
+        public Action<IExplorerItemViewModel> SelectAction { get; set; }
         string _resourceName;
         private bool _isVisible;
         bool _allowEditing;
@@ -141,7 +144,13 @@ namespace Warewolf.Studio.ViewModels
         IVersionInfo _versionInfo;
         private IEnvironmentModel _environmentModel;
 
+        public ExplorerItemViewModel(IDeletedFileMetadata fileMetadata)
+        {
+            _fileMetadata = fileMetadata;
+        }
+
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
+            : this(new DeletedFileMetadata())
         {
             SelectAction = selectAction;
             _shellViewModel = shellViewModel;
@@ -152,7 +161,7 @@ namespace Warewolf.Studio.ViewModels
                 parent.AreVersionsVisible = true;
                 parent.ResourceName = output.DisplayName;
             });
-            DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a=>ShellViewModel.AddDeploySurface(AsList().Union(new []{this})));
+            DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] { this })));
             _canShowVersions = true;
             Parent = parent;
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "server", server }, });
@@ -161,7 +170,7 @@ namespace Warewolf.Studio.ViewModels
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() =>
             {
-                if(ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService")
+                if (ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService")
                 {
                     return;
                 }
@@ -195,7 +204,7 @@ namespace Warewolf.Studio.ViewModels
             IsResourceChecked = false;
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
-            if(Server.Permissions != null)
+            if (Server.Permissions != null)
             {
                 SetPermissions(Server.Permissions);
             }
@@ -237,13 +246,13 @@ namespace Warewolf.Studio.ViewModels
             _activityNames = new Dictionary<string, Type>
                 {
                     {
-                        "DbService", typeof(DsfDatabaseActivity) 
+                        "DbService", typeof(DsfDatabaseActivity)
                     },
                     {
-                        "PluginService", typeof(DsfPluginActivity) 
+                        "PluginService", typeof(DsfPluginActivity)
                     },
                     {
-                        "WebService", typeof(DsfWebserviceActivity) 
+                        "WebService", typeof(DsfWebserviceActivity)
                     }
                 };
             _candrop = true;
@@ -260,12 +269,12 @@ namespace Warewolf.Studio.ViewModels
 
         void DeleteVersion()
         {
-            if (_popupController.ShowDeleteVersionMessage(ResourceName)==MessageBoxResult.Yes)
+            if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             {
                 _explorerRepository.Delete(this);
                 if (Parent != null)
                 {
-                    Parent.RemoveChild(Parent.Children.First(a=>a.ResourceName==ResourceName));
+                    Parent.RemoveChild(Parent.Children.First(a => a.ResourceName == ResourceName));
                 }
             }
         }
@@ -380,7 +389,7 @@ namespace Warewolf.Studio.ViewModels
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
                 _explorerRepository.CreateFolder(ResourcePath, name, id);
-                var child = new ExplorerItemViewModel(Server, this, SelectAction, _shellViewModel,_popupController)
+                var child = new ExplorerItemViewModel(Server, this, SelectAction, _shellViewModel, _popupController)
                 {
                     ResourceName = name,
                     ResourceId = id,
@@ -459,9 +468,9 @@ namespace Warewolf.Studio.ViewModels
 
         public IEnumerable<IExplorerItemViewModel> AsList()
         {
-            if(Children != null)
+            if (Children != null)
             {
-                return Children.Union( Children.SelectMany(a => a.AsList()));
+                return Children.Union(Children.SelectMany(a => a.AsList()));
             }
             return new List<IExplorerItemViewModel>();
         }
@@ -489,11 +498,12 @@ namespace Warewolf.Studio.ViewModels
         public void Delete()
         {
             var environmentModel = EnvironmentModel;
-            
+
             if (environmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
             {
                 ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
-                if (_explorerRepository.Delete(this))
+                _fileMetadata = _explorerRepository.Delete(this);
+                if (_fileMetadata.IsDeleted)
                 {
                     if (Parent != null)
                     {
@@ -506,6 +516,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
+                    ResourceId = _fileMetadata.ResourceId;
                     ShellViewModel.ShowDependencies(ResourceId, Server);
                 }
             }
@@ -518,7 +529,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void SetPermissions(List<IWindowsGroupPermission> permissions, bool isDeploy = false)
         {
-            if(permissions != null)
+            if (permissions != null)
             {
                 var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
                 if (resourcePermission != null)
@@ -817,13 +828,13 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if(IsFolder)
+                if (IsFolder)
                 {
-                    if(ChildrenCount >= 1)
+                    if (ChildrenCount >= 1)
                     {
                         Children.Apply(a => a.IsResourceChecked = value ?? false);
                         _isResource = value ?? false;
-                        if(Parent.IsFolder)
+                        if (Parent.IsFolder)
                             Parent.IsFolderChecked = value;
                     }
                 }
@@ -831,7 +842,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _isResource = value.HasValue && !IsFolder && value.Value;
                 }
-                if(SelectAction != null)
+                if (SelectAction != null)
                 {
                     SelectAction(this);
                 }
@@ -861,9 +872,9 @@ namespace Warewolf.Studio.ViewModels
                     {
                         _isResource = false;
                     }
-                    if( !_isResource.HasValue ||_isResource.Value)
+                    if (!_isResource.HasValue || _isResource.Value)
                     {
-                        if(Parent.IsFolder)
+                        if (Parent.IsFolder)
                             Parent.IsFolderChecked = _isResource;
                     }
                 }
@@ -889,7 +900,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginSource { get; set; }
         public bool CanCreateEmailSource { get; set; }
-        public bool CanCreateRabbitMQSource { get; set; }        
+        public bool CanCreateRabbitMQSource { get; set; }
         public bool CanCreateExchangeSource { get; set; }
         public bool CanCreateDropboxSource { get; set; }
         public bool CanCreateSharePointSource { get; set; }
@@ -1220,7 +1231,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isExpanded = value;
-       
+
                 OnPropertyChanged(() => IsExpanded);
             }
         }
@@ -1284,7 +1295,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _environmentModel ?? EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID); 
+                return _environmentModel ?? EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
             }
             set
             {
@@ -1302,7 +1313,8 @@ namespace Warewolf.Studio.ViewModels
                 }
         }
     }
-    public class VersionViewModel : ExplorerItemViewModel {
+    public class VersionViewModel : ExplorerItemViewModel
+    {
         public VersionViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
             : base(server, parent, selectAction, shellViewModel, popupController)
         {
