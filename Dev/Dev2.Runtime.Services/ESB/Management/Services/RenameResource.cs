@@ -21,6 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -41,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string newName = null;
                 if(values == null)
                 {
-                    throw new InvalidDataContractException("No parameter values provided.");
+                    throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
 
                 StringBuilder tmp;
@@ -58,11 +59,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if(resourceId == null)
                 {
-                    throw new InvalidDataContractException("No value provided for ResourceID parameter.");
+                    throw new InvalidDataContractException(string.Format(ErrorResource.NoValueProvidedForParameter, "ResourceID"));
                 }
                 if(String.IsNullOrEmpty(newName))
                 {
-                    throw new InvalidDataContractException("No value provided for NewName parameter.");
+                    throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
 
                 Guid id;

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Dev2 {
     /// <summary>
@@ -35,7 +36,7 @@ namespace Dev2 {
          {
              if (args.Any(a=> a.Value== null))
              {
-                 throw new ArgumentNullException("",String.Format("The following arguments are not allowed to be null: {0}" ,args.Where(a=>a.Value==null).Aggregate("",(a,b)=>string.Format("{0}{1}{2}", a, b.Key, Environment.NewLine))));
+                 throw new ArgumentNullException("",String.Format(ErrorResource.ArgumentsNotAllowedToBeNull ,args.Where(a=>a.Value==null).Aggregate("",(a,b)=>string.Format("{0}{1}{2}", a, b.Key, Environment.NewLine))));
              }
          }
 
@@ -47,7 +48,7 @@ namespace Dev2 {
         public static void IsNotNullOrWhitespace([NotNull]string name, string value) {
             if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException(name, "The argument must not be null or empty and must contain non-whitespace characters must");
+                throw new ArgumentNullException(name, ErrorResource.NullArgument);
             }
          }
     }

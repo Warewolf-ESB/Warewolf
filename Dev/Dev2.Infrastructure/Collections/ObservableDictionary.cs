@@ -686,7 +686,7 @@ namespace Dev2.Collections
             {
                 if(_version != _dictionary._version)
                 {
-                    throw new InvalidOperationException("The enumerator is not valid because the dictionary changed.");
+                    throw new InvalidOperationException(ErrorResource.InvalidEnumerator);
                 }
             }
 

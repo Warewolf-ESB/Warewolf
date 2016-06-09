@@ -16,6 +16,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using Dev2.Common;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Security
 {
@@ -121,7 +122,7 @@ namespace Dev2.Runtime.Security
             // We need to check both the live and development paths ;)
             if(!File.Exists(FileName))
             {
-                Dev2Logger.Info("File not found: " + FileName);
+                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName));
                 var newSettings = new NameValueCollection();
                 newSettings["ServerID"] = "";
                 newSettings["ServerKey"] = "";

@@ -26,6 +26,7 @@ using Dev2.Util;
 using Dev2.Workspaces;
 using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -131,7 +132,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(string.Format("Error getting resource definition for: {0}", resourceId), e);
+                    Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e);
                 }
             
 
