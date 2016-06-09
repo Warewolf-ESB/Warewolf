@@ -435,11 +435,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
         }
 
-        public void ValidateTestComplete()
-        {
-            OutputsRegion.IsEnabled = true;
-        }
-
         public IWebService ToModel()
         {
             var webServiceDefinition = new WebServiceDefinition

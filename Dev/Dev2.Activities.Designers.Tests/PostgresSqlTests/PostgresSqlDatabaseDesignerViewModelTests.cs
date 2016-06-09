@@ -45,19 +45,6 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             Assert.IsNotNull(model);
         }
 
-        [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
-        public void PostgreSql_ValidResource_ReturnSuccess()
-        {
-            var model = GetViewModel();
-            Assert.IsTrue(model.SourceRegion.IsEnabled);
-            Assert.IsFalse(model.ActionRegion.IsEnabled);
-            Assert.IsFalse(model.InputArea.IsEnabled);
-            Assert.IsTrue(model.ErrorRegion.IsEnabled);
-            model.ValidateTestComplete();
-            Assert.IsTrue(model.OutputsRegion.IsEnabled);
-        }
 
         [TestMethod]
         [Owner(TestOwner)]

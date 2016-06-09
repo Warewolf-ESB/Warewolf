@@ -148,94 +148,11 @@ namespace Dev2.Utilities
 
         #endregion
 
-        #region CompileExpressions
-
-        /// <summary>
-        /// Only invoke from the server!
-        /// </summary>
-        public void CompileExpressions(DynamicActivity dynamicActivity, Guid resourceID)
-        {
-            if(dynamicActivity != null)
-            {
-                FixAndCompileExpressions(dynamicActivity,resourceID);
-            }
-        }
-
-        void FixAndCompileExpressions(Activity dynamicActivity, Guid resourceID)
-        {
-            // NOTE: DO NOT set properties or variables!
-            SetNamespaces(dynamicActivity);
-            // MS Memory Leak ;(
-            var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
-            if (chart != null)
-            {
-                FixExpressions(chart, true);
-            }
-            Dev2Logger.Info("Fix Expressions");
-           CompileExpressionsImpl(dynamicActivity,resourceID);
-        }
-
-        #endregion
-
         #region CompileExpressionsImpl
 
         public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = GlobalConstants.Resultscache;
        
  
-
-        // NOTE : Static method here causes memory leak in the TextExpressioncCompiler ;)
-        void CompileExpressionsImpl(Activity dynamicActivity, Guid resourceID)
-        {
-            // http://msdn.microsoft.com/en-us/library/jj591618.aspx
-
-            // activity.Name is the Namespace.Type of the activity that contains the C# expressions. 
-            // activity.Name must be in the form Namespace.Type
-            string activityName = ToNamespaceTypeString(dynamicActivity.GetType());
-
-            // Split activityName into Namespace and Type and append _CompiledExpressionRoot to the type name to represent 
-            // the new type that represents the compiled expressions. Take everything after the last . for the type name.
-            var activityType = activityName.Replace(" ", "_").Split('.').Last() + "_CompiledExpressionRoot";
-
-            // Take everything before the last . for the namespace.
-            var activityNamespace = string.Join(".", activityName.Split('.').Reverse().Skip(1).Reverse());
-
-            var settings = new TextExpressionCompilerSettings
-            {
-                Activity = dynamicActivity,
-                Language = "C#",
-                ActivityName = activityType,
-                ActivityNamespace = activityNamespace,
-                RootNamespace = null,
-                GenerateAsPartialClass = false,
-                AlwaysGenerateSource = true,
-                ForImplementation = true
-            };
-            TextExpressionCompilerResults results;
-            if (Resultscache.ContainsKey(resourceID))
-            {
-                results = Resultscache[resourceID];
-            }
-            //// Compile the C# expression.
-            else{
-            var compiler = new TextExpressionCompiler(settings);
-             results = compiler.Compile(); // Nasty MS memory leak ;(
-             Resultscache.TryAdd(resourceID,results);
-            }
-
-            if(results.HasErrors)
-            {
-                var err = new StringBuilder("Compilation failed.\n");
-                foreach(var message in results.CompilerMessages)
-                {
-                    err.AppendFormat("{0} : {1} ({2}) --> {3}\n", message.Number, message.IsWarning ? "WARNING" : "ERROR  ", message.SourceLineNumber, message.Message);
-                }
-                throw new Exception(err.ToString());
-            }
-
-            var compiledExpressionRoot = Activator.CreateInstance(results.ResultType, dynamicActivity) as ICompiledExpressionRoot;
-            CompiledExpressionInvoker.SetCompiledExpressionRootForImplementation(dynamicActivity, compiledExpressionRoot);
-        }
-
         #endregion
 
 
