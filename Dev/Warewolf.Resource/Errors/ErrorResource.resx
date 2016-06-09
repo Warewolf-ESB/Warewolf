@@ -1137,4 +1137,19 @@
   <data name="ValueNotSupplied" xml:space="preserve">
     <value>{0} value not supplied.</value>
   </data>
+  <data name="CannotDeleteRootPath" xml:space="preserve">
+    <value>You may not delete the root path</value>
+  </data>
+  <data name="FailedToDeleteChildItems" xml:space="preserve">
+    <value>Failed to delete child items</value>
+  </data>
+  <data name="ItemToAddIsNull" xml:space="preserve">
+    <value>Item to add was null</value>
+  </data>
+  <data name="ItemToRenameIsNull" xml:space="preserve">
+    <value>Item to rename was null</value>
+  </data>
+  <data name="RequestedFolderAlreadyExists" xml:space="preserve">
+    <value>Requested folder already exists on server.</value>
+  </data>
 </root>
