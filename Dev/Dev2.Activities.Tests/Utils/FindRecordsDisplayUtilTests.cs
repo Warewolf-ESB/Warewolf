@@ -32,8 +32,6 @@ namespace Dev2.Tests.Activities.Utils
             Assert.AreEqual("<=", FindRecordsDisplayUtil.ConvertForDisplay("<="));
             Assert.AreEqual("Doesn't Contain", FindRecordsDisplayUtil.ConvertForDisplay("Not Contains"));
             Assert.AreEqual("Is Regex", FindRecordsDisplayUtil.ConvertForDisplay("Regex"));
-        }
-
-
+        }        
     }
 }

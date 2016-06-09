@@ -49,8 +49,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             dropBoxUpload.Object.ExecuteTask(It.IsAny<DropboxClient>());
             dropBoxUpload.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
         }
-
-  
+        
+      
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
