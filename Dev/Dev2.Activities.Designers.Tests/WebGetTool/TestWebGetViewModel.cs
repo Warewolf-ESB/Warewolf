@@ -26,35 +26,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
     [TestClass]
     public class TestWebGetViewModel
     {
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void Webget_MethodName_Scenerio_Result()
-        {
-            //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
-            var mod = new MyWebModel();
-            var act = new DsfWebGetActivity()
-            {
-                SourceId = mod.Sources[0].Id,
-                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
-                Headers = new List<INameValue> { new NameValue("a", "x") },
-                QueryString = "Bob the builder",
-                ServiceName = "dsfBob"
-            };
 
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-
-            //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsEnabled);
-            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
-            Assert.IsTrue(webget.InputArea.IsEnabled);
-            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
-            webget.ValidateTestComplete();
-            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
-
-            //------------Assert Results-------------------------
-        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

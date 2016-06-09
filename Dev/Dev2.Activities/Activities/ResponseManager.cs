@@ -54,7 +54,7 @@ namespace Dev2.Activities
                         }
                         formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                     }
-                    if (input == null)
+                    if (string.IsNullOrEmpty(input))
                     {
                         dataObj.Environment.AddError(ErrorResource.NoWebResponse);
                     }
@@ -124,7 +124,7 @@ namespace Dev2.Activities
                                     {
                                         update = fetchIdx;
                                     }
-                                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
+                                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
                                 }
                             }
                         }
