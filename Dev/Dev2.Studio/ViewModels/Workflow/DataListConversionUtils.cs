@@ -66,7 +66,7 @@ namespace Dev2.ViewModels.Workflow
             if (item != null)
             {
                 IDataListItem singleRes = new DataListItem();
-                singleRes.IsRecordset = false;
+                singleRes.CanHaveMutipleRows = false;
                 singleRes.Field = item.Name;
                 singleRes.DisplayValue = item.Name;
                 try
@@ -95,10 +95,10 @@ namespace Dev2.ViewModels.Workflow
                 foreach (var col in fields)
                 {
                     IDataListItem singleRes = new DataListItem();
-                    singleRes.IsRecordset = true;
+                    singleRes.CanHaveMutipleRows = true;
                     singleRes.Recordset = recordSet.Name;
                     singleRes.Field = col.Name;
-                    singleRes.RecordsetIndex = column.Key.ToString();
+                    singleRes.Index = column.Key.ToString();
                     singleRes.Value = col.Value;
                     singleRes.DisplayValue = DataListUtil.CreateRecordsetDisplayValue(recordSet.Name, col.Name, column.Key.ToString());
                     singleRes.Description = col.Description;
@@ -120,13 +120,15 @@ namespace Dev2.ViewModels.Workflow
                 foreach (var col in fields)
                 {
                     IDataListItem singleRes = new DataListItem();
-                    singleRes.IsRecordset = complexObject.IsArray;
+                    singleRes.IsObject = true;
+                    singleRes.CanHaveMutipleRows = complexObject.IsArray;
                     if (complexObject.IsArray)
                     {
                         singleRes.Recordset = complexObject.Name;
                         singleRes.Field = col.Name;
-                        singleRes.RecordsetIndex = column.Key.ToString();
-                        singleRes.DisplayValue = DataListUtil.CreateRecordsetDisplayValue(complexObject.Name, col.Name, column.Key.ToString());
+                        singleRes.Index = column.Key.ToString();
+                        var displayValue = complexObject.Name + "." + col.Name;
+                        singleRes.DisplayValue = DataListUtil.ReplaceRecordsetBlankWithIndex(displayValue, column.Key);
                     }
                     else
                     {
@@ -166,16 +168,28 @@ namespace Dev2.ViewModels.Workflow
             if(complexObject.Children.Count==0)
             {
                 IDataListItem singleRes = new DataListItem();
-
-                if (parentItem == null)
+                singleRes.IsObject = true;
+                if (parentItem!=null && parentItem.Field.Contains("()"))
                 {
-                    singleRes.Field = complexObject.Name + "." + complexObject.Name;
-                    singleRes.DisplayValue = complexObject.Name + "." + complexObject.Name;
+                    singleRes.Recordset = parentItem.Field;
+                    singleRes.Field = complexObject.Name;
+                    singleRes.CanHaveMutipleRows = true;
+                    singleRes.Index = "1";
+                    var displayValue = parentItem.DisplayValue + "." + complexObject.Name;
+                    singleRes.DisplayValue = DataListUtil.ReplaceRecordsetBlankWithIndex(displayValue,1);
                 }
                 else
                 {
-                    singleRes.Field = parentItem.Field + "." + complexObject.Name;
-                    singleRes.DisplayValue = parentItem.DisplayValue + "." + complexObject.Name;
+                    if (parentItem == null)
+                    {
+                        singleRes.Field = complexObject.Name + "." + complexObject.Name;
+                        singleRes.DisplayValue = complexObject.Name + "." + complexObject.Name;
+                    }
+                    else
+                    {
+                        singleRes.Field = parentItem.Field + "." + complexObject.Name;
+                        singleRes.DisplayValue = parentItem.DisplayValue + "." + complexObject.Name;
+                    }
                 }
                 singleRes.Value = complexObject.Value;
                 singleRes.Description = complexObject.Description;

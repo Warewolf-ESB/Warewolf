@@ -179,6 +179,92 @@ namespace Dev2.Core.Tests.UtilsTests
             var result = converter.CreateListToBindTo(dataListModel);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
+            Assert.AreEqual(5,result.Count);
+            Assert.AreEqual("Country", result[0].DisplayValue);
+            Assert.AreEqual("Person.Age",result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);
+            Assert.AreEqual("Person.Name",result[2].DisplayValue);
+            Assert.AreEqual("Person.Schools.Name",result[3].DisplayValue);
+            Assert.IsTrue(result[3].IsObject);
+            Assert.AreEqual("Person.Schools.Location",result[4].DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListModel_Create")]
+        public void DataListModel_Create_PayLoadWithComplexObjectsWithArrays_ShouldHaveComplexObjectItems()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList>
+                                    <Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" >
+                                        <Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
+                                        <Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
+                                    </Car>
+                                    <Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />
+                                    <Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Both"" >
+                                        <Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age>
+                                        <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
+                                        <Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" >
+                                            <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
+                                            <Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location>
+                                        </Schools>
+                                    </Person>
+                                   </DataList>";
+            const string Data = "<DataList></DataList>";
+            var dataListModel = new DataListModel();
+            var converter = new DataListConversionUtils();
+            //------------Execute Test---------------------------
+            dataListModel.Create(Data, Shape);
+            var result = converter.CreateListToBindTo(dataListModel);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual("Country", result[0].DisplayValue);
+            Assert.AreEqual("Person.Age", result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);
+            Assert.AreEqual("Person.Name", result[2].DisplayValue);
+            Assert.AreEqual("Person.Schools(1).Name", result[3].DisplayValue);
+            Assert.IsTrue(result[3].IsObject);
+            Assert.AreEqual("Person.Schools(1).Location", result[4].DisplayValue);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListModel_Create")]
+        public void DataListModel_Create_PayLoadWithComplexObjectsWithParentArray_ShouldHaveComplexObjectItems()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList>
+                                    <Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" >
+                                        <Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
+                                        <Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
+                                    </Car>
+                                    <Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />
+                                    <Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""Both"" >
+                                        <Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age>
+                                        <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
+                                        <Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" >
+                                            <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
+                                            <Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location>
+                                        </Schools>
+                                    </Person>
+                                   </DataList>";
+            const string Data = "<DataList></DataList>";
+            var dataListModel = new DataListModel();
+            var converter = new DataListConversionUtils();
+            //------------Execute Test---------------------------
+            dataListModel.Create(Data, Shape);
+            var result = converter.CreateListToBindTo(dataListModel);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual("Country", result[0].DisplayValue);
+            Assert.AreEqual("Person(1).Age", result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);
+            Assert.AreEqual("Person(1).Name", result[2].DisplayValue);
+            Assert.AreEqual("Person(1).Schools(1).Name", result[3].DisplayValue);
+            Assert.IsTrue(result[3].IsObject);
+            Assert.AreEqual("Person(1).Schools(1).Location", result[4].DisplayValue);
         }
     }
 }
