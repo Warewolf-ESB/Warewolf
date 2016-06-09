@@ -21,6 +21,7 @@ using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
@@ -75,7 +76,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             catch(Exception)
             {
-                SetError(string.Format("Error parsing '{0}' input.", configurationXml));
+                SetError(string.Format(ErrorResource.ErrorParsingInput, configurationXml));
                 return false;
             }
 
@@ -86,7 +87,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             catch(Exception)
             {
-                SetError(string.Format("Error building settings graph from '{0}'.", configurationXml));
+                SetError(string.Format(ErrorResource.ErrorBuildingSettingsGraph, configurationXml));
                 return false;
             }
 
@@ -279,7 +280,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             catch(Exception ex)
             {
                 SaveSuccess = false;
-                SetError(string.Format("The following error occurred while executing the save callback '{0}'.", ex.Message));
+                SetError(string.Format(ErrorResource.ErrorDuringSaveCallback, ex.Message));
             }
 
         }
@@ -300,7 +301,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             catch(Exception ex)
             {
-                SetError(string.Format("The following error occurred while executing the cancel callback '{0}'.", ex.Message));
+                SetError(string.Format(ErrorResource.ErrorDuringCancelCallback, ex.Message));
             }
         }
 

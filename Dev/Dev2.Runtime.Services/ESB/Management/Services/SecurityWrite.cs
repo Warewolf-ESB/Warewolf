@@ -21,6 +21,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(securitySettings == null || securitySettings.Length == 0)
             {
-                throw new InvalidDataException("Empty Security Settings passed.");
+                throw new InvalidDataException(ErrorResource.EmptySecuritySettingsPassed);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -53,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var securitySettingsTo = serializer.Deserialize<SecuritySettingsTO>(securitySettings);
                 if(securitySettingsTo == null)
                 {
-                    throw new InvalidDataException("The security settings are not valid.");
+                    throw new InvalidDataException(ErrorResource.InvalidSecuritySettings);
                 }
 
                 Write(securitySettings);
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                throw new InvalidDataException(string.Format("The security settings are not valid. Error: {0}", e.Message));
+                throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + string.Format(" Error: {0}", e.Message));
             }
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };

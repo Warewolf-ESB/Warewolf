@@ -61,6 +61,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following arguments are not allowed to be null: {0}.
+        /// </summary>
+        public static string ArgumentsNotAllowedToBeNull {
+            get {
+                return ResourceManager.GetString("ArgumentsNotAllowedToBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compilation Error Creating Assembly.
         /// </summary>
         public static string AssemblyCreationError {
@@ -192,6 +201,15 @@ namespace Warewolf.Resource.Errors {
         public static string CannotConvertPaneLocation {
             get {
                 return ResourceManager.GetString("CannotConvertPaneLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cant delete a file if no directory is passed..
+        /// </summary>
+        public static string CannotDeleteFileWithoughtDirectory {
+            get {
+                return ResourceManager.GetString("CannotDeleteFileWithoughtDirectory", resourceCulture);
             }
         }
         
@@ -907,6 +925,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty Security Settings passed..
+        /// </summary>
+        public static string EmptySecuritySettingsPassed {
+            get {
+                return ResourceManager.GetString("EmptySecuritySettingsPassed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty values passed..
         /// </summary>
         public static string EmptyValuesPassed {
@@ -943,6 +970,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error building settings graph from &apos;{0}&apos;..
+        /// </summary>
+        public static string ErrorBuildingSettingsGraph {
+            get {
+                return ResourceManager.GetString("ErrorBuildingSettingsGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error casting base Object to {0}.
+        /// </summary>
+        public static string ErrorCastingBaseObject {
+            get {
+                return ResourceManager.GetString("ErrorCastingBaseObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error connecting to server. Please check your network connection..
         /// </summary>
         public static string ErrorConnectingToServer {
@@ -952,11 +997,38 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following error occurred while executing the cancel callback &apos;{0}&apos;..
+        /// </summary>
+        public static string ErrorDuringCancelCallback {
+            get {
+                return ResourceManager.GetString("ErrorDuringCancelCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following error occurred while executing the save callback &apos;{0}&apos;..
+        /// </summary>
+        public static string ErrorDuringSaveCallback {
+            get {
+                return ResourceManager.GetString("ErrorDuringSaveCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error enumerating directory..
         /// </summary>
         public static string ErrorEnumeratingDirectory {
             get {
                 return ResourceManager.GetString("ErrorEnumeratingDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error getting resource definition for: {0}.
+        /// </summary>
+        public static string ErrorGettingResourceDefinition {
+            get {
+                return ResourceManager.GetString("ErrorGettingResourceDefinition", resourceCulture);
             }
         }
         
@@ -979,11 +1051,47 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error loading resource with ID:{0}&quot;.
+        /// </summary>
+        public static string ErrorLoadingResource {
+            get {
+                return ResourceManager.GetString("ErrorLoadingResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error parsing &apos;{0}&apos; input..
+        /// </summary>
+        public static string ErrorParsingInput {
+            get {
+                return ResourceManager.GetString("ErrorParsingInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error retrieving DBSource for resource ID:{0} and Name:{1}.
+        /// </summary>
+        public static string ErrorRetrievingDBSourceForResource {
+            get {
+                return ResourceManager.GetString("ErrorRetrievingDBSourceForResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving shape from service output..
         /// </summary>
         public static string ErrorRetrievingShapeFromServiceOutput {
             get {
                 return ResourceManager.GetString("ErrorRetrievingShapeFromServiceOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error writing logging configuration..
+        /// </summary>
+        public static string ErrorWritingLoggingConfiguration {
+            get {
+                return ResourceManager.GetString("ErrorWritingLoggingConfiguration", resourceCulture);
             }
         }
         
@@ -1033,6 +1141,24 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to build future receipt for [{0} ] Value [ {1} ].
+        /// </summary>
+        public static string FailedToBuildFutureReceipt {
+            get {
+                return ResourceManager.GetString("FailedToBuildFutureReceipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect with the following connection string: &apos;{0}&apos;.
+        /// </summary>
+        public static string FailedToConnectWithConnectionString {
+            get {
+                return ResourceManager.GetString("FailedToConnectWithConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to fetch resoure list as JSON model.
         /// </summary>
         public static string FailedToFetchResoureListAsJSONModel {
@@ -1047,6 +1173,15 @@ namespace Warewolf.Resource.Errors {
         public static string FailedToLoadManagementService {
             get {
                 return ResourceManager.GetString("FailedToLoadManagementService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No such file exists on the server..
+        /// </summary>
+        public static string FileDoesNotExist {
+            get {
+                return ResourceManager.GetString("FileDoesNotExist", resourceCulture);
             }
         }
         
@@ -1330,6 +1465,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid arguments passed in..
+        /// </summary>
+        public static string InvalidArguments {
+            get {
+                return ResourceManager.GetString("InvalidArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Calculate.
         /// </summary>
         public static string InvalidCalculate {
@@ -1348,11 +1492,29 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid {0} expected.
+        /// </summary>
+        public static string InvalidCommand {
+            get {
+                return ResourceManager.GetString("InvalidCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Email Source.
         /// </summary>
         public static string InvalidEmailSource {
             get {
                 return ResourceManager.GetString("InvalidEmailSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The enumerator is not valid because the dictionary changed..
+        /// </summary>
+        public static string InvalidEnumerator {
+            get {
+                return ResourceManager.GetString("InvalidEnumerator", resourceCulture);
             }
         }
         
@@ -1389,6 +1551,15 @@ namespace Warewolf.Resource.Errors {
         public static string InvalidOpenRegion {
             get {
                 return ResourceManager.GetString("InvalidOpenRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output format in service action {0} is invalid..
+        /// </summary>
+        public static string InvalidOutputFormat {
+            get {
+                return ResourceManager.GetString("InvalidOutputFormat", resourceCulture);
             }
         }
         
@@ -1465,6 +1636,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The security settings are not valid..
+        /// </summary>
+        public static string InvalidSecuritySettings {
+            get {
+                return ResourceManager.GetString("InvalidSecuritySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sort field is invalid. You may only sort on a single RecordSet columns.
         /// </summary>
         public static string InvalidSortField {
@@ -1479,6 +1659,15 @@ namespace Warewolf.Resource.Errors {
         public static string InvalidSource {
             get {
                 return ResourceManager.GetString("InvalidSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid {0} Connection.
+        /// </summary>
+        public static string InvalidSqlConnection {
+            get {
+                return ResourceManager.GetString("InvalidSqlConnection", resourceCulture);
             }
         }
         
@@ -1578,6 +1767,24 @@ namespace Warewolf.Resource.Errors {
         public static string IsRequired {
             get {
                 return ResourceManager.GetString("IsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is an item that exists with the same name and path.
+        /// </summary>
+        public static string ItemAlreadyExistInPath {
+            get {
+                return ResourceManager.GetString("ItemAlreadyExistInPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item to delete was null.
+        /// </summary>
+        public static string ItemToDeleteWasNull {
+            get {
+                return ResourceManager.GetString("ItemToDeleteWasNull", resourceCulture);
             }
         }
         
@@ -1834,6 +2041,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no text for object &apos;{0}&apos;..
+        /// </summary>
+        public static string NoTextForObject {
+            get {
+                return ResourceManager.GetString("NoTextForObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing to Evaluate.
         /// </summary>
         public static string NothingToEvaluate {
@@ -1852,11 +2068,38 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No username and password provided,.
+        /// </summary>
+        public static string NoUserNameAndPassword {
+            get {
+                return ResourceManager.GetString("NoUserNameAndPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Value assigned for {0}.
         /// </summary>
         public static string NoValueAssigned {
             get {
                 return ResourceManager.GetString("NoValueAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Novalue Provided for: {0}.
+        /// </summary>
+        public static string NoValueProvided {
+            get {
+                return ResourceManager.GetString("NoValueProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No value provided for {0} parameter..
+        /// </summary>
+        public static string NoValueProvidedForParameter {
+            get {
+                return ResourceManager.GetString("NoValueProvidedForParameter", resourceCulture);
             }
         }
         
@@ -1870,11 +2113,29 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The argument must not be null or empty and must contain non-whitespace characters must.
+        /// </summary>
+        public static string NullArgument {
+            get {
+                return ResourceManager.GetString("NullArgument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FATAL ERROR : Null ESB channel!!.
         /// </summary>
         public static string NullESBChannel {
             get {
                 return ResourceManager.GetString("NullESBChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Null Executing User.
+        /// </summary>
+        public static string NullExecutingUser {
+            get {
+                return ResourceManager.GetString("NullExecutingUser", resourceCulture);
             }
         }
         
@@ -1987,6 +2248,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The parent cannot be null..
+        /// </summary>
+        public static string ParentCannotBeNull {
+            get {
+                return ResourceManager.GetString("ParentCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password cannot be empty or only white space.
         /// </summary>
         public static string PasswordEmpty {
@@ -2010,6 +2280,15 @@ namespace Warewolf.Resource.Errors {
         public static string PathMismatch {
             get {
                 return ResourceManager.GetString("PathMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please connect first..
+        /// </summary>
+        public static string PleaseConnectFirst {
+            get {
+                return ResourceManager.GetString("PleaseConnectFirst", resourceCulture);
             }
         }
         
@@ -2145,6 +2424,24 @@ namespace Warewolf.Resource.Errors {
         public static string RegexValidatorUsedWithTexyBoxs {
             get {
                 return ResourceManager.GetString("RegexValidatorUsedWithTexyBoxs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote Server ID Empty.
+        /// </summary>
+        public static string RemoteServerIDNull {
+            get {
+                return ResourceManager.GetString("RemoteServerIDNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested folder does not exist on server. Folder: {0}.
+        /// </summary>
+        public static string RequestedFolderDoesNotExistOnServer {
+            get {
+                return ResourceManager.GetString("RequestedFolderDoesNotExistOnServer", resourceCulture);
             }
         }
         
@@ -2302,6 +2599,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scheduler Error Enumerating Groups:{0}.
+        /// </summary>
+        public static string SchedulerErrorEnumeratingGroups {
+            get {
+                return ResourceManager.GetString("SchedulerErrorEnumeratingGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was an error when returning a value from your script, remember to use the &apos;Return&apos; keyword when returning the result.
         /// </summary>
         public static string ScriptingErrorReturningValue {
@@ -2343,6 +2649,15 @@ namespace Warewolf.Resource.Errors {
         public static string ServiceDoesNotExist {
             get {
                 return ResourceManager.GetString("ServiceDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Execution Error: {0}.
+        /// </summary>
+        public static string ServiceExecutionError {
+            get {
+                return ResourceManager.GetString("ServiceExecutionError", resourceCulture);
             }
         }
         
@@ -2455,6 +2770,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to String too long.
+        /// </summary>
+        public static string StringTooLong {
+            get {
+                return ResourceManager.GetString("StringTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please supply at least one of the following: {0}.
         /// </summary>
         public static string SupplyAtLeastOne {
@@ -2536,6 +2860,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation Error: There is a {0} with the same name..
+        /// </summary>
+        public static string TypeConflict {
+            get {
+                return ResourceManager.GetString("TypeConflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to contact Server.
         /// </summary>
         public static string UnableToContactServer {
@@ -2550,6 +2883,15 @@ namespace Warewolf.Resource.Errors {
         public static string UnableToCreateDefinedFunction {
             get {
                 return ResourceManager.GetString("UnableToCreateDefinedFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to load instance for key: {0}&quot;.
+        /// </summary>
+        public static string UnableToLoadInstance {
+            get {
+                return ResourceManager.GetString("UnableToLoadInstance", resourceCulture);
             }
         }
         
@@ -2676,6 +3018,15 @@ namespace Warewolf.Resource.Errors {
         public static string ValueMustBeAnEnum {
             get {
                 return ResourceManager.GetString("ValueMustBeAnEnum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} value not supplied..
+        /// </summary>
+        public static string ValueNotSupplied {
+            get {
+                return ResourceManager.GetString("ValueNotSupplied", resourceCulture);
             }
         }
         
