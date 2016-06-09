@@ -521,6 +521,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         Index = indexNum.ToString(CultureInfo.InvariantCulture)
                     });
                     indexToInsertAt++;
+                if (complexObject.Children.Count > 0)
+                {
+                    AddBlankComplexObjectRow(itemToAdd,complexObject, indexToInsertAt,indexNum);
+                }
             }
             //
             //
