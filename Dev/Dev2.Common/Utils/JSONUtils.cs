@@ -40,17 +40,6 @@ namespace Dev2.Common.Utils
             return stringToScrub;
         }
 
-        /// <summary>
-        ///     Replaces the slashes.
-        /// </summary>
-        /// <param name="stringToReplaceIn">The string to replace in.</param>
-        /// <returns></returns>
-        public static string ReplaceSlashes(string stringToReplaceIn)
-        {
-            string replaceSlashes = stringToReplaceIn.Replace(@"\", @"\\");
-            return replaceSlashes;
-        }
-
 
         public static string Format(string text)
         {

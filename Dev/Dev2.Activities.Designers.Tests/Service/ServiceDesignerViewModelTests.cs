@@ -1063,8 +1063,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
             var outputMapping = viewModel.ModelItem.GetProperty<string>("OutputMapping");
 
-            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
-            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" IsObject=\"False\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" IsObject=\"False\" /></Outputs>", outputMapping);
 
 
             //------------Execute Test---------------------------
@@ -1076,8 +1076,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
             outputMapping = viewModel.ModelItem.GetProperty<string>("OutputMapping");
 
-            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[a1]]\" /></Inputs>", inputMapping);
-            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[b1]]\" /></Outputs>", outputMapping);
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[a1]]\" IsObject=\"False\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[b1]]\" IsObject=\"False\" /></Outputs>", outputMapping);
         }
 
 
@@ -1139,9 +1139,12 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var resRepo = new Mock<IResourceRepository>();
+           
+
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.ResourceName).Returns("bob");
             resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(srcRes.Object);
+            resRepo.Setup(a => a.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(resourceModel.Object);
             environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
@@ -1149,8 +1152,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var inputMapping = viewModel.InputMapping;
             var outputMapping = viewModel.OutputMapping;
 
-            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
-            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" IsObject=\"False\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" IsObject=\"False\" /></Outputs>", outputMapping);
 
         }
         [TestMethod]
@@ -1840,8 +1843,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
             var outputMapping = viewModel.ModelItem.GetProperty<string>("OutputMapping");
 
-            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
-            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" IsObject=\"False\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" IsObject=\"False\" /></Outputs>", outputMapping);
 
         }
 

@@ -12,7 +12,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml;
 
 namespace Dev2.Common.ExtMethods
 {
@@ -38,35 +37,6 @@ namespace Dev2.Common.ExtMethods
             const int MaxAnsiCode = 255;
 
             return input.Any(c => c > MaxAnsiCode);
-        }
-
-        public static string Escape(this string unescaped)
-        {
-            var doc = new XmlDocument();
-            XmlNode node = doc.CreateElement("root");
-            node.InnerText = unescaped;
-            return node.InnerXml;
-        }
-
-        public static string Unescape(this string payload)
-        {
-            var doc = new XmlDocument();
-            try
-            {
-                doc.LoadXml(payload);
-                return doc.InnerXml;
-            }
-            catch (Exception)
-            {
-                string xml = String.Format("<dummycake>{0}</dummycake>", payload);
-                doc.LoadXml(xml);
-            }
-            if (doc.DocumentElement != null)
-            {
-                return doc.DocumentElement.InnerText;
-            }
-
-            return String.Empty;
         }
 
         /// <summary>
@@ -286,18 +256,6 @@ namespace Dev2.Common.ExtMethods
             char[] arr = s.ToCharArray();
             Array.Reverse(arr);
             return new string(arr);
-        }
-
-        /// <summary>
-        ///     Determines whether the specified payload is a valid resource category name.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <returns>
-        ///     <c>true</c> if the specified payload is a valid resource category name; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsValidCategoryName(this string payload)
-        {
-            return !IsValidCategoryname.IsMatch(payload);
         }
 
         /// <summary>
