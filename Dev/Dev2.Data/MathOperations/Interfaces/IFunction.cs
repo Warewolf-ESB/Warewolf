@@ -9,7 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
+using Infragistics.Calculations.CalcManager;
 
 namespace Dev2.MathOperations {
     public interface IFunction {
@@ -17,5 +19,8 @@ namespace Dev2.MathOperations {
         IList<string> arguments { get; }
         IList<string> ArgumentDescriptions { get; }
         string Description { get; }
+
+        void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
+           Func<double[], double> function, IDev2CalculationManager calcManager);
     }
 }

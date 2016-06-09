@@ -51,6 +51,16 @@ namespace Dev2.Studio.Factory
             SetupDialogAction(dialogueViewModel, ver, packUri);
             return dialogueViewModel;
         }
+
+        public IDialogueViewModel CreateServerAboutDialog(string serverVersion)
+        {
+            IDialogueViewModel dialogueViewModel = new DialogueViewModel();
+            string packUri = StringResources.Warewolf_Logo;
+
+            var ver = VersionInfo.FetchVersionInfo();
+            SetupServerDialogAction(dialogueViewModel, ver, packUri, serverVersion);
+            return dialogueViewModel;
+        }
     }
 }
 

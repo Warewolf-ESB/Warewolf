@@ -80,7 +80,6 @@ namespace Dev2.Runtime.Services.Specs.WebService
             IOutputDescription outputDescription = webService.GetOutputDescription();
             webService.OutputDescription = outputDescription;
             outputDescription.ToRecordsetList(webService.Recordsets);
-            webService.OutputSpecification = webService.GetOutputString(webService.Recordsets);
         }
 
         [Given(@"I have a webservice calling http://maps\.googleapis\.com/maps/api/geocode/json\?sensor=true&amp;address=address")]

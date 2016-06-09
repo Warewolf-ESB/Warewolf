@@ -16,6 +16,7 @@ namespace Dev2.ConnectionHelpers
 {
     public interface IConnectControlSingleton
     {
+        void EditConnection(int selectedIndex, Action<int> openWizard);
         void ToggleConnection(int selectedIndex);
         void ToggleConnection(Guid environmentId);
         void Refresh(Guid environmentId);

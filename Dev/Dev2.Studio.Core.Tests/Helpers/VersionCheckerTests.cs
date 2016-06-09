@@ -12,11 +12,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Windows;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Common.Interfaces;
 using Warewolf.Core;
 using Dev2.Studio.Core;
 
@@ -66,41 +64,7 @@ namespace Dev2.Core.Tests.Helpers
 
         #region IsLastest Tests
 
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("VersionChecker")]
-        [Description("Check if the app is the lastest version and show a pop up informing the user")]
-        // ReSharper disable InconsistentNaming
-        public void GetNewerVersion_LaterVersion_ReturnsTrue()
-        // ReSharper restore InconsistentNaming
-        {
-            Mock<IWarewolfWebClient> mockWebClient = new Mock<IWarewolfWebClient>();
-            mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.2").Verifiable();
-
-            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
-            var newerVersion = versionChecker.GetNewerVersion();
-
-            Assert.IsTrue(newerVersion, "Current version (" + versionChecker.Current + ") is not newer than Latest (" + versionChecker.Latest + ")");
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("VersionChecker")]
-        [Description("Check if the app is the lastest version and show a pop up informing the user")]
-        // ReSharper disable InconsistentNaming
-        public void GetNewerVersion_NotLaterVersion_ReturnsFalse()
-        // ReSharper restore InconsistentNaming
-        {
-            Mock<IWarewolfWebClient> mockWebClient = new Mock<IWarewolfWebClient>();
-            mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.1").Verifiable();
-
-            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
-            var newerVersion = versionChecker.GetNewerVersion();
-
-            Assert.IsFalse(newerVersion);
-        }
-
+        
         #endregion
 
 

@@ -10,8 +10,6 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Diagnostics
@@ -38,23 +36,6 @@ namespace Dev2.Core.Tests.Diagnostics
 
         #region Create Directory from String
 
-        [TestMethod]
-        [TestCategory("StringExtensionUnitTest")]
-        [Description("Test for FileHelper's CreateDirectoryFromString method: A valid file directory is passed to it and that files directory is created")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void FileHelper_FileHelperUnitTest_CreateDirectoryFromString_DirectoryCreated()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var fileDir = Context.TestDir + "\\Sub Directory\\some file name.ext";
-
-            //exe
-            FileHelper.CreateDirectoryFromString(fileDir);
-
-            //assert
-            Assert.IsTrue(Directory.Exists(Context.TestDir + "\\Sub Directory"));
-        }
 
         #endregion
     }

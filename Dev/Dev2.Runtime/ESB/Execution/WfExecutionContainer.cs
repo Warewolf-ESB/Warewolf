@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Threading;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -142,6 +143,13 @@ namespace Dev2.Runtime.ESB.Execution
                 to.AddError(ex.Message);
             }
             return result;
+        }
+
+        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
+        {
+            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
+
+            EvalInner(dsfDataObject, resource, update);
         }
 
         public void Eval(Guid resourceID, IDSFDataObject dataObject)

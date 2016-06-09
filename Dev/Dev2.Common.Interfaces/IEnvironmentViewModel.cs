@@ -14,7 +14,8 @@ namespace Dev2.Common.Interfaces
         bool IsLoaded { get; }
         bool Connect();
         bool IsConnecting { get; set; }
-
+        void SetItemCheckedState(Guid id, bool state);
+        void RemoveItem(IExplorerItemViewModel vm);
         Task<bool> Load(bool b=false);
         Task<bool> LoadDialog(string selectedId,bool b=false);
         void Filter(string filter);

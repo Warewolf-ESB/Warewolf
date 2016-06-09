@@ -43,11 +43,27 @@ namespace Dev2.MathOperations
         /// <returns></returns>
         public ICollection<IFunction> All()
         {
-            if(_functions != null)
+            if (_functions != null)
             {
                 return _functions;
             }
             return new List<IFunction>();
+        }
+
+        /// <summary>
+        /// Finds a collection of functions that satisfy a condition specified by the expression passed in
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public ICollection<IFunction> Find(Expression<Func<IFunction, bool>> expression)
+        {
+            if (expression != null)
+            {
+                return _functions.AsQueryable().Where(expression).ToList();
+            }
+            // ReSharper disable NotResolvedInText
+            throw new ArgumentNullException(ErrorResource.ExpressionCannotBeNull);
+            // ReSharper restore NotResolvedInText
         }
 
         /// <summary>
@@ -57,14 +73,14 @@ namespace Dev2.MathOperations
         /// <returns></returns>
         public IFunction FindSingle(Expression<Func<IFunction, bool>> expression)
         {
-            if(expression != null)
+            if (expression != null)
             {
 
                 try
                 {
                     return _functions.AsQueryable().First(expression);
                 }
-                catch(InvalidOperationException ioex)
+                catch (InvalidOperationException ioex)
                 {
                     Dev2Logger.Error(ioex);
                     IFunction func = MathOpsFactory.CreateFunction();
@@ -82,7 +98,7 @@ namespace Dev2.MathOperations
         {
             IEnumerable<CalculationFunction> calcFunctions = CalcManager.GetAllFunctions();
 
-            foreach(CalculationFunction calcFunction in calcFunctions)
+            foreach (CalculationFunction calcFunction in calcFunctions)
             {
                 _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
             }
@@ -90,20 +106,76 @@ namespace Dev2.MathOperations
         }
 
         /// <summary>
+        /// Removes a collection of functions from the function repository
+        /// </summary>
+        /// <param name="instanceObjs"></param>
+        public void Remove(ICollection<IFunction> instanceObjs)
+        {
+            if (instanceObjs != null)
+            {
+                foreach (IFunction func in instanceObjs)
+                {
+                    _functions.Remove(func);
+                }
+            }
+            else
+            {
+                // ReSharper disable NotResolvedInText
+                throw new ArgumentNullException(ErrorResource.CannotRemoveNullListOfFunctions);
+                // ReSharper restore NotResolvedInText
+            }
+        }
+
+        /// <summary>
+        /// Removes a function from the function repository
+        /// </summary>
+        /// <param name="instanceObj"></param>
+        public void Remove(IFunction instanceObj)
+        {
+            if (instanceObj != null)
+            {
+                _functions.Remove(instanceObj);
+            }
+            else
+            {
+                // ReSharper disable NotResolvedInText
+                throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
+                // ReSharper restore NotResolvedInText
+            }
+        }
+
+        /// <summary>
+        /// Save A collection of new functions to the function library
+        /// </summary>
+        /// <param name="instanceObjs"></param>
+        public void Save(ICollection<IFunction> instanceObjs)
+        {
+            if (instanceObjs != null)
+            {
+                _functions.AddRange(instanceObjs);
+            }
+            else
+            {
+                // ReSharper disable NotResolvedInText
+                throw new ArgumentNullException(ErrorResource.CannotSaveNullListOfFunctions);
+                // ReSharper restore NotResolvedInText
+            }
+        }
+        /// <summary>
         /// Save a collection of new user-defined functions to the function library
         /// </summary>
         /// <param name="instanceObj"></param>
         public string Save(IFunction instanceObj)
         {
-            if(instanceObj != null)
+            if (instanceObj != null)
             {
                 _functions.Add(instanceObj);
             }
             else
             {
-// ReSharper disable NotResolvedInText
+                // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
-// ReSharper restore NotResolvedInText
+                // ReSharper restore NotResolvedInText
             }
             return "Saved";
         }
@@ -113,7 +185,7 @@ namespace Dev2.MathOperations
         // ReSharper disable once UnusedMember.Global
         protected void OnItemAdded()
         {
-            if(ItemAdded != null)
+            if (ItemAdded != null)
             {
                 ItemAdded(this, new EventArgs());
             }
@@ -153,11 +225,11 @@ namespace Dev2.MathOperations
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if(!_isDisposed)
+            if (!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if(disposing)
+                if (disposing)
                 {
                     // Dispose managed resources.                    
                 }

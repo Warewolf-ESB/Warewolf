@@ -2333,7 +2333,6 @@ namespace Dev2.Core.Tests.Workflows
 
                     //Execute
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
-                    OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
                     resourceModel.Object.IsWorkflowSaved = true;
                     viewModel.TestWorkflowDesignerModelChanged();
 
@@ -2423,7 +2422,6 @@ namespace Dev2.Core.Tests.Workflows
 
                     //Execute
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
-                    OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
                     resourceModel.Object.IsWorkflowSaved = true;
                     viewModel.TestWorkflowDesignerModelChanged();
 
@@ -2510,7 +2508,6 @@ namespace Dev2.Core.Tests.Workflows
 
                     //Execute
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
-                    OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
                     resourceModel.Object.IsWorkflowSaved = true;
                     resourceModel.Object.DataList = "<DataList><b></b></DataList>";
                     viewModel.TestWorkflowDesignerModelChanged();

@@ -223,6 +223,25 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void RemoveItem(IExplorerItemViewModel item)
+        {
+            if (Environments != null)
+            {
+                var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+
+                if (env != null)
+                {
+                    if (env.Children.Contains(item))
+                    {
+                        env.RemoveChild(item);
+                    }
+                    else
+                        env.RemoveItem(item);
+                }
+                OnPropertyChanged(() => Environments);
+            }
+        }
+
         public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         public event SelectedExplorerItemChanged SelectedItemChanged;
 
@@ -258,9 +277,20 @@ namespace Warewolf.Studio.ViewModels
                 environmentViewModel.SelectAction = a => SelectedItem = a;
             }
         }
-
+        public void SelectItem(string path)
+        {
+            foreach (var environmentViewModel in Environments)
+            {
+                environmentViewModel.SelectItem(path, a => SelectedItem = a);
+                environmentViewModel.SelectAction = a => SelectedItem = a;
+            }
+        }
+        public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
+        {
+            return null;
+        }
         public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
-       
+
         public void Dispose()
         {
             foreach (var environmentViewModel in Environments)
@@ -315,20 +345,20 @@ namespace Warewolf.Studio.ViewModels
         {
             if (!IsLoading && server.EnvironmentID == Guid.Empty)
                 Application.Current.Dispatcher.Invoke(async () =>
-               {
-                   IsLoading = true;
+                {
+                    IsLoading = true;
 
-                   var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
-                   if (existing == null)
-                   {
-                       existing = CreateEnvironmentFromServer(server, _shellViewModel);
-                       _environments.Add(existing);
-                       OnPropertyChanged(() => Environments);
-                   }
-                   var result = await LoadEnvironment(existing, IsDeploy);
+                    var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
+                    if (existing == null)
+                    {
+                        existing = CreateEnvironmentFromServer(server, _shellViewModel);
+                        _environments.Add(existing);
+                        OnPropertyChanged(() => Environments);
+                    }
+                    var result = await LoadEnvironment(existing, IsDeploy);
 
-                   IsLoading = result;
-               });
+                    IsLoading = result;
+                });
         }
 
         protected virtual void AfterLoad(Guid environmentId)

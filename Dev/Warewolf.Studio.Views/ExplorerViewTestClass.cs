@@ -42,9 +42,9 @@ namespace Warewolf.Studio.Views
             var xamDataTreeNode = _explorerView.ExplorerTree.Nodes.FirstOrDefault(node =>
             {
                 var explorerItem = node.Data as IEnvironmentViewModel;
-                if(explorerItem != null)
+                if (explorerItem != null)
                 {
-                    if(explorerItem.DisplayName.ToLowerInvariant().Contains(nodeName.ToLowerInvariant()))
+                    if (explorerItem.DisplayName.ToLowerInvariant().Contains(nodeName.ToLowerInvariant()))
                     {
                         return true;
                     }
@@ -91,7 +91,7 @@ namespace Warewolf.Studio.Views
                 }
 
                 return explorerItemViewModel;
-            }            
+            }
             return null;
         }
 
@@ -127,7 +127,7 @@ namespace Warewolf.Studio.Views
             if (folderName.Contains("\\"))
             {
                 var lastIndex = folderName.LastIndexOf("\\", StringComparison.OrdinalIgnoreCase);
-                searchName = folderName.Substring(lastIndex+1);
+                searchName = folderName.Substring(lastIndex + 1);
             }
             var foundFolder = flattenTree.FirstOrDefault(node =>
             {
@@ -241,7 +241,7 @@ namespace Warewolf.Studio.Views
             return found;
         }
 
-        public void DeletePath(string path,IEnvironmentModel model)
+        public void DeletePath(string path, IEnvironmentModel model)
         {
             var node = VerifyItemExists(path);
             if (node != null)
@@ -288,11 +288,11 @@ namespace Warewolf.Studio.Views
                 var item = node.Data as IExplorerTreeItem;
                 if (item != null)
                 {
-                    item.AddChild(new ExplorerItemViewModel(item.Server, item ,a=>{},item.ShellViewModel,CustomContainer.Get<IPopupController>() )
+                    item.AddChild(new ExplorerItemViewModel(item.Server, item, a => { }, item.ShellViewModel, CustomContainer.Get<IPopupController>())
                     {
                         ResourceName = path.Substring(1 + path.LastIndexOf("\\", StringComparison.Ordinal)),
                         ResourcePath = path
-                        
+
                     });
                 }
             }
@@ -305,10 +305,10 @@ namespace Warewolf.Studio.Views
                     {
                         explorerViewModelBase.SelectedItem = explorerViewModelBase.Environments.First();
                     }
-                    if(explorerViewModelBase.SelectedItem != null)
+                    if (explorerViewModelBase.SelectedItem != null)
                     {
                         var item = explorerViewModelBase.SelectedItem;
-                        item.AddChild(new ExplorerItemViewModel(item.Server, item,a => { },item.ShellViewModel,null) { ResourceName = path });
+                        item.AddChild(new ExplorerItemViewModel(item.Server, item, a => { }, item.ShellViewModel, null) { ResourceName = path });
                     }
                 }
             }
@@ -351,6 +351,62 @@ namespace Warewolf.Studio.Views
             return node.Nodes.Select(child => child.Data as IExplorerTreeItem).Count(childitem => childitem != null && childitem.ResourceType == "WorkflowService");
         }
 
+        public void ShowVersionHistory(string path)
+        {
+            var node = VerifyItemExists(path);
+            var explorerItemViewModel = node.Data as IExplorerTreeItem;
+            if (explorerItemViewModel != null)
+            {
+                explorerItemViewModel.ShowVersionHistory.Execute(null);
+            }
+        }
+
+        public ICollection<IExplorerTreeItem> CreateChildNodes(int count, string path)
+        {
+            var node = VerifyItemExists(path);
+            var item = node.Data as IExplorerTreeItem;
+            var items = new List<IExplorerTreeItem>();
+            const string Name = "Resource ";
+            for (int i = 0; i < count; i++)
+            {
+                if (item != null)
+                {
+                    items.Add(new ExplorerItemViewModel(item.Server, item, a => { }, null, null) { ResourceName = Name + i, ResourceType = "Version" });
+                }
+            }
+            return items;
+        }
+
+        public void PerformVersionRollback(string versionPath)
+        {
+            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("\\", StringComparison.Ordinal)));
+
+            var explorerItemViewModel = node.Data as IExplorerTreeItem;
+            if (explorerItemViewModel != null)
+            {
+                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("\\", StringComparison.Ordinal))));
+                if (child != null)
+                {
+                    child.RollbackCommand.Execute(null);
+                }
+            }
+        }
+
+        public void PerformVersionDelete(string versionPath)
+        {
+            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("\\", StringComparison.Ordinal)));
+            var explorerItemViewModel = node.Data as IExplorerItemViewModel;
+            if (explorerItemViewModel != null)
+            {
+                explorerItemViewModel = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("\\", StringComparison.Ordinal))));
+
+                if (explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.DeleteVersionCommand.Execute(null);
+                }
+            }
+        }
+
         public void PerformFolderDelete(string path)
         {
             var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("\\", StringComparison.Ordinal)));
@@ -364,6 +420,11 @@ namespace Warewolf.Studio.Views
                     child.DeleteCommand.Execute(null);
                 }
             }
+        }
+
+        public void VerifyContextMenu(string option, string visibility, string path)
+        {
+
         }
 
         public void Reset()
@@ -441,7 +502,7 @@ namespace Warewolf.Studio.Views
             var destinationNode = GetFolderXamDataTreeNode(destinationPath) ?? GetEnvironmentNode(destinationPath);
             var explorerItem = sourceNode.Data as IExplorerItemViewModel;
             var destinationItem = destinationNode.Data as IExplorerTreeItem;
-            if(explorerItem != null)
+            if (explorerItem != null)
             {
                 explorerItem.Move(destinationItem);
                 BindingExpression be = _explorerView.ExplorerTree.GetBindingExpression(XamDataTree.ItemsSourceProperty);
@@ -450,6 +511,10 @@ namespace Warewolf.Studio.Views
                     be.UpdateSource();
                 }
             }
+        }
+
+        public void Close(string nodeName)
+        {
         }
     }
 }
