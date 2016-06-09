@@ -68,16 +68,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var res = new ExecuteMessage();
                 res.HasError = true;
-                res.SetMessage("No sharepoint server set");
-                Dev2Logger.Debug("No sharepoint server set.");
+                res.SetMessage(ErrorResource.NoSharepointServerSet);
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet);
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(listName))
             {
                 var res = new ExecuteMessage();
                 res.HasError = true;
-                res.SetMessage("No sharepoint list name set");
-                Dev2Logger.Debug("No sharepoint list name set.");
+                res.SetMessage(ErrorResource.NoSharepointListNameSet);
+                Dev2Logger.Debug(ErrorResource.NoSharepointListNameSet);
                 return serializer.SerializeToBuilder(res);
             }
             var editableFieldsOnly = false;

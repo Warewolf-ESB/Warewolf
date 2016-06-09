@@ -28,6 +28,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -151,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel
             var result = new ValidationResult
             {
                 IsValid = false,
-                ErrorMessage = "Unknown connection type."
+                ErrorMessage = ErrorResource.UnknownConnectionType
             };
 
             try

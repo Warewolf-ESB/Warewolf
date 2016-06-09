@@ -1155,7 +1155,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error getting resources",e);
+                Dev2Logger.Error(ErrorResource.ErrorGettingResources, e);
                 throw;
             }
         }
@@ -1184,7 +1184,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error getting resource",e);
+                Dev2Logger.Error(ErrorResource.ErrorGettingResources,e);
             }
             if(foundResource==null)
                 if(_perfCounter != null)
@@ -1818,7 +1818,7 @@ namespace Dev2.Runtime.Hosting
                     return new ResourceCatalogResult
                     {
                         Status = ExecStatus.Fail,
-                        Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
+                        Message = string.Format("{0} '{1}' to '{2}'", ErrorResource.FailedToFindResource, resourceID, newName)
                     };
                 }
              
@@ -1831,8 +1831,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         Status = ExecStatus.Fail,
                         Message =
-                            string.Format("{0} '{1}' to '{2}'",
-                                            "Failed to Rename Resource", resourceID, newName)
+                            string.Format("{0} '{1}' to '{2}'", ErrorResource.FailedToRenameResource, resourceID, newName)
                     };
                 }
             }
@@ -1842,7 +1841,7 @@ namespace Dev2.Runtime.Hosting
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
-                    Message = string.Format("{0} '{1}' to '{2}'", "Failed to Rename Resource", resourceID, newName)
+                    Message = string.Format("{0} '{1}' to '{2}'", ErrorResource.FailedToRenameResource, resourceID, newName)
                 };
             }
             return new ResourceCatalogResult

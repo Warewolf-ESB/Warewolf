@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -22,6 +23,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -49,15 +51,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 StringBuilder newPath;
                 if (!values.TryGetValue("itemToMove", out itemToBeRenamed))
                 {
-                    throw new ArgumentException("itemToMove value not supplied.");
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "itemToMove"));
                 }
                 if (!values.TryGetValue("newPath", out newPath))
                 {
-                    throw new ArgumentException("newName value not supplied.");
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newName"));
                 }
                 if (!values.TryGetValue("itemToBeRenamedPath", out itemToBeRenamedPath))
                 {
-                    throw new ArgumentException("newName value not supplied.");
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newName"));
                 }
 
 

@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.DateAndTime
 {
@@ -266,7 +267,7 @@ namespace Dev2.Common.DateAndTime
                     else
                     {
                         nothingDied = false;
-                        error = "A \'\\\' character must be followed by a \' or preceeded by a \\.";
+                        error = ErrorResource.BackSlashFormatError;
                     }
                 }
                 else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
@@ -303,7 +304,7 @@ namespace Dev2.Common.DateAndTime
                     else
                     {
                         nothingDied = false;
-                        error = "A \'\\\' character must be followed by a \' or preceeded by a \\.";
+                        error = ErrorResource.BackSlashFormatError;
                     }
                 }
 
@@ -488,8 +489,7 @@ namespace Dev2.Common.DateAndTime
                             else
                             {
                                 //no result, throw error
-                                error =
-                                    "Could not parse input datetime with given input format (if you left the input format blank then even after trying default datetime formats from other cultures) " + error;
+                                error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
                             }
                         }
                         else
@@ -572,7 +572,7 @@ namespace Dev2.Common.DateAndTime
                     if (!TimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
                     {
                         nothingDied = false;
-                        error = string.Concat("Unrecognised format part '", part.Value, "'.");
+                        error = string.Format(ErrorResource.UnrecognisedFormatPart, part.Value);
                     }
                 }
                 else
@@ -580,7 +580,7 @@ namespace Dev2.Common.DateAndTime
                     if (!DateTimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
                     {
                         nothingDied = false;
-                        error = string.Concat("Unrecognised format part '", part.Value, "'.");
+                        error = string.Format(ErrorResource.UnrecognisedFormatPart, part.Value);
                     }
                 }
 
@@ -666,7 +666,7 @@ namespace Dev2.Common.DateAndTime
                     if (!dataFound)
                     {
                         nothingDied = false;
-                        error = string.Concat("Unexpected value at index ", startPosition, ".");
+                        error = string.Format(ErrorResource.UnexpectedValueAtIndex, startPosition);
                     }
                 }
             }
@@ -736,7 +736,7 @@ namespace Dev2.Common.DateAndTime
             else
             {
                 nothingDied = false;
-                error = string.Concat("Unexpected character at index ", startPosition, " of format.");
+                error = string.Format(ErrorResource.UnexpectedCharacterAtIndex, startPosition);
             }
 
             return nothingDied;

@@ -55,8 +55,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 ExecuteMessage message = new ExecuteMessage();
                 message.HasError = true;
-                message.SetMessage("No sharepoint server set.");
-                Dev2Logger.Debug("No sharepoint server set.");
+                message.SetMessage(ErrorResource.NoSharepointServerSet);
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet);
                 return serializer.SerializeToBuilder(message);
             }
 
@@ -84,14 +84,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             if(runtimeSource == null)
             {
-                var res = new DbTableList("Invalid sharepoint server source");
-                Dev2Logger.Debug("Invalid sharepoint server source");
+                var res = new DbTableList(ErrorResource.InvalidSharepointServerSource);
+                Dev2Logger.Debug(ErrorResource.InvalidSharepointServerSource);
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(runtimeSource.Server))
             {
-                var res = new DbTableList("Invalid sharepoint server sent {0}.", serializedSource);
-                Dev2Logger.Debug(String.Format("Invalid sharepoint server sent {0}.", serializedSource));
+                var res = new DbTableList(ErrorResource.InvalidSharepointServerSent, serializedSource);
+                Dev2Logger.Debug(String.Format(ErrorResource.InvalidSharepointServerSent, serializedSource));
                 return serializer.SerializeToBuilder(res);
             }
 

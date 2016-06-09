@@ -198,9 +198,9 @@ namespace Dev2.Data.PathOperations
                 }
                 if(path.Path.Contains("\\"))
                 {
-                    throw new Exception(string.Format("Bad format for SFTP. Path {0}. Please correct path.", path.Path));
+                    throw new Exception(string.Format(ErrorResource.BadFormatForSFTP, path.Path));
                 }
-                throw new Exception(string.Format("Error connecting to SFTP location {0}.", path.Path));
+                throw new Exception(string.Format(ErrorResource.ErrorConnectingToSFTP, path.Path));
             }
             return sftp;
         }
