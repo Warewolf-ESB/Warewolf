@@ -1907,8 +1907,6 @@ namespace Dev2.Runtime.Hosting
                 categoryElement.SetValue(newCategory);
             }
             var resPath = CalcResPath(resource);
-            resource.ResourcePath = resPath + newName;
-            resource.ResourceName = newName;
 
             //delete old resource in local workspace without updating dependants with compile messages
             if(File.Exists(resource.FilePath))
@@ -1918,8 +1916,11 @@ namespace Dev2.Runtime.Hosting
                     File.Delete(resource.FilePath);
                 }
             }
+
+            resource.ResourcePath = resPath + newName;
+            resource.ResourceName = newName;
             //update file path
-            if(oldName != null)
+            if (oldName != null)
             {
                 resource.FilePath = resource.FilePath.Replace(oldName, newName);
             }
