@@ -11,22 +11,17 @@
 
 using System;
 using System.Activities;
-using System.Activities.Expressions;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Statements;
-using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Xaml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Utilities;
-using Microsoft.CSharp.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities
 {
