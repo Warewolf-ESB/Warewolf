@@ -198,26 +198,6 @@ namespace Dev2.Common.Common
             return ms;
         }
 
-        /// <summary>
-        ///     Escapes the specified string builder
-        /// </summary>
-        /// <param name="sb">The sb.</param>
-        /// <returns></returns>
-        public static StringBuilder Escape(this StringBuilder sb)
-        {
-            if (sb != null)
-            {
-                sb = sb.Replace("&", "&amp;");
-                sb = sb.Replace("\"", "&quot;");
-                sb = sb.Replace("'", "&apos;");
-                sb = sb.Replace("<", "&lt;");
-                sb = sb.Replace(">", "&gt;");
-            }
-
-
-            return sb;
-        }
-
         public static string EscapeString(this string sb)
         {
             if (sb != null)
@@ -478,11 +458,6 @@ namespace Dev2.Common.Common
             return col;
         }
 
-        public static string ToBase64String(this Stream stream)
-        {
-            return Convert.ToBase64String(GetByteArray(stream));
-        }
-
         public static byte[] ToByteArray(this Stream stream)
         {
             return GetByteArray(stream);
@@ -501,17 +476,5 @@ namespace Dev2.Common.Common
                 return ms.ToArray();
             }
         }
-
-
-        /// <summary>
-        ///     Returns the current string as a set of XML tags
-        /// </summary>
-        /// <param name="tag">The string to be returned as tags</param>
-        /// <returns>a set of tags in the form <tag>,</tag> as a string array</returns>
-        public static string[] ReturnAsTagSet(this string tag)
-        {
-            return new[] {"<" + tag + ">", "</" + tag + ">"};
-        }
-
     }
 }

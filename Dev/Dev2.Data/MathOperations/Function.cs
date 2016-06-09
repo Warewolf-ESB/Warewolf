@@ -11,10 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common;
-using Infragistics.Calculations;
-using Infragistics.Calculations.CalcManager;
-using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
@@ -79,55 +75,9 @@ namespace Dev2.MathOperations
 
         #region Public Methods
 
-        public void CreateCustomFunction(string functionName, List<string> args, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
-        {
-            CustomCalculationFunction calcFunction;
-            if(CreateCustomFunction(functionName, function, out calcFunction))
-            {
-                if(calcManager != null)
-                {
-                    calcManager.RegisterUserDefinedFunction(calcFunction);
-                    SetFunctionName(functionName);
-                    SetArguments(args);
-                    SetArgumentDescriptions(argumentDescriptions);
-                    SetDescription(description);
-                }
-                else
-                {
-                    throw new NullReferenceException(ErrorResource.CalculationManagerIsNull);
-                }
-            }
-
-            else
-            {
-                throw new InvalidOperationException(ErrorResource.UnableToCreateDefinedFunction);
-            }
-
-
-
-        }
-
         #endregion Public Methods
 
         #region Private Methods
-
-        private static bool CreateCustomFunction(string functionName, Func<double[], double> func, out CustomCalculationFunction custCalculation)
-        {
-            bool isSucessfullyCreated;            
-            try
-            {
-                custCalculation = new CustomCalculationFunction(functionName, func, 0, 1);
-                isSucessfullyCreated = true;
-            }
-            catch(Exception ex)
-            {
-                Dev2Logger.Error("Function", ex);
-                custCalculation = null;
-                isSucessfullyCreated = false;
-            }
-            return isSucessfullyCreated;
-
-        }
 
         private void SetFunctionName(string functionName)
         {

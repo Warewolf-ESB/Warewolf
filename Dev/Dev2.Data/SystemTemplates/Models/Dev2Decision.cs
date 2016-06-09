@@ -337,39 +337,5 @@ namespace Dev2.Data.SystemTemplates.Models
             errors = new ErrorResultTO();
             return null;
         }
-
-        /// <summary>
-        /// Fetches the cols as array.
-        /// </summary>
-        /// <returns></returns>
-        public string[] FetchColsAsArray()
-        {
-            string[] result = new string[TotalCols];
-
-            if(Col1 == null)
-            {
-                Col1 = string.Empty;
-            }
-
-            if(Col2 == null)
-            {
-                Col2 = string.Empty;
-            }
-
-            if(Col3 == null)
-            {
-                Col3 = string.Empty;
-            }
-
-
-            result[0] = Col1.Replace("\\\\", "\\");
-            result[1] = Col2.Replace("\\\\", "\\");
-            result[2] = Col3.Replace("\\\\", "\\");
-
-
-            return result;
-
-        }
-
     }
 }

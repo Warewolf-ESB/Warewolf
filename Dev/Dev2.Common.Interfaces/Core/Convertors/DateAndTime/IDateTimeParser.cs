@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Core.Convertors.DateAndTime
 {
@@ -19,6 +20,7 @@ namespace Dev2.Common.Interfaces.Core.Convertors.DateAndTime
         bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO parsedDateTime,
             out string error);
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error);
         string TranslateDotNetToDev2Format(string originalFormat, out string error);
     }

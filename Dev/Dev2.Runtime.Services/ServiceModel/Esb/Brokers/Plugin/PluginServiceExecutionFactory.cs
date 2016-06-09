@@ -82,20 +82,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }           
         }
 
-        /// <summary>
-        /// Validates the plugin.
-        /// </summary>
-        /// <param name="toLoad">The automatic load.</param>
-        /// <returns></returns>
-        public static string ValidatePlugin(string toLoad)
-        {
-            using (var runtime = CreateInvokeAppDomain())
-            {
-                return runtime.Value.ValidatePlugin(toLoad);
-            }
-           
-        }
-
         public static NamespaceList GetNamespaces(PluginSource pluginSource)
         {
             using (var runtime = CreateInvokeAppDomain())

@@ -45,11 +45,6 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             return obj.GetHashCode();
         }
 
-        public bool Equals(IEnvironmentModel x, object y)
-        {
-            return Equals(x, y as IEnvironmentModel);
-        }
-
         #endregion Methods
 
         #region Properties

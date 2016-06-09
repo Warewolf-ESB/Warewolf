@@ -59,12 +59,12 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
-        protected override Service DeserializeService(string args)
+        protected virtual Service DeserializeService(string args)
         {
             return JsonConvert.DeserializeObject<WebService>(args);
         }
 
-        protected override Service DeserializeService(XElement xml, string resourceType)
+        protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new WebService() : new WebService(xml);
         }
