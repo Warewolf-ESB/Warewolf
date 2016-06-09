@@ -198,6 +198,7 @@
     <Compile Include="IComputerName.cs" />
     <Compile Include="IComputerNameProvider.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
     <Compile Include="IDropboxResult.cs" />
