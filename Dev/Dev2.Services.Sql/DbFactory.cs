@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
@@ -81,7 +82,7 @@ namespace Dev2.Services.Sql
             else
             // ReSharper restore RedundantIfElseBlock
             {
-                throw new Exception("Invalid SqlConnection");
+                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Sql"));
             }
         }
 
@@ -100,7 +101,7 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is SqlCommand))
-                throw new Exception("Invalid DBCommand expected.");
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new SqlDataAdapter(command as SqlCommand))

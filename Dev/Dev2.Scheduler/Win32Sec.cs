@@ -21,6 +21,7 @@ using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Services.Security;
+using Warewolf.Resource.Errors;
 using LSA_HANDLE = System.IntPtr;
 
 
@@ -264,7 +265,7 @@ public class SecurityWrapper : ISecurityWrapper
                     }
                     catch (Exception err)
                     {
-                        Dev2Logger.Error(String.Format("Scheduler Error Enumerating Groups:{0}", grp), err);
+                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, grp), err);
                     }
                 }
 
@@ -358,7 +359,7 @@ public class SecurityWrapper : ISecurityWrapper
     /// <param name="Value"></param>
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
-        if (Value.Length > 0x7ffe) throw new ArgumentException("String too long");
+        if (Value.Length > 0x7ffe) throw new ArgumentException(ErrorResource.StringTooLong);
         var lus = new LSA_UNICODE_STRING { Buffer = Value, Length = (ushort)(Value.Length * sizeof(char)) };
         lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
         return lus;

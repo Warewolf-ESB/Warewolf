@@ -31,6 +31,7 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -220,7 +221,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                         {
                             if (!ResultsCache.Instance.AddResult(future, value))
                             {
-                                Dev2Logger.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                                Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId,value)));
                             }
                         }
                         return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
