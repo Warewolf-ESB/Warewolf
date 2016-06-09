@@ -2095,6 +2095,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Description("When the model changes we mark the resource as unsaved")]
+        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
             var ok = true;

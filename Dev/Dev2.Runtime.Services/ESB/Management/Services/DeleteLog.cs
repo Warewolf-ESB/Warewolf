@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -46,19 +47,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(String.IsNullOrWhiteSpace(filePath))
             {
                 msg.HasError = true;
-                msg.SetMessage(FormatMessage("Can't delete a file if no filename is passed.", filePath, directory));
+                msg.SetMessage(FormatMessage(ErrorResource.CannotDeleteFileWithoutFilename, filePath, directory));
                 Dev2Logger.Info(msg.Message.ToString());
             }
             else if(String.IsNullOrWhiteSpace(directory))
             {
                 msg.HasError = true;
-                msg.SetMessage(FormatMessage("Can't delete a file if no directory is passed.", filePath, directory));
+                msg.SetMessage(FormatMessage(ErrorResource.CannotDeleteFileWithoughtDirectory, filePath, directory));
                 Dev2Logger.Info(msg.Message.ToString());
             }
             else if(!Directory.Exists(directory))
             {
                 msg.HasError = true;
-                msg.SetMessage(FormatMessage("No such directory exists on the server.", filePath, directory));
+                msg.SetMessage(FormatMessage(string.Format(ErrorResource.DirectoryDoesNotExist,directory), filePath, directory));
                 Dev2Logger.Info(msg.Message.ToString());
             }
             else
@@ -68,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if(!File.Exists(path))
                 {
                     msg.HasError = true;
-                    msg.SetMessage(FormatMessage("No such file exists on the server.", filePath, directory));
+                    msg.SetMessage(FormatMessage(ErrorResource.FileDoesNotExist, filePath, directory));
                     Dev2Logger.Info(msg.Message.ToString());
                 }
                 else

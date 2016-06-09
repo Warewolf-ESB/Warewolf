@@ -270,7 +270,7 @@ namespace Dev2.Runtime.ESB.Execution
             var remoteInvokerId = DataObject.RemoteInvokerID;
             if(remoteInvokerId == Guid.Empty.ToString())
             {
-                throw new Exception("Remote Server ID Empty");
+                throw new Exception(ErrorResource.RemoteServerIDNull);
             }
             req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
             req.Headers.Add(HttpRequestHeader.Cookie, isDebug ? GlobalConstants.RemoteServerInvoke : GlobalConstants.RemoteDebugServerInvoke);

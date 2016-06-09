@@ -17,9 +17,11 @@ namespace Dev2.Data.Interfaces
     {
         string Field { get; set; }
         string Recordset { get; set; }
-        string RecordsetIndex { get; set; }        
+        string Index { get; set; }        
         enRecordsetIndexType RecordsetIndexType { get; set; }
-        bool IsRecordset { get; set; }
+        bool CanHaveMutipleRows { get; set; }
+
+        bool IsObject { get; set; }
         string Value { get; set; }
         string DisplayValue { get; set; }
         string Description { get; set; }

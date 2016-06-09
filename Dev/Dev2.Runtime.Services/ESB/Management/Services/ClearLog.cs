@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -39,11 +40,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(String.IsNullOrWhiteSpace(directory))
             {
-                AppendError(msg, directory, "Cant delete a file if no directory is passed.");
+                AppendError(msg, directory, ErrorResource.CannotDeleteFileWithoughtDirectory);
             }
             else if(!Directory.Exists(directory))
             {
-                AppendError(msg, directory, "No such directory exists on the server.");
+                AppendError(msg, directory, string.Format(ErrorResource.DirectoryDoesNotExist, directory));
             }
             else
             {
