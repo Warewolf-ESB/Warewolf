@@ -17,8 +17,5 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
     {
         IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper);
         IScheduleTrigger CreateTrigger(Trigger trigger);
-
-        IScheduledResource CreateResource(string name, SchedulerStatus status
-            , Trigger trigger, string workflowName,string resourceId);
     }
 }

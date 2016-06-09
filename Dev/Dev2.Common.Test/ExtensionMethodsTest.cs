@@ -28,24 +28,7 @@ namespace Dev2.Common.Tests
 
         // ReturnAsTagSet
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ExtensionMethods_ToByteArray")]
-        public void ExtensionMethods_ReturnAsTagSet_WhenValidString_ExpectTagSet()
-        {
-            //------------Setup for test--------------------------
-            const string tag = "foo";
-            //------------Execute Test---------------------------
-
-            var tagSet = tag.ReturnAsTagSet();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, tagSet.Length);
-            StringAssert.Contains(tagSet[0], "<foo>");
-            StringAssert.Contains(tagSet[1], "</foo>");
-
-        }
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExtensionMethods_ToByteArray")]
@@ -63,26 +46,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual(result.ToString(), bytes.ToString());
             }
         }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ExtensionMethods_ToBase64String")]
-        public void ExtensionMethods_ToBase64String_WhenValidString_ExpectBase64Data()
-        {
-            //------------Setup for test--------------------------
-            const string input = "test message";
-            var bytes = Encoding.UTF8.GetBytes(input);
-            //------------Execute Test---------------------------
-            using(Stream s = new MemoryStream(bytes))
-            {
-                var result = s.ToBase64String();
-
-                //------------Assert Results-------------------------
-                Assert.AreEqual(result, "dGVzdCBtZXNzYWdl");
-            }
-
-
-        }
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -659,36 +623,6 @@ namespace Dev2.Common.Tests
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ExtensionMethods_Escape")]
-        public void ExtensionMethods_Escape_WhenXmlString_ExpectEscapedStringBuilder()
-        {
-            //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("<x>this \" is' & neat</x>");
-
-            //------------Execute Test---------------------------
-            var result = value.Escape();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;", result.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ExtensionMethods_Escape")]
-        public void ExtensionMethods_Escape_WhenNonXmlString_ExpectSameStringBuilder()
-        {
-            //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("how cool");
-
-            //------------Execute Test---------------------------
-            var result = value.Escape();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual("how cool", result.ToString());
         }
 
         [TestMethod]

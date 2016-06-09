@@ -16,6 +16,12 @@ namespace Dev2.SignalR.Wrappers.New
             _hubProxy = hubProxy; 
         }
 
+        public ISubscriptionWrapper Subscribe(string sendmemo)
+        {
+            Subscription s = _hubProxy.Subscribe(sendmemo);
+            return new SubscriptionWrapper(s);
+        }
+
         #region Implementation of IHubProxyWrapper
 
         /// <summary>
@@ -49,12 +55,6 @@ namespace Dev2.SignalR.Wrappers.New
         public  IDisposable On<T>( string eventName, Action<T> onData)
         {
             return ((IHubProxy)Object()).On(eventName, onData);
-        }
-
-        public ISubscriptionWrapper Subscribe(string sendmemo)
-        {
-            Subscription s = _hubProxy.Subscribe(sendmemo);
-            return new SubscriptionWrapper(s);
         }
 
         #endregion

@@ -187,31 +187,7 @@ namespace Dev2.Tests.DataList
             DeleteDir(rootFolder);
         }
 
-
-        [TestMethod]
-        public void GetXmlForInputsExpectEmptyWithRandomDataList()
-        {
-            // bootstrap
-            DebugTO to = new DebugTO();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            to.RememberInputs = false;
-            to.BaseSaveDirectory = rootFolder;
-            to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
-            to.XmlData = "";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
-            to = broker.InitDebugSession(to);
-            to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
-            to = broker.PersistDebugSession(to);
-            to.XmlData = "";
-            to = broker.InitDebugSession(to);
-            var outputxml =broker.GetXMLForInputs(to.BinaryDataList);
-            Assert.AreEqual("<DataList></DataList>", outputxml);
-
-            DeleteDir(rootFolder);
-        }
-
+        
         #endregion PersistSession Tests
 
         // ReSharper restore InconsistentNaming

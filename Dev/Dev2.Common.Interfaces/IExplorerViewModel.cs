@@ -13,8 +13,7 @@ namespace Dev2.Common.Interfaces
 	{
 		ICollection<IEnvironmentViewModel> Environments {get;set;}
         void Filter(string filter);
-        void RemoveItem(IExplorerItemViewModel item);
-        event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
+	    event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         event SelectedExplorerItemChanged SelectedItemChanged;
         IEnvironmentViewModel SelectedEnvironment { get; set; }
         IServer SelectedServer { get;  }
@@ -34,9 +33,6 @@ namespace Dev2.Common.Interfaces
 	    string RefreshToolTip { get; }
 
 	    void SelectItem(Guid id);
-	    IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc);
-
-	    void SelectItem(string path);
 
 	    void RefreshEnvironment(Guid environmentId);
 	}

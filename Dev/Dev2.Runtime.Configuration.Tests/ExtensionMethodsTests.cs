@@ -56,31 +56,6 @@ namespace Dev2.Runtime.Configuration.Tests
 
         #endregion
 
-        #region ElementSafe
 
-        [TestMethod]
-        public void ElementSafeWithInvalidArgumentsReturnsEmptyString()
-        {
-            var result = ExtensionMethods.ElementSafe(null, null);
-            Assert.AreEqual(string.Empty, result);
-
-            var elem = CreateXml();
-            result = elem.ElementSafe(null);
-            Assert.AreEqual(string.Empty, result);
-            result = elem.ElementSafe(string.Empty);
-            Assert.AreEqual(string.Empty, result);
-            result = elem.ElementSafe("y");
-            Assert.AreEqual(string.Empty, result);
-        }
-
-        [TestMethod]
-        public void ElementSafeWithValidArgumentsReturnsElementValue()
-        {
-            var elem = CreateXml();
-            var result = elem.ElementSafe(ElementName);
-            Assert.AreEqual(ElementValue, result);
-        }
-
-        #endregion
     }
 }

@@ -124,11 +124,6 @@ namespace Dev2.Data.Operations
             Merge(value, mergingType, at, padding, mergeAlignment);
         }
 
-        public void Clear()
-        {
-            MergeData.Clear();
-        }
-
         #endregion Methods
 
         #region Private Methods

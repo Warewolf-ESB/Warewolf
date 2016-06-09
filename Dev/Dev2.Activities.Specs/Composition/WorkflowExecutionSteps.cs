@@ -197,8 +197,7 @@ namespace Dev2.Activities.Specs.Composition
                     EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
                     newEnvironment.ForceLoadResources();
 
-                    // now find the bloody resource model for execution
-                    var resourceModel = newEnvironment.ResourceRepository.Find(r => r.ResourceName == workflow).FirstOrDefault();
+                    var resourceModel = newEnvironment.ResourceRepository.FindSingle(r => r.ResourceName == workflow);
 
                     _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(newEnvironment.Connection.ServerEvents);
 

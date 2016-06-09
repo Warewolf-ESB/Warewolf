@@ -38,10 +38,9 @@ namespace Dev2.Scheduler
             return new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
         }
 
-
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
-            switch(trigger.TriggerType)
+            switch (trigger.TriggerType)
             {
                 case TaskTriggerType.Boot:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(_serviceConvertorFactory, trigger as BootTrigger), _service, _serviceConvertorFactory);
@@ -70,6 +69,5 @@ namespace Dev2.Scheduler
 
             }
         }
-
     }
 }

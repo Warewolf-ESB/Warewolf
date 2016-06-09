@@ -379,11 +379,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<List<IWcfServerSource>>(result.Message.ToString());
         }
 
-        public IList<IWcfAction> WcfActions(IWcfServerSource WcfSource)
+        public IList<IWcfAction> WcfActions(IWcfServerSource wcfSource)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
-            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(WcfSource));
+            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(wcfSource));
             var workspaceId = Connection.WorkspaceID;
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)
