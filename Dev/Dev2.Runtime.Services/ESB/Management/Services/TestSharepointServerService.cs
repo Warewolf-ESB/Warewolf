@@ -9,6 +9,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -35,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(values == null)
             {
-                throw new InvalidDataContractException("No parameter values provided.");
+                throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string serializedSource = null;
             StringBuilder tmp;

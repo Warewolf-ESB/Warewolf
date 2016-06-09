@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder result = new StringBuilder();
             if(values == null)
             {
-                throw new InvalidDataContractException("No parameter values provided.");
+                throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             StringBuilder tmp;
             values.TryGetValue("Directory", out tmp);

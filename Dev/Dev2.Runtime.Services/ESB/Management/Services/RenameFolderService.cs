@@ -21,6 +21,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -47,12 +48,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 StringBuilder path;
                 if(!values.TryGetValue("path", out path))
                 {
-                    throw new ArgumentException("path value not supplied.");
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "path"));
                 }
                 StringBuilder newPath;
                 if(!values.TryGetValue("newPath", out newPath))
                 {
-                    throw new ArgumentException("newPath value not supplied.");
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newPath"));
                 }
                 Dev2Logger.Info(String.Format("Reanme Folder. Path:{0} NewPath:{1}",path,newPath));
                 item = ServerExplorerRepository.Instance.RenameFolder(path.ToString(), newPath.ToString(), theWorkspace.ID);

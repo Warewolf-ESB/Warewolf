@@ -26,6 +26,8 @@ using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
 using Npgsql;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Services.Execution
@@ -53,7 +55,7 @@ namespace Dev2.Services.Execution
                 bool connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
                         Source.ConnectionString));
                 }
             }
@@ -86,7 +88,7 @@ namespace Dev2.Services.Execution
                 bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
                         Source.ConnectionString));
                 }
                 return server;
@@ -379,7 +381,7 @@ namespace Dev2.Services.Execution
                 bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
                         Source.ConnectionString));
                 }
                 return server;
@@ -458,7 +460,7 @@ namespace Dev2.Services.Execution
                 bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
                         Source.ConnectionString));
                 }
                 return server;
@@ -540,7 +542,7 @@ namespace Dev2.Services.Execution
                 bool connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
                 if (!connected)
                 {
-                    Dev2Logger.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                    Dev2Logger.Error(string.Format(ErrorResource.FailedToConnectWithConnectionString,
                         Source.ConnectionString));
                 }
                 return server;
