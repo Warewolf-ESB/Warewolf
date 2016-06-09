@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
@@ -31,11 +30,6 @@ namespace Dev2.TaskScheduler.Wrappers
         public IAction Add(IAction action)
         {
             return _taskServiceConvertorFactory.CreateAction(Instance.Add(action.Instance));
-        }
-
-        public bool ContainsType(Type actionType)
-        {
-            return Instance.ContainsType(actionType);
         }
 
 

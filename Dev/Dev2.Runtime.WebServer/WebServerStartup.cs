@@ -10,13 +10,8 @@
 */
 
 using System;
-using System.Net;
-using System.Web.Http;
-using Dev2.Common;
 using Microsoft.AspNet.SignalR;
-using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
-using Owin;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -51,43 +46,6 @@ namespace Dev2.Runtime.WebServer
                 startOptions.Urls.Add(endpoint.Url);
             }
             return WebApp.Start<WebServerStartup>(startOptions);
-        }
-
-        public void Configuration(IAppBuilder app)
-        {
-            var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
-            listener.AuthenticationSchemeSelectorDelegate+=AuthenticationSchemeSelectorDelegate;
-            listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
-            // Enable cross-domain calls
-            app.UseCors(CorsOptions.AllowAll);
-
-            //
-            // Sequence is important!
-            // ALWAYS MapSignalR first then UseWebApi
-            //
-
-            // Add SignalR routing...
-            var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
-            app.MapSignalR("/dsf", hubConfiguration);
-
-            // Add web server routing...
-            var config = new HttpConfiguration();
-            
-            config.MapHttpAttributeRoutes();
-            config.EnsureInitialized();
-            app.UseWebApi(config);
-        }
-
-        AuthenticationSchemes AuthenticationSchemeSelectorDelegate(HttpListenerRequest httpRequest)
-        {
-            EnvironmentVariables.DnsName = httpRequest.Url.DnsSafeHost;
-            EnvironmentVariables.Port = httpRequest.Url.Port;
-            if (httpRequest.RawUrl.StartsWith("/public/",StringComparison.OrdinalIgnoreCase))
-            {
-                return AuthenticationSchemes.Anonymous;
-            }
-            //DO NOT USE NEGOTIATE BREAKS SERVER to SERVER coms when using public authentication and hostname.
-            return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }
     }
 }

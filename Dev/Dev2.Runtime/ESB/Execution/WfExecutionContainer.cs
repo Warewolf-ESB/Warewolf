@@ -12,7 +12,6 @@
 using System;
 using System.Activities;
 using System.Threading;
-using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -158,13 +157,6 @@ namespace Dev2.Runtime.ESB.Execution
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
-        }
-
-        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject,int update)
-        {
-            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
-
-            EvalInner(dsfDataObject, resource, update);
         }
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)

@@ -340,12 +340,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             return new[] { outputs, description };
         }
 
-        public string GetOutputString(IEnumerable<Recordset> recordsets)
-        {
-            IEnumerable<XElement> outputsXml = CreateOutputsXml(recordsets);
-            return outputsXml.ToList()[0].ToString();
-        }
-
         #endregion
 
 

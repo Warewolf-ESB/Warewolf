@@ -47,11 +47,6 @@ namespace Dev2.Data.ServiceModel.Helper
         }
 
 
-        public static bool MappingValuesChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
-        {
-            return MappingChanged(oldMappings, newMappings, (oldMapping, newMapping) => oldMapping.Value == newMapping.Value);
-        }
-
         public static bool MappingNamesChanged(IList<IDev2Definition> oldMappings, IList<IDev2Definition> newMappings)
         {
             return MappingChanged(oldMappings, newMappings, (oldMapping, newMapping) => oldMapping.Name == newMapping.Name);

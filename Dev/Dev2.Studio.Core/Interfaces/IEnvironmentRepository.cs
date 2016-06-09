@@ -24,16 +24,6 @@ namespace Dev2.Studio.Core.Interfaces
         event EventHandler<EnvironmentEditedArgs> ItemEdited;
         bool IsLoaded { get; set; }
 
-        void Clear();
-
-        IEnvironmentModel Fetch(IEnvironmentModel server);
-
-        IList<Guid> ReadSession();
-
-        void WriteSession(IEnumerable<Guid> environmentGuids);
-
-        void ForceLoad();
-
         ICollection<IEnvironmentModel> ReloadServers();
 
         IEnvironmentModel Get(Guid id);

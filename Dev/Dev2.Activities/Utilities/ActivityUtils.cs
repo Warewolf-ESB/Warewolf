@@ -10,6 +10,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.DB;
@@ -93,6 +94,7 @@ namespace Dev2.Utilities
             return dsfMySqlDatabaseActivity;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static DsfOracleDatabaseActivity GetDsfOracleDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             var DsfOracleDatabaseActivity = new DsfOracleDatabaseActivity
@@ -125,6 +127,7 @@ namespace Dev2.Utilities
             return DsfOracleDatabaseActivity;
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public static DsfODBCDatabaseActivity GetDsfODBCDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             var dsfOdbcDatabaseActivity = new DsfODBCDatabaseActivity
