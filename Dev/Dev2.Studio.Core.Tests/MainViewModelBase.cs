@@ -75,7 +75,6 @@ namespace Dev2.Core.Tests
             var mockEnv = new Mock<IEnvironmentRepository>();
             mockEnv.SetupProperty(g => g.ActiveEnvironment); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IEnvironmentModel>());
-            mockEnv.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
@@ -147,7 +146,6 @@ namespace Dev2.Core.Tests
             var models = new List<IEnvironmentModel> { EnvironmentModel.Object };
             var mock = new Mock<IEnvironmentRepository>();
             mock.Setup(s => s.All()).Returns(models);
-            mock.Setup(c => c.ReadSession()).Returns(new[] { EnvironmentModel.Object.ID });
             mock.Setup(s => s.Source).Returns(EnvironmentModel.Object);
             mock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(EnvironmentModel.Object);
             EnvironmentRepo = mock.Object;

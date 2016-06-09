@@ -47,5 +47,13 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         ///     pattern duration.
         /// </summary>
         bool StopAtDurationEnd { get; set; }
+
+        /// <summary>
+        ///     Determines whether any properties for this <see cref="RepetitionPattern" /> have been set.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if properties have been set; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsSet();
     }
 }

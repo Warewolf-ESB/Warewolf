@@ -16,6 +16,12 @@ namespace Dev2.SignalR.Wrappers.New
             _hubProxy = hubProxy; 
         }
 
+        public ISubscriptionWrapper Subscribe(string sendmemo)
+        {
+            Subscription s = _hubProxy.Subscribe(sendmemo);
+            return new SubscriptionWrapper(s);
+        }
+
         #region Implementation of IHubProxyWrapper
 
         /// <summary>

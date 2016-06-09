@@ -12,9 +12,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,39 +25,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [ExcludeFromCodeCoverage]
     public class PluginSourceTests
     {
-        #region Save
-
-        [TestMethod]
-        public void SavePluginSourceWithExistingSourceExpectedServerWorkspaceUpdated()
-        {
-            //Initialize test resource, save then change path
-            ResourceCatalog.Instance.ResourceSaved = resource => { };
-            string uniquePathText = Guid.NewGuid()+"\\test plugin source";
-            var testResource = new Resource { ResourceName = "test plugin source", ResourcePath = "initialpath", ResourceType = "PluginSource", ResourceID = Guid.NewGuid() };
-            new PluginSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-            testResource.ResourcePath = uniquePathText;
-
-            //Execute save again on test resource
-            new PluginSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-
-            //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, testResource.ResourceID.ToString());
-            const string PathStartText = "<Category>";
-            int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
-            if(start > 0)
-            {
-                start += PathStartText.Length;
-                int end = getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal);
-                var savedPath = getSavedResource.Substring(start, end - start);
-                Assert.AreEqual(uniquePathText, savedPath);
-            }
-            else
-            {
-                Assert.Fail("Resource xml malformed after save");
-            }
-        }
-
-        #endregion
+  
 
         #region CTOR
 

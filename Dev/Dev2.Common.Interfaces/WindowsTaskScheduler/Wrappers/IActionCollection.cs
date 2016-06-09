@@ -31,5 +31,16 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         ///     The bound <see cref="Microsoft.Win32.TaskScheduler.Action" /> that was added to the collection.
         /// </returns>
         IAction Add(IAction action);
+
+
+        /// <summary>
+        ///     Determines whether the specified action type is contained in this collection.
+        /// </summary>
+        /// <param name="actionType">Type of the action.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified action type is contained in this collection; otherwise, <c>false</c>.
+        /// </returns>
+        bool ContainsType(Type actionType);
+
     }
 }

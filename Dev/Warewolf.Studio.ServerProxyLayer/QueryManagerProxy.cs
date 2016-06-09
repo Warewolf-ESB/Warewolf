@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -28,6 +29,16 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         #region Implementation of IQueryManager
 
+        /// <summary>
+        /// Gets the dependencies of a resource. a dependency referes to a nested resource
+        /// </summary>
+        /// <param name="resourceId">the resource</param>
+        /// <returns>a list of tree dependencies</returns>
+        public IExecuteMessage FetchDependencies(Guid resourceId)
+        {
+            return FetchDependantsFromServerService(resourceId, false);
+        }
+
         ExecuteMessage FetchDependantsFromServerService(Guid resourceId, bool getDependsOnMe)
         {
             var comsController = CommunicationControllerFactory.CreateController("FindDependencyService");
@@ -48,6 +59,20 @@ namespace Warewolf.Studio.ServerProxyLayer
         public IExecuteMessage FetchDependants(Guid resourceId)
         {
             return FetchDependantsFromServerService(resourceId, true);
+        }
+
+        /// <summary>
+        /// Fetch a heavy weight reource
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        public StringBuilder FetchResourceXaml(Guid resourceId)
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService");
+            comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
+
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, Connection.WorkspaceID);
+            return result.Message;
         }
 
         /// <summary>
@@ -354,11 +379,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<List<IWcfServerSource>>(result.Message.ToString());
         }
 
-        public IList<IWcfAction> WcfActions(IWcfServerSource WcfSource)
+        public IList<IWcfAction> WcfActions(IWcfServerSource wcfSource)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
-            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(WcfSource));
+            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(wcfSource));
             var workspaceId = Connection.WorkspaceID;
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)

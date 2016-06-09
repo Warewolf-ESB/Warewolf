@@ -9,16 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -951,104 +945,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion
 
-        #region Get
-
-        [TestMethod]
-        public void GetWithNullArgsExpectedReturnsNewService()
-        {
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.Get(null, Guid.Empty, Guid.Empty);
-
-            Assert.AreEqual(Guid.Empty, result.ResourceID);
-        }
-
-        [TestMethod]
-        public void GetWithInvalidArgsExpectedReturnsNewService()
-        {
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var result = services.Get("xxxxx", Guid.Empty, Guid.Empty);
-
-            Assert.AreEqual(Guid.Empty, result.ResourceID);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("Services_Get")]
-        public void Services_Get_WithDBServiceWebRequestPoco_ShouldReturnDbService()
-        {
-            //------------Setup for test--------------------------
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var webRequestPoco = new WebRequestPoco { ResourceType = "DbService" };
-            //------------Execute Test---------------------------
-            var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(service);
-            Assert.IsInstanceOfType(service, typeof(DbService));
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("Services_Get")]
-        public void Services_Get_WithPluginServiceWebRequestPoco_ShouldReturnPluginService()
-        {
-            //------------Setup for test--------------------------
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var webRequestPoco = new WebRequestPoco { ResourceType = "PluginService" };
-            //------------Execute Test---------------------------
-            var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(service);
-            Assert.IsInstanceOfType(service, typeof(PluginService));
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("Services_Get")]
-        public void Services_Get_WithWebServiceWebRequestPoco_ShouldReturnWebService()
-        {
-            //------------Setup for test--------------------------
-            var services = new Dev2.Runtime.ServiceModel.Services();
-            var webRequestPoco = new WebRequestPoco { ResourceType = "WebService" };
-            //------------Execute Test---------------------------
-            var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(service);
-            Assert.IsInstanceOfType(service, typeof(WebService));
-        }
-        #endregion
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("Services_IsReadOnly")]
-        public void Services_IsReadOnly_UserIsAuthorized_False()
-        {
-            Verify_IsReadOnly(isAuthorized: true);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("Services_IsReadOnly")]
-        public void Services_IsReadOnly_UserIsNotAuthorized_True()
-        {
-            Verify_IsReadOnly(isAuthorized: false);
-        }
-
-        static void Verify_IsReadOnly(bool isAuthorized)
-        {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
-
-            var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Contribute, resourceID.ToString())).Returns(isAuthorized).Verifiable();
-
-            var services = new Dev2.Runtime.ServiceModel.Services(new Mock<IResourceCatalog>().Object, authorizationService.Object);
-
-            //------------Execute Test---------------------------
-            var result = services.IsReadOnly(resourceID.ToString(), Guid.NewGuid(), Guid.NewGuid());
-
-            //------------Assert Results-------------------------
-            Assert.AreNotEqual(isAuthorized, result.IsReadOnly);
-            authorizationService.Verify(a => a.IsAuthorized(AuthorizationContext.Contribute, resourceID.ToString()));
-        }
+             
     }
 }

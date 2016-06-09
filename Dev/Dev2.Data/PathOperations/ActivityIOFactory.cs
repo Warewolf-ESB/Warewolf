@@ -71,6 +71,19 @@ namespace Dev2.PathOperations
             return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);
         }
 
+
+        /// <summary>
+        /// Return an IActivityIOPath based upont the path string
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="isNotCertVerifiable"></param>
+        /// <param name="privateKeyFile">If private key file is required. This is the path</param>
+        /// <returns></returns>
+        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable, string privateKeyFile = "")
+        {
+            return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable, privateKeyFile);
+        }
+
         /// <summary>
         /// Return the appropriate operation end point based upon the IOPath type
         /// </summary>

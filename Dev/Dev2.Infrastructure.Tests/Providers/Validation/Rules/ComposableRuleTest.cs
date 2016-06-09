@@ -43,17 +43,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Setup for test--------------------------
             new ComposableRule<string>(new Rule1(()=>"")).Or(null);
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ComposeAbleRule_And")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ComposeAbleRule_And_Null()
-        {
-            //------------Setup for test--------------------------
-            new ComposableRule<string>(new Rule1(() => "")).And(null);
-        }
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ComposeAbleRule_Check")]
@@ -64,52 +54,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             Assert.IsNotNull(cr.Check());
 
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ComposeAbleRule_And")]
-        public void ComposeAbleRule_AndConditionNotSatisfied()
-        {
-            //------------Setup for test--------------------------
-            var cr = new ComposableRule<string>(new Rule1(() => "")).And(new Rule1(()=>"1"));
-            Assert.IsNotNull(cr.Check());
-
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ComposeAbleRule_And")]
-        public void ComposeAbleRule_AndConditionSatisfied()
-        {
-            //------------Setup for test--------------------------
-            var cr = new ComposableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1"));
-            Assert.IsNull(cr.Check());
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ComposeAbleRule_And")]
-        public void ComposeAbleRule_AndConditionSatisfied_Three()
-        {
-            //------------Setup for test--------------------------
-            var cr = new ComposableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1")).And(new Rule2(() => "2"));
-            Assert.IsNull(cr.Check());
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ComposeAbleRule_And")]
-        public void ComposeAbleRule_AndConditionFailed_Three()
-        {
-            //------------Setup for test--------------------------
-            var cr = new ComposableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1")).And(new Rule2(() => "v"));
-            Assert.IsNotNull(cr.Check());
-
-        }
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ComposeAbleRule_Or")]

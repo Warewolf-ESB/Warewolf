@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
@@ -60,6 +61,10 @@ namespace Dev2.TaskScheduler.Wrappers
             get { return _nativeInstance; }
         }
 
+        public bool ContainsType(Type actionType)
+        {
+            return Instance.ContainsType(actionType);
+        }
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
