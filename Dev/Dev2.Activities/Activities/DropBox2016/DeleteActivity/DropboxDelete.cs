@@ -50,11 +50,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         #endregion
 
-        public void Validate()
-        {
-            if (!string.IsNullOrEmpty(_dropboxPath))
-                IsValid = true;
-        }
         [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {
