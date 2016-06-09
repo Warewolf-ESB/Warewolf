@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.PerformanceCounters.Counters;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
