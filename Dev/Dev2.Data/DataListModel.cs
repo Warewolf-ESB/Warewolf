@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 
@@ -153,7 +154,7 @@ namespace Dev2.Data
                             }
                             if (jsonAttribute)
                             {
-                                //AddComplexObjectFromXmlNode(c, null);
+                                AddComplexObjectFromXmlNode(c, null);
                             }
 
                             var cols = new List<IScalar>();
@@ -219,6 +220,40 @@ namespace Dev2.Data
                             ShapeScalars.Add(scalar);
                         }
                     }
+                }
+            }
+        }
+
+        private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObject parent)
+        {
+            var isArray = false;
+            var ioDirection = enDev2ColumnArgumentDirection.None;
+            if (c.Attributes != null)
+            {
+                isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
+                ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
+            }
+            var name = GetNameForArrayComplexObject(c, isArray);
+            var complexObjectItemModel = new ComplexObject { Name = name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
+            if (parent != null)
+            {
+                if (!parent.Children.ContainsKey(1))
+                {
+                    parent.Children[1] = new List<IComplexObject>();
+                }
+                parent.Children[1].Add(complexObjectItemModel);
+            }
+            else
+            {
+                ComplexObjects.Add(complexObjectItemModel);
+                ShapeComplexObjects.Add(complexObjectItemModel);
+            }
+            if (c.HasChildNodes)
+            {
+                var children = c.ChildNodes;
+                foreach (XmlNode childNode in children)
+                {
+                    AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
                 }
             }
         }
