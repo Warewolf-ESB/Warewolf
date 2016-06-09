@@ -223,6 +223,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You may not delete the root path.
+        /// </summary>
+        public static string CannotDeleteRootPath {
+            get {
+                return ResourceManager.GetString("CannotDeleteRootPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not allowed to delete system files/directories. {0}.
         /// </summary>
         public static string CannotDeleteSystemFiles {
@@ -1159,6 +1168,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to delete child items.
+        /// </summary>
+        public static string FailedToDeleteChildItems {
+            get {
+                return ResourceManager.GetString("FailedToDeleteChildItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to fetch resoure list as JSON model.
         /// </summary>
         public static string FailedToFetchResoureListAsJSONModel {
@@ -1780,11 +1798,29 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item to add was null.
+        /// </summary>
+        public static string ItemToAddIsNull {
+            get {
+                return ResourceManager.GetString("ItemToAddIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item to delete was null.
         /// </summary>
         public static string ItemToDeleteWasNull {
             get {
                 return ResourceManager.GetString("ItemToDeleteWasNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item to rename was null.
+        /// </summary>
+        public static string ItemToRenameIsNull {
+            get {
+                return ResourceManager.GetString("ItemToRenameIsNull", resourceCulture);
             }
         }
         
@@ -2433,6 +2469,15 @@ namespace Warewolf.Resource.Errors {
         public static string RemoteServerIDNull {
             get {
                 return ResourceManager.GetString("RemoteServerIDNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested folder already exists on server..
+        /// </summary>
+        public static string RequestedFolderAlreadyExists {
+            get {
+                return ResourceManager.GetString("RequestedFolderAlreadyExists", resourceCulture);
             }
         }
         
