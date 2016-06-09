@@ -25,6 +25,7 @@ using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 // ReSharper disable InconsistentNaming
@@ -95,7 +96,7 @@ namespace Dev2.Services.Execution
                      catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
             if (Source == null)
             {
-                ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}",
+                ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                     Service.Source.ResourceID, Service.Source.ResourceName));
             }
         }
@@ -135,7 +136,7 @@ namespace Dev2.Services.Execution
                 Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
                 if (Source == null)
                 {
-                    ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}",
+                    ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                         Service.Source.ResourceID, Service.Source.ResourceName));
                 }
             }
@@ -147,7 +148,7 @@ namespace Dev2.Services.Execution
                       catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
             if (Service == null)
             {
-                ErrorResult.AddError(string.Format("Error loading resource with ID:{0}", DataObj.ResourceID));
+                ErrorResult.AddError(string.Format(ErrorResource.ErrorLoadingResource, DataObj.ResourceID));
                 return false;
             }
             return true;
@@ -184,7 +185,7 @@ namespace Dev2.Services.Execution
                 if (HandlesOutputFormatting)
                 {
                     errors.AddError(
-                        string.Format("Output format in service action {0} is invalid. Please edit and remap.",
+                        string.Format(ErrorResource.InvalidOutputFormat + "Please edit and remap.",
                             Service.ResourceName));
                     return;
                 }
@@ -192,7 +193,7 @@ namespace Dev2.Services.Execution
 
             if (HandlesOutputFormatting && outputFormatter == null && !string.IsNullOrEmpty(InstanceOutputDefintions))
             {
-                errors.AddError(string.Format("Output format in service action {0} is invalid.", Service.ResourceName));
+                errors.AddError(string.Format(ErrorResource.InvalidOutputFormat, Service.ResourceName));
                 return;
             }
 
@@ -348,7 +349,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("Service Execution Error: {0}", ex.Message));
+                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.Message));
             }
         }
 
@@ -402,7 +403,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format("Service Execution Error: {0}", ex.Message));
+                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.Message));
             }
         }
 

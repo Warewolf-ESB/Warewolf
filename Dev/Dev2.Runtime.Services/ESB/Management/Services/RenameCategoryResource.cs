@@ -60,15 +60,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(oldCategory == null)
             {
                 
-                throw new InvalidDataContractException("No value provided for OldCategory parameter.");
+                throw new InvalidDataContractException(string.Format(ErrorResource.NoValueProvidedForParameter,
+                    "OldCategory"));
             }
             if(String.IsNullOrEmpty(newCategory))
             {
-                throw new InvalidDataContractException("No value provided for NewCategory parameter.");
+                throw new InvalidDataContractException(string.Format(ErrorResource.NoValueProvidedForParameter,
+                    "NewCategory"));
             }
             if(String.IsNullOrEmpty(resourceType))
             {
-                throw new InvalidDataContractException("No value provided for ResourceType parameter.");
+                throw new InvalidDataContractException(string.Format(ErrorResource.NoValueProvidedForParameter,
+                    "ResourceType"));
             }
             Dev2Logger.Info(String.Format( "Rename Category. Old {0} New {1} Type{2}",oldCategory,newCategory,resourceType));
             var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory);

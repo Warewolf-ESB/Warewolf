@@ -41,14 +41,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var loggingSettingsTo = serializer.Deserialize<LoggingSettingsTo>(loggingSettingsBuilder);
                 if(loggingSettingsTo == null)
                 {
-                    throw new InvalidDataException("The security settings are not valid.");
+                    throw new InvalidDataException(ErrorResource.InvalidSecuritySettings);
                 }
 
                 Write(loggingSettingsTo);
             }
             catch(Exception e)
             {
-                throw new InvalidDataException(string.Format("The security settings are not valid. Error: {0}", e.Message));
+                throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + string.Format(" Error: {0}", e.Message));
             }
 
             var msg = new ExecuteMessage { HasError = false };

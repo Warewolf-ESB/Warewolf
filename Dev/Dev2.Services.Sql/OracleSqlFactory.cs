@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
@@ -40,7 +41,7 @@ namespace Dev2.Services.Sql
         DataTable GetOracleServerSchema(IDbConnection connection)
         {
             if (!(connection is OracleConnection))
-                throw new Exception("Invalid Oracle connection");
+                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Oracle"));
 
             return ((OracleConnection)connection).GetSchema();
         }
@@ -55,7 +56,7 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is OracleCommand))
-                throw new Exception("Invalid OracleCommand expected.");
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "OracleCommand"));
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new OracleDataAdapter(command as OracleCommand))

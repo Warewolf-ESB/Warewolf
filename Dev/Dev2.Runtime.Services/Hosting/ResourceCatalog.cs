@@ -1353,7 +1353,7 @@ namespace Dev2.Runtime.Hosting
                             saveResult = new ResourceCatalogResult
                             {
                                 Status = ExecStatus.DuplicateMatch,
-                                Message = string.Format("Compilation Error: There is a {0} with the same name.", conflicting.ResourceType)
+                                Message = string.Format(ErrorResource.TypeConflict, conflicting.ResourceType)
                             };
                             return;
                         }
@@ -1804,11 +1804,11 @@ namespace Dev2.Runtime.Hosting
 
             if(resourceID == null)
             {
-                throw new ArgumentNullException("resourceID", @"No value provided for resourceID");
+                throw new ArgumentNullException("resourceID", string.Format(ErrorResource.NoValueProvided, "resourceID"));
             }
             if(string.IsNullOrEmpty(newName))
             {
-                throw new ArgumentNullException("newName", @"No value provided for newName");
+                throw new ArgumentNullException("newName", string.Format(ErrorResource.NoValueProvided, "newName"));
             }
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == resourceID).ToArray();
             try
@@ -2062,11 +2062,11 @@ namespace Dev2.Runtime.Hosting
         {
             if(oldCategory == null)
             {
-                throw new ArgumentNullException("oldCategory", @"No value provided for oldCategory");
+                throw new ArgumentNullException("oldCategory", string.Format(ErrorResource.NoValueProvided, "oldCategory"));
             }
             if(string.IsNullOrEmpty(newCategory))
             {
-                throw new ArgumentNullException("newCategory", @"No value provided for oldCategory");
+                throw new ArgumentNullException("newCategory", string.Format(ErrorResource.NoValueProvided, "oldCategory"));
             }
         }
 

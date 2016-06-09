@@ -22,6 +22,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -58,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         values.TryGetValue("Password", out password);
                         if(userName == null || password == null)
                         {
-                            result.Message.Append("No UserName or password provided");
+                            result.Message.Append(ErrorResource.NoUserNameAndPassword);
                             result.HasError = true;
                         }
                         else
