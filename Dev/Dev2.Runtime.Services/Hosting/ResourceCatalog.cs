@@ -1155,7 +1155,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error getting resources",e);
+                Dev2Logger.Error(ErrorResource.ErrorGettingResources, e);
                 throw;
             }
         }
@@ -1184,7 +1184,7 @@ namespace Dev2.Runtime.Hosting
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error getting resource",e);
+                Dev2Logger.Error(ErrorResource.ErrorGettingResources,e);
             }
             if(foundResource==null)
                 if(_perfCounter != null)
@@ -1818,7 +1818,7 @@ namespace Dev2.Runtime.Hosting
                     return new ResourceCatalogResult
                     {
                         Status = ExecStatus.Fail,
-                        Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
+                        Message = string.Format("{0} '{1}' to '{2}'", ErrorResource.FailedToFindResource, resourceID, newName)
                     };
                 }
              
@@ -1831,8 +1831,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         Status = ExecStatus.Fail,
                         Message =
-                            string.Format("{0} '{1}' to '{2}'",
-                                            "Failed to Rename Resource", resourceID, newName)
+                            string.Format("{0} '{1}' to '{2}'", ErrorResource.FailedToRenameResource, resourceID, newName)
                     };
                 }
             }
@@ -1842,7 +1841,7 @@ namespace Dev2.Runtime.Hosting
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
-                    Message = string.Format("{0} '{1}' to '{2}'", "Failed to Rename Resource", resourceID, newName)
+                    Message = string.Format("{0} '{1}' to '{2}'", ErrorResource.FailedToRenameResource, resourceID, newName)
                 };
             }
             return new ResourceCatalogResult
@@ -1907,8 +1906,6 @@ namespace Dev2.Runtime.Hosting
                 categoryElement.SetValue(newCategory);
             }
             var resPath = CalcResPath(resource);
-            resource.ResourcePath = resPath + newName;
-            resource.ResourceName = newName;
 
             //delete old resource in local workspace without updating dependants with compile messages
             if(File.Exists(resource.FilePath))
@@ -1918,8 +1915,11 @@ namespace Dev2.Runtime.Hosting
                     File.Delete(resource.FilePath);
                 }
             }
+
+            resource.ResourcePath = resPath + newName;
+            resource.ResourceName = newName;
             //update file path
-            if(oldName != null)
+            if (oldName != null)
             {
                 resource.FilePath = resource.FilePath.Replace(oldName, newName);
             }

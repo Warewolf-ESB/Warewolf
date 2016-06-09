@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -38,8 +39,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(values == null)
             {
-                Dev2Logger.Debug("values are missing");
-                throw new InvalidDataContractException("values are missing");
+                Dev2Logger.Debug(ErrorResource.valuesAreMissing);
+                throw new InvalidDataContractException(ErrorResource.valuesAreMissing);
             }
 
             StringBuilder tmp;
@@ -47,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(tmp == null || tmp.Length == 0)
             {
                 Dev2Logger.Debug("DebugItemFilePath is missing");
-                throw new InvalidDataContractException("DebugItemFilePath is missing");
+                throw new InvalidDataContractException(string.Format(ErrorResource.PropertyMusHaveAValue, "DebugItemFilePath "));
             }
 
             string debugItemFilePath = tmp.ToString();
@@ -66,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return serializer.SerializeToBuilder(result);
             }
             Dev2Logger.Debug("DebugItemFilePath not found, throwing an exception");
-            throw new InvalidDataContractException(string.Format("DebugItemFilePath {0} not found", debugItemFilePath));
+            throw new InvalidDataContractException(string.Format(string.Format(ErrorResource.NotFound, debugItemFilePath)));
             }
             catch (Exception e)
             {

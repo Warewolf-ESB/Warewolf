@@ -50,9 +50,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Error writing settings.", ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettings, ex);
                 result.HasError = true;
-                result.Message.AppendLine("Error writing settings.");
+                result.Message.AppendLine(ErrorResource.ErrorWritingSettings);
             }
             return serializer.SerializeToBuilder(result);
         }
@@ -105,9 +105,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Error writing settings configuration.", ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettingsConfiguration, ex);
                 result.HasError = true;
-                result.Message.AppendLine("Error writing settings configuration.");
+                result.Message.AppendLine(ErrorResource.ErrorWritingSettingsConfiguration);
             }
         }
 

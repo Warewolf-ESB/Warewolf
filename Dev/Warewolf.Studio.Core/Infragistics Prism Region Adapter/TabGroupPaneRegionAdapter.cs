@@ -13,6 +13,7 @@ using System.Windows.Data;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Microsoft.Practices.Prism.Regions;
+using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
 {
@@ -36,8 +37,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
         protected override void Adapt(IRegion region, TabGroupPane regionTarget)
         {
             if (regionTarget.ItemsSource != null)
-                throw new InvalidOperationException(
-                    "ItemsSource property is not empty. This control is being associated with a region, but the control is already bound to something else. If you did not explicitly set the control's ItemSource property, this exception may be caused by a change in the value of the inherited RegionManager attached property.");
+                throw new InvalidOperationException(ErrorResource.ItemsSourcepropertyIsNotEmpty);
 
             SynchronizeItems(region, regionTarget);
 

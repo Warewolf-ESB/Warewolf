@@ -34,6 +34,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
@@ -629,7 +630,7 @@ namespace Dev2.Studio.Core.Models
             }
             else
             {
-                throw new Exception("ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.");
+                throw new Exception(ErrorResource.ToServiceDefinitionDoesNotRupportResourcesOfTypeSource);
             }
 
             return result;

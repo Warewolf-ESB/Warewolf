@@ -20,6 +20,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using Warewolf.Resource.Errors;
 using WPF.JoshSmith.Adorners;
 using WPF.JoshSmith.Controls.Utilities;
 
@@ -117,8 +118,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             set
             {
                 if (IsDragInProgress)
-                    throw new InvalidOperationException(
-                        "Cannot set the DragAdornerOpacity property during a drag operation.");
+                    throw new InvalidOperationException(ErrorResource.CannotSetDragAdornerOpacityDuringADrag);
 
                 if (value < 0.0 || value > 1.0)
 // ReSharper disable NotResolvedInText
@@ -161,7 +161,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             set
             {
                 if (IsDragInProgress)
-                    throw new InvalidOperationException("Cannot set the ListView property during a drag operation.");
+                    throw new InvalidOperationException(ErrorResource.CannotSetListViewPropertyDuringADrag);
 
                 if (listView != null)
                 {
@@ -224,8 +224,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             set
             {
                 if (IsDragInProgress)
-                    throw new InvalidOperationException(
-                        "Cannot set the ShowDragAdorner property during a drag operation.");
+                    throw new InvalidOperationException(ErrorResource.CannotSetShowDragAdornerDuringADrag);
 
                 showDragAdorner = value;
             }
@@ -366,8 +365,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             // Get the ObservableCollection<ItemType> which contains the dropped data object.
             var itemsSource = listView.ItemsSource as ObservableCollection<ItemType>;
             if (itemsSource == null)
-                throw new Exception(
-                    "A ListView managed by ListViewDragManager must have its ItemsSource set to an ObservableCollection<ItemType>.");
+                throw new Exception(ErrorResource.ListViewManagedByListViewDragManagerMustHaveItsItemsSource);
 
             int oldIndex = itemsSource.IndexOf(data);
             int newIndex = IndexUnderDragCursor;

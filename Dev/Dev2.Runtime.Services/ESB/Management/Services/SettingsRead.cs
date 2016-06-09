@@ -22,6 +22,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -51,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Error(ex);
                 settings.HasError = true;
-                settings.Error = "Error reading settings configuration : " + ex.Message;
+                settings.Error = ErrorResource.ErrorReadingSettingsConfiguration + ex.Message;
                 settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
             }
 
