@@ -9,6 +9,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -35,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(values == null)
             {
-                throw new InvalidDataContractException("No parameter values provided.");
+                throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string serializedSource = null;
             StringBuilder tmp;
@@ -52,8 +53,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var res = new ExecuteMessage();
                 res.HasError = true;
-                res.SetMessage("No sharepoint server set");
-                Dev2Logger.Debug("No sharepoint server set.");
+                res.SetMessage(ErrorResource.NoSharepointServerSet);
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet);
                 return serializer.SerializeToBuilder(res);
             }
             try

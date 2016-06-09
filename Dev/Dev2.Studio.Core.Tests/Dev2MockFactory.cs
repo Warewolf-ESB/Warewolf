@@ -67,7 +67,6 @@ namespace Dev2.Core.Tests
                     var environmentRepository = new Mock<IEnvironmentRepository>();
                     var environmentModel = new Mock<IEnvironmentModel>();
                     environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
-                    environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
                     environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
                     environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
                     var versionChecker = new Mock<IVersionChecker>();

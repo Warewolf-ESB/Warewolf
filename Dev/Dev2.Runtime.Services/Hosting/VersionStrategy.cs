@@ -49,18 +49,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-
-        public IVersionInfo GetCurrentVersion(IResource newResource, IResource oldResource, string userName, string reason)
-        {
-            if (oldResource !=null && oldResource.VersionInfo == null)
-                return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
-
-
-// ReSharper disable PossibleNullReferenceException
-            return  oldResource.VersionInfo;
-// ReSharper restore PossibleNullReferenceException
-        }
-
         public IVersionInfo GetCurrentVersion(IResource newResource, IVersionInfo oldresource, string userName, string reason)
         {
             if (oldresource == null)
@@ -70,5 +58,17 @@ namespace Dev2.Runtime.Hosting
             // ReSharper disable PossibleNullReferenceException
             return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldresource.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldresource.ResourceId, oldresource.VersionId);
         }
+
+        public IVersionInfo GetCurrentVersion(IResource newResource, IResource oldResource, string userName, string reason)
+        {
+            if (oldResource != null && oldResource.VersionInfo == null)
+                return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
+
+
+            // ReSharper disable PossibleNullReferenceException
+            return oldResource.VersionInfo;
+            // ReSharper restore PossibleNullReferenceException
+        }
+
     }
 }

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Sql
 {
@@ -67,6 +68,23 @@ namespace Dev2.Services.Sql
                 _transaction = null;
             }
         }
+        #region FetchDataSet
+
+        public DataSet FetchDataSet(params SqlParameter[] parameters)
+        {
+            VerifyConnection();
+            return FetchDataSet(_command, parameters);
+        }
+
+        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
+        {
+            VerifyArgument.IsNotNull("command", command);
+            AddParameters(command, parameters);
+            return _factory.FetchDataSet(command);
+        }
+
+        #endregion
+
 
         #region FetchDatabases
 
@@ -104,23 +122,6 @@ namespace Dev2.Services.Sql
             VerifyConnection();
             AddParameters(_command, parameters);
             return FetchDataTable(_command);
-        }
-
-        #endregion
-
-        #region FetchDataSet
-
-        public DataSet FetchDataSet(params SqlParameter[] parameters)
-        {
-            VerifyConnection();
-            return FetchDataSet(_command, parameters);
-        }
-
-        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
-        {
-            VerifyArgument.IsNotNull("command", command);
-            AddParameters(command, parameters);
-            return _factory.FetchDataSet(command);
         }
 
         #endregion
@@ -223,7 +224,7 @@ namespace Dev2.Services.Sql
         {
             if (!IsConnected)
             {
-                throw new Exception("Please connect first.");
+                throw new Exception(ErrorResource.PleaseConnectFirst);
             }
         }
 
@@ -326,7 +327,7 @@ namespace Dev2.Services.Sql
                         }
                         if (sb.Length == 0)
                         {
-                            throw new WarewolfDbException(string.Format("There is no text for object '{0}'.", objectName));
+                            throw new WarewolfDbException(string.Format(ErrorResource.NoTextForObject, objectName));
                         }
                         return sb.ToString();
                     });

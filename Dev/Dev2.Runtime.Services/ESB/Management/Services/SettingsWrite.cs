@@ -20,6 +20,7 @@ using Dev2.Data.Settings;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -29,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(values == null)
             {
-                throw new InvalidDataException("Empty values passed.");
+                throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
             StringBuilder settingsJson;
@@ -49,9 +50,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Error writing settings.", ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettings, ex);
                 result.HasError = true;
-                result.Message.AppendLine("Error writing settings.");
+                result.Message.AppendLine(ErrorResource.ErrorWritingSettings);
             }
             return serializer.SerializeToBuilder(result);
         }
@@ -68,9 +69,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Error writing logging configuration.", ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex);
                 result.HasError = true;
-                result.Message.AppendLine("Error writing logging configuration.");
+                result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
             }
         }
 
@@ -86,9 +87,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Error writing logging configuration.", ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex);
                 result.HasError = true;
-                result.Message.AppendLine("Error writing logging configuration.");
+                result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
             }
         }
 
@@ -104,9 +105,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Error writing settings configuration.", ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettingsConfiguration, ex);
                 result.HasError = true;
-                result.Message.AppendLine("Error writing settings configuration.");
+                result.Message.AppendLine(ErrorResource.ErrorWritingSettingsConfiguration);
             }
         }
 

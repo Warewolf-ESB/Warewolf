@@ -1576,7 +1576,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {    
-               
+               DoWorkspaceSave();
         }
 
         /// <summary>
@@ -1888,6 +1888,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
+            DoWorkspaceSave();
         }
 
         void ModelItemAdded(ModelChangedEventArgs e)

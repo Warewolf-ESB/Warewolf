@@ -9,9 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-
 // ReSharper disable once CheckNamespace
 namespace Dev2.MathOperations
 {
@@ -19,6 +16,5 @@ namespace Dev2.MathOperations
     public interface IFunctionEvaluator
     {
         bool TryEvaluateFunction(string expression, out string evaluation, out string error);
-        bool TryEvaluateFunction<T>(List<T> value, string expression, out string evaluation, out string error) where T : IConvertible;
     }
 }

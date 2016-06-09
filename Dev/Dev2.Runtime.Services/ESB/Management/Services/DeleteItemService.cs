@@ -23,6 +23,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -51,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (!values.TryGetValue("folderToDelete", out pathBeingDeleted))
                     {
-                        throw new ArgumentException("itemToDelete value not supplied.");
+                        throw new ArgumentException(string.Format(ErrorResource.IsBlank, "itemToDelete"));
                     }
                 }
                 IExplorerItem itemToDelete;

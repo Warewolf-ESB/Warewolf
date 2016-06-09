@@ -9,14 +9,12 @@
 */
 
 using System;
-using Dev2.Data;
 
 namespace Dev2.Session
 {
     public interface IDev2StudioSessionBroker : IDebugSession,IDisposable
     {
         // ReSharper disable InconsistentNaming
-        string GetXMLForInputs(IDataListModel dataListModel);
         // ReSharper restore InconsistentNaming
 
    

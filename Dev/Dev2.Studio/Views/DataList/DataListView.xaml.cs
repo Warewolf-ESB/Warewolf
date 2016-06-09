@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
@@ -90,7 +89,7 @@ namespace Dev2.Studio.Views.DataList
                 if(txtbox != null)
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    if (itemThatChanged != null) // && itemThatChanged.IsRecordset
+                    if (itemThatChanged != null) // && itemThatChanged.CanHaveMutipleRows
                     {
                         itemThatChanged.IsExpanded = true;
                     }
@@ -185,26 +184,6 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion
-
-        public void ExecuteCommand(string command)
-        {
-            if (command.Equals("Delete Variables", StringComparison.OrdinalIgnoreCase))
-            {
-                DeleteButton.Command.Execute(null);
-            }
-            if (command.Equals("lr().a", StringComparison.OrdinalIgnoreCase))
-            {
-                DeleteButton.Command.Execute(null);
-            }
-            if (command.Equals("[[a]]", StringComparison.OrdinalIgnoreCase))
-            {
-                DeleteButton.Command.Execute(null);
-            }
-            if (command.Equals("mr()", StringComparison.OrdinalIgnoreCase))
-            {
-                DeleteButton.Command.Execute(null);
-            }
-        }
 
         private void Xtg_OnAssigningFieldLayoutToItem(object sender, AssigningFieldLayoutToItemEventArgs e)
         {

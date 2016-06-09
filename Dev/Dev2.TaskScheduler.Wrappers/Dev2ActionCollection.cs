@@ -33,11 +33,6 @@ namespace Dev2.TaskScheduler.Wrappers
             return _taskServiceConvertorFactory.CreateAction(Instance.Add(action.Instance));
         }
 
-        public bool ContainsType(Type actionType)
-        {
-            return Instance.ContainsType(actionType);
-        }
-
 
         public int Count
         {
@@ -66,6 +61,10 @@ namespace Dev2.TaskScheduler.Wrappers
             get { return _nativeInstance; }
         }
 
+        public bool ContainsType(Type actionType)
+        {
+            return Instance.ContainsType(actionType);
+        }
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

@@ -56,32 +56,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             PluginServiceExecutionFactory.GetNamespaces(null);
         }
 
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginServiceExecutionFactory_Validate")]
-        public void PluginRuntimeHandler_Validate_WhenValidDll_ExpectBlankMessage()
-        {
-            //------------Setup for test--------------------------
-            var source = CreatePluginSource();
-
-            //------------Execute Test---------------------------
-            var result = PluginServiceExecutionFactory.ValidatePlugin(source.AssemblyLocation);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result, string.Empty);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginServiceExecutionFactory_Validate")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void PluginRuntimeHandler_Validate_WhenNullDll_ExpectException()
-        {
-            //------------Execute Test---------------------------
-            PluginServiceExecutionFactory.ValidatePlugin(null);
-        }
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetMethods")]

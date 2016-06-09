@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Core.Interfaces;
 
@@ -132,120 +131,6 @@ namespace Dev2.Intellisense.Provider
             }
 
             return searchString;
-        }
-
-        public static IEnumerable<int> AllIndexesOf(this string inputString, string searchString)
-        {
-            if(string.IsNullOrEmpty(searchString) || string.IsNullOrEmpty(inputString))
-            {
-                yield return 0;
-            }
-            else
-            {
-                for(var index = 0; ; index += searchString.Length)
-                {
-                    index = inputString.IndexOf(searchString, index, StringComparison.Ordinal);
-                    if(index == -1)
-                        break;
-                    yield return index;
-                }
-            }
-        }
-
-        public static Region RegionInPostion(this string inputText, int position)
-        {
-            var region = new Region();
-
-            if(position > inputText.Length)
-            {
-                return new Region { Name = "" };
-            }
-
-            if(string.IsNullOrEmpty(inputText))
-            {
-                return region;
-            }
-
-            var rightSubstring = inputText.Substring(position, inputText.Length - position);
-            char[] charArray = rightSubstring.ToCharArray();
-            var openingBraces = 2;
-            var closingBraces = 0;
-            var index = position;
-            var openBraceFound = false;
-
-            foreach(var c in charArray)
-            {
-                if(c == '(')
-                {
-                    openBraceFound = true;
-                }
-
-                if(c == ')' && !openBraceFound)
-                {
-                    break;
-                }
-
-                if(Char.IsWhiteSpace(c))
-                {
-                    break;
-                }
-
-                index++;
-                if(c == '[')
-                {
-                    openingBraces++;
-                }
-
-                if(c == ']')
-                {
-                    closingBraces++;
-                }
-
-                if(openingBraces == closingBraces)
-                {
-                    break;
-                }
-            }
-
-            var endIndex = openingBraces - closingBraces == 0 ? index : position;
-
-            var leftSubString = inputText.Substring(0, position);
-            charArray = leftSubString.ToCharArray();
-            openingBraces = 0;
-            closingBraces = 2;
-            index = position;
-
-            foreach(var c in charArray.Reverse())
-            {
-                if(Char.IsWhiteSpace(c))
-                {
-                    break;
-                }
-
-                index--;
-                if(c == '[')
-                {
-                    openingBraces++;
-                }
-
-                if(c == ']')
-                {
-                    closingBraces++;
-                }
-
-                if(openingBraces == closingBraces)
-                {
-                    break;
-                }
-            }
-
-            var indexOfClosingBracket = leftSubString.LastIndexOf("]]", StringComparison.Ordinal) == -1 ? 0 : leftSubString.LastIndexOf("]]", StringComparison.Ordinal);
-            var startIndex = openingBraces - closingBraces == 0 ? index : indexOfClosingBracket;
-
-            region.StartIndex = startIndex;
-            region.Name = inputText.Substring(startIndex, endIndex - startIndex);
-
-            return region;
         }
     }
 

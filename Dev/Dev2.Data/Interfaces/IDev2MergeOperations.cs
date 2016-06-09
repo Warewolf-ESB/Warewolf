@@ -38,10 +38,5 @@ namespace Dev2.Data.Operations
         /// <param name="padding">The padding.</param>
         /// <param name="align">The align.</param>
         void Merge(string value, string mergeType, string at, string padding, string align);
-
-        /// <summary>
-        /// Clears the Merged Data.
-        /// </summary>
-        void Clear();
     }
 }

@@ -59,23 +59,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(catalogue.Object, explorerItemFactory.Catalogue);
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ExplorerItemFactory_Constructor")]
-        public void ExplorerItemFactory_IsChild_AssertStringEqualitySameAsIsChild()
-        {
-
-            //------------Setup for test--------------------------
-            var catalogue = new Mock<IResourceCatalog>();
-            var directory = new Mock<IDirectory>();
-            var auth = new Mock<IAuthorizationService>();
-            var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
-            Assert.IsTrue(explorerItemFactory.IsChild("a", "a"));
-            Assert.IsFalse(explorerItemFactory.IsChild("cd", "cde"));
-
-
-        }
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_BuildRootNode")]

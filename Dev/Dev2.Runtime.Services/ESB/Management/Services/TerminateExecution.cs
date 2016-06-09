@@ -19,6 +19,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ESB.Management
@@ -40,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management
 
             if(resourceIdString == null)
             {
-                throw new InvalidDataContractException("ResourceID is missing");
+                throw new InvalidDataContractException(ErrorResource.ResourceIdIsNull);
             }
 
             var res = new ExecuteMessage { HasError = false };

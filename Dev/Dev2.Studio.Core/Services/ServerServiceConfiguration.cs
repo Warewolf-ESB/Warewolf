@@ -42,14 +42,14 @@ namespace Dev2.Services
         {
             if(ServiceManager == null)
             {
-                throw new Exception("Null Service Manager");
+                throw new Exception(ErrorResource.NullServiceManager);
             }
 
             if(!IsServiceRunning())
             {
                 if(PopupController == null)
                 {
-                    throw new Exception("Null Popup Controller");
+                    throw new Exception(ErrorResource.NullPopupController);
                 }
 
                 var startResult = PopupController.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNo, MessageBoxImage.Question, null, false, false, false, true);

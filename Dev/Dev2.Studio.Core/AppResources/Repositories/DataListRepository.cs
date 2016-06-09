@@ -15,6 +15,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -56,7 +57,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Load()
         {
-            throw new InvalidOperationException("This repository does not require loading. It is intended to be added to at runtime");
+            throw new InvalidOperationException(ErrorResource.RepositoryDoesNotRequireLoading);
         }
 
         public void Remove(ICollection<IDataListViewModel> instanceObjs)

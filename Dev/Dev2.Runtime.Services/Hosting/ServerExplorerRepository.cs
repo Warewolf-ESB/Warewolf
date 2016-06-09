@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Security;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable MemberCanBePrivate.Global
@@ -104,7 +105,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (itemToRename == null)
             {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to rename was null");
+                return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemToRenameIsNull);
             }
             if(itemToRename.ResourceType=="Folder")
             {
@@ -126,7 +127,7 @@ namespace Dev2.Runtime.Hosting
                                      (a.ResourcePath == itemToRename.ResourcePath.Trim()));
             if (item.Any())
             {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");
+                return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
             }
             ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName);
            // Reload(workSpaceId);
@@ -139,7 +140,7 @@ namespace Dev2.Runtime.Hosting
             {
                 if (!Directory.Exists(DirectoryStructureFromPath(path)))
                 {
-                    return new ExplorerRepositoryResult(ExecStatus.NoMatch, "Requested folder does not exist on server. Folder: " + path);
+                    return new ExplorerRepositoryResult(ExecStatus.NoMatch, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
                 }
                 var resourceCatalogResult = ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
                 //if(_root != null)
@@ -241,7 +242,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (itemToDelete == null)
             {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to delete was null");
+                return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemToDeleteWasNull);
             }
             if (itemToDelete.ResourceType == "Folder")
             {
@@ -256,15 +257,15 @@ namespace Dev2.Runtime.Hosting
         {
             if (!Directory.Exists(DirectoryStructureFromPath(path)))
             {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "Requested folder does not exist on server. Folder: " + path);
+                return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
             if (!deleteContents && ResourceCatalogue.GetResourceList(workSpaceId).Count(a => a.ResourcePath == path) > 0)
             {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "Requested folder contains existing valid resources " + path);
+                return new ExplorerRepositoryResult(ExecStatus.Fail, string.Format(ErrorResource.RequestedFolderDoesNotExistOnServer, path));
             }
             if (path.Trim() == "")
             {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "You may not delete the root path");
+                return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.CannotDeleteRootPath);
             }
             try
             {
@@ -274,7 +275,7 @@ namespace Dev2.Runtime.Hosting
                                                                                 .Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();
                 if (deletedResources.Any(a => a.Status != ExecStatus.Success))
                 {
-                    return new ExplorerRepositoryResult(ExecStatus.Fail, "Failed to delete child items");
+                    return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.FailedToDeleteChildItems);
                 }
 
                 Directory.Delete(DirectoryStructureFromPath(path), true);
@@ -292,7 +293,7 @@ namespace Dev2.Runtime.Hosting
             if (itemToAdd == null)
             {
                 Dev2Logger.Info("Invalid Item");
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to add was null");
+                return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemToAddIsNull);
             }
             var resourceType = itemToAdd.ResourceType;
             if (resourceType == "Folder")
@@ -303,7 +304,7 @@ namespace Dev2.Runtime.Hosting
 
                     if (Directory.Exists(dir))
                     {
-                        return new ExplorerRepositoryResult(ExecStatus.Fail, "Requested folder already exists on server.");
+                        return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.RequestedFolderAlreadyExists);
                     }
                     Directory.CreateIfNotExists(dir);
 
@@ -330,7 +331,7 @@ namespace Dev2.Runtime.Hosting
                     return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
                 }
             }
-            return new ExplorerRepositoryResult(ExecStatus.Fail, "Only user resources can be added from this repository");
+            return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.OnlyUserResourcesCanBeAdded);
         }
 
         public IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
@@ -369,7 +370,7 @@ namespace Dev2.Runtime.Hosting
                 a.ResourcePath == newPath);
                 if (item.Any())
                 {
-                    return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");
+                    return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.ItemAlreadyExistInPath);
                 }
                 return MoveSingeItem(itemToMove, newPath, workSpaceId);
             }

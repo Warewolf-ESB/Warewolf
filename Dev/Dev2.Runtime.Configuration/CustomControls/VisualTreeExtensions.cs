@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
+using Warewolf.Resource.Errors;
 
 namespace System.Windows.Controls
 {
@@ -34,7 +35,7 @@ namespace System.Windows.Controls
         /// <returns>The visual children of the framework element.</returns>
         internal static IEnumerable<DependencyObject> GetVisualChildren(this DependencyObject parent)
         {
-            Debug.Assert(parent != null, "The parent cannot be null.");
+            Debug.Assert(parent != null, ErrorResource.ParentCannotBeNull);
 
             int childCount = VisualTreeHelper.GetChildrenCount(parent);
             for(int counter = 0; counter < childCount; counter++)
@@ -54,7 +55,7 @@ namespace System.Windows.Controls
         /// <returns>The logical children of the framework element.</returns>
         internal static IEnumerable<FrameworkElement> GetLogicalChildrenBreadthFirst(this FrameworkElement parent)
         {
-            Debug.Assert(parent != null, "The parent cannot be null.");
+            Debug.Assert(parent != null, ErrorResource.ParentCannotBeNull);
 
             Queue<FrameworkElement> queue =
                 new Queue<FrameworkElement>(parent.GetVisualChildren().OfType<FrameworkElement>());

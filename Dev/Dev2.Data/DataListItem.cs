@@ -23,10 +23,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private string _field;
         private string _recordset;
         private string _displayValue;
-        private bool _isRecordset;
-        private string _recordsetIndex;
+        private bool _canHaveMutipleRows;
+        private string _index;
         private string _value;
         private enRecordsetIndexType _recordsetIndexType;
+        private bool _isObject;
 
         #endregion Fields
 
@@ -60,16 +61,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public string RecordsetIndex
+        public string Index
         {
             get
             {
-                return _recordsetIndex;
+                return _index;
             }
             set
             {
-                _recordsetIndex = value;
-                OnNotifyPropertyChange("RecordsetIndex");
+                _index = value;
+                OnNotifyPropertyChange("Index");
             }
         }
 
@@ -86,16 +87,28 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public bool IsRecordset
+        public bool CanHaveMutipleRows
         {
             get
             {
-                return _isRecordset;
+                return _canHaveMutipleRows;
             }
             set
             {
-                _isRecordset = value;
-                OnNotifyPropertyChange("IsRecordset");
+                _canHaveMutipleRows = value;
+                OnNotifyPropertyChange("CanHaveMutipleRows");
+            }
+        }
+        public bool IsObject
+        {
+            get
+            {
+                return _isObject;
+            }
+            set
+            {
+                _isObject = value;
+                OnNotifyPropertyChange("IsObject");
             }
         }
 

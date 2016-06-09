@@ -95,53 +95,7 @@ namespace Dev2.Sql.Tests
                 sqlServer.Dispose();
             }
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("SqlServer_FetchDataSet")]
-        [ExpectedException(typeof(Exception))]
-// ReSharper disable InconsistentNaming
-        public void SqlServer_FetchDataSet_ConnectionNotInitialized_ThrowsConnectFirstException()
-// ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            var sqlServer = new SqlServer();
-            try
-            {
-                //------------Execute Test---------------------------
-                sqlServer.FetchDataSet();
-
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("SqlServer_FetchDataSet")]
-        [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
-        public void SqlServer_FetchDataSet_CommandIsNull_ThrowsArgumentNullException()
-// ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            var sqlServer = new SqlServer();
-            try
-            {
-                //------------Execute Test---------------------------
-                sqlServer.FetchDataSet((SqlCommand)null);
-
-                //------------Assert Results-------------------------
-            }
-            finally
-            {
-                sqlServer.Dispose();
-            }
-        }
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchDataTable")]

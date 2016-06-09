@@ -395,8 +395,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             else
             {
-                throw new InvalidCastException("Error casting base Object to LoggingSettings.");
+                throw new InvalidCastException(string.Format(ErrorResource.ErrorCastingBaseObject,"LoggingSettings."));
             }
+            
 
             Initialize();
 

@@ -212,18 +212,17 @@ namespace Dev2
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
-            if(dataList != null)
+            if (dataList != null)
             {
-                dataList = dataList.Replace("ADL>", "DataList>").Replace("root>","DataList>");
+                dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
                 if (xDoc.DocumentElement != null)
                 {
                     XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                    var dataListTO = new DataListTO(dataList,true);
+                    var dataListTO = new DataListTO(dataList, true);
                     TryConvert(dataObject, children, dataListTO.Inputs, update);
                 }
             }
         }
-
         public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList,int update)
         {
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)

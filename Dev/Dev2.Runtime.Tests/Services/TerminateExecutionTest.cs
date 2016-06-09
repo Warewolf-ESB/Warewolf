@@ -60,7 +60,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ExecuteExpectTaskTerminated()
         {
-            ExecutableServiceRepository.Instance.Clear();
             var service = GetExecutableService();
             ExecutableServiceRepository.Instance.Add(service.Object);
             var terminateExecution = new TerminateExecution();
@@ -71,7 +70,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ExecuteExpectSuccessResult()
         {
-            ExecutableServiceRepository.Instance.Clear();
             var service = GetExecutableService();
             ExecutableServiceRepository.Instance.Add(service.Object);
             var terminateExecution = new TerminateExecution();
@@ -87,7 +85,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ExecuteExpectFailResultIfNoServiceExist()
         {
-            ExecutableServiceRepository.Instance.Clear();
             const string Expected = "Message: Failed to stop the workflow execution. It may have completed already.";
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
@@ -100,7 +97,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void TwoServicesAddedExpectServiceWithOneAssociatedServiceFromRepository()
         {
-            ExecutableServiceRepository.Instance.Clear();
             var service1 = GetExecutableService();
             var service2 = GetExecutableService();
             service2.SetupGet(executableService => executableService.ParentID).Returns(service1.Object.ID);
@@ -114,7 +110,6 @@ namespace Dev2.Tests.Runtime.Services
         public void ThreeServicesAddedTwoRemovedExpectsOneRepository()
         {
             var guid = Guid.NewGuid();
-            ExecutableServiceRepository.Instance.Clear();
             var service1 = GetExecutableService();
             var service2 = GetExecutableService();
             var service3 = GetExecutableService();

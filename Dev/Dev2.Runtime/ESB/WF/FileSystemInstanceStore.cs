@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using System.Xml.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.DynamicServices
 {
@@ -200,7 +201,7 @@ namespace Dev2.DynamicServices
                 if(instanceId == Guid.Empty)
                 {
                     throw new InstanceKeyNotReadyException(
-                        String.Format("Unable to load instance for key: {0}",
+                        String.Format(ErrorResource.UnableToLoadInstance,
                             command.LookupInstanceKey));
                 }
 
@@ -238,7 +239,7 @@ namespace Dev2.DynamicServices
             else
             {
                 throw new InstanceNotReadyException(
-                    String.Format("Unable to load instance: {0}", instanceId));
+                    String.Format(ErrorResource.UnableToLoadInstance, instanceId));
             }
         }
 
