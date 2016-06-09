@@ -23,6 +23,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -52,12 +53,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (!values.TryGetValue("folderToRename", out folderToBeRenamed))
                     {
-                        throw new ArgumentException("itemToRename value not supplied.");
+                        throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "itemToRename"));
                     }
                 }
                 if(!values.TryGetValue("newName", out newName))
                 {
-                    throw new ArgumentException("newName value not supplied.");
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newName"));
                 }
                 IExplorerItem explorerItem;
                 if (itemToBeRenamed != null)

@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests
         //public void IsNotRecordSet_ExpectedDataItemNotContainChildren()
         //{
         //    const bool expected = false;
-        //    bool actual = _dataListItemModel.IsRecordset;
+        //    bool actual = _dataListItemModel.CanHaveMutipleRows;
         //    Assert.AreEqual(expected, actual);
         //}
 

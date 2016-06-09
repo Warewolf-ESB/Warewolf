@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ESB.Control
                 catch(Exception ex)
                 {
                     Dev2Logger.Error(ex);
-                    errors.AddError(string.Format("Service [ {0} ] not found.", dataObject.ServiceName));
+                    errors.AddError(string.Format(ErrorResource.ServiceNotFound, dataObject.ServiceName));
                     return resultID;
                 }
 

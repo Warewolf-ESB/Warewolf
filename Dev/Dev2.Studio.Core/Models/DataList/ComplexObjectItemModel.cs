@@ -10,6 +10,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private ObservableCollection<IComplexObjectItemModel> _children;
         private IComplexObjectItemModel _parent;
         private bool _isParentObject;
+        private bool _isArray;
 
         public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
@@ -37,7 +38,17 @@ namespace Dev2.Studio.Core.Models.DataList
                 NotifyOfPropertyChange(() => Children);
             }
         }
-        public bool IsArray { get; set; }
+        public bool IsArray
+        {
+            get
+            {
+                return _isArray || DisplayName.EndsWith("()");
+            }
+            set
+            {
+                _isArray = value;
+            }
+        }
         public IComplexObjectItemModel Parent
         {
             get

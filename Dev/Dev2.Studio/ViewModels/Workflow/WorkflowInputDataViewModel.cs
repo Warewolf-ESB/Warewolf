@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -350,12 +351,20 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string BuildWebPayLoad()
         {
-            var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
+            var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows);
             if(allScalars && WorkflowInputs.Count > 0)
             {
                 return WorkflowInputs.Aggregate("", (current, workflowInput) => current + workflowInput.Field + "=" + workflowInput.Value + "&").TrimEnd('&');
             }
-            return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
+            try
+            {
+                return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
+            }
+            catch(Exception)
+            {
+                //Error in the xml payload
+                return "";
+            }
         }
 
         protected virtual void SendViewInBrowserRequest(string payload)
@@ -410,8 +419,59 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="itemToAdd">The item that is currently selected</param>
         public void AddRow(IDataListItem itemToAdd)
         {
-            if(itemToAdd != null && itemToAdd.IsRecordset)
+            if(itemToAdd != null && itemToAdd.CanHaveMutipleRows)
             {
+                if (itemToAdd.IsObject)
+                {
+                    var parts = itemToAdd.DisplayValue.Split('.');
+                    if (parts.Length >= 1)
+                    {
+                        var parentItem = DataList.ShapeComplexObjects.FirstOrDefault(o => o.Name == DataListUtil.ReplaceRecordsetIndexWithBlank(parts[0]));
+                        if (parentItem != null)
+                        {
+                            for (int i = 1; i < parts.Length - 1; i++)
+                            {
+
+                                foreach (var child in parentItem.Children)
+                                {
+                                    var foundItem = child.Value.FirstOrDefault(o =>
+                                    {
+                                        var nameToCheck = DataListUtil.ReplaceRecordsetIndexWithBlank(parts[i]);
+                                        return o.Name == nameToCheck;
+                                    });
+                                    if (foundItem != null)
+                                    {
+                                        parentItem = foundItem;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (parentItem.IsArray)
+                            {
+                                var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+                                IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
+                                var lastItem = dataListItems.Last();
+                                var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                                var indexString = lastItem.Index;
+                                var indexNum = Convert.ToInt32(indexString) + 1;
+                                var lastRow = dataListItems.Where(c => c.Index == indexString);
+                                var addRow = false;
+                                foreach (var item in lastRow)
+                                {
+                                    if (item.Value != string.Empty)
+                                    {
+                                        addRow = true;
+                                    }
+                                }
+                                if (addRow)
+                                {
+                                    AddBlankComplexObjectRow(itemToAdd,parentItem, indexToInsertAt, indexNum);
+                                }
+                            }
+                        }                        
+                    }
+                    
+                }
                 IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
                 if(recordset != null)
                 {
@@ -426,23 +486,64 @@ namespace Dev2.Studio.ViewModels.Workflow
                     IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
                     var lastItem = dataListItems.Last();
                     var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                    var indexString = lastItem.RecordsetIndex;
+                    var indexString = lastItem.Index;
                     var indexNum = Convert.ToInt32(indexString) + 1;
-                    var lastRow = dataListItems.Where(c => c.RecordsetIndex == indexString);
-                    var dontAddRow = true;
+                    var lastRow = dataListItems.Where(c => c.Index == indexString);
+                    var addRow = false;
                     foreach(var item in lastRow)
                     {
                         if(item.Value != string.Empty)
                         {
-                            dontAddRow = false;
+                            addRow = true;
                         }
                     }
-                    if(!dontAddRow)
+                    if(addRow)
                     {
                         AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
                     }
                 }
             }
+        }
+
+        private void AddBlankComplexObjectRow(IDataListItem itemToAdd,IComplexObject parentItem, int indexToInsertAt, int indexNum)
+        {
+            var complexObjects = parentItem.Children[indexNum-1];
+            foreach(var complexObject in complexObjects)
+            {
+                WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+                    {
+                        DisplayValue = string.Concat(itemToAdd.Recordset.TrimEnd('(',')'), "(", indexNum, ").", complexObject.Name),
+                        Value = string.Empty,
+                        CanHaveMutipleRows = itemToAdd.CanHaveMutipleRows,
+                        Recordset = itemToAdd.Recordset,
+                        Field = complexObject.Name,
+                        Description = complexObject.Description,
+                        Index = indexNum.ToString(CultureInfo.InvariantCulture)
+                    });
+                    indexToInsertAt++;
+            }
+            //
+            //
+            //            foreach (var col in parentItem..Distinct(new ScalarNameComparer()))
+            //            {
+            //                if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+            //                {
+            //                    WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+            //                    {
+            //                        DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
+            //                        Value = string.Empty,
+            //                        CanHaveMutipleRows = dlItem.CanHaveMutipleRows,
+            //                        Recordset = dlItem.Recordset,
+            //                        Field = col.Name,
+            //                        Description = col.Description,
+            //                        Index = indexNum.ToString(CultureInfo.InvariantCulture)
+            //                    });
+            //                    indexToInsertAt++;
+            //                }
+            //                colName = col.Name;
+            //                itemsAdded = true;
+            //
+            //            }
         }
 
         /// <summary>
@@ -454,23 +555,23 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             indexToSelect = 1;
             var itemsRemoved = false;
-            if(itemToRemove != null && itemToRemove.IsRecordset)
+            if(itemToRemove != null && itemToRemove.CanHaveMutipleRows)
             {
                 // ReSharper disable InconsistentNaming
                 IEnumerable<IDataListItem> NumberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
                 // ReSharper restore InconsistentNaming
                 var numberOfRows = NumberOfRows.Count();
-                List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.RecordsetIndex == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
+                List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.Index == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
 
                 if(numberOfRows == 2)
                 {
-                    IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => c.RecordsetIndex == "1" && c.Recordset == itemToRemove.Recordset);
+                    IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => c.Index == "1" && c.Recordset == itemToRemove.Recordset);
                     bool removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
 
                     if(removeRow)
                     {
 
-                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.RecordsetIndex == "2" && c.Recordset == itemToRemove.Recordset);
+                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == "2" && c.Recordset == itemToRemove.Recordset);
 
                         foreach(IDataListItem item in listToChange)
                         {
@@ -480,7 +581,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             WorkflowInputs.Remove(item);
                             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                            if(itemToRemove.RecordsetIndex == item.RecordsetIndex)
+                            if(itemToRemove.Index == item.Index)
                             {
                                 IDataListItem item1 = item;
                                 indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
@@ -495,7 +596,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else if(numberOfRows > 2)
                 {
-                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.RecordsetIndex == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
+                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
                     foreach(IDataListItem item in listToChange)
                     {
                         item.Value = string.Empty;
@@ -504,7 +605,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         WorkflowInputs.Remove(item);
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                        if(itemToRemove.RecordsetIndex == item.RecordsetIndex)
+                        if(itemToRemove.Index == item.Index)
                         {
                             IDataListItem item1 = item;
                             indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
@@ -537,7 +638,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(val)));
                 }
-                if (item.IsRecordset)
+                if (item.CanHaveMutipleRows)
                 {
                     var recordSet = recordSets.FirstOrDefault(set => set.Name == item.Recordset);
                     if (recordSet==null)
@@ -549,9 +650,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         };
                         recordSets.Add(recordSet);
                     }
-                    recordSet.AddColumn(val, item.Field, Convert.ToInt32(item.RecordsetIndex));
+                    recordSet.AddColumn(val, item.Field, Convert.ToInt32(item.Index));
                 }
-                else if(!item.IsRecordset)
+                else if(!item.CanHaveMutipleRows)
                 {
                     DoScalarAppending(result,item);
                 }
@@ -655,7 +756,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             indexToSelect = 1;
             bool itemsAdded = false;
-            if(selectedItem != null && selectedItem.IsRecordset)
+            if(selectedItem != null && selectedItem.CanHaveMutipleRows)
             {
                 var recordset = DataList.RecordSets.FirstOrDefault(set => set.Name == selectedItem.Recordset);
                 if(recordset != null)
@@ -668,7 +769,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     IEnumerable<IDataListItem> numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
                     IDataListItem lastItem = numberOfRows.Last();
                     int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                    string indexString = lastItem.RecordsetIndex;
+                    string indexString = lastItem.Index;
                     int indexNum = Convert.ToInt32(indexString) + 1;
                     indexToSelect = indexToInsertAt + 1;
                     itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, indexToInsertAt, indexNum);
@@ -725,7 +826,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;
-            if(dlItem.IsRecordset)
+            if(dlItem.CanHaveMutipleRows)
             {
                 IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
                 string colName = null;
@@ -737,11 +838,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.Name),
                             Value = string.Empty,
-                            IsRecordset = dlItem.IsRecordset,
+                            CanHaveMutipleRows = dlItem.CanHaveMutipleRows,
                             Recordset = dlItem.Recordset,
                             Field = col.Name,
                             Description = col.Description,
-                            RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
+                            Index = indexNum.ToString(CultureInfo.InvariantCulture)
                         });
                         indexToInsertAt++;
                     }
