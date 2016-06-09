@@ -68,6 +68,23 @@ namespace Dev2.Services.Sql
                 _transaction = null;
             }
         }
+        #region FetchDataSet
+
+        public DataSet FetchDataSet(params SqlParameter[] parameters)
+        {
+            VerifyConnection();
+            return FetchDataSet(_command, parameters);
+        }
+
+        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
+        {
+            VerifyArgument.IsNotNull("command", command);
+            AddParameters(command, parameters);
+            return _factory.FetchDataSet(command);
+        }
+
+        #endregion
+
 
         #region FetchDatabases
 
@@ -105,23 +122,6 @@ namespace Dev2.Services.Sql
             VerifyConnection();
             AddParameters(_command, parameters);
             return FetchDataTable(_command);
-        }
-
-        #endregion
-
-        #region FetchDataSet
-
-        public DataSet FetchDataSet(params SqlParameter[] parameters)
-        {
-            VerifyConnection();
-            return FetchDataSet(_command, parameters);
-        }
-
-        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
-        {
-            VerifyArgument.IsNotNull("command", command);
-            AddParameters(command, parameters);
-            return _factory.FetchDataSet(command);
         }
 
         #endregion

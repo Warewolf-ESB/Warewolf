@@ -61,8 +61,6 @@ namespace Dev2.Studio.Factory
             SetupServerDialogAction(dialogueViewModel, ver, packUri, serverVersion);
             return dialogueViewModel;
         }
-
-
     }
 }
 

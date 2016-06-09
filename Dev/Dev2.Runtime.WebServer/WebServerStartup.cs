@@ -17,6 +17,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Owin;
+// ReSharper disable ParameterTypeCanBeEnumerable.Global
 
 namespace Dev2.Runtime.WebServer
 {
@@ -56,7 +57,7 @@ namespace Dev2.Runtime.WebServer
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
-            listener.AuthenticationSchemeSelectorDelegate+=AuthenticationSchemeSelectorDelegate;
+            listener.AuthenticationSchemeSelectorDelegate += AuthenticationSchemeSelectorDelegate;
             listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
@@ -72,7 +73,7 @@ namespace Dev2.Runtime.WebServer
 
             // Add web server routing...
             var config = new HttpConfiguration();
-            
+
             config.MapHttpAttributeRoutes();
             config.EnsureInitialized();
             app.UseWebApi(config);
@@ -82,7 +83,7 @@ namespace Dev2.Runtime.WebServer
         {
             EnvironmentVariables.DnsName = httpRequest.Url.DnsSafeHost;
             EnvironmentVariables.Port = httpRequest.Url.Port;
-            if (httpRequest.RawUrl.StartsWith("/public/",StringComparison.OrdinalIgnoreCase))
+            if (httpRequest.RawUrl.StartsWith("/public/", StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticationSchemes.Anonymous;
             }

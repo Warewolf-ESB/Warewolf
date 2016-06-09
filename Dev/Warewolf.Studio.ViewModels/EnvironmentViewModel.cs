@@ -240,6 +240,27 @@ namespace Warewolf.Studio.ViewModels
 
         public bool? IsResourceUnchecked { get; set; }
 
+        public void SetItemCheckedState(Guid id, bool state)
+        {
+            var resource = AsList().FirstOrDefault(a => a.ResourceId == id);
+            if (resource != null)
+            {
+                resource.Checked = state;
+            }
+        }
+
+        public void RemoveItem(IExplorerItemViewModel vm)
+        {
+            if (!vm.IsServer)
+            {
+                var res = AsList(_children).FirstOrDefault(a => a.Children != null && a.Children.Any(b => b.ResourceId == vm.ResourceId));
+                if (res != null)
+                {
+                    res.RemoveChild(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
+                    OnPropertyChanged(() => Children);
+                }
+            }
+        }
         public bool IsVisible
         {
             get
@@ -765,28 +786,6 @@ namespace Warewolf.Studio.ViewModels
         private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
         {
             return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
-        }
-
-        public void SetItemCheckedState(Guid id, bool state)
-        {
-            var resource = AsList().FirstOrDefault(a => a.ResourceId == id);
-            if (resource != null)
-            {
-                resource.Checked = state;
-            }
-        }
-
-        public void RemoveItem(IExplorerItemViewModel vm)
-        {
-            if (!vm.IsServer)
-            {
-                var res = AsList(_children).FirstOrDefault(a => a.Children != null && a.Children.Any(b => b.ResourceId == vm.ResourceId));
-                if (res != null)
-                {
-                    res.RemoveChild(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
-                    OnPropertyChanged(() => Children);
-                }
-            }
         }
 
         public ICommand RefreshCommand { get; set; }

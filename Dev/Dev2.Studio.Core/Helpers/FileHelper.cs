@@ -70,12 +70,30 @@ namespace Dev2.Studio.Core.Helpers
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
-            using(var writer = new StreamWriter(fs, Encoding.UTF8))
+            using (var writer = new StreamWriter(fs, Encoding.UTF8))
             {
                 Dev2Logger.Info("Writing a text file");
                 writer.Write(outputTxt);
             }
         }
+        public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
+        {
+            CreateTextFile(fileContent, uniqueOutputPath);
+            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+            if (sourceDirectoryName != null)
+            {
+                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+                using (var zip = new ZipFile())
+                {
+                    zip.AddFile(uniqueOutputPath, ".");
+                    zip.Save(destinationArchiveFileName);
+                }
+                return destinationArchiveFileName;
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Ensures the path isvalid.
@@ -88,12 +106,12 @@ namespace Dev2.Studio.Core.Helpers
 
             if(string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
             {
-                throw new InvalidOperationException(ErrorResource.OutputPathCanOnlyBeXmlOrZip);
+                throw new InvalidOperationException("The output path can only be to a 'xml' or 'zip' file.");
             }
 
             if(path.Exists)
             {
-                throw new IOException(ErrorResource.FileSpecifiedAlreadyExists);
+                throw new IOException("File specified in the output path already exists.");
             }
 
             if(path.Directory == null)
@@ -124,24 +142,6 @@ namespace Dev2.Studio.Core.Helpers
         }
 
 
-        public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
-        {
-            CreateTextFile(fileContent, uniqueOutputPath);
-            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            if(sourceDirectoryName != null)
-            {
-                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-                using(var zip = new ZipFile())
-                {
-                    zip.AddFile(uniqueOutputPath, ".");
-                    zip.Save(destinationArchiveFileName);
-                }
-                return destinationArchiveFileName;
-            }
-            return null;
-        }
-
         public static string GetDebugItemTempFilePath(string uri)
         {
             Dev2Logger.Info("");
@@ -149,7 +149,7 @@ namespace Dev2.Studio.Core.Helpers
             if(String.IsNullOrEmpty(uri))
             {
                 Dev2Logger.Info("Uri is empty, an exception is thrown");
-                throw new ArgumentNullException("uri", ErrorResource.CannotPassNullOrEmptyUri);
+                throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
             }
 
             using(var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
@@ -176,20 +176,6 @@ namespace Dev2.Studio.Core.Helpers
             if(!Directory.Exists(fullNewPath))
             {
                 Directory.Move(fullOldPath, fullNewPath);
-            }
-        }
-
-        public static void CreateDirectoryFromString(string filePath)
-        {
-            var file = new FileInfo(filePath);
-            var directory = file.Directory;
-            if(directory != null)
-            {
-                Directory.CreateDirectory(directory.ToString());
-            }
-            else
-            {
-                throw new ArgumentException(ErrorResource.InvalidPath);
             }
         }
     }

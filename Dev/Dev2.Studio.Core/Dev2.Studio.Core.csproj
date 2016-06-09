@@ -185,7 +185,6 @@
     <Compile Include="Activities\Utils\ModelItemUtils.cs" />
     <Compile Include="AppResources\Attributes\ResourceHelper.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
-    <Compile Include="AppResources\Browsers\InternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />

@@ -11,7 +11,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Common.Interfaces.Communication;
 using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -138,26 +137,6 @@ namespace Dev2.Infrastructure.Tests.Communication
             Assert.AreEqual(memo.InstanceID, actualMemo.InstanceID);
             Assert.AreEqual(memo.Date, actualMemo.Date);
         }
-
-
-        [TestMethod]
-        [Description("Parse must deserialize the envelope and then deserialize the contained memo.")]
-        [TestCategory("UnitTest")]
-        [Owner("Trevor Williams-Ros")]
-// ReSharper disable InconsistentNaming
-        public void MemoParse_UnitTest_Serialization_MemoFromEnvelopeContent()
-// ReSharper restore InconsistentNaming
-        {
-            var memo = new Memo { InstanceID = Guid.NewGuid() };
-
-            var serializer = new Dev2JsonSerializer();
-
-            var envelopeStr = memo.ToString(serializer);
-            var actual = Memo.Parse(serializer, envelopeStr) as IMemo;
-
-            Assert.IsNotNull(actual);
-            Assert.AreEqual(memo.InstanceID, actual.InstanceID);
-            Assert.AreEqual(memo.Date, actual.Date);
-        }
+        
     }
 }

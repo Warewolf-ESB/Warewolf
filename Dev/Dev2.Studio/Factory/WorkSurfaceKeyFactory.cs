@@ -37,11 +37,11 @@ namespace Dev2.Factory
         public static IWorkSurfaceKey CreateKey(WorkSurfaceContext context)
         {
             return new WorkSurfaceKey
-                {
-                    WorkSurfaceContext = context,
-                    ResourceID = Guid.NewGuid(),
-                    ServerID = Guid.Empty
-                };
+            {
+                WorkSurfaceContext = context,
+                ResourceID = Guid.NewGuid(),
+                ServerID = Guid.Empty
+            };
         }
         /// <summary>
         /// Create a key which are unique to the entire studio
@@ -50,7 +50,7 @@ namespace Dev2.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context,Guid Environemt)
+        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context, Guid Environemt)
         {
             return new WorkSurfaceKey
             {
@@ -91,18 +91,18 @@ namespace Dev2.Factory
         {
             var context = resourceModel.ResourceType.ToWorkSurfaceContext();
             return new WorkSurfaceKey
-                {
-                    WorkSurfaceContext = context,
-                    ResourceID = resourceModel.ID,
-                    ServerID = resourceModel.ServerID,
-                    EnvironmentID = resourceModel.Environment.ID
-                };
+            {
+                WorkSurfaceContext = context,
+                ResourceID = resourceModel.ID,
+                ServerID = resourceModel.ServerID,
+                EnvironmentID = resourceModel.Environment.ID
+            };
         }
 
         public static WorkSurfaceKey CreateKey(IDebugState debugState)
         {
             var origin = debugState.WorkspaceID;
-            if(origin != Guid.Empty)
+            if (origin != Guid.Empty)
             {
                 IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
                 Guid environmentID = environmentModel.ID;
@@ -115,11 +115,11 @@ namespace Dev2.Factory
                 };
             }
             return new WorkSurfaceKey
-                {
-                    WorkSurfaceContext = WorkSurfaceContext.Workflow,
-                    ResourceID = debugState.OriginatingResourceID,
-                    ServerID = debugState.ServerID,
-                };
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow,
+                ResourceID = debugState.OriginatingResourceID,
+                ServerID = debugState.ServerID,
+            };
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace Dev2.SignalR.Wrappers
 
     public interface ISubscriptionWrapper
     {
-         event Action<IList<JToken>> Received;
+        event Action<IList<JToken>> Received;
     }
 
 

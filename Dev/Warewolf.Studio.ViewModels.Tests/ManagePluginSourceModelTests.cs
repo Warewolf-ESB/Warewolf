@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -38,21 +37,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        public void TestGetComputerNames()
-        {
-            //arrange
-            var expectedResult = new List<string>();
-            _queryProxyMock.Setup(it => it.GetComputerNames()).Returns(expectedResult);
-
-            //act
-            var result = _target.GetComputerNames();
-
-            //assert
-            Assert.AreSame(expectedResult, result);
-            _queryProxyMock.Verify(it => it.GetComputerNames());
-        }
-
-        [TestMethod]
         public void TestGetDllListings()
         {
             //arrange
@@ -68,31 +52,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _queryProxyMock.Verify(it => it.GetDllListings(listingMock.Object));
         }
 
-        [TestMethod]
-        public void TestTestDbConnection()
-        {
-            //arrange
-            var resourceMock = new Mock<IDbSource>();
-
-            //act
-            _target.TestDbConnection(resourceMock.Object);
-
-            //assert
-            _updateRepositoryMock.Verify(it => it.TestDbConnection(resourceMock.Object));
-        }
-
-        [TestMethod]
-        public void TestSave()
-        {
-            //arrange
-            var resourceMock = new Mock<IDbSource>();
-
-            //act
-            _target.Save(resourceMock.Object);
-
-            //assert
-            _updateRepositoryMock.Verify(it => it.Save(resourceMock.Object));
-        }
 
         [TestMethod]
         public void TestSavePlugin()

@@ -258,16 +258,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             ScenarioContext.Current.Add(DestinationPrivateKeyFile, destinationKey);
         }
 
-        [When(@"validating the tool")]
-        public void WhenValidatingTheTool()
-        {
-            var dev2Activity = TestStartNode.Action as IDev2Activity;
-            if (dev2Activity != null)
-            {
-                var validationErrors = dev2Activity.PerformValidation();
-                ScenarioContext.Current.Add(ValidationErrors, validationErrors);
-            }
-        }
+      
 
         [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)

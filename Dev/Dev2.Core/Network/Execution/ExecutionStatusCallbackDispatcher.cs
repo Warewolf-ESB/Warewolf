@@ -76,51 +76,6 @@ namespace Dev2.Network.Execution
         #region Methods
 
         /// <summary>
-        ///     Adds the specified callback.
-        /// </summary>
-        /// <param name="callbackID">The callback ID.</param>
-        /// <param name="callback">The callback.</param>
-        /// <exception cref="System.ArgumentNullException">callback</exception>
-        /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
-        public bool Add(Guid callbackID, Action<ExecutionStatusCallbackMessage> callback)
-        {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
-
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
-                }
-            }
-
-            return _callbacks.TryAdd(callbackID, callback);
-        }
-
-        /// <summary>
-        ///     Removes the specified callback.
-        /// </summary>
-        /// <param name="callbackID">The callback ID.</param>
-        /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
-        public bool Remove(Guid callbackID)
-        {
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
-                }
-            }
-
-            Action<ExecutionStatusCallbackMessage> tmpCallback;
-            return _callbacks.TryRemove(callbackID, out tmpCallback);
-        }
-
-
-        /// <summary>
         ///     Posts the specified message (Asynchronously).
         /// </summary>
         /// <param name="message">The message.</param>
@@ -145,34 +100,6 @@ namespace Dev2.Network.Execution
             if (_callbacks.TryGetValue(message.CallbackID, out callback))
             {
                 callback.BeginInvoke(message, null, null);
-            }
-        }
-
-        /// <summary>
-        ///     Sends the specified message (Synchronously).
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <exception cref="System.ArgumentNullException">message</exception>
-        /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
-        public void Send(ExecutionStatusCallbackMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-
-            lock (_disposeGuard)
-            {
-                if (_isDisposed)
-                {
-                    throw new InvalidOperationException(ErrorResource.ChannelDisposing);
-                }
-            }
-
-            Action<ExecutionStatusCallbackMessage> callback;
-            if (_callbacks.TryGetValue(message.CallbackID, out callback))
-            {
-                callback(message);
             }
         }
 

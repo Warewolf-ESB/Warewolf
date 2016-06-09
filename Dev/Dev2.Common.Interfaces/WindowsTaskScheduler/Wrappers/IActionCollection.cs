@@ -32,6 +32,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// </returns>
         IAction Add(IAction action);
 
+
         /// <summary>
         ///     Determines whether the specified action type is contained in this collection.
         /// </summary>

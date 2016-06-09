@@ -172,7 +172,6 @@ namespace Warewolf.AcceptanceTesting.Variables
                     parentName = variableName.Substring(0, variableName.IndexOf("(", StringComparison.Ordinal));
                     var variableListViewRecsetCollection = sourceControl.RecsetCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.DisplayName == varName && model.Parent.DisplayName == parentName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewRecsetCollection));
-                    sourceViewControl.ExecuteCommand(variableName);
                 }
                 else
                 {
@@ -183,7 +182,6 @@ namespace Warewolf.AcceptanceTesting.Variables
                         variableListViewRecsetCollection.IsUsed = false;
                     }
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewRecsetCollection));
-                    sourceViewControl.ExecuteCommand(variableName);
                 }
             }
             else
@@ -193,7 +191,6 @@ namespace Warewolf.AcceptanceTesting.Variables
                     varName = variableName.Substring(variableName.IndexOf(".", StringComparison.Ordinal) + 1);
                     var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == varName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
-                    sourceViewControl.ExecuteCommand(variableName);
                     //var variableListViewScalarCollection = sourceControl.ScalarCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName);
                     //Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
                     //sourceViewControl.ExecuteCommand(variableName);
@@ -202,7 +199,6 @@ namespace Warewolf.AcceptanceTesting.Variables
                 {
                     var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == variableName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
-                    sourceViewControl.ExecuteCommand(variableName);
                 }
             }
         }
@@ -220,7 +216,6 @@ namespace Warewolf.AcceptanceTesting.Variables
         public void WhenIClick(string command)
         {
             var sourceControl = ScenarioContext.Current.Get<DataListView>(Utils.ViewNameKey);
-            sourceControl.ExecuteCommand(command);
         }
 
         [When(@"I Sort the variables")]

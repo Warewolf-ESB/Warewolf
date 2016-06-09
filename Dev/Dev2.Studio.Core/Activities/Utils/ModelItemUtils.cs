@@ -47,16 +47,6 @@ namespace Dev2.Studio.Core.Activities.Utils
             }
         }
 
-        public static ModelItem CreateModelItem(object objectToMakeModelItem)
-        {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-            
-            mtm.Load(objectToMakeModelItem);
-           
-            return mtm.Root;
-        }
-
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
             EditingContext ec = new EditingContext();
@@ -68,6 +58,15 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
+        }
+        public static ModelItem CreateModelItem(object objectToMakeModelItem)
+        {
+            EditingContext ec = new EditingContext();
+            ModelTreeManager mtm = new ModelTreeManager(ec);
+            
+            mtm.Load(objectToMakeModelItem);
+           
+            return mtm.Root;
         }
 
         public static T GetProperty<T>(this ModelItem modelItem, string propertyName)

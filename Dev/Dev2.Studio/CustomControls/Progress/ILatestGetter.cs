@@ -19,6 +19,5 @@ namespace Dev2.Studio.Core.Helpers
     public interface ILatestGetter
     {
         event EventHandler Invoked;
-        void GetLatest(string uri, string filePath);
     }
 }
