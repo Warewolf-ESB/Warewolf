@@ -107,8 +107,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
             Assert.IsNull(DsfWebPutActivity.OutputDescription);
-            Assert.AreEqual(1, environment.Errors.Count);
-            Assert.AreEqual("There are no outputs", environment.Errors.ToList()[0]);
         }
 
         [TestMethod]
@@ -201,8 +199,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
             Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
-            Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0))); 
-           }
+            Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
+        }
 
 
         [TestMethod]
@@ -478,7 +476,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var count = userAgentCollection.Count;
             //---------------Test Result -----------------------
             Assert.AreEqual(0, count);
-   
+
         }
 
         [TestMethod]
@@ -538,34 +536,34 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
 
-       /* [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void PerfomWebRequest_GivenLiveUrl_ShouldReturnResponse()
-        {
-            //---------------Set up test pack-------------------
-            const string putData = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
-                                   "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
-                                   "\"Visibility\": \"greater than 7 mile(s):0\"," +
-                                   "\"Temperature\": \"59 F (15 C)\"," +
-                                   "\"DewPoint\": \"41 F (5 C)\"," +
-                                   "\"RelativeHumidity\": \"51%\"," +
-                                   "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
-                                   "\"Status\": \"Success\"" +
-                                   "}";
-            var webSource = new WebSource()
-            {
-                Address = "http://petstore.swagger.io/v2/pet",
-                AuthenticationType = AuthenticationType.Windows
-            };
-            var dsfWebPutActivity = new DsfWebPutActivity { PutData = putData };
-            
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfWebPutActivity);
-            //---------------Execute Test ----------------------
-            dsfWebPutActivity.
+        /* [TestMethod]
+         [Owner("Nkosinathi Sangweni")]
+         public void PerfomWebRequest_GivenLiveUrl_ShouldReturnResponse()
+         {
+             //---------------Set up test pack-------------------
+             const string putData = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
+                                    "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
+                                    "\"Visibility\": \"greater than 7 mile(s):0\"," +
+                                    "\"Temperature\": \"59 F (15 C)\"," +
+                                    "\"DewPoint\": \"41 F (5 C)\"," +
+                                    "\"RelativeHumidity\": \"51%\"," +
+                                    "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
+                                    "\"Status\": \"Success\"" +
+                                    "}";
+             var webSource = new WebSource()
+             {
+                 Address = "http://petstore.swagger.io/v2/pet",
+                 AuthenticationType = AuthenticationType.Windows
+             };
+             var dsfWebPutActivity = new DsfWebPutActivity { PutData = putData };
 
-            //---------------Test Result -----------------------
-        }*/
+             //---------------Assert Precondition----------------
+             Assert.IsNotNull(dsfWebPutActivity);
+             //---------------Execute Test ----------------------
+             dsfWebPutActivity.
+
+             //---------------Test Result -----------------------
+         }*/
 
         private static TestDsfWebPutActivity CreateWebPutActivityFromBase()
         {
