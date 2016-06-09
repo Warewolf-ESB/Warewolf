@@ -1156,22 +1156,30 @@ namespace Warewolf.Studio.ViewModels
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
-                    var a = new PopupMessage
-                    {
-                        Buttons = MessageBoxButton.OK,
-                        Description = "The destination folder has a resource with the same name",
-                        Header = "Move Not allowed",
-                        Image = MessageBoxImage.Error
-                    };
-                    ShellViewModel.ShowPopup(a);
+                    ShowErrorMessage("An unexpected error occured which prevented the resource from being moved.");
+                    Server.UpdateRepository.FireItemSaved();
                     return false;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ShowErrorMessage(ex.Message);
+                Server.UpdateRepository.FireItemSaved();
                 return false;
             }
             return true;
+        }
+
+        public void ShowErrorMessage(string errorMessage)
+        {
+            var a = new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                Description = errorMessage,
+                Header = "Move Not allowed",
+                Image = MessageBoxImage.Error
+            };
+            ShellViewModel.ShowPopup(a);
         }
 
         public bool CanDrop

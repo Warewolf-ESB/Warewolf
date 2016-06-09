@@ -1520,7 +1520,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-            studioUpdateManagerMock.Verify(it=>it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1552,10 +1551,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-         
-
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1584,8 +1579,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsTrue(result);
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1615,8 +1608,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsTrue(result);
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1646,8 +1637,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         #endregion Test methods
