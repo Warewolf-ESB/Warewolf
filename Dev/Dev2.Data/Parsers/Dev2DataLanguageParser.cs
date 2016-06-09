@@ -195,7 +195,7 @@ namespace Dev2.Data.Parsers
                 // short-circuit this case ;)
                 if (payload.Equals("[[]]"))
                 {
-                    result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, "Variable [[]] is missing a name", enIntellisenseErrorCode.SyntaxError, true));
+                    result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, ErrorResource.VariableIsMissing, enIntellisenseErrorCode.SyntaxError, true));
                     return result;
                 }
 
@@ -367,7 +367,7 @@ namespace Dev2.Data.Parsers
                         }
                         else if (currentNode.IsRoot && !currentNode.IsLeaf && currentNode.Child.HangingOpen)
                         {
-                            throw new Dev2DataLanguageParseError("Invalid syntax - You need to close ( ]] ) your variable list reference", 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
+                            throw new Dev2DataLanguageParseError(ErrorResource.InvalidSyntaxCreatingVariable, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
                         }
                         cur = '\0';
                     }
@@ -1366,12 +1366,12 @@ namespace Dev2.Data.Parsers
                             }
                             else
                             {
-                                throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonPositiveRecordsetIndex);
+                                throw new Dev2DataLanguageParseError(string.Format(ErrorResource.RecordsetIndexNotGreaterThanZero, part), to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                             }
                         }
                         else
                         {
-                            string message = "Recordset index (" + part + ") contains invalid character(s)";
+                            string message = string.Format(ErrorResource.RecordsetIndexContainsInvalidCharecters, part);
                             throw new Dev2DataLanguageParseError(message, to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonNumericRecordsetIndex);
                         }
                     }

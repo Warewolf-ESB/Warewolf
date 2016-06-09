@@ -104,8 +104,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
             Assert.IsNull(dsfWebPostActivity.OutputDescription);
-            Assert.AreEqual(1,environment.Errors.Count);
-            Assert.AreEqual("There are no outputs", environment.Errors.ToList()[0]);
         }
 
         [TestMethod]

@@ -35,9 +35,6 @@ namespace Dev2.PerformanceCounters.Management
         {
             return _counters.First(a => a.PerfCounterType == type).ToSafe();
         }
-
-
-
         public IPerformanceCounter GetCounter(Guid resourceId, WarewolfPerfCounterType type)
         {
             try
@@ -52,7 +49,21 @@ namespace Dev2.PerformanceCounters.Management
             }
             
         }
+        public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
+        {
+            var toRemove = _resourceCounters.FirstOrDefault(a =>
+            {
+                var resourcePerformanceCounter = a as IResourcePerformanceCounter;
+                return resourcePerformanceCounter != null && (resourcePerformanceCounter.ResourceId == resourceId && resourcePerformanceCounter.PerfCounterType == type);
+            });
 
+            if (toRemove != null)
+            {
+                _resourceCounters.Remove(toRemove);
+                _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
+            }
+
+        }
         public IResourcePerformanceCounter EmptyCounter { get; set; }
 
         #region Implementation of IPerformanceCounterFactory
@@ -86,21 +97,7 @@ namespace Dev2.PerformanceCounters.Management
             }
             return (IResourcePerformanceCounter)GetCounter(resourceId, type).FromSafe();
         }
-        public void RemoverCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
-        {
-            var toRemove = _resourceCounters.FirstOrDefault(a =>
-            {
-                var resourcePerformanceCounter = a as IResourcePerformanceCounter;
-                return resourcePerformanceCounter != null && (resourcePerformanceCounter.ResourceId == resourceId && resourcePerformanceCounter.PerfCounterType == type);
-            });
 
-            if (toRemove != null)
-            {
-                _resourceCounters.Remove(toRemove);
-                _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
-            }
-       
-        }
         #endregion
 
         #region Implementation of IPerformanceCounterRepository

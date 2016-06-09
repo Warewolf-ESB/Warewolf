@@ -194,8 +194,8 @@ namespace Dev2.Core.Tests.Workflows
             {
                 Assert.AreEqual(inputValues[i].DisplayValue, workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
                 Assert.AreEqual(inputValues[i].Value, workflowInputDataviewModel.WorkflowInputs[i].Value);
-                Assert.AreEqual(inputValues[i].IsRecordset, workflowInputDataviewModel.WorkflowInputs[i].IsRecordset);
-                Assert.AreEqual(inputValues[i].RecordsetIndex, workflowInputDataviewModel.WorkflowInputs[i].RecordsetIndex);
+                Assert.AreEqual(inputValues[i].CanHaveMutipleRows, workflowInputDataviewModel.WorkflowInputs[i].CanHaveMutipleRows);
+                Assert.AreEqual(inputValues[i].Index, workflowInputDataviewModel.WorkflowInputs[i].Index);
                 Assert.AreEqual(inputValues[i].Field, workflowInputDataviewModel.WorkflowInputs[i].Field);
             }
         }
@@ -226,7 +226,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugVM = CreateDebugOutputViewModel();
 
-            var itemToAdd = new DataListItem { DisplayValue = "rec(1).a", Field = "a", Recordset = "rec", IsRecordset = true, RecordsetIndex = "1", RecordsetIndexType = enRecordsetIndexType.Numeric, Value = "1" };
+            var itemToAdd = new DataListItem { DisplayValue = "rec(1).a", Field = "a", Recordset = "rec", CanHaveMutipleRows = true, Index = "1", RecordsetIndexType = enRecordsetIndexType.Numeric, Value = "1" };
 
             //------------Execute Test---------------------------
             var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
@@ -267,7 +267,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugVM = CreateDebugOutputViewModel();
 
-            var itemToAdd = new DataListItem { DisplayValue = "scalar", Field = "scalar", IsRecordset = false, Value = "1" };
+            var itemToAdd = new DataListItem { DisplayValue = "scalar", Field = "scalar", CanHaveMutipleRows = false, Value = "1" };
 
             //------------Execute Test---------------------------
             var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
@@ -529,11 +529,11 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IDataListItem> records = new Mock<IDataListItem>();
             records.Setup(rec => rec.DisplayValue).Returns(recordSetName + "(" + recordSetIndex + ")." + recordSetField);
             records.Setup(rec => rec.Field).Returns(recordSetField);
-            records.Setup(rec => rec.RecordsetIndex).Returns(Convert.ToString(recordSetIndex));
+            records.Setup(rec => rec.Index).Returns(Convert.ToString(recordSetIndex));
             records.Setup(rec => rec.RecordsetIndexType).Returns(enRecordsetIndexType.Numeric);
             records.Setup(rec => rec.Recordset).Returns(recordSetName);
             records.Setup(rec => rec.Value).Returns(recordSetValue);
-            records.Setup(rec => rec.IsRecordset).Returns(true);
+            records.Setup(rec => rec.CanHaveMutipleRows).Returns(true);
 
             return records.Object;
         }

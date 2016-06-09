@@ -22,6 +22,7 @@ using Dev2.Data.MathOperations;
 using Dev2.Intellisense.Provider;
 using Dev2.MathOperations;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
@@ -172,7 +173,7 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
             parseEventLog.Clear();
-            errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, "An error occurred while parsing { " + expression + " } It appears to be malformed", true, 0, expression.Length));
+            errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, string.Format(ErrorResource.MalformedExpression, expression), true, 0, expression.Length));
             return errors;
         }
 
@@ -181,7 +182,7 @@ namespace Dev2.Studio.InterfaceImplementors
             IList<IntellisenseProviderResult> errors = new List<IntellisenseProviderResult>();
             var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
             parseEventLog.Clear();
-            errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, "An error occurred while parsing { " + expression + " } It appears to be malformed", true, 0, expression.Length));
+            errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, string.Format(ErrorResource.MalformedExpression, expression), true, 0, expression.Length));
             return errors;
         }
 

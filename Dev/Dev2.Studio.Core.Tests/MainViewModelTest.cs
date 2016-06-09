@@ -1127,7 +1127,6 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
-            envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
@@ -1187,7 +1186,6 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
             envRepo.Setup(e => e.Get(It.IsAny<Guid>())).Returns(env.Object);
-            envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
@@ -1494,7 +1492,6 @@ namespace Dev2.Core.Tests
 
             envRepo.Setup(mock => mock.All()).Returns(envColletion);
             envRepo.Setup(mock => mock.Source).Returns(env.Object);
-            envRepo.Setup(mock => mock.ReadSession()).Returns(new[] { env.Object.ID });
 
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
@@ -1545,7 +1542,6 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
-            envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             viewModel.Items.Add(contextViewModel);
@@ -1594,7 +1590,6 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
-            envRepo.Setup(r => r.ReadSession()).Returns(new[] { env.Object.ID });
             var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
             viewModel.Items.Add(contextViewModel);
 
@@ -1628,7 +1623,6 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
-            envRepo.Setup(e => e.ReadSession()).Returns(new[] { Guid.NewGuid() });
             var vm = new MainViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, popupController.Object);
             vm.ShowCommunityPage();
 
@@ -2065,7 +2059,6 @@ namespace Dev2.Core.Tests
             var environmentRepository = new Mock<IEnvironmentRepository>();
             environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
             environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
-            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
 
         }
@@ -2106,7 +2099,6 @@ namespace Dev2.Core.Tests
             var environmentRepository = new Mock<IEnvironmentRepository>();
             environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
             environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
-            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
             //            new Thread(() =>
             //            {

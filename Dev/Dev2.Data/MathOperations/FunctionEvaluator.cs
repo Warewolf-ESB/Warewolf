@@ -10,9 +10,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Dev2.Common;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
@@ -101,87 +99,8 @@ namespace Dev2.MathOperations
 
         // It expects a List of Type To (either strings or any type of object that is IComparable).
         // And evaluates the whole list against the expression.
-        /// <summary>
-        /// This is to cater for range operations 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <param name="expression"></param>
-        /// <param name="evaluation"></param>
-        /// <param name="error"></param>
-        /// <returns></returns>
-        public bool TryEvaluateFunction<T>(List<T> value, string expression, out string evaluation, out string error) where T : IConvertible
-        {
-            bool evaluationState;
-            string evalString = string.Concat(expression, "(");
-            evaluation = string.Empty;
-            error = string.Empty;
-            if(value == null || value.Count == 0)
-            {
-                evaluationState = false;
-                error = ErrorResource.CannotEvaluateEmptyValueList;
-            }
-            else if(!string.IsNullOrEmpty(expression))
-            {
-                evalString = value.Select(val => val.ToString(CultureInfo.InvariantCulture)).Where(eval => !string.IsNullOrEmpty(eval)).Aggregate(evalString, (current, eval) => current + string.Concat(eval, ","));
-                evalString = evalString.Remove(evalString.LastIndexOf(",", StringComparison.Ordinal), 1);
-                evalString = string.Concat(evalString, ")");
-                try
-                {
-                    CalculationValue calcValue = _manager.CalculateFormula(evalString);
-                    evaluation = calcValue.GetResolvedValue().ToString();
-                    evaluationState = true;
-                }
-                catch(Exception ex)
-                {
-                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
-                    error = ex.Message;
-                    evaluationState = false;
-                }
-            }
-            else
-            {
-                error = ErrorResource.NothingToEvaluate;
-                evaluationState = false;
-            }
-            return evaluationState;
-        }
 
         #endregion Public Methods
-
-        #region Statics
-
-        public bool TryEvaluateAtomicFunction(string expression, out string evaluation, out string error)
-        {
-            bool evaluationState;
-            error = String.Empty;
-            evaluation = String.Empty;
-            if(!String.IsNullOrEmpty(expression))
-            {
-
-                try
-                {
-                    CalculationValue value = _manager.CalculateFormula(expression);
-                    evaluation = value.GetResolvedValue().ToString();
-                    evaluationState = true;
-                }
-                catch(Exception ex)
-                {
-                    Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex);
-                    error = ex.Message;
-                    evaluationState = false;
-                }
-            }
-            else
-            {
-                error = ErrorResource.NothingToEvaluate;
-                evaluationState = false;
-            }
-
-            return evaluationState;
-        }
-
-        #endregion Statics
 
         #region Private Methods
 

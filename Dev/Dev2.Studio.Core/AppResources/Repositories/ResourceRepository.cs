@@ -228,7 +228,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return effectedResources;
         }
 
- 
+
         public void UpdateResourceRepositoryWithDeploy(IResourceModel resource)
         {
             var x = GetStudioResourceRepository().FindItem(a => a.ResourceId == resource.ID && a.EnvironmentId == _environmentModel.ID);

@@ -429,19 +429,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
         #endregion
-    }
-
-    public class Person
-    {
-        public string Name { get; set; }
-        public string SurName { get; set; }
-        public int Age { get; set; }
-    }
-    public class Car
-    {
-        public string Model { get; set; }
-        public string Make { get; set; }
-    }
+    }    
     public class Main
     {
     }

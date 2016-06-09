@@ -82,9 +82,9 @@ namespace Dev2.MathOperations
         public void CreateCustomFunction(string functionName, List<string> args, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
             CustomCalculationFunction calcFunction;
-            if(CreateCustomFunction(functionName, function, out calcFunction))
+            if (CreateCustomFunction(functionName, function, out calcFunction))
             {
-                if(calcManager != null)
+                if (calcManager != null)
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
                     SetFunctionName(functionName);
@@ -113,13 +113,13 @@ namespace Dev2.MathOperations
 
         private static bool CreateCustomFunction(string functionName, Func<double[], double> func, out CustomCalculationFunction custCalculation)
         {
-            bool isSucessfullyCreated;            
+            bool isSucessfullyCreated;
             try
             {
                 custCalculation = new CustomCalculationFunction(functionName, func, 0, 1);
                 isSucessfullyCreated = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Function", ex);
                 custCalculation = null;
@@ -131,7 +131,7 @@ namespace Dev2.MathOperations
 
         private void SetFunctionName(string functionName)
         {
-            if(!string.IsNullOrEmpty(functionName))
+            if (!string.IsNullOrEmpty(functionName))
             {
                 _functionName = functionName;
             }

@@ -748,7 +748,7 @@
     <value>The value can not be null.</value>
   </data>
   <data name="VariableIsMissing" xml:space="preserve">
-    <value>Variable [[{0}]] is missing a name</value>
+    <value>Variable [[]] is missing a name</value>
   </data>
   <data name="XPathProvidedNotValid" xml:space="preserve">
     <value>The XPath expression provided is not valid</value>
@@ -1019,5 +1019,314 @@
   </data>
   <data name="NoObjectName" xml:space="preserve">
     <value>Please enter an 'Object Name' as 'Is Object' has been selected.</value>
+  </data>
+  <data name="ArgumentsNotAllowedToBeNull" xml:space="preserve">
+    <value>The following arguments are not allowed to be null: {0}</value>
+  </data>
+  <data name="CannotDeleteFileWithoughtDirectory" xml:space="preserve">
+    <value>Cant delete a file if no directory is passed.</value>
+  </data>
+  <data name="EmptySecuritySettingsPassed" xml:space="preserve">
+    <value>Empty Security Settings passed.</value>
+  </data>
+  <data name="ErrorBuildingSettingsGraph" xml:space="preserve">
+    <value>Error building settings graph from '{0}'.</value>
+  </data>
+  <data name="ErrorCastingBaseObject" xml:space="preserve">
+    <value>Error casting base Object to {0}</value>
+  </data>
+  <data name="ErrorDuringCancelCallback" xml:space="preserve">
+    <value>The following error occurred while executing the cancel callback '{0}'.</value>
+  </data>
+  <data name="ErrorDuringSaveCallback" xml:space="preserve">
+    <value>The following error occurred while executing the save callback '{0}'.</value>
+  </data>
+  <data name="ErrorGettingResourceDefinition" xml:space="preserve">
+    <value>Error getting resource definition for: {0}</value>
+  </data>
+  <data name="ErrorLoadingResource" xml:space="preserve">
+    <value>Error loading resource with ID:{0}"</value>
+  </data>
+  <data name="ErrorParsingInput" xml:space="preserve">
+    <value>Error parsing '{0}' input.</value>
+  </data>
+  <data name="ErrorRetrievingDBSourceForResource" xml:space="preserve">
+    <value>Error retrieving DBSource for resource ID:{0} and Name:{1}</value>
+  </data>
+  <data name="ErrorWritingLoggingConfiguration" xml:space="preserve">
+    <value>Error writing logging configuration.</value>
+  </data>
+  <data name="FailedToBuildFutureReceipt" xml:space="preserve">
+    <value>Failed to build future receipt for [{0} ] Value [ {1} ]</value>
+  </data>
+  <data name="FailedToConnectWithConnectionString" xml:space="preserve">
+    <value>Failed to connect with the following connection string: '{0}'</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>No such file exists on the server.</value>
+  </data>
+  <data name="InvalidArguments" xml:space="preserve">
+    <value>Invalid arguments passed in.</value>
+  </data>
+  <data name="InvalidCommand" xml:space="preserve">
+    <value>Invalid {0} expected</value>
+  </data>
+  <data name="InvalidEnumerator" xml:space="preserve">
+    <value>The enumerator is not valid because the dictionary changed.</value>
+  </data>
+  <data name="InvalidOutputFormat" xml:space="preserve">
+    <value>Output format in service action {0} is invalid.</value>
+  </data>
+  <data name="InvalidSecuritySettings" xml:space="preserve">
+    <value>The security settings are not valid.</value>
+  </data>
+  <data name="InvalidSqlConnection" xml:space="preserve">
+    <value>Invalid {0} Connection</value>
+  </data>
+  <data name="ItemAlreadyExistInPath" xml:space="preserve">
+    <value>There is an item that exists with the same name and path</value>
+  </data>
+  <data name="ItemToDeleteWasNull" xml:space="preserve">
+    <value>Item to delete was null</value>
+  </data>
+  <data name="NoTextForObject" xml:space="preserve">
+    <value>There is no text for object '{0}'.</value>
+  </data>
+  <data name="NoUserNameAndPassword" xml:space="preserve">
+    <value>No username and password provided,</value>
+  </data>
+  <data name="NoValueProvided" xml:space="preserve">
+    <value>Novalue Provided for: {0}</value>
+  </data>
+  <data name="NoValueProvidedForParameter" xml:space="preserve">
+    <value>No value provided for {0} parameter.</value>
+  </data>
+  <data name="NullArgument" xml:space="preserve">
+    <value>The argument must not be null or empty and must contain non-whitespace characters must</value>
+  </data>
+  <data name="NullExecutingUser" xml:space="preserve">
+    <value>Null Executing User</value>
+  </data>
+  <data name="ParentCannotBeNull" xml:space="preserve">
+    <value>The parent cannot be null.</value>
+  </data>
+  <data name="PleaseConnectFirst" xml:space="preserve">
+    <value>Please connect first.</value>
+  </data>
+  <data name="RemoteServerIDNull" xml:space="preserve">
+    <value>Remote Server ID Empty</value>
+  </data>
+  <data name="RequestedFolderDoesNotExistOnServer" xml:space="preserve">
+    <value>Requested folder does not exist on server. Folder: {0}</value>
+  </data>
+  <data name="SchedulerErrorEnumeratingGroups" xml:space="preserve">
+    <value>Scheduler Error Enumerating Groups:{0}</value>
+  </data>
+  <data name="ServiceExecutionError" xml:space="preserve">
+    <value>Service Execution Error: {0}</value>
+  </data>
+  <data name="StringTooLong" xml:space="preserve">
+    <value>String too long</value>
+  </data>
+  <data name="TypeConflict" xml:space="preserve">
+    <value>Compilation Error: There is a {0} with the same name.</value>
+  </data>
+  <data name="UnableToLoadInstance" xml:space="preserve">
+    <value>Unable to load instance for key: {0}"</value>
+  </data>
+  <data name="ValueNotSupplied" xml:space="preserve">
+    <value>{0} value not supplied.</value>
+  </data>
+  <data name="BackSlashFormatError" xml:space="preserve">
+    <value>A \'\\\' character must be followed by a \' or preceeded by a \\.</value>
+  </data>
+  <data name="BadFormatForSFTP" xml:space="preserve">
+    <value>Bad format for SFTP. Path {0}. Please correct path.</value>
+  </data>
+  <data name="CannorParseInputDateTimeWithGivenFormat" xml:space="preserve">
+    <value>Could not parse input datetime with given input format (if you left the input format blank then even after trying default datetime formats from other cultures)</value>
+  </data>
+  <data name="CannotDeleteRootPath" xml:space="preserve">
+    <value>You may not delete the root path</value>
+  </data>
+  <data name="CannotImplicitlyAddDisconnectedChildren" xml:space="preserve">
+    <value>Disconnected children cannot be explicitly added to this collection while the panel is serving as an items host. However, visual children can be added by simply calling the AddVisualChild method.</value>
+  </data>
+  <data name="CannotPassNullOrEmptyUri" xml:space="preserve">
+    <value>Cannot pass null or empty uri</value>
+  </data>
+  <data name="CannotSetDragAdornerOpacityDuringADrag" xml:space="preserve">
+    <value>Cannot set the DragAdornerOpacity property during a drag operation.</value>
+  </data>
+  <data name="CannotSetListViewPropertyDuringADrag" xml:space="preserve">
+    <value>Cannot set the ListView property during a drag operation.</value>
+  </data>
+  <data name="CannotSetShowDragAdornerDuringADrag" xml:space="preserve">
+    <value>Cannot set the ShowDragAdorner property during a drag operation.</value>
+  </data>
+  <data name="CannotUpdateAWorkspaceItemFromAnotherWorkspace" xml:space="preserve">
+    <value>Cannot update a workspace item from another workspace</value>
+  </data>
+  <data name="CouldNotEvaluateDecisionData" xml:space="preserve">
+    <value>Could not evaluate decision data - No decision function found for [{0}]</value>
+  </data>
+  <data name="DataListErrors" xml:space="preserve">
+    <value>Could not populate decision model - DataList Errors!</value>
+  </data>
+  <data name="EmptyLoggingSettingsPassed" xml:space="preserve">
+    <value>Empty Logging Settings passed.</value>
+  </data>
+  <data name="ErrorConnectingToSFTP" xml:space="preserve">
+    <value>Error connecting to SFTP location {0}.</value>
+  </data>
+  <data name="ErrorGettingResources" xml:space="preserve">
+    <value>Error getting resources</value>
+  </data>
+  <data name="ErrorLoadingTypes" xml:space="preserve">
+    <value>Error loading types.</value>
+  </data>
+  <data name="ErrorReadingSettingsConfiguration" xml:space="preserve">
+    <value>Error reading settings configuration :</value>
+  </data>
+  <data name="ErrorWhileFormattingANumber" xml:space="preserve">
+    <value>An error occurred while formatting a number, an ivalid value of '{0}' was returned from the rounding function.</value>
+  </data>
+  <data name="ErrorWritingSettings" xml:space="preserve">
+    <value>Error writing settings.</value>
+  </data>
+  <data name="ErrorWritingSettingsConfiguration" xml:space="preserve">
+    <value>Error writing settings configuration.</value>
+  </data>
+  <data name="FailedToDeleteChildItems" xml:space="preserve">
+    <value>Failed to delete child items</value>
+  </data>
+  <data name="FailedToFindResource" xml:space="preserve">
+    <value>Failed to Find Resource</value>
+  </data>
+  <data name="FailedToRenameResource" xml:space="preserve">
+    <value>Failed to Rename Resource</value>
+  </data>
+  <data name="FileSpecifiedAlreadyExists" xml:space="preserve">
+    <value>File specified in the output path already exists.</value>
+  </data>
+  <data name="InvalidModelDataSent" xml:space="preserve">
+    <value>Could not evaluate decision data - Invalid model data sent!</value>
+  </data>
+  <data name="InvalidSharepointServerSent" xml:space="preserve">
+    <value>Invalid sharepoint server sent {0}.</value>
+  </data>
+  <data name="InvalidSharepointServerSource" xml:space="preserve">
+    <value>Invalid sharepoint server source</value>
+  </data>
+  <data name="InvalidSyntaxCreatingVariable" xml:space="preserve">
+    <value>Invalid syntax - You need to close ( ]] ) your variable list reference</value>
+  </data>
+  <data name="InvalidWorkspaceItemDefinition" xml:space="preserve">
+    <value>Invalid workspace item definition</value>
+  </data>
+  <data name="ItemsSourcepropertyIsNotEmpty" xml:space="preserve">
+    <value>ItemsSource property is not empty. This control is being associated with a region, but the control is already bound to something else. If you did not explicitly set the control's ItemSource property, this exception may be caused by a change in the value of the inherited RegionManager attached property.</value>
+  </data>
+  <data name="ItemToAddIsNull" xml:space="preserve">
+    <value>Item to add was null</value>
+  </data>
+  <data name="ItemToRenameIsNull" xml:space="preserve">
+    <value>Item to rename was null</value>
+  </data>
+  <data name="ListViewManagedByListViewDragManagerMustHaveItsItemsSource" xml:space="preserve">
+    <value>A ListView managed by ListViewDragManager must have its ItemsSource set to an ObservableCollection&lt;ItemType&gt;.</value>
+  </data>
+  <data name="MalformedExpression" xml:space="preserve">
+    <value>An error occurred while parsing '{0}' It appears to be malformed</value>
+  </data>
+  <data name="NoDataListIDsent" xml:space="preserve">
+    <value>Could not evaluate decision data - no DataList ID sent!</value>
+  </data>
+  <data name="NoModelDataSent" xml:space="preserve">
+    <value>Could not evaluate decision data - No model data sent!</value>
+  </data>
+  <data name="NoResourceIdSentToServer" xml:space="preserve">
+    <value>No resourceId sent to server</value>
+  </data>
+  <data name="NoResourceSelected" xml:space="preserve">
+    <value>No Resource Selected</value>
+  </data>
+  <data name="NoSharepointListNameSet" xml:space="preserve">
+    <value>No sharepoint list name set</value>
+  </data>
+  <data name="NoSharepointServerSet" xml:space="preserve">
+    <value>No sharepoint server set</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>{0} not found</value>
+  </data>
+  <data name="NoVersionNumberSentToServer" xml:space="preserve">
+    <value>No versionNumber sent to server</value>
+  </data>
+  <data name="NullPopupController" xml:space="preserve">
+    <value>Null Popup Controller</value>
+  </data>
+  <data name="OnlyUserResourcesCanBeAdded" xml:space="preserve">
+    <value>Only user resources can be added from this repository</value>
+  </data>
+  <data name="OutputPathCanOnlyBeXmlOrZip" xml:space="preserve">
+    <value>The output path can only be to a 'xml' or 'zip' file.</value>
+  </data>
+  <data name="PermissionsPassedNotValid" xml:space="preserve">
+    <value>The permissions passed is not a valid list of permissions. Error: {0}</value>
+  </data>
+  <data name="RecordsetIndexContainsInvalidCharecters" xml:space="preserve">
+    <value>Recordset index ({0}) contains invalid character(s)</value>
+  </data>
+  <data name="RecordsetIndexNotGreaterThanZero" xml:space="preserve">
+    <value>Recordset index {0} is not greater than zero</value>
+  </data>
+  <data name="RepositoryDoesNotRequireLoading" xml:space="preserve">
+    <value>This repository does not require loading. It is intended to be added to at runtime</value>
+  </data>
+  <data name="RequestedFolderAlreadyExists" xml:space="preserve">
+    <value>Requested folder already exists on server.</value>
+  </data>
+  <data name="ResourceAlreadyLoaded" xml:space="preserve">
+    <value>Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.</value>
+  </data>
+  <data name="ResourceHasUnrecognizedFormatting" xml:space="preserve">
+    <value>Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.</value>
+  </data>
+  <data name="ServerconnectionDropped" xml:space="preserve">
+    <value>Server connection has dropped during execution of command.</value>
+  </data>
+  <data name="ServerDissconnected" xml:space="preserve">
+    <value>Server: {0} has disconnected.</value>
+  </data>
+  <data name="ToServiceDefinitionDoesNotRupportResourcesOfTypeSource" xml:space="preserve">
+    <value>ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.</value>
+  </data>
+  <data name="UnexpectedCharacterAtIndex" xml:space="preserve">
+    <value>Unexpected character at index {0} of format</value>
+  </data>
+  <data name="UnexpectedValueAtIndex" xml:space="preserve">
+    <value>Unexpected value at index {0}.</value>
+  </data>
+  <data name="UnknownConnectionType" xml:space="preserve">
+    <value>Unknown connection type.</value>
+  </data>
+  <data name="UnrecognisedFormatPart" xml:space="preserve">
+    <value>Unrecognised format part {0}.</value>
+  </data>
+  <data name="valuesAreMissing" xml:space="preserve">
+    <value>Values are missing</value>
+  </data>
+  <data name="ViewModelTypeMustContainAParameterlessContructor" xml:space="preserve">
+    <value>ViewModel type must contain a parameterless contructor.</value>
+  </data>
+  <data name="ViewModelTypeMustInheritFromSettingsViewModelBase" xml:space="preserve">
+    <value>ViewModel type must inherit from SettingsViewModelBase.</value>
+  </data>
+  <data name="ViewTypeMustContainAParameterlessContructor" xml:space="preserve">
+    <value>View type must contain a parameterless contructor.</value>
+  </data>
+  <data name="ViewTypeMustInheritFromUserControl" xml:space="preserve">
+    <value>View type must inherit from UserControl.</value>
   </data>
 </root>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -24,21 +23,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #region Implementation of IManageDatabaseSourceModel
-
-        public IList<string> GetComputerNames()
-        {
-            return _queryProxy.GetComputerNames();
-        }
-
-        public IList<string> TestDbConnection(IDbSource resource)
-        {
-            return _updateRepository.TestDbConnection(resource);
-        }
-
-        public void Save(IDbSource toDbSource)
-        {
-            _updateRepository.Save(toDbSource);
-        }
 
         public string ServerName { get; private set; }
 

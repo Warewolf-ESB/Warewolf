@@ -27,7 +27,10 @@ namespace Dev2.TaskScheduler.Wrappers
         {
             Instance.Dispose();
         }
-
+        public bool IsSet()
+        {
+            return Instance.IsSet();
+        }
         public RepetitionPattern Instance
         {
             get { return _nativeInstance; }
@@ -49,11 +52,6 @@ namespace Dev2.TaskScheduler.Wrappers
         {
             get { return Instance.StopAtDurationEnd; }
             set { Instance.StopAtDurationEnd = value; }
-        }
-
-        public bool IsSet()
-        {
-            return Instance.IsSet();
         }
     }
 }

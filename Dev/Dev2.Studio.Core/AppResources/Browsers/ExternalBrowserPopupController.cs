@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Diagnostics;
 
 // ReSharper disable once CheckNamespace
@@ -25,23 +24,6 @@ namespace Dev2.Studio.Core.AppResources.Browsers
                 Process.Start(url);
             }
             return true;
-        }
-
-        public override IntPtr FindPopup()
-        {
-            return IntPtr.Zero;
-        }
-
-        public override void SetPopupTitle(IntPtr hwnd)
-        {
-        }
-
-        public override void SetPopupForeground(IntPtr hwnd)
-        {
-        }
-
-        public override void SetPopupIcon(IntPtr hwnd)
-        {
         }
     }
 }

@@ -21,6 +21,6 @@ namespace Dev2.MathOperations {
         string Description { get; }
 
         void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
-            Func<double[], double> function, IDev2CalculationManager calcManager);
+           Func<double[], double> function, IDev2CalculationManager calcManager);
     }
 }

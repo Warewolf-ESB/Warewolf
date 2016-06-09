@@ -20,6 +20,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.WebServer.TransferObjects;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -51,7 +52,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             if(ExecutingUser == null)
             {
-                throw new Exception("Null Executing User");
+                throw new Exception(ErrorResource.NullExecutingUser);
             }
 
             try
@@ -114,7 +115,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 if(ExecutingUser == null)
                 {
-                    throw new Exception("Null Executing User");
+                    throw new Exception(ErrorResource.NullExecutingUser);
                 }
 
                 try

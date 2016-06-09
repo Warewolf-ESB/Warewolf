@@ -290,7 +290,7 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
         public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
-       
+
         public void Dispose()
         {
             foreach (var environmentViewModel in Environments)
@@ -345,20 +345,20 @@ namespace Warewolf.Studio.ViewModels
         {
             if (!IsLoading && server.EnvironmentID == Guid.Empty)
                 Application.Current.Dispatcher.Invoke(async () =>
-               {
-                   IsLoading = true;
+                {
+                    IsLoading = true;
 
-                   var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
-                   if (existing == null)
-                   {
-                       existing = CreateEnvironmentFromServer(server, _shellViewModel);
-                       _environments.Add(existing);
-                       OnPropertyChanged(() => Environments);
-                   }
-                   var result = await LoadEnvironment(existing, IsDeploy);
+                    var existing = _environments.FirstOrDefault(a => a.ResourceId == server.EnvironmentID);
+                    if (existing == null)
+                    {
+                        existing = CreateEnvironmentFromServer(server, _shellViewModel);
+                        _environments.Add(existing);
+                        OnPropertyChanged(() => Environments);
+                    }
+                    var result = await LoadEnvironment(existing, IsDeploy);
 
-                   IsLoading = result;
-               });
+                    IsLoading = result;
+                });
         }
 
         protected virtual void AfterLoad(Guid environmentId)

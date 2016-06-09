@@ -17,7 +17,6 @@ using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
-using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             MailMessage mailMessage = null;
             mock.Setup(sender =>
@@ -129,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             MailMessage mailMessage = null;
             mock.Setup(sender =>
@@ -170,7 +169,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             MailMessage mailMessage = null;
             mock.Setup(sender =>
@@ -209,7 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             MailMessage mailMessage = null;
             mock.Setup(sender =>
@@ -248,7 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             MailMessage mailMessage = null;
             mock.Setup(sender =>
@@ -287,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             MailMessage mailMessage = null;
             mock.Setup(sender =>
@@ -324,7 +323,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void SendEmail_Execute_MixedScalarsRecordsetData_CorrectExcecution()
         {
             var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var esbChannelMock = CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
@@ -406,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             TestData = "<root></root>";
             CurrentDl = "<ADL></ADL>";
-            var esbChannelMock = CreateMockEsbChannel(testSource);
+            var esbChannelMock = CreateMockEsbChannel();
 
             //------------Execute Test---------------------------
             ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
@@ -438,7 +437,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
-            CreateMockEsbChannel(emailSourceForTesting);
+            CreateMockEsbChannel();
             var mock = new Mock<IEmailSender>();
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
@@ -511,14 +510,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("TheResult", activity.Result);
         }
 
-        static Mock<IEsbChannel> CreateMockEsbChannel(EmailSource emailSourceForTesting)
+        static Mock<IEsbChannel> CreateMockEsbChannel()
         {
             Mock<IEsbChannel> esbChannelMock = new Mock<IEsbChannel>();
-            ErrorResultTO errorResultTO;
-            esbChannelMock.Setup(channel => channel.FetchServerModel<EmailSource>(
-                It.IsAny<IDSFDataObject>(),
-                It.IsAny<Guid>(),
-                out errorResultTO, 0)).Returns(emailSourceForTesting);
             return esbChannelMock;
         }
 

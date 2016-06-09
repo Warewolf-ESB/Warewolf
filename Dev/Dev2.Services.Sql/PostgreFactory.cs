@@ -3,6 +3,7 @@ using Dev2.Common.Interfaces.Services.Sql;
 using Npgsql;
 using System;
 using System.Data;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
@@ -34,7 +35,7 @@ namespace Dev2.Services.Sql
         {
             if (!(connection is NpgsqlConnection))
             {
-                throw new Exception("Invalid Postgre connection");
+                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection , "Postgre"));
             }
 
             return ((NpgsqlConnection)connection).GetSchema(collectionName);
@@ -51,7 +52,7 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is NpgsqlCommand))
-                throw new Exception("Not a valid PostgreCommand");
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "PostgreCommand"));
 
             using (var dataset = new DataSet())
             {

@@ -14,14 +14,13 @@ namespace Dev2.Common.Interfaces
         bool IsLoaded { get; }
         bool Connect();
         bool IsConnecting { get; set; }
-
+        void SetItemCheckedState(Guid id, bool state);
+        void RemoveItem(IExplorerItemViewModel vm);
         Task<bool> Load(bool b=false);
         Task<bool> LoadDialog(string selectedId,bool b=false);
         void Filter(string filter);
         void Filter(Func<IExplorerItemViewModel, bool> filter);
         ICollection<IExplorerItemViewModel> AsList();
-        void SetItemCheckedState(Guid id, bool state);
-        void RemoveItem(IExplorerItemViewModel vm);
         ICommand RefreshCommand { get; set; }
         bool IsServerIconVisible { get; set; }
         bool IsServerUnavailableIconVisible { get; set; }

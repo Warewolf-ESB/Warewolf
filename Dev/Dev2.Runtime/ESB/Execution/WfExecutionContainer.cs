@@ -145,6 +145,13 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
+        {
+            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
+
+            EvalInner(dsfDataObject, resource, update);
+        }
+
         public void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
@@ -158,13 +165,6 @@ namespace Dev2.Runtime.ESB.Execution
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
-        }
-
-        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject,int update)
-        {
-            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
-
-            EvalInner(dsfDataObject, resource, update);
         }
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)

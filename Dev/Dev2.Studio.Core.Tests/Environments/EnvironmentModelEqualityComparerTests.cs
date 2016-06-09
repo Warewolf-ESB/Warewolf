@@ -74,27 +74,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Assert Results-------------------------
             Assert.IsFalse(actual);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("EnvironmentModelEqualityComparer_Equals")]
-        public void EnvironmentModelEqualityComparer_Equals_YIsNotEnvironmentModel_False()
-        {
-            //------------Setup for test--------------------------
-            var resourceID = Guid.NewGuid();
-            var serverID = Guid.NewGuid();
-            const string ServerUri = "https://myotherserver1:3143";
-            const string Name = "test";
-
-            var environment = EnvironmentModelTest.CreateEqualityEnvironmentModel(resourceID, Name, serverID, ServerUri);
-
-            //------------Execute Test---------------------------
-            var actual = EnvironmentModelEqualityComparer.Current.Equals(environment, new object());
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(actual);
-        }
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModelEqualityComparer_Equals")]
