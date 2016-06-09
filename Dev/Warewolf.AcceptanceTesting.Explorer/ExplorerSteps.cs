@@ -474,7 +474,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var mainViewModelMock = ScenarioContext.Current.Get<Mock<IMainViewModel>>("mainViewModel");
             var repo = FeatureContext.Current.Get<Mock<IExplorerRepository>>("mockExplorerRepository");
-            repo.Setup(a => a.Delete(It.IsAny<IExplorerItemViewModel>())).Returns(true);
+            repo.Setup(a => a.Delete(It.IsAny<IExplorerItemViewModel>())).Returns(new DeletedFileMetadata() { IsDeleted = true });
             if (ScenarioContext.Current.ContainsKey("popupResult"))
             {
                 var popupResult = ScenarioContext.Current.Get<string>("popupResult");
