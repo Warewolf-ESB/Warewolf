@@ -333,10 +333,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dsfWebDeleteActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
             Assert.IsNotNull(dsfWebDeleteActivity.OutputDescription);
-            Assert.AreEqual("<greater than 7 mile(s):0>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
-            Assert.AreEqual("<Paris>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
-            Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
-            Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
+            var visibility = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0));
+            Assert.AreEqual("<greater than 7 mile(s):0>", visibility);
+            var location = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0));
+            Assert.AreEqual("<Paris>", location);
+            var time = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0));
+            Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", time);
+            var wind = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0));
+            Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", wind);
         }
 
 

@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
@@ -43,7 +44,7 @@ namespace Dev2.Services.Sql
         DataTable GetMySqlServerSchema(IDbConnection connection)
         {
             if (!(connection is MySqlConnection))
-                throw new Exception("Invalid Mqsql Connection");
+                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Mqsql"));
 
             return ((MySqlConnection)connection).GetSchema();
 
@@ -61,7 +62,7 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is SqlCommand))
-                throw new Exception("Invalid DBCommand expected.");
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBComman"));
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new SqlDataAdapter(command as SqlCommand))

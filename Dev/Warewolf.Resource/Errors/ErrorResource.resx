@@ -1020,4 +1020,136 @@
   <data name="NoObjectName" xml:space="preserve">
     <value>Please enter an 'Object Name' as 'Is Object' has been selected.</value>
   </data>
+  <data name="ArgumentsNotAllowedToBeNull" xml:space="preserve">
+    <value>The following arguments are not allowed to be null: {0}</value>
+  </data>
+  <data name="CannotDeleteFileWithoughtDirectory" xml:space="preserve">
+    <value>Cant delete a file if no directory is passed.</value>
+  </data>
+  <data name="EmptySecuritySettingsPassed" xml:space="preserve">
+    <value>Empty Security Settings passed.</value>
+  </data>
+  <data name="ErrorBuildingSettingsGraph" xml:space="preserve">
+    <value>Error building settings graph from '{0}'.</value>
+  </data>
+  <data name="ErrorCastingBaseObject" xml:space="preserve">
+    <value>Error casting base Object to {0}</value>
+  </data>
+  <data name="ErrorDuringCancelCallback" xml:space="preserve">
+    <value>The following error occurred while executing the cancel callback '{0}'.</value>
+  </data>
+  <data name="ErrorDuringSaveCallback" xml:space="preserve">
+    <value>The following error occurred while executing the save callback '{0}'.</value>
+  </data>
+  <data name="ErrorGettingResourceDefinition" xml:space="preserve">
+    <value>Error getting resource definition for: {0}</value>
+  </data>
+  <data name="ErrorLoadingResource" xml:space="preserve">
+    <value>Error loading resource with ID:{0}"</value>
+  </data>
+  <data name="ErrorParsingInput" xml:space="preserve">
+    <value>Error parsing '{0}' input.</value>
+  </data>
+  <data name="ErrorRetrievingDBSourceForResource" xml:space="preserve">
+    <value>Error retrieving DBSource for resource ID:{0} and Name:{1}</value>
+  </data>
+  <data name="ErrorWritingLoggingConfiguration" xml:space="preserve">
+    <value>Error writing logging configuration.</value>
+  </data>
+  <data name="FailedToBuildFutureReceipt" xml:space="preserve">
+    <value>Failed to build future receipt for [{0} ] Value [ {1} ]</value>
+  </data>
+  <data name="FailedToConnectWithConnectionString" xml:space="preserve">
+    <value>Failed to connect with the following connection string: '{0}'</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>No such file exists on the server.</value>
+  </data>
+  <data name="InvalidArguments" xml:space="preserve">
+    <value>Invalid arguments passed in.</value>
+  </data>
+  <data name="InvalidCommand" xml:space="preserve">
+    <value>Invalid {0} expected</value>
+  </data>
+  <data name="InvalidEnumerator" xml:space="preserve">
+    <value>The enumerator is not valid because the dictionary changed.</value>
+  </data>
+  <data name="InvalidOutputFormat" xml:space="preserve">
+    <value>Output format in service action {0} is invalid.</value>
+  </data>
+  <data name="InvalidSecuritySettings" xml:space="preserve">
+    <value>The security settings are not valid.</value>
+  </data>
+  <data name="InvalidSqlConnection" xml:space="preserve">
+    <value>Invalid {0} Connection</value>
+  </data>
+  <data name="ItemAlreadyExistInPath" xml:space="preserve">
+    <value>There is an item that exists with the same name and path</value>
+  </data>
+  <data name="ItemToDeleteWasNull" xml:space="preserve">
+    <value>Item to delete was null</value>
+  </data>
+  <data name="NoTextForObject" xml:space="preserve">
+    <value>There is no text for object '{0}'.</value>
+  </data>
+  <data name="NoUserNameAndPassword" xml:space="preserve">
+    <value>No username and password provided,</value>
+  </data>
+  <data name="NoValueProvided" xml:space="preserve">
+    <value>Novalue Provided for: {0}</value>
+  </data>
+  <data name="NoValueProvidedForParameter" xml:space="preserve">
+    <value>No value provided for {0} parameter.</value>
+  </data>
+  <data name="NullArgument" xml:space="preserve">
+    <value>The argument must not be null or empty and must contain non-whitespace characters must</value>
+  </data>
+  <data name="NullExecutingUser" xml:space="preserve">
+    <value>Null Executing User</value>
+  </data>
+  <data name="ParentCannotBeNull" xml:space="preserve">
+    <value>The parent cannot be null.</value>
+  </data>
+  <data name="PleaseConnectFirst" xml:space="preserve">
+    <value>Please connect first.</value>
+  </data>
+  <data name="RemoteServerIDNull" xml:space="preserve">
+    <value>Remote Server ID Empty</value>
+  </data>
+  <data name="RequestedFolderDoesNotExistOnServer" xml:space="preserve">
+    <value>Requested folder does not exist on server. Folder: {0}</value>
+  </data>
+  <data name="SchedulerErrorEnumeratingGroups" xml:space="preserve">
+    <value>Scheduler Error Enumerating Groups:{0}</value>
+  </data>
+  <data name="ServiceExecutionError" xml:space="preserve">
+    <value>Service Execution Error: {0}</value>
+  </data>
+  <data name="StringTooLong" xml:space="preserve">
+    <value>String too long</value>
+  </data>
+  <data name="TypeConflict" xml:space="preserve">
+    <value>Compilation Error: There is a {0} with the same name.</value>
+  </data>
+  <data name="UnableToLoadInstance" xml:space="preserve">
+    <value>Unable to load instance for key: {0}"</value>
+  </data>
+  <data name="ValueNotSupplied" xml:space="preserve">
+    <value>{0} value not supplied.</value>
+  </data>
+  <data name="CannotDeleteRootPath" xml:space="preserve">
+    <value>You may not delete the root path</value>
+  </data>
+  <data name="FailedToDeleteChildItems" xml:space="preserve">
+    <value>Failed to delete child items</value>
+  </data>
+  <data name="ItemToAddIsNull" xml:space="preserve">
+    <value>Item to add was null</value>
+  </data>
+  <data name="ItemToRenameIsNull" xml:space="preserve">
+    <value>Item to rename was null</value>
+  </data>
+  <data name="RequestedFolderAlreadyExists" xml:space="preserve">
+    <value>Requested folder already exists on server.</value>
+  </data>
 </root>

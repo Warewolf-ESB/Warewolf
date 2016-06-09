@@ -27,6 +27,7 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.TaskScheduler.Wrappers;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.ScheduleExecutor
 {
@@ -52,7 +53,7 @@ namespace Dev2.ScheduleExecutor
                 Log("Info", "Task Started");
                 if(args.Length < 2)
                 {
-                    Log("Error", "Invalid arguments passed in.");
+                    Log("Error", ErrorResource.InvalidArguments);
                     return;
                 }
                 var paramters = new Dictionary<string, string>();

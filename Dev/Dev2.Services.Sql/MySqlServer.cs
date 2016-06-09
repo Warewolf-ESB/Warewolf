@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Sql
 {
@@ -221,7 +222,7 @@ namespace Dev2.Services.Sql
         {
             if (!IsConnected)
             {
-                throw new Exception("Please connect first.");
+                throw new Exception(ErrorResource.PleaseConnectFirst);
             }
         }
 
