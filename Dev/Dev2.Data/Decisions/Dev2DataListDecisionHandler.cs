@@ -20,6 +20,7 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -118,7 +119,7 @@ namespace Dev2.Data.Decision
                                 }
                                 else
                                 {
-                                    throw new InvalidExpressionException("Could not evaluate decision data - No decision function found for [ " + typeOf + " ]");
+                                    throw new InvalidExpressionException(string.Format(ErrorResource.CouldNotEvaluateDecisionData, typeOf));
                                 }
                             }
 
@@ -132,19 +133,19 @@ namespace Dev2.Data.Decision
                             return false;
                         }
 
-                        throw new InvalidExpressionException("Could not evaluate decision data - Invalid model data sent!");
+                        throw new InvalidExpressionException(ErrorResource.InvalidModelDataSent);
                     }
                     catch
                     {
                         // all hell has broken loose... ;)
-                        throw new InvalidExpressionException("Could not evaluate decision data - No model data sent!");
+                        throw new InvalidExpressionException(ErrorResource.NoModelDataSent);
                     }
                 }
 
-                throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
+                throw new InvalidExpressionException(ErrorResource.NoDataListIDsent);
             }
 
-            throw new InvalidExpressionException("Could not populate decision model - DataList Errors!");
+            throw new InvalidExpressionException(ErrorResource.DataListErrors);
         }
 
         /// <summary>

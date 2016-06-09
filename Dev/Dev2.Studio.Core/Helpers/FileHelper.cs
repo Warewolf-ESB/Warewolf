@@ -88,12 +88,12 @@ namespace Dev2.Studio.Core.Helpers
 
             if(string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
             {
-                throw new InvalidOperationException("The output path can only be to a 'xml' or 'zip' file.");
+                throw new InvalidOperationException(ErrorResource.OutputPathCanOnlyBeXmlOrZip);
             }
 
             if(path.Exists)
             {
-                throw new IOException("File specified in the output path already exists.");
+                throw new IOException(ErrorResource.FileSpecifiedAlreadyExists);
             }
 
             if(path.Directory == null)
@@ -149,7 +149,7 @@ namespace Dev2.Studio.Core.Helpers
             if(String.IsNullOrEmpty(uri))
             {
                 Dev2Logger.Info("Uri is empty, an exception is thrown");
-                throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
+                throw new ArgumentNullException("uri", ErrorResource.CannotPassNullOrEmptyUri);
             }
 
             using(var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
@@ -189,7 +189,7 @@ namespace Dev2.Studio.Core.Helpers
             }
             else
             {
-                throw new ArgumentException("Invalid File Path");
+                throw new ArgumentException(ErrorResource.InvalidPath);
             }
         }
     }

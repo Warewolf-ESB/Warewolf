@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -49,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(itemXml == null || itemXml.Length == 0)
             {
-                res.SetMessage("Invalid workspace item definition " + DateTime.Now);
+                res.SetMessage(ErrorResource.InvalidWorkspaceItemDefinition + DateTime.Now);
                 res.HasError = true;
             }
             else
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var workspaceItem = new WorkspaceItem(xe);
                     if (workspaceItem.WorkspaceID != theWorkspace.ID)
                     {
-                        res.SetMessage("Cannot update a workspace item from another workspace " + DateTime.Now);
+                        res.SetMessage(ErrorResource.CannotUpdateAWorkspaceItemFromAnotherWorkspace + DateTime.Now);
                         res.HasError = true;
                     }
                     else

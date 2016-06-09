@@ -15,6 +15,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data.TO;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.DataList.Contract
 {
@@ -161,7 +162,7 @@ namespace Dev2.DataList.Contract
         {
             if(s.Contains("Cannot set unknown member"))
             {
-                return "Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.";
+                return ErrorResource.ResourceHasUnrecognizedFormatting;
             }
             return s;
         }

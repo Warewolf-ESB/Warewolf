@@ -12,6 +12,7 @@
 using System;
 using System.Windows.Controls;
 using Dev2.Runtime.Configuration.ViewModels;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Configuration.ComponentModel
 {
@@ -25,22 +26,22 @@ namespace Dev2.Runtime.Configuration.ComponentModel
         {
             if (!CheckInheretenceHierarchy(view, typeof(UserControl)))
             {
-                throw new Exception("View type must inherit from UserControl.");
+                throw new Exception(ErrorResource.ViewTypeMustInheritFromUserControl);
             }
 
             if (view.GetConstructor(Type.EmptyTypes) == null)
             {
-                throw new Exception("View type must contain a parameterless contructor.");
+                throw new Exception(ErrorResource.ViewTypeMustContainAParameterlessContructor);
             }
 
             if (!CheckInheretenceHierarchy(viewModel, typeof(SettingsViewModelBase)))
             {
-                throw new Exception("ViewModel type must inherit from SettingsViewModelBase.");
+                throw new Exception(ErrorResource.ViewModelTypeMustInheritFromSettingsViewModelBase);
             }
 
             if (viewModel.GetConstructor(Type.EmptyTypes) == null)
             {
-                throw new Exception("ViewModel type must contain a parameterless contructor.");
+                throw new Exception(ErrorResource.ViewModelTypeMustContainAParameterlessContructor);
             }
             
             View = view;

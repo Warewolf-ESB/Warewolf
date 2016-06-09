@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -125,7 +126,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Error loading types.",e);
+                    Dev2Logger.Error(ErrorResource.ErrorLoadingTypes, e);
                 }
                 streams.ForEach(currentItem =>
                 {
@@ -293,8 +294,7 @@ namespace Dev2.Runtime.Hosting
                 if (dupRes != null)
                 {
                     Dev2Logger.Debug(
-                        string.Format(
-                            "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.",
+                        string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath));
                 }
                 else

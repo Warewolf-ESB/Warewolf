@@ -331,7 +331,7 @@ namespace Dev2.Runtime.Hosting
                     return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
                 }
             }
-            return new ExplorerRepositoryResult(ExecStatus.Fail, "Only user resources can be added from this repository");
+            return new ExplorerRepositoryResult(ExecStatus.Fail, ErrorResource.OnlyUserResourcesCanBeAdded);
         }
 
         public IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)

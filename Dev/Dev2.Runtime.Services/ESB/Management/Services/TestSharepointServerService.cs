@@ -53,8 +53,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var res = new ExecuteMessage();
                 res.HasError = true;
-                res.SetMessage("No sharepoint server set");
-                Dev2Logger.Debug("No sharepoint server set.");
+                res.SetMessage(ErrorResource.NoSharepointServerSet);
+                Dev2Logger.Debug(ErrorResource.NoSharepointServerSet);
                 return serializer.SerializeToBuilder(res);
             }
             try
