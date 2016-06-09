@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
@@ -175,11 +174,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public bool Inserted { get; set; }
-
-        public OutputTO ConvertToOutputTO()
-        {
-            return DataListFactory.CreateOutputTO(OutputVariable, OutList);
-        }
 
         public bool IsEmpty()
         {

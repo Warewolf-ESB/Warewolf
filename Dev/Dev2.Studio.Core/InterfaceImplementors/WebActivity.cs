@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core
         }
         public bool IsNotAvailable()
         {
-            return !ResourceModel.Environment.IsLocalHost && !ResourceModel.Environment.HasLoadedResources;
+            return !ResourceModel.Environment.IsLocalHost && !ResourceModel.Environment.IsConnected;
         }
     }
 }

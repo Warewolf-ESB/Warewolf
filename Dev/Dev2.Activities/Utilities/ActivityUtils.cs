@@ -17,6 +17,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Utilities
 {
@@ -126,7 +127,7 @@ namespace Dev2.Utilities
 
         public static DsfODBCDatabaseActivity GetDsfODBCDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
-            var DsfODBCDatabaseActivity = new DsfODBCDatabaseActivity
+            var dsfOdbcDatabaseActivity = new DsfODBCDatabaseActivity
             {
                 ResourceID = dbActivity.ResourceID,
                 SourceId = source.ResourceID,
@@ -153,9 +154,8 @@ namespace Dev2.Utilities
                 ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
                 ParentInstanceID = dbActivity.ParentInstanceID,
             };
-            return DsfODBCDatabaseActivity;
+            return dsfOdbcDatabaseActivity;
         }
-
         public static ICollection<IServiceOutputMapping> TranslateOutputMappingToOutputs(string outputMapping)
         {
             var outputDefs = DataListFactory.CreateOutputParser().Parse(outputMapping);

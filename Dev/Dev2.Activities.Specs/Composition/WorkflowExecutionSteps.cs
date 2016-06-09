@@ -509,12 +509,6 @@ namespace Dev2.Activities.Specs.Composition
                         case "sqlserver database":
                             updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
-                        case "oracle database":
-                            updatedActivity = ActivityUtils.GetDsfOracleDatabaseActivity((DsfDatabaseActivity)activity, service, source);
-                            break;
-                        case "odbc database":
-                            updatedActivity = ActivityUtils.GetDsfODBCDatabaseActivity((DsfDatabaseActivity)activity, service, source);
-                            break;
                     }
                     CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }

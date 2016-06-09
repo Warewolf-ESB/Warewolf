@@ -55,55 +55,6 @@ namespace Warewolf.AcceptanceTesting.Switch
             Assert.IsTrue(vm != null && vm.Switch.SwitchExpression==p0);
         }
 
-        [Then(@"""(.*)"" is ""(.*)""")]
-        public void ThenIs(string control, string state)
-        {
-            var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            if(view != null)
-            {
-                switch(control)
-                {
-                    case "Variable to Switch on":
-                        view.CheckSwitchVariableState(state);
-                        break;
-                    case "Display text":
-                        view.CheckDisplayState(state);
-                        break;
-
-                }
-            }
-        }
-
-        [Then(@"""(.*)"" equals ""(.*)""")]
-        public void ThenEquals(string p0, string variable)
-        {
-            var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            if(view != null)
-            {
-                view.SetVariableToSwitchOn(variable);
-            }
-        }
-
-        [Then(@"I have variable ""(.*)"" equals ""(.*)""")]
-        public void ThenIHaveVariableEquals(string p0, string variable)
-        {
-            var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            if(view != null)
-            {
-                view.SetVariableToSwitchOn(variable);
-            }
-        }
-
-        [Then(@"""(.*)"" is changed to ""(.*)""")]
-        public void ThenIsChangedTo(string p0, string variable)
-        {
-            var view = FeatureContext.Current["view"] as ConfigureSwitch;
-            if(view != null)
-            {
-                Assert.AreEqual(variable,view.GetDisplayName());
-            }
-        }
-
         [Then(@"I set the switch arm as ""(.*)""")]
         public void ThenISetTheSwitchArmAs(string p0)
         {
