@@ -139,36 +139,6 @@ namespace Dev2.ConnectionHelpers
             }
         }
 
-        public void EditConnection(int selectedIndex, Action<int> openWizard)
-        {
-            if(selectedIndex != -1 && selectedIndex <= Servers.Count)
-            {
-                var selectedServer = Servers[selectedIndex];
-                var environmentModel = selectedServer.EnvironmentModel;
-                if(environmentModel != null && environmentModel.Connection != null)
-                {
-                    var serverUri = environmentModel.Connection.AppServerUri;
-                    var auth = environmentModel.Connection.AuthenticationType;
-                    openWizard(selectedIndex);
-                    var updatedServer = _environmentRepository.All().FirstOrDefault(e => e.ID == environmentModel.ID);
-                    if (updatedServer != null && (!serverUri.Equals(updatedServer.Connection.AppServerUri) || auth != updatedServer.Connection.AuthenticationType))
-                    {
-                        if(ConnectedStatusChanged != null)
-                        {
-                            ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.ID, false));
-                        }
-
-                        if(selectedServer.IsConnected)
-                        {
-                            _studioResourceRepository.Disconnect(environmentModel.ID);
-                        }
-                        selectedServer.EnvironmentModel = updatedServer;
-                        _studioResourceRepository.Load(environmentModel.ID, _asyncWorker, ResourcesLoadedHandler);
-                    }
-                }
-            }
-        }
-
         public void ResourcesLoadedHandler(Guid environmentId)
         {
             if(ConnectedStatusChanged == null)

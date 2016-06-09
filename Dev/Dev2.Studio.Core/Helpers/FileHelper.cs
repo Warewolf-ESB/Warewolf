@@ -15,7 +15,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
-using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
@@ -50,20 +49,6 @@ namespace Dev2.Studio.Core.Helpers
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
         public static void CreateTextFile(string outputTxt, string outputPath)
-        {
-            Dev2Logger.Info("");
-            EnsurePathIsvalid(outputPath, ".txt");
-            var fs = File.Open(outputPath,
-                                      FileMode.OpenOrCreate,
-                                      FileAccess.Write);
-            using(var writer = new StreamWriter(fs, Encoding.UTF8))
-            {
-                Dev2Logger.Info("Writing a text file");
-                writer.Write(outputTxt);
-            }
-        }
-
-        public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
             Dev2Logger.Info("");
             EnsurePathIsvalid(outputPath, ".txt");
@@ -124,24 +109,6 @@ namespace Dev2.Studio.Core.Helpers
         }
 
 
-        public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
-        {
-            CreateTextFile(fileContent, uniqueOutputPath);
-            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            if(sourceDirectoryName != null)
-            {
-                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-                using(var zip = new ZipFile())
-                {
-                    zip.AddFile(uniqueOutputPath, ".");
-                    zip.Save(destinationArchiveFileName);
-                }
-                return destinationArchiveFileName;
-            }
-            return null;
-        }
-
         public static string GetDebugItemTempFilePath(string uri)
         {
             Dev2Logger.Info("");
@@ -176,20 +143,6 @@ namespace Dev2.Studio.Core.Helpers
             if(!Directory.Exists(fullNewPath))
             {
                 Directory.Move(fullOldPath, fullNewPath);
-            }
-        }
-
-        public static void CreateDirectoryFromString(string filePath)
-        {
-            var file = new FileInfo(filePath);
-            var directory = file.Directory;
-            if(directory != null)
-            {
-                Directory.CreateDirectory(directory.ToString());
-            }
-            else
-            {
-                throw new ArgumentException("Invalid File Path");
             }
         }
     }
