@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
             //------------Assert Results-------------------------
             dropBoxDelete.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
         }
-
+        
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

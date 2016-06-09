@@ -17,6 +17,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Utilities
 {
@@ -92,6 +93,69 @@ namespace Dev2.Utilities
             return dsfMySqlDatabaseActivity;
         }
 
+        public static DsfOracleDatabaseActivity GetDsfOracleDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
+        {
+            var DsfOracleDatabaseActivity = new DsfOracleDatabaseActivity
+            {
+                ResourceID = dbActivity.ResourceID,
+                SourceId = source.ResourceID,
+                ProcedureName = service.Method.ExecuteAction,
+                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
+                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
+                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
+                IconPath = dbActivity.IconPath,
+                ServiceName = dbActivity.ServiceName,
+                DataTags = dbActivity.DataTags,
+                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
+                ResultValidationExpression = dbActivity.ResultValidationExpression,
+                FriendlySourceName = dbActivity.FriendlySourceName,
+                EnvironmentID = dbActivity.EnvironmentID,
+                Type = dbActivity.Type,
+                ActionName = dbActivity.ActionName,
+                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
+                Category = dbActivity.Category,
+                ServiceUri = dbActivity.ServiceUri,
+                ServiceServer = dbActivity.ServiceServer,
+                UniqueID = dbActivity.UniqueID,
+                ParentServiceName = dbActivity.ParentServiceName,
+                ParentServiceID = dbActivity.ParentServiceID,
+                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
+                ParentInstanceID = dbActivity.ParentInstanceID,
+            };
+            return DsfOracleDatabaseActivity;
+        }
+
+        public static DsfODBCDatabaseActivity GetDsfODBCDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
+        {
+            var dsfOdbcDatabaseActivity = new DsfODBCDatabaseActivity
+            {
+                ResourceID = dbActivity.ResourceID,
+                SourceId = source.ResourceID,
+                CommandText = service.Method.ExecuteAction,
+                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
+                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
+                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
+                IconPath = dbActivity.IconPath,
+                ServiceName = dbActivity.ServiceName,
+                DataTags = dbActivity.DataTags,
+                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
+                ResultValidationExpression = dbActivity.ResultValidationExpression,
+                FriendlySourceName = dbActivity.FriendlySourceName,
+                EnvironmentID = dbActivity.EnvironmentID,
+                Type = dbActivity.Type,
+                ActionName = dbActivity.ActionName,
+                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
+                Category = dbActivity.Category,
+                ServiceUri = dbActivity.ServiceUri,
+                ServiceServer = dbActivity.ServiceServer,
+                UniqueID = dbActivity.UniqueID,
+                ParentServiceName = dbActivity.ParentServiceName,
+                ParentServiceID = dbActivity.ParentServiceID,
+                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
+                ParentInstanceID = dbActivity.ParentInstanceID,
+            };
+            return dsfOdbcDatabaseActivity;
+        }
         public static ICollection<IServiceOutputMapping> TranslateOutputMappingToOutputs(string outputMapping)
         {
             var outputDefs = DataListFactory.CreateOutputParser().Parse(outputMapping);
