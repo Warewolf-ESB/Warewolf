@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2
 {
@@ -10,7 +9,7 @@ namespace Dev2
         /// UniqueID is the InstanceID and MUST be a guid.
         /// </summary>
         string UniqueID { get; set; }
-        IList<IActionableErrorInfo> PerformValidation();
+
         enFindMissingType GetFindMissingType();
         IDev2Activity Execute(IDSFDataObject data, int update);
         IEnumerable<IDev2Activity> NextNodes { get; set; }

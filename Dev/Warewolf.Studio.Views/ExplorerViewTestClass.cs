@@ -351,62 +351,6 @@ namespace Warewolf.Studio.Views
             return node.Nodes.Select(child => child.Data as IExplorerTreeItem).Count(childitem => childitem != null && childitem.ResourceType == "WorkflowService");
         }
 
-        public void ShowVersionHistory(string path)
-        {
-            var node = VerifyItemExists(path);
-            var explorerItemViewModel = node.Data as IExplorerTreeItem;
-            if (explorerItemViewModel != null)
-            {
-                explorerItemViewModel.ShowVersionHistory.Execute(null);
-            }
-        }
-
-        public ICollection<IExplorerTreeItem> CreateChildNodes(int count, string path)
-        {
-            var node = VerifyItemExists(path);
-            var item = node.Data as IExplorerTreeItem;
-            var items = new List<IExplorerTreeItem>();
-            const string Name = "Resource ";
-            for (int i = 0; i < count; i++)
-            {
-                if (item != null)
-                {
-                    items.Add(new ExplorerItemViewModel(item.Server, item, a => { }, null, null) { ResourceName = Name + i, ResourceType = "Version" });
-                }
-            }
-            return items;
-        }
-
-        public void PerformVersionRollback(string versionPath)
-        {
-            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("\\", StringComparison.Ordinal)));
-
-            var explorerItemViewModel = node.Data as IExplorerTreeItem;
-            if (explorerItemViewModel != null)
-            {
-                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("\\", StringComparison.Ordinal))));
-                if (child != null)
-                {
-                    child.RollbackCommand.Execute(null);
-                }
-            }
-        }
-
-        public void PerformVersionDelete(string versionPath)
-        {
-            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("\\", StringComparison.Ordinal)));
-            var explorerItemViewModel = node.Data as IExplorerItemViewModel;
-            if (explorerItemViewModel != null)
-            {
-                explorerItemViewModel = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("\\", StringComparison.Ordinal))));
-
-                if (explorerItemViewModel != null)
-                {
-                    explorerItemViewModel.DeleteVersionCommand.Execute(null);
-                }
-            }
-        }
-
         public void PerformFolderDelete(string path)
         {
             var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("\\", StringComparison.Ordinal)));
@@ -420,11 +364,6 @@ namespace Warewolf.Studio.Views
                     child.DeleteCommand.Execute(null);
                 }
             }
-        }
-
-        public void VerifyContextMenu(string option, string visibility, string path)
-        {
-
         }
 
         public void Reset()
@@ -511,10 +450,6 @@ namespace Warewolf.Studio.Views
                     be.UpdateSource();
                 }
             }
-        }
-
-        public void Close(string nodeName)
-        {
         }
     }
 }

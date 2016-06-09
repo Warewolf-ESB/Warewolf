@@ -51,12 +51,6 @@ namespace Dev2.SignalR.Wrappers.New
             return ((IHubProxy)Object()).On(eventName, onData);
         }
 
-        public ISubscriptionWrapper Subscribe(string sendmemo)
-        {
-            Subscription s = _hubProxy.Subscribe(sendmemo);
-            return new SubscriptionWrapper(s);
-        }
-
         #endregion
     }
     public class SubscriptionWrapper : ISubscriptionWrapper

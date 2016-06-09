@@ -56,13 +56,6 @@ namespace Dev2.Data.Binary_Objects
             return result;
         }
 
-        public bool Contains(int idx)
-        {
-            bool result = idx <= MaxValue && idx >= 0 && !Gaps.Contains(idx);
-
-            return result;
-        }
-
         public int Count()
         {
 
@@ -77,29 +70,6 @@ namespace Dev2.Data.Binary_Objects
             int result = MaxValue - Gaps.Count;
 
             return result;
-        }
-
-        public void SetMaxValue(int idx, bool isEmpty)
-        {
-            var currMax = MaxValue;
-
-            if(idx > MaxValue && idx > 0)
-            {
-                MaxValue = idx;
-
-                // set to zero so we populate gaps correctly ;)
-                if(isEmpty)
-                {
-                    currMax = 0;
-                }
-
-                // now fill in the gaps?!
-                for(int i = currMax + 1; i < idx; i++)
-                {
-                    Gaps.Add(i);
-                }
-            }
-
         }
     }
 }

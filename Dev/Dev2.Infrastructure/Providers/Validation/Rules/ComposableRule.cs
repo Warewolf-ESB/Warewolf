@@ -26,22 +26,6 @@ namespace Dev2.Providers.Validation.Rules
 
         }
 
-        public ComposableRule<T> And(Rule<T> andRule)
-        {
-
-            VerifyArgument.IsNotNull("andRule", andRule);
-            var b = _check;
-            _check = () =>
-                {
-                    var a = b();
-
-                    if (a != null)
-                        return a;
-                    return andRule.Check();
-                };
-            return this;
-        }
-
         public ComposableRule<T> Or(Rule<T> orRule)
         {
 

@@ -50,7 +50,6 @@ namespace Dev2.Common.Interfaces.Studio
         bool IsProcessing { get; set; }
         ICommand StartPageCommand { get; }
 
-        void UpdateHelpDescriptor(string helpText);
         void Lock();
     }
 }

@@ -10,13 +10,9 @@
 */
 
 using System;
-using System.Reflection;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -42,58 +38,6 @@ namespace Dev2.Runtime.ServiceModel
                 RaiseError(ex);
             }
             return result;
-        }
-
-        #endregion
-
-        #region Save
-
-        // POST: Service/PluginSources/Save
-        public string Save(string args, Guid workspaceId, Guid dataListId)
-        {
-            var pluginSourceDetails = JsonConvert.DeserializeObject<PluginSource>(args);
-
-            if(string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))
-            {
-                //resolve AssemblyName from AssemblyLocation
-                if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation) && !pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
-                {
-                    //assembly location refers to a file, read the assembly name out of the dll file
-                    pluginSourceDetails.AssemblyLocation = pluginSourceDetails.AssemblyLocation.EndsWith("\\") ?
-                        pluginSourceDetails.AssemblyLocation.Remove(pluginSourceDetails.AssemblyLocation.Length - 1) : //remove trailing slashes if they exist
-                        pluginSourceDetails.AssemblyLocation; //else do nothing
-                    try
-                    {
-                        pluginSourceDetails.AssemblyName = AssemblyName.GetAssemblyName(pluginSourceDetails.AssemblyLocation).Name;
-                    }
-                    catch(Exception ex)
-                    {
-                        if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
-                        {
-                            pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) + 1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) - 1);
-                        }
-                        Dev2Logger.Error(ex);
-                    }
-                }
-                else
-                {
-                    //assembly location refers to the GAC
-                    string getName = null;
-                    if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
-                    {
-                        getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':') + 1);
-                    }
-                    pluginSourceDetails.AssemblyName = getName;
-                }
-            }
-
-            ResourceCatalog.Instance.SaveResource(workspaceId, pluginSourceDetails);
-            if(workspaceId != GlobalConstants.ServerWorkspaceID)
-            {
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, pluginSourceDetails);
-            }
-
-            return pluginSourceDetails.ToString();
         }
 
         #endregion

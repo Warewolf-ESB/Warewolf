@@ -2,8 +2,6 @@
 {
     public interface IScalarItemModel : IDataListItemModel
     {
-        //string DisplayName { get; set; }
-
-        string ValidateName(string name);
+       
     }
 }

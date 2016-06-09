@@ -98,15 +98,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        public static PluginService Create()
-        {
-            var result = new PluginService
-            {
-                ResourceID = Guid.Empty,
-                Source = { ResourceID = Guid.Empty },
-            };
-            return result;
-        }
     }
 }

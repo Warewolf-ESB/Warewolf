@@ -11,9 +11,7 @@
 
 using System;
 using System.Linq;
-using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -22,7 +20,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Services.Security;
-using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel
@@ -51,50 +48,6 @@ namespace Dev2.Runtime.ServiceModel
             VerifyArgument.IsNotNull("authorizationService", authorizationService);
             _resourceCatalog = resourceCatalog;
             _authorizationService = authorizationService;
-        }
-
-        #endregion
-
-        #region Get
-
-        // POST: Service/Services/Get
-        public Service Get(string args, Guid workspaceId, Guid dataListId)
-        {
-            string resourceType = "Unknown";
-            try
-            {
-                var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
-                var resourceTypeStr = webRequestPoco.ResourceType;
-                resourceType = resourceTypeStr;
-                var resourceId = webRequestPoco.ResourceId;
-                var xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId));
-
-                if (xmlStr != null && xmlStr.Length != 0)
-                {
-                    return DeserializeService(xmlStr.ToXElement(), resourceType);
-                }
-                return GetDefaultService(resourceType);
-
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-                return GetDefaultService(resourceType);
-            }
-        }
-
-        static Service GetDefaultService(string resourceType)
-        {
-            switch (resourceType)
-            {
-                case "DbService":
-                    return DbService.Create();
-                case "PluginService":
-                    return PluginService.Create();
-                case "WebService":
-                    return WebService.Create();
-            }
-            return DbService.Create();
         }
 
         #endregion
@@ -405,14 +358,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region IsReadOnly
 
-        public WebPermission IsReadOnly(string resourceId, Guid workspaceId, Guid dataListId)
-        {
-            return new WebPermission { IsReadOnly = !_authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId) };
-        }
-
-        #endregion
 
         protected virtual SqlDatabaseBroker CreateDatabaseBroker()
         {
@@ -421,38 +367,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #region DeserializeService
-
-        protected virtual Service DeserializeService(string args)
-        {
-            var service = JsonConvert.DeserializeObject<Service>(args);
-            switch (service.ResourceType)
-            {
-                case "DbService":
-                    return JsonConvert.DeserializeObject<DbService>(args);
-            }
-            return service;
-        }
-
-        protected virtual Service DeserializeService(XElement xml, string resourceType)
-        {
-            if (xml != null)
-            {
-                switch (resourceType)
-                {
-                    case "DbService":
-                        return new DbService(xml);
-                }
-            }
-            else
-            {
-                switch (resourceType)
-                {
-                    case "DbService":
-                        return DbService.Create();
-                }
-            }
-            return null;
-        }
 
         #endregion
 
