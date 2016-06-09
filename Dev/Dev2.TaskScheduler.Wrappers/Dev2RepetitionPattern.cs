@@ -50,10 +50,5 @@ namespace Dev2.TaskScheduler.Wrappers
             get { return Instance.StopAtDurationEnd; }
             set { Instance.StopAtDurationEnd = value; }
         }
-
-        public bool IsSet()
-        {
-            return Instance.IsSet();
-        }
     }
 }

@@ -60,22 +60,22 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             return false;
         }
 
-        public override IntPtr FindPopup()
+        public virtual IntPtr FindPopup()
         {
             return FindWindow("CefBrowserWindow", null);
         }
 
-        public override void SetPopupTitle(IntPtr hwnd)
+        public virtual void SetPopupTitle(IntPtr hwnd)
         {
             SetWindowText(hwnd, PopupTitle);
         }
 
-        public override void SetPopupForeground(IntPtr hwnd)
+        public virtual void SetPopupForeground(IntPtr hwnd)
         {
             SetForegroundWindow(hwnd);
         }
 
-        public override void SetPopupIcon(IntPtr hwnd)
+        public virtual void SetPopupIcon(IntPtr hwnd)
         {
             var iconPath = Assembly.GetEntryAssembly().Location;
             var icon = Icon.ExtractAssociatedIcon(iconPath);

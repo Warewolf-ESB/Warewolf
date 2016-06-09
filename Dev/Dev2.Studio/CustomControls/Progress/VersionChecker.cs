@@ -93,11 +93,6 @@ namespace Dev2.Studio.Core.Helpers
 
         #region IsLatest?
 
-        public bool GetNewerVersion()
-        {
-            return Latest > Current;
-        }
-
         public async Task<bool> GetNewerVersionAsync()
         {
             var latest = await GetLatestVersionAsync();

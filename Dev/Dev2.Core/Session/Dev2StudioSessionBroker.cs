@@ -13,11 +13,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using Dev2.Common;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.PathOperations;
 
 namespace Dev2.Session
@@ -160,81 +158,7 @@ namespace Dev2.Session
             return to;
         }
         protected const string RootTag = "DataList";
-        public string GetXMLForInputs(IDataListModel dataListModel)
-        {
-            StringBuilder result = new StringBuilder("<" + RootTag + ">");
-            foreach(var item in dataListModel.Scalars.Where(scalar => scalar.IODirection==enDev2ColumnArgumentDirection.Input || scalar.IODirection==enDev2ColumnArgumentDirection.Both))
-            {
-                DoScalarAppending(result, item);    
-            }
-            foreach (var recordSet in dataListModel.RecordSets.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both))
-            {
-                DoRecordSetAppending(recordSet, result);
-            }
-            result.Append("</" + RootTag + ">");
-            return result.ToString();
-        }
 
-        internal static void DoRecordSetAppending(IRecordSet recordSet, StringBuilder result)
-        {
-            var cnt = recordSet.Columns.Max(pair => pair.Key);
-
-            for (var i = 1; i <= cnt; i++)
-            {
-                var rowData = recordSet.Columns[i];
-
-                result.Append("<");
-                result.Append(recordSet.Name);
-                result.Append(">");
-                foreach (var col in rowData)
-                {
-
-                    var fName = col.Name;
-
-
-
-                    result.Append("<");
-                    result.Append(fName);
-                    result.Append(">");
-                    try
-                    {
-                        result.Append(col.Value);
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch (Exception)
-                    {
-                    }
-                    result.Append("</");
-                    result.Append(fName);
-                    result.Append(">");
-                }
-
-                result.Append("</");
-                result.Append(recordSet.Name);
-                result.Append(">");
-            }
-        }
-
-        internal static void DoScalarAppending(StringBuilder result, IScalar val)
-        {
-
-            var fName = val.Name;
-            result.Append("<");
-            result.Append(fName);
-            result.Append(">");
-            try
-            {
-                result.Append(val.Value);
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-            }
-            result.Append("</");
-            result.Append(fName);
-            result.Append(">");
-        }
         #region Private Method
 
         private void BootstrapPersistence(string baseDir)

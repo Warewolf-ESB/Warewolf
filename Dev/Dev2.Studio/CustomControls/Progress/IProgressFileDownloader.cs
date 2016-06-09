@@ -9,13 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
 namespace Dev2.CustomControls.Progress
 {
     public interface IProgressFileDownloader
     {
-        void Download(Uri address, string tmpfileName, bool dontStartUpdate,string fileName, string checkSum);
         void StartUpdate(string fileName, bool onlyCloseDialog);
     }
 }

@@ -20,8 +20,6 @@ namespace Dev2.Common.Interfaces
         void Filter(string filter);
         void Filter(Func<IExplorerItemViewModel, bool> filter);
         ICollection<IExplorerItemViewModel> AsList();
-        void SetItemCheckedState(Guid id, bool state);
-        void RemoveItem(IExplorerItemViewModel vm);
         ICommand RefreshCommand { get; set; }
         bool IsServerIconVisible { get; set; }
         bool IsServerUnavailableIconVisible { get; set; }

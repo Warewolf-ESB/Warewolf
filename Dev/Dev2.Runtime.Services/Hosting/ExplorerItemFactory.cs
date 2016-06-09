@@ -165,13 +165,6 @@ namespace Dev2.Runtime.Hosting
             return serverExplorerItem;
         }
 
-        public bool IsChild(string parent, string maybeChild)
-        {
-
-            return parent == maybeChild;
-
-        }
-
         public IResourceCatalog Catalogue { get; private set; }
         public IDirectory Directory { get; private set; }
     }

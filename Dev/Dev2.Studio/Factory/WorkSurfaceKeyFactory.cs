@@ -11,9 +11,7 @@
 
 using System;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 
@@ -59,26 +57,6 @@ namespace Dev2.Factory
                 ServerID = Environemt
             };
         }
-        /// <summary>
-        /// Creates a key for a worksurface that identifies a unique resource
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="resourceID">The resource ID.</param>
-        /// <param name="serverID">The server ID.</param>
-        /// <param name="environmentID">The environment ID.</param>
-        /// <returns></returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2/28/2013</date>
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID, Guid? environmentID = null)
-        {
-            return new WorkSurfaceKey
-            {
-                WorkSurfaceContext = context,
-                ResourceID = resourceID,
-                ServerID = serverID,
-                EnvironmentID = environmentID
-            };
-        }
 
         /// <summary>
         /// Creates the for a specific Contextual Resource
@@ -96,29 +74,6 @@ namespace Dev2.Factory
                     ResourceID = resourceModel.ID,
                     ServerID = resourceModel.ServerID,
                     EnvironmentID = resourceModel.Environment.ID
-                };
-        }
-
-        public static WorkSurfaceKey CreateKey(IDebugState debugState)
-        {
-            var origin = debugState.WorkspaceID;
-            if(origin != Guid.Empty)
-            {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
-                Guid environmentID = environmentModel.ID;
-                return new WorkSurfaceKey
-                {
-                    WorkSurfaceContext = WorkSurfaceContext.Workflow,
-                    ResourceID = debugState.OriginatingResourceID,
-                    ServerID = debugState.ServerID,
-                    EnvironmentID = environmentID
-                };
-            }
-            return new WorkSurfaceKey
-                {
-                    WorkSurfaceContext = WorkSurfaceContext.Workflow,
-                    ResourceID = debugState.OriginatingResourceID,
-                    ServerID = debugState.ServerID,
                 };
         }
 
