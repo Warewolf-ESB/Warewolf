@@ -32,17 +32,6 @@ namespace Dev2
             out ErrorResultTO errors);
 
         /// <summary>
-        ///     Fetches the server model.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, int update);
-
-        /// <summary>
         ///     Executes the sub request.
         /// </summary>
         /// <param name="dataObject">The data object.</param>

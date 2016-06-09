@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
@@ -18,24 +17,11 @@ namespace Dev2.Common.Interfaces
     public interface IQueryManager
     {
         /// <summary>
-        /// Gets the dependencies of a resource. a dependency referes to a nested resource
-        /// </summary>
-        /// <param name="resourceId">the resource</param>
-        /// <returns>a list of tree dependencies</returns>
-        IExecuteMessage FetchDependencies(Guid resourceId);
-        /// <summary>
         /// Get the list of items that use this resource a nested resource
         /// </summary>
         /// <param name="resourceId"></param>
         /// <returns></returns>
         IExecuteMessage FetchDependants(Guid resourceId);
-
-        /// <summary>
-        /// Fetch a heavy weight reource
-        /// </summary>
-        /// <param name="resourceId"></param>
-        /// <returns></returns>
-        StringBuilder FetchResourceXaml(Guid resourceId);
 
 
         /// <summary>

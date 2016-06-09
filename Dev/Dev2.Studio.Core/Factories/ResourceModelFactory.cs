@@ -30,16 +30,6 @@ namespace Dev2.Studio.Core.Factories
             };
         }
 
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, ResourceType resourceType, string iconPath, string displayName)
-        {
-            IContextualResourceModel resource = new ResourceModel(environment);
-            resource.ResourceType = resourceType;
-            resource.IconPath = iconPath;
-            resource.DisplayName = displayName;
-            resource.UserPermissions = Permissions.Contribute;
-            return resource;
-        }
-
         public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType)
         {
             return CreateResourceModel(environment, resourceType, resourceType);

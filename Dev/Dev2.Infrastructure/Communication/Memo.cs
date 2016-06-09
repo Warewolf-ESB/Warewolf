@@ -45,12 +45,6 @@ namespace Dev2.Communication
             return serializer.Serialize(envelope);
         }
 
-        public static object Parse(ISerializer serializer, string envelopeStr)
-        {
-            var envelope = serializer.Deserialize<Envelope>(envelopeStr);
-            return serializer.Deserialize(envelope.Content, envelope.Type);
-        }
-
         #region IEquatable
 
         public bool Equals(IMemo other)

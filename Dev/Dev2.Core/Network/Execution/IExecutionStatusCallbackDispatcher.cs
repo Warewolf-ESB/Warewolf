@@ -8,16 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
 namespace Dev2.Network.Execution
 {
     public interface IExecutionStatusCallbackDispatcher
     {
-        bool Add(Guid callbackID, Action<ExecutionStatusCallbackMessage> callback);
-        bool Remove(Guid callbackID);
-
-        void Post(ExecutionStatusCallbackMessage message);
-        void Send(ExecutionStatusCallbackMessage message);
     }
 }

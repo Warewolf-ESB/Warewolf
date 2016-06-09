@@ -76,15 +76,6 @@ namespace Dev2.Utils
         }
 
         /// <summary>
-        /// Adds the workflow waiting for first focus loss.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void AddWorkflowWaitingForFirstFocusLoss(WorkSurfaceKey workSurfaceKey)
-        {
-            _resourcesCurrentlyWaitingForFirstFocusLoss[workSurfaceKey.ToString()] = true;
-        }
-
-        /// <summary>
         /// Removes the workflow waiting for first focus loss.
         /// </summary>
         /// <param name="workSurfaceKey">The work surface key.</param>

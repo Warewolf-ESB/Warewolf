@@ -57,19 +57,6 @@ namespace Dev2.Studio.Core.Activities.Utils
             return mtm.Root;
         }
 
-        public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
-        {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-
-            return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
-        }
-
-        public static ModelItem CreateModelItem()
-        {
-            return CreateModelItem(new object());
-        }
-
         public static T GetProperty<T>(this ModelItem modelItem, string propertyName)
         {
             var modelProperty = modelItem.Properties[propertyName];
