@@ -144,6 +144,8 @@ namespace Dev2.Activities.SelectAndApply
                     }
                     //Eval list using DataSource
                     var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true);
+                    var warewolfEvalResult = dataObject.Environment.EvalForJson(dataObject.Environment.ToStar(DataSource));
+                    
                     //Create a new Execution Environment
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment, DataSource, Alias);
 
