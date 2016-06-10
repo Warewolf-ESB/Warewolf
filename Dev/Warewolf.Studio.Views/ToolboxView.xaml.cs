@@ -21,7 +21,6 @@ namespace Warewolf.Studio.Views
             var grid = sender as Grid;
             if (grid != null && e.LeftButton == MouseButtonState.Pressed)
             {
-                Mouse.SetCursor(_customCursor);
                 var dataContext = grid.DataContext as ToolDescriptorViewModel;
                 if (dataContext != null &&
                     dataContext.ActivityType != null)
@@ -30,9 +29,6 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
-
-
-        private Cursor _customCursor;
 
         void UIElement_OnDragEnter(object sender, DragEventArgs e)
         {

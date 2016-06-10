@@ -502,13 +502,15 @@ namespace Warewolf.Studio.ViewModels
             if (environmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
             {
                 ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
+                // Remove the item from the parent for studio change to show, then do the delete from the server.
+                if (Parent != null)
+                {
+                    Parent.RemoveChild(this);
+                }
+                //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
                 _fileMetadata = _explorerRepository.Delete(this);
                 if (_fileMetadata.IsDeleted)
                 {
-                    if (Parent != null)
-                    {
-                        Parent.RemoveChild(this);
-                    }
                     if (ResourceType == "ServerSource" || IsServer)
                     {
                         Server.UpdateRepository.FireServerSaved();
@@ -516,6 +518,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
+                    // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
+                    if (Parent != null)
+                    {
+                        Parent.AddChild(this);
+                    }
                     ResourceId = _fileMetadata.ResourceId;
                     ShellViewModel.ShowDependencies(ResourceId, Server);
                 }
