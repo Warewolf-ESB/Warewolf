@@ -114,7 +114,6 @@
     <Compile Include="CustomViewModel.cs" />
     <Compile Include="DataPresenterHelpers.cs" />
     <Compile Include="DebugConverter.cs" />
-    <Compile Include="DragDropExtension.cs" />
     <Compile Include="HighlightTextBlock.cs" />
     <Compile Include="NavigationItemViewModelDragDropBehavior.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />

@@ -1164,6 +1164,7 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                 }
+                RemoveChildFromParent();
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
@@ -1179,6 +1180,13 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
             return true;
+        }
+        private void RemoveChildFromParent()
+        {
+            if (Parent != null)
+            {
+                Parent.RemoveChild(this);
+            }
         }
 
         public void ShowErrorMessage(string errorMessage)
