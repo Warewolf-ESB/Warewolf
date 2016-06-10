@@ -201,7 +201,6 @@ namespace Warewolf.Studio.Views
                 xamDataTreeNodeControl.Node.Data.GetType() == typeof(ExplorerItemViewModel))
             {
                 DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
-                dragSource.DragEnter += src_DragEnter;
                 dragSource.DragLeave += src_DragLeave;
                 dragSource.DragOver += SrcOnDragOver;
                 dragSource.Drop += src_Drop;
@@ -358,73 +357,6 @@ namespace Warewolf.Studio.Views
             _errorMessage = "The destination folder has a resource with the same name";
         }
 
-        void src_DragEnter(object sender, DragDropCancelEventArgs e)
-        {
-            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
-            var dragSource = e.DragSource as XamDataTreeNodeControl;
-            if (dropTarget != null && dragSource != null)
-            {
-                var dataType = dropTarget.Node.Data.GetType();
-                if (dataType == typeof(ExplorerItemViewModel))
-                {
-                    var dropNodeData = dropTarget.Node.Data;
-                    var sourceNodeData = dragSource.Node.Data;
-                    if (dropNodeData.GetType() == typeof(ExplorerItemViewModel))
-                    {
-                        var destination = dropNodeData as IExplorerItemViewModel;
-                        var source = sourceNodeData as IExplorerItemViewModel;
-
-                        if (destination != null && source != null)
-                        {
-                            IEnvironmentViewModel vmDestination = GetEnv(destination);
-
-                            if (!ValidateDragDrop(source, vmDestination) && destination.IsFolder)
-                            {
-                                e.DropNotAllowedCursorTemplate = null;
-                                e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
-                                e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
-                                e.OperationType = OperationType.Move;
-                                DropAllowedStyle(e.DropTarget);
-                            }
-                            else
-                            {
-                                e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-                                e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-                                e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-                                e.OperationType = OperationType.DropNotAllowed;
-                                DropNotAllowedStyle(e.DropTarget);
-                            }
-                        }
-                    }
-                    else if (dataType == typeof(EnvironmentViewModel))
-                    {
-                        var destination = dropNodeData as IEnvironmentViewModel;
-                        var source = sourceNodeData as IExplorerItemViewModel;
-
-                        if (destination != null && source != null)
-                        {
-                            if (!ValidateDragDrop(source, destination))
-                            {
-                                e.DropNotAllowedCursorTemplate = null;
-                                e.CopyCursorTemplate = DragDropManager.CurrentCopyCursorTemplate;
-                                e.MoveCursorTemplate = DragDropManager.CurrentMoveCursorTemplate;
-                                e.OperationType = OperationType.Move;
-                                DropAllowedStyle(e.DropTarget);
-                            }
-                            else
-                            {
-                                e.DropNotAllowedCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-                                e.CopyCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-                                e.MoveCursorTemplate = DragDropManager.CurrentDropNotAllowedCursorTemplate;
-                                e.OperationType = OperationType.DropNotAllowed;
-                                DropNotAllowedStyle(e.DropTarget);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         void src_DragLeave(object sender, DragDropEventArgs e)
         {
             // Reset the cursor template
@@ -443,7 +375,6 @@ namespace Warewolf.Studio.Views
         {
             // Disconnect the events for memory reasons.
             var src = DragDropManager.GetDragSource(e.DragSource);
-            src.DragEnter -= src_DragEnter;
             src.DragLeave -= src_DragLeave;
             src.DragOver -= SrcOnDragOver;
             src.Drop -= src_Drop;
