@@ -39,7 +39,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory, environmentConnection);
             VersionManager = new VersionManagerProxy(environmentConnection, controllerFactory); //todo:swap
             AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection); //todo:swap
-
         }
 
         public async Task<IExplorerItem> LoadExplorer()
@@ -79,9 +78,22 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             if (explorerItemViewModel != null)
             {
-
                 var graphGenerator = new DependencyGraphGenerator();
-                if (explorerItemViewModel.ResourceType == "Folder")
+                if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
+                {
+                    var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
+                    if (!HasDependencies(explorerItemViewModel, graphGenerator, dep))
+                        return new DeletedFileMetadata
+                        {
+                            IsDeleted = false,
+                            ResourceId = explorerItemViewModel.ResourceId
+                        };
+                }
+                if (explorerItemViewModel.ResourceType == "Version")
+                {
+                    VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
+                }
+                else if (explorerItemViewModel.ResourceType == "Folder")
                 {
                     var explorerItemViewModels = explorerItemViewModel.AsList();
                     // ReSharper disable once LoopCanBeConvertedToQuery
@@ -90,23 +102,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                         var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
                         if (!HasDependencies(itemViewModel, graphGenerator, dependants))
                         {
-
-                            return new DeletedFileMetadata() { IsDeleted = false, ResourceId = itemViewModel.ResourceId };
+                            return new DeletedFileMetadata
+                            {
+                                IsDeleted = false,
+                                ResourceId = itemViewModel.ResourceId
+                            };
                         }
                     }
-                }
-                if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
-                {
-                    var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-                    if (!HasDependencies(explorerItemViewModel, graphGenerator, dep))
-                        return new DeletedFileMetadata() { IsDeleted = false, ResourceId = explorerItemViewModel.ResourceId };
-                }
-                if (explorerItemViewModel.ResourceType == "Version")
-                {
-                    VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
-                }
-                else if (explorerItemViewModel.ResourceType == "Folder")
-                {
                     if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
                     {
                         UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
@@ -117,7 +119,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
                 }
             }
-            return new DeletedFileMetadata() { IsDeleted = true };
+            return new DeletedFileMetadata
+            {
+                IsDeleted = true
+            };
         }
 
         private bool HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
@@ -149,8 +154,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.AddFolder(parentPath, name, id);
         }
-        //
-        //        #endregion
     }
 
     public static class StudioServerProxyHelper
