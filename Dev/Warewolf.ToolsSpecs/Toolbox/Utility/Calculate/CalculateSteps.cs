@@ -25,6 +25,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     [Binding]
     public class CalculateSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public CalculateSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildInternal(false);
@@ -33,17 +41,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         private void BuildInternal(bool isAggregate)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
             string resVar;
-            if(ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            if(scenarioContext.TryGetValue("resVar", out resVar))
             {
                 resultVariable = resVar;
             }
@@ -51,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             BuildShapeAndTestData();
 
             string formula;
-            ScenarioContext.Current.TryGetValue("formula", out formula);
+            scenarioContext.TryGetValue("formula", out formula);
             if (isAggregate)
             {
                 var calculate = new DsfAggregateCalculateActivity
@@ -63,7 +71,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 {
                     Action = calculate
                 };
-                ScenarioContext.Current.Add("activity", calculate);
+                scenarioContext.Add("activity", calculate);
             }
             else
             {
@@ -76,7 +84,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 {
                     Action = calculate
                 };
-                ScenarioContext.Current.Add("activity", calculate);
+                scenarioContext.Add("activity", calculate);
             }
             
         }
@@ -84,7 +92,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         [Given(@"I have the formula ""(.*)""")]
         public void GivenIHaveTheFormula(string formula)
         {
-            ScenarioContext.Current.Add("formula", formula);
+            scenarioContext.Add("formula", formula);
         }
 
         [When(@"the aggregate calculate tool is executed")]
@@ -92,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         {
             BuildInternal(true);
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [When(@"the calculate tool is executed")]
@@ -100,19 +108,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Given(@"I have a calculate variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveACalculateVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -125,12 +133,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             for (int i = 0; i < tableRows.Count; i++)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(recordset, tableRows[i][0]));
             }
@@ -142,7 +150,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
 
@@ -182,7 +190,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         [Given(@"I have the Example formula '(.*)'")]
         public void GivenIHaveTheExampleFormula(string formula)
         {
-            ScenarioContext.Current.Add("formula", formula);
+            scenarioContext.Add("formula", formula);
 
         }
 
@@ -190,13 +198,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         [Then(@"the example output = '(.*)'")]
         public void ThenTheExampleOutput(int p0)
         {
-            ScenarioContext.Current.Pending();
+            scenarioContext.Pending();
         }
 
         [Given(@"calculate result as ""(.*)""")]
         public void GivenCalculateResultAs(string p0)
         {
-            ScenarioContext.Current.Add("resVar", p0);
+            scenarioContext.Add("resVar", p0);
         }
 
     }

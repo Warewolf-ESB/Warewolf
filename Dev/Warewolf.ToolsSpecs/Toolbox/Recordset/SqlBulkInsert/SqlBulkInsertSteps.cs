@@ -30,14 +30,22 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
     [Binding]
     public class SqlBulkInsertSteps : BaseActivityUnitTest
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SqlBulkInsertSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         public void SetupScenerio()
         {
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
-            ScenarioContext.Current.Add("dbSource", dbSource);
+            scenarioContext.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
-            sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+            sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
             var dataColumnMappings = new List<DataColumnMapping>
                 {
                     new DataColumnMapping
@@ -77,7 +85,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                     Action = sqlBulkInsert
                 };
            
-            ScenarioContext.Current.Add("activity", sqlBulkInsert);
+            scenarioContext.Add("activity", sqlBulkInsert);
         }
 
         [Given(@"I have this data")]
@@ -90,11 +98,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
         private void ClearCountColumn()
         {
-            var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
+            var dbSource = scenarioContext.Get<DbSource>("dbSource");
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_') + " " +
+                var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + " " +
                                   "set Col2 = 0 " +
                                   "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using(var cmd = new SqlCommand(q2, connection))
@@ -136,26 +144,26 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         [Given(@"Check constraints is disabled")]
         public void GivenCheckConstraintsIsNotenabled()
         {
-            ScenarioContext.Current.Add("checkConstraints", false);
+            scenarioContext.Add("checkConstraints", false);
         }
 
         [When(@"the tool is executed")]
         public void WhenTheToolIsExecuted()
         {
             bool checkConstraints;
-            ScenarioContext.Current.TryGetValue("checkConstraints", out checkConstraints);
+            scenarioContext.TryGetValue("checkConstraints", out checkConstraints);
             bool keepIdentity;
-            ScenarioContext.Current.TryGetValue("keepIdentity", out keepIdentity);
+            scenarioContext.TryGetValue("keepIdentity", out keepIdentity);
             bool ignoreBlankRows;
-            ScenarioContext.Current.TryGetValue("ignoreBlankRows", out ignoreBlankRows);
+            scenarioContext.TryGetValue("ignoreBlankRows", out ignoreBlankRows);
             bool fireTriggers;
-            ScenarioContext.Current.TryGetValue("fireTriggers", out fireTriggers);
+            scenarioContext.TryGetValue("fireTriggers", out fireTriggers);
             string batchSize;
-            ScenarioContext.Current.TryGetValue("batchSize", out batchSize);
+            scenarioContext.TryGetValue("batchSize", out batchSize);
             string timeout;
-            ScenarioContext.Current.TryGetValue("timeout", out timeout);
+            scenarioContext.TryGetValue("timeout", out timeout);
 
-            var sqlBulkInsert = ScenarioContext.Current.Get<DsfSqlBulkInsertActivity>("activity");
+            var sqlBulkInsert = scenarioContext.Get<DsfSqlBulkInsertActivity>("activity");
 
             sqlBulkInsert.CheckConstraints = checkConstraints;
             sqlBulkInsert.IgnoreBlankRows = ignoreBlankRows;
@@ -165,7 +173,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.Timeout = timeout;
             sqlBulkInsert.Result = "[[result]]";
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the new table will have")]
@@ -173,12 +181,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         {
             var t1 = new DataTable();
 
-            var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
+            var dbSource = scenarioContext.Get<DbSource>("dbSource");
 
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+                var query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
 
                 using(var cmd = new SqlCommand(query, connection))
                 {
@@ -196,7 +204,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                string q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+                string q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
 
                 using(var cmd = new SqlCommand(q1, connection))
                 {
@@ -217,31 +225,31 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         [Given(@"Check constraints is enabled")]
         public void GivenCheckConstraintsIsenabled()
         {
-            ScenarioContext.Current.Add("checkConstraints", true);
+            scenarioContext.Add("checkConstraints", true);
         }
 
         [Given(@"Keep identity is disabled")]
         public void GivenKeepIdentityIsNotenabled()
         {
-            ScenarioContext.Current.Add("keepIdentity", false);
+            scenarioContext.Add("keepIdentity", false);
         }
 
         [Given(@"Keep identity is enabled")]
         public void GivenKeepIdentityIsenabled()
         {
-            ScenarioContext.Current.Add("keepIdentity", true);
+            scenarioContext.Add("keepIdentity", true);
         }
 
         [Then(@"the new table will will have (.*) of rows")]
         public void ThenTheNewTableWillWillHaveOfRows(int numberOfRows)
         {
             object numberOfRowsInDb;
-            var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
+            var dbSource = scenarioContext.Get<DbSource>("dbSource");
 
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q1 = "SELECT Count(*) FROM SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+                var q1 = "SELECT Count(*) FROM SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 using(var cmd = new SqlCommand(q1, connection))
                 {
                     numberOfRowsInDb = cmd.ExecuteScalar();
@@ -251,7 +259,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+                var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
@@ -264,39 +272,39 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         [Given(@"Skip rows is enabled")]
         public void GivenSkipRowsIsenabled()
         {
-            ScenarioContext.Current.Add("ignoreBlankRows", true);
+            scenarioContext.Add("ignoreBlankRows", true);
         }
 
         [Given(@"Skip rows is disabled")]
         public void GivenSkipRowsIsNotenabled()
         {
-            ScenarioContext.Current.Add("ignoreBlankRows", false);
+            scenarioContext.Add("ignoreBlankRows", false);
         }
 
         [Given(@"Fire triggers is disabled")]
         public void GivenFireTriggersIsNotenabled()
         {
-            ScenarioContext.Current.Add("fireTriggers", false);
+            scenarioContext.Add("fireTriggers", false);
         }
 
         [Given(@"Fire triggers is enabled")]
         public void GivenFireTriggersIsenabled()
         {
-            ScenarioContext.Current.Add("fireTriggers", true);
+            scenarioContext.Add("fireTriggers", true);
         }
 
         [Given(@"Batch size is (.*)")]
         public void GivenBatchSizeIs(string batchSize)
         {
-            ScenarioContext.Current.Add("batchSize", batchSize);
-            ScenarioContext.Current.Add("fireTriggers", true);
+            scenarioContext.Add("batchSize", batchSize);
+            scenarioContext.Add("fireTriggers", true);
         }
 
         [Given(@"Timeout in (.*) seconds")]
         public void GivenTimeoutInSeconds(string timeout)
         {
-            ScenarioContext.Current.Add("timeout", timeout);
-            ScenarioContext.Current.Add("fireTriggers", true);
+            scenarioContext.Add("timeout", timeout);
+            scenarioContext.Add("fireTriggers", true);
         }
 
 
@@ -304,12 +312,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void ThenNumberOfInsertsIs(string numOfInserts)
         {
             object actualInserts;
-            var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
+            var dbSource = scenarioContext.Get<DbSource>("dbSource");
 
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_') + " " +
+                var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + " " +
                                   "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using(var cmd = new SqlCommand(q1, connection))
                 {
@@ -320,7 +328,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+                var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
