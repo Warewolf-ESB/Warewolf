@@ -1070,9 +1070,9 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void AssignToAInvalidVariable(string no, string var, string error, string[] exampleTags)
+        public virtual void AssignToAnInvalidVariable(string no, string var, string error, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign to a invalid variable", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign to an invalid variable", exampleTags);
 #line 319
 this.ScenarioSetup(scenarioInfo);
 #line 320
@@ -1099,392 +1099,392 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[rec\").a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_1()
+        public virtual void AssignToAnInvalidVariable_1()
         {
-            this.AssignToAInvalidVariable("1", "[rec\").a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("1", "[rec\").a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_2()
+        public virtual void AssignToAnInvalidVariable_2()
         {
-            this.AssignToAInvalidVariable("2", "[[rec\"()\".a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("2", "[[rec\"()\".a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_3()
+        public virtual void AssignToAnInvalidVariable_3()
         {
-            this.AssignToAInvalidVariable("3", "[[rec\"()\".a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("3", "[[rec\"()\".a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_4()
+        public virtual void AssignToAnInvalidVariable_4()
         {
-            this.AssignToAInvalidVariable("4", "[[rec\".a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("4", "[[rec\".a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec.a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_5()
+        public virtual void AssignToAnInvalidVariable_5()
         {
-            this.AssignToAInvalidVariable("5", "[[rec.a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("5", "[[rec.a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()*.a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_6()
+        public virtual void AssignToAnInvalidVariable_6()
         {
-            this.AssignToAInvalidVariable("6", "[[rec()*.a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("6", "[[rec()*.a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]].[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_7()
+        public virtual void AssignToAnInvalidVariable_7()
         {
-            this.AssignToAInvalidVariable("7", "[[rec().a]].[[a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("7", "[[rec().a]].[[a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]][[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_8()
+        public virtual void AssignToAnInvalidVariable_8()
         {
-            this.AssignToAInvalidVariable("8", "[[rec().a]][[a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("8", "[[rec().a]][[a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]]*")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_9()
+        public virtual void AssignToAnInvalidVariable_9()
         {
-            this.AssignToAInvalidVariable("9", "[[rec().a]]*", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("9", "[[rec().a]]*", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]] a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_10()
+        public virtual void AssignToAnInvalidVariable_10()
         {
-            this.AssignToAInvalidVariable("10", "[[rec().a]] a", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("10", "[[rec().a]] a", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[1]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_11()
+        public virtual void AssignToAnInvalidVariable_11()
         {
-            this.AssignToAInvalidVariable("11", "[[1]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("11", "[[1]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rs(),.val]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_12()
+        public virtual void AssignToAnInvalidVariable_12()
         {
-            this.AssignToAInvalidVariable("12", "[[rs(),.val]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("12", "[[rs(),.val]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var#]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_13()
+        public virtual void AssignToAnInvalidVariable_13()
         {
-            this.AssignToAInvalidVariable("13", "[[var#]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("13", "[[var#]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var]]00]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_14()
+        public virtual void AssignToAnInvalidVariable_14()
         {
-            this.AssignToAInvalidVariable("14", "[[var]]00]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("14", "[[var]]00]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var]]@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_15()
+        public virtual void AssignToAnInvalidVariable_15()
         {
-            this.AssignToAInvalidVariable("15", "[[var]]@]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("15", "[[var]]@]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var.()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_16()
+        public virtual void AssignToAnInvalidVariable_16()
         {
-            this.AssignToAInvalidVariable("16", "[[var.()]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("16", "[[var.()]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_17()
+        public virtual void AssignToAnInvalidVariable_17()
         {
-            this.AssignToAInvalidVariable("17", "[[]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("17", "[[]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_18()
+        public virtual void AssignToAnInvalidVariable_18()
         {
-            this.AssignToAInvalidVariable("18", "[[()]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("18", "[[()]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_19()
+        public virtual void AssignToAnInvalidVariable_19()
         {
-            this.AssignToAInvalidVariable("19", "[[var[[a]]]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("19", "[[var[[a]]]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var[[]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_20()
+        public virtual void AssignToAnInvalidVariable_20()
         {
-            this.AssignToAInvalidVariable("20", "[[var[[]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("20", "[[var[[]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var1.a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_21()
+        public virtual void AssignToAnInvalidVariable_21()
         {
-            this.AssignToAInvalidVariable("21", "[[var1.a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("21", "[[var1.a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()!a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_22()
+        public virtual void AssignToAnInvalidVariable_22()
         {
-            this.AssignToAInvalidVariable("22", "[[rec()!a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("22", "[[rec()!a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()         a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_23()
+        public virtual void AssignToAnInvalidVariable_23()
         {
-            this.AssignToAInvalidVariable("23", "[[rec()         a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("23", "[[rec()         a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[{{rec(_).a}}]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_24()
+        public virtual void AssignToAnInvalidVariable_24()
         {
-            this.AssignToAInvalidVariable("24", "[[{{rec(_).a}}]]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("24", "[[{{rec(_).a}}]]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec(23).[[var*]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_25()
+        public virtual void AssignToAnInvalidVariable_25()
         {
-            this.AssignToAInvalidVariable("25", "[[rec(23).[[var*]]]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("25", "[[rec(23).[[var*]]]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_26()
+        public virtual void AssignToAnInvalidVariable_26()
         {
-            this.AssignToAInvalidVariable("26", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("26", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]]&[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_27()
+        public virtual void AssignToAnInvalidVariable_27()
         {
-            this.AssignToAInvalidVariable("27", "[[rec().a]]&[[a]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("27", "[[rec().a]]&[[a]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "a[[rec([[[[b]]]]).a]]@")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_28()
+        public virtual void AssignToAnInvalidVariable_28()
         {
-            this.AssignToAInvalidVariable("28", "a[[rec([[[[b]]]]).a]]@", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("28", "a[[rec([[[[b]]]]).a]]@", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var  ]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_29()
+        public virtual void AssignToAnInvalidVariable_29()
         {
-            this.AssignToAInvalidVariable("29", "[[var  ]]", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("29", "[[var  ]]", "AN", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable: 30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to an invalid variable: 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
-        public virtual void AssignToAInvalidVariable_30()
+        public virtual void AssignToAnInvalidVariable_30()
         {
-            this.AssignToAInvalidVariable("30", "[[rec()", "AN", ((string[])(null)));
+            this.AssignToAnInvalidVariable("30", "[[rec()", "AN", ((string[])(null)));
 #line hidden
         }
         

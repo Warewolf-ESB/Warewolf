@@ -316,7 +316,7 @@ Scenario: Assign a scalar equal to a calculation with a blank variable
 	
 
 #Bug 11499
-Scenario Outline: Assign to a invalid variable
+Scenario Outline: Assign to an invalid variable
    Given I assign the value 10 to a variable "<var>"
    When the assign tool is executed
    Then the execution has "<error>" error
