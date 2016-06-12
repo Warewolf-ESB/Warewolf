@@ -22,19 +22,27 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
     [Binding]
     public class WebRequestSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public WebRequestSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             var resultVariable = ResultVariable;
             string resVar;
-            if(ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            if(scenarioContext.TryGetValue("resVar", out resVar))
             {
                 resultVariable = resVar;
             }
@@ -42,11 +50,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             BuildShapeAndTestData();
 
             string header;
-            ScenarioContext.Current.TryGetValue("header", out header);
+            scenarioContext.TryGetValue("header", out header);
             string url;
-            ScenarioContext.Current.TryGetValue("url", out url);
+            scenarioContext.TryGetValue("url", out url);
             string timeout;
-            ScenarioContext.Current.TryGetValue("timeoutSeconds", out timeout);
+            scenarioContext.TryGetValue("timeoutSeconds", out timeout);
             var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = resultVariable,
@@ -60,13 +68,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 {
                     Action = webGet
                 };
-            ScenarioContext.Current.Add("activity", webGet);
+            scenarioContext.Add("activity", webGet);
         }
 
         [Given(@"I have the url ""(.*)"" without timeout")]
         public void GivenIHaveTheUrl(string url)
         {
-            ScenarioContext.Current.Add("url", url);
+            scenarioContext.Add("url", url);
         }
 
         [When(@"the web request tool is executed")]
@@ -74,19 +82,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Given(@"I have a web request variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAWebRequestVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -94,7 +102,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         [Given(@"I have the Header ""(.*)""")]
         public void GivenIHaveTheHeader(string header)
         {
-            ScenarioContext.Current.Add("header", header);
+            scenarioContext.Add("header", header);
         }
 
 
@@ -103,7 +111,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             if (string.IsNullOrEmpty(expectedResult))
@@ -121,15 +129,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         [Given(@"I have web request result as ""(.*)""")]
         public void GivenIHaveWebRequestResultAs(string resultVar)
         {
-            ScenarioContext.Current.Add("resVar", resultVar);
+            scenarioContext.Add("resVar", resultVar);
         }
 
 
         [Given(@"I have the url ""(.*)"" with timeoutSeconds ""(.*)""")]
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
-            ScenarioContext.Current.Add("url", url);
-            ScenarioContext.Current.Add("timeoutSeconds", timeoutSeconds);
+            scenarioContext.Add("url", url);
+            scenarioContext.Add("timeoutSeconds", timeoutSeconds);
         }
 
 

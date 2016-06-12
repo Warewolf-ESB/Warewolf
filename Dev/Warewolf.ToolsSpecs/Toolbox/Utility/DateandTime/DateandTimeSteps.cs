@@ -25,31 +25,38 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
     [Binding]
     public class DateandTimeSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DateandTimeSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
 
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string inputDate;
-            ScenarioContext.Current.TryGetValue("inputDate", out inputDate);
+            scenarioContext.TryGetValue("inputDate", out inputDate);
             string inputFormat;
-            ScenarioContext.Current.TryGetValue("inputFormat", out inputFormat);
+            scenarioContext.TryGetValue("inputFormat", out inputFormat);
             string outputFormat;
-            ScenarioContext.Current.TryGetValue("outputFormat", out outputFormat);
+            scenarioContext.TryGetValue("outputFormat", out outputFormat);
             string timeModifierType;
-            ScenarioContext.Current.TryGetValue("timeModifierType", out timeModifierType);
+            scenarioContext.TryGetValue("timeModifierType", out timeModifierType);
             string timeModifierAmount;
-            ScenarioContext.Current.TryGetValue("timeModifierAmount", out timeModifierAmount);
+            scenarioContext.TryGetValue("timeModifierAmount", out timeModifierAmount);
 
             //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
             if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.0.6002 Service Pack 2")
@@ -72,25 +79,25 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                     Action = dateTime
                 };
 
-            ScenarioContext.Current.Add("activity", dateTime);
+            scenarioContext.Add("activity", dateTime);
         }
 
 
         [Given(@"I have a date ""(.*)""")]
         public void GivenIHaveADate(string inputDate)
         {
-            ScenarioContext.Current.Add("inputDate", inputDate);
+            scenarioContext.Add("inputDate", inputDate);
         }
         [Given(@"I have a Date time variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADateTimeVariableWithValue(string name, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(name, value));
         }
@@ -101,20 +108,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Given(@"the input format as ""(.*)""")]
         public void GivenTheInputFormatAs(string inputFormat)
         {
-            ScenarioContext.Current.Add("inputFormat", inputFormat);
+            scenarioContext.Add("inputFormat", inputFormat);
         }
 
         [Given(@"I selected Add time as ""(.*)"" with a value of (.*)")]
         public void GivenISelectedAddTimeAsWithAValueOf(string timeModifierType, string timeModifierAmount)
         {
-            ScenarioContext.Current.Add("timeModifierType", timeModifierType);
-            ScenarioContext.Current.Add("timeModifierAmount", timeModifierAmount);
+            scenarioContext.Add("timeModifierType", timeModifierType);
+            scenarioContext.Add("timeModifierAmount", timeModifierAmount);
         }
 
         [Given(@"the output format as ""(.*)""")]
         public void GivenTheOutputFormatAs(string outputFormat)
         {
-            ScenarioContext.Current.Add("outputFormat", outputFormat);
+            scenarioContext.Add("outputFormat", outputFormat);
         }
 
         [When(@"the datetime tool is executed")]
@@ -122,7 +129,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the datetime result should be a ""(.*)""")]
@@ -130,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             // ReSharper disable AssignNullToNotNullAttribute
@@ -144,7 +151,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
@@ -202,7 +209,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
 
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
 
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
