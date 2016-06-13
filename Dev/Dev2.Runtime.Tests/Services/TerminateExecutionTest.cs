@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
-        public void ThreeServicesAddedTwoRemovedExpectsOneRepository()
+        public void ThreeServicesAddedOneRemovedExpectsTwoInRepository()
         {
             var guid = Guid.NewGuid();
             var service1 = GetExecutableService();
