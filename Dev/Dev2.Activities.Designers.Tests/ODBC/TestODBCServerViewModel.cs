@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.ODBC;
@@ -21,7 +20,6 @@ using Warewolf.Core;
 namespace Dev2.Activities.Designers.Tests.ODBC
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TestODBCServerViewModel
     {
         [TestMethod]
@@ -519,11 +517,9 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public void CreateNewSource()
         {
         }
-        [ExcludeFromCodeCoverage]
         public void EditSource(IDbSource selectedSource)
         {
         }
@@ -533,7 +529,6 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             return _updateRepository.TestDbService(inputValues);
         }
 
-        [ExcludeFromCodeCoverage]
         public IStudioUpdateManager UpdateRepository
         {
             get

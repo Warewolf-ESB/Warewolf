@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
@@ -25,7 +24,6 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
     // OnSearchTypeChanged moved from FindRecordsTO tests
     // ReSharper disable InconsistentNaming
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FindRecordsMultipleCriteriaTests
     {
         [TestMethod]

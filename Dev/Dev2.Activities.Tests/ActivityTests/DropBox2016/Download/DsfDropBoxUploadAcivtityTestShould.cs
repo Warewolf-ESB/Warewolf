@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
@@ -16,7 +15,6 @@ using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
-    [ExcludeFromCodeCoverage]
     public class DsfDropBoxDownloadActivityMock : DsfDropBoxDownloadActivity
     {
 

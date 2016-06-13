@@ -25,7 +25,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dev2.DynamicServices.Test
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DynamicServicesHostTests
     {
         const int VersionNo = 9999;

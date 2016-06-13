@@ -9,14 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class BrowserPopupControllerTests
     {
         #region ShowPopup

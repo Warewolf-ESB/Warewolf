@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Services.Execution;
@@ -22,7 +21,6 @@ namespace Dev2.Tests.Runtime.ESB
 {
     // BUG 9710 - 2013.06.20 - TWR - Created
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DatabaseServiceContainerTests
     {
         #region ClassInitialize

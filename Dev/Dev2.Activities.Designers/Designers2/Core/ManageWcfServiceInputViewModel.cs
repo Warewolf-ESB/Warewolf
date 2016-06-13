@@ -298,7 +298,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public ImageSource TestIconImageSource { get; set; }
 
         public ICommand CloseCommand { get; private set; }

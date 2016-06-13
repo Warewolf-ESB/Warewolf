@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -23,7 +22,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WebSourceTests
     {
         #region Save

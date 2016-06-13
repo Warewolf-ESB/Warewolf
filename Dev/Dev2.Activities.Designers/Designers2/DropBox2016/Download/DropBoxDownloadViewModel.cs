@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -33,7 +32,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         private string _fromPath;
         private bool _overwriteFile;
         private readonly IDropboxSourceManager _sourceManager;
-        [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
             : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
         {
@@ -180,11 +178,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         }
 
         #region Overrides of ActivityDesignerViewModel
-        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
@@ -198,7 +194,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -42,7 +41,6 @@ namespace Dev2.Core.Tests.Environments
     /// Summary description for EnvironmentRepositoryTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class EnviromentRepositoryTest
     {
         static readonly object TestLock = new object();

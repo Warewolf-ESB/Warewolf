@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
@@ -19,7 +18,6 @@ using Unlimited.Framework.Converters.Graph.Poco;
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class PocoInterrogatorTests
     {
         #region Private/Internal Methods

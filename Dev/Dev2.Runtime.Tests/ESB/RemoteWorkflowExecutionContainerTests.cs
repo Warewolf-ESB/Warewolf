@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -28,7 +27,6 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RemoteWorkflowExecutionContainerTests
     {
         static XElement _connectionXml;

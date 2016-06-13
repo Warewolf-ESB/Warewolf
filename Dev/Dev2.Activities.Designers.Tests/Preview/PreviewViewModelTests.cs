@@ -11,7 +11,6 @@
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Activities.Preview;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.Preview
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class PreviewViewModelTests
     {
         [TestMethod]

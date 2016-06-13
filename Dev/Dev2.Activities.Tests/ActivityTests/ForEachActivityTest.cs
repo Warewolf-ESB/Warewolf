@@ -12,7 +12,6 @@
 using System;
 using System.Activities;
 using System.Activities.Statements;
-using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
@@ -27,7 +26,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for AssignActivity
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ForEachActivityTest : BaseActivityUnitTest
     {
        

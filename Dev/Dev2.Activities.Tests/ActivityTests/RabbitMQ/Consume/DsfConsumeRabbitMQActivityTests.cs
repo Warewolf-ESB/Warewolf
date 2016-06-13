@@ -6,7 +6,6 @@ using Moq;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.DynamicServices;
 using Warewolf.Storage;
 
@@ -15,7 +14,6 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfConsumeRabbitMQActivityTests
     {
         [TestMethod]

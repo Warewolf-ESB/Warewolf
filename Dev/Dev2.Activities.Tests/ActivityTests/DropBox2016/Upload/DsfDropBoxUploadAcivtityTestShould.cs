@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.Result;
@@ -20,7 +19,6 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfDropBoxUploadAcivtityTestShould
     {
         private static DsfDropBoxUploadActivity CreateDropboxActivity()

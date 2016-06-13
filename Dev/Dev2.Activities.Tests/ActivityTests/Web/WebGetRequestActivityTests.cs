@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Dev2;
@@ -31,7 +30,6 @@ namespace ActivityUnitTests.ActivityTest
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WebGetRequestWithTimeoutActivityTests : BaseActivityUnitTest
     {
         /// <summary>

@@ -10,14 +10,12 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DirectoryHelperTests
     {
         [TestMethod]

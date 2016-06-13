@@ -13,7 +13,6 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,7 +27,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ExecuteCommandLineTest : BaseActivityUnitTest
     {
         /// <summary>
