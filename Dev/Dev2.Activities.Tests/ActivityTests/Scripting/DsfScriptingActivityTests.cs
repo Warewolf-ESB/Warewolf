@@ -14,7 +14,6 @@ using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -22,7 +21,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
     /// Summary description for CalculateActivityTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
         /// <summary>

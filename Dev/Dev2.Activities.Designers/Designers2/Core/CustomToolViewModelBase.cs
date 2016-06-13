@@ -13,7 +13,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
@@ -203,7 +202,6 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;

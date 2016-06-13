@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +21,6 @@ namespace Dev2.Core.Tests.Helpers
 {
     // ReSharper disable InconsistentNaming
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class VersionCheckerTests
     {
         [TestMethod]

@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using ActivityUnitTests;
 using Dev2.Activities;
@@ -26,7 +25,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     ///     Summary description for RandomActivityTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RandomActivityTests : BaseActivityUnitTest
     {
         /// <summary>

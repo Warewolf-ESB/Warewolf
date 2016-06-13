@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Data.PathOperations;
 using Dev2.PathOperations;
@@ -22,7 +21,6 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 // ReSharper restore CheckNamespace
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ActivityIOFactoryTests
     {
         #region Additional test attributes

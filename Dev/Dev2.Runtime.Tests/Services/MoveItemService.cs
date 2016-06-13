@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -28,7 +27,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class MoveItemsServiceTest
     {

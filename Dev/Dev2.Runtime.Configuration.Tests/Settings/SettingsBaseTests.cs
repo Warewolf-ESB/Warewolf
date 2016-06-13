@@ -11,14 +11,12 @@
 
 using System;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Runtime.Configuration.Tests.Settings
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SettingsBaseTests
     {
         #region CTOR

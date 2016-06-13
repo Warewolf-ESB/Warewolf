@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.WCFEndPoint;
 using Dev2.Activities.WcfEndPoint;
@@ -18,7 +17,6 @@ using Dev2.Common.Interfaces.Core;
 namespace Dev2.Activities.Designers.Tests.WCFEndPoint
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WcfEndPointViewModelTests
     {
         public const string TestOwner = "Bernardt Joubert";

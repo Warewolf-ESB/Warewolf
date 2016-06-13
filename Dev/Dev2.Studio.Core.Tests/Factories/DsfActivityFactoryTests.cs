@@ -11,7 +11,6 @@
 
 using System;
 using System.Activities.Expressions;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
@@ -25,7 +24,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Core.Tests.Factories
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfActivityFactoryTests
     {
         // ReSharper disable InconsistentNaming

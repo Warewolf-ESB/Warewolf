@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Core.Interfaces;
@@ -37,13 +36,11 @@ namespace Dev2.Views.DropBox2016
         public string ResourceType { get; set; }
         public string ResourcePath { get; set; }
 
-        [ExcludeFromCodeCoverage]
         public void Navigate(string uri)
         {
             DropBoxViewWindow.WebBrowserHost.Navigate(uri);
         }
 
-        [ExcludeFromCodeCoverage]
         public void CloseAndSave(ManageOAuthSourceViewModel manageOAuthSourceViewModel)
         {
             DropBoxViewWindow.DialogResult = true;

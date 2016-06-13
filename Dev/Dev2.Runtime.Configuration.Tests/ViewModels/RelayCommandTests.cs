@@ -10,14 +10,12 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class RelayCommandTests
     {
@@ -85,7 +83,6 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
     }
 
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RelayGenericCommandTests
     {
         [TestMethod]

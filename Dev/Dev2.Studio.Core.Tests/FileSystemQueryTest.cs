@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -22,7 +21,6 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class FileSystemQueryTest
     {

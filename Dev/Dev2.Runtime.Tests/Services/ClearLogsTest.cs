@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Dev2.Common.Common;
@@ -25,7 +24,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ClearLogsTest
     {
         private static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");

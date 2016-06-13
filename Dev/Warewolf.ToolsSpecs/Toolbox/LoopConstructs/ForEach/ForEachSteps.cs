@@ -35,6 +35,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         private readonly ScenarioContext scenarioContext;
 
         public ForEachSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -25,7 +24,6 @@ namespace Dev2.Core.Tests.ViewModelTests
 {
     // ReSharper disable InconsistentNaming
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class HelpViewModelTests
     {
         [TestMethod]

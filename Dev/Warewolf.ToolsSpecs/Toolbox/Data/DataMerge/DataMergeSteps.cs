@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         private readonly ScenarioContext scenarioContext;
 
         public DataMergeSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

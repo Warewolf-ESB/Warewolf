@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
@@ -11,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SharepointSearchToTests
     {
         [TestMethod]

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 // ReSharper disable CheckNamespace
@@ -18,7 +17,6 @@ namespace Dev2.CustomControls.Connections
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public partial class ConnectControl
     {
         public ConnectControl()

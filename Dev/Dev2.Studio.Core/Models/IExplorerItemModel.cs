@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Security;
@@ -388,7 +387,6 @@ namespace Dev2.Models
         /// </summary>
         void AddNewFolder();
 
-        [ExcludeFromCodeCoverage]
         void CancelRename(KeyEventArgs eventArgs);
 
         /// <summary>

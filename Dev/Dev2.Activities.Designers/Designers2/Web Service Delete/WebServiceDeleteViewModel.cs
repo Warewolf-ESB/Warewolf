@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -50,7 +49,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
         // ReSharper restore UnusedMember.Local
-        [ExcludeFromCodeCoverage]
         public WebServiceDeleteViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -337,7 +335,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 
         public string ButtonDisplayValue { get; set; }
 
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

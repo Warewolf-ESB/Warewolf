@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
@@ -104,7 +103,6 @@ namespace Warewolf.Studio.ViewModels
         public Uri ContributorsUrl { get; set; }
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }
-        [ExcludeFromCodeCoverage]
         public string WarewolfCopyright { get; set; }
 
         public void ShowServerVersion()

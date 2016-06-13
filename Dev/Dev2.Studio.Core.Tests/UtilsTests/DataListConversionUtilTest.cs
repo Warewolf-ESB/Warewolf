@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data;
 using Dev2.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +19,6 @@ namespace Dev2.Core.Tests.UtilsTests
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DataListConversionUtilTest
     {
         /// <summary>

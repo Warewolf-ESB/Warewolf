@@ -16,13 +16,11 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Dev2.Core.Tests.ViewModelTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ExceptionViewModelTest
     {
         #region Class Members
