@@ -223,6 +223,11 @@ namespace Warewolf.Storage
             _inner.AssignJson(value, update);
         }
 
+        public JContainer EvalJContainer(string exp)
+        {
+            return _inner.EvalJContainer(exp);
+        }
+
         #endregion
     }
 }

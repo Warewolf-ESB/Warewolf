@@ -136,12 +136,14 @@ namespace Dev2.ViewModels.Workflow
                         {
                             if (parentItem == null)
                             {
-                                singleRes.Field = complexObject.Name + "." + col.Name;
+                                singleRes.Index = column.Key.ToString();
+                                singleRes.Field = col.Name;
                                 singleRes.DisplayValue = complexObject.Name + "." + col.Name;
                             }
                             else
                             {
-                                singleRes.Field = parentItem.Field + "." + col.Name;
+                                singleRes.Index = column.Key.ToString();
+                                singleRes.Field = col.Name;
                                 singleRes.DisplayValue = parentItem.DisplayValue + "." + col.Name;
                             }
                         }
@@ -182,12 +184,14 @@ namespace Dev2.ViewModels.Workflow
                 {
                     if (parentItem == null)
                     {
-                        singleRes.Field = complexObject.Name + "." + complexObject.Name;
+                        singleRes.Index = "1";
+                        singleRes.Field =  complexObject.Name;
                         singleRes.DisplayValue = complexObject.Name + "." + complexObject.Name;
                     }
                     else
                     {
-                        singleRes.Field = parentItem.Field + "." + complexObject.Name;
+                        singleRes.Index = "1";
+                        singleRes.Field = complexObject.Name;
                         singleRes.DisplayValue = parentItem.DisplayValue + "." + complexObject.Name;
                     }
                 }
