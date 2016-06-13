@@ -653,6 +653,7 @@
                                                     <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
+                                                                    InputGestureText="[Ctrl+D]"
                                                                     Header="Deploy"
                                                                     Visibility="{Binding Path=Data.CanDeploy,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">

@@ -2108,7 +2108,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service.
+        ///   Looks up a localized string similar to Run and debug your workflow service  [F5] or [F6] or [F7].
         /// </summary>
         public static string DebugToolTip {
             get {
@@ -5192,7 +5192,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move resources between Warewolf servers.
+        ///   Looks up a localized string similar to Move resources between Warewolf servers [CTRL+D].
         /// </summary>
         public static string MenuDeployToolTip {
             get {
@@ -5419,7 +5419,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new service.
+        ///   Looks up a localized string similar to Create a new service [CTRL+W].
         /// </summary>
         public static string MenuNewServiceToolTip {
             get {
@@ -5464,7 +5464,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save this tab.
+        ///   Looks up a localized string similar to Save this tab [CTRL+S].
         /// </summary>
         public static string MenuSaveToolTip {
             get {
