@@ -1,4 +1,5 @@
-﻿Feature: Utility - Email
+﻿@Ignore
+Feature: Utility - Email
 	In order to send an email
 	As a warewolf user
 	I want a tool that performs this action
