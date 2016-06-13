@@ -22,6 +22,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
     [Binding]
     public class BaseConversionSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public BaseConversionSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -35,7 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
 
             int row = 1;
 
-            var baseCollection = ScenarioContext.Current.Get<List<Tuple<string, string, string>>>("baseCollection");
+            var baseCollection = scenarioContext.Get<List<Tuple<string, string, string>>>("baseCollection");
 
             foreach(dynamic variable in baseCollection)
             {
@@ -43,19 +51,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
                                                                     variable.Item1, row));
                 row++;
             }
-            ScenarioContext.Current.Add("activity", baseConvert);
+            scenarioContext.Add("activity", baseConvert);
         }
 
         [Given(@"I have a convert variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveAConvertVariableWithAValueOf(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -65,12 +73,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         public void GivenIConvertAVariableFromTypeToType(string variable, string fromType, string toType)
         {
             List<Tuple<string, string, string>> baseCollection;
-            ScenarioContext.Current.TryGetValue("baseCollection", out baseCollection);
+            scenarioContext.TryGetValue("baseCollection", out baseCollection);
 
             if(baseCollection == null)
             {
                 baseCollection = new List<Tuple<string, string, string>>();
-                ScenarioContext.Current.Add("baseCollection", baseCollection);
+                scenarioContext.Add("baseCollection", baseCollection);
             }
 
             baseCollection.Add(new Tuple<string, string, string>(variable, fromType, toType));
@@ -81,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the result is ""(.*)""")]
@@ -90,7 +98,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             string error;
             string actualValue;
             value = value.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, "[[var]]", out actualValue, out error);
             if (string.IsNullOrEmpty(value))
             {

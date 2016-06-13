@@ -24,34 +24,42 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
     [Binding]
     public class DateandTimeDifferenceSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DateandTimeDifferenceSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string resVar;
-            if (!ScenarioContext.Current.TryGetValue("resultVar", out resVar))
+            if (!scenarioContext.TryGetValue("resultVar", out resVar))
             {
                 resVar = ResultVariable;
             }
 
             string inputFormat;
-            ScenarioContext.Current.TryGetValue("inputFormat", out inputFormat);
+            scenarioContext.TryGetValue("inputFormat", out inputFormat);
             string input1;
-            ScenarioContext.Current.TryGetValue("input1", out input1);
+            scenarioContext.TryGetValue("input1", out input1);
             string input2;
-            ScenarioContext.Current.TryGetValue("input2", out input2);
+            scenarioContext.TryGetValue("input2", out input2);
             string outputIn;
-            ScenarioContext.Current.TryGetValue("outputIn", out outputIn);
+            scenarioContext.TryGetValue("outputIn", out outputIn);
 
             var dateTimeDifference = new DsfDateTimeDifferenceActivity
                 {
@@ -66,19 +74,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
                 {
                     Action = dateTimeDifference
                 };
-            ScenarioContext.Current.Add("activity", dateTimeDifference);
+            scenarioContext.Add("activity", dateTimeDifference);
         }
 
         [Given(@"DateTimeDifference result variable is ""(.*)""")]
         public void GivenDateTimeDifferenceResultVariableIs(string p0)
         {
-            ScenarioContext.Current.Add("resultVar", p0);
+            scenarioContext.Add("resultVar", p0);
         }
 
         [Given(@"I have a first date ""(.*)""")]
         public void GivenIHaveAFirstDate(string input1)
         {
-            ScenarioContext.Current.Add("input1", input1);
+            scenarioContext.Add("input1", input1);
         }
 
         [Given(@"I have a first date ""(.*)"" equals ""(.*)""")]
@@ -90,7 +98,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         [Given(@"I have a second date ""(.*)""")]
         public void GivenIHaveASecondDate(string input2)
         {
-            ScenarioContext.Current.Add("input2", input2);
+            scenarioContext.Add("input2", input2);
         }
 
         [Given(@"I have a second date ""(.*)"" equals ""(.*)""")]
@@ -102,19 +110,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         [Given(@"I selected output in ""(.*)""")]
         public void GivenISelectedOutputIn(string outputIn)
         {
-            ScenarioContext.Current.Add("outputIn", outputIn);
+            scenarioContext.Add("outputIn", outputIn);
         }
 
         [Given(@"I have date time difference variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveDateTimeDifferenceVariableWithValue(string name, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(name, value));
         }
@@ -123,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         [Given(@"the date format as ""(.*)""")]
         public void GivenTheDateFormatAs(string inputFormat)
         {
-            ScenarioContext.Current.Add("inputFormat", inputFormat);
+            scenarioContext.Add("inputFormat", inputFormat);
         }
 
         [Given(@"the date format as ""(.*)"" equals ""(.*)""")]
@@ -136,12 +144,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         public void GivenIHaveADateAndTimeDifferenceVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -154,7 +162,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             Thread.CurrentThread.CurrentUICulture = currentCulture;
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the difference should be ""(.*)""")]
@@ -163,9 +171,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             string resVar;
-            if (!ScenarioContext.Current.TryGetValue("resultVar", out resVar))
+            if (!scenarioContext.TryGetValue("resultVar", out resVar))
             {
                 resVar = ResultVariable;
             }

@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
       <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -80,10 +81,6 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Explorer.Specs\Dev2.Explorer.Specs.csproj">
-      <Project>{3c6d24ed-71a4-4a97-a941-15c02754a0de}</Project>
-      <Name>Dev2.Explorer.Specs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>

@@ -24,12 +24,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     [Binding]
     public class AssignSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public AssignSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
             List<ActivityDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             var multiAssign = new DsfMultiAssignActivity();
 
@@ -42,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             {
                 multiAssign.FieldsCollection.Add(field);
             }
-            ScenarioContext.Current.Add("activity", multiAssign);
+            scenarioContext.Add("activity", multiAssign);
         }
 
         [Given(@"I assign the value (.*) to a variable ""(.*)""")]
@@ -58,21 +66,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             List<ActivityDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             if(fieldCollection == null)
             {
                 fieldCollection = new List<ActivityDTO>();
-                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+                scenarioContext.Add("fieldCollection", fieldCollection);
             }
 
             fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
@@ -83,12 +91,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public void GivenIHaveAVariableWithAValueOf(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -98,7 +106,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Then(@"the value of ""(.*)"" is null")]
         public void ThenTheValueOfIsNull(string variable)
         {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             try
             {
                 if (DataListUtil.IsValueRecordset(variable))
@@ -126,13 +134,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the value of ""(.*)"" equals (.*)")]
         public void ThenTheValueOfEquals(string variable, string value)
         {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
 
             if(DataListUtil.IsValueRecordset(variable))
             {

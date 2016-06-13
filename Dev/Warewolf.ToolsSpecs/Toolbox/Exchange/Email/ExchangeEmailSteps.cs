@@ -15,33 +15,41 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
     [Binding]
     public class ExchangeEmailSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ExchangeEmailSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string body;
-            ScenarioContext.Current.TryGetValue("body", out body);
+            scenarioContext.TryGetValue("body", out body);
             string subject;
-            ScenarioContext.Current.TryGetValue("subject", out subject);
+            scenarioContext.TryGetValue("subject", out subject);
             string password;
-            ScenarioContext.Current.TryGetValue("password", out password);
+            scenarioContext.TryGetValue("password", out password);
             string simulationOutput;
-            ScenarioContext.Current.TryGetValue("simulationOutput", out simulationOutput);
+            scenarioContext.TryGetValue("simulationOutput", out simulationOutput);
             string to;
-            ScenarioContext.Current.TryGetValue("to", out to);
+            scenarioContext.TryGetValue("to", out to);
 
             var server = SimpleSmtpServer.Start(25);
-            ScenarioContext.Current.Add("server", server);
+            scenarioContext.Add("server", server);
 
             var selectedEmailSource = new ExchangeSource()
             {
@@ -65,19 +73,19 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             {
                 Action = sendEmail
             };
-            ScenarioContext.Current.Add("activity", sendEmail);
+            scenarioContext.Add("activity", sendEmail);
         }
 
         [Given(@"I have an exchange email variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAnExchangEmailVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
             
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -86,19 +94,19 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         [Given(@"to exchange address is ""(.*)""")]
         public void GivenToExchangeAddressIs(string to)
         {
-            ScenarioContext.Current.Add("to", to);
+            scenarioContext.Add("to", to);
         }
 
         [Given(@"the exchange subject is ""(.*)""")]
         public void GivenTheExchangeSubjectIs(string subject)
         {
-            ScenarioContext.Current.Add("subject", subject);
+            scenarioContext.Add("subject", subject);
         }
 
         [Given(@"exchange body is ""(.*)""")]
         public void GivenExchangeBodyIs(string body)
         {
-            ScenarioContext.Current.Add("body", body);
+            scenarioContext.Add("body", body);
         }
 
         [When(@"the exchange email tool is executed")]
@@ -106,7 +114,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the exchange email result will be ""(.*)""")]
@@ -115,7 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             if (string.IsNullOrEmpty(expectedResult))
@@ -132,7 +140,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         public void ThenTheExchangeExecutionHasError(string anError)
         {
             bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
 
             string fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
             bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
@@ -147,7 +155,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         [Given(@"exchange to address is ""(.*)""")]
         public void GivenExchangeToAddressIs(string to)
         {
-            ScenarioContext.Current.Add("to", to);
+            scenarioContext.Add("to", to);
         }
     }
 }

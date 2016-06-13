@@ -24,6 +24,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
     [Binding]
     public sealed class PutWebConnectoToolSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public PutWebConnectoToolSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
         private WebServiceSourceDefinition _webHelooWebSource;
         private WebServiceSourceDefinition _googleWebSource;
@@ -66,19 +74,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             var viewModel = new WebServicePutViewModel(modelItem, mockServiceModel.Object);
 
 
-            ScenarioContext.Current.Add("viewModel", viewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockServiceModel", mockServiceModel);
+            scenarioContext.Add("viewModel", viewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockServiceModel", mockServiceModel);
         }
 
-        private static WebServicePutViewModel GetViewModel()
+        private WebServicePutViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<WebServicePutViewModel>("viewModel");
+            return scenarioContext.Get<WebServicePutViewModel>("viewModel");
         }
 
-        private static Mock<IWebServiceModel> GetServiceModel()
+        private Mock<IWebServiceModel> GetServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IWebServiceModel>>("mockServiceModel");
+            return scenarioContext.Get<Mock<IWebServiceModel>>("mockServiceModel");
         }
 
         [When(@"Put Test Inputs is Successful")]

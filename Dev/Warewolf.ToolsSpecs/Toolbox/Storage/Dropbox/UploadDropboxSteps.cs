@@ -22,9 +22,16 @@ using Dev2.Runtime.ServiceModel.Data;
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
-    //[Owner("Nkosinathi Sangweni")]
     public class UploadDropboxSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public UploadDropboxSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I drag Upload Dropbox Tool onto the design surface")]
         public void GivenIDragWriteDropboxToolOntoTheDesignSurface()
         {
@@ -53,18 +60,21 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
             var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
-            ScenarioContext.Current.Add("uploadViewModel", uploadViewModel);
-            ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
-            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator);
+            scenarioContext.Add("uploadViewModel", uploadViewModel);
+            scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
+            scenarioContext.Add("mockEventAggregator", mockEventAggregator);
         }
-        private static DropBoxUploadViewModel GetViewModel()
+
+        DropBoxUploadViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<DropBoxUploadViewModel>("uploadViewModel");
+            return scenarioContext.Get<DropBoxUploadViewModel>("uploadViewModel");
         }
-        private static Mock<IEnvironmentModel> GeEnvrionmentModel()
+
+        Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
-            return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return scenarioContext.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
+
         [Given(@"New is Enabled")]
         [When(@"New is Enabled")]
         [Then(@"New is Enabled")]
@@ -73,11 +83,12 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var canExecute = GetViewModel().NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
+
         [When(@"the Dropbox tool is executed")]
         public void WhenTheDropboxToolIsExecuted()
         {
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Given(@"Edit is Enabled")]
@@ -159,7 +170,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New Dropbox Source window is opened")]
         public void ThenTheNewDropboxSourceWindowIsOpened()
         {
-            var mock = ScenarioContext.Current.Get<Mock<IEventAggregator>>("mockEventAggregator");
+            var mock = scenarioContext.Get<Mock<IEventAggregator>>("mockEventAggregator");
             mock.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
         }
 

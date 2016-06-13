@@ -122,6 +122,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
+    <Compile Include="DeletedFileMetadata.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />

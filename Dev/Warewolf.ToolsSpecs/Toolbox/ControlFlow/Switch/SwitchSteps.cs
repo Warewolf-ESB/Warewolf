@@ -23,9 +23,17 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     [Binding]
     public class SwitchSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SwitchSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            var variableList = scenarioContext.Get<List<Tuple<string, string>>>("variableList");
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
             BuildShapeAndTestData();
@@ -35,8 +43,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
                         string.Format(
                             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"{0}\",AmbientDataList)",
                             variableList.First().Item1),
-                      
-                            
                 };
             var sw = new FlowSwitch<string>();
             sw.Expression = flowSwitch;
@@ -54,19 +60,19 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
                     Next = sw
                 };
 
-            ScenarioContext.Current.Add("activity", flowSwitch);
+            scenarioContext.Add("activity", flowSwitch);
         }
 
         [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]
         public void GivenINeedToSwitchOnVariableWithTheValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -77,7 +83,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the variable ""(.*)"" will evaluate to ""(.*)""")]
@@ -86,7 +92,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, variable,
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);

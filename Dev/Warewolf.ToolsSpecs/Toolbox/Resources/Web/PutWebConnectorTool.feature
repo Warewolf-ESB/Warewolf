@@ -5,7 +5,7 @@
 
 # layout of tool not ready
 
-Scenario: Open new Web Tool
+Scenario: Open new Put Web Tool
 	And I drag Web Put Request Connector Tool onto the design surface
     And Put New is Enabled
 	And Put Edit is Disabled
@@ -21,7 +21,7 @@ Scenario: Open new Web Tool
 	And Put mapped outputs are
 	| Output | Output Alias |
 
-Scenario: Create Web Service with different methods
+Scenario: Create Put Web Service with different methods
 	And I drag Web Put Request Connector Tool onto the design surface
     And Put New is Enabled
 	And Put Edit is Disabled
@@ -48,7 +48,7 @@ Scenario: Create Web Service with different methods
 	
 
 
-Scenario: Adding parameters in request headers is updating variables
+Scenario: Adding parameters in Put Web Connectgor Tool request headers is updating variables
 	And I drag Web Put Request Connector Tool onto the design surface
     And Put New is Enabled
 	When I Select "Dev2CountriesWebService" as a Put web Source
@@ -79,7 +79,7 @@ Scenario: Adding parameters in request headers is updating variables
 	| CountryID   | [[CountryID]]   |
 	| Description | [[Description]] |
 
- Scenario: Editing Web Service
+ Scenario: Editing Put Web Service
 	And I drag Web Put Request Connector Tool onto the design surface
     And Put New is Enabled
 	When I Select "Dev2CountriesWebService" as a Put web Source
@@ -88,7 +88,7 @@ Scenario: Adding parameters in request headers is updating variables
 	When I click Put Edit
 	Then the "Dev2CountriesWebService" Put Source tab is opened
 
-Scenario: Changing Sources 
+Scenario: Changing Put Web Connector Sources 
 	And I drag Web Put Request Connector Tool onto the design surface
     And Put New is Enabled
 	When I Select "WebHeloo" as a Put web Source
@@ -116,7 +116,7 @@ Scenario: Changing Sources
 	And Put Mappings is Disabled
 	
 #wolf-1034
-Scenario: Web Connector Tool returns text
+Scenario: Put Web Connector Tool returns text
 	And I drag Web Put Request Connector Tool onto the design surface
     And Put New is Enabled
 	And Put Edit is Enabled

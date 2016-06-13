@@ -27,6 +27,7 @@ using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
@@ -621,6 +622,21 @@ namespace Dev2.Studio.Views
             {
                 // ignored
             }
+        }
+
+        private void Toolbox_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Toolbox.Activate();
+        }
+
+        private void Variables_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Variables.Activate();
+        }
+
+        private void Explorer_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Explorer.Activate();
         }
     }
 }

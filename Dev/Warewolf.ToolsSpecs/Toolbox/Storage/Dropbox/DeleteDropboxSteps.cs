@@ -22,13 +22,22 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class DeleteDropboxSteps
     {
-        private static DropBoxDeleteViewModel GetViewModel()
+        private readonly ScenarioContext scenarioContext;
+
+        public DeleteDropboxSteps(ScenarioContext scenarioContext)
         {
-            return ScenarioContext.Current.Get<DropBoxDeleteViewModel>("deleteViewModel");
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
         }
-        private static Mock<IEnvironmentModel> GeEnvrionmentModel()
+
+        DropBoxDeleteViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return scenarioContext.Get<DropBoxDeleteViewModel>("deleteViewModel");
+        }
+
+        Mock<IEnvironmentModel> GeEnvrionmentModel()
+        {
+            return scenarioContext.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
 
         [Given(@"I drag Delete Dropbox Tool onto the design surface")]
@@ -59,9 +68,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
             var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
-            ScenarioContext.Current.Add("deleteViewModel", deleteViewModel);
-            ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
-            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator.Object);
+            scenarioContext.Add("deleteViewModel", deleteViewModel);
+            scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
+            scenarioContext.Add("mockEventAggregator", mockEventAggregator.Object);
         }
 
         [Given(@"Dropbox Delete New is Enabled")]

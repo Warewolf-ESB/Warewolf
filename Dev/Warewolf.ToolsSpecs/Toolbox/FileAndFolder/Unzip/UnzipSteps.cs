@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
@@ -26,12 +27,19 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     [Binding]
     public class UnzipSteps : FileToolsBase
     {
-        
+        private readonly ScenarioContext scenarioContext;
+
+        public UnzipSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"zip credentials as ""(.*)"" and ""(.*)""")]
         public void GivenZipCredentialsAsAnd(string userName, string password)
         {
-            ScenarioContext.Current.Add(CommonSteps.SourceUsernameHolder, userName.Replace('"', ' ').Trim());
-            ScenarioContext.Current.Add(CommonSteps.SourcePasswordHolder, password.Replace('"', ' ').Trim());
+            scenarioContext.Add(CommonSteps.SourceUsernameHolder, userName.Replace('"', ' ').Trim());
+            scenarioContext.Add(CommonSteps.SourcePasswordHolder, password.Replace('"', ' ').Trim());
         }
 
         //
@@ -40,16 +48,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [When(@"the Unzip file tool is executed with a single file")]
         public void WhenTheUnzipFileToolIsExecutedWithASingleFile()
         {
-            ScenarioContext.Current.Add("singleFile",true );
+            scenarioContext.Add("singleFile",true );
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         protected override void BuildDataList()
@@ -58,17 +66,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             CopyZipFileToSourceLocation();
             var unzip = new DsfUnZip
             {
-                InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
-                DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
-                DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
-                Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
-                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-                ArchivePassword = ScenarioContext.Current.Get<string>("archivePassword"),
-                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
-                DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),
+                DestinationUsername = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
+                DestinationPassword = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
+                Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
+                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                ArchivePassword = scenarioContext.Get<string>("archivePassword"),
+                PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile)
             };
 
             TestStartNode = new FlowStep
@@ -76,7 +84,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                 Action = unzip
             };
 
-            ScenarioContext.Current.Add("activity", unzip);
+            scenarioContext.Add("activity", unzip);
         }
 
         void CopyZipFileToSourceLocation()
@@ -84,7 +92,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             RunwithRetry(1);
         }
 
-        static void RunwithRetry(int retrycount)
+        void RunwithRetry(int retrycount)
         {
             if (retrycount == 0)
                 return;
@@ -110,17 +118,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             }
         }
 
-        static void RunCopy()
+        void RunCopy()
         {
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
-                                                                            ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                                                                            ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
+                                                                            scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                                                                            scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                                                                             true);
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
             
             string resourceName = "Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Unzip.Test.zip";
-             if (ScenarioContext.Current.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
+             if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
                  resourceName = "TestFile.zip";
             Assembly assembly = Assembly.GetExecutingAssembly();
             List<string> filesToCleanup = new List<string>();
