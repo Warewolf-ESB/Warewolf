@@ -4,7 +4,7 @@
 	I want to Create or Edit Warewolf Web Delete Request.
 
 
-Scenario: Open new Web Tool
+Scenario: Open new Deletge Web Tool
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	And Delete Edit is Disabled
@@ -20,7 +20,7 @@ Scenario: Open new Web Tool
 	And Delete mapped outputs are
 	| Output | Output Alias |
 
-Scenario: Create Web Service with different methods
+Scenario: Create Delete Web Service with different methods
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	And Delete Edit is Disabled
@@ -47,7 +47,7 @@ Scenario: Create Web Service with different methods
 	
 
 
-Scenario: Adding parameters in request headers is updating variables
+Scenario: Adding parameters in Delete Post Web Connector Tool request headers is updating variables
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	When I Select "Dev2CountriesWebService" as a Delete web Source
@@ -78,7 +78,7 @@ Scenario: Adding parameters in request headers is updating variables
 	| CountryID   | [[CountryID]]   |
 	| Description | [[Description]] |
 
- Scenario: Editing Web Service
+ Scenario: Editing Delete Web Service
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	When I Select "Dev2CountriesWebService" as a Delete web Source
@@ -87,7 +87,7 @@ Scenario: Adding parameters in request headers is updating variables
 	When I click Delete Edit
 	Then the "Dev2CountriesWebService" Delete Source tab is opened
 
-Scenario: Changing Sources 
+Scenario: Changing Delete Web Connector Tool Sources 
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	When I Select "WebHeloo" as a Delete web Source
@@ -116,7 +116,7 @@ Scenario: Changing Sources
 
 
 #wolf-1034
-Scenario: Web Connector Tool returns text
+Scenario: Delete Web Connector Tool returns text
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	And Delete Edit is Enabled

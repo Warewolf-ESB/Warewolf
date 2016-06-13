@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ActivityUnitTests;
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.RabbitMQ.Publish;
@@ -16,6 +17,14 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
     [Binding]
     public class PublishRabbitMQSteps : BaseActivityUnitTest
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public PublishRabbitMQSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I drag RabbitMQPublish tool onto the design surface")]
         public void GivenIDragRabbitMQPublishToolOntoTheDesignSurface()
         {
@@ -24,85 +33,85 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
             var model = new Mock<IRabbitMQSourceModel>();
             var viewModel = new RabbitMQPublishDesignerViewModel(modelItem, model.Object);
 
-            ScenarioContext.Current.Add("ViewModel", viewModel);
-            ScenarioContext.Current.Add("Model", model);
-            ScenarioContext.Current.Add("Activity", publishActivity);
+            scenarioContext.Add("ViewModel", viewModel);
+            scenarioContext.Add("Model", model);
+            scenarioContext.Add("Activity", publishActivity);
         }
 
         [Given(@"New Button is Enabled")]
         public void GivenNewButtonIsEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.NewRabbitMQSourceCommand.CanExecute(null));
         }
 
         [Given(@"Edit Button is Disabled")]
         public void GivenEditButtonIsDisabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
 
         [Given(@"The QueueName and Message and Result are Disabled")]
         public void GivenTheQueueNameAndMessageAndResultAreDisabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);
         }
 
         [When(@"I Select ""(.*)"" as a Rabbit Source")]
         public void WhenISelectAsARabbitSource(string resourceName)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.SelectedRabbitMQSource = vm.RabbitMQSources.FirstOrDefault(a => a.ResourceName == resourceName);
         }
 
         [Then(@"The QueueName and Message and Result are Enabled")]
         public void ThenTheQueueNameAndMessageAndResultAreEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.IsRabbitMQSourceSelected);
         }
 
         [Then(@"Edit Button is Enabled")]
         public void ThenEditButtonIsEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
 
         [Given(@"Edit Button is Enabled")]
         public void GivenEditButtonIsEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
 
         [When(@"I Click New Source")]
         public void WhenIClickNewSource()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.NewRabbitMQSourceCommand.Execute(null);
         }
 
         [When(@"I Click Edit Source")]
         public void WhenIClickEditSource()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.EditRabbitMQSourceCommand.Execute(null);
         }
 
         [Then(@"CreateNewSource is executed")]
         public void ThenCreateNewSourceIsExecuted()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.CreateNewSource());
         }
 
         [Then(@"EditSource is executed")]
         public void ThenEditSourceIsExecuted()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
 
@@ -110,7 +119,7 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         [When(@"I Select ""(.*)"" as the Rabbit source")]
         public void GivenISelectAsARabbitSource(string resourceName)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.SelectedRabbitMQSource = SourceDefinitions().FirstOrDefault(a => a.ResourceName == resourceName);
         }
         private IEnumerable<IRabbitMQServiceSourceDefinition> SourceDefinitions()
@@ -147,40 +156,40 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         [Then(@"the New RabbitMQ Publish Source window is opened")]
         public void ThenTheNewRabbitMQPublishSourceWindowIsOpened()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.CreateNewSource(), Times.AtLeastOnce);
         }
 
         [Then(@"the ""(.*)"" RabbitMQ Publish Source window is opened")]
         public void ThenTheRabbitMQPublishSourceWindowIsOpened(string resourceName)
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
 
         [Then(@"I Click Edit Source")]
         public void ThenIClickEditSource()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.EditRabbitMQSourceCommand.Execute(null);
         }
         [Then(@"I set Message equals ""(.*)""")]
         public void ThenISetMessageEquals(string msg)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.Message = msg;
         }
 
         [Then(@"I set Queue Name equals ""(.*)""")]
         public void ThenISetQueueNameEquals(string qname)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.QueueName = qname;
         }
         [When(@"I change RabbitMq source from ""(.*)"" to ""(.*)""")]
         public void WhenIChangeRabbitMqSourceFromTo(string oldSourceName, string newSourceName)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.AreEqual(oldSourceName, vm.SelectedRabbitMQSource.ResourceName);
             Assert.IsFalse(string.IsNullOrEmpty(vm.Message));
             Assert.IsFalse(string.IsNullOrEmpty(vm.QueueName));
@@ -190,14 +199,14 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         [Then(@"Message equals ""(.*)""")]
         public void ThenMessageEquals(string p0)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.AreEqual(p0, vm.Message);
         }
 
         [Then(@"Queue Name equals ""(.*)""")]
         public void ThenQueueNameEquals(string p0)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             Assert.AreEqual(p0, vm.QueueName);
         }
 

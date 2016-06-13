@@ -24,6 +24,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class OracleServerConnectorSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public OracleServerConnectorSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private DbSourceDefinition _greenPointSource;
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
@@ -98,23 +106,24 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
         }
 
-        private static OracleDatabaseDesignerViewModel GetViewModel()
+        OracleDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<OracleDatabaseDesignerViewModel>("viewModel");
+            return scenarioContext.Get<OracleDatabaseDesignerViewModel>("viewModel");
         }
 
-        private static Mock<IManageDatabaseInputViewModel> GetOutputViewModel()
+        Mock<IManageDatabaseInputViewModel> GetOutputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
-        }
-        private static Mock<IManageServiceInputViewModel> GetInputViewModel()
-        {
-            return ScenarioContext.Current.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
+            return scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
         }
 
-        private static Mock<IDbServiceModel> GetDbServiceModel()
+        Mock<IManageServiceInputViewModel> GetInputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return scenarioContext.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
+        }
+
+        Mock<IDbServiceModel> GetDbServiceModel()
+        {
+            return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         [Given(@"Action iss ""(.*)""")]
@@ -128,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Action is dbo\.Pr_CitiesGetCountries")]
         public void GivenActionIsDbo_Pr_CitiesGetCountries()
         {
-            ScenarioContext.Current.Pending();
+            scenarioContext.Pending();
         }
 
         [Given(@"Action is Disable")]
@@ -208,14 +217,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Validate is Enable")]
         public void GivenValidateIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            scenarioContext.Pending();
         }
 
         [Then(@"Mapping is Enable")]
         [Given(@"Mapping is Enable")]
         public void GivenMappingIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            scenarioContext.Pending();
         }
 
         [When(@"Action iz changed from to ""(.*)""")]
@@ -230,7 +239,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string p0)
         {
-            ScenarioContext.Current.Pending();
+            scenarioContext.Pending();
         }
         
         [When(@"Recordset Name iz changed to ""(.*)""")]
@@ -397,9 +406,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDatabaseInputViewModel.SetupAllProperties();
             var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            ScenarioContext.Current.Add("viewModel", oracleDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", oracleDatabaseDesignerViewModel);
+            scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Then(@"Outputs appear az")]
@@ -433,11 +442,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         #region Private Methods
 
-        private static void AddScenarioContext(OracleDatabaseDesignerViewModel oracleServerDesignerViewModel, Mock<IManageDatabaseInputViewModel> mockDatabaseInputViewModel, Mock<IDbServiceModel> mockDbServiceModel)
+        void AddScenarioContext(OracleDatabaseDesignerViewModel oracleServerDesignerViewModel, Mock<IManageDatabaseInputViewModel> mockDatabaseInputViewModel, Mock<IDbServiceModel> mockDbServiceModel)
         {
-            ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", oracleServerDesignerViewModel);
+            scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         #endregion

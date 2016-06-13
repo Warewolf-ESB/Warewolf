@@ -17,7 +17,7 @@ using System.Reflection;
 // WARNING: Bamboo 5.8 Build Agents will execute PowerShell 3.0 scripts which over write this file with full version and year variables.
 
 [assembly: AssemblyCompany("Warewolf")]
-[assembly: AssemblyProduct("Warewolf ESB")]
+[assembly: AssemblyProduct("Warewolf")]
 [assembly: AssemblyCopyright("Copyright Warewolf 2016")]
 
 

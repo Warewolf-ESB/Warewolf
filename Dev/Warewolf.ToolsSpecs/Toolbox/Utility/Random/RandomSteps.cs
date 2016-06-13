@@ -24,20 +24,28 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
     [Binding]
     public class RandomSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public RandomSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
             string resVar;
-            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out resVar))
             {
                 resultVariable = resVar;
             }
@@ -45,13 +53,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             BuildShapeAndTestData();
 
             enRandomType randomType;
-            ScenarioContext.Current.TryGetValue("randomType", out randomType);
+            scenarioContext.TryGetValue("randomType", out randomType);
             string length;
-            ScenarioContext.Current.TryGetValue("length", out length);
+            scenarioContext.TryGetValue("length", out length);
             string rangeFrom;
-            ScenarioContext.Current.TryGetValue("rangeFrom", out rangeFrom);
+            scenarioContext.TryGetValue("rangeFrom", out rangeFrom);
             string rangeTo;
-            ScenarioContext.Current.TryGetValue("rangeTo", out rangeTo);
+            scenarioContext.TryGetValue("rangeTo", out rangeTo);
 
             var dsfRandom = new DsfRandomActivity
                 {
@@ -79,26 +87,26 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
                     Action = dsfRandom
                 };
 
-            ScenarioContext.Current.Add("activity", dsfRandom);
+            scenarioContext.Add("activity", dsfRandom);
         }
 
         [Given(@"I have a type as ""(.*)""")]
         public void GivenIHaveATypeAs(string randomType)
         {
-            ScenarioContext.Current.Add("randomType", (enRandomType)Enum.Parse(typeof(enRandomType), randomType));
+            scenarioContext.Add("randomType", (enRandomType)Enum.Parse(typeof(enRandomType), randomType));
         }
 
         [Given(@"I have a length as ""(.*)""")]
         public void GivenIHaveALengthAs(string length)
         {
-            ScenarioContext.Current.Add("length", length);
+            scenarioContext.Add("length", length);
         }
 
         [Given(@"I have a range from ""(.*)"" to ""(.*)""")]
         public void GivenIHaveARangeFromTo(string rangeFrom, string rangeTo)
         {
-            ScenarioContext.Current.Add("rangeFrom", rangeFrom);
-            ScenarioContext.Current.Add("rangeTo", rangeTo);
+            scenarioContext.Add("rangeFrom", rangeFrom);
+            scenarioContext.Add("rangeTo", rangeTo);
         }
 
 
@@ -107,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the result from the random tool should be of type ""(.*)"" with a length of ""(.*)""")]
@@ -115,7 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             // ReSharper disable AssignNullToNotNullAttribute
@@ -137,7 +145,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             // ReSharper disable AssignNullToNotNullAttribute
@@ -155,7 +163,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             string error;
             string actualValue;
             value = value.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
@@ -166,7 +174,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             decimal d = decimal.Parse(actualValue);
@@ -179,12 +187,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
             variable = variable.Replace('"', ' ').Trim();
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -192,7 +200,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         [Given(@"I have a random result variable as ""(.*)""")]
         public void GivenIHaveARandomResultVariableAs(string resultVar)
         {
-            ScenarioContext.Current.Add("resVar", resultVar);
+            scenarioContext.Add("resVar", resultVar);
         }
 
     }

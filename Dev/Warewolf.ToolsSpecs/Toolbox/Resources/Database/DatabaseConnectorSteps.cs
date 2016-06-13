@@ -22,6 +22,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class DatabaseConnectorSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DatabaseConnectorSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private DbSourceDefinition _greenPointSource;
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
@@ -55,9 +63,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [When(@"Source is changed from to ""(.*)""")]
@@ -230,9 +238,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"Source is ""(.*)""")]
@@ -411,10 +419,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("privateObject", privateObject);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            scenarioContext.Add("privateObject", privateObject);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
@@ -446,6 +454,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             Assert.IsNotNull(GetViewModel().ManageServiceInputViewModel.Errors);
         }
+
         [Given(@"And ""(.*)"" contains ""(.*)"" from server ""(.*)"" with Mapping To as")]
         public void GivenAndContainsFromServerWithMappingToAs(string p0, string p1, string p2, Table table)
         {
@@ -454,24 +463,24 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
        
         #region Private Methods
 
-        private static SqlServerDatabaseDesignerViewModel GetViewModel()
+        SqlServerDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
+            return scenarioContext.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
         }
 
-        private static PrivateObject GetSqlServerPrivateObject()
+        PrivateObject GetSqlServerPrivateObject()
         {
-            return ScenarioContext.Current.Get<PrivateObject>("privateObject");
+            return scenarioContext.Get<PrivateObject>("privateObject");
         }
 
-        private static Mock<IManageDatabaseInputViewModel> GetInputViewModel()
+        Mock<IManageDatabaseInputViewModel> GetInputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
+            return scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
         }
 
-        private static Mock<IDbServiceModel> GetDbServiceModel()
+        Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         [Then(@"the workflow execution has ""(.*)"" error")]
