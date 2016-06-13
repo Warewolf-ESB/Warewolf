@@ -88,7 +88,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A \&apos;\\\&apos; character must be followed by a \&apos; or preceeded by a \\..
+        ///   Looks up a localized string similar to A \&apos;\\\&apos; character must be followed by a \&apos; or preceded by a \\..
         /// </summary>
         public static string BackSlashFormatError {
             get {
@@ -214,7 +214,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot specify a Recordset as part of a comma saperated list of expressions.
+        ///   Looks up a localized string similar to Cannot specify a Recordset as part of a comma separated list of expressions.
         /// </summary>
         public static string CannotCommaSeperateRecordset {
             get {
@@ -223,7 +223,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not convert PaneLocation to InitialPaneLocation.
+        ///   Looks up a localized string similar to Cannot convert PaneLocation to InitialPaneLocation.
         /// </summary>
         public static string CannotConvertPaneLocation {
             get {
@@ -232,7 +232,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cant delete a file if no directory is passed..
+        ///   Looks up a localized string similar to Can&apos;t delete a file if no directory is passed..
         /// </summary>
         public static string CannotDeleteFileWithoughtDirectory {
             get {
@@ -268,7 +268,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not do switch on null type argument if no default implementation provided.
+        ///   Looks up a localized string similar to Cannot do switch on null type argument if no default implementation provided.
         /// </summary>
         public static string CannotDoSwitchOnNullType {
             get {
@@ -367,7 +367,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot pass null or empty uri.
+        ///   Looks up a localized string similar to Cannot pass null or empty URI.
         /// </summary>
         public static string CannotPassNullOrEmptyUri {
             get {
@@ -511,7 +511,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} contains invalid charecters.
+        ///   Looks up a localized string similar to {0} contains invalid characters.
         /// </summary>
         public static string ContainsInvalidCharecters {
             get {
@@ -772,7 +772,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination directory can not be a child of the source directory.
+        ///   Looks up a localized string similar to Destination directory cannot be a child of the source directory.
         /// </summary>
         public static string DestinationDirectoryCannotBeAChild {
             get {
@@ -970,7 +970,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please specify a correct dropbox file name.
+        ///   Looks up a localized string similar to Please specify a correct DropBox file name.
         /// </summary>
         public static string DropboxCorrectFileName {
             get {
@@ -988,7 +988,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please specify the path of file in Dropbox.
+        ///   Looks up a localized string similar to Please specify the path of file in DropBox.
         /// </summary>
         public static string DropBoxFilePathMissing {
             get {
@@ -1240,7 +1240,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while formatting a number, an ivalid value of &apos;{0}&apos; was returned from the rounding function..
+        ///   Looks up a localized string similar to An error occurred while formatting a number, an invalid value of &apos;{0}&apos; was returned from the rounding function..
         /// </summary>
         public static string ErrorWhileFormattingANumber {
             get {
@@ -1285,7 +1285,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value must be a lamda expression.
+        ///   Looks up a localized string similar to Value must be a lambda expression.
         /// </summary>
         public static string ExpectedLambdaExpresion {
             get {
@@ -1348,7 +1348,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to fetch resoure list as JSON model.
+        ///   Looks up a localized string similar to Failed to fetch resource list as JSON model.
         /// </summary>
         public static string FailedToFetchResoureListAsJSONModel {
             get {
@@ -1546,7 +1546,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not execute a For Each with no content.
+        ///   Looks up a localized string similar to Cannot execute a For Each with no content.
         /// </summary>
         public static string ForEachWithNoContentError {
             get {
@@ -1555,7 +1555,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to formatName cannot be null or empty string..
+        ///   Looks up a localized string similar to FormatName cannot be null or empty string..
         /// </summary>
         public static string FormatNameCannotBeNull {
             get {
@@ -1870,7 +1870,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid sharepoint server sent {0}..
+        ///   Looks up a localized string similar to Invalid SharePoint server sent {0}..
         /// </summary>
         public static string InvalidSharepointServerSent {
             get {
@@ -1879,7 +1879,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid sharepoint server source.
+        ///   Looks up a localized string similar to Invalid SharePoint server source.
         /// </summary>
         public static string InvalidSharepointServerSource {
             get {
@@ -1942,7 +1942,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Url to execute for logging.
+        ///   Looks up a localized string similar to Invalid URL to execute for logging.
         /// </summary>
         public static string InvalidUrl {
             get {
@@ -2383,7 +2383,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No sharepoint list name set.
+        ///   Looks up a localized string similar to No SharePoint list name set.
         /// </summary>
         public static string NoSharepointListNameSet {
             get {
@@ -2392,7 +2392,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No sharepoint server set.
+        ///   Looks up a localized string similar to No SharePoint server set.
         /// </summary>
         public static string NoSharepointServerSet {
             get {
@@ -2428,7 +2428,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cant find anything to split on!.
+        ///   Looks up a localized string similar to Cannot find anything to split on!.
         /// </summary>
         public static string NothingToSplit {
             get {
@@ -2716,7 +2716,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be non negative..
+        ///   Looks up a localized string similar to The value must be non-negative..
         /// </summary>
         public static string PositiveNumberRequired {
             get {
@@ -2824,7 +2824,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You appear to have recordsets of differnt sizes.
+        ///   Looks up a localized string similar to You appear to have recordsets of different sizes.
         /// </summary>
         public static string RecordsetsHaveDifferntSizes {
             get {
@@ -3121,7 +3121,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server version {0} is incompatiable with version {1}.
+        ///   Looks up a localized string similar to Server version {0} is incompatible with version {1}.
         /// </summary>
         public static string ServerVersionsIncompatiable {
             get {
@@ -3211,7 +3211,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source can not be an empty string.
+        ///   Looks up a localized string similar to Source cannot be an empty string.
         /// </summary>
         public static string SourceCannotBeAnEmptyString {
             get {
@@ -3535,7 +3535,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value can not be null..
+        ///   Looks up a localized string similar to The value cannot be null..
         /// </summary>
         public static string ValueCannotBeNull {
             get {
@@ -3607,7 +3607,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable List String can not be blank/empty.
+        ///   Looks up a localized string similar to Variable List String cannot be blank/empty.
         /// </summary>
         public static string VariableListStringRequired {
             get {
@@ -3616,7 +3616,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ViewModel type must contain a parameterless contructor..
+        ///   Looks up a localized string similar to ViewModel type must contain a parameterless constructor..
         /// </summary>
         public static string ViewModelTypeMustContainAParameterlessContructor {
             get {
@@ -3634,7 +3634,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View type must contain a parameterless contructor..
+        ///   Looks up a localized string similar to View type must contain a parameterless constructor..
         /// </summary>
         public static string ViewTypeMustContainAParameterlessContructor {
             get {

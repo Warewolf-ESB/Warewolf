@@ -259,7 +259,7 @@
     <value>Cannot be a variable</value>
   </data>
   <data name="CannotCommaSeperateRecordset" xml:space="preserve">
-    <value>Cannot specify a Recordset as part of a comma saperated list of expressions</value>
+    <value>Cannot specify a Recordset as part of a comma separated list of expressions</value>
   </data>
   <data name="CannotExecuteCMDFromTool" xml:space="preserve">
     <value>Cannot execute CMD from tool.</value>
@@ -310,13 +310,13 @@
     <value>Please confirm that the correct file location has been entered</value>
   </data>
   <data name="DropboxCorrectFileName" xml:space="preserve">
-    <value>Please specify a correct dropbox file name</value>
+    <value>Please specify a correct DropBox file name</value>
   </data>
   <data name="DropBoxDestinationFileAlreadyExist" xml:space="preserve">
     <value>Destination File already exists and overwrite is set to false</value>
   </data>
   <data name="DropBoxFilePathMissing" xml:space="preserve">
-    <value>Please specify the path of file in Dropbox</value>
+    <value>Please specify the path of file in DropBox</value>
   </data>
   <data name="DropBoxPathContainsColon" xml:space="preserve">
     <value>Path contains a colon (\":\") that is not part of a volume identifier (for example, \"c:\")</value>
@@ -331,13 +331,13 @@
     <value>Please ensure that the {0} is an integer value.</value>
   </data>
   <data name="ExpectedLambdaExpresion" xml:space="preserve">
-    <value>Value must be a lamda expression</value>
+    <value>Value must be a lambda expression</value>
   </data>
   <data name="ExpressionMustBeCommaSeperated" xml:space="preserve">
     <value>Problem with input: expressions must be comma separated</value>
   </data>
   <data name="ForEachWithNoContentError" xml:space="preserve">
-    <value>Can not execute a For Each with no content</value>
+    <value>Cannot execute a For Each with no content</value>
   </data>
   <data name="FROMAddressInvalidFormat" xml:space="preserve">
     <value>FROM address is not in the valid format: {0}</value>
@@ -568,7 +568,7 @@
     <value>You do not have permissions to View or Execute this resource.</value>
   </data>
   <data name="NothingToSplit" xml:space="preserve">
-    <value>Cant find anything to split on!</value>
+    <value>Cannot find anything to split on!</value>
   </data>
   <data name="NullTokenzeString" xml:space="preserve">
     <value>Null or empty tokenize string!</value>
@@ -592,7 +592,7 @@
     <value>Server source not found. This service will not execute.</value>
   </data>
   <data name="ServerVersionsIncompatiable" xml:space="preserve">
-    <value>Server version {0} is incompatiable with version {1}</value>
+    <value>Server version {0} is incompatible with version {1}</value>
   </data>
   <data name="SharepointServerPathRequired" xml:space="preserve">
     <value>Please enter SharePoint Server path From</value>
@@ -613,7 +613,7 @@
     <value>{0} must be validated before minimising</value>
   </data>
   <data name="VariableListStringRequired" xml:space="preserve">
-    <value>Variable List String can not be blank/empty</value>
+    <value>Variable List String cannot be blank/empty</value>
   </data>
   <data name="AssemblyCreationError" xml:space="preserve">
     <value>Compilation Error Creating Assembly</value>
@@ -697,7 +697,7 @@
     <value>Unable to create the defined function</value>
   </data>
   <data name="DestinationDirectoryCannotBeAChild" xml:space="preserve">
-    <value>Destination directory can not be a child of the source directory</value>
+    <value>Destination directory cannot be a child of the source directory</value>
   </data>
   <data name="DestinationDirectoryExist" xml:space="preserve">
     <value>Destination directory already exists and overwrite is set to false</value>
@@ -739,13 +739,13 @@
     <value>Source and destination need to be both files or directories</value>
   </data>
   <data name="SourceCannotBeAnEmptyString" xml:space="preserve">
-    <value>Source can not be an empty string</value>
+    <value>Source cannot be an empty string</value>
   </data>
   <data name="SourceMustBeAFile" xml:space="preserve">
     <value>Source must be a file</value>
   </data>
   <data name="ValueCannotBeNull" xml:space="preserve">
-    <value>The value can not be null.</value>
+    <value>The value cannot be null.</value>
   </data>
   <data name="VariableIsMissing" xml:space="preserve">
     <value>Variable [[]] is missing a name</value>
@@ -769,7 +769,7 @@
     <value>File was not created</value>
   </data>
   <data name="FormatNameCannotBeNull" xml:space="preserve">
-    <value>formatName cannot be null or empty string.</value>
+    <value>FormatName cannot be null or empty string.</value>
   </data>
   <data name="IncorrectOperandType" xml:space="preserve">
     <value>Incorrect type of argument or operand.</value>
@@ -781,7 +781,7 @@
     <value>The path is in the incorrect format.</value>
   </data>
   <data name="RecordsetsHaveDifferntSizes" xml:space="preserve">
-    <value>You appear to have recordsets of differnt sizes</value>
+    <value>You appear to have recordsets of different sizes</value>
   </data>
   <data name="InvalidScriptingContext" xml:space="preserve">
     <value>Invalid scripting context</value>
@@ -793,13 +793,13 @@
     <value>Cannot be null</value>
   </data>
   <data name="CannotConvertPaneLocation" xml:space="preserve">
-    <value>Can not convert PaneLocation to InitialPaneLocation</value>
+    <value>Cannot convert PaneLocation to InitialPaneLocation</value>
   </data>
   <data name="CannotDeleteFileWithoutFilename" xml:space="preserve">
     <value>Can't delete a file if no filename is passed.</value>
   </data>
   <data name="CannotDoSwitchOnNullType" xml:space="preserve">
-    <value>Can not do switch on null type argument if no default implementation provided</value>
+    <value>Cannot do switch on null type argument if no default implementation provided</value>
   </data>
   <data name="CannotFindGroup" xml:space="preserve">
     <value>Cannot find group</value>
@@ -820,7 +820,7 @@
     <value>The constant for '{0}' is not supported</value>
   </data>
   <data name="ContainsInvalidCharecters" xml:space="preserve">
-    <value>{0} contains invalid charecters</value>
+    <value>{0} contains invalid characters</value>
   </data>
   <data name="ContainsLeadingOrTrailingWhitespace" xml:space="preserve">
     <value>contains leading or trailing whitespace characters.</value>
@@ -868,7 +868,7 @@
     <value>Error retrieving shape from service output.</value>
   </data>
   <data name="FailedToFetchResoureListAsJSONModel" xml:space="preserve">
-    <value>Failed to fetch resoure list as JSON model</value>
+    <value>Failed to fetch resource list as JSON model</value>
   </data>
   <data name="FailedToLoadManagementService" xml:space="preserve">
     <value>Failed to load management service [{0}]</value>
@@ -895,7 +895,7 @@
     <value>Invalid ResourceID</value>
   </data>
   <data name="InvalidUrl" xml:space="preserve">
-    <value>Invalid Url to execute for logging</value>
+    <value>Invalid URL to execute for logging</value>
   </data>
   <data name="InvalidUser" xml:space="preserve">
     <value>Invalid User</value>
@@ -961,7 +961,7 @@
     <value>Operator need to be specified</value>
   </data>
   <data name="PositiveNumberRequired" xml:space="preserve">
-    <value>The value must be non negative.</value>
+    <value>The value must be non-negative.</value>
   </data>
   <data name="RecordsetDoesNotHaveRow" xml:space="preserve">
     <value>Recordset does not have the row</value>
@@ -1024,7 +1024,7 @@
     <value>The following arguments are not allowed to be null: {0}</value>
   </data>
   <data name="CannotDeleteFileWithoughtDirectory" xml:space="preserve">
-    <value>Cant delete a file if no directory is passed.</value>
+    <value>Can't delete a file if no directory is passed.</value>
   </data>
   <data name="EmptySecuritySettingsPassed" xml:space="preserve">
     <value>Empty Security Settings passed.</value>
@@ -1138,7 +1138,7 @@
     <value>{0} value not supplied.</value>
   </data>
   <data name="BackSlashFormatError" xml:space="preserve">
-    <value>A \'\\\' character must be followed by a \' or preceeded by a \\.</value>
+    <value>A \'\\\' character must be followed by a \' or preceded by a \\.</value>
   </data>
   <data name="BadFormatForSFTP" xml:space="preserve">
     <value>Bad format for SFTP. Path {0}. Please correct path.</value>
@@ -1153,7 +1153,7 @@
     <value>Disconnected children cannot be explicitly added to this collection while the panel is serving as an items host. However, visual children can be added by simply calling the AddVisualChild method.</value>
   </data>
   <data name="CannotPassNullOrEmptyUri" xml:space="preserve">
-    <value>Cannot pass null or empty uri</value>
+    <value>Cannot pass null or empty URI</value>
   </data>
   <data name="CannotSetDragAdornerOpacityDuringADrag" xml:space="preserve">
     <value>Cannot set the DragAdornerOpacity property during a drag operation.</value>
@@ -1189,7 +1189,7 @@
     <value>Error reading settings configuration :</value>
   </data>
   <data name="ErrorWhileFormattingANumber" xml:space="preserve">
-    <value>An error occurred while formatting a number, an ivalid value of '{0}' was returned from the rounding function.</value>
+    <value>An error occurred while formatting a number, an invalid value of '{0}' was returned from the rounding function.</value>
   </data>
   <data name="ErrorWritingSettings" xml:space="preserve">
     <value>Error writing settings.</value>
@@ -1213,10 +1213,10 @@
     <value>Could not evaluate decision data - Invalid model data sent!</value>
   </data>
   <data name="InvalidSharepointServerSent" xml:space="preserve">
-    <value>Invalid sharepoint server sent {0}.</value>
+    <value>Invalid SharePoint server sent {0}.</value>
   </data>
   <data name="InvalidSharepointServerSource" xml:space="preserve">
-    <value>Invalid sharepoint server source</value>
+    <value>Invalid SharePoint server source</value>
   </data>
   <data name="InvalidSyntaxCreatingVariable" xml:space="preserve">
     <value>Invalid syntax - You need to close ( ]] ) your variable list reference</value>
@@ -1252,10 +1252,10 @@
     <value>No Resource Selected</value>
   </data>
   <data name="NoSharepointListNameSet" xml:space="preserve">
-    <value>No sharepoint list name set</value>
+    <value>No SharePoint list name set</value>
   </data>
   <data name="NoSharepointServerSet" xml:space="preserve">
-    <value>No sharepoint server set</value>
+    <value>No SharePoint server set</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>{0} not found</value>
@@ -1318,13 +1318,13 @@
     <value>Values are missing</value>
   </data>
   <data name="ViewModelTypeMustContainAParameterlessContructor" xml:space="preserve">
-    <value>ViewModel type must contain a parameterless contructor.</value>
+    <value>ViewModel type must contain a parameterless constructor.</value>
   </data>
   <data name="ViewModelTypeMustInheritFromSettingsViewModelBase" xml:space="preserve">
     <value>ViewModel type must inherit from SettingsViewModelBase.</value>
   </data>
   <data name="ViewTypeMustContainAParameterlessContructor" xml:space="preserve">
-    <value>View type must contain a parameterless contructor.</value>
+    <value>View type must contain a parameterless constructor.</value>
   </data>
   <data name="ViewTypeMustInheritFromUserControl" xml:space="preserve">
     <value>View type must inherit from UserControl.</value>
