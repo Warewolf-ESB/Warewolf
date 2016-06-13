@@ -23,13 +23,28 @@ namespace Warewolf.Studio.Views
     public partial class ExplorerView : IExplorerView
     {
         private readonly ExplorerViewTestClass _explorerViewTestClass;
+        private bool _exceptionThrown;
+        private string _errorMessage;
+        private bool _isDropOntoNode;
 
         public ExplorerView()
         {
             InitializeComponent();
             _explorerViewTestClass = new ExplorerViewTestClass(this);
+            ExplorerTree.NodeDragDrop+=ExplorerTreeOnNodeDragDrop;
         }
-        
+
+        private void ExplorerTreeOnNodeDragDrop(object sender, TreeDropEventArgs treeDropEventArgs)
+        {
+            _isDropOntoNode = true;
+            if (treeDropEventArgs.DropDestination != TreeDropDestination.DropOnto)
+            {
+                treeDropEventArgs.DragDropEventArgs.OperationType=OperationType.DropNotAllowed;
+                DropNotAllowedStyle(treeDropEventArgs.DragDropEventArgs.DropTarget);
+                _isDropOntoNode = false;
+            }
+        }
+
         public ExplorerViewTestClass ExplorerViewTestClass
         {
             get { return _explorerViewTestClass; }
@@ -192,8 +207,6 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private bool _exceptionThrown;
-        private string _errorMessage;
         private void ExplorerTree_OnNodeDraggingStart(object sender, DragDropStartEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Released)
@@ -208,52 +221,15 @@ namespace Warewolf.Studio.Views
                     xamDataTreeNodeControl.Node.Data.GetType() == typeof(ExplorerItemViewModel))
                 {
                     DragSource dragSource = DragDropManager.GetDragSource(e.DragSource);
-                    dragSource.DragLeave += src_DragLeave;
-                    dragSource.DragOver += SrcOnDragOver;
-                    dragSource.Drop += src_Drop;
-                    dragSource.DragEnd += DragSourceOnDragEnd;
+                    dragSource.DragOver += DragSourceDragOver;
+                    dragSource.Drop += DragSourceDrop;                    
+                    dragSource.DragLeave += DragSourceDragLeave;
+                    dragSource.DragEnd += DragSourceDragEnd;
                 }
             }
         }
 
-        private void DragSourceOnDragEnd(object sender, DragDropEventArgs e)
-        {
-            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
-            var dragSource = e.DragSource as XamDataTreeNodeControl;
-            if (dropTarget != null && dragSource != null)
-            {
-                var dropNodeData = dropTarget.Node.Data;
-                var sourceNodeData = dragSource.Node.Data;
-                if (dropNodeData != null && dropNodeData.GetType() == typeof(ExplorerItemViewModel))
-                {
-                    var source = sourceNodeData as IExplorerItemViewModel;
-                    if (source != null && _exceptionThrown)
-                    {
-                        e.OperationType = OperationType.DropNotAllowed;
-                        source.ShowErrorMessage(_errorMessage);
-                        _exceptionThrown = false;
-                        _errorMessage = "";
-                        ResetDragDropTemplate(e);
-                    }
-                }
-            }
-            
-        }
-
-        void StopDragging()
-        {
-            CancelDrag = true;
-            try
-            {
-                DragDropManager.EndDrag(true);
-            }
-            catch (Exception e)
-            {
-                //aaa
-            }
-        }
-
-        private void SrcOnDragOver(object sender, DragDropMoveEventArgs e)
+        private void DragSourceDragOver(object sender, DragDropMoveEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Released)
             {
@@ -319,8 +295,7 @@ namespace Warewolf.Studio.Views
                                 DropAllowedStyle(e.DropTarget);
 
                                 ClearException(e);
-                                var checkExists =
-                                    destination.Children.FirstOrDefault(o => o.ResourceName == source.ResourceName);
+                                var checkExists = destination.Children.FirstOrDefault(o => o.ResourceName == source.ResourceName);
                                 if (checkExists != null)
                                 {
                                     SetException(e);
@@ -377,46 +352,15 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ClearException(DragDropMoveEventArgs e)
-        {
-            e.OperationType = OperationType.Move;
-            _exceptionThrown = false;
-            _errorMessage = "";
-        }
-        private void SetException(DragDropMoveEventArgs e)
-        {
-            e.OperationType = OperationType.DropNotAllowed;
-            _exceptionThrown = true;
-            _errorMessage = "The destination folder has a resource with the same name";
-        }
-
-        void src_DragLeave(object sender, DragDropEventArgs e)
-        {
-            // Reset the cursor template
-            if (Mouse.LeftButton == MouseButtonState.Released)
-            {
-                StopDragging();
-            }
-            ResetDragDropTemplate(e);
-        }
-
-        private static void ResetDragDropTemplate(DragDropEventArgs e)
-        {
-            e.DropNotAllowedCursorTemplate = null;
-            e.CopyCursorTemplate = null;
-            e.MoveCursorTemplate = null;
-            DropNotAllowedStyle(e.DropTarget);
-        }
-
-        void src_Drop(object sender, DropEventArgs e)
+        void DragSourceDrop(object sender, DropEventArgs e)
         {
             // Disconnect the events for memory reasons.
             var src = DragDropManager.GetDragSource(e.DragSource);
-            src.DragLeave -= src_DragLeave;
-            src.DragOver -= SrcOnDragOver;
-            src.Drop -= src_Drop;
+            src.DragLeave -= DragSourceDragLeave;
+            src.DragOver -= DragSourceDragOver;
+            src.Drop -= DragSourceDrop;
 
-            if (!_exceptionThrown)
+            if (!_exceptionThrown && !_isDropOntoNode)
             {
                 var dropTarget = e.DropTarget as XamDataTreeNodeControl;
                 var dragSource = e.DragSource as XamDataTreeNodeControl;
@@ -428,7 +372,6 @@ namespace Warewolf.Studio.Views
                     {
                         var destination = dropNodeData as IExplorerItemViewModel;
                         var source = sourceNodeData as IExplorerItemViewModel;
-
                         if (destination != null && source != null)
                         {
                             IEnvironmentViewModel vmDestination = GetEnv(destination);
@@ -464,6 +407,61 @@ namespace Warewolf.Studio.Views
                     }
                 }
             }
+        }
+
+        void DragSourceDragLeave(object sender, DragDropEventArgs e)
+        {
+            // Reset the cursor template
+            if (Mouse.LeftButton == MouseButtonState.Released)
+            {
+                StopDragging();
+            }
+            ResetDragDropTemplate(e);
+        }
+
+        private void DragSourceDragEnd(object sender, DragDropEventArgs e)
+        {
+            var dropTarget = e.DropTarget as XamDataTreeNodeControl;
+            var dragSource = e.DragSource as XamDataTreeNodeControl;
+            if (dropTarget != null && dragSource != null)
+            {
+                var dropNodeData = dropTarget.Node.Data;
+                var sourceNodeData = dragSource.Node.Data;
+                if (dropNodeData != null && dropNodeData.GetType() == typeof(ExplorerItemViewModel))
+                {
+                    var source = sourceNodeData as IExplorerItemViewModel;
+                    if (source != null && _exceptionThrown)
+                    {
+                        e.OperationType = OperationType.DropNotAllowed;
+                        source.ShowErrorMessage(_errorMessage, "Move not allowed");
+                        _exceptionThrown = false;
+                        _errorMessage = "";
+                        ResetDragDropTemplate(e);
+                    }
+                    ExplorerTree.ScrollNodeIntoView(dragSource.Node);
+                }
+            }
+        }
+
+        private static void ResetDragDropTemplate(DragDropEventArgs e)
+        {
+            e.DropNotAllowedCursorTemplate = null;
+            e.CopyCursorTemplate = null;
+            e.MoveCursorTemplate = null;
+            DropNotAllowedStyle(e.DropTarget);
+        }
+
+        private void ClearException(DragDropMoveEventArgs e)
+        {
+            e.OperationType = OperationType.Move;
+            _exceptionThrown = false;
+            _errorMessage = "";
+        }
+        private void SetException(DragDropMoveEventArgs e)
+        {
+            e.OperationType = OperationType.DropNotAllowed;
+            _exceptionThrown = true;
+            _errorMessage = "The destination folder has a resource with the same name";
         }
 
         private bool ValidateDragDrop(IExplorerItemViewModel source, IEnvironmentViewModel vmDestination)
@@ -528,6 +526,20 @@ namespace Warewolf.Studio.Views
                     rect.Opacity = 0.5;
                 }
                 element.AllowDrop = true;
+            }
+        }
+
+        void StopDragging()
+        {
+            CancelDrag = true;
+            try
+            {
+                DragDropManager.EndDrag(true);
+            }
+            // ReSharper disable once UnusedVariable
+            catch (Exception)
+            {
+                //aaa
             }
         }
     }

@@ -70,5 +70,6 @@ namespace Dev2.Common.Interfaces
         bool IsReservedService { get; set; }
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
+        void UpdateChildrenCount();
     }
 }
