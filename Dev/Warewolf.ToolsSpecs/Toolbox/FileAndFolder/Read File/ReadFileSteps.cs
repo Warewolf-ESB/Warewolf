@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
 using TechTalk.SpecFlow;
@@ -20,12 +21,20 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
     [Binding]
     public class ReadFileSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ReadFileSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [When(@"the read file tool is executed")]
         public void WhenTheReadFileToolIsExecuted()
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         protected override void BuildDataList()
@@ -33,13 +42,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             BuildShapeAndTestData();
 
             string privateKeyFile;
-            ScenarioContext.Current.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile,out privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile,out privateKeyFile);
             var fileRead = new DsfFileRead
             {
-                InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
-                Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
+                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
                 PrivateKeyFile = privateKeyFile
             };
 
@@ -48,7 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
                 Action = fileRead
             };
 
-            ScenarioContext.Current.Add("activity", fileRead);
+            scenarioContext.Add("activity", fileRead);
         }
     }
 }

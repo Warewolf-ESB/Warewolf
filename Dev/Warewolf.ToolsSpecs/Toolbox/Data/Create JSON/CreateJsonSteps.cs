@@ -13,16 +13,24 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
 {
     public class CreateJsonSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public CreateJsonSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I select variable ""(.*)"" with name ""(.*)""")]
         public void GivenISelectVariableWithName(string variable, string name)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("toList", out variableList);
+            scenarioContext.TryGetValue("toList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("toList", variableList);
+                scenarioContext.Add("toList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, name));
         }
@@ -31,7 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         public void GivenAResultVariable(string JsonString)
         {
             //JsonString = JsonString.Replace('"', ' ').Trim();
-            ScenarioContext.Current.Add("JsonString", JsonString);
+            scenarioContext.Add("JsonString", JsonString);
         }
 
         [When(@"the create json tool is executed")]
@@ -39,7 +47,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the value of ""(.*)"" should be ""(.*)""")]
@@ -47,7 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(resultVariable),
                 out actualValue, out error);
             if(string.IsNullOrEmpty(expectedResult))
@@ -64,31 +72,31 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         public void GivenIHaveAVariableWithValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> toList;
-            ScenarioContext.Current.TryGetValue("toList", out toList);
+            scenarioContext.TryGetValue("toList", out toList);
 
             if(toList == null)
             {
                 toList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("toList", toList);
+                scenarioContext.Add("toList", toList);
             }
 
             // toList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string json;
-            ScenarioContext.Current.TryGetValue("JsonString", out json);
+            scenarioContext.TryGetValue("JsonString", out json);
 
             var jsonTool = new DsfCreateJsonActivity
             {
@@ -100,7 +108,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             {
                 Action = jsonTool
             };
-            ScenarioContext.Current.Add("activity", jsonTool);
+            scenarioContext.Add("activity", jsonTool);
         }
     }
 }

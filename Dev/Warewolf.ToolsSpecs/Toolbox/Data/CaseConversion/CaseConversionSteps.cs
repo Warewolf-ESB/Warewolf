@@ -24,6 +24,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
     [Binding]
     public class CaseConversionSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public CaseConversionSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -37,13 +45,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
             int row = 1;
 
-            var caseConversion = ScenarioContext.Current.Get<List<Tuple<string, string>>>("caseConversion");
+            var caseConversion = scenarioContext.Get<List<Tuple<string, string>>>("caseConversion");
             foreach(dynamic variable in caseConversion)
             {
                 caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item2, variable.Item1, row));
                 row++;
             }
-            ScenarioContext.Current.Add("activity", caseConvert);
+            scenarioContext.Add("activity", caseConvert);
         }
 
         [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
@@ -51,12 +59,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         public void GivenIHaveACaseConvertVariableWithAValueOf(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -73,12 +81,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         public void GivenIConvertAVariableTo(string variable, string toCase)
         {
             List<Tuple<string, string>> caseConversion;
-            ScenarioContext.Current.TryGetValue("caseConversion", out caseConversion);
+            scenarioContext.TryGetValue("caseConversion", out caseConversion);
 
             if(caseConversion == null)
             {
                 caseConversion = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("caseConversion", caseConversion);
+                scenarioContext.Add("caseConversion", caseConversion);
             }
 
             caseConversion.Add(new Tuple<string, string>(variable, toCase));
@@ -89,7 +97,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Given(@"I have a CaseConversion recordset")]
@@ -104,11 +112,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -116,12 +124,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             foreach(TableRow record in records)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(record[0], record[1]));
             }
@@ -134,7 +142,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             string error;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
@@ -153,7 +161,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             string error;
             string actualValue;
             value = value.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment( result.Environment,"[[var]]", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }

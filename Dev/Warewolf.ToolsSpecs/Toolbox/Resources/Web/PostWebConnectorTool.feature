@@ -5,7 +5,7 @@
 
 # layout of tool not ready
 
-Scenario: Open new Web Tool
+Scenario: Open new Post Web Tool
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	And Post Edit is Disabled
@@ -48,7 +48,7 @@ Scenario: Create Web Service with different methods
 	
 
 
-Scenario: Adding parameters in request headers is updating variables
+Scenario: Adding parameters in Post Post Web Connector Tool request headers is updating variables
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	When I Select "Dev2CountriesWebService" as a Post web Source
@@ -79,7 +79,7 @@ Scenario: Adding parameters in request headers is updating variables
 	| CountryID   | [[CountryID]]   |
 	| Description | [[Description]] |
 
- Scenario: Editing Web Service
+ Scenario: Editing Post Web Service
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	When I Select "Dev2CountriesWebService" as a Post web Source
@@ -88,7 +88,7 @@ Scenario: Adding parameters in request headers is updating variables
 	When I click Post Edit
 	Then the "Dev2CountriesWebService" Post Source tab is opened
 
-Scenario: Changing Sources
+Scenario: Changing Post Post Web Connector Tool Sources
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	When I Select "WebHeloo" as a Post web Source
@@ -117,7 +117,7 @@ Scenario: Changing Sources
 
 
 #wolf-1034 re-opened worked as a connector not as a tool
-Scenario: Web Connector Tool returns text
+Scenario: Post Web Connector Tool returns text
 	And I drag Web Post Request Connector Tool onto the design surface
     And New is Enabled
 	And Edit is Enabled

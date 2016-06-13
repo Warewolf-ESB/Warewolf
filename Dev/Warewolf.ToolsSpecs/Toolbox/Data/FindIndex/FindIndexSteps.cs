@@ -24,21 +24,29 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
     [Binding]
     public class FindIndexSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public FindIndexSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             var resultVariable = ResultVariable;
             string resultVar;
-            if (ScenarioContext.Current.TryGetValue("resultVariable", out resultVar))
+            if (scenarioContext.TryGetValue("resultVariable", out resultVar))
             {
                 resultVariable = resultVar;
                 var resultVars = resultVariable.Split(',');
@@ -47,13 +55,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             BuildShapeAndTestData();
 
             string inField;
-            ScenarioContext.Current.TryGetValue("inField", out inField);
+            scenarioContext.TryGetValue("inField", out inField);
             string index;
-            ScenarioContext.Current.TryGetValue("index", out index);
+            scenarioContext.TryGetValue("index", out index);
             string characters;
-            ScenarioContext.Current.TryGetValue("characters", out characters);
+            scenarioContext.TryGetValue("characters", out characters);
             string direction;
-            ScenarioContext.Current.TryGetValue("direction", out direction);
+            scenarioContext.TryGetValue("direction", out direction);
 
             var findIndex = new DsfIndexActivity
                 {
@@ -68,20 +76,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
                 {
                     Action = findIndex
                 };
-            ScenarioContext.Current.Add("activity", findIndex);
+            scenarioContext.Add("activity", findIndex);
         }
 
         [Given(@"the sentence ""(.*)""")]
         public void GivenTheSentence(string inField)
         {
-            ScenarioContext.Current.Add("inField", inField);
+            scenarioContext.Add("inField", inField);
         }
 
         [Given(@"I selected Index ""(.*)""")]
         [Given(@"I have selected Index ""(.*)""")]
         public void GivenISelectedIndex(string index)
         {
-            ScenarioContext.Current.Add("index", index);
+            scenarioContext.Add("index", index);
         }
 
        
@@ -92,25 +100,25 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             {
                 characters = ' '.ToString();
             }
-            ScenarioContext.Current.Add("characters", characters);
+            scenarioContext.Add("characters", characters);
         }
 
         [Given(@"I selected direction as ""(.*)""")]
         public void GivenISelectedDirectionAs(string direction)
         {
-            ScenarioContext.Current.Add("direction", direction);
+            scenarioContext.Add("direction", direction);
         }
 
         [Given(@"I have a Find Index variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAFindIndexVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -128,11 +136,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -140,12 +148,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             foreach (TableRow record in records)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(record[0], record[1]));
             }
@@ -156,7 +164,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the find index result is ""(.*)""")]
@@ -172,7 +180,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             {
                 results = results.Replace("\"\"", "");
             }
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(results, actualValue);
@@ -183,7 +191,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
 
@@ -201,7 +209,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         [Given(@"result variable as ""(.*)""")]
         public void GivenResultVariableAs(string resultVar)
         {
-            ScenarioContext.Current.Add("resultVariable", resultVar);
+            scenarioContext.Add("resultVariable", resultVar);
         }
     }
 }

@@ -26,12 +26,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
     [Binding]
     public class GatherSystemInformationSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public GatherSystemInformationSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
             var systemInformationCollection =
-                ScenarioContext.Current.Get<List<GatherSystemInformationTO>>("systemInformationCollection");
+                scenarioContext.Get<List<GatherSystemInformationTO>>("systemInformationCollection");
 
             var dsfGatherSystemInformationActivity = new DsfGatherSystemInformationActivity
                 {
@@ -42,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
                 {
                     Action = dsfGatherSystemInformationActivity
                 };
-            ScenarioContext.Current.Add("activity", dsfGatherSystemInformationActivity);
+            scenarioContext.Add("activity", dsfGatherSystemInformationActivity);
         }
 
         [Given(@"I have a variable ""(.*)"" and I selected ""(.*)""")]
@@ -50,20 +58,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         {
             int row;
 
-            bool isRowAdded = ScenarioContext.Current.TryGetValue("row", out row);
+            bool isRowAdded = scenarioContext.TryGetValue("row", out row);
             if(isRowAdded)
             {
-                ScenarioContext.Current.Add("row", row);
+                scenarioContext.Add("row", row);
             }
             row++;
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, string.Empty));
@@ -72,12 +80,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
                 Enum.Parse(typeof(enTypeOfSystemInformationToGather), informationType);
 
             List<GatherSystemInformationTO> systemInformationCollection;
-            ScenarioContext.Current.TryGetValue("systemInformationCollection", out systemInformationCollection);
+            scenarioContext.TryGetValue("systemInformationCollection", out systemInformationCollection);
 
             if(systemInformationCollection == null)
             {
                 systemInformationCollection = new List<GatherSystemInformationTO>();
-                ScenarioContext.Current.Add("systemInformationCollection", systemInformationCollection);
+                scenarioContext.Add("systemInformationCollection", systemInformationCollection);
             }
             systemInformationCollection.Add(new GatherSystemInformationTO(type, variable, row));
         }
@@ -87,14 +95,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the value of the variable ""(.*)"" is a valid ""(.*)""")]
         public void ThenTheValueOfTheVariableIsAValid(string variable, string type)
         {
             string error;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
 
             if(DataListUtil.IsValueRecordset(variable))
             {
@@ -117,7 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             }
         }
 
-        private static void Verify(string type, string actualValue, string error)
+        void Verify(string type, string actualValue, string error)
         {
             if(type == "DateTime")
             {

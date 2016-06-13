@@ -18,6 +18,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
     [Binding]
     public sealed class ConsumeRabbitMQSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ConsumeRabbitMQSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I create New Workflow")]
         public void GivenICreateNewWorkflow()
         {
@@ -37,79 +45,79 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var viewModel = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object);
             var privateObject = new PrivateObject(consumeActivity);
 
-            ScenarioContext.Current.Add("ViewModel", viewModel);
-            ScenarioContext.Current.Add("Model", model);
-            ScenarioContext.Current.Add("Activity", consumeActivity);
-            ScenarioContext.Current.Add("PrivateObj", privateObject);
+            scenarioContext.Add("ViewModel", viewModel);
+            scenarioContext.Add("Model", model);
+            scenarioContext.Add("Activity", consumeActivity);
+            scenarioContext.Add("PrivateObj", privateObject);
         }
 
         [Given(@"RabbitMq Source is Enabled")]
         public void GivenRabbitMqSourceIsEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.NewRabbitMQSourceCommand.CanExecute(null));
         }
 
         [Given(@"EditButton is Disabled")]
         public void GivenEditButtonIsDisabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
 
         [Then(@"EditButton is Enabled")]
         public void ThenEditButtonIsEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
 
         [Given(@"Queue Name is disabled")]
         public void GivenQueueNameIsDisabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);
         }
 
         [Given(@"Prefech is disabled")]
         public void GivenPrefechIsDisabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);
         }
 
         [Given(@"ReQueue is disabled")]
         public void GivenReQueueIsDisabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);
         }
 
         [Given(@"New button is Enabled")]
         public void GivenNewButtonIsEnabled()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsTrue(vm.NewRabbitMQSourceCommand.CanExecute(null));
         }
 
         [When(@"I click new source")]
         public void WhenIClickNewSource()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.NewRabbitMQSourceCommand.Execute(null);
         }
 
         [Then(@"the RabbitMQ Source window is opened")]
         public void ThenTheRabbitMQSourceWindowIsOpened()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.CreateNewSource(), Times.AtLeastOnce);
         }
 
         [When(@"I select ""(.*)"" from source list as the source")]
         public void WhenISelectFromSourceListAsTheSource(string p0)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.SelectedRabbitMQSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == "localhost");
         }
 
@@ -127,28 +135,28 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"I click Edit source")]
         public void ThenIClickEditSource()
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.EditRabbitMQSourceCommand.Execute(null);
         }
 
         [Then(@"the RabbitMQ Source window is opened with localhost source")]
         public void ThenTheRabbitMQSourceWindowIsOpenedWithLocalhostSource()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
 
         [Then(@"I set QueueName to ""(.*)""")]
         public void ThenISetQueueNameTo(string p0)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.QueueName = p0;
         }
 
         [When(@"I change the source from ""(.*)"" to ""(.*)""")]
         public void WhenIChangeTheSourceFromTo(string p0, string p1)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             Assert.IsFalse(string.IsNullOrEmpty(vm.QueueName));
             vm.SelectedRabbitMQSource = new RabbitMQServiceSourceDefinition() { ResourceName = p1 };
         }
@@ -156,7 +164,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"QueueName equals ""(.*)""")]
         public void ThenQueueNameEquals(string p0)
         {
-            var vm = ScenarioContext.Current.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
+            var vm = scenarioContext.Get<RabbitMQConsumeDesignerViewModel>("ViewModel");
             vm.QueueName = p0;
         }
 
@@ -171,8 +179,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         {
          
 
-            var consumeRabbitMQActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("Activity");
-            var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
+            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
+            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
         }
 
@@ -182,7 +190,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(RabbitMQSource));
 
-            var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
             _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(string.Equals("Failure: Source has been deleted.", executeResults));
@@ -191,13 +199,13 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"No queue error is Returned")]
         public void ThenNoQueueErrorIsReturned()
         {
-            var consumeRabbitMQActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("Activity");
+            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
 
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
-            var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
             _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             _privateObject.SetProperty("RabbitSource", rabbitMQSource.Object);
 
@@ -208,16 +216,16 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"I add the new source")]
         public void ThenIAddTheNewSource()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            var model = scenarioContext.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Setup(sourceModel => sourceModel.CreateNewSource());
         }
 
         [Then(@"Nothing in the queue error is Returned")]
         public void ThenNothingInTheQueueErrorIsReturned()
         {
-            var consumeRabbitMQActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("Activity");
+            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
             consumeRabbitMQActivity.RabbitMQSourceResourceId = new Guid();
-            var _privateObject = ScenarioContext.Current.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(Equals(string.Format("Nothing in the Queue : {0}", consumeRabbitMQActivity.QueueName), executeResults));
         }

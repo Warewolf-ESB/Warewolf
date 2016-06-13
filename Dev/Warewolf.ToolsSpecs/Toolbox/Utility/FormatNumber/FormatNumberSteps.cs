@@ -23,20 +23,28 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
     [Binding]
     public class FormatNumberSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public FormatNumberSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
             string resVar;
-            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out resVar))
             {
                 resultVariable = resVar;
             }
@@ -44,13 +52,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             BuildShapeAndTestData();
 
             string number;
-            ScenarioContext.Current.TryGetValue("number", out number);
+            scenarioContext.TryGetValue("number", out number);
             string roundingType;
-            ScenarioContext.Current.TryGetValue("rounding", out roundingType);
+            scenarioContext.TryGetValue("rounding", out roundingType);
             string roundingDecimalPlaces;
-            ScenarioContext.Current.TryGetValue("to", out roundingDecimalPlaces);
+            scenarioContext.TryGetValue("to", out roundingDecimalPlaces);
             string decimalToShow;
-            ScenarioContext.Current.TryGetValue("decimalToShow", out decimalToShow);
+            scenarioContext.TryGetValue("decimalToShow", out decimalToShow);
 
             var numberFormat = new DsfNumberFormatActivity
                 {
@@ -65,20 +73,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 {
                     Action = numberFormat
                 };
-            ScenarioContext.Current.Add("activity", numberFormat);
+            scenarioContext.Add("activity", numberFormat);
         }
 
         [Given(@"I have a number (.*)")]
         public void GivenIHaveANumber(string number)
         {
-            ScenarioContext.Current.Add("number", number.Replace('"', ' ').Trim());
+            scenarioContext.Add("number", number.Replace('"', ' ').Trim());
         }
 
         [Given(@"I selected rounding ""(.*)"" to (.*)")]
         public void GivenISelectedRoundingTo(string rounding, string to)
         {
-            ScenarioContext.Current.Add("rounding", rounding.Replace('"', ' ').Trim());
-            ScenarioContext.Current.Add("to", to.Replace('"', ' ').Trim());
+            scenarioContext.Add("rounding", rounding.Replace('"', ' ').Trim());
+            scenarioContext.Add("to", to.Replace('"', ' ').Trim());
         }
 
         [Given(@"I want to show ""(.*)"" decimals")]
@@ -90,13 +98,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         [Given(@"I want to show (.*) decimals with value ""(.*)""")]
         public void GivenIWantToShowDecimalsWithValue(string p0, string decimalToShow)
         {
-            ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
+            scenarioContext.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
         }
 
         [Given(@"I want to show ""(.*)"" decimals with values ""(.*)""")]
         public void GivenIWantToShowDecimalsWithValues(string p0, string decimalToShow)
         {
-            ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
+            scenarioContext.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
         }
 
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
@@ -105,12 +113,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
             variable = variable.Replace('"', ' ').Trim();
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -120,7 +128,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the result (.*) will be returned")]
@@ -129,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(expectedResult))
@@ -145,7 +153,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         [Given(@"I have a formatnumber result is ""(.*)""")]
         public void GivenIHaveAFormatnumberResultIs(string resultVar)
         {
-            ScenarioContext.Current.Add("resVar", resultVar);
+            scenarioContext.Add("resVar", resultVar);
         }
 
     }
