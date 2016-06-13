@@ -28,6 +28,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
     [Binding]
     public class LengthSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public LengthSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             var shape = new XElement("root");
@@ -35,7 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
 
             int row = 0;
             dynamic variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList != null)
             {
@@ -59,9 +67,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             }
 
             string recordSetName;
-            ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
+            scenarioContext.TryGetValue("recordset", out recordSetName);
 
-            var recordset = ScenarioContext.Current.Get<string>("recordset");
+            var recordset = scenarioContext.Get<string>("recordset");
 
             var length = new DsfRecordsetLengthActivity
             {
@@ -73,7 +81,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             {
                 Action = length
             };
-            ScenarioContext.Current.Add("activity", length);
+            scenarioContext.Add("activity", length);
             CurrentDl = shape.ToString();
             TestData = data.ToString();
         }
@@ -89,11 +97,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, "row"));
             }
@@ -101,12 +109,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
@@ -121,7 +129,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
         [Given(@"get length on record ""(.*)""")]
         public void GivenGetLengthOnRecord(string recordset)
         {
-            ScenarioContext.Current.Add("recordset", recordset);
+            scenarioContext.Add("recordset", recordset);
         }
 
         [When(@"the length tool is executed")]
@@ -129,13 +137,13 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the length result should be (.*)")]
         public void ThenTheLengthResultShouldBe(string expectedResult)
         {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             string actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]",0));
             expectedResult = expectedResult.Replace('"', ' ').Trim();
            

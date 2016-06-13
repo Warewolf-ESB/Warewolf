@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
@@ -37,15 +38,15 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _serverMock = new Mock<IServer>();
             _updateManager = new Mock<IStudioUpdateManager>();
-            _serverMock.Setup(a=>a.UpdateRepository).Returns(_updateManager.Object);
-           
+            _serverMock.Setup(a => a.UpdateRepository).Returns(_updateManager.Object);
+
             _explorerTreeItemMock = new Mock<IExplorerTreeItem>();
             _shellViewModelMock = new Mock<IShellViewModel>();
             _explorerRepositoryMock = new Mock<IExplorerRepository>();
             _windowsGroupPermissionsMock = new Mock<IWindowsGroupPermission>();
             _serverMock.SetupGet(it => it.ExplorerRepository).Returns(_explorerRepositoryMock.Object);
             _serverMock.SetupGet(it => it.Permissions)
-                .Returns(new List<IWindowsGroupPermission> {_windowsGroupPermissionsMock.Object});
+                .Returns(new List<IWindowsGroupPermission> { _windowsGroupPermissionsMock.Object });
             _popupControllerMock = new Mock<IPopupController>();
             _target = new ExplorerItemViewModel(_serverMock.Object, _explorerTreeItemMock.Object,
                 a => { }, _shellViewModelMock.Object, _popupControllerMock.Object);
@@ -309,7 +310,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(true);
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata() { IsDeleted = true });
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = "ServerSource";
             _target.ResourceId = Guid.NewGuid();
@@ -335,7 +336,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(true);
+            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata() { IsDeleted = true });
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = "Server";
             _target.IsServer = true;
@@ -356,7 +357,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             studioManagerUpdateMock.Verify(it => it.FireServerSaved());
         }
 
-        
+
         [TestMethod]
         public void TestOpenVersionCommandResourceTypeVersion()
         {
@@ -570,7 +571,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Equals((object)_target));
             Assert.IsTrue(_target.Equals((object)otherSameId));
             Assert.IsFalse(_target.Equals((object)otherDifferentId));
-            Assert.IsFalse(_target.Equals(otherDifferentType)); 
+            Assert.IsFalse(_target.Equals(otherDifferentType));
 
             Assert.IsFalse(_target == null);
             // ReSharper disable once EqualExpressionComparison
@@ -578,7 +579,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target == otherSameId);
             Assert.IsFalse(_target == otherDifferentId);
             Assert.IsFalse(_target == otherDifferentType);
-                
+
             Assert.IsTrue(_target != null);
             // ReSharper disable once EqualExpressionComparison
             Assert.IsFalse(_target != _target);
@@ -766,7 +767,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             _target.AreVersionsVisible = true;
             //assert
-            var version = (VersionViewModel) _target.Children[0];
+            var version = (VersionViewModel)_target.Children[0];
             Assert.AreEqual("Hide Version History", _target.VersionHeader);
             Assert.IsTrue(version.IsVersion);
             Assert.AreEqual("v.someVerNum 02022013 000000 gfedew", version.ResourceName);
@@ -810,18 +811,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var isAreVersionsVisibleChanged = false;
             var isChildrenChanged = false;
-            
+
             _target.PropertyChanged += (sender, e) =>
             {
                 isAreVersionsVisibleChanged = isAreVersionsVisibleChanged || e.PropertyName == "AreVersionsVisible";
                 isChildrenChanged = isChildrenChanged || e.PropertyName == "Children";
             };
-           //act
+            //act
             _target.AreVersionsVisible = false;
             //assert
             Assert.IsFalse(_target.Children.Any());
             Assert.AreEqual("Show Version History", _target.VersionHeader);
-            
+
             Assert.IsTrue(isAreVersionsVisibleChanged);
             Assert.IsTrue(isChildrenChanged);
         }
@@ -855,8 +856,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var isRenamingFired = false;
             var isNotRenamingFired = false;
-            _target.PropertyChanged+=(sender,e)=> { isRenamingFired = isRenamingFired || e.PropertyName == "IsRenaming";
-                                                      isNotRenamingFired = isNotRenamingFired || e.PropertyName == "IsNotRenaming";
+            _target.PropertyChanged += (sender, e) =>
+            {
+                isRenamingFired = isRenamingFired || e.PropertyName == "IsRenaming";
+                isNotRenamingFired = isNotRenamingFired || e.PropertyName == "IsNotRenaming";
             };
             //act
             _target.IsRenaming = true;
@@ -872,7 +875,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var isResourceNameFired = false;
-            _target.PropertyChanged += (sender, e) => {
+            _target.PropertyChanged += (sender, e) =>
+            {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
             _explorerTreeItemMock.SetupGet(it => it.Children)
@@ -898,7 +902,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var isResourceNameFired = false;
-            _target.PropertyChanged += (sender, e) => {
+            _target.PropertyChanged += (sender, e) =>
+            {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
             _explorerTreeItemMock.SetupGet(it => it.Children)
@@ -924,14 +929,15 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var isResourceNameFired = false;
-            _target.PropertyChanged += (sender, e) => {
+            _target.PropertyChanged += (sender, e) =>
+            {
                 isResourceNameFired = e.PropertyName == "ResourceName";
             };
             var newName = "SomeNewName";
             var childMock = new Mock<IExplorerItemViewModel>();
             childMock.SetupGet(it => it.ResourceName).Returns(newName);
             _explorerTreeItemMock.SetupGet(it => it.Children)
-                .Returns(new ObservableCollection<IExplorerItemViewModel>() { childMock .Object});
+                .Returns(new ObservableCollection<IExplorerItemViewModel>() { childMock.Object });
             _target.IsRenaming = false;
             _target.ResourcePath = "Some\\someResPath";
             _target.ResourceName = "someResPath";
@@ -985,7 +991,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var childrenCount = _target.ChildrenCount;
 
             //assert
-           Assert.AreEqual(3,childrenCount);
+            Assert.AreEqual(3, childrenCount);
         }
 
         #endregion Test properties
@@ -996,11 +1002,15 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestDeleteClosesWindow()
         {
             //arrange
+            var mock = new Mock<IExplorerRepository>();
+            mock.Setup(metadata => metadata.Delete(It.IsAny<IExplorerItemViewModel>())).Returns(new DeletedFileMetadata() {IsDeleted = false});
             _popupControllerMock.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             _target.EnvironmentModel = new Mock<IEnvironmentModel>().Object;
             var child = new Mock<IExplorerItemViewModel>();
             _target.Children.Add(child.Object);
-
+            
+            PrivateObject privateObject = new PrivateObject(_target);
+            privateObject.SetField("_explorerRepository", mock.Object);
             //act
             _target.Delete();
 
@@ -1042,7 +1052,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(isChildrenChanged);
             Assert.IsTrue(_target.IsVisible);
-            childMock.Verify(it=>it.Filter("someFilter"));
+            childMock.Verify(it => it.Filter("someFilter"));
         }
 
         [TestMethod]
@@ -1108,7 +1118,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         public void TestAddChild()
-        { 
+        {
             //arrange
             var child = new Mock<IExplorerItemViewModel>().Object;
             _target.Children.Clear();
@@ -1137,10 +1147,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             _target.SelectItem(id, foundAction);
             //assert
-            childSameId.VerifySet(it=>it.IsExpanded = true);
+            childSameId.VerifySet(it => it.IsExpanded = true);
             childSameId.VerifySet(it => it.IsSelected = true);
             Assert.IsTrue(foundActionRun);
-            childDifferentId.Verify(it=>it.SelectItem(id, foundAction));
+            childDifferentId.Verify(it => it.SelectItem(id, foundAction));
         }
 
         [TestMethod]
@@ -1248,7 +1258,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Apply(action);
             //assert
             Assert.IsTrue(actionRun);
-            child.Verify(it=>it.Apply(action));
+            child.Verify(it => it.Apply(action));
         }
 
         [TestMethod]
@@ -1303,7 +1313,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Filter(filter);
             //assert
             Assert.IsTrue(propertyChangedRaised);
-            child.Verify(it=>it.Filter(filter));
+            child.Verify(it => it.Filter(filter));
             Assert.IsTrue(_target.IsVisible);
         }
 
@@ -1331,7 +1341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
             var child2 = new Mock<IExplorerItemViewModel>();
-            child.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel>() { child2.Object});
+            child.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel>() { child2.Object });
             _target.Children.Add(child.Object);
             //act
             var result = _target.AsList();
@@ -1370,8 +1380,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceId = Guid.NewGuid();
             _target.ResourceType = "WorkflowService";
             _target.IsService = true;
-           permisson.SetupGet(it => it.ResourceID).Returns(_target.ResourceId);
-            var grpPermissions = new List<IWindowsGroupPermission>() {permisson.Object};
+            permisson.SetupGet(it => it.ResourceID).Returns(_target.ResourceId);
+            var grpPermissions = new List<IWindowsGroupPermission>() { permisson.Object };
             permisson.SetupGet(it => it.Contribute).Returns(true);
             permisson.SetupGet(it => it.Execute).Returns(true);
             permisson.SetupGet(it => it.View).Returns(true);
@@ -1380,7 +1390,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SetPermissions(grpPermissions);
             //assert
             Assert.IsTrue(_target.CanEdit);
-            Assert.IsTrue(_target.CanView );
+            Assert.IsTrue(_target.CanView);
             Assert.IsTrue(_target.CanRename); ;
             Assert.IsTrue(_target.CanDelete);
             Assert.IsFalse(_target.CanCreateFolder);
@@ -1468,7 +1478,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
             _target.AddSibling(siblingMock.Object);
             //assert
-            _explorerTreeItemMock.Verify(it=>it.AddChild(siblingMock.Object));
+            _explorerTreeItemMock.Verify(it => it.AddChild(siblingMock.Object));
         }
 
         [TestMethod]
@@ -1488,7 +1498,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(movedItem.Object);
             //assert
             Assert.IsFalse(result);
-            _shellViewModelMock.Verify(it=>it.ShowPopup(It.IsAny<IPopupMessage>()));
+            _shellViewModelMock.Verify(it => it.ShowPopup(It.IsAny<IPopupMessage>()));
         }
 
         [TestMethod]
@@ -1520,7 +1530,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-            studioUpdateManagerMock.Verify(it=>it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1552,10 +1561,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-         
-
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1576,7 +1581,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             _target.ResourceName = "someName";
             _target.ResourceType = "WebSource";
-            
+
             var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
 
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
@@ -1584,8 +1589,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsTrue(result);
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1615,8 +1618,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsTrue(result);
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         [TestMethod]
@@ -1646,8 +1647,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
-
-            studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
         #endregion Test methods

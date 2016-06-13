@@ -24,21 +24,29 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
     [Binding]
     public class DeleteSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DeleteSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            var recordset = ScenarioContext.Current.Get<string>("recordset");
+            var recordset = scenarioContext.Get<string>("recordset");
             var delete = new DsfDeleteRecordActivity
                 {
                     RecordsetName = recordset,
@@ -49,7 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
                 {
                     Action = delete
                 };
-            ScenarioContext.Current.Add("activity", delete);
+            scenarioContext.Add("activity", delete);
         }
 
         [Given(@"I have the following recordset")]
@@ -64,11 +72,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -76,12 +84,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
@@ -92,12 +100,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -107,12 +115,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -123,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the delete result should be ""(.*)""")]
@@ -132,7 +140,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             //if(string.IsNullOrEmpty(expectedResult))
@@ -169,7 +177,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         [Given(@"I delete a record ""(.*)""")]
         public void GivenIDeleteARecord(string recordset)
         {
-            ScenarioContext.Current.Add("recordset", recordset);
+            scenarioContext.Add("recordset", recordset);
         }
     }
 }

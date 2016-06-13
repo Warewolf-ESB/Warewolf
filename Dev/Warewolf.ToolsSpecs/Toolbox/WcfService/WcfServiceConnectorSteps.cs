@@ -25,11 +25,19 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
     [Binding]
     public class WcfServiceConnectorSteps : BaseActivityUnitTest
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public WcfServiceConnectorSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         public WcfSource GetSource()
         {
             return new WcfSource()
             {
-                EndpointUrl = ScenarioContext.Current.Get<string>("EndPointUrl"),
+                EndpointUrl = scenarioContext.Get<string>("EndPointUrl"),
                 ResourceID = Guid.NewGuid(),
                 Id = Guid.NewGuid(),
                 Name = "Testwcf",
@@ -41,14 +49,14 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
         {
             return new WcfAction()
             {
-                FullName = ScenarioContext.Current.Get<string>("MethodName"),
-                Method = ScenarioContext.Current.Get<string>("MethodName"),
+                FullName = scenarioContext.Get<string>("MethodName"),
+                Method = scenarioContext.Get<string>("MethodName"),
             };
         }
 
         public DsfWcfEndPointActivity GetActivity()
         {
-            var inputs = ScenarioContext.Current.Get<Table>("Inputs");
+            var inputs = scenarioContext.Get<Table>("Inputs");
             var serviceInputs = new List<IServiceInput>();
 
             foreach (var row in inputs.Rows)
@@ -105,35 +113,35 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
             resource.Setup(a => a.GetErrors(It.IsAny<Guid>())).Returns(new ObservableReadOnlyList<IErrorInfo>());
             var sqlServerDesignerViewModel = new WcfEndPointViewModel(modelItem, mockDbServiceModel.Object);
           
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Then(@"""(.*)"" wcf combobox is enabled")]
         public void ThenWcfComboboxIsEnabled(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             Assert.IsTrue(vm.SourceRegion.IsEnabled);
         }
         [Then(@"Selected wcf Source is null")]
         public void ThenSelectedWcfSourceIsNull()
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             Assert.IsNull(vm.SourceRegion.SelectedSource);
         }
 
         [Then(@"Selected wcf Method is Null")]
         public void ThenSelectedWcfMethodIsNull()
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             Assert.IsNull(vm.ActionRegion.SelectedAction);
         }
 
         [Then(@"wcf Inputs are")]
         public void ThenWcfInputsAre(Table table)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             if (table.Rows.Count == 0)
             {
                 if (vm.InputArea.Inputs != null)
@@ -155,7 +163,7 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
         [Then(@"wcf Outputs are")]
         public void ThenWcfOutputsAre(Table table)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)
@@ -175,7 +183,7 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
         [Then(@"wcf Recordset is ""(.*)""")]
         public void ThenWcfRecordsetIs(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             Assert.IsTrue(String.IsNullOrEmpty(vm.OutputsRegion.RecordsetName));
         }
 
@@ -184,12 +192,12 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
         {
             if (p0.ToLower() == "no")
             {
-                var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+                var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
                 Assert.IsTrue(vm.Errors == null || vm.Errors.Count == 0);
             }
             else
             {
-                var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+                var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
                 Assert.AreEqual(String.Join(Environment.NewLine, vm.Errors.Select(a => a.Message)), p1);
             }
         }
@@ -197,39 +205,39 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
         [When(@"I select the wcf Source ""(.*)""")]
         public void WhenISelectTheWcfSource(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.FirstOrDefault(a => a.Name == p0);
         }
         [Then(@"Selected wcf Source is ""(.*)""")]
         public void ThenSelectedWcfSourceIs(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             Assert.AreEqual(vm.SourceRegion.SelectedSource.Name, p0);
         }
 
         [Then(@"I select the wcf Method ""(.*)""")]
         public void ThenISelectTheWcfMethod(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(a => a.FullName == p0);
         }
         [Then(@"Selected wcf Method is ""(.*)""")]
         public void ThenSelectedWcfMethodIs(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(a => a.FullName == p0);
         }
 
         [Then(@"the available wcf methods in the dropdown are")]
         public void ThenTheAvailableWcfMethodsInTheDropdownAre(Table table)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
           
         }
         [Then(@"Validate wcf is ""(.*)""")]
         public void ThenValidateWcfIs(string p0)
         {
-            var vm = ScenarioContext.Current.Get<WcfEndPointViewModel>("viewModel");
+            var vm = scenarioContext.Get<WcfEndPointViewModel>("viewModel");
             Assert.IsFalse(vm.InputArea.IsEnabled);
         }
 

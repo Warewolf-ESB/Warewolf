@@ -22,6 +22,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
     [Binding]
     public class ReplaceSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ReplaceSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private string _inFields = "[[sentence]]";
 
         protected override void BuildDataList()

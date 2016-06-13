@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces
 
         Task<bool>  Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination);
 
-        bool Delete(IExplorerItemViewModel explorerItemViewModel);
+        IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel);
 
         ICollection<IVersionInfo> GetVersions(Guid id);
 

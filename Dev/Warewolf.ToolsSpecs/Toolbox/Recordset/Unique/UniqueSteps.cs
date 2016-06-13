@@ -23,26 +23,34 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
     [Binding]
     public class UniqueSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public UniqueSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string inField;
-            ScenarioContext.Current.TryGetValue("inField", out inField);
+            scenarioContext.TryGetValue("inField", out inField);
             string returnField;
-            ScenarioContext.Current.TryGetValue("returnField", out returnField);
+            scenarioContext.TryGetValue("returnField", out returnField);
             string resultVariable;
-            ScenarioContext.Current.TryGetValue("resultVariable", out resultVariable);
+            scenarioContext.TryGetValue("resultVariable", out resultVariable);
 
             var unique = new DsfUniqueActivity
                 {
@@ -55,7 +63,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
                 {
                     Action = unique
                 };
-            ScenarioContext.Current.Add("activity", unique);
+            scenarioContext.Add("activity", unique);
         }
 
         [Given(@"I have the following empty recordset")]
@@ -70,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             FillDataset(table);
         }
 
-        private static void FillDataset(Table table)
+        void FillDataset(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
@@ -81,11 +89,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -93,12 +101,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
@@ -107,22 +115,22 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         [Given(@"I want to find unique in field ""(.*)"" with the return field ""(.*)""")]
         public void GivenIWantToFindUniqueInFieldWithTheReturnField(string inField, string returnField)
         {
-            ScenarioContext.Current.Add("inField", inField);
-            ScenarioContext.Current.Add("returnField", returnField);
+            scenarioContext.Add("inField", inField);
+            scenarioContext.Add("returnField", returnField);
         }
 
         [Given(@"The result variable is ""(.*)""")]
         public void GivenTheResultVariableIs(string resultVariable)
         {
-            ScenarioContext.Current.Add("resultVariable", resultVariable);
+            scenarioContext.Add("resultVariable", resultVariable);
 
             //List<Tuple<string, string>> variableList;
-            //ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            //scenarioContext.TryGetValue("variableList", out variableList);
 
             //if(variableList == null)
             //{
             //    variableList = new List<Tuple<string, string>>();
-            //    ScenarioContext.Current.Add("variableList", variableList);
+            //    scenarioContext.Add("variableList", variableList);
             //}
             //variableList.Add(new Tuple<string, string>(resultVariable, ""));
         }
@@ -132,15 +140,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the unique result will be")]
         public void ThenTheUniqueResultWillBe(Table table)
         {
        
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string resultVariable = ScenarioContext.Current.Get<string>("resultVariable");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
+            string resultVariable = scenarioContext.Get<string>("resultVariable");
 
             string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, resultVariable);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);

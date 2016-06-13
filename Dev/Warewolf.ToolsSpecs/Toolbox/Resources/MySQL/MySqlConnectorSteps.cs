@@ -22,6 +22,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
     [Binding]
     public sealed class MySqlConnectorSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public MySqlConnectorSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private DbSourceDefinition _sqlSource;
         private DbSourceDefinition _anotherSqlSource;
         private DbAction _someAction;
@@ -76,31 +84,31 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 
             var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            ScenarioContext.Current.Add("mysqlActivity", mysqlActivity);
-            ScenarioContext.Current.Add("viewModel", mysqlDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("mysqlActivity", mysqlActivity);
+            scenarioContext.Add("viewModel", mysqlDesignerViewModel);
+            scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         #region Private Methods
 
         private DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
         {
-            return ScenarioContext.Current.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
+            return scenarioContext.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
         }
         private Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
+            return scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
         }
 
         private MySqlDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<MySqlDatabaseDesignerViewModel>("viewModel");
+            return scenarioContext.Get<MySqlDatabaseDesignerViewModel>("viewModel");
         }
 
         private Mock<IDbServiceModel> GetServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         #endregion
@@ -321,9 +329,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 
             var selectedSource = SetupSelectedSource(mysqlDesignerViewModel);            
 
-            ScenarioContext.Current.Add("viewModel", mysqlDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", mysqlDesignerViewModel);
+            scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
 
             SetupActions(selectedSource);
         }
