@@ -1,4 +1,5 @@
-﻿Feature: MySqlConnector
+﻿@Ignore
+Feature: MySqlConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
