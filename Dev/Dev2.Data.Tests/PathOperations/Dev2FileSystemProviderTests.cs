@@ -44,7 +44,7 @@ namespace Dev2.Data.Tests.PathOperations
             }
             if(!pass)
             {
-                Assert.Fail("The corrrect error wasnt returned");
+                Assert.Fail("The correct error wasn't returned.");
             }
         }
 
