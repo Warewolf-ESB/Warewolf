@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         private readonly ScenarioContext scenarioContext;
 
         public FindIndexSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

@@ -28,6 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         private readonly ScenarioContext scenarioContext;
 
         public FindRecordsetIndexMultipleSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

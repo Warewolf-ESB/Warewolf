@@ -28,19 +28,29 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public RecordSetBases(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(this.scenarioContext);
+        }
+
         protected const string ResultVariable = "[[result]]";
         private int _lastAddedIndex;
+        private readonly CommonSteps _commonSteps;
 
         protected abstract void BuildDataList();
 
         protected virtual List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
         {
-            return CommonSteps.GetInputDebugItems(activity,DataObject.Environment);
+            return _commonSteps.GetInputDebugItems(activity,DataObject.Environment);
         }
 
         protected virtual List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
         {
-            return CommonSteps.GetOutputDebugItems(activity, DataObject.Environment);
+            return _commonSteps.GetOutputDebugItems(activity, DataObject.Environment);
         }
 
         protected void BuildShapeAndTestData()
@@ -51,7 +61,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             // ReSharper disable NotAccessedVariable
             int row = 0;
             dynamic variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
             if(variableList != null)
             {
                 try
@@ -83,7 +93,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
 
             List<Tuple<string, string>> emptyRecordset;
-            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+            bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
@@ -93,7 +103,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
 
             dynamic objList;
-            ScenarioContext.Current.TryGetValue("objList", out objList);
+            scenarioContext.TryGetValue("objList", out objList);
             if (objList != null)
             {
                 try
@@ -129,7 +139,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         protected string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
-            return CommonSteps.RetrieveItemForEvaluation(partType, value);
+            return _commonSteps.RetrieveItemForEvaluation(partType, value);
         }
 
         protected string ReadFile(string resourceName)
