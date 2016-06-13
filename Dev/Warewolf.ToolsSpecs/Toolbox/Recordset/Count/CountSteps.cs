@@ -26,6 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         private readonly ScenarioContext scenarioContext;
 
         public CountSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
