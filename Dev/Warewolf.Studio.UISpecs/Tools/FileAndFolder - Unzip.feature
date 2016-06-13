@@ -1,4 +1,5 @@
-﻿Feature: FileAndFolder-Unzip
+﻿@Ignore
+Feature: FileAndFolder-Unzip
 	In order to be able to Unzip File or Folder 
 	as a Warewolf user
 	I want a tool that will Unzip File(s) or Folder(s) at a given location

@@ -1,4 +1,5 @@
-﻿Feature: Get Web Service Tool
+﻿@Ignore
+Feature: Get Web Service Tool
 	In order to create New Web Get Request Tool in Warewolf
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Get Request.
