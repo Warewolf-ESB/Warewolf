@@ -745,10 +745,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (itemToRemove is IComplexObjectItemModel)
             {
-                var item = ComplexObjectCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
+                var complexObj = (IComplexObjectItemModel) itemToRemove;
+                var complexObjectItemModels = complexObj.Children;
+                var notUsedItems = complexObjectItemModels.Flatten(model => model.Children).Where(x => !x.IsUsed).ToList();
+                for (int index = notUsedItems.Count-1; index > 0; index--)
                 {
-                    ComplexObjectCollection.Remove(item);
+                    var complexObjectItemModel = notUsedItems[index];
+                    complexObjectItemModels.Remove(complexObjectItemModel);
                 }
             }
 
@@ -1722,7 +1725,7 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
-                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed) || complexObjectItemModel.IsUsed;
+                complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) || complexObjectItemModel.IsUsed;
             }
             
         }
