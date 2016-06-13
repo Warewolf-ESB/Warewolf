@@ -29,34 +29,42 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
-   
     [Binding]
     public class ForEachSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ForEachSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private const string ResultRecordsetVariable = "[[r().v]]";
 
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultRecordsetVariable, ""));
 
             string outMapTo;
-            if(ScenarioContext.Current.TryGetValue("outMapTo", out outMapTo))
+            if(scenarioContext.TryGetValue("outMapTo", out outMapTo))
             {
                 variableList.Add(new Tuple<string, string>(outMapTo, ""));
             }
 
             BuildShapeAndTestData();
 
-            var activityType = ScenarioContext.Current.Get<string>("activityType");
+            var activityType = scenarioContext.Get<string>("activityType");
 
             dynamic activity;
 
@@ -81,28 +89,28 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             }
 
             var activityFunction = new ActivityFunc<string, bool> { Handler = activity };
-            var foreachType = ScenarioContext.Current.Get<enForEachType>("foreachType");
+            var foreachType = scenarioContext.Get<enForEachType>("foreachType");
 
             string recordSet;
-            if(!ScenarioContext.Current.TryGetValue("recordset", out recordSet))
+            if(!scenarioContext.TryGetValue("recordset", out recordSet))
             {
                 recordSet = string.Empty;
             }
 
             string from;
-            if(!ScenarioContext.Current.TryGetValue("from", out from))
+            if(!scenarioContext.TryGetValue("from", out from))
             {
                 from = string.Empty;
             }
 
             string to;
-            if(!ScenarioContext.Current.TryGetValue("to", out to))
+            if(!scenarioContext.TryGetValue("to", out to))
             {
                 to = string.Empty;
             }
 
             string numberAs;
-            if(!ScenarioContext.Current.TryGetValue("numberAs", out numberAs))
+            if(!scenarioContext.TryGetValue("numberAs", out numberAs))
             {
                 numberAs = string.Empty;
             }
@@ -123,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
                     Action = dsfForEach
                 };
 
-            ScenarioContext.Current.Add("activity", dsfForEach);
+            scenarioContext.Add("activity", dsfForEach);
         }
 
         private string BuildInputMappings()
@@ -131,11 +139,11 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var inputMappings = new StringBuilder();
             inputMappings.Append("<Inputs>");
 
-            var inMapTo = ScenarioContext.Current.Get<string>("inMapTo");
+            var inMapTo = scenarioContext.Get<string>("inMapTo");
             string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
             string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
 
-            var inMapFrom = ScenarioContext.Current.Get<string>("inMapFrom");
+            var inMapFrom = scenarioContext.Get<string>("inMapFrom");
             inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>", inColumn,
                                                inMapFrom, inRecordset));
 
@@ -148,11 +156,11 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var outputMappings = new StringBuilder();
             outputMappings.Append("<Outputs>");
 
-            var outMapFrom = ScenarioContext.Current.Get<string>("outMapFrom");
+            var outMapFrom = scenarioContext.Get<string>("outMapFrom");
             string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
             string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
 
-            var outMapTo = ScenarioContext.Current.Get<string>("outMapTo");
+            var outMapTo = scenarioContext.Get<string>("outMapTo");
             outputMappings.Append(string.Format(
                 "<Output Name=\"{0}\" MapsTo=\"{1}\" Value=\"{1}\" Recordset=\"{2}\"/>", inColumn,
                 outMapTo, inRecordset));
@@ -165,21 +173,21 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void GivenIHaveSelectedTheForeachTypeAsAndUsed(string foreachType, string recordSet)
         {
             var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
-            ScenarioContext.Current.Add("foreachType", forEachType);
+            scenarioContext.Add("foreachType", forEachType);
             switch(forEachType)
             {
                 case enForEachType.NumOfExecution:
-                    ScenarioContext.Current.Add("numberAs", recordSet);
+                    scenarioContext.Add("numberAs", recordSet);
                     break;
                 case enForEachType.InRange:
-                    ScenarioContext.Current.Add("from", recordSet);
-                    ScenarioContext.Current.Add("to", recordSet);
+                    scenarioContext.Add("from", recordSet);
+                    scenarioContext.Add("to", recordSet);
                     break;
                 case enForEachType.InCSV:
-                    ScenarioContext.Current.Add("numberAs", recordSet);
+                    scenarioContext.Add("numberAs", recordSet);
                     break;
                 case enForEachType.InRecordset:
-                    ScenarioContext.Current.Add("recordset", recordSet);
+                    scenarioContext.Add("recordset", recordSet);
                     break;
             }
         }
@@ -187,30 +195,30 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         [Given(@"I have selected the foreach type as ""(.*)"" from (.*) to (.*)")]
         public void GivenIHaveSelectedTheForeachTypeAsFromTo(string foreachType, string from, string to)
         {
-            ScenarioContext.Current.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
-            ScenarioContext.Current.Add("from", from);
-            ScenarioContext.Current.Add("to", to);
+            scenarioContext.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
+            scenarioContext.Add("from", from);
+            scenarioContext.Add("to", to);
         }
 
         [Given(@"I have selected the foreach type as ""(.*)"" as ""(.*)""")]
         public void GivenIHaveSelectedTheForeachTypeAsAs(string foreachType, string numberAs)
         {
-            ScenarioContext.Current.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
-            ScenarioContext.Current.Add("numberAs", numberAs);
+            scenarioContext.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
+            scenarioContext.Add("numberAs", numberAs);
         }
 
         [Given(@"the underlying dropped activity is a\(n\) ""(.*)""")]
         public void GivenTheUnderlyingDroppedActivityIsAN(string activityType)
         {
-            ScenarioContext.Current.Add("activityType", activityType);
+            scenarioContext.Add("activityType", activityType);
         }
 
         [When(@"the foreach tool is executed")]
         public void WhenTheForeachToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb());
-            ScenarioContext.Current.Add("result", result);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
+            scenarioContext.Add("result", result);
         }
         
         [Then(@"the foreach executes (.*) times")]
@@ -219,7 +227,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             string error;
             var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultRecordsetVariable);
             var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultRecordsetVariable);
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             var recordSetValues = RetrieveAllRecordSetFieldValues(DataObject.Environment, recordset, column, out error);
             recordSetValues = Enumerable.Where<string>(recordSetValues, i => !string.IsNullOrEmpty(i)).ToList();
             Assert.AreEqual<int>(numOfIterations, recordSetValues.Count);
@@ -228,6 +236,14 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
     public class mockEsb : IEsbChannel
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public mockEsb(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         #region Not Implemented
 
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
@@ -293,22 +309,22 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             List<string> inputList;
             List<string> outputList;
             List<int> updateValues;
-            if (!ScenarioContext.Current.TryGetValue("indexUpdate", out updateValues))
+            if (!scenarioContext.TryGetValue("indexUpdate", out updateValues))
             {
                 updateValues = new List<int>();
-                ScenarioContext.Current.Add("indexUpdate", updateValues);
+                scenarioContext.Add("indexUpdate", updateValues);
             }
 
-            if(!ScenarioContext.Current.TryGetValue("inputDefs", out inputList))
+            if(!scenarioContext.TryGetValue("inputDefs", out inputList))
             {
                 inputList = new List<string>();
-                ScenarioContext.Current.Add("inputDefs", inputList);
+                scenarioContext.Add("inputDefs", inputList);
             }
 
-            if(!ScenarioContext.Current.TryGetValue("outputDefs", out outputList))
+            if(!scenarioContext.TryGetValue("outputDefs", out outputList))
             {
                 outputList = new List<string>();
-                ScenarioContext.Current.Add("outputDefs", outputList);
+                scenarioContext.Add("outputDefs", outputList);
             }
 
             inputList.Add(inputDefs);

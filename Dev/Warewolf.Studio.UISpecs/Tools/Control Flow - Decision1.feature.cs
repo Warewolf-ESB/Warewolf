@@ -18,6 +18,7 @@ namespace Warewolf.Studio.UISpecs.Tools
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class DecisionFeature
     {
         
@@ -31,7 +32,8 @@ namespace Warewolf.Studio.UISpecs.Tools
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Decision", "\tIn order to branch based on the data\r\n\tAs Warewolf user\r\n\tI want tool that be ma" +
-                    "kes a true or false (yes/no) decision based on the data", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "kes a true or false (yes/no) decision based on the data", ProgrammingLanguage.CSharp, new string[] {
+                        "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,19 +80,19 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Decision Large View", new string[] {
                         "ignore",
                         "Decision"});
-#line 9
-this.ScenarioSetup(scenarioInfo);
 #line 10
- testRunner.Given("I have Decision tool on the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 11
- testRunner.When("I double click on \"Decision\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have Decision tool on the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
- testRunner.Then("the decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I double click on \"Decision\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 14
- testRunner.And("\"statement1 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
+ testRunner.And("\"statement1 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 16
  testRunner.And("\"TextBox1\" is focussed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -103,17 +105,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Choose...",
                         "",
                         "NO"});
-#line 16
+#line 17
  testRunner.And("Evaluates a statement to True or False", ((string)(null)), table1, "And ");
-#line 19
- testRunner.And("Diplay text as \"If Choose..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
- testRunner.And("True arm text as \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Diplay text as \"If Choose..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.And("False arm text as \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("True arm text as \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.And("Require All decision to be True selected as \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("False arm text as \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
+ testRunner.And("Require All decision to be True selected as \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -127,19 +129,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding Statements in Decision Tool", new string[] {
                         "ignore"});
-#line 26
-this.ScenarioSetup(scenarioInfo);
 #line 27
- testRunner.Given("I have Decision tool on the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 28
- testRunner.When("I double click on \"Decision\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have Decision tool on the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
- testRunner.Then("the large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I double click on \"Decision\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 30
- testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 31
- testRunner.And("\"statement1 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
+ testRunner.And("\"statement1 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
  testRunner.And("\"TextBox1\" is focussed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -152,9 +154,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Choose...",
                         "",
                         "NO"});
-#line 33
+#line 34
  testRunner.And("Evaluates a statement to True or False", ((string)(null)), table2, "And ");
-#line 36
+#line 37
  testRunner.When("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -172,17 +174,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Choose...",
                         "",
                         "Yes"});
-#line 37
+#line 38
  testRunner.Then("Statements are", ((string)(null)), table3, "Then ");
-#line 41
- testRunner.And("Diplay text as \"If Choose..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
- testRunner.And("True arm text as \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Diplay text as \"If Choose..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
- testRunner.And("False arm text as \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("True arm text as \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
- testRunner.And("Require All decision to be True selected as \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("False arm text as \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
+ testRunner.And("Require All decision to be True selected as \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -196,12 +198,10 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding Statements more then five appears scroll bar", new string[] {
                         "ignore"});
-#line 48
-this.ScenarioSetup(scenarioInfo);
 #line 49
- testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 50
- testRunner.When("I click on \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 51
  testRunner.When("I click on \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
@@ -211,6 +211,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 54
  testRunner.When("I click on \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 55
+ testRunner.When("I click on \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 56
  testRunner.When("I click on \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -248,19 +250,19 @@ this.ScenarioSetup(scenarioInfo);
                         "Choose...",
                         "",
                         "Yes"});
-#line 56
+#line 57
  testRunner.Then("Evaluates a statement to True or False", ((string)(null)), table4, "Then ");
-#line 64
- testRunner.Then("scroll bar is \"visible\" on \"Decion large view\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 65
- testRunner.And("Diplay text as \"If Choose..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("scroll bar is \"visible\" on \"Decion large view\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 66
- testRunner.And("True arm text as \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Diplay text as \"If Choose..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.And("False arm text as \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("True arm text as \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
- testRunner.And("Require All decision to be True selected as \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("False arm text as \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
+ testRunner.And("Require All decision to be True selected as \"Yes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -274,9 +276,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Statements in Decision Tool", new string[] {
                         "ignore"});
-#line 72
-this.ScenarioSetup(scenarioInfo);
 #line 73
+this.ScenarioSetup(scenarioInfo);
+#line 74
  testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -294,9 +296,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Choose...",
                         "",
                         "Yes"});
-#line 74
+#line 75
  testRunner.Then("Statements are", ((string)(null)), table5, "Then ");
-#line 78
+#line 79
  testRunner.When("I delete \"statement1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -309,7 +311,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Choose...",
                         "",
                         "NO"});
-#line 79
+#line 80
  testRunner.Then("Evaluates a statement to True or False", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -323,49 +325,49 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selecting Statement in combobox1", new string[] {
                         "ignore"});
-#line 84
-this.ScenarioSetup(scenarioInfo);
 #line 85
- testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 86
- testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 87
+ testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
  testRunner.And("\"statement1 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
- testRunner.When("I select \"statement1\" of combobox as \"There Is An Error\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 90
- testRunner.Then("\"statement1\" of \"TextBox1\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement1\" of combobox as \"There Is An Error\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 91
+ testRunner.Then("\"statement1\" of \"TextBox1\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 92
  testRunner.And("\"statement1\" of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
- testRunner.When("I select \"statement2\" of combobox as \"There Is No Error\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 95
- testRunner.Then("\"statement2\" of \"TextBox1\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement2\" of combobox as \"There Is No Error\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 96
+ testRunner.Then("\"statement2\" of \"TextBox1\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
  testRunner.And("\"statement2\" of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
- testRunner.When("I select \"statement3\" of combobox as \"=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 100
- testRunner.Then("\"statement3\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 101
- testRunner.And("\"statement3\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
- testRunner.When("I select \"statement4\" of combobox as \">\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
- testRunner.Then("\"statement4\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 105
- testRunner.And("\"statement4\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
  testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+ testRunner.When("I select \"statement3\" of combobox as \"=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 101
+ testRunner.Then("\"statement3\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 102
+ testRunner.And("\"statement3\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.When("I select \"statement4\" of combobox as \">\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 105
+ testRunner.Then("\"statement4\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
+ testRunner.And("\"statement4\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
- testRunner.When("I select \"statement5\" of combobox as \"<\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
- testRunner.Then("\"statement5\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement5\" of combobox as \"<\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 110
+ testRunner.Then("\"statement5\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 111
  testRunner.And("\"statement5\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -398,7 +400,7 @@ this.ScenarioSetup(scenarioInfo);
                         "<",
                         "\"\"",
                         "Yes"});
-#line 111
+#line 112
  testRunner.Then("Evaluates a statement to True or False", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -412,59 +414,59 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selecting Statement in combobox2", new string[] {
                         "ignore"});
-#line 120
-this.ScenarioSetup(scenarioInfo);
 #line 121
- testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 122
- testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 123
+ testRunner.And("\"statement1 of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
  testRunner.And("\"statement1 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
- testRunner.When("I select \"statement1\" of combobox as \"<> (Not Equal)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 126
- testRunner.Then("\"statement1\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement1\" of combobox as \"<> (Not Equal)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 127
+ testRunner.Then("\"statement1\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 128
  testRunner.And("\"statement1\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
- testRunner.When("I select \"statement2\" of combobox as \">=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 131
- testRunner.Then("\"statement2\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement2\" of combobox as \">=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 132
+ testRunner.Then("\"statement2\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 133
  testRunner.And("\"statement2\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
- testRunner.When("I select \"statement3\" of combobox as \"<=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
- testRunner.Then("\"statement3\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement3\" of combobox as \"<=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 137
+ testRunner.Then("\"statement3\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 138
  testRunner.And("\"statement3 of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
- testRunner.When("I select \"statement4\" of combobox as \"Starts With\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
- testRunner.Then("\"statement4\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement4\" of combobox as \"Starts With\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 142
+ testRunner.Then("\"statement4\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 143
  testRunner.And("\"statement4 of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 145
- testRunner.When("I select \"statement5\" of combobox as \"Ends With\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 146
- testRunner.Then("\"statement5\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 147
- testRunner.And("\"statement5\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
  testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 146
+ testRunner.When("I select \"statement5\" of combobox as \"Ends With\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 147
+ testRunner.Then("\"statement5\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 148
+ testRunner.And("\"statement5\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 150
- testRunner.When("I select \"statement6\" of combobox as \"Contains\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 151
- testRunner.Then("\"statement6\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement6\" of combobox as \"Contains\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 152
+ testRunner.Then("\"statement6\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 153
  testRunner.And("\"statement6\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -502,7 +504,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Contains",
                         "\"\"",
                         "Yes"});
-#line 153
+#line 154
  testRunner.Then("Evaluates a statement to True or False", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -516,67 +518,67 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selecting Statement in combobox3", new string[] {
                         "ignore"});
-#line 164
-this.ScenarioSetup(scenarioInfo);
 #line 165
- testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 166
- testRunner.And("\"statement1\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Decision large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 167
+ testRunner.And("\"statement1\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 168
  testRunner.And("\"statement1\" of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
- testRunner.When("I select \"statement1\" of combobox as \"Doesn\"t Start With\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 170
- testRunner.Then("\"statement1\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement1\" of combobox as \"Doesn\"t Start With\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 171
+ testRunner.Then("\"statement1\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 172
  testRunner.And("\"statement1\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 174
- testRunner.When("I select \"statement2\" of combobox as \"Doesn\"t Contain\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 175
- testRunner.Then("\"statement2\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement2\" of combobox as \"Doesn\"t Contain\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 176
+ testRunner.Then("\"statement2\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 177
  testRunner.And("\"statement2\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
- testRunner.When("I select \"statement3\" of combobox as \"Is Alphanumeric\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 179
- testRunner.Then("\"statement3\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement3\" of combobox as \"Is Alphanumeric\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 180
+ testRunner.Then("\"statement3\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
  testRunner.And("\"statement3\" of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 183
- testRunner.When("I select \"statement4\" of combobox as \"Is Base64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 184
- testRunner.Then("\"statement4\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement4\" of combobox as \"Is Base64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 185
+ testRunner.Then("\"statement4\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 186
  testRunner.And("\"statement4\" of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
- testRunner.When("I select \"statement5\" of combobox as \"Is Between\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
- testRunner.Then("\"statement5\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement5\" of combobox as \"Is Between\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 190
- testRunner.And("\"statement5\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"statement5\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 191
+ testRunner.And("\"statement5\" of \"TextBox2\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 192
  testRunner.And("\"statement5\" of \"TextBox3\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
- testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
- testRunner.When("I select \"statement6\" of combobox as \"Is Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 195
- testRunner.Then("\"statement6\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 196
- testRunner.And("\"statement6 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
  testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 195
+ testRunner.When("I select \"statement6\" of combobox as \"Is Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 196
+ testRunner.Then("\"statement6\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 197
+ testRunner.And("\"statement6 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 199
- testRunner.When("I select \"statement7\" of combobox as \"Is Date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I \"Add Statement\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 200
- testRunner.Then("\"statement7\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select \"statement7\" of combobox as \"Is Date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 201
+ testRunner.Then("\"statement7\" of \"TextBox1\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 202
  testRunner.And("\"statement7 of \"TextBox2\" is \"NotVisible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -619,7 +621,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Is Date",
                         "",
                         "Yes"});
-#line 202
+#line 203
  testRunner.Then("Evaluates a statement to True or False", ((string)(null)), table9, "Then ");
 #line hidden
             this.ScenarioCleanup();

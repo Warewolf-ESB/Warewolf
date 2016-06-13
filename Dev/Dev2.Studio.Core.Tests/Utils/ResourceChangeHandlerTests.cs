@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
@@ -26,7 +25,6 @@ using Moq;
 namespace Dev2.Core.Tests.Utils
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ResourceChangeHandlerTests
     {
         [TestMethod]

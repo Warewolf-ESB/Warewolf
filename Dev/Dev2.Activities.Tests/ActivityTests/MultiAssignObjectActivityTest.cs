@@ -14,13 +14,11 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class MultiAssignObjectActivityTest : BaseActivityUnitTest
     {

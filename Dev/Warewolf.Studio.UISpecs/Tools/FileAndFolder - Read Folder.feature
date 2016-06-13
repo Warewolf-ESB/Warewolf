@@ -1,4 +1,5 @@
-﻿Feature: FileAndFolder-Read Folder
+﻿@Ignore
+Feature: FileAndFolder-Read Folder
 	In order to be able to Read Folder File or Folder 
 	as a Warewolf user
 	I want a tool that reads the contents of a Folder at a given location

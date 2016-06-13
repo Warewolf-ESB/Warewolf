@@ -25,12 +25,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     [Binding]
     public class XPathSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public XPathSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
             string xmlData;
-            ScenarioContext.Current.TryGetValue("xmlData", out xmlData);
+            scenarioContext.TryGetValue("xmlData", out xmlData);
 
             var xPath = new DsfXPathActivity
                 {
@@ -43,7 +52,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 };
 
             List<Tuple<string, string>> xpathDtos;
-            ScenarioContext.Current.TryGetValue("xpathDtos", out xpathDtos);
+            scenarioContext.TryGetValue("xpathDtos", out xpathDtos);
 
             int row = 1;
             foreach(var variable in xpathDtos)
@@ -51,41 +60,41 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
-            ScenarioContext.Current.Add("activity", xPath);
+            scenarioContext.Add("activity", xPath);
         }
 
         [Given(@"I have this xml ""(.*)""")]
         public void GivenIHaveThisXml(string xmlData)
         {
-            ScenarioContext.Current.Add("xmlData", xmlData);
+            scenarioContext.Add("xmlData", xmlData);
         }
 
         [Given(@"I assign the variable ""(.*)"" as xml input")]
         public void GivenIAssignTheVariableAsXmlInput(string variable)
         {
-            ScenarioContext.Current.Add("xmlData", variable);
+            scenarioContext.Add("xmlData", variable);
         }
 
         [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
         public void GivenIHaveAVariableOutputWithXpath(string variable, string xpath)
         {
             List<Tuple<string, string>> xpathDtos;
-            ScenarioContext.Current.TryGetValue("xpathDtos", out xpathDtos);
+            scenarioContext.TryGetValue("xpathDtos", out xpathDtos);
 
             if(xpathDtos == null)
             {
                 xpathDtos = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("xpathDtos", xpathDtos);
+                scenarioContext.Add("xpathDtos", xpathDtos);
             }
             xpathDtos.Add(new Tuple<string, string>(variable, xpath));
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
         }
 
@@ -93,12 +102,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         public void GivenIHaveThisXmlInAVariable(string xml, string variable)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, xml));
         }
@@ -108,7 +117,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the variable ""(.*)"" should have a value ""(.*)""")]
@@ -116,7 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         {
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(value))
@@ -136,7 +145,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             string error;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();

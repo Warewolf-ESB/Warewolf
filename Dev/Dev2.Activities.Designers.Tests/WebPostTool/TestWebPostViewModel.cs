@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
@@ -18,7 +17,6 @@ using Warewolf.Core;
 namespace Dev2.Activities.Designers.Tests.WebPostTool
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TestWebPostViewModel
     {
         #region Test Setup

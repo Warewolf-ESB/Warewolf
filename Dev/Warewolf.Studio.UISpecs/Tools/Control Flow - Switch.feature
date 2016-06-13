@@ -1,4 +1,5 @@
-﻿Feature: Switch
+﻿@Ignore
+Feature: Switch
 	In order to branch based on the data
 	As Warewolf user
 	I want tool has multiple branching decisions based on the data

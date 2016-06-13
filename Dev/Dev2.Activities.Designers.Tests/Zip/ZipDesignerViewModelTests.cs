@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Lookups;
 using Dev2.Studio.Core;
@@ -22,7 +21,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Zip
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class ZipDesignerViewModelTests
     {

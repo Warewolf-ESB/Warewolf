@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
@@ -23,7 +22,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DbSourceTests
     {
         #region ToString Tests

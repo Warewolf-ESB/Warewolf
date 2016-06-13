@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
@@ -316,11 +315,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             return Sources;
         }
 
-        [ExcludeFromCodeCoverage]
         public void CreateNewSource()
         {
         }
-        [ExcludeFromCodeCoverage]
         public void EditSource(IWebServiceSource selectedSource)
         {
         }
@@ -340,11 +337,9 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             }
             return serializer.Serialize(svc);
         }
-        [ExcludeFromCodeCoverage]
         public void SaveService(IWebService toModel)
         {
         }
-        [ExcludeFromCodeCoverage]
         public IStudioUpdateManager UpdateRepository
         {
             get
@@ -352,7 +347,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
                 return _updateRepository;
             }
         }
-        [ExcludeFromCodeCoverage]
         public IQueryManager QueryProxy
         {
             get
@@ -367,7 +361,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
                 return _sources;
             }
         }
-        [ExcludeFromCodeCoverage]
         public string HandlePasteResponse(string current)
         {
             return null;
@@ -378,7 +371,6 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
     public class InputViewForTest : ManageWebServiceInputViewModel
     {
         #region Overrides of ManageWebServiceInputViewModel
-        [ExcludeFromCodeCoverage]
         public void ShowView()
         {
 

@@ -18,6 +18,7 @@ namespace Warewolf.Studio.UISpecs.Tools.Database
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class MySqlConnectorFeature
     {
         
@@ -31,7 +32,8 @@ namespace Warewolf.Studio.UISpecs.Tools.Database
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MySqlConnector", "\tIn order to manage my database services\r\n\tAs a Warewolf User\r\n\tI want to be show" +
-                    "n the database service setup", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "n the database service setup", ProgrammingLanguage.CSharp, new string[] {
+                        "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,37 +78,37 @@ namespace Warewolf.Studio.UISpecs.Tools.Database
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating MySQL Connector", new string[] {
                         "ignore"});
-#line 13
-this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.Then("\"New Workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.And("\"Source\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"New Workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 17
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.And("\"Action\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Action\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.When("I Select \"mysqlSource\" as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I Select \"mysqlSource\" as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 23
- testRunner.When("I select new_procedure as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 24
- testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select new_procedure as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
- testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
- testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
+ testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 29
  testRunner.And("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -136,9 +138,9 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "1212",
                         "ffff"});
-#line 29
+#line 30
  testRunner.Then("Outputs appear as", ((string)(null)), table1, "Then ");
-#line 39
+#line 40
  testRunner.When("I click \"OK\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -150,13 +152,13 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 40
+#line 41
  testRunner.And("mappings are", ((string)(null)), table2, "And ");
-#line 44
- testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
- testRunner.When("the MySql Connector tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
+ testRunner.When("the MySql Connector tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
  testRunner.And("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -165,7 +167,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[new_procedure().id]] = 1212"});
             table3.AddRow(new string[] {
                         "[[new_procedure().value]] = ffff"});
-#line 47
+#line 48
  testRunner.Then("the debug output as", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -179,32 +181,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with MySQL Connector tool", new string[] {
                         "ignore"});
-#line 53
-this.ScenarioSetup(scenarioInfo);
 #line 54
-   testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 55
- testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 57
- testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
- testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
+ testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
  testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Inputs",
                         "Value",
                         "Empty is Null"});
-#line 61
+#line 62
  testRunner.And("input mappings are", ((string)(null)), table4, "And ");
-#line 63
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
+ testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
  testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -216,9 +218,9 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 65
+#line 66
  testRunner.And("mappings are", ((string)(null)), table5, "And ");
-#line 69
+#line 70
  testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -232,32 +234,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change MySQL Source on Existing tool", new string[] {
                         "ignore"});
-#line 72
-this.ScenarioSetup(scenarioInfo);
 #line 73
- testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 74
- testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 75
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 76
- testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 78
- testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 79
+ testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 80
  testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Inputs",
                         "Value",
                         "Empty is Null"});
-#line 80
+#line 81
  testRunner.And("input mappings are", ((string)(null)), table6, "And ");
-#line 82
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
+ testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
  testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -269,19 +271,19 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 84
+#line 85
  testRunner.And("mappings are", ((string)(null)), table7, "And ");
-#line 88
- testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.When("\"Source\" is changed from \"mysqlSource\" to \"TestMysql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
- testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("\"Source\" is changed from \"mysqlSource\" to \"TestMysql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 91
- testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 92
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
+ testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
  testRunner.And("\"Validate\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -295,25 +297,25 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing MySql Connector and Test Execution is unsuccesful", new string[] {
                         "ignore"});
-#line 97
- this.ScenarioSetup(scenarioInfo);
 #line 98
-   testRunner.Given("I open \"MySql_workflow\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ this.ScenarioSetup(scenarioInfo);
 #line 99
-   testRunner.And("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Given("I open \"MySql_workflow\" service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 100
-   testRunner.Then("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.And("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
-   testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 102
-   testRunner.When("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
-   testRunner.Then("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.When("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 104
-   testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 105
-   testRunner.Then("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
+   testRunner.Then("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 107
    testRunner.And("Inspect Data Connector hyper link is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -328,15 +330,15 @@ this.ScenarioSetup(scenarioInfo);
                         "wolf",
                         "Dev",
                         "10/1/1990"});
-#line 107
+#line 108
    testRunner.And("inputs are", ((string)(null)), table8, "And ");
-#line 110
-   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 111
-   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Test\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
-   testRunner.When("testing the action fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
+   testRunner.When("testing the action fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 114
    testRunner.Then("\"4 Defaults and Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -344,16 +346,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Default Value",
                         "Required Field",
                         "Empty is Null"});
-#line 114
+#line 115
    testRunner.And("input mappings are", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias",
                         "Recordset Name"});
-#line 116
+#line 117
  testRunner.And("output mappings are", ((string)(null)), table10, "And ");
-#line 118
+#line 119
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,32 +369,32 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing MySQL Actions", new string[] {
                         "ignore"});
-#line 121
-this.ScenarioSetup(scenarioInfo);
 #line 122
- testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 123
- testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 125
- testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
- testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
+ testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
  testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Inputs",
                         "Value",
                         "Empty is Null"});
-#line 129
+#line 130
  testRunner.And("\"Input/Output\" mappings are", ((string)(null)), table11, "And ");
-#line 131
- testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
+ testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 133
  testRunner.And("\"Mapping\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -404,28 +406,28 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 133
+#line 134
  testRunner.And("mappings are", ((string)(null)), table12, "And ");
-#line 137
- testRunner.When("\"Action\" is changed from \"new_procedure\" to \"getCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 138
- testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("\"Action\" is changed from \"new_procedure\" to \"getCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 139
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 140
+ testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 141
  testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-#line 141
+#line 142
  testRunner.And("\"Inputs/Outputs\" appear as", ((string)(null)), table13, "And ");
-#line 143
- testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 144
- testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 145
+ testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 146
  testRunner.And("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -455,9 +457,9 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "1212",
                         "ffff"});
-#line 146
+#line 147
  testRunner.Then("Outputs appear as", ((string)(null)), table14, "Then ");
-#line 156
+#line 157
  testRunner.When("I click \"OK\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -469,9 +471,9 @@ this.ScenarioSetup(scenarioInfo);
             table15.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 157
+#line 158
  testRunner.And("mappings are", ((string)(null)), table15, "And ");
-#line 161
+#line 162
  testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -485,38 +487,38 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change MySQL Recordset Name", new string[] {
                         "ignore"});
-#line 164
-this.ScenarioSetup(scenarioInfo);
 #line 165
- testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 166
- testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open MySql_workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 167
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"MySql_workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 168
- testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 169
- testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" equals \"mysqlSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 170
- testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 171
+ testRunner.And("\"Action\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
  testRunner.And("\"Input/Output\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-#line 172
+#line 173
  testRunner.And("\"Inputs/Outputs\" appear as", ((string)(null)), table16, "And ");
-#line 174
- testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 175
- testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 176
- testRunner.And("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 177
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
+ testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
  testRunner.When("I test the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -546,9 +548,9 @@ this.ScenarioSetup(scenarioInfo);
             table17.AddRow(new string[] {
                         "1212",
                         "ffff"});
-#line 179
+#line 180
  testRunner.And("Outputs appear as", ((string)(null)), table17, "And ");
-#line 189
+#line 190
  testRunner.When("I click \"OK\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -560,11 +562,11 @@ this.ScenarioSetup(scenarioInfo);
             table18.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 190
+#line 191
  testRunner.And("mappings are", ((string)(null)), table18, "And ");
-#line 194
- testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
+ testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 196
  testRunner.When("\"Recordset Name\" is changed from \"new_procedure\" to \"New_Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -576,7 +578,7 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "value",
                         "[[New_Category().value]]"});
-#line 196
+#line 197
  testRunner.Then("mappings are", ((string)(null)), table19, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -590,48 +592,48 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid Recordset name", new string[] {
                         "ignore"});
-#line 202
-this.ScenarioSetup(scenarioInfo);
 #line 203
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 204
- testRunner.Then("\"New Workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 205
- testRunner.And("\"Source\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"New Workflow\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 206
- testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 207
- testRunner.And("\"Action\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 208
- testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Action\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 209
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Inputs/Outputs\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
- testRunner.When("I Select \"mysqlSource\" as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
- testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I Select \"mysqlSource\" as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 212
- testRunner.When("I select new_procedure as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("\"Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 213
- testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I select new_procedure as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 214
+ testRunner.Then("\"Inputs/Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 215
  testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-#line 215
+#line 216
  testRunner.And("\"Inputs/Outputs\" appear as", ((string)(null)), table20, "And ");
-#line 217
- testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 218
- testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I click \"Validate\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 219
- testRunner.And("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the \"Test Connector and Calculate Outputs\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 220
- testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 221
+ testRunner.And("\"Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 222
  testRunner.When("I test the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -661,9 +663,9 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "1212",
                         "ffff"});
-#line 222
+#line 223
  testRunner.And("Outputs appear as", ((string)(null)), table21, "And ");
-#line 232
+#line 233
  testRunner.When("I click \"OK\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -675,22 +677,22 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         "value",
                         "[[new_procedure().value]]"});
-#line 233
+#line 234
  testRunner.And("mappings are", ((string)(null)), table22, "And ");
-#line 237
- testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
- testRunner.When("\"Recordset Name\" is changed from \"new_procedure\" to \"#$New_Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"Recordset Name\" equals \"new_procedure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
- testRunner.When("the MySql Connector tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("\"Recordset Name\" is changed from \"new_procedure\" to \"#$New_Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 240
+ testRunner.When("the MySql Connector tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 241
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table23.AddRow(new string[] {
                         "Error : input must be recordset or value"});
-#line 241
+#line 242
  testRunner.Then("the debug output as", ((string)(null)), table23, "Then ");
 #line hidden
             this.ScenarioCleanup();

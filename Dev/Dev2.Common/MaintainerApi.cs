@@ -1,3 +1,13 @@
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 
 namespace Dev2.Common
@@ -13,11 +23,11 @@ namespace Dev2.Common
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(MaintainerApi other)
         {
-            if(ReferenceEquals(null, other))
+            if (ReferenceEquals(null, other))
             {
                 return false;
             }
-            if(ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -33,15 +43,15 @@ namespace Dev2.Common
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -49,7 +59,7 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        /// Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
@@ -81,20 +91,28 @@ namespace Dev2.Common
         {
             return !Equals(left, right);
         }
+
         [Newtonsoft.Json.JsonProperty("FN")]
         public string Fn { get; set; }
+
         public string Email { get; set; }
         public string Url { get; set; }
+
         [Newtonsoft.Json.JsonProperty("org")]
         public string Org { get; set; }
+
         public string Adr { get; set; }
         public string Tel { get; set; }
+
         [Newtonsoft.Json.JsonProperty("X-Twitter")]
         public string XTwitter { get; set; }
+
         [Newtonsoft.Json.JsonProperty("X-Github")]
         public string XGithub { get; set; }
+
         [Newtonsoft.Json.JsonProperty("photo")]
         public string Photo { get; set; }
+
         [Newtonsoft.Json.JsonProperty("vCard")]
         public string VCard { get; set; }
     }

@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using Dev2.Common.Interfaces.Studio;
@@ -23,7 +22,6 @@ namespace Dev2.Core.Tests
     /// Summary description for Dev2DialogueTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2DialogueTest
     {
 

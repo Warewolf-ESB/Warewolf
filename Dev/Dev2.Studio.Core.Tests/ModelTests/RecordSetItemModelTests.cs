@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class RecordSetItemModelTests
     {
@@ -68,7 +67,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void Validatename_GivenValidName_ShouldHaveNoErrorMessage()
         {
             //---------------Set up test pack-------------------
-            IRecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
+            RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
             //---------------Assert Precondition----------------
             Assert.IsTrue(string.IsNullOrEmpty(recordSetItemModel.ErrorMessage));
             //---------------Execute Test ----------------------
@@ -85,7 +84,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ValidateName_GivenInvalidName_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
-            IRecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
+            RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
             //---------------Assert Precondition----------------
             Assert.IsTrue(string.IsNullOrEmpty(recordSetItemModel.ErrorMessage));
             //---------------Execute Test ----------------------
@@ -101,7 +100,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ValidateName_GivenNameHasXmlEscapeCharacters_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
-            IRecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
+            RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
             //---------------Assert Precondition----------------
             Assert.IsTrue(string.IsNullOrEmpty(recordSetItemModel.ErrorMessage));
             //---------------Execute Test ----------------------

@@ -13,7 +13,6 @@ using System;
 using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
@@ -46,7 +45,6 @@ using Moq;
 namespace Dev2.Core.Tests.ViewModelTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkSurfaceContextViewModelTests
     {
         [ClassInitialize]

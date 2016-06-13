@@ -27,15 +27,24 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [Binding]
     public class DataSplitSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DataSplitSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
             string stringToSplit;
-            ScenarioContext.Current.TryGetValue("stringToSplit", out stringToSplit);
+            scenarioContext.TryGetValue("stringToSplit", out stringToSplit);
 
             List<DataSplitDTO> splitCollection;
-            ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
+            scenarioContext.TryGetValue("splitCollection", out splitCollection);
 
             var dataSplit = new DsfDataSplitActivity { SourceString = stringToSplit };
 
@@ -50,8 +59,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
             bool reverseOrder;
             bool skipBlankRows;
-            ScenarioContext.Current.TryGetValue("ReverseOrder", out reverseOrder);
-            ScenarioContext.Current.TryGetValue("SkipBlankRows", out skipBlankRows);
+            scenarioContext.TryGetValue("ReverseOrder", out reverseOrder);
+            scenarioContext.TryGetValue("SkipBlankRows", out skipBlankRows);
             dataSplit.ReverseOrder = reverseOrder;
             dataSplit.SkipBlankRows = skipBlankRows;
             TestStartNode = new FlowStep
@@ -60,15 +69,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 };
 
             string errorVariable;
-            ScenarioContext.Current.TryGetValue("errorVariable", out errorVariable);
+            scenarioContext.TryGetValue("errorVariable", out errorVariable);
 
             string webserviceToCall;
-            ScenarioContext.Current.TryGetValue("webserviceToCall", out webserviceToCall);
+            scenarioContext.TryGetValue("webserviceToCall", out webserviceToCall);
 
             dataSplit.OnErrorVariable = errorVariable;
             dataSplit.OnErrorWorkflow = webserviceToCall;
           
-            ScenarioContext.Current.Add("activity", dataSplit);
+            scenarioContext.Add("activity", dataSplit);
         }
 
         [Given(@"A file ""(.*)"" to split")]
@@ -77,21 +86,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string resourceName = string.Format("Warewolf.ToolsSpecs.Toolbox.Data.DataSplit.{0}",
                                                 fileName);
             var stringToSplit = ReadFile(resourceName);
-            ScenarioContext.Current.Add("stringToSplit", stringToSplit.Replace("\n","\r\n"));
+            scenarioContext.Add("stringToSplit", stringToSplit.Replace("\n","\r\n"));
         }
 
         [Given(@"Skip Blanks rows is ""(.*)""")]
         public void GivenSkipBlanksRowsIs(string enabled)
         {
             var skipBlankRows = enabled.ToLower() == "enabled";
-            ScenarioContext.Current.Add("SkipBlankRows", skipBlankRows);
+            scenarioContext.Add("SkipBlankRows", skipBlankRows);
         }
 
 
         [Given(@"A string to split with value ""(.*)""")]
         public void GivenAStringToSplitWithValue(string stringToSplit)
         {
-            ScenarioContext.Current.Add("stringToSplit", stringToSplit);
+            scenarioContext.Add("stringToSplit", stringToSplit);
         }
 
         [Given(@"the direction is ""(.*)""")]
@@ -99,33 +108,33 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             if(!String.IsNullOrEmpty(direction) && direction.ToLower() == "backward")
             {
-                ScenarioContext.Current.Add("ReverseOrder", true);
+                scenarioContext.Add("ReverseOrder", true);
             }
             else
             {
-                ScenarioContext.Current.Add("ReverseOrder", false);
+                scenarioContext.Add("ReverseOrder", false);
             }
         }
         
-        static void AddVariables(string variable, string splitType, string splitAt, bool include = false, string escape = "")
+        void AddVariables(string variable, string splitType, string splitAt, bool include = false, string escape = "")
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
            // variableList.Add(new Tuple<string, string>(variable, ""));
 
             List<DataSplitDTO> splitCollection;
-            ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
+            scenarioContext.TryGetValue("splitCollection", out splitCollection);
 
             if(splitCollection == null)
             {
                 splitCollection = new List<DataSplitDTO>();
-                ScenarioContext.Current.Add("splitCollection", splitCollection);
+                scenarioContext.Add("splitCollection", splitCollection);
             }
             DataSplitDTO dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt, EscapeChar = escape, Include = include };
             splitCollection.Add(dto);
@@ -150,12 +159,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void GivenIHaveAVariableWithAValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
         }
@@ -163,7 +172,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
          [Then(@"the split recordset ""(.*)"" will be")]
          public void ThenTheSplitRecordsetWillBe(string variable, Table table)
          {
-             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+             var result = scenarioContext.Get<IDSFDataObject>("result");
              List<TableRow> tableRows = table.Rows.ToList();
              var recordSets = result.Environment.Eval(variable, 0);
              if (recordSets.IsWarewolfAtomListresult)
@@ -188,7 +197,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             BuildDataList();
             var esbChannel = new EsbServicesEndpoint();
             IDSFDataObject result = ExecuteProcess(isDebug: true,channel:esbChannel, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the split result will be")]
@@ -197,10 +206,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             List<TableRow> tableRows = table.Rows.ToList();
             string error;
 
-            var recordset = ScenarioContext.Current.Get<string>("recordset");
-            var field = ScenarioContext.Current.Get<string>("recordField");
+            var recordset = scenarioContext.Get<string>("recordset");
+            var field = scenarioContext.Get<string>("recordField");
 
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             List<string> recordSetValues = Enumerable.ToList<string>(RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out error));
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
@@ -218,7 +227,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string actualValue;
             string error;
             value = value.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             if (!string.IsNullOrEmpty(actualValue))

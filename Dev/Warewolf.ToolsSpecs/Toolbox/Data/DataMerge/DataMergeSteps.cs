@@ -24,15 +24,24 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
     [Binding]
     public class DataMergeSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DataMergeSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
@@ -41,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             var dataMerge = new DsfDataMergeActivity { Result = ResultVariable };
 
             List<Tuple<string, string, string, string, string>> mergeCollection;
-            ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
+            scenarioContext.TryGetValue("mergeCollection", out mergeCollection);
 
             int row = 1;
             foreach(var variable in mergeCollection)
@@ -56,7 +65,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                     Action = dataMerge
                 };
 
-            ScenarioContext.Current.Add("activity", dataMerge);
+            scenarioContext.Add("activity", dataMerge);
         }
 
         [Given(@"a merge variable ""(.*)"" equal to ""(.*)""")]
@@ -64,12 +73,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public void GivenAMergeVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -83,12 +92,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                                                                 string alignment)
         {
             List<Tuple<string, string, string, string, string>> mergeCollection;
-            ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
+            scenarioContext.TryGetValue("mergeCollection", out mergeCollection);
 
             if(mergeCollection == null)
             {
                 mergeCollection = new List<Tuple<string, string, string, string, string>>();
-                ScenarioContext.Current.Add("mergeCollection", mergeCollection);
+                scenarioContext.Add("mergeCollection", mergeCollection);
             }
 
             mergeCollection.Add(new Tuple<string, string, string, string, string>(input, mergeType, stringAt, padding,
@@ -107,11 +116,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -119,12 +128,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             foreach(TableRow record in records)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(record[0], record[1]));
             }
@@ -135,7 +144,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the merged result is ""(.*)""")]
@@ -144,7 +153,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             FixBreaks(ref value, ref actualValue);
@@ -172,7 +181,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             string value = readFile;
             string error;
             string actualValue;
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             FixBreaks(ref value, ref actualValue);

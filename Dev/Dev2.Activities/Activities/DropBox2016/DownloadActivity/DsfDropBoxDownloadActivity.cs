@@ -11,7 +11,6 @@ using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Dev2.Activities.Debug;
 using Dev2.Diagnostics;
@@ -81,7 +80,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         // ReSharper disable once MemberCanBeProtected.Global
 
-        [ExcludeFromCodeCoverage]
         protected virtual DropboxClient GetClient()
         {
             if (_client != null)

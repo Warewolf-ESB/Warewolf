@@ -1,6 +1,9 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Text;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Parsers;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
@@ -152,7 +155,37 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public override string ValidateName(string name)
         {
-            return name.Replace("@", "");
+            var nameToCheck  = name.Replace("@", "");
+            var isArray = name.EndsWith("()");
+            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+            if (!string.IsNullOrEmpty(nameToCheck))
+            {
+                nameToCheck = DataListUtil.RemoveRecordsetBracketsFromValue(nameToCheck);
+
+                if (!string.IsNullOrEmpty(nameToCheck))
+                {
+                    var intellisenseResult = parser.ValidateName(nameToCheck, "Complex Object");
+                    if (intellisenseResult != null)
+                    {
+                        SetError(intellisenseResult.Message);
+                    }
+                    else
+                    {
+                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                        {
+                            RemoveError();
+                        }
+                    }
+                }
+            }
+            if (isArray)
+            {
+                nameToCheck = nameToCheck + "()";
+            }
+            return nameToCheck;
         }
 
         #endregion

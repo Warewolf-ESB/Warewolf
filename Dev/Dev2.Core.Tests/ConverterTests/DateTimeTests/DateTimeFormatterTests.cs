@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
@@ -24,7 +23,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     /// Summary description for DateTimeFormatterTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DateTimeFormatterTests
     {
         static IDateTimeFormatter formatter;

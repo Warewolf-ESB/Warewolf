@@ -10,6 +10,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,187 +23,150 @@ namespace Dev2
     {
         public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
         {
-            var environment = dataObject.Environment;
-            var dataListTO = new DataListTO(dataList);
-            StringBuilder result = new StringBuilder("<DataList>");
-            var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
-            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            foreach (var groupedRecSet in groupedRecSets)
-            {
-                var i = 1;
-                var warewolfListIterators = new WarewolfListIterator();
-                Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
-                foreach (var name in groupedRecSet)
-                {
-                    var warewolfEvalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
-                    try
-                    {
-                        warewolfEvalResult = environment.Eval(name, update,false);
-                    }
-                    // ReSharper disable once RESP510236
-                    // ReSharper disable once RESP510241
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Debug("Null Variable",e);
-                    }
-                    var warewolfIterator = new WarewolfIterator(warewolfEvalResult);
-                    iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
-                    warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
-                }
-                while (warewolfListIterators.HasMoreData())
-                {
-                    result.Append("<");
-                    result.Append(groupedRecSet.Key);
-                    result.Append(string.Format(" Index=\"{0}\">", i));
-                    foreach (var namedIterator in iterators)
-                    {
-                        try
-                        {
-                            var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
-                            result.Append("<");
-                            result.Append(namedIterator.Key);
-                            result.Append(">");
-                            result.Append(value);
-                            result.Append("</");
-                            result.Append(namedIterator.Key);
-                            result.Append(">");
-                        }
-                        catch(Exception e)
-                        {
-                            Dev2Logger.Debug(e.Message,e);
-                        }
-                    }
-                    result.Append("</");
-                    result.Append(groupedRecSet.Key);
-                    result.Append(">");
-                    i++;
-                }
-
-            }
-
-            foreach (var output in scalarOutputs)
-            {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update,false);
-                if (evalResult.IsWarewolfAtomResult)
-                {
-                    var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if (scalarResult != null && !scalarResult.Item.IsNothing)
-                    {
-                        result.Append("<");
-                        result.Append(output);
-                        result.Append(">");
-                        result.Append(scalarResult.Item);
-                        result.Append("</");
-                        result.Append(output);
-                        result.Append(">");
-                    }
-                }
-            }
-
-            result.Append("</DataList>");
-
-
-            return result.ToString();
+            var xml = JsonConvert.DeserializeXNode(GetJsonForOutput(dataObject, dataList), "DataList");
+            return xml.ToString();
         }
 
+        private static string GetJsonForOutput(IDSFDataObject dataObject, string dataList)
+        {
+            var environment = dataObject.Environment;
+            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(dataList), Newtonsoft.Json.Formatting.Indented, true);
+            var deserializeObject = JsonConvert.DeserializeObject(serializeXNode) as JObject;
+            if(deserializeObject != null)
+            {
+                var outputObj = new JObject();
+                var props = deserializeObject.Properties().ToList();
+                foreach(var prop in props)
+                {
+                    if(prop.Value != null && prop.Value.Type == JTokenType.Object)
+                    {
+                        var val = prop.Value as JObject;
+                        if(val != null)
+                        {
+                            var jProperty = val.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+                            if(jProperty != null)
+                            {
+                                var propValue = jProperty.Value;
+                                enDev2ColumnArgumentDirection ioDirection;
+                                if(Enum.TryParse(propValue.ToString(), true, out ioDirection))
+                                {
+                                    if(ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == enDev2ColumnArgumentDirection.Output)
+                                    {
+                                        var objName = prop.Name;
+                                        var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
+                                        if(isJson != null && isJson.Value.ToString() == "True")
+                                        {
+                                            AddObjectsToOutput(environment, objName, outputObj);
+                                        }
+                                        else
+                                        {
+                                            if(prop.Value.Count() > 3)
+                                            {
+                                                AddRecordsetsToOutput(environment, objName, val, outputObj);
+                                            }
+                                            else
+                                            {
+                                                AddScalarsToOutput(prop, environment, objName, outputObj);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                var dataListString = outputObj.ToString(Newtonsoft.Json.Formatting.Indented);
+                return dataListString;
+            }
+            return null;
+        }
+
+        private static void AddObjectsToOutput(IExecutionEnvironment environment, string objName, JObject outputObj)
+        {
+            var evalResult = environment.EvalJContainer("[[@" + objName + "]]");
+            if(evalResult != null)
+            {
+                outputObj.Add(objName, evalResult);
+            }
+        }
+
+        private static void AddScalarsToOutput(JProperty prop, IExecutionEnvironment environment, string objName, JObject outputObj)
+        {
+            var v = prop.Value as JObject;
+            if(v != null)
+            {
+                var ioDire = v.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+                if(ioDire != null)
+                {
+                    enDev2ColumnArgumentDirection x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
+                    if(x == enDev2ColumnArgumentDirection.Both || x == enDev2ColumnArgumentDirection.Output)
+                    {
+                        var warewolfEvalResult = environment.Eval("[[" + objName + "]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                        if(warewolfEvalResult != null)
+                        {
+                            var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
+                            outputObj.Add(objName, eval);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void AddRecordsetsToOutput(IExecutionEnvironment environment, string objName, JObject val, JObject outputObj)
+        {
+            var evalResult = environment.Eval("[[" + objName + "(*)]]", 0);
+            var newArray = new JArray();
+            if(evalResult != null)
+            {
+                var res = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
+                if(res != null)
+                {
+                    var data = res.Item.Data;
+                    foreach(var dataItem in data)
+                    {
+                        var jObjForArray = new JObject();
+                        var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
+                        if(recCol != null)
+                        {
+                            var io = recCol.Children().FirstOrDefault() as JObject;
+                            if(io != null)
+                            {
+                                var p = io.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
+                                if(p != null)
+                                {
+                                    enDev2ColumnArgumentDirection direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
+                                    if(direction == enDev2ColumnArgumentDirection.Both || direction == enDev2ColumnArgumentDirection.Output)
+                                    {
+                                        int i = 0;
+                                        foreach(var warewolfAtom in dataItem.Value)
+                                        {
+                                            jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
+                                            if(newArray.Count < i + 1 || newArray.Count == 0)
+                                            {
+                                                newArray.Add(jObjForArray);
+                                            }
+                                            else
+                                            {
+                                                var jToken = newArray[i] as JObject;
+                                                if(jToken != null)
+                                                    jToken.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
+                                            }
+                                            jObjForArray = new JObject();
+                                            i++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                outputObj.Add(objName, newArray);
+            }
+        }
 
         public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
         {
-            var environment = dataObject.Environment;
-            var dataListTO = new DataListTO(dataList);
-            StringBuilder result = new StringBuilder("{");
-            var keyCnt = 0;
-            var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
-            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            var recSets = groupedRecSets as IGrouping<string, string>[] ?? groupedRecSets.ToArray();
-            foreach (var groupedRecSet in recSets)
-            {
-                var i = 0;
-                var warewolfListIterators = new WarewolfListIterator();
-                Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
-                foreach (var name in groupedRecSet)
-                {
-                    var warewolfIterator = new WarewolfIterator(environment.Eval(name, update,false));
-                    iterators.Add(DataListUtil.ExtractFieldNameFromValue(name), warewolfIterator);
-                    warewolfListIterators.AddVariableToIterateOn(warewolfIterator);
-
-                }
-                result.Append("\"");
-                result.Append(groupedRecSet.Key);
-                result.Append("\" : [");
-                
-                while (warewolfListIterators.HasMoreData())
-                {
-                    int colIdx = 0;
-                    result.Append("{");
-                    foreach (var namedIterator in iterators)
-                    {
-                        try
-                        {
-                            var value = warewolfListIterators.FetchNextValue(namedIterator.Value);
-                            result.Append("\"");
-                            result.Append(namedIterator.Key);
-                            result.Append("\":\"");
-                            result.Append(value);
-                            result.Append("\"");
-                            colIdx++;
-                            if (colIdx < iterators.Count)
-                            {
-                                result.Append(",");
-                            }
-                        }
-                        catch(Exception e)
-                        {
-                            Dev2Logger.Debug(e.Message,e);
-                            colIdx++;
-                        }
-                        
-                    }
-                    if (warewolfListIterators.HasMoreData())
-                    {
-                        result = new StringBuilder(result.ToString().TrimEnd(','));
-                        result.Append("}");
-                        result.Append(",");
-                    }
-                }
-                result.Append("}");
-                result.Append("]");
-                i++;
-                if (i <= recSets.Length)
-                {
-                    result.Append(",");
-                }
-            }
-
-            var scalars = scalarOutputs as string[] ?? scalarOutputs.ToArray();
-            foreach (var output in scalars)
-            {
-                var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update,false);
-                if (evalResult.IsWarewolfAtomResult)
-                {
-                    var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if (scalarResult != null && !scalarResult.Item.IsNothing)
-                    {
-                        result.Append("\"");
-                        result.Append(output);
-                        result.Append("\":\"");
-                        result.Append(scalarResult.Item);
-                        result.Append("\"");
-
-                    }
-                }                
-                keyCnt++;
-                if (keyCnt < scalars.Length)
-                {
-                    result.Append(",");
-                }
-            }
-            var jsonOutputFromEnvironment = result.ToString();
-            jsonOutputFromEnvironment = jsonOutputFromEnvironment.TrimEnd(',');
-            jsonOutputFromEnvironment += "}";
-            return jsonOutputFromEnvironment;
+            return GetJsonForOutput(dataObject, dataList);            
         }
 
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
@@ -225,15 +189,24 @@ namespace Dev2
         }
         public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList,int update)
         {
-            string toLoad = DataListUtil.StripCrap(rawPayload.ToString()); // clean up the rubish ;)
-            if(toLoad.IsJSON())
+
+            var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
+            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(fixedDataList), Newtonsoft.Json.Formatting.Indented, true);
+            var deserializeObject = JsonConvert.DeserializeObject(serializeXNode) as JObject;
+            JObject inputObject;
+            string toLoad = DataListUtil.StripCrap(rawPayload.ToString());
+            if (!toLoad.IsJSON())
             {
-                XNode node = JsonConvert.DeserializeXNode(toLoad, "Root");
-                if(node == null)
-                {
-                    return;
-                }
-                toLoad = node.ToString();
+                var sXNode = JsonConvert.SerializeXNode(XDocument.Parse(toLoad), Newtonsoft.Json.Formatting.Indented, true);
+                inputObject = JsonConvert.DeserializeObject(sXNode) as JObject;
+            }
+            else
+            {
+                inputObject = JsonConvert.DeserializeObject(toLoad) as JObject;
+            }
+            if (inputObject != null)
+            {
+                
             }
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);

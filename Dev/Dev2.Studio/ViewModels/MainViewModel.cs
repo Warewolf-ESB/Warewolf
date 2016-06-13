@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -344,7 +343,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public ICommand ExitCommand
         {
             get
@@ -1552,28 +1550,24 @@ namespace Dev2.Studio.ViewModels
                 return;
             ShowDependencies(true, resource, ActiveServer);
         }
-
-        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
+ //Excluded due to needing a parent window
         void AddSettingsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
-
-        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
+ //Excluded due to needing a parent window
         void AddSchedulerWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
-
-        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
+ //Excluded due to needing a parent window
         void AddEmailWorkSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource) as WorkSurfaceKey, new SourceViewModel<IEmailServiceSource>(EventPublisher, new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), PopupProvider, new ManageEmailSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
 
         }
-
-        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
+ //Excluded due to needing a parent window
         void AddExchangeWorkSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange) as WorkSurfaceKey, new SourceViewModel<IExchangeSource>(EventPublisher, new ManageExchangeSourceViewModel(new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), PopupProvider, new ManageExchangeSourceControl()));

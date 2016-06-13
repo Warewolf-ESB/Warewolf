@@ -69,11 +69,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.Web
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Web Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Put Web Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Put Web Connector Tool")]
-        public virtual void OpenNewWebTool()
+        public virtual void OpenNewPutWebTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Web Tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Put Web Tool", ((string[])(null)));
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
@@ -113,11 +113,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Web Service with different methods")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Put Web Service with different methods")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Put Web Connector Tool")]
-        public virtual void CreateWebServiceWithDifferentMethods()
+        public virtual void CreatePutWebServiceWithDifferentMethods()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Web Service with different methods", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Put Web Service with different methods", ((string[])(null)));
 #line 24
 this.ScenarioSetup(scenarioInfo);
 #line 25
@@ -177,11 +177,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding parameters in request headers is updating variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding parameters in Put Web Connectgor Tool request headers is updating variable" +
+            "s")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Put Web Connector Tool")]
-        public virtual void AddingParametersInRequestHeadersIsUpdatingVariables()
+        public virtual void AddingParametersInPutWebConnectgorToolRequestHeadersIsUpdatingVariables()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding parameters in request headers is updating variables", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding parameters in Put Web Connectgor Tool request headers is updating variable" +
+                    "s", ((string[])(null)));
 #line 51
 this.ScenarioSetup(scenarioInfo);
 #line 52
@@ -255,11 +257,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Web Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Put Web Service")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Put Web Connector Tool")]
-        public virtual void EditingWebService()
+        public virtual void EditingPutWebService()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Web Service", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Put Web Service", ((string[])(null)));
 #line 82
  this.ScenarioSetup(scenarioInfo);
 #line 83
@@ -281,11 +283,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Sources")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Put Web Connector Sources")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Put Web Connector Tool")]
-        public virtual void ChangingSources()
+        public virtual void ChangingPutWebConnectorSources()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Sources", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Put Web Connector Sources", ((string[])(null)));
 #line 91
 this.ScenarioSetup(scenarioInfo);
 #line 92
@@ -347,11 +349,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool returns text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Put Web Connector Tool returns text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Put Web Connector Tool")]
-        public virtual void WebConnectorToolReturnsText()
+        public virtual void PutWebConnectorToolReturnsText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool returns text", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Put Web Connector Tool returns text", ((string[])(null)));
 #line 119
 this.ScenarioSetup(scenarioInfo);
 #line 120

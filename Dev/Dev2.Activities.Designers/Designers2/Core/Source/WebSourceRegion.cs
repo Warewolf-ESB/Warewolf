@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -63,7 +62,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string NewSourceHelpText
         {
             get
@@ -77,7 +75,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EditSourceHelpText
         {
             get
@@ -90,7 +87,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public string SourcesHelpText
         {
             get
@@ -104,7 +100,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string NewSourceTooltip
         {
             get
@@ -118,7 +113,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EditSourceTooltip
         {
             get
@@ -131,7 +125,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public string SourcesTooltip
         {
             get

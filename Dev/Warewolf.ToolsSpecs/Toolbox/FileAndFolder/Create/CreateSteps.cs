@@ -21,12 +21,21 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
     [Binding]
     public class CreateSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public CreateSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [When(@"the create file tool is executed")]
         public void WhenTheCreateFileToolIsExecuted()
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         #region Overrides of RecordSetBases
@@ -36,14 +45,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
             BuildShapeAndTestData();
 
             string privateKeyFile;
-            ScenarioContext.Current.TryGetValue(CommonSteps.DestinationPrivateKeyFile,out privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile,out privateKeyFile);
             var create = new DsfPathCreate
             {
-                OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder).ResolveDomain(),
-                Password = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
-                Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
-                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),
+                Username = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder).ResolveDomain(),
+                Password = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
+                Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
+                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
                 PrivateKeyFile = privateKeyFile
             };
 
@@ -52,13 +61,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
                 Action = create
             };
 
-            ScenarioContext.Current.Add("activity", create);
+            scenarioContext.Add("activity", create);
         }
 
         #endregion
 
         [BeforeScenario("fileFeature")]
-        public static void SetupForTesting()
+        public void SetupForTesting()
         {
             StartSftpServer();
         }

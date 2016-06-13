@@ -1,44 +1,43 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 // Source: Microsoft KB Article KB317540
 
 /*
 SUMMARY
-The native code application programming interfaces (APIs) that allow you to interact with the Global Assembly Cache (GAC) are not documented 
-in the .NET Framework Software Development Kit (SDK) documentation. 
+The native code application programming interfaces (APIs) that allow you to interact with the Global Assembly Cache (GAC) are not documented
+in the .NET Framework Software Development Kit (SDK) documentation.
 
 MORE INFORMATION
-CAUTION: Do not use these APIs in your application to perform assembly binds or to test for the presence of assemblies or other run time, 
-development, or design-time operations. Only administrative tools and setup programs must use these APIs. If you use the GAC, this directly 
-exposes your application to assembly binding fragility or may cause your application to work improperly on future versions of the .NET 
+CAUTION: Do not use these APIs in your application to perform assembly binds or to test for the presence of assemblies or other run time,
+development, or design-time operations. Only administrative tools and setup programs must use these APIs. If you use the GAC, this directly
+exposes your application to assembly binding fragility or may cause your application to work improperly on future versions of the .NET
 Framework.
 
-The GAC stores assemblies that are shared across all applications on a computer. The actual storage location and structure of the GAC is 
+The GAC stores assemblies that are shared across all applications on a computer. The actual storage location and structure of the GAC is
 not documented and is subject to change in future versions of the .NET Framework and the Microsoft Windows operating system.
 
 The only supported method to access assemblies in the GAC is through the APIs that are documented in this article.
 
-Most applications do not have to use these APIs because the assembly binding is performed automatically by the common language runtime. 
+Most applications do not have to use these APIs because the assembly binding is performed automatically by the common language runtime.
 Only custom setup programs or management tools must use these APIs. Microsoft Windows Installer has native support for installing assemblies
  to the GAC.
 
 For more information about assemblies and the GAC, see the .NET Framework SDK.
 
-Use the GAC API in the following scenarios: 
+Use the GAC API in the following scenarios:
 When you install an assembly to the GAC.
 When you remove an assembly from the GAC.
 When you export an assembly from the GAC.
 When you enumerate assemblies that are available in the GAC.
-NOTE: CoInitialize(Ex) must be called before you use any of the functions and interfaces that are described in this specification. 
+NOTE: CoInitialize(Ex) must be called before you use any of the functions and interfaces that are described in this specification.
 */
 
 using System;
@@ -50,7 +49,6 @@ using System.Text;
 
 namespace Dev2.Common.Reflection
 {
-
     #region Flags
 
     /// <summary>
@@ -83,6 +81,7 @@ namespace Dev2.Common.Reflection
         ALL = NAME | MAJOR_VERSION | MINOR_VERSION |
               REVISION_NUMBER | BUILD_NUMBER |
               PUBLIC_KEY_TOKEN | CULTURE | CUSTOM,
+
         DEFAULT = 0x100
     }
 
@@ -166,7 +165,7 @@ namespace Dev2.Common.Reflection
         ASM_CACHE_DOWNLOAD = 0x4
     }
 
-    #endregion
+    #endregion Flags
 
     #region Structs
 
@@ -229,7 +228,7 @@ namespace Dev2.Common.Reflection
         public uint cchBuf;
     }
 
-    #endregion
+    #endregion Structs
 
     public class GAC
     {
@@ -262,7 +261,7 @@ namespace Dev2.Common.Reflection
             [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwzCachePath,
             ref uint pcchPath);
 
-        #endregion
+        #endregion DLL Entries
 
         #region GUID Definition
 
@@ -304,11 +303,9 @@ namespace Dev2.Common.Reflection
             get { return new Guid("25df0fc1-7f97-4070-add7-4b13bbfd7cb8"); }
         }
 
-        #endregion
+        #endregion GUID Definition
 
-        #region Public Functions for DLL - Assembly Cache
 
-        #endregion
 
         #region Public Functions for DLL - AssemblyName
 
@@ -321,12 +318,12 @@ namespace Dev2.Common.Reflection
         public static String GetDisplayName(IAssemblyName name, ASM_DISPLAY_FLAGS which)
         {
             uint bufferSize = 255;
-            var buffer = new StringBuilder((int) bufferSize);
+            var buffer = new StringBuilder((int)bufferSize);
             name.GetDisplayName(buffer, ref bufferSize, which);
             return buffer.ToString();
         }
 
-        #endregion
+        #endregion Public Functions for DLL - AssemblyName
 
         #region Public Functions for DLL - AssemblyEnum
 
@@ -338,7 +335,7 @@ namespace Dev2.Common.Reflection
         {
             IAssemblyEnum ae;
 
-            CreateAssemblyEnum(out ae, (IntPtr) 0, null, ASM_CACHE_FLAGS.ASM_CACHE_GAC, (IntPtr) 0);
+            CreateAssemblyEnum(out ae, (IntPtr)0, null, ASM_CACHE_FLAGS.ASM_CACHE_GAC, (IntPtr)0);
 
             return ae;
         }
@@ -351,10 +348,10 @@ namespace Dev2.Common.Reflection
         /// <returns>0 if the enumeration is not at its end</returns>
         public static int GetNextAssembly(IAssemblyEnum enumerator, out IAssemblyName name)
         {
-            return enumerator.GetNextAssembly((IntPtr) 0, out name, 0);
+            return enumerator.GetNextAssembly((IntPtr)0, out name, 0);
         }
 
-        #endregion
+        #endregion Public Functions for DLL - AssemblyEnum
 
         #region GAC Resolution Handling
 
@@ -473,7 +470,7 @@ namespace Dev2.Common.Reflection
             return true;
         }
 
-        #endregion
+        #endregion GAC Resolution Handling
     }
 
     #region GACAssemblyName
@@ -533,7 +530,7 @@ namespace Dev2.Common.Reflection
         }
     }
 
-    #endregion
+    #endregion GACAssemblyName
 
     #region COM Interface Definitions
 
@@ -650,7 +647,6 @@ namespace Dev2.Common.Reflection
             [MarshalAs(UnmanagedType.LPArray)] FUSION_INSTALL_REFERENCE[] pRefData);
     }
 
-
     /// <summary>
     ///     The IAssemblyName interface represents an assembly name. An assembly name includes a predetermined set of
     ///     name-value pairs.
@@ -692,7 +688,6 @@ namespace Dev2.Common.Reflection
             ASM_DISPLAY_FLAGS dwDisplayFlags);
     }
 
-
     /// <summary>
     ///     The IAssemblyEnum interface enumerates the assemblies in the GAC.
     /// </summary>
@@ -717,7 +712,6 @@ namespace Dev2.Common.Reflection
             uint dwFlags);
     }
 
-
     /// <summary>
     ///     The IInstallReferenceItem interface represents a reference that has been set on an assembly in the GAC.
     ///     Instances of IInstallReferenceIteam are returned by the IInstallReferenceEnum interface.
@@ -727,7 +721,6 @@ namespace Dev2.Common.Reflection
     public interface IInstallReferenceItem
     {
     }
-
 
     /// <summary>
     ///     The IInstallReferenceEnum interface enumerates all references that are set on an assembly in the GAC.
@@ -739,7 +732,6 @@ namespace Dev2.Common.Reflection
     {
     }
 
-
     /// <summary>
     ///     Undocumented. Probably only for internal use.
     ///     <see cref="IAssemblyCache.CreateAssemblyCacheItem" />
@@ -750,5 +742,5 @@ namespace Dev2.Common.Reflection
     {
     }
 
-    #endregion
+    #endregion COM Interface Definitions
 }

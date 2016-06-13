@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
@@ -36,7 +35,6 @@ namespace Dev2.DynamicServices.Test
     /// Summary description for WorkspaceTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkspaceTest
     {
         const string ServiceName = "Calculate_RecordSet_Subtract";

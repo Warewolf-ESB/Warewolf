@@ -24,6 +24,14 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class ReadDropboxSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ReadDropboxSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I drag Readlist Dropbox Tool onto the design surface")]
         public void GivenIDragReadDropboxToolOntoTheDesignSurface()
         {
@@ -57,24 +65,24 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockCatalog = new Mock<IResourceCatalog>();
             mockCatalog.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
             var viewModel = new DropBoxFileListDesignerViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
-            ScenarioContext.Current.Add("viewModel", viewModel);
-            ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
-            ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
+            scenarioContext.Add("viewModel", viewModel);
+            scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
+            scenarioContext.Add("eventAggrMock", mockEventAggregator);
         }
 
-        private static DropBoxFileListDesignerViewModel GetViewModel()
+        DropBoxFileListDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<DropBoxFileListDesignerViewModel>("viewModel");
+            return scenarioContext.Get<DropBoxFileListDesignerViewModel>("viewModel");
         }
 
-        private static Mock<IEnvironmentModel> GeEnvrionmentModel()
+        Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
-            return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return scenarioContext.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
 
-        private Mock<IEventAggregator> GetEventAggregator()
+        Mock<IEventAggregator> GetEventAggregator()
         {
-            return ScenarioContext.Current.Get<Mock<IEventAggregator>>("eventAggrMock");
+            return scenarioContext.Get<Mock<IEventAggregator>>("eventAggrMock");
         }
 
         [Given(@"Readlist New is Enabled")]

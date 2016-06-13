@@ -23,24 +23,33 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
     [Binding]
     public class ScriptSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ScriptSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string scriptToExecute;
-            ScenarioContext.Current.TryGetValue("scriptToExecute", out scriptToExecute);
+            scenarioContext.TryGetValue("scriptToExecute", out scriptToExecute);
             enScriptType language;
-            ScenarioContext.Current.TryGetValue("language", out language);
+            scenarioContext.TryGetValue("language", out language);
 
             var dsfScripting = new DsfScriptingActivity
                 {
@@ -53,19 +62,19 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 {
                     Action = dsfScripting
                 };
-            ScenarioContext.Current.Add("activity", dsfScripting);
+            scenarioContext.Add("activity", dsfScripting);
         }
 
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
         public void GivenIHaveAScriptVariableWithThisValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -85,13 +94,13 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                                                     scriptFileName);
                 scriptToExecute = ReadFile(resourceName);
             }
-            ScenarioContext.Current.Add("scriptToExecute", scriptToExecute);
+            scenarioContext.Add("scriptToExecute", scriptToExecute);
         }
 
         [Given(@"I have selected the language as ""(.*)""")]
         public void GivenIHaveSelectedTheLanguageAs(string language)
         {
-            ScenarioContext.Current.Add("language", (enScriptType)Enum.Parse(typeof(enScriptType), language));
+            scenarioContext.Add("language", (enScriptType)Enum.Parse(typeof(enScriptType), language));
         }
 
         [When(@"I execute the script tool")]
@@ -99,7 +108,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the script result should be ""(.*)""")]
@@ -108,7 +117,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment,ResultVariable,out actualValue,out error);
             if (string.IsNullOrEmpty(expectedResult))
             {

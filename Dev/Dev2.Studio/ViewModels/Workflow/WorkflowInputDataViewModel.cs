@@ -13,12 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -38,6 +36,8 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Workflow;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -465,41 +465,44 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 }
                                 if (addRow)
                                 {
-                                    AddBlankComplexObjectRow(itemToAdd,parentItem, indexToInsertAt, indexNum);
+                                    AddBlankComplexObjectRow(itemToAdd, parentItem, indexToInsertAt, indexNum);
                                 }
                             }
-                        }                        
-                    }
-                    
-                }
-                IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
-                if(recordset != null)
-                {
-                    var recsetCols = new List<IScalar>();
-                    foreach (var column in recordset.Columns)
-                    {
-                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
-                        recsetCols.AddRange(cols);
-                    }
-
-                    var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
-                    IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
-                    var lastItem = dataListItems.Last();
-                    var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                    var indexString = lastItem.Index;
-                    var indexNum = Convert.ToInt32(indexString) + 1;
-                    var lastRow = dataListItems.Where(c => c.Index == indexString);
-                    var addRow = false;
-                    foreach(var item in lastRow)
-                    {
-                        if(item.Value != string.Empty)
-                        {
-                            addRow = true;
                         }
                     }
-                    if(addRow)
+
+                }
+                else
+                {
+                    IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
+                    if (recordset != null)
                     {
-                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
+                        var recsetCols = new List<IScalar>();
+                        foreach (var column in recordset.Columns)
+                        {
+                            var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                            recsetCols.AddRange(cols);
+                        }
+
+                        var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+                        IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
+                        var lastItem = dataListItems.Last();
+                        var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                        var indexString = lastItem.Index;
+                        var indexNum = Convert.ToInt32(indexString) + 1;
+                        var lastRow = dataListItems.Where(c => c.Index == indexString);
+                        var addRow = false;
+                        foreach (var item in lastRow)
+                        {
+                            if (item.Value != string.Empty)
+                            {
+                                addRow = true;
+                            }
+                        }
+                        if (addRow)
+                        {
+                            AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
+                        }
                     }
                 }
             }
@@ -523,17 +526,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (recordset != parentItem.Name)
                 {
                     recordset = itemToAdd.DisplayValue;
-                }                
+                }
+                var replaceValue = DataListUtil.ReplaceRecordsetBlankWithIndex(recordset+".", indexNum - 1);
                 var displayName = recordset.TrimEnd('(',')');
 
                 var values = parentItem.IsArray? "("+indexNum+").":".";
-                var displayValue = string.Concat(displayName, values, complexObject.Name);
+                var recSetPortion = string.Concat(displayName, values);
+                var displayValue  = itemToAdd.DisplayValue.Replace(replaceValue, recSetPortion).Replace(itemToAdd.Field,complexObject.Name);
                 var dataListItem = new DataListItem
                 {
                     DisplayValue = displayValue,
                     Value = string.Empty,
-                    CanHaveMutipleRows = itemToAdd.CanHaveMutipleRows,
-                    Recordset = parentItem.Name,
+                    CanHaveMutipleRows = itemToAdd.CanHaveMutipleRows || parentItem.IsArray,
+                    Recordset = recordset,
                     Field = complexObject.Name,
                     Description = complexObject.Description,
                     Index = indexNum.ToString(CultureInfo.InvariantCulture)
@@ -625,52 +630,38 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return itemsRemoved;
         }
-        protected const string RootTag = "DataList";
         /// <summary>
         /// Used to transform the WorkflowInputs into XML
         /// </summary>
         public void SetXmlData()
         {
+            var dataListObject = new JObject();
+            var objects = WorkflowInputs.Where(item => item.IsObject);
+            var recSets = WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
+            var scalars = WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
+            AddScalarsToObject(scalars, dataListObject);
+            AddRecordsetsToObject(recSets, dataListObject);
+            var dataListItems = objects as IList<IDataListItem> ?? objects.ToList();
+            foreach (var dataListItem in dataListItems)
+            {
+                var parts = dataListItem.DisplayValue.Split('.');
+                if (parts.Length > 0)
+                {
+                    var parentName = string.Join(".", parts.Take(parts.Length - 1));
+                    var normalizedName = DataListUtil.ReplaceRecordsetIndexWithBlank(parentName);
+                    dataListItem.ParentName = normalizedName;
+
+                }
+            }
+            AddObjectsToObject(dataListItems,null, dataListObject);
+
+            var dataListString = dataListObject.ToString(Formatting.Indented);
+            var xml = JsonConvert.DeserializeXNode(dataListString, "DataList");
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
-            StringBuilder result = new StringBuilder("<" + RootTag + ">");
-            var recordSets = new List<IRecordSet>();
-
-            foreach(var item in WorkflowInputs)
-            {
-                string val = item.Value;
-                if (val != null && val.IsXml())
-                {
-                    val = string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(val)));
-                }
-                if (item.CanHaveMutipleRows)
-                {
-                    var recordSet = recordSets.FirstOrDefault(set => set.Name == item.Recordset);
-                    if (recordSet==null)
-                    {
-                        recordSet = new RecordSet
-                        {
-                            Name = item.Recordset,
-                            Columns = new Dictionary<int, List<IScalar>>()
-                        };
-                        recordSets.Add(recordSet);
-                    }
-                    recordSet.AddColumn(val, item.Field, Convert.ToInt32(item.Index));
-                }
-                else if(!item.CanHaveMutipleRows)
-                {
-                    DoScalarAppending(result,item);
-                }
-                }
-            foreach(var recordSet in recordSets)
-            {
-                
-                DoRecordSetAppending(recordSet,result);
-            }
-            result.Append("</" + RootTag + ">");
             try
             {
-                XmlData = XElement.Parse(result.ToString()).ToString();
+                XmlData = XElement.Parse(xml.ToString()).ToString();
             }
             catch(Exception)
             {
@@ -678,70 +669,131 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static void DoScalarAppending(StringBuilder result, IDataListItem val)
+        private void AddObjectsToObject(IEnumerable<IDataListItem> objects,JObject parentObject, JObject dataListObject)
         {
-
-            var fName = val.Field;
-            result.Append("<");
-            result.Append(fName);
-            result.Append(">");
-            try
-            {
-                result.Append(val.Value);
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-            }
-            result.Append("</");
-            result.Append(fName);
-            result.Append(">");
-        }
-
-        private static void DoRecordSetAppending(IRecordSet recordSet, StringBuilder result)
-        {
-            var cnt = recordSet.Columns.Max(pair => pair.Key);
             
-            for (var i = 1; i <= cnt; i++)
+            
+            var groupedObjects = objects.GroupBy(item => item.ParentName);
+            var parentObjects = new Dictionary<string,JObject>();
+            foreach (var groupedObject in groupedObjects)
             {
-                var rowData = recordSet.Columns[i];
-                
-                if (rowData.All(scalar => string.IsNullOrEmpty(scalar.Value)))
+                var objName = groupedObject.Key.Replace("()","");
+                var parts = objName.Split('.');
+                var obj = new JObject();
+                string parentName;
+                if (parts.Length > 1)
                 {
-                    continue;
+                    objName = parts[parts.Length - 1].Replace("()", "");
+                    parentName = parts[0].Replace("()", "");
                 }
-                result.Append("<");
-                result.Append(recordSet.Name);
-                result.Append(">");
-                foreach (var col in rowData)
+                else
                 {
+                    parentName = objName.Replace("()", "");
+                }
+                
+                foreach (var dataListItem in groupedObject.GroupBy(item => item.Index))
+                {
+                    var jObjForArray = new JObject();
+                    var newArray = new JArray();
+                    var isArray = false;
+                    foreach (var listItem in dataListItem)
+                    {
 
-                    var fName = col.Name;
-
-                    
-
-                        result.Append("<");
-                        result.Append(fName);
-                        result.Append(">");
-                        try
+                        if (listItem.CanHaveMutipleRows)
                         {
-                            result.Append(col.Value);
+                            isArray = true;
+                            jObjForArray.Add(listItem.Field.Replace("()", ""), listItem.Value);
                         }
-                        // ReSharper disable EmptyGeneralCatchClause
-                        catch (Exception)
+                        else
                         {
+                            if (listItem.Field.EndsWith("()"))
+                            {
+                                if(listItem.Value != null)
+                                {
+                                    var content = listItem.Value.Split(',');
+                                    var jArray = new JArray();
+                                    foreach(var s in content)
+                                    {
+                                        jArray.Add(s);
+                                    }
+                                    obj.Add(listItem.Field.Replace("()", ""), jArray);
+                                }
+                            }
+                            else
+                            {
+                                obj.Add(listItem.Field.Replace("()", ""), listItem.Value);
+                            }
                         }
-                        result.Append("</");
-                        result.Append(fName);
-                        result.Append(">");
                     }
-
-                result.Append("</");
-                result.Append(recordSet.Name);
-                result.Append(">");
+                    if (isArray)
+                    {
+                        newArray.Add(jObjForArray);                        
+                        if (parentObjects.ContainsKey(parentName))
+                        {
+                            parentObjects[parentName].Add(objName, newArray);
+                        }
+                        else
+                        {
+                            obj.Add(objName, newArray);
+                            parentObjects.Add(parentName, obj);
+                        }
+                    }
+                    else
+                    {
+                        if (parentObjects.ContainsKey(parentName))
+                        {
+                            parentObjects[parentName].Add(objName,obj);
+                        }
+                        else
+                        {
+                            parentObjects.Add(parentName,obj);
+                        }
+                        
+                    }
+                }
+            }
+            foreach(var o in parentObjects)
+            {
+                dataListObject.Add(o.Key,o.Value);
             }
         }
+
+        private static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject)
+        {
+            var groupedRecsets = recSets.GroupBy(item => item.Recordset);
+            foreach(var groupedRecset in groupedRecsets)
+            {
+                var arrayName = groupedRecset.Key;
+                var newArray = new JArray();
+                foreach(var dataListItem in groupedRecset.GroupBy(item => item.Index))
+                {
+                    var jObjForArray = new JObject();
+                    var empty = true;
+                    foreach(var listItem in dataListItem)
+                    {
+                        if(!string.IsNullOrEmpty(listItem.Value))
+                        {
+                            empty = false;
+                        }
+                        jObjForArray.Add(new JProperty(listItem.Field, listItem.Value));
+                    }
+                    if(!empty)
+                    {
+                        newArray.Add(jObjForArray);
+                    }
+                }
+                dataListObject.Add(arrayName, newArray);
+            }
+        }
+
+        private static void AddScalarsToObject(IEnumerable<IDataListItem> scalars, JObject dataListObject)
+        {
+            foreach(var dataListItem in scalars)
+            {
+                dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value));
+            }
+        }
+
         /// <summary>
         /// Used to transform the XML into WorkflowInputs
         /// </summary>
@@ -828,6 +880,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Private Methods
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;

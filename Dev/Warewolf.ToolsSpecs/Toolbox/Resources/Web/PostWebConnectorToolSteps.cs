@@ -26,6 +26,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
     [Binding]
     public class PostWebConnectorToolSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public PostWebConnectorToolSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
         private WebServiceSourceDefinition _webHelooWebSource;
         private WebServiceSourceDefinition _googleWebSource;
@@ -68,19 +76,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             var viewModel = new WebServicePostViewModel(modelItem, mockServiceModel.Object);
 
 
-            ScenarioContext.Current.Add("viewModel", viewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockServiceModel", mockServiceModel);
+            scenarioContext.Add("viewModel", viewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockServiceModel", mockServiceModel);
         }
 
-        private static WebServicePostViewModel PostViewModel()
+        WebServicePostViewModel PostViewModel()
         {
-            return ScenarioContext.Current.Get<WebServicePostViewModel>("viewModel");
+            return scenarioContext.Get<WebServicePostViewModel>("viewModel");
         }
 
-        private static Mock<IWebServiceModel> PostServiceModel()
+        Mock<IWebServiceModel> PostServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IWebServiceModel>>("mockServiceModel");
+            return scenarioContext.Get<Mock<IWebServiceModel>>("mockServiceModel");
         }
 
         [When(@"Post Test Inputs is Successful")]

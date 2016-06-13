@@ -10,7 +10,6 @@
 */
 
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Interfaces;
 
@@ -29,12 +28,10 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         }
 
 
-        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }
 
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

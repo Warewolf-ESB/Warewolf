@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 
@@ -19,7 +18,6 @@ namespace Dev2.Tests.Activities.TOTests
     /// Summary description for CaseConvertDTOTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class CaseConvertDTOTests
     {
         [TestMethod]

@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.DataList.Contract;
@@ -19,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.ServiceModel
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ServiceUtilsTests
     {
        

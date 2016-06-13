@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Preview;
@@ -20,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public partial class QuickVariableInputViewModelTests
     {

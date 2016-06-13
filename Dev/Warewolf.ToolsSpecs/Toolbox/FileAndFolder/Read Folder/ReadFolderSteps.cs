@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
 using TechTalk.SpecFlow;
@@ -20,10 +21,19 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
     [Binding]
     public class ReadFolderSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ReadFolderSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"Read is ""(.*)""")]
         public void GivenReadIs(string readType)
         {
-            ScenarioContext.Current.Add("readType", readType);
+            scenarioContext.Add("readType", readType);
         }
         
         [When(@"the read folder file tool is executed")]
@@ -31,14 +41,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            var readtype = ScenarioContext.Current.Get<string>("readType");
+            var readtype = scenarioContext.Get<string>("readType");
             var isFileSelected = false;
             var isFolderSelected = false;
             var isFileOrFolder = false;
@@ -58,14 +68,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
 
             var folderRead = new DsfFolderRead
                 {
-                    InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                    Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                    Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                    Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
+                    InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                    Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                    Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                    Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
                     IsFilesAndFoldersSelected = isFileOrFolder,
                     IsFoldersSelected = isFolderSelected,
                     IsFilesSelected = isFileSelected,
-                    PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
+                    PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
                 };
 
             TestStartNode = new FlowStep
@@ -73,7 +83,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
                 Action = folderRead
             };
 
-            ScenarioContext.Current.Add("activity", folderRead);
+            scenarioContext.Add("activity", folderRead);
         }
     }
 }

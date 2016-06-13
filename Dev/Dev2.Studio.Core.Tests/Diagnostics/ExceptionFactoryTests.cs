@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
@@ -21,7 +20,6 @@ using Dev2.Studio.Core;
 namespace Dev2.Core.Tests.Diagnostics
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ExceptionFactoryTests
     {
         Mock<IEnvironmentModel> _contextModel;

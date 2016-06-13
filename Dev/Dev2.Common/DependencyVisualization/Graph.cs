@@ -1,8 +1,7 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,7 +15,7 @@ using System.Text;
 namespace Dev2.Common.DependencyVisualization
 {
     /// <summary>
-    /// Represents a set of nodes that can be dependent upon each other, 
+    /// Represents a set of nodes that can be dependent upon each other,
     /// and will detect circular dependencies between its nodes.
     /// </summary>
     public class Graph
@@ -54,7 +53,7 @@ namespace Dev2.Common.DependencyVisualization
 
         public new string ToString()
         {
-            StringBuilder result = new StringBuilder(string.Format("<graph title=\"{0}\">",Title));
+            StringBuilder result = new StringBuilder(string.Format("<graph title=\"{0}\">", Title));
 
             foreach (var node in Nodes)
             {
@@ -64,7 +63,7 @@ namespace Dev2.Common.DependencyVisualization
             result.Append("</graph>");
 
             return result.ToString();
-        } 
+        }
 
         /// <summary>
         /// Inspects the graph's nodes for circular dependencies.

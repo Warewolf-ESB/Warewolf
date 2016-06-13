@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -51,7 +52,7 @@ namespace Dev2.ViewModels.Workflow
                 {
                     if (complexObject.IODirection == enDev2ColumnArgumentDirection.Both || complexObject.IODirection == enDev2ColumnArgumentDirection.Input)
                     {
-                        result.AddRange(ConvertToIDataListItem(complexObject,null));
+                        result.AddRange(ConvertToIDataListItem(complexObject));
                     }
                 }
             }
@@ -110,7 +111,7 @@ namespace Dev2.ViewModels.Workflow
             return result;
         }
 
-        IList<IDataListItem> ConvertToIDataListItem(IComplexObject complexObject, IDataListItem parentItem)
+        IList<IDataListItem> ConvertToIDataListItem(IComplexObject complexObject,IDataListItem parentItem = null)
         {
             List<IDataListItem> result = new List<IDataListItem>();
             var dataListEntry = complexObject;
@@ -121,90 +122,57 @@ namespace Dev2.ViewModels.Workflow
                 {
                     IDataListItem singleRes = new DataListItem();
                     singleRes.IsObject = true;
-                    singleRes.CanHaveMutipleRows = complexObject.IsArray;
-                    if (complexObject.IsArray)
+                    singleRes.CanHaveMutipleRows = col.IsArray || col.Parent.IsArray;
+                    singleRes.Index = column.Key.ToString();
+                    singleRes.Recordset = complexObject.Name;
+                    singleRes.Description = col.Description;
+                    singleRes.ParentName = col.Parent.Name;
+                    if (parentItem != null)
                     {
-                        singleRes.Recordset = complexObject.Name;
-                        singleRes.Field = col.Name;
-                        singleRes.Index = column.Key.ToString();
-                        var displayValue = complexObject.Name + "." + col.Name;
-                        singleRes.DisplayValue = DataListUtil.ReplaceRecordsetBlankWithIndex(displayValue, column.Key);
+                        var displayValue = parentItem.DisplayValue;
+                        if (col.IsArray)
+                        {
+                            singleRes.Field = col.Name;
+                            displayValue = displayValue+DataListUtil.ReplaceRecordsetBlankWithIndex(col.Name+".", column.Key);
+                        }
+                        else
+                        {
+                            if (!displayValue.EndsWith("."))
+                            {
+                                displayValue = displayValue + ".";
+                            } 
+                            displayValue = displayValue + col.Name;
+                        }
+                        singleRes.DisplayValue = displayValue;
                     }
                     else
                     {
-                        //if (col.Children == null || col.Children.Count == 0)
+                        var displayValue = col.Parent.Name;
+                        if (col.Parent.IsArray)
                         {
-                            if (parentItem == null)
-                            {
-                                singleRes.Field = complexObject.Name + "." + col.Name;
-                                singleRes.DisplayValue = complexObject.Name + "." + col.Name;
-                            }
-                            else
-                            {
-                                singleRes.Field = parentItem.Field + "." + col.Name;
-                                singleRes.DisplayValue = parentItem.DisplayValue + "." + col.Name;
-                            }
+                            singleRes.Field = col.Name;
+                            displayValue = DataListUtil.ReplaceRecordsetBlankWithIndex(col.Parent.Name + ".", column.Key);
                         }
-                    }
-                    singleRes.Value = col.Value;
-                    singleRes.Description = col.Description;
-                    if (col.Children != null && col.Children.Count > 0)
-                    {
-                        foreach(var child in col.Children)
+                        else if (col.IsArray)
                         {
-                            foreach(var obj in child.Value)
-                            {
-                                var childRes = ConvertToIDataListItem(obj,singleRes);
-                                result.AddRange(childRes);
-                            }
+                            singleRes.Field = col.Name;
+                            displayValue = displayValue + "." + DataListUtil.ReplaceRecordsetBlankWithIndex(col.Name + ".", column.Key);
                         }
+                        else
+                        {
+                            displayValue = displayValue + "." + col.Name;
+                        }
+                        singleRes.DisplayValue = displayValue;
                     }
-                    if (col.Children == null || col.Children.Count == 0)
+                    if (col.Children.Count == 0)
                     {
                         result.Add(singleRes);
                     }
-                }
-            }
-            if(complexObject.Children.Count==0)
-            {
-                IDataListItem singleRes = new DataListItem();
-                singleRes.IsObject = true;
-                if (parentItem!=null && parentItem.Field.Contains("()"))
-                {
-                    singleRes.Recordset = parentItem.Field;
-                    singleRes.Field = complexObject.Name;
-                    singleRes.CanHaveMutipleRows = true;
-                    singleRes.Index = "1";
-                    var displayValue = parentItem.DisplayValue + "." + complexObject.Name;
-                    singleRes.DisplayValue = DataListUtil.ReplaceRecordsetBlankWithIndex(displayValue,1);
-                }
-                else
-                {
-                    if (parentItem == null)
-                    {
-                        singleRes.Field = complexObject.Name + "." + complexObject.Name;
-                        singleRes.DisplayValue = complexObject.Name + "." + complexObject.Name;
-                    }
                     else
                     {
-                        singleRes.Field = parentItem.Field + "." + complexObject.Name;
-                        singleRes.DisplayValue = parentItem.DisplayValue + "." + complexObject.Name;
+                        result.AddRange(ConvertToIDataListItem(col, singleRes));
                     }
                 }
-                singleRes.Value = complexObject.Value;
-                singleRes.Description = complexObject.Description;
-                if (complexObject.Children != null && complexObject.Children.Count > 0)
-                {
-                    foreach (var child in complexObject.Children)
-                    {
-                        foreach (var obj in child.Value)
-                        {
-                            var childRes = ConvertToIDataListItem(obj, singleRes);
-                            result.AddRange(childRes);
-                        }
-                    }
-                }
-                result.Add(singleRes);
             }       
             return result;
         }

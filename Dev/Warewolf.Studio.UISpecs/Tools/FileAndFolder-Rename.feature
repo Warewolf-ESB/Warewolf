@@ -1,4 +1,4 @@
-﻿
+﻿@Ignore
 Feature: FileAndFolder-Rename
 	In order to be able to Rename File or Folder 
 	as a Warewolf user

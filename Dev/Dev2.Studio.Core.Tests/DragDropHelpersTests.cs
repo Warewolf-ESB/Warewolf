@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
@@ -28,7 +27,6 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class DragDropHelpersTests
     {

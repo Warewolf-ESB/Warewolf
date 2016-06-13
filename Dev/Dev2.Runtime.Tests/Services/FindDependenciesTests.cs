@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -22,7 +21,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FindDependenciesTests
     {
        

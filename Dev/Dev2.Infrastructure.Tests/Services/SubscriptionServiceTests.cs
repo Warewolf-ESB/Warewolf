@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +18,6 @@ using Moq;
 namespace Dev2.Infrastructure.Tests.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SubscriptionServiceTests
     {
         [TestMethod]

@@ -4,7 +4,6 @@ using Dev2.Common.Interfaces;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 
@@ -52,7 +51,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         #region Implementation of IDropboxSingleExecutor
 
-        [ExcludeFromCodeCoverage]
         public IDropboxResult ExecuteTask(DropboxClient client)
         {
             try
@@ -72,7 +70,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         #endregion Implementation of IDropboxSingleExecutor
 
-        [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>

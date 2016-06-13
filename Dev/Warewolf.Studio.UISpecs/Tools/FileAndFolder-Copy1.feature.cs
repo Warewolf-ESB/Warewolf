@@ -18,6 +18,7 @@ namespace Warewolf.Studio.UISpecs.Tools
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class FileAndFolder_CopyFeature
     {
         
@@ -31,7 +32,8 @@ namespace Warewolf.Studio.UISpecs.Tools
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Copy", "\tIn order to be able to Copy File or Folder \r\n\tas a Warewolf user\r\n\tI want a tool" +
-                    " that Copy File or Folder from a given location to another location", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    " that Copy File or Folder from a given location to another location", ProgrammingLanguage.CSharp, new string[] {
+                        "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,9 +80,9 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Small View", new string[] {
                         "ignore",
                         "Copy"});
-#line 9
-this.ScenarioSetup(scenarioInfo);
 #line 10
+this.ScenarioSetup(scenarioInfo);
+#line 11
        testRunner.Given("I have Copy Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -91,7 +93,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 11
+#line 12
        testRunner.Then("Copy small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -105,9 +107,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Large View", new string[] {
                         "ignore"});
-#line 16
-this.ScenarioSetup(scenarioInfo);
 #line 17
+this.ScenarioSetup(scenarioInfo);
+#line 18
        testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -126,9 +128,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 18
+#line 19
        testRunner.Then("Copy Large View has", ((string)(null)), table2, "Then ");
-#line 21
+#line 22
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -137,11 +139,11 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 22
+#line 23
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 25
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -155,9 +157,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Small View water marks", new string[] {
                         "ignore"});
-#line 29
-this.ScenarioSetup(scenarioInfo);
 #line 30
+this.ScenarioSetup(scenarioInfo);
+#line 31
        testRunner.Given("I have Copy Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -168,7 +170,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[PathToCopy]]",
                         "[[CopyToPath]]",
                         "[[Success]]"});
-#line 31
+#line 32
        testRunner.Then("Copy small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -182,9 +184,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Large View Water marks", new string[] {
                         "ignore"});
-#line 36
-this.ScenarioSetup(scenarioInfo);
 #line 37
+this.ScenarioSetup(scenarioInfo);
+#line 38
        testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -203,9 +205,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 38
+#line 39
        testRunner.Then("Copy Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 41
+#line 42
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -214,11 +216,11 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "",
                         ""});
-#line 42
+#line 43
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 45
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -232,11 +234,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating when clicking on done with blank fields", new string[] {
                         "ignore"});
-#line 48
-this.ScenarioSetup(scenarioInfo);
 #line 49
-       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 50
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 51
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -255,15 +257,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 51
+#line 52
        testRunner.And("Copy Large View has", ((string)(null)), table7, "And ");
-#line 54
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 58
        testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -277,9 +279,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 59
-this.ScenarioSetup(scenarioInfo);
 #line 60
+this.ScenarioSetup(scenarioInfo);
+#line 61
        testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -298,9 +300,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[copy]]"});
-#line 61
+#line 62
        testRunner.And("Copy Large View has", ((string)(null)), table8, "And ");
-#line 64
+#line 65
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -309,17 +311,17 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "",
                         ""});
-#line 65
+#line 66
        testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
-#line 68
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 72
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 73
        testRunner.And("Copy Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -330,7 +332,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\",
                         "D:\\",
                         "[[copy]]"});
-#line 73
+#line 74
        testRunner.And("Copy small view has", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -344,9 +346,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 78
-this.ScenarioSetup(scenarioInfo);
 #line 79
+this.ScenarioSetup(scenarioInfo);
+#line 80
        testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -365,9 +367,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[copy]]"});
-#line 80
+#line 81
        testRunner.When("Copy Large View has", ((string)(null)), table11, "When ");
-#line 83
+#line 84
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -376,15 +378,15 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "",
                         ""});
-#line 84
+#line 85
        testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
-#line 87
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 91
        testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -403,13 +405,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[copy]]"});
-#line 91
+#line 92
        testRunner.When("I edit Copy Large View", ((string)(null)), table13, "When ");
-#line 94
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 95
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 96
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
        testRunner.And("Copy Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -420,7 +422,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]]",
                         "D:\\",
                         "[[copy]]"});
-#line 97
+#line 98
        testRunner.And("Copy small view as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -434,9 +436,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 102
-this.ScenarioSetup(scenarioInfo);
 #line 103
+this.ScenarioSetup(scenarioInfo);
+#line 104
        testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -455,9 +457,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[copy]]"});
-#line 104
+#line 105
        testRunner.And("Copy Large View has", ((string)(null)), table15, "And ");
-#line 107
+#line 108
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -466,19 +468,19 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 108
+#line 109
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 111
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
-       testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 115
-       testRunner.When("collapse \"Copy\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
+       testRunner.When("collapse \"Copy\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 117
        testRunner.Then("Copy Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -489,7 +491,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]",
                         "D:\\",
                         "[[copy]]"});
-#line 117
+#line 118
        testRunner.And("Copy small view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -504,11 +506,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect source path", @__tags);
-#line 122
-this.ScenarioSetup(scenarioInfo);
 #line 123
-       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 124
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 125
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -527,13 +529,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Copy]]"});
-#line 125
+#line 126
        testRunner.And("Copy Large View has", ((string)(null)), table18, "And ");
-#line 128
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 131
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -702,11 +704,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect Destination path", @__tags);
-#line 146
-this.ScenarioSetup(scenarioInfo);
 #line 147
-       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 148
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 149
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -725,13 +727,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Copy]]"});
-#line 149
+#line 150
        testRunner.And("Copy Large View has", ((string)(null)), table19, "And ");
-#line 152
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 153
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 155
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -900,11 +902,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect variable in source username field", @__tags);
-#line 171
-this.ScenarioSetup(scenarioInfo);
 #line 172
-       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 173
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 174
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -923,13 +925,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Copy]]"});
-#line 174
+#line 175
        testRunner.And("Copy Large View has", ((string)(null)), table20, "And ");
-#line 177
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 180
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1098,11 +1100,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect variable in Destination username field", @__tags);
-#line 196
-this.ScenarioSetup(scenarioInfo);
 #line 197
-       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 198
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 199
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1121,13 +1123,13 @@ this.ScenarioSetup(scenarioInfo);
                         "\"<Username>\"",
                         "abc",
                         "[[Copy]]"});
-#line 199
+#line 200
        testRunner.And("Copy Large View has", ((string)(null)), table21, "And ");
-#line 202
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 204
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 205
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1307,11 +1309,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect variable in Result field", @__tags);
-#line 221
-this.ScenarioSetup(scenarioInfo);
 #line 222
-       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 223
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 224
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1330,13 +1332,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("\"{0}\"", result)});
-#line 224
+#line 225
        testRunner.And("Copy Large View has", ((string)(null)), table22, "And ");
-#line 227
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 228
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 230
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1449,9 +1451,9 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy On error fields incorrect variables are validating", @__tags);
-#line 241
-this.ScenarioSetup(scenarioInfo);
 #line 242
+this.ScenarioSetup(scenarioInfo);
+#line 243
        testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1470,9 +1472,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 243
+#line 244
        testRunner.And("Copy Large View with water marks has", ((string)(null)), table23, "And ");
-#line 246
+#line 247
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1481,15 +1483,15 @@ this.ScenarioSetup(scenarioInfo);
             table24.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 247
+#line 248
        testRunner.And("On Error box consists", ((string)(null)), table24, "And ");
-#line 250
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 251
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 253
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 254
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

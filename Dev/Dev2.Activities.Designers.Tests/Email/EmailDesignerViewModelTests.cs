@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -36,7 +35,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Email
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class EmailDesignerViewModelTests
     {
         const string AppLocalhost = "http://localhost:3142";
