@@ -141,7 +141,7 @@ namespace Dev2.Data
                     XmlAttribute columnIoDirection = null;
                     if(!DataListUtil.IsSystemTag(c.Name))
                     {
-                        if(c.HasChildNodes)
+                        if (c.HasChildNodes)
                         {
                             var jsonAttribute = false;
                             if (c.Attributes != null)
@@ -156,62 +156,64 @@ namespace Dev2.Data
                             {
                                 AddComplexObjectFromXmlNode(c, null);
                             }
-
-                            var cols = new List<IScalar>();
-                            foreach(XmlNode subc in c.ChildNodes)
+                            else
                             {
-                                // It is possible for the .Attributes property to be null, a check should be added
-                                if(subc.Attributes != null)
+                                var cols = new List<IScalar>();
+                                foreach (XmlNode subc in c.ChildNodes)
                                 {
-                                    descAttribute = subc.Attributes["Description"];
-                                    columnIoDirection = subc.Attributes["ColumnIODirection"];
-                                    if(columnIoDirection != null)
+                                    // It is possible for the .Attributes property to be null, a check should be added
+                                    if (subc.Attributes != null)
                                     {
-                                        Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                        descAttribute = subc.Attributes["Description"];
+                                        columnIoDirection = subc.Attributes["ColumnIODirection"];
+                                        if (columnIoDirection != null)
+                                        {
+                                            Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                        }
                                     }
+                                    var scalar = new Scalar { Name = subc.Name, IsEditable = true, IODirection = columnDirection };
+                                    if (descAttribute != null)
+                                    {
+                                        scalar.Description = descAttribute.Value;
+                                    }
+                                    cols.Add(scalar);
                                 }
-                                var scalar = new Scalar { Name = subc.Name, IsEditable = true, IODirection = columnDirection };
-                                if(descAttribute != null)
+                                if (c.Attributes != null)
                                 {
-                                    scalar.Description = descAttribute.Value;
+                                    descAttribute = c.Attributes["Description"];
+                                    columnIoDirection = c.Attributes["ColumnIODirection"];
                                 }
-                                cols.Add(scalar);
-                            }
-                            if(c.Attributes != null)
-                            {
-                                descAttribute = c.Attributes["Description"];
-                                columnIoDirection = c.Attributes["ColumnIODirection"];
-                            }
 
-                            var descriptionValue = "";
-                            columnDirection = enDev2ColumnArgumentDirection.None;
-                            if(descAttribute != null)
-                            {
-                                descriptionValue = descAttribute.Value;
+                                var descriptionValue = "";
+                                columnDirection = enDev2ColumnArgumentDirection.None;
+                                if (descAttribute != null)
+                                {
+                                    descriptionValue = descAttribute.Value;
+                                }
+                                if (columnIoDirection != null)
+                                {
+                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                }
+                                var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+                                RecordSets.Add(recSet);
+                                var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+                                ShapeRecordSets.Add(shapeRecSet);
                             }
-                            if(columnIoDirection != null)
-                            {
-                                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
-                            }
-                            var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
-                            RecordSets.Add(recSet);
-                            var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
-                            ShapeRecordSets.Add(shapeRecSet);
                         }
                         else
                         {
-                            if(c.Attributes != null)
+                            if (c.Attributes != null)
                             {
                                 descAttribute = c.Attributes["Description"];
                                 columnIoDirection = c.Attributes["ColumnIODirection"];
                             }
                             string descriptionValue = "";
                             columnDirection = enDev2ColumnArgumentDirection.None;
-                            if(descAttribute != null)
+                            if (descAttribute != null)
                             {
                                 descriptionValue = descAttribute.Value;
                             }
-                            if(columnIoDirection != null)
+                            if (columnIoDirection != null)
                             {
                                 Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
                             }
@@ -242,6 +244,7 @@ namespace Dev2.Data
                     parent.Children[1] = new List<IComplexObject>();
                 }
                 parent.Children[1].Add(complexObjectItemModel);
+                complexObjectItemModel.Parent = parent;
             }
             else
             {
