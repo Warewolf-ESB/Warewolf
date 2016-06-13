@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,10 +11,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Integration.Tests.Activities
+namespace Dev2.Tests.Activities.Utils
 {
-
-
     /// <summary>
     ///This is a test class for UtilTest and is intended
     ///to contain all UtilTest Unit Tests
