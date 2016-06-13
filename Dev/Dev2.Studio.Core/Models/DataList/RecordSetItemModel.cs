@@ -12,13 +12,12 @@ namespace Dev2.Studio.Core.Models.DataList
     {
         private ObservableCollection<IRecordSetFieldItemModel> _backupChildren;
 
-        private string _filterText;
         private ObservableCollection<IRecordSetFieldItemModel> _children;
 
         public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {
-            Children = children;
+            Children = children;            
         }
 
         public ObservableCollection<IRecordSetFieldItemModel> Children
@@ -97,22 +96,6 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public string FilterText
-        {
-            get
-            {
-                string child = "";
-                if (Children != null)
-                {
-                    child = String.Join("", Children.Select(a => a.DisplayName));
-                }
-                return DisplayName + child;
-            }
-            set
-            {
-                _filterText = value;
-            }
-        }
 
         public void Filter(string searchText)
         {

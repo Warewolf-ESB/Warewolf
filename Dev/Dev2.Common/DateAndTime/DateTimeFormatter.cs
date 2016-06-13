@@ -1,17 +1,18 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Common.DateAndTime
@@ -92,7 +93,7 @@ namespace Dev2.Common.DateAndTime
                 //
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
                 if (nothingDied)
-                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     //
                     // If there is no output format use the input format
@@ -104,14 +105,13 @@ namespace Dev2.Common.DateAndTime
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
 
-
                         string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
                         string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
                         string finalPattern = shortPattern + " " + longPattern;
                         if (finalPattern.Contains("ss"))
                         {
                             outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-                            outputFormat =dateTimeParser.TranslateDotNetToDev2Format(outputFormat,out error);
+                            outputFormat = dateTimeParser.TranslateDotNetToDev2Format(outputFormat, out error);
                         }
                     }
 

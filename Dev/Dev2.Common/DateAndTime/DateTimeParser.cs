@@ -1,25 +1,23 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.DateAndTime.TO;
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Dev2.Common.DateAndTime.TO;
-using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.DateAndTime
 {
-
-
     public class DateTimeParser : IDateTimeParser
     {
         #region Private Enums
@@ -339,7 +337,7 @@ namespace Dev2.Common.DateAndTime
             }
             else
             {
-                val = (int) dayOfWeek;
+                val = (int)dayOfWeek;
             }
 
             return val;
@@ -432,39 +430,46 @@ namespace Dev2.Common.DateAndTime
                                     TranslateDotNetToDev2Format(
                                         CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
                                 break;
+
                             case 1:
                                 inputFormat =
                                     TranslateDotNetToDev2Format(
                                         CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
                                 break;
+
                             case 2:
                                 inputFormat =
                                     TranslateDotNetToDev2Format(
                                         CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " +
                                         CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
                                 break;
+
                             case 3:
                                 inputFormat =
                                     TranslateDotNetToDev2Format(
                                         new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
                                 break;
+
                             case 4:
                                 inputFormat =
                                     TranslateDotNetToDev2Format(
                                         new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " +
                                         new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
                                 break;
+
                             case 5:
                                 inputFormat =
                                     TranslateDotNetToDev2Format(
                                         new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
                                 break;
+
                             case 6:
                                 inputFormat =
                                     TranslateDotNetToDev2Format(
                                         new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " +
                                         new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
                                 break;
+
                             case 7:
                                 string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
                                 string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
@@ -583,7 +588,6 @@ namespace Dev2.Common.DateAndTime
                         error = string.Format(ErrorResource.UnrecognisedFormatPart, part.Value);
                     }
                 }
-
 
                 if (nothingDied)
                 {
@@ -1406,7 +1410,7 @@ namespace Dev2.Common.DateAndTime
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
                         string min = minutes == 0 ? "00" : "30";
-                        string hrs = string.Concat(hours/Math.Abs(hours) < 0 ? "-" : "+",
+                        string hrs = string.Concat(hours / Math.Abs(hours) < 0 ? "-" : "+",
                             Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
                         string uct = string.Concat(UctShort, hrs, ":", min);
                         TimeZones.Add(uct.ToLower(), new TimeZoneTO(UctShort, uct, UctLong));
@@ -1434,7 +1438,7 @@ namespace Dev2.Common.DateAndTime
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
                         string min = minutes == 0 ? "00" : "30";
-                        string hrs = string.Concat(hours/Math.Abs(hours) < 0 ? "-" : "+",
+                        string hrs = string.Concat(hours / Math.Abs(hours) < 0 ? "-" : "+",
                             Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
                         string gmt = string.Concat(GmtShort, hrs, ":", min);
                         TimeZones.Add(gmt.ToLower(), new TimeZoneTO(GmtShort, gmt, GmtLong));
@@ -1482,67 +1486,67 @@ namespace Dev2.Common.DateAndTime
             //
             // Lookups for dddd, ddd, dd, d
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('d', new List<int> {4, 3, 2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('d', new List<int> { 4, 3, 2, 1 });
 
             //
             // Lookups for fffffff, ffffff, fffff, ffff, fff, ff, f
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('f', new List<int> {7, 6, 5, 4, 3, 2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('f', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
 
             //
             // Lookups for FFFFFFF, FFFFFF, FFFFF, FFFF, FFF, FF, F
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('F', new List<int> {7, 6, 5, 4, 3, 2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('F', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
 
             //
             // Lookups for gg, g
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('g', new List<int> {2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('g', new List<int> { 2, 1 });
 
             //
             // Lookups for hh, h
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('h', new List<int> {2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('h', new List<int> { 2, 1 });
 
             //
             // Lookups for HH, H
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('H', new List<int> {2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('H', new List<int> { 2, 1 });
 
             //
             // Lookups for K
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('K', new List<int> {1});
+            DateTimeFormatForwardLookupsForDotNet.Add('K', new List<int> { 1 });
 
             //
             // Lookups for mm, m
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('m', new List<int> {2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('m', new List<int> { 2, 1 });
 
             //
             // Lookups for MMMM, MMM, MM, M
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('M', new List<int> {4, 3, 2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('M', new List<int> { 4, 3, 2, 1 });
 
             //
             // Lookups for ss, s
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('s', new List<int> {2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('s', new List<int> { 2, 1 });
 
             //
             // Lookups for tt, t
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('t', new List<int> {2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('t', new List<int> { 2, 1 });
 
             //
             // Lookups for yyyyy, yyyy, yyy, yy, y
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('y', new List<int> {5, 4, 3, 2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('y', new List<int> { 5, 4, 3, 2, 1 });
 
             //
             // Lookups for zzz, zz, z
             //
-            DateTimeFormatForwardLookupsForDotNet.Add('z', new List<int> {3, 2, 1});
+            DateTimeFormatForwardLookupsForDotNet.Add('z', new List<int> { 3, 2, 1 });
         }
 
         /// <summary>
@@ -1553,63 +1557,63 @@ namespace Dev2.Common.DateAndTime
             //
             // Lookups for yyyyy, yyyy, yyy, yy and y
             //
-            DateTimeFormatForwardLookups.Add('y', new List<int> {5, 4, 3, 2, 1});
+            DateTimeFormatForwardLookups.Add('y', new List<int> { 5, 4, 3, 2, 1 });
 
             //
             // Lookups for min, mm and m
             //
-            DateTimeFormatForwardLookups.Add('m', new List<int> {3, 2, 1});
+            DateTimeFormatForwardLookups.Add('m', new List<int> { 3, 2, 1 });
 
             //
             // Lookups for MM and M
             //
-            DateTimeFormatForwardLookups.Add('M', new List<int> {2, 1});
+            DateTimeFormatForwardLookups.Add('M', new List<int> { 2, 1 });
 
             //
             // Lookups for dd, dW, dw, dy and d
             //
-            DateTimeFormatForwardLookups.Add('d', new List<int> {2, 1});
+            DateTimeFormatForwardLookups.Add('d', new List<int> { 2, 1 });
 
             //
             // Lookups for w
             //
-            DateTimeFormatForwardLookups.Add('w', new List<int> {2, 1});
+            DateTimeFormatForwardLookups.Add('w', new List<int> { 2, 1 });
 
             //
             // Lookups for DW
             //
-            DateTimeFormatForwardLookups.Add('D', new List<int> {2});
+            DateTimeFormatForwardLookups.Add('D', new List<int> { 2 });
 
             //
             // Lookups for 24h
             //
-            DateTimeFormatForwardLookups.Add('2', new List<int> {3});
+            DateTimeFormatForwardLookups.Add('2', new List<int> { 3 });
 
             //
             // Lookups for 12h
             //
-            DateTimeFormatForwardLookups.Add('1', new List<int> {3});
+            DateTimeFormatForwardLookups.Add('1', new List<int> { 3 });
 
             //
             // Lookups for ss and sp
             //
-            DateTimeFormatForwardLookups.Add('s', new List<int> {2});
+            DateTimeFormatForwardLookups.Add('s', new List<int> { 2 });
 
             //
             // Lookups for am/pm
             //
-            DateTimeFormatForwardLookups.Add('a', new List<int> {5});
+            DateTimeFormatForwardLookups.Add('a', new List<int> { 5 });
 
             //
             // Lookups for ZZZ, ZZ and Z
             //
-            DateTimeFormatForwardLookups.Add('Z', new List<int> {3, 2, 1});
+            DateTimeFormatForwardLookups.Add('Z', new List<int> { 3, 2, 1 });
 
             //
             // Lookups for Era
             //
-            DateTimeFormatForwardLookups.Add('E', new List<int> {3});
-            DateTimeFormatForwardLookups.Add('e', new List<int> {3});
+            DateTimeFormatForwardLookups.Add('E', new List<int> { 3 });
+            DateTimeFormatForwardLookups.Add('e', new List<int> { 3 });
         }
 
         #region DateTime Assign Actions
