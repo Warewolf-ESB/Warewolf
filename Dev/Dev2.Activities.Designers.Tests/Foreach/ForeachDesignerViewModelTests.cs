@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Data.Enums;
@@ -23,7 +22,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Foreach
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ForeachDesignerViewModelTests
     {
         [TestMethod]

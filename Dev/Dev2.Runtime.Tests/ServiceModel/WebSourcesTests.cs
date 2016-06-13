@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,7 +29,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]    
-    [ExcludeFromCodeCoverage]
     public class WebSourcesTests
     {
         // ReSharper disable InconsistentNaming

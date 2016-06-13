@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
@@ -21,7 +20,6 @@ namespace Dev2.Tests
     /// Summary description for TypeExtentionTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TypeExtentionTest
     {
         /// <summary>

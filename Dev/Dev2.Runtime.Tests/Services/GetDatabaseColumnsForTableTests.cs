@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
@@ -28,7 +27,6 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]    
-    [ExcludeFromCodeCoverage]
     public class GetDatabaseColumnsForTableTests
     {
 

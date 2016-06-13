@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +18,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.TOTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FindRecordsTOTests
     {
         [TestMethod]

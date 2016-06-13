@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -33,7 +32,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         private string _deletePath;
         private string _result;
 
-        [ExcludeFromCodeCoverage]
         // ReSharper disable once UnusedMember.Global
         public DropBoxDeleteViewModel(ModelItem modelItem)
            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
@@ -147,11 +145,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
 
         #region Overrides of ActivityDesignerViewModel
-        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
@@ -164,7 +160,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

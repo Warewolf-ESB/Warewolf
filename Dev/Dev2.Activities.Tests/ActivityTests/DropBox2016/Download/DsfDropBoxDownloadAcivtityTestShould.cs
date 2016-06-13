@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Dev2.Activities.DropBox2016;
@@ -25,7 +24,6 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfDropBoxDownloadAcivtityTestShould
     {
         private static DsfDropBoxDownloadActivity CreateDropboxActivity()

@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         private readonly ScenarioContext scenarioContext;
 
         public SortSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

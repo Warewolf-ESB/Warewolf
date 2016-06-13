@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -27,7 +26,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class EmailSourcesTests
     {
         const int SmtpTimeout = 30000;

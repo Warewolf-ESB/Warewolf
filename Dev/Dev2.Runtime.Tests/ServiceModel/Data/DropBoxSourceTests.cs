@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +9,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
 
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DropBoxSourceTests
     {
         #region ToString Tests

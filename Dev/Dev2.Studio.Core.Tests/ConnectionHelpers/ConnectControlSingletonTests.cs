@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -26,7 +25,6 @@ using Moq;
 namespace Dev2.Core.Tests.ConnectionHelpers
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     // ReSharper disable ObjectCreationAsStatement
     public class ConnectControlSingletonTests

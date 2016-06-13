@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
@@ -27,7 +26,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class SendEmailActivityTests : BaseActivityUnitTest
     {

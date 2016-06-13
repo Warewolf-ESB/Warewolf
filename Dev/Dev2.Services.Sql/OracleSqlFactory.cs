@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
@@ -9,7 +8,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    [ExcludeFromCodeCoverage]
     internal class OracleSqlFactory : IDbFactory
     {
         #region Implementation of IDbFactory

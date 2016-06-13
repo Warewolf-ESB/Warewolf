@@ -1,9 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [ExcludeFromCodeCoverage]
     public static class TestUtils
     {
         public static WebSource CreateWebSourceWithCredentials()

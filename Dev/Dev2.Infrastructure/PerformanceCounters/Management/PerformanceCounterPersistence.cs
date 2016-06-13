@@ -42,7 +42,6 @@ namespace Dev2.PerformanceCounters.Management
             Save(counters.Cast<IPerformanceCounter>().ToList(), path);
         }
 
-        [ExcludeFromCodeCoverage]
         public IList<IPerformanceCounter> LoadOrCreate()
         {
             return LoadOrCreate(EnvironmentVariables.ServerPerfmonSettingsFile);

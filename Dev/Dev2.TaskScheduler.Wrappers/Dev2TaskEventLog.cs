@@ -10,13 +10,11 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers
-{
-    [ExcludeFromCodeCoverage] // cant really test this. 
+{ // cant really test this. 
     public class Dev2TaskEventLog : ITaskEventLog
     {
         private readonly ITaskServiceConvertorFactory _factory;

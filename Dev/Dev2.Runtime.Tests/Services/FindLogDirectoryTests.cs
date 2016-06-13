@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -24,7 +23,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FindLogDirectoryTests
     {
         static string _testDir;

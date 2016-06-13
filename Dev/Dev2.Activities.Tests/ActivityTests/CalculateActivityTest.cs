@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using ActivityUnitTests;
@@ -26,7 +25,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for CalculateActivityTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class CalculateActivityTest : BaseActivityUnitTest
     {
         /// <summary>

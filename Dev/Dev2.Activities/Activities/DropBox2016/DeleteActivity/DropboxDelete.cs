@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
@@ -33,7 +32,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         public bool IsValid { get; set; }
 
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
-        [ExcludeFromCodeCoverage]
         public IDropboxResult ExecuteTask(DropboxClient client)
         {
             try
@@ -50,7 +48,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         #endregion
 
-        [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>

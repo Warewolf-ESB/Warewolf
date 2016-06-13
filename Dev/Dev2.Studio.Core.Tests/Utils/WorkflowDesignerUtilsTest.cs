@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -28,7 +27,6 @@ namespace Dev2.Core.Tests.Utils
     /// Summary description for WorkflowDesignerUtilsTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUtilsTest
     {
         /// <summary>

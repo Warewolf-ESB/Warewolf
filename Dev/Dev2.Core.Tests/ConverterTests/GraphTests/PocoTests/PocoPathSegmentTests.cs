@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
@@ -18,7 +17,6 @@ using Unlimited.Framework.Converters.Graph.Poco;
 namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class PocoPathSegmentTests
     {
         /// <summary>

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Util;
@@ -21,7 +20,6 @@ using Moq;
 namespace Dev2.Core.Tests.Activities.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DesignerManagementServiceTests
     {
 

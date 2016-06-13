@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Caliburn.Micro;
 using Dev2.Interfaces;
@@ -24,7 +23,6 @@ using Moq.Protected;
 namespace Dev2.Core.Tests.Diagnostics
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class AppExceptionHandlerTests
     {
         static readonly object TestGuard = new object();

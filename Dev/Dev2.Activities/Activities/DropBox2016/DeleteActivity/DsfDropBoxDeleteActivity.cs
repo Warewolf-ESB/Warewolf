@@ -7,7 +7,6 @@ using Dev2.Util;
 using Dropbox.Api;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -38,7 +37,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         [FindMissing]
         public string DeletePath { get; set; }
 
-        [ExcludeFromCodeCoverage]
         protected virtual DropboxClient GetClient()
         {
             if (_client != null)

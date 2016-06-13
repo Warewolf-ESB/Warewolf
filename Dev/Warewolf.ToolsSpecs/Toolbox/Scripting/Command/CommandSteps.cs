@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         private readonly ScenarioContext scenarioContext;
 
         public CommandSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -49,7 +48,6 @@ namespace Dev2.Activities
         string GetNumberOfWareWolfAgentsInformation();
     }
 
-    [ExcludeFromCodeCoverage]
     public class GetSystemInformationHelper : IGetSystemInformation
     {
         #region Implementation of IGetSystemInformation

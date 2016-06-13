@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Xml.Linq;
 using Warewolf.Core;
@@ -67,7 +66,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             return ProxyService.GetMethods(endpoint);
         }
 
-        [ExcludeFromCodeCoverage]
         public IList<IWcfAction> GetServiceActions(IWcfServerSource source)
         {
             var methods = GetServiceMethods(source.EndpointUrl);

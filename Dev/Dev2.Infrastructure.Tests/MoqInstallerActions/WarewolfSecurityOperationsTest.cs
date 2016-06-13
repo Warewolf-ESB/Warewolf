@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.ActiveDirectory;
 using System.Reflection;
 using Dev2.Services.Security.MoqInstallerActions;
@@ -19,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WarewolfSecurityOperationsTest
     {
         // ReSharper disable InconsistentNaming

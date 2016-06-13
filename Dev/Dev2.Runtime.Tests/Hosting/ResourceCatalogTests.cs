@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -53,7 +52,6 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resources saved by SaveResources()

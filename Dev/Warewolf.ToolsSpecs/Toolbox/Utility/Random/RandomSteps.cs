@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         private readonly ScenarioContext scenarioContext;
 
         public RandomSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

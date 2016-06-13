@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Common.Interfaces.Enums.Enums;
@@ -24,7 +23,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.BaseConvert
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class BaseConvertTests
     {
         [TestMethod]

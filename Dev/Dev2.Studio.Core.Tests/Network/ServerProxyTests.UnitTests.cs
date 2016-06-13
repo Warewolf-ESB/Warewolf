@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -27,7 +26,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Network
 {
-    [ExcludeFromCodeCoverage]
     [TestClass]
     public partial class ServerProxyTests
     {

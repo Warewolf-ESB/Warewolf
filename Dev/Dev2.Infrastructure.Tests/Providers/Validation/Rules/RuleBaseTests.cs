@@ -10,13 +10,11 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RuleBaseTests
     {
         [TestMethod]
