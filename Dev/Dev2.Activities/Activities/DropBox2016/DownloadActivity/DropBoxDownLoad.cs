@@ -5,7 +5,6 @@ using Dropbox.Api;
 using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
@@ -39,7 +38,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
 
-        [ExcludeFromCodeCoverage]
         public IDropboxResult ExecuteTask(DropboxClient client)
         {
             try

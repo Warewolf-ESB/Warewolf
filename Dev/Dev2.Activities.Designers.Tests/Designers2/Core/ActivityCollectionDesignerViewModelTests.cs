@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Data;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
@@ -27,7 +26,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ActivityCollectionDesignerViewModelTests
     {
         [TestMethod]

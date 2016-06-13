@@ -13,7 +13,6 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -314,7 +313,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         private string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
 
-        [ExcludeFromCodeCoverage]
         private void FixErrors()
         {
         }
@@ -334,7 +332,6 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         public string ButtonDisplayValue { get; set; }
 
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

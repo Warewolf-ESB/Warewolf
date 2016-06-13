@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -57,8 +56,7 @@ namespace Dev2.Diagnostics.Logging
 
             });
         }
-
-        [ExcludeFromCodeCoverage] // wf debug logging
+ // wf debug logging
         public static bool ShouldLog(Guid resourceID)
         {
             //Unnecessary to continue if logging is turned off
@@ -71,8 +69,7 @@ namespace Dev2.Diagnostics.Logging
             bool shouldlog = LoggingSettings.LogAll || _workflowsToLog.ContainsKey(resourceID);
             return shouldlog;
         }
-
-        [ExcludeFromCodeCoverage] // wf debug logging
+ // wf debug logging
         public static string GetDirectoryPath(LoggingSettings loggingSettings)
         {
             var dirPath = loggingSettings.LogFileDirectory;
@@ -83,8 +80,7 @@ namespace Dev2.Diagnostics.Logging
             }
             return dirPath;
         }
-
-        [ExcludeFromCodeCoverage] // wf debug logging
+ // wf debug logging
         public static string GetDefaultLogDirectoryPath()
         {
             var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

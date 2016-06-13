@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
@@ -24,7 +23,6 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ConnectionTests
     {
 

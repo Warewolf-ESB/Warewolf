@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
@@ -24,7 +23,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     /// Summary description for DateTimeParserTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DateTimeParserTests
     {
         static IDateTimeParser _parser;

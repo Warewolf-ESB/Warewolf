@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2;
 using Dev2.Tests.Activities;
@@ -27,7 +26,6 @@ namespace ActivityUnitTests.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +20,6 @@ namespace Dev2.Core.Tests.DataList
     /// Summary description for InputOutputViewModelEqualityComparerTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class InputOutputViewModelEqualityComparerTest
     {
         /// <summary>

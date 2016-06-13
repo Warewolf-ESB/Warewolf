@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Operations
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2IOBrokerTests
     {
         /// <summary>

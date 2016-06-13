@@ -11,7 +11,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.ConnectionHelpers;
@@ -21,7 +20,6 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public partial class ConnectControl
     {
         public ConnectControl()

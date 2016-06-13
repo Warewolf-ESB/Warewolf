@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Data.Decisions.Operations;
@@ -28,7 +27,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Decision
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DecisionTests
     {
         [TestMethod]

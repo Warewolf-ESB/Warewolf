@@ -10,7 +10,6 @@
 */
 
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.Activities.Designers2.Core.Controls;
@@ -21,7 +20,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2DataGridTests
     {
         [TestMethod]

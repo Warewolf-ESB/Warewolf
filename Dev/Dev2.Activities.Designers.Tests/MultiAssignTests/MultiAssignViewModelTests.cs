@@ -10,7 +10,6 @@
 */
 
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Studio.Core.Activities.Utils;
@@ -22,7 +21,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.MultiAssignTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class MultiAssignViewModelTests
     {
         [TestMethod]

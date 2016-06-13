@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
@@ -67,7 +66,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
         }
 
-        [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>

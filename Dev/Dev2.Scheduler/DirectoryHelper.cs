@@ -9,13 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Scheduler
-{
-    [ExcludeFromCodeCoverage] // not required for code coverage this is simply a pass through required for unit testing
+{ // not required for code coverage this is simply a pass through required for unit testing
     public class DirectoryHelper : IDirectoryHelper
     {
         public string[] GetFiles(string path)

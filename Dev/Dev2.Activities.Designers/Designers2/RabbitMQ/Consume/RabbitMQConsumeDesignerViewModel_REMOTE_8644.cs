@@ -34,7 +34,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
     {
         private readonly IRabbitMQSourceModel _model;
 
-        [ExcludeFromCodeCoverage]
         public RabbitMQConsumeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -216,7 +215,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [ExcludeFromCodeCoverage]
         private void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
@@ -226,7 +224,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

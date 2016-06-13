@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +24,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for RecordsetLengthTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RecordsetLengthTest : BaseActivityUnitTest
     {
         /// <summary>

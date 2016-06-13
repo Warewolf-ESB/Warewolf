@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +21,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// Summary description for DsfActivityFindMissingStrategyTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfActivityFindMissingStrategyTests
     {
         /// <summary>

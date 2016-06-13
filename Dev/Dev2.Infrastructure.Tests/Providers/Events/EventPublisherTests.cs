@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Communication;
 using Dev2.Providers.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Providers.Events
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class EventPublisherTests
     {
         [TestMethod]

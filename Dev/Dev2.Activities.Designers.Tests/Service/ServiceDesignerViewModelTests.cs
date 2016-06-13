@@ -14,7 +14,6 @@ using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -48,7 +47,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Service
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ServiceDesignerViewModelTests
     {
         const string ExpectedName = "TestServiceName";
