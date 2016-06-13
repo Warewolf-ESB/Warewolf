@@ -1,32 +1,31 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.ExtMethods;
 using System;
 using System.Collections.Generic;
-using Dev2.Common.ExtMethods;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.Interfaces.Enums.Enums
 {
     public static class Dev2EnumConverter
     {
-
         public static IList<string> ConvertEnumsTypeToStringList<tEnum>() where tEnum : struct
         {
-            Type enumType = typeof (tEnum);
+            Type enumType = typeof(tEnum);
 
             IList<string> result = new List<string>();
 
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach (object value in Enum.GetValues(enumType))
-                // ReSharper restore LoopCanBeConvertedToQuery
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 result.Add((value as Enum).GetDescription());
             }
@@ -48,7 +47,7 @@ namespace Dev2.Common.Interfaces.Enums.Enums
 
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach (object value in Enum.GetValues(type))
-                // ReSharper restore LoopCanBeConvertedToQuery
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if ((value as Enum).GetDescription() == discription)
                 {
