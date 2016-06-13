@@ -2108,7 +2108,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and debug your workflow service.
+        ///   Looks up a localized string similar to Run and debug your workflow service  [F5] or [F6] or [F7].
         /// </summary>
         public static string DebugToolTip {
             get {
@@ -8150,7 +8150,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run and Debug this workflow [F5] or [F6] or [F7].
+        ///   Looks up a localized string similar to Run and Debug this workflow.
         /// </summary>
         public static string SettingsSecurityResourceToolTipExecute {
             get {
