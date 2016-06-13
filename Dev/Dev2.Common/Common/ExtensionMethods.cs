@@ -1,13 +1,14 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using ChinhDo.Transactions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using ChinhDo.Transactions;
 
 namespace Dev2.Common.Common
 {
@@ -45,7 +45,7 @@ namespace Dev2.Common.Common
             return FromHierarchy(source, nextItem, s => s != null);
         }
 
-        #endregion
+        #endregion Exception Unrolling
 
         #region StringBuilder Methods
 
@@ -76,11 +76,11 @@ namespace Dev2.Common.Common
         /// <param name="fileName">Name of the file.</param>
         /// <param name="encoding">The encoding.</param>
         /// <param name="fileManager"></param>
-        public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding,IFileManager fileManager)
+        public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding, IFileManager fileManager)
         {
             int length = sb.Length;
             int startIdx = 0;
-            var rounds = (int) Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
             // remove the darn header ;)
             sb = sb.CleanEncodingHeaderForXmlSave();
@@ -98,7 +98,7 @@ namespace Dev2.Common.Common
             {
                 for (int i = 0; i < rounds; i++)
                 {
-                    var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
+                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
                     if (len > sb.Length - startIdx)
                     {
                         len = sb.Length - startIdx;
@@ -120,7 +120,7 @@ namespace Dev2.Common.Common
         {
             try
             {
-                // first try utf8, if that fails then unicode. 
+                // first try utf8, if that fails then unicode.
                 // some test where kicking up issues with utf8 ;)
 
                 using (Stream result = sb.EncodeStream(Encoding.UTF8))
@@ -156,7 +156,7 @@ namespace Dev2.Common.Common
         {
             try
             {
-                // first try utf8, if that fails then unicode. 
+                // first try utf8, if that fails then unicode.
                 // some test where kicking up issues with utf8 ;)
                 Stream result = sb.EncodeStream(Encoding.UTF8);
                 XElement.Load(result);
@@ -176,11 +176,11 @@ namespace Dev2.Common.Common
         {
             int length = sb.Length;
             int startIdx = 0;
-            var rounds = (int) Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
             var ms = new MemoryStream(length);
             for (int i = 0; i < rounds; i++)
             {
-                var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
                 if (len > sb.Length - startIdx)
                 {
                     len = sb.Length - startIdx;
@@ -209,7 +209,6 @@ namespace Dev2.Common.Common
                 sb = sb.Replace(">", "&gt;");
             }
 
-
             return sb;
         }
 
@@ -232,7 +231,6 @@ namespace Dev2.Common.Common
             return sb;
         }
 
-
         /// <summary>
         ///     Unescapes the specified string builder
         /// </summary>
@@ -251,6 +249,7 @@ namespace Dev2.Common.Common
 
             return sb;
         }
+
         /// <summary>
         ///     Determines whether [contains] [the specified string builder].
         /// </summary>
@@ -387,7 +386,7 @@ namespace Dev2.Common.Common
             return true;
         }
 
-        #endregion
+        #endregion StringBuilder Methods
 
         /// <summary>
         ///     Extracts the XML attribute from unsafe XML.
@@ -413,7 +412,6 @@ namespace Dev2.Common.Common
 
             return sb.Substring(startIndex, length);
         }
-
 
         // -- End StringBuilder Methods
 
@@ -465,7 +463,7 @@ namespace Dev2.Common.Common
 
         public static byte[] GetByteArray(Stream stream)
         {
-            var buffer = new byte[16*1024];
+            var buffer = new byte[16 * 1024];
             using (var ms = new MemoryStream())
             {
                 int read;

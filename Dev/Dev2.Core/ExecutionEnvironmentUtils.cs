@@ -189,11 +189,13 @@ namespace Dev2
         }
         public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList,int update)
         {
-            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(dataList), Newtonsoft.Json.Formatting.Indented, true);
+
+            var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
+            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(fixedDataList), Newtonsoft.Json.Formatting.Indented, true);
             var deserializeObject = JsonConvert.DeserializeObject(serializeXNode) as JObject;
             JObject inputObject;
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString());
-            if(!toLoad.IsJSON())
+            if (!toLoad.IsJSON())
             {
                 var sXNode = JsonConvert.SerializeXNode(XDocument.Parse(toLoad), Newtonsoft.Json.Formatting.Indented, true);
                 inputObject = JsonConvert.DeserializeObject(sXNode) as JObject;

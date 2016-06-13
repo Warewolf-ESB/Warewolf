@@ -1,16 +1,16 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.Text;
-using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
@@ -48,7 +48,6 @@ namespace Dev2.Common
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
         {
             var result = new StringBuilder();
-
 
             if (!isReversed)
             {
@@ -123,7 +122,7 @@ namespace Dev2.Common
                 {
                     char tmp;
 
-                    // fetch next value while 
+                    // fetch next value while
                     char previous = '\0';
                     while (canidate.MoveNext() &&
                            ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(previous)))
@@ -146,7 +145,6 @@ namespace Dev2.Common
 
             return result.ToString();
         }
-
 
         public int OpLength()
         {
@@ -202,7 +200,7 @@ namespace Dev2.Common
             return result;
         }
 
-        #endregion
+        #endregion Private Method
 
         private bool SkipDueToEscapeChar(char[] candidate, int pos)
         {

@@ -366,6 +366,11 @@ namespace Warewolf.Studio.ViewModels
             ShowContextMenu = true;
         }
 
+        public void UpdateChildrenCount()
+        {
+            OnPropertyChanged(()=>ChildrenCount);
+        }
+
         public void SetPropertiesForDialog()
         {
             if (_isDialog)

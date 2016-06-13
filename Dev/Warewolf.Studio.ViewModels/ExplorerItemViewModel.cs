@@ -380,6 +380,11 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
 
+        public void UpdateChildrenCount()
+        {
+            OnPropertyChanged(()=>ChildrenCount);
+        }
+
 
         public void CreateNewFolder()
         {
@@ -497,35 +502,43 @@ namespace Warewolf.Studio.ViewModels
 
         public void Delete()
         {
-            var environmentModel = EnvironmentModel;
-
-            if (environmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
+            try
             {
-                ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
-                // Remove the item from the parent for studio change to show, then do the delete from the server.
-                if (Parent != null)
+                var environmentModel = EnvironmentModel;
+
+                if (environmentModel != null &&
+                    _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
                 {
-                    Parent.RemoveChild(this);
-                }
-                //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
-                _fileMetadata = _explorerRepository.Delete(this);
-                if (_fileMetadata.IsDeleted)
-                {
-                    if (ResourceType == "ServerSource" || IsServer)
-                    {
-                        Server.UpdateRepository.FireServerSaved();
-                    }
-                }
-                else
-                {
-                    // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
+                    ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
+                    // Remove the item from the parent for studio change to show, then do the delete from the server.
                     if (Parent != null)
                     {
-                        Parent.AddChild(this);
+                        Parent.RemoveChild(this);
                     }
-                    ResourceId = _fileMetadata.ResourceId;
-                    ShellViewModel.ShowDependencies(ResourceId, Server);
+                    //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
+                    _fileMetadata = _explorerRepository.Delete(this);
+                    if (_fileMetadata.IsDeleted)
+                    {
+                        if (ResourceType == "ServerSource" || IsServer)
+                        {
+                            Server.UpdateRepository.FireServerSaved();
+                        }
+                    }
+                    else
+                    {
+                        ResourceId = _fileMetadata.ResourceId;
+                        ShellViewModel.ShowDependencies(ResourceId, Server);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
+                if (Parent != null)
+                {
+                    Parent.AddChild(this);
+                }
+                ShowErrorMessage(ex.Message, "Delete not allowed");
             }
         }
 
@@ -1171,38 +1184,31 @@ namespace Warewolf.Studio.ViewModels
                         return false;
                     }
                 }
-                RemoveChildFromParent();
                 var moveResult = await _explorerRepository.Move(this, destination);
                 if (!moveResult)
                 {
-                    ShowErrorMessage("An unexpected error occured which prevented the resource from being moved.");
+                    ShowErrorMessage("An unexpected error occured which prevented the resource from being moved.", "Move Not allowed");
                     Server.UpdateRepository.FireItemSaved();
                     return false;
                 }
+                destination.UpdateChildrenCount();
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(ex.Message);
+                ShowErrorMessage(ex.Message, "Move Not allowed");
                 Server.UpdateRepository.FireItemSaved();
                 return false;
             }
             return true;
         }
-        private void RemoveChildFromParent()
-        {
-            if (Parent != null)
-            {
-                Parent.RemoveChild(this);
-            }
-        }
 
-        public void ShowErrorMessage(string errorMessage)
+        public void ShowErrorMessage(string errorMessage, string header)
         {
             var a = new PopupMessage
             {
                 Buttons = MessageBoxButton.OK,
                 Description = errorMessage,
-                Header = "Move Not allowed",
+                Header = header,
                 Image = MessageBoxImage.Error
             };
             ShellViewModel.ShowPopup(a);
