@@ -56,7 +56,6 @@ Scenario Outline: Read File validation
 	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
-	When validating the tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the read file tool is executed
