@@ -28,6 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         private readonly ScenarioContext scenarioContext;
 
         public CalculateSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +18,6 @@ namespace Dev2.Data.Tests
     /// Summary description for XmlHelperTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class XmlHelperTest
     {
         /// <summary>

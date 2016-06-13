@@ -307,7 +307,7 @@ https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
     <value>Connect / disconnect the selected server</value>
   </data>
   <data name="DebugToolTip" xml:space="preserve">
-    <value>Run and debug your workflow service</value>
+    <value>Run and debug your workflow service  [F5] or [F6] or [F7]</value>
   </data>
   <data name="ExplorerItemEditToolTip" xml:space="preserve">
     <value>You have view permission on this item. Click to open</value>
@@ -542,7 +542,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Create a new database source</value>
   </data>
   <data name="MenuDeployToolTip" xml:space="preserve">
-    <value>Move resources between Warewolf servers</value>
+    <value>Move resources between Warewolf servers [CTRL+D]</value>
   </data>
   <data name="MenuDownloadToolTip" xml:space="preserve">
     <value>A new version of Warewolf is available for download</value>
@@ -554,13 +554,13 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Lock / unlock the menu</value>
   </data>
   <data name="MenuNewServiceToolTip" xml:space="preserve">
-    <value>Create a new service</value>
+    <value>Create a new service [CTRL+W]</value>
   </data>
   <data name="MenuPluginToolTip" xml:space="preserve">
     <value>Create a new plugin source</value>
   </data>
   <data name="MenuSaveToolTip" xml:space="preserve">
-    <value>Save this tab</value>
+    <value>Save this tab [CTRL+S]</value>
   </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.PostgreSql;
@@ -20,7 +19,6 @@ using Warewolf.Core;
 namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class PostgresSqlDatabaseDesignerViewModelTests
     {
         public const string TestOwner = "Bernardt Joubert";
@@ -282,11 +280,9 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public void CreateNewSource()
         {
         }
-        [ExcludeFromCodeCoverage]
         public void EditSource(IDbSource selectedSource)
         {
         }
@@ -296,7 +292,6 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             return _updateRepository.TestDbService(inputValues);
         }
 
-        [ExcludeFromCodeCoverage]
         public IStudioUpdateManager UpdateRepository
         {
             get

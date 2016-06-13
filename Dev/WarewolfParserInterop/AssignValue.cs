@@ -1,7 +1,6 @@
 ﻿
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
 
 namespace WarewolfParserInterop
@@ -31,8 +30,7 @@ namespace WarewolfParserInterop
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        [ExcludeFromCodeCoverage] //fenerated
+        /// <param name="other">An object to compare with this object.</param> //fenerated
         public bool Equals(AssignValue other)
         {
             if(ReferenceEquals(null, other))
@@ -52,8 +50,7 @@ namespace WarewolfParserInterop
         /// <returns>
         /// true if the specified object  is equal to the current object; otherwise, false.
         /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
-        [ExcludeFromCodeCoverage] //fenerated
+        /// <param name="obj">The object to compare with the current object. </param> //fenerated
         public override bool Equals(object obj)
         {
             if(ReferenceEquals(null, obj))
@@ -76,21 +73,18 @@ namespace WarewolfParserInterop
         /// </summary>
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        [ExcludeFromCodeCoverage] //fenerated
+        /// </returns> //fenerated
         public override int GetHashCode()
         {
             unchecked
             {
                 return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (Value != null ? Value.GetHashCode() : 0);
             }
-        }
-        [ExcludeFromCodeCoverage] //fenerated
+        } //fenerated
         public static bool operator ==(AssignValue left, AssignValue right)
         {
             return Equals(left, right);
-        }
-        [ExcludeFromCodeCoverage] //fenerated
+        } //fenerated
         public static bool operator !=(AssignValue left, AssignValue right)
         {
             return !Equals(left, right);

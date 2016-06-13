@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -26,7 +25,6 @@ namespace Dev2.Core.Tests
     /// Summary description for DeployServiceTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DeployServiceTest
     {
 

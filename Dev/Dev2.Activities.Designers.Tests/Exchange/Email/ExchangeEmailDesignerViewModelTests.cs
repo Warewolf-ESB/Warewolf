@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
@@ -27,7 +26,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Exchange.Email
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ExchangeEmailDesignerViewModelTests
     {
         public const string TestOwner = "Bernardt Joubert";

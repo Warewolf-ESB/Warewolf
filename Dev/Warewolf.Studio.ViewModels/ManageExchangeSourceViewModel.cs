@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -498,7 +497,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string AutoDiscoverLabel
         {
             get
@@ -507,7 +505,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string UserNameLabel
         {
             get
@@ -516,7 +513,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string PasswordLabel
         {
             get
@@ -527,7 +523,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         
-        [ExcludeFromCodeCoverage]
         public string TimeoutLabel
         {
             get
@@ -537,7 +532,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string TestLabel
         {
             get
@@ -546,7 +540,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EmailFromLabel
         {
             get
@@ -555,7 +548,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EmailToLabel
         {
             get
@@ -564,7 +556,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         protected override void OnDispose()
         {
             if (RequestServiceNameViewModel != null)
@@ -576,7 +567,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        [ExcludeFromCodeCoverage]
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
         // or indirectly by a user's code. Managed and unmanaged resources

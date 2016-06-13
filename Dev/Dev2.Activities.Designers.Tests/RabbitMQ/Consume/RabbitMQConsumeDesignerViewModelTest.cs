@@ -8,7 +8,6 @@ using Moq;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Core;
@@ -18,7 +17,6 @@ using Dev2.Common.Interfaces.Core;
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RabbitMQConsumeDesignerViewModelTest
     {
         [TestMethod]

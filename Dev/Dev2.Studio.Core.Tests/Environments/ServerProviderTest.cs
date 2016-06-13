@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -23,7 +22,6 @@ namespace Dev2.Core.Tests.Environments
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ServerProviderTest
     {
 

@@ -2,7 +2,6 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -42,7 +41,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         private IErrorInfo _worstDesignError;
 
-        [ExcludeFromCodeCoverage]
         public WebServicePutViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -356,7 +354,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         public string ButtonDisplayValue { get; set; }
 
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

@@ -12,7 +12,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -156,7 +155,6 @@ namespace Dev2.Intellisense.Helper
 
         #region Enumerate shares
 
-        [ExcludeFromCodeCoverage]
 // ReSharper disable InconsistentNaming
         static void EnumerateSharesNT(string server, ShareCollection shares)
 // ReSharper restore InconsistentNaming

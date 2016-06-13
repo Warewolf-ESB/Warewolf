@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
@@ -25,7 +24,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DataObjectTest
     {
 

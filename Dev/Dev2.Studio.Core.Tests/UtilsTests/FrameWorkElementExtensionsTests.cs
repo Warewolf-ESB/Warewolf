@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.Util.ExtensionMethods;
@@ -22,7 +21,6 @@ namespace Dev2.Core.Tests.UtilsTests
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FrameWorkElementExtensionsTests
     {
         /// <summary>

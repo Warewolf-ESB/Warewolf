@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Diagnostics;
@@ -13,7 +12,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DataSplitActivityTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class BaseActivityTests : BaseActivityUnitTest
     {
         /// <summary>

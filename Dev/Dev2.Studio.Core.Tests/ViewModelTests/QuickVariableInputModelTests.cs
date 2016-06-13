@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
@@ -25,7 +24,6 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// Summary description for QuickVariableInputModelTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class QuickVariableInputModelTests
     {
         private TestContext testContextInstance;

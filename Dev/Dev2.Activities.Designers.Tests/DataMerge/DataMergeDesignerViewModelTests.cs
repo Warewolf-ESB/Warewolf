@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.DataMerge;
 using Dev2.Studio.Core.Activities.Utils;
@@ -22,7 +21,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.DataMerge
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DataMergeDesignerViewModelTests
     {
         [TestMethod]

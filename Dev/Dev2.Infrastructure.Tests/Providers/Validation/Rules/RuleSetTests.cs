@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
@@ -20,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RuleSetTests
     {
         [TestMethod]

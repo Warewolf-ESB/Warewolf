@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -13,7 +12,6 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WcfSourceTests
     {
         public WcfSource GetSource()
@@ -111,7 +109,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             return new OutputDescription();
         }
 
-        [ExcludeFromCodeCoverage]
         public object ExcecuteMethod(IWcfAction action, string endpointUrl)
         {
             return new object();

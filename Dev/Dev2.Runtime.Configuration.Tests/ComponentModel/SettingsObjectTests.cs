@@ -10,14 +10,12 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SettingsObjectTests
     {
         [TestMethod]

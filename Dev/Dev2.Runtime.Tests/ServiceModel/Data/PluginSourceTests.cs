@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
@@ -22,7 +21,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class PluginSourceTests
     {
   

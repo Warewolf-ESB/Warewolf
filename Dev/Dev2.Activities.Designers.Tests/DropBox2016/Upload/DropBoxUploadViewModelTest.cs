@@ -18,7 +18,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class DropBoxUploadViewModelTest
     {

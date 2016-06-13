@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Activities;
 using Dev2.DataList;
@@ -25,7 +24,6 @@ namespace Dev2.Core.Tests.DataList
     /// Summary description for ActivityDataMappingBuilderTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ActivityDataMappingBuilderTest
     {
         /// <summary>

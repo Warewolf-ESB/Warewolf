@@ -12,7 +12,6 @@ using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -25,7 +24,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Tests that the Properties have not changed on the activities
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class HighLevel_ActivityTests : BaseActivityUnitTest
     {

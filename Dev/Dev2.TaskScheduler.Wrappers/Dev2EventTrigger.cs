@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.Win32.TaskScheduler;
@@ -45,7 +44,6 @@ namespace Dev2.TaskScheduler.Wrappers
             get { return Instance.ValueQueries; }
         }
 
-        [ExcludeFromCodeCoverage]
         public bool GetBasic(out string log, out string source, out int? eventId)
         {
             return Instance.GetBasic(out log, out source, out eventId);

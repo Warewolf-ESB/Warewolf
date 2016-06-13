@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -36,13 +35,11 @@ namespace Dev2.Settings.Perfcounters
         private ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
         private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
-        [ExcludeFromCodeCoverage]
         internal PerfcounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment)
             : this(counters, environment,null)
         {
         }
 
-        [ExcludeFromCodeCoverage]
         IResourcePickerDialog CreateResourcePickerDialog()
         {
             var env = GetEnvironment();
@@ -51,7 +48,6 @@ namespace Dev2.Settings.Perfcounters
             return res;
         }
 
-        [ExcludeFromCodeCoverage]
         static IEnvironmentViewModel GetEnvironment()
         {
             var environment = EnvironmentRepository.Instance.ActiveEnvironment;
@@ -304,8 +300,7 @@ namespace Dev2.Settings.Perfcounters
 
         #endregion
 
-        #region Overrides of SettingsItemViewModel
-        [ExcludeFromCodeCoverage] //Not used but needed due to base class
+        #region Overrides of SettingsItemViewModel //Not used but needed due to base class
         protected override void CloseHelp()
         {
         }

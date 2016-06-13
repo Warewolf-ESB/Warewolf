@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -21,7 +20,6 @@ namespace Dev2.Tests.Diagnostics
 {
     // ReSharper disable InconsistentNaming
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DebugItemTests
     {
         const string LongText = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."

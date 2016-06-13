@@ -1,8 +1,7 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -29,10 +28,10 @@ namespace Dev2.Common.DependencyVisualization
 
         #region Fields
 
-        double _locationX, _locationY;
+        private double _locationX, _locationY;
         private readonly bool _isBroken;
 
-        #endregion // Fields
+        #endregion Fields
 
         #region INotifyPropertyChanged
 
@@ -40,7 +39,7 @@ namespace Dev2.Common.DependencyVisualization
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -61,7 +60,7 @@ namespace Dev2.Common.DependencyVisualization
             _isBroken = isBroken;
         }
 
-        #endregion // Constructor
+        #endregion Constructor
 
         #region Properties
 
@@ -82,7 +81,7 @@ namespace Dev2.Common.DependencyVisualization
             get { return _locationX; }
             set
             {
-                if(value == _locationX)
+                if (value == _locationX)
                     return;
 
                 _locationX = value;
@@ -96,7 +95,7 @@ namespace Dev2.Common.DependencyVisualization
             get { return _locationY; }
             set
             {
-                if(value == _locationY)
+                if (value == _locationY)
                     return;
 
                 _locationY = value;
@@ -119,7 +118,7 @@ namespace Dev2.Common.DependencyVisualization
 
         public bool IsBroken { get { return _isBroken; } }
 
-        #endregion // Properties
+        #endregion Properties
 
         #region Methods
 
@@ -133,7 +132,7 @@ namespace Dev2.Common.DependencyVisualization
         {
             StringBuilder result = new StringBuilder(string.Format("<node id=\"{0}\" x=\"{1}\" y=\"{2}\" broken=\"{3}\">", ID, LocationX, LocationY, IsBroken));
 
-            foreach(var nodeDependency in NodeDependencies)
+            foreach (var nodeDependency in NodeDependencies)
             {
                 result.Append(string.Format("<dependency id=\"{0}\" />", nodeDependency.ID));
             }
@@ -145,7 +144,7 @@ namespace Dev2.Common.DependencyVisualization
 
         public List<CircularDependency> FindCircularDependencies()
         {
-            if(NodeDependencies.Count == 0)
+            if (NodeDependencies.Count == 0)
                 return null;
 
             var circularDependencies = new List<CircularDependency>();
@@ -153,12 +152,12 @@ namespace Dev2.Common.DependencyVisualization
             var stack = new Stack<NodeInfo>();
             stack.Push(new NodeInfo(this));
 
-            while(stack.Any())
+            while (stack.Any())
             {
                 var current = stack.Peek().GetNextDependency();
-                if(current != null)
+                if (current != null)
                 {
-                    if(current.Node == this)
+                    if (current.Node == this)
                     {
                         var nodes = stack.Select(info => info.Node);
                         circularDependencies.Add(new CircularDependency(nodes));
@@ -166,7 +165,7 @@ namespace Dev2.Common.DependencyVisualization
                     else
                     {
                         bool visited = stack.Any(info => info.Node == current.Node);
-                        if(!visited)
+                        if (!visited)
                             stack.Push(current);
                     }
                 }
@@ -191,7 +190,7 @@ namespace Dev2.Common.DependencyVisualization
 
             public NodeInfo GetNextDependency()
             {
-                if(_index < Node.NodeDependencies.Count)
+                if (_index < Node.NodeDependencies.Count)
                 {
                     var nextNode = Node.NodeDependencies[_index++];
                     return new NodeInfo(nextNode);
@@ -200,10 +199,9 @@ namespace Dev2.Common.DependencyVisualization
                 return null;
             }
 
-            int _index;
+            private int _index;
         }
 
-        #endregion // Methods
-
+        #endregion Methods
     }
 }

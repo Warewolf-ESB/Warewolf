@@ -29,6 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         private readonly ScenarioContext scenarioContext;
 
         public DecisionSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

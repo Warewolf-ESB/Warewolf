@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         private readonly ScenarioContext scenarioContext;
 
         public DeleteSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
