@@ -26,6 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         private readonly ScenarioContext scenarioContext;
 
         public UniqueSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

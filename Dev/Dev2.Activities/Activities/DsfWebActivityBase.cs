@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -107,7 +106,6 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        [ExcludeFromCodeCoverage]
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             var headerValues = head as NameValue[] ?? head.ToArray();

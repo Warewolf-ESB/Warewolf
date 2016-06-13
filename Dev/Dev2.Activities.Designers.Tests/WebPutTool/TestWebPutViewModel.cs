@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
@@ -19,7 +18,6 @@ using Warewolf.Core;
 namespace Dev2.Activities.Designers.Tests.WebPutTool
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TestWebPutViewModel
     {
         #region Test Setup
@@ -346,7 +344,6 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
     public class InputViewForTest : ManageWebServiceInputViewModel
     {
         #region Overrides of ManageWebServiceInputViewModel
-        [ExcludeFromCodeCoverage]
         public void ShowView()
         {
 

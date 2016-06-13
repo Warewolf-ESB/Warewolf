@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class ScalarItemModelTests
     {

@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
@@ -29,7 +28,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// Summary description for DataGridActivityFindMissingStrategyTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DataGridActivityFindMissingStrategyTests
     {
         /// <summary>

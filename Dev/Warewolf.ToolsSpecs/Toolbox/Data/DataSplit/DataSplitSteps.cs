@@ -30,6 +30,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         private readonly ScenarioContext scenarioContext;
 
         public DataSplitSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

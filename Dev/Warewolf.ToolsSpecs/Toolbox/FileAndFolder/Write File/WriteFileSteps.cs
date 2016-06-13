@@ -29,6 +29,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         private readonly ScenarioContext scenarioContext;
 
         public WriteFileSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

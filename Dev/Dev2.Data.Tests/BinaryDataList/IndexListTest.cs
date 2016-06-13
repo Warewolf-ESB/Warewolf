@@ -10,14 +10,12 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class IndexListTest
     {
         [TestMethod]

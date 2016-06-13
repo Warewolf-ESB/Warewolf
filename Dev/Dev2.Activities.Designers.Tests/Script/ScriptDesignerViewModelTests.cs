@@ -10,7 +10,6 @@
 */
 
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
@@ -20,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.Script
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ScriptDesignerViewModelTests
     {
 

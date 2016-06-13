@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -42,7 +41,6 @@ using Moq;
 namespace Dev2.Core.Tests.Repositories
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     // ReSharper disable ObjectCreationAsStatement
     public class StudioResourceRepositoryTests

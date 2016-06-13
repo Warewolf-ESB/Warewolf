@@ -11,7 +11,6 @@
 
 using System;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -27,7 +26,6 @@ namespace Dev2.Sql.Tests
     /// <author>Trevor.Williams-Ros</author>
     /// <date>2013/02/21</date>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkflowsTests
     {
         const string TestServerUri = "http://localhost:1234/services/Test";

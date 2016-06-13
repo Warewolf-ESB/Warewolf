@@ -11,7 +11,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Tests.Properties;
@@ -24,7 +23,6 @@ namespace Dev2.Tests {
     /// Summary description for TokenizerTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TokenizerTest {
         const string Search = "AB-CD-DE-FG-HI";
         const string Search2 = "AB-CD-AB-CD";

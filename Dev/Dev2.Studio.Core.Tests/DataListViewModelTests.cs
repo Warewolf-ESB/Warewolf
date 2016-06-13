@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
@@ -33,7 +32,6 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public partial class DataListViewModelTests
     {
         #region Locals

@@ -2,7 +2,6 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.ToolBase;
 // ReSharper disable InconsistentNaming
 // ReSharper disable VirtualMemberCallInContructor
@@ -17,7 +16,6 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;

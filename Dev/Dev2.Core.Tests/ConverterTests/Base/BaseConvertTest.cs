@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Convertors.Base;
 using Dev2.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +19,6 @@ namespace Dev2.Tests.ConverterTests.Base
     /// PBI : 1204 - Base Convert Test
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class BaseConvertTest
     {
 

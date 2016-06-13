@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Utils;
@@ -28,7 +27,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
     /// Summary description for ServiceMappingHelperTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ServiceMappingHelperTest
     {
         /// <summary>

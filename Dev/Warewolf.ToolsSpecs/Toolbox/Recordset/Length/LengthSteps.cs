@@ -31,6 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
         private readonly ScenarioContext scenarioContext;
 
         public LengthSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

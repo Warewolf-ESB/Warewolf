@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Calculate;
 using Dev2.Studio.Core.Interfaces;
@@ -22,7 +21,6 @@ using Moq;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class CalculateIntellisenseProviderTest
     {
         // ReSharper disable InconsistentNaming

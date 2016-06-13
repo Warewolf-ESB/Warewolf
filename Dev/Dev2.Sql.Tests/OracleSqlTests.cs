@@ -12,7 +12,6 @@ using Moq;
 namespace Dev2.Sql.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class OracleSqlTests
     {
         /*

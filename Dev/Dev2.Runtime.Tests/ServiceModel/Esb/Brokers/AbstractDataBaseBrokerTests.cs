@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,7 +21,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class AbstractDataBaseBrokerTests
     {
         [TestMethod]

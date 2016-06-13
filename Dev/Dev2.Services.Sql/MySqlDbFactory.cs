@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
@@ -10,7 +9,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    [ExcludeFromCodeCoverage]
     internal class MySqlDbFactory : IDbFactory
     {
         #region Implementation of IDbFactory

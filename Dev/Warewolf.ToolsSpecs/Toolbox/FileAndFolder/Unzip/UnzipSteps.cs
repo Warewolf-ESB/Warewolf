@@ -30,6 +30,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         private readonly ScenarioContext scenarioContext;
 
         public UnzipSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
@@ -41,8 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add(CommonSteps.SourceUsernameHolder, userName.Replace('"', ' ').Trim());
             scenarioContext.Add(CommonSteps.SourcePasswordHolder, password.Replace('"', ' ').Trim());
         }
-
-        //
+        
         [When(@"the Unzip file tool is executed")]
         public void WhenTheUnzipFileToolIsExecuted()
         {

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Services.Sql;
@@ -24,7 +23,6 @@ using Moq;
 namespace Dev2.Sql.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SqlServerTests
     {
         [TestMethod]

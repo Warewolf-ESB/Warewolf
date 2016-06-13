@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using Dev2.Activities.Debug;
@@ -106,7 +105,6 @@ namespace Dev2.Activities
 
         
 
-        [ExcludeFromCodeCoverage]
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
         {
             var webclient = CreateClient(head, query, source);

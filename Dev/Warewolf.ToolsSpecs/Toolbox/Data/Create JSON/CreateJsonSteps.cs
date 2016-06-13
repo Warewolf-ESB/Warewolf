@@ -16,6 +16,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
         private readonly ScenarioContext scenarioContext;
 
         public CreateJsonSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

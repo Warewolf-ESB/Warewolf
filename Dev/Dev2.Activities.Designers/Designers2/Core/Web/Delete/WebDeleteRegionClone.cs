@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Annotations;
 using Dev2.Common.Interfaces;
@@ -22,12 +21,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         public ObservableCollection<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
         public string RequestUrl { get; set; }
-        [ExcludeFromCodeCoverage]
         public IToolRegion CloneRegion()
         {
             return this;
         }
-        [ExcludeFromCodeCoverage]
         public void RestoreRegion(IToolRegion toRestore)
         {
 
@@ -39,7 +36,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             set;
         }
 
-        [ExcludeFromCodeCoverage]
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

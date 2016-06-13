@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -22,7 +21,6 @@ namespace Dev2.Core.Tests
     /// A set of test cases to test the functionality of the DataListSingleton
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DataListSingletonTest
     {
 
