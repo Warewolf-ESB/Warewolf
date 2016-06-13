@@ -307,7 +307,7 @@ https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
     <value>Connect / disconnect the selected server</value>
   </data>
   <data name="DebugToolTip" xml:space="preserve">
-    <value>Run and debug your workflow service</value>
+    <value>Run and debug your workflow service  [F5] or [F6] or [F7]</value>
   </data>
   <data name="ExplorerItemEditToolTip" xml:space="preserve">
     <value>You have view permission on this item. Click to open</value>
@@ -3417,7 +3417,7 @@ Public is an internal Warewolf group that applies to everyone.</value>
     <value>Edit and Delete this workflow</value>
   </data>
   <data name="SettingsSecurityResourceToolTipExecute" xml:space="preserve">
-    <value>Run and Debug this workflow [F5] or [F6] or [F7]</value>
+    <value>Run and Debug this workflow</value>
   </data>
   <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
     <value>Click the Ellipsis to add a resource</value>
