@@ -9,7 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
@@ -81,7 +80,6 @@ namespace Dev2.TaskScheduler.Wrappers
             return _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance));
         }
 
-        [ExcludeFromCodeCoverage]
 // ReSharper disable ParameterHidesMember
 // ReSharper disable InconsistentNaming
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,

@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -762,7 +761,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region overrides
 
-        [ExcludeFromCodeCoverage]
         protected override void OnActivate()
         {
             base.OnActivate();

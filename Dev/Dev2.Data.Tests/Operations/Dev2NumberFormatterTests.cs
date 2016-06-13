@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
@@ -21,7 +20,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Operations
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2NumberFormatterTests
     {
         #region Class Members

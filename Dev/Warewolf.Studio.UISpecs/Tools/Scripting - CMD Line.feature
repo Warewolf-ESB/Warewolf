@@ -1,4 +1,5 @@
-﻿Feature: Scripting - CMD Line
+﻿@Ignore
+Feature: Scripting - CMD Line
 	In order to execute command line scripts
 	As a Warewolf user
 	I want a tool that allows me to execute commands 

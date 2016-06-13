@@ -20,7 +20,7 @@ namespace Dev2.Data.Interfaces
         string Index { get; set; }        
         enRecordsetIndexType RecordsetIndexType { get; set; }
         bool CanHaveMutipleRows { get; set; }
-
+        string ParentName { get; set; }
         bool IsObject { get; set; }
         string Value { get; set; }
         string DisplayValue { get; set; }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -13,7 +12,6 @@ using Dev2.Common.Interfaces.Core;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ManageWcfSourceViewModelTests
     {
         public const string TestOwner = "Bernardt Joubert";

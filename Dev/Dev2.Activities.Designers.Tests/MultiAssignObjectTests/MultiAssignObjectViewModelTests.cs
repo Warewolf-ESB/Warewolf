@@ -15,14 +15,12 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class MultiAssignObjectViewModelTests
     {
         [TestMethod]

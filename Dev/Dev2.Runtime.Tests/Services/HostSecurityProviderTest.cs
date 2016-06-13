@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -27,7 +26,6 @@ namespace Dev2.Tests.Runtime.Services
     /// Summary description for HostSecurityProviderTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class HostSecurityProviderTest
     {
         static XElement TestXml;

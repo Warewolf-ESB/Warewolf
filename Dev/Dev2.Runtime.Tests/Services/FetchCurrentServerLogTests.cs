@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Dev2.Common;
@@ -22,7 +21,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FetchCurrentServerLogTests
     {
         #region Static Class Init

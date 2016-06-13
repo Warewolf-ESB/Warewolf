@@ -25,37 +25,46 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
     [Binding]
     public class EmailSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public EmailSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string body;
-            ScenarioContext.Current.TryGetValue("body", out body);
+            scenarioContext.TryGetValue("body", out body);
             string subject;
-            ScenarioContext.Current.TryGetValue("subject", out subject);
+            scenarioContext.TryGetValue("subject", out subject);
             string fromAccount;
-            ScenarioContext.Current.TryGetValue("fromAccount", out fromAccount);
+            scenarioContext.TryGetValue("fromAccount", out fromAccount);
             string password;
-            ScenarioContext.Current.TryGetValue("password", out password);
+            scenarioContext.TryGetValue("password", out password);
             string simulationOutput;
-            ScenarioContext.Current.TryGetValue("simulationOutput", out simulationOutput);
+            scenarioContext.TryGetValue("simulationOutput", out simulationOutput);
             string to;
-            ScenarioContext.Current.TryGetValue("to", out to);
+            scenarioContext.TryGetValue("to", out to);
             bool isHtml;
-            ScenarioContext.Current.TryGetValue("isHtml", out isHtml);
+            scenarioContext.TryGetValue("isHtml", out isHtml);
 
             var server = SimpleSmtpServer.Start(25);
-            ScenarioContext.Current.Add("server", server);
+            scenarioContext.Add("server", server);
 
             var selectedEmailSource = new EmailSource
             {
@@ -82,50 +91,50 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                 {
                     Action = sendEmail
                 };
-            ScenarioContext.Current.Add("activity", sendEmail);
+            scenarioContext.Add("activity", sendEmail);
         }
 
         [Given(@"the from account is ""(.*)""")]
         public void GivenTheFromAccountIs(string fromAccount)
         {
-            ScenarioContext.Current.Add("fromAccount", fromAccount);
+            scenarioContext.Add("fromAccount", fromAccount);
         }
 
         [Given(@"to address is ""(.*)""")]
         public void GivenToAddressIs(string to)
         {
-            ScenarioContext.Current.Add("to", to);
+            scenarioContext.Add("to", to);
         }
 
         [Given(@"the subject is ""(.*)""")]
         public void GivenTheSubjectIs(string subject)
         {
-            ScenarioContext.Current.Add("subject", subject);
+            scenarioContext.Add("subject", subject);
         }
         [Given(@"the email is html")]
         public void GivenTheEmailIsHtml()
         {
-            ScenarioContext.Current.Add("IsHtml", true);
+            scenarioContext.Add("IsHtml", true);
         }
 
 
         [Given(@"the sever name is ""(.*)"" with password as ""(.*)""")]
         public void GivenTheSeverNameIsWithPasswordAs(string serverName, string password)
         {
-            ScenarioContext.Current.Add("serverName", serverName);
-            ScenarioContext.Current.Add("password", password);
+            scenarioContext.Add("serverName", serverName);
+            scenarioContext.Add("password", password);
         }
 
         [Given(@"I have an email variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAnEmailVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -134,19 +143,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Given(@"body is ""(.*)""")]
         public void GivenBodyIs(string body)
         {
-            ScenarioContext.Current.Add("body", body);
+            scenarioContext.Add("body", body);
         }
 
         [Given(@"I have a variable ""(.*)"" with this email address ""(.*)""")]
         public void GivenIHaveAVariableWithThisEmailAddress(string variable, string emailAddress)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, emailAddress));
         }
@@ -156,7 +165,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the email result will be ""(.*)""")]
@@ -165,7 +174,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             if(string.IsNullOrEmpty(expectedResult))

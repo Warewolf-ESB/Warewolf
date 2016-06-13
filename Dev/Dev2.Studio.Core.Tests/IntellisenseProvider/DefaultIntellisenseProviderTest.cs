@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Caliburn.Micro;
@@ -35,7 +34,6 @@ using Moq;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DefaultIntellisenseProviderTest
     {
         // ReSharper disable InconsistentNaming

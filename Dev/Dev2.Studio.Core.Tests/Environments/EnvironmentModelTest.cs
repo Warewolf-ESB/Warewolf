@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Network;
 using Caliburn.Micro;
@@ -36,7 +35,6 @@ namespace Dev2.Core.Tests.Environments
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class EnvironmentModelTest
     {
         [TestMethod]

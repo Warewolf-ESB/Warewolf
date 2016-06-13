@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.DataList.Contract;
@@ -28,7 +27,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 1220 - 2013.05.27 - TWR - Created
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WebServicesTest
     {
         string _requestResponse;

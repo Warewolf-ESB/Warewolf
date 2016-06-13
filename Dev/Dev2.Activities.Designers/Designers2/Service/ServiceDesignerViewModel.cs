@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -1327,7 +1326,6 @@ namespace Dev2.Activities.Designers2.Service
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;

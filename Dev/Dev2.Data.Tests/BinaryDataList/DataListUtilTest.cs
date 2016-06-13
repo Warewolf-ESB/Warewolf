@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
@@ -24,7 +23,6 @@ using Moq;
 namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class DataListUtilTest
     {

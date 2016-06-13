@@ -11,7 +11,6 @@
 
 using System;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Parsing.Intellisense;
 using System.Parsing.SyntaxAnalysis;
 using System.Parsing.Tokenization;
@@ -24,7 +23,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Unlimited.UnitTest.Framework.Parsing
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TokenizerTest
     {
         #region RequiredDefinitions Tests

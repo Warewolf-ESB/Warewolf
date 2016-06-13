@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Parsing
@@ -20,7 +19,6 @@ namespace Dev2.Tests.Parsing
     /// Summary description for BitVectorTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class BitVectorTest
     {
         private TestContext testContextInstance;

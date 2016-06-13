@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.DynamicServices;
 using Dev2.TO;
 using FluentAssertions;
@@ -23,7 +22,6 @@ namespace Dev2.Tests.Activities.TOTests
 {
 
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class JsonMappingCompoundTests
     {
         [TestMethod]

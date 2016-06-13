@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
 using TechTalk.SpecFlow;
@@ -20,13 +21,21 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
     [Binding]
     public class MoveSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public MoveSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
 
         [When(@"the Move file tool is executed")]
         public void WhenTheMoveFileToolIsExecuted()
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         protected override void BuildDataList()
@@ -35,23 +44,23 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
 
             var move = new DsfPathMove
             {
-                InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
-                DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
-                DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
-                Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
-                Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
-                DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),
+                DestinationUsername = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
+                DestinationPassword = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
+                Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
+                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile)
             };
 
             TestStartNode = new FlowStep
             {
                 Action = move
             };
-            ScenarioContext.Current.Add("activity", move);
+            scenarioContext.Add("activity", move);
         }
     }
 }

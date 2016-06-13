@@ -11,7 +11,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common.Interfaces.Utils;
 using Dev2.Common.Interfaces.Wrappers;
@@ -23,7 +22,6 @@ using Moq;
 namespace Dev2.Core.Tests.Helpers
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
    
     public class TestProgressFileDownloaderTests
     {

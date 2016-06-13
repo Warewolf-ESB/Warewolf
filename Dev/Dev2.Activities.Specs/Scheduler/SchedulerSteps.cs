@@ -40,6 +40,16 @@ namespace Dev2.Activities.Specs.Scheduler
     [Binding]
     public class SchedulerSteps
     {
+        private readonly ScenarioContext scenarioContext;
+        private readonly CommonSteps _commonSteps;
+
+        public SchedulerSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(this.scenarioContext);
+        }
+
         [Given(@"I have a schedule ""(.*)""")]
         public void GivenIHaveASchedule(string scheduleName)
         {
@@ -211,8 +221,7 @@ namespace Dev2.Activities.Specs.Scheduler
             var debug = resources.First().DebugOutput;
             // ReSharper restore AssignNullToNotNullAttribute
             var debugTocompare = debug.Last();
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugOutputAs(table, debugTocompare.Outputs.SelectMany(s => s.ResultsList).ToList(), true);
+            _commonSteps.ThenTheDebugOutputAs(table, debugTocompare.Outputs.SelectMany(s => s.ResultsList).ToList(), true);
         }
 
         [Given(@"task history ""(.*)"" is ""(.*)""")]

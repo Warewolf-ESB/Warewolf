@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
@@ -24,7 +23,6 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DebugStateTreeViewItemViewModelTests
     {
         [ClassInitialize]

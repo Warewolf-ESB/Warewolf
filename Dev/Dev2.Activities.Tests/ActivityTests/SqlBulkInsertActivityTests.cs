@@ -14,7 +14,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Activities.SqlBulkInsert;
@@ -29,7 +28,6 @@ using Moq;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SqlBulkInsertActivityTests : BaseActivityUnitTest
     {
         public TestContext TestContext { get; set; }

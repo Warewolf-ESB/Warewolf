@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class GatherSystemInformationTOTests
     {
         [TestMethod]

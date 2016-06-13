@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
 using Dev2.Factories;
 using Dev2.Interfaces;
@@ -25,7 +24,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// Summary description for MixedActivityFindMissingStrategyTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class MixedActivityFindMissingStrategyTests
     {

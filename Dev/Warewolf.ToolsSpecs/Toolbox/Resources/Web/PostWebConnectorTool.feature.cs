@@ -69,11 +69,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.Web
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Web Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Post Web Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Post Web Connector Tool")]
-        public virtual void OpenNewWebTool()
+        public virtual void OpenNewPostWebTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Web Tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Post Web Tool", ((string[])(null)));
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
@@ -177,11 +177,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding parameters in request headers is updating variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Adding parameters in Post Post Web Connector Tool request headers is updating var" +
+            "iables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Post Web Connector Tool")]
-        public virtual void AddingParametersInRequestHeadersIsUpdatingVariables()
+        public virtual void AddingParametersInPostPostWebConnectorToolRequestHeadersIsUpdatingVariables()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding parameters in request headers is updating variables", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding parameters in Post Post Web Connector Tool request headers is updating var" +
+                    "iables", ((string[])(null)));
 #line 51
 this.ScenarioSetup(scenarioInfo);
 #line 52
@@ -255,11 +257,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Web Service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Post Web Service")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Post Web Connector Tool")]
-        public virtual void EditingWebService()
+        public virtual void EditingPostWebService()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Web Service", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Post Web Service", ((string[])(null)));
 #line 82
  this.ScenarioSetup(scenarioInfo);
 #line 83
@@ -281,11 +283,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Sources")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Post Post Web Connector Tool Sources")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Post Web Connector Tool")]
-        public virtual void ChangingSources()
+        public virtual void ChangingPostPostWebConnectorToolSources()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Sources", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Post Post Web Connector Tool Sources", ((string[])(null)));
 #line 91
 this.ScenarioSetup(scenarioInfo);
 #line 92
@@ -347,11 +349,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Connector Tool returns text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Post Web Connector Tool returns text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Post Web Connector Tool")]
-        public virtual void WebConnectorToolReturnsText()
+        public virtual void PostWebConnectorToolReturnsText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Connector Tool returns text", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post Web Connector Tool returns text", ((string[])(null)));
 #line 120
 this.ScenarioSetup(scenarioInfo);
 #line 121

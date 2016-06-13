@@ -1,8 +1,7 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -27,20 +26,20 @@ namespace Dev2.Common.DependencyVisualization
             Nodes = new List<Node>(nodes);
         }
 
-        #endregion // Constructor
+        #endregion Constructor
 
         #region Properties
 
         public List<Node> Nodes { get; private set; }
 
-        #endregion // Properties
+        #endregion Properties
 
         #region Base Class Overrides
 
         public override bool Equals(object obj)
         {
             var other = obj as CircularDependency;
-            return 
+            return
                 other != null &&
                 other.Nodes.Count == Nodes.Count &&
                 other.Nodes.Intersect(Nodes).Count() == Nodes.Count;
@@ -51,7 +50,7 @@ namespace Dev2.Common.DependencyVisualization
             return Nodes.GetHashCode();
         }
 
-        #endregion // Base Class Overrides
+        #endregion Base Class Overrides
 
         #region IComparable<CircularDependency> Members
 
@@ -60,6 +59,6 @@ namespace Dev2.Common.DependencyVisualization
             return Nodes.Count.CompareTo(other.Nodes.Count);
         }
 
-        #endregion // IComparable<CircularDependency> Members
+        #endregion IComparable<CircularDependency> Members
     }
 }

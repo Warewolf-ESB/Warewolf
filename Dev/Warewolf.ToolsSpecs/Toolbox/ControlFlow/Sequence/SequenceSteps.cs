@@ -33,6 +33,17 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
     [Binding]
     public class SequenceSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+        private readonly CommonSteps _commonSteps;
+
+        public SequenceSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(this.scenarioContext);
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -42,9 +53,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenIHaveASequence(string sequenceName)
         {
             var dsfSequence = new DsfSequenceActivity { DisplayName = sequenceName };
-            ScenarioContext.Current.Add("activityList", new Dictionary<string, Activity>());
-            ScenarioContext.Current.Add("activity", dsfSequence);
-            CommonSteps.AddActivityToActivityList("", sequenceName, dsfSequence);
+            scenarioContext.Add("activityList", new Dictionary<string, Activity>());
+            scenarioContext.Add("activity", dsfSequence);
+            _commonSteps.AddActivityToActivityList("", sequenceName, dsfSequence);
             Assert.AreEqual(enFindMissingType.Sequence, dsfSequence.GetFindMissingType());
         }
 
@@ -67,13 +78,13 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 }
 
                 List<ActivityDTO> fieldCollection;
-                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+                scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
-            CommonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
         [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
@@ -87,44 +98,44 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var result = tableRow["Result"];
 
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.Result = result;
                 activity.ResultFields = returnFields;
                 activity.InFields = inFields;
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
         public void GivenCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
         {
-            CommonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddVariableToVariableList(resultVariable);
 
             DsfCalculateActivity calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
         }
 
         [Given(@"""(.*)"" contains Aggregate Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
         public void GivenContainsAggregateCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
         {
-            CommonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddVariableToVariableList(resultVariable);
 
             DsfAggregateCalculateActivity aggCalculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, aggCalculateActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, aggCalculateActivity);
         }
 
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            CommonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddVariableToVariableList(result);
 
             DsfCountRecordsetActivity countRecordsetActivity = new DsfCountRecordsetActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetActivity);
         }
 
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
@@ -136,12 +147,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var result = tableRow["result"];
                 var variable = tableRow["Variable"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
                 activity.RecordsetName = variable;
                 activity.Result = result;
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" search ""(.*)"" and result ""(.*)"" as")]
@@ -149,7 +160,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             var result = resultVariable;
             var recset = recsetToSearch;
-            CommonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddVariableToVariableList(result);
             DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
@@ -159,7 +170,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.ResultsCollection.Add(new FindRecordsTO(matchValue, matchType, 1, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains find unique ""(.*)"" as")]
@@ -176,9 +187,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.ResultFields = returnFields;
                 activity.Result = result;
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
@@ -193,7 +204,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.ConvertCollection.Add(new CaseConvertTO(variableToConvert, conversionType, variableToConvert, 1, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Gather System Info ""(.*)"" as")]
@@ -204,13 +215,13 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             {
                 var variable = tableRow["Variable"];
 
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
 
                 enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Random ""(.*)"" as")]
@@ -224,7 +235,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var to = tableRow["To"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.RandomType = type;
                 activity.To = to;
@@ -233,7 +244,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Format Number ""(.*)"" as")]
@@ -248,7 +259,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var decimalPlacesToShow = tableRow["Decimal to show"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.Expression = number;
                 activity.RoundingType = roundingType;
@@ -258,7 +269,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -274,7 +285,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var timeModifierAmount = tableRow["Add Time"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.DateTime = input1;
                 activity.InputFormat = inputFormat;
@@ -285,7 +296,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -301,7 +312,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var output = tableRow["Output In"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.Input1 = input1;
                 activity.Input2 = input2;
@@ -311,7 +322,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -327,16 +338,16 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var at = tableRow["At"];
                 var include = tableRow["Include"] == "Selected";
                 //var escapeChar = tableRow["Escape"];
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
                 if(!string.IsNullOrEmpty(valueToSplit))
                 {
                     activity.SourceString = valueToSplit;
                 }
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
                 activity.ResultsCollection.Add(new DataSplitDTO(variable, type, at, 1, include, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
@@ -353,8 +364,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.Find = find;
                 activity.ReplaceWith = replaceValue;
             }
-            CommonSteps.AddVariableToVariableList(resultVariable);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -374,8 +385,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.Characters = character;
                 activity.Direction = direction;
             }
-            CommonSteps.AddVariableToVariableList(resultVariable);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an Create ""(.*)"" as")]
@@ -396,9 +407,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.Overwrite = exist == "True";
                 activity.OutputPath = variable;
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -418,9 +429,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 //activity.Username = userName;
                 //activity.Password = password;
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
@@ -437,8 +448,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
                 activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
             }
-            CommonSteps.AddVariableToVariableList(resultVariable);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
@@ -454,7 +465,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 activity.ConvertCollection.Add(new BaseConvertTO(variableToConvert, from, to, variableToConvert, 1, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -470,10 +481,10 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 Action = sequence
             };
             string errorVariable;
-            ScenarioContext.Current.TryGetValue("errorVariable", out errorVariable);
+            scenarioContext.TryGetValue("errorVariable", out errorVariable);
 
             string webserviceToCall;
-            ScenarioContext.Current.TryGetValue("webserviceToCall", out webserviceToCall);
+            scenarioContext.TryGetValue("webserviceToCall", out webserviceToCall);
 
             if(!string.IsNullOrEmpty(errorVariable))
             {
@@ -501,8 +512,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             Thread.Sleep(2000);
             var debugStates = testDebugWriter.DebugStates.Where(a=>a.StateType!=StateType.Duration).ToList();
             var duration = testDebugWriter.DebugStates.Where(a => a.StateType == StateType.Duration).ToList();
-            ScenarioContext.Current.Add("duration", duration);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("duration", duration);
+            scenarioContext.Add("result", result);
             CheckDebugStates(debugStates);
             testDebugWriter.DebugStates.Clear();
             try
@@ -520,7 +531,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         void CheckDebugStates(IEnumerable<IDebugState> debugStates)
         {
             DsfSequenceActivity sequence;
-            ScenarioContext.Current.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activity", out sequence);
             if(sequence != null)
             {
                 var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.ToString() == sequence.UniqueID);
@@ -528,32 +539,24 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 Assert.IsTrue(count > 0);
             }
 
-            ScenarioContext.Current.Add("DebugStates", debugStates);
+            scenarioContext.Add("DebugStates", debugStates);
         }
 
-        static DsfSequenceActivity SetupSequence()
+        DsfSequenceActivity SetupSequence()
         {
             DsfSequenceActivity sequence;
-            ScenarioContext.Current.TryGetValue("activity", out sequence);
-//                        var activityList = CommonSteps.GetActivityList();
-//            
-//                        foreach(var activity in activityList)
-//                        {
-//                            sequence.Activities.Add(activity.Value);
-//                        }
+            scenarioContext.TryGetValue("activity", out sequence);
             return sequence;
         }
+
         [Then(@"the Sequence Has a Duration")]
         public void ThenTheSequenceHasADuration()
         {
-           var  dur =  ScenarioContext.Current.Get<IEnumerable<IDebugState>>("duration");
+           var  dur =  scenarioContext.Get<IEnumerable<IDebugState>>("duration");
             Assert.IsNotNull(dur);
             Assert.IsTrue(dur.Count()==1);
             Assert.IsTrue(dur.First().EndTime.Subtract(DateTime.Now).Ticks < 10000);
-
         }
-
-
 
         [Given(@"I have a ForEach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
         public void GivenIHaveAForEachAsExecutions(string activityName, string forEachType, string numberOfExecutions)
@@ -565,7 +568,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             forEachActivity.ForEachType = typeOfForEach;
             forEachActivity.NumOfExections = numberOfExecutions;
 
-            ScenarioContext.Current.Add(activityName, forEachActivity);
+            scenarioContext.Add(activityName, forEachActivity);
         }
 
         [When(@"the ForEach ""(.*)"" tool is executed")]
@@ -574,7 +577,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             BuildDataList();
 
             DsfForEachActivity forEachActivity;
-            ScenarioContext.Current.TryGetValue(activityName, out forEachActivity);
+            scenarioContext.TryGetValue(activityName, out forEachActivity);
 
             var sequence = SetupSequence();
             var activityFunc = new ActivityFunc<string, bool> { Handler = sequence };
@@ -588,7 +591,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             PerformExecution();
 
             List<IDebugState> debugStates;
-            ScenarioContext.Current.TryGetValue("DebugStates", out debugStates);
+            scenarioContext.TryGetValue("DebugStates", out debugStates);
 
             if(debugStates.Count > 0)
             {
@@ -599,7 +602,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             }
 
             Dictionary<string, Activity> activityList;
-            ScenarioContext.Current.TryGetValue("activityList", out activityList);
+            scenarioContext.TryGetValue("activityList", out activityList);
             activityList.Add(activityName, forEachActivity);
         }
 
@@ -608,26 +611,24 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void ThenDebugInputsAs(string toolName, Table table)
         {
             Dictionary<string, Activity> activityList;
-            ScenarioContext.Current.TryGetValue("activityList", out activityList);
+            scenarioContext.TryGetValue("activityList", out activityList);
             DsfSequenceActivity sequence;
-            ScenarioContext.Current.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activity", out sequence);
             var sequenceActivity = sequence.Activities.ToList().FirstOrDefault(activity => activity.DisplayName == toolName) ?? activityList[toolName];
             var actualDebugItems = GetDebugInputItemResults(sequenceActivity);
-            CommonSteps commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, actualDebugItems);
+            _commonSteps.ThenTheDebugInputsAs(table, actualDebugItems);
         }
 
         [Then(@"the ""(.*)"" debug outputs as")]
         public void ThenDebugOutputsAs(string toolName, Table table)
         {
             Dictionary<string, Activity> activityList;
-            ScenarioContext.Current.TryGetValue("activityList", out activityList);
+            scenarioContext.TryGetValue("activityList", out activityList);
             DsfSequenceActivity sequence;
-            ScenarioContext.Current.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activity", out sequence);
             var sequenceActivity = sequence.Activities.ToList().FirstOrDefault(activity => activity.DisplayName == toolName) ?? activityList[toolName];
             var actualDebugItems = GetDebugOutputItemResults(sequenceActivity);
-            CommonSteps commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugOutputAs(table, actualDebugItems);
+            _commonSteps.ThenTheDebugOutputAs(table, actualDebugItems);
         }
     }
 

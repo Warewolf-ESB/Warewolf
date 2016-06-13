@@ -1,4 +1,5 @@
-﻿Feature: FileAndFolder-Copy
+﻿@Ignore
+Feature: FileAndFolder-Copy
 	In order to be able to Copy File or Folder 
 	as a Warewolf user
 	I want a tool that Copy File or Folder from a given location to another location

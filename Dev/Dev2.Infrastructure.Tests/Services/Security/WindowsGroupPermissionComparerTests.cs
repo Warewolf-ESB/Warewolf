@@ -11,7 +11,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WindowsGroupPermissionComparerTests
     {
         [TestMethod]

@@ -23,6 +23,14 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class DownloadDropboxSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DownloadDropboxSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I drag DropboxDownload Tool onto the design surface")]
         public void GivenIDragReadDropboxToolOntoTheDesignSurface()
         {
@@ -51,24 +59,27 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
             var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
-            ScenarioContext.Current.Add("downloadViewModel", downloadViewModel);
-            ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
-            ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
+            scenarioContext.Add("downloadViewModel", downloadViewModel);
+            scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
+            scenarioContext.Add("eventAggrMock", mockEventAggregator);
             
         }
 
-        private static DropBoxDownloadViewModel GetViewModel()
+        DropBoxDownloadViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<DropBoxDownloadViewModel>("downloadViewModel");
+            return scenarioContext.Get<DropBoxDownloadViewModel>("downloadViewModel");
         }
-        private static Mock<IEnvironmentModel> GeEnvrionmentModel()
+
+        Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
-            return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return scenarioContext.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
-        private Mock<IEventAggregator> GetEventAggregator()
+
+        Mock<IEventAggregator> GetEventAggregator()
         {
-            return ScenarioContext.Current.Get<Mock<IEventAggregator>>("eventAggrMock");
+            return scenarioContext.Get<Mock<IEventAggregator>>("eventAggrMock");
         }
+
         [Given(@"DropboxDownload New is Enabled")]
         public void GivenReadNewIsEnabled()
         {

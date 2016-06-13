@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -25,7 +24,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class AbstractServiceExecutionTests
     {
         #region Create Service

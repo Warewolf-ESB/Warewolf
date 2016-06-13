@@ -10,7 +10,6 @@
 */
 
 using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Enums;
@@ -21,7 +20,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.Random
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RandomDesignerViewModelTests
     {
         [TestMethod]

@@ -1,7 +1,7 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -39,7 +39,6 @@ namespace Dev2.Common.Utils
             }
             return stringToScrub;
         }
-
 
         public static string Format(string text)
         {
@@ -97,7 +96,6 @@ namespace Dev2.Common.Utils
                     output.Append(Environment.NewLine);
                     tabs(output, offset);
                     output.Append(chr);
-
                 }
                 else if (chr.ToString() == ",")
                 {

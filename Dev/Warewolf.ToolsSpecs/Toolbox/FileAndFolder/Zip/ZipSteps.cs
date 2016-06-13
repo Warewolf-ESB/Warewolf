@@ -22,16 +22,25 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
     [Binding]
     public class ZipSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ZipSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"Archive Password as ""(.*)""")]
         public void GivenArchivePasswordAs(string archivePassword)
         {
-            ScenarioContext.Current.Add("archivePassword", archivePassword);
+            scenarioContext.Add("archivePassword", archivePassword);
         }
 
         [Given(@"the Compression as ""(.*)""")]
         public void GivenTheCompressionAs(string compressio)
         {
-            ScenarioContext.Current.Add("compressio", compressio);
+            scenarioContext.Add("compressio", compressio);
         }
 
         [When(@"the Zip file tool is executed")]
@@ -39,7 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         protected override void BuildDataList()
@@ -50,18 +59,18 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
 
                 var zip = new DsfZip
                 {
-                    InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                    Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                    Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                    OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
-                    DestinationUsername = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
-                    DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
-                    Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
-                    Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-                    ArchivePassword = ScenarioContext.Current.Get<string>("archivePassword"),
-                    CompressionRatio = ScenarioContext.Current.Get<string>("compressio"),
-                    PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
-                    DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                    InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                    Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                    Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                    OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),
+                    DestinationUsername = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
+                    DestinationPassword = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
+                    Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
+                    Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                    ArchivePassword = scenarioContext.Get<string>("archivePassword"),
+                    CompressionRatio = scenarioContext.Get<string>("compressio"),
+                    PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
+                    DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile)
                 };
 
                 TestStartNode = new FlowStep
@@ -69,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
                     Action = zip
                 };
                 // CI
-                ScenarioContext.Current.Add("activity", zip);
+                scenarioContext.Add("activity", zip);
             }
             catch(Exception e)
             {

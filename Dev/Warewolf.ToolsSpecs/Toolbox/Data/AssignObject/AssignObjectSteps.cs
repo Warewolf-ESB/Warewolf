@@ -15,6 +15,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
     [Binding]
     public class AssignObjectSteps : BaseActivityUnitTest
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public AssignObjectSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"I assign the value ""(.*)"" to a json object ""(.*)""")]
         public void GivenIAssignTheValueToAJsonObject(string value, string variable)
         {
@@ -27,21 +35,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             List<AssignObjectDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             if (fieldCollection == null)
             {
                 fieldCollection = new List<AssignObjectDTO>();
-                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+                scenarioContext.Add("fieldCollection", fieldCollection);
             }
 
             fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
@@ -58,13 +66,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the json object ""(.*)"" equals ""(.*)""")]
         public void ThenTheJsonObjectEquals(string variable, string value)
         {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             var recordSetValues = result.Environment.EvalAsListOfStrings(variable, 0);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
             value = value.Replace('"', ' ').Trim();
@@ -82,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
         [Then(@"the variable ""(.*)"" equals ""(.*)""")]
         public void ThenTheVariableEquals(string variable, string value)
         {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
 
             if (DataListUtil.IsValueRecordset(variable))
             {
@@ -123,21 +131,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             List<AssignObjectDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             if (fieldCollection == null)
             {
                 fieldCollection = new List<AssignObjectDTO>();
-                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+                scenarioContext.Add("fieldCollection", fieldCollection);
             }
 
             fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
@@ -155,21 +163,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             List<AssignObjectDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             if (fieldCollection == null)
             {
                 fieldCollection = new List<AssignObjectDTO>();
-                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+                scenarioContext.Add("fieldCollection", fieldCollection);
             }
 
             fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
@@ -187,21 +195,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             List<AssignObjectDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             if (fieldCollection == null)
             {
                 fieldCollection = new List<AssignObjectDTO>();
-                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+                scenarioContext.Add("fieldCollection", fieldCollection);
             }
 
             fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
@@ -212,7 +220,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             BuildShapeAndTestData();
 
             List<AssignObjectDTO> fieldCollection;
-            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
             var multiAssign = new DsfMultiAssignObjectActivity();
 
@@ -225,7 +233,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             {
                 multiAssign.FieldsCollection.Add(field);
             }
-            ScenarioContext.Current.Add("activity", multiAssign);
+            scenarioContext.Add("activity", multiAssign);
         }
 
         protected void BuildShapeAndTestData()
@@ -236,7 +244,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             // ReSharper disable NotAccessedVariable
             int row = 0;
             dynamic variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList != null)
             {
@@ -259,7 +267,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
 
             List<Tuple<string, string>> emptyRecordset;
-            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+            bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)

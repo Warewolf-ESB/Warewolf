@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
 using Infragistics.Calculations.CalcManager;
@@ -25,7 +24,6 @@ namespace Dev2.Tests.MathOperationTest
     /// Summary description for FunctionTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FunctionTest
     {
         /// <summary>

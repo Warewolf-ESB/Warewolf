@@ -26,15 +26,24 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
     [Binding]
     public class DecisionSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public DecisionSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
             var decisionActivity = new DsfFlowDecisionActivity();
             Dev2DecisionMode mode;
-            ScenarioContext.Current.TryGetValue("mode", out mode);
+            scenarioContext.TryGetValue("mode", out mode);
 
             var decisionModels =
-                ScenarioContext.Current.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
+                scenarioContext.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
             var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
 
             foreach(var dm in decisionModels)
@@ -51,18 +60,18 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             }
 
             string modelData = dds.ToVBPersistableModel();
-            ScenarioContext.Current.Add("modelData", modelData);
+            scenarioContext.Add("modelData", modelData);
 
             decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
                                                           "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
 
@@ -80,19 +89,19 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                     Action = multiAssign,
                     Next = x
                 };
-            ScenarioContext.Current.Add("activity", decisionActivity);
+            scenarioContext.Add("activity", decisionActivity);
         }
 
         [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
         public void GivenADecisionVariableValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
@@ -103,30 +112,30 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         {
             if (p0 == "true")
             {
-                ScenarioContext.Current.Add("mode", Dev2DecisionMode.AND);
+                scenarioContext.Add("mode", Dev2DecisionMode.AND);
             }
             else
             {
-                ScenarioContext.Current.Add("mode", Dev2DecisionMode.OR);
+                scenarioContext.Add("mode", Dev2DecisionMode.OR);
             }
         }
 
         [Given(@"the decision mode is ""(.*)""")]
         public void GivenTheDecisionModeIs(string mode)
         {
-            ScenarioContext.Current.Add("mode", (Dev2DecisionMode)Enum.Parse(typeof(Dev2DecisionMode), mode));
+            scenarioContext.Add("mode", (Dev2DecisionMode)Enum.Parse(typeof(Dev2DecisionMode), mode));
         }
 
         [Given(@"is ""(.*)"" ""(.*)"" ""(.*)""")]
         public void GivenIs(string variable1, string decision, string variable2)
         {
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out decisionModels);
 
             if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
-                ScenarioContext.Current.Add("decisionModels", decisionModels);
+                scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
@@ -139,12 +148,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void GivenIWantToCheck(string decision)
         {
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out decisionModels);
 
             if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
-                ScenarioContext.Current.Add("decisionModels", decisionModels);
+                scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
@@ -157,12 +166,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void GivenDecideIf(string variable1, string decision)
         {
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out decisionModels);
 
             if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
-                ScenarioContext.Current.Add("decisionModels", decisionModels);
+                scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
@@ -175,12 +184,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void GivenCheckIfAnd(string variable1, string decision, string variable2, string variable3)
         {
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
-            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out decisionModels);
 
             if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
-                ScenarioContext.Current.Add("decisionModels", decisionModels);
+                scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
@@ -194,14 +203,14 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the decision result should be ""(.*)""")]
         public void ThenTheDecisionResultShouldBe(string expectedRes)
         {
-            var modelData = ScenarioContext.Current.Get<string>("modelData");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var modelData = scenarioContext.Get<string>("modelData");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             if (result.DataListID== Guid.Empty)
             {
                 result.DataListID = Guid.NewGuid();

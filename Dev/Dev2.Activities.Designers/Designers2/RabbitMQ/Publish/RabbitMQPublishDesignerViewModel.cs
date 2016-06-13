@@ -22,7 +22,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 
@@ -34,7 +33,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
     {
         private readonly IRabbitMQSourceModel _model;
 
-        [ExcludeFromCodeCoverage]
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -229,7 +227,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [ExcludeFromCodeCoverage]
         private void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
@@ -239,7 +236,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

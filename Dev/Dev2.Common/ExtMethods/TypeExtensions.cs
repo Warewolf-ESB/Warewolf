@@ -1,7 +1,7 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -48,63 +48,81 @@ namespace Dev2.Common.ExtMethods
                 case "boolean":
                     parsedTypeName = "System.Boolean";
                     break;
+
                 case "byte":
                     parsedTypeName = "System.Byte";
                     break;
+
                 case "char":
                     parsedTypeName = "System.Char";
                     break;
+
                 case "datetime":
                     parsedTypeName = "System.DateTime";
                     break;
+
                 case "datetimeoffset":
                     parsedTypeName = "System.DateTimeOffset";
                     break;
+
                 case "decimal":
                     parsedTypeName = "System.Decimal";
                     break;
+
                 case "double":
                     parsedTypeName = "System.Double";
                     break;
+
                 case "float":
                     parsedTypeName = "System.Single";
                     break;
+
                 case "int16":
                 case "short":
                     parsedTypeName = "System.Int16";
                     break;
+
                 case "int32":
                 case "int":
                     parsedTypeName = "System.Int32";
                     break;
+
                 case "int64":
                 case "long":
                     parsedTypeName = "System.Int64";
                     break;
+
                 case "object":
                     parsedTypeName = "System.Object";
                     break;
+
                 case "sbyte":
                     parsedTypeName = "System.SByte";
                     break;
+
                 case "string":
                     parsedTypeName = "System.String";
                     break;
+
                 case "timespan":
                     parsedTypeName = "System.TimeSpan";
                     break;
+
                 case "uint16":
                 case "ushort":
                     parsedTypeName = "System.UInt16";
                     break;
+
                 case "uint32":
                 case "uint":
                     parsedTypeName = "System.UInt32";
                     break;
+
                 case "uint64":
                 case "ulong":
                     parsedTypeName = "System.UInt64";
                     break;
+
                 case "guid":
                     parsedTypeName = "System.Guid";
                     break;

@@ -24,22 +24,31 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
     [Binding]
     public class SortSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SortSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            var recordsetName = ScenarioContext.Current.Get<string>("recordset");
-            var sortOrder = ScenarioContext.Current.Get<string>("sortOrder");
+            var recordsetName = scenarioContext.Get<string>("recordset");
+            var sortOrder = scenarioContext.Get<string>("sortOrder");
             var sortRecords = new DsfSortRecordsActivity
                 {
                     SortField = recordsetName,
@@ -50,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
                 {
                     Action = sortRecords
                 };
-            ScenarioContext.Current.Add("activity", sortRecords);
+            scenarioContext.Add("activity", sortRecords);
         }
 
         [Given(@"I have the following recordset to sort")]
@@ -65,11 +74,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -77,12 +86,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
             foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
@@ -91,13 +100,13 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         [Given(@"I sort a record ""(.*)""")]
         public void GivenISortARecord(string recordset)
         {
-            ScenarioContext.Current.Add("recordset", recordset);
+            scenarioContext.Add("recordset", recordset);
         }
 
         [Given(@"my sort order is ""(.*)""")]
         public void GivenMySortOrderIs(string sortOrder)
         {
-            ScenarioContext.Current.Add("sortOrder", sortOrder);
+            scenarioContext.Add("sortOrder", sortOrder);
         }
 
         [When(@"the sort records tool is executed")]
@@ -105,7 +114,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the sorted recordset ""(.*)""  will be")]
