@@ -1,27 +1,26 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Common;
+using Dev2.Common.DependencyVisualization;
 using System;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml.Linq;
-using Dev2.Common.Common;
-using Dev2.Common.DependencyVisualization;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
     /// <summary>
-    /// Used to genreate dependency graphs. 
+    /// Used to genreate dependency graphs.
     /// Extracted From View Model ;)
     /// </summary>
     public class DependencyGraphGenerator
@@ -37,8 +36,7 @@ namespace Dev2.Common
         /// <returns></returns>
         public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
-
-            if(xmlData == null || xmlData.Length == 0)
+            if (xmlData == null || xmlData.Length == 0)
             {
                 return new Graph(ErrorResource.DependencyMissing);
             }
@@ -47,7 +45,7 @@ namespace Dev2.Common
 
             // Create a graph.
             var graphElem = xe.AncestorsAndSelf("graph").FirstOrDefault();
-            if(graphElem == null)
+            if (graphElem == null)
             {
                 return new Graph(ErrorResource.DependencyInormationMalformed);
             }
@@ -61,22 +59,22 @@ namespace Dev2.Common
                 var nodeElems = graphElem.Elements("node").ToList();
 
                 // Create all of the nodes and add them to the graph.
-                foreach(XElement nodeElem in nodeElems)
+                foreach (XElement nodeElem in nodeElems)
                 {
                     // build the graph position data
                     string id = nodeElem.Attribute("id").Value;
                     var node = CreateNode(nodeElem, modelName, width, height, ref count);
 
                     bool alreadyAdded = false;
-                    foreach(Node n in graph.Nodes)
+                    foreach (Node n in graph.Nodes)
                     {
-                        if(n.ID == id)
+                        if (n.ID == id)
                         {
                             alreadyAdded = true;
                         }
                     }
 
-                    if(!alreadyAdded)
+                    if (!alreadyAdded)
                     {
                         graph.Nodes.Add(node);
                     }
@@ -95,11 +93,11 @@ namespace Dev2.Common
                         }
                     }
                 }
-                foreach(Node node in graph.Nodes)
+                foreach (Node node in graph.Nodes)
                 {
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
                     var dependencyElems = nodeElem.Elements("dependency");
-                    foreach(XElement dependencyElem in dependencyElems)
+                    foreach (XElement dependencyElem in dependencyElems)
                     {
                         string depID = dependencyElem.Attribute("id").Value;
 
@@ -107,7 +105,7 @@ namespace Dev2.Common
                         if (dependency != null)
                         {
                             node.NodeDependencies.Add(dependency);
-                        }                        
+                        }
                     }
 
                     //Now adjust position according to nodesize
@@ -126,7 +124,7 @@ namespace Dev2.Common
             }
         }
 
-        Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
+        private Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             double screenWidth = width;
             double screenHeight = height - 150;
@@ -145,19 +143,18 @@ namespace Dev2.Common
             double.TryParse(tmpX, out x);
             double.TryParse(tmpY, out y);
 
-
             string id = nodeElm.Attribute("id").Value;
             bool isTarget = id == resourceName;
             bool broken = String.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
-            if(isTarget)
+            if (isTarget)
             {
                 x = centerX;
                 y = centerY;
             }
             else
             {
-                if(count > Distance)
+                if (count > Distance)
                 {
                     count = 1.5;
                 }
@@ -165,16 +162,15 @@ namespace Dev2.Common
                 int xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
                 int yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
 
-                if(xCoOrd >= maxX)
+                if (xCoOrd >= maxX)
                 {
                     xCoOrd = maxX;
                 }
 
-                if(yCoOrd >= maxY)
+                if (yCoOrd >= maxY)
                 {
                     yCoOrd = maxY;
                 }
-
 
                 x = xCoOrd;
                 y = yCoOrd;
@@ -183,7 +179,5 @@ namespace Dev2.Common
 
             return new Node(id, x, y, isTarget, broken);
         }
-
-
     }
 }

@@ -1,18 +1,18 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Patterns;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common.Interfaces.Patterns;
 
 // ReSharper disable CheckNamespace
 
@@ -37,14 +37,14 @@ namespace Dev2.Common
         /// </summary>
         private void Bootstrap()
         {
-            Type type = typeof (TReflect);
+            Type type = typeof(TReflect);
 
             List<Type> types =
                 type.Assembly.GetTypes()
                     .Where(t => type.IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                     .ToList();
 
-            foreach (TReflect item in types.Select(t => (TReflect) Activator.CreateInstance(t, true)))
+            foreach (TReflect item in types.Select(t => (TReflect)Activator.CreateInstance(t, true)))
             {
                 _options.TryAdd(item.HandlesType(), item);
             }
