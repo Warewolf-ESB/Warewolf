@@ -99,6 +99,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 OnNotifyPropertyChange("CanHaveMutipleRows");
             }
         }
+        public string ParentName { get; set; }
         public bool IsObject
         {
             get
