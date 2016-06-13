@@ -542,7 +542,7 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Create a new database source</value>
   </data>
   <data name="MenuDeployToolTip" xml:space="preserve">
-    <value>Move resources between Warewolf servers</value>
+    <value>Move resources between Warewolf servers [CTRL+D]</value>
   </data>
   <data name="MenuDownloadToolTip" xml:space="preserve">
     <value>A new version of Warewolf is available for download</value>
@@ -554,13 +554,13 @@ The more information you can provide us with, the faster we can track the issue 
     <value>Lock / unlock the menu</value>
   </data>
   <data name="MenuNewServiceToolTip" xml:space="preserve">
-    <value>Create a new service</value>
+    <value>Create a new service [CTRL+W]</value>
   </data>
   <data name="MenuPluginToolTip" xml:space="preserve">
     <value>Create a new plugin source</value>
   </data>
   <data name="MenuSaveToolTip" xml:space="preserve">
-    <value>Save this tab</value>
+    <value>Save this tab [CTRL+S]</value>
   </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
@@ -3417,7 +3417,7 @@ Public is an internal Warewolf group that applies to everyone.</value>
     <value>Edit and Delete this workflow</value>
   </data>
   <data name="SettingsSecurityResourceToolTipExecute" xml:space="preserve">
-    <value>Run and Debug this workflow</value>
+    <value>Run and Debug this workflow [F5] or [F6] or [F7]</value>
   </data>
   <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
     <value>Click the Ellipsis to add a resource</value>
