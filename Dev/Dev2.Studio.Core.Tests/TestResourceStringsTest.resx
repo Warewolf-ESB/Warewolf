@@ -120,10 +120,4 @@
   <data name="SpecialChars" xml:space="preserve">
     <value>! @ #$% ^&amp;* ( ) +_{ }| [] \: "; '&lt;&gt; ?, ./</value>
   </data>
-  <data name="ResourceToHydrateActualAppUri" xml:space="preserve">
-    <value>http://rsatest1:77/dsf</value>
-  </data>
-  <data name="ResourceToHydrateConnectionString1" xml:space="preserve">
-    <value>AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234</value>
-  </data>
 </root>
