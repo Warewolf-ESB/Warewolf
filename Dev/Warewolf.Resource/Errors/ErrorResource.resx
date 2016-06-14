@@ -823,7 +823,7 @@
     <value>{0} contains invalid characters</value>
   </data>
   <data name="ContainsLeadingOrTrailingWhitespace" xml:space="preserve">
-    <value>contains leading or trailing whitespace characters.</value>
+    <value>{0} contains leading or trailing whitespace characters.</value>
   </data>
   <data name="CopyToFailedArrayTooSmall" xml:space="preserve">
     <value>CopyTo() failed:  supplied array was too small</value>
@@ -880,7 +880,7 @@
     <value>Folder was not found after adding</value>
   </data>
   <data name="InvalidExpression" xml:space="preserve">
-    <value>Is not a valid expression</value>
+    <value>is not a valid expression</value>
   </data>
   <data name="InvalidOutputPath" xml:space="preserve">
     <value>Output path is invalid.</value>
@@ -928,7 +928,7 @@
     <value>Multiple Resources found for Resource ID: {0}</value>
   </data>
   <data name="MustBeRealNumber" xml:space="preserve">
-    <value>Must be a real number</value>
+    <value>must be a real number</value>
   </data>
   <data name="MustBeSingleCharacter" xml:space="preserve">
     <value>Must be a single character</value>
@@ -1354,7 +1354,7 @@
     <value>'String to Split' Cannot be null</value>
   </data>
   <data name="DataSplitUsingNullErrorTest" xml:space="preserve">
-    <value>'Using' Must be a real number</value>
+    <value>'Using' must be a real number</value>
   </data>
   <data name="DecisionDisplayTextNotNullErrorTest" xml:space="preserve">
     <value>'DisplayText' Cannot be null</value>
@@ -1441,13 +1441,13 @@
     <value>Scalars are not allowed. Please check the following: 'Result'</value>
   </data>
   <data name="XPathInvalidExpressionErrorTest" xml:space="preserve">
-    <value>'XPath' Is not a valid expression</value>
+    <value>'XPath' is not a valid expression</value>
   </data>
   <data name="XPathResultsNotNullErrorTest" xml:space="preserve">
     <value>'Results' Cannot be null</value>
   </data>
   <data name="XPathXmlInvalidExpressionErrorTest" xml:space="preserve">
-    <value>'XML' Is not a valid expression</value>
+    <value>'XML' is not a valid expression</value>
   </data>
   <data name="XPathXmlNotNullErrorTest" xml:space="preserve">
     <value>'XML' Cannot be null</value>
@@ -1469,5 +1469,16 @@
   </data>
   <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
     <value>Variable name [[res#]] contains invalid character(s)</value>
+  </data>
+  <data name="CalculateIntellisenseProviderParsingMalformedErrorTest" xml:space="preserve">
+    <value>An error occurred while parsing '{0}' It appears to be malformed</value>
+  </data>
+  <data name="ScheduledResourceInvalidUserPermissionErrorTest" xml:space="preserve">
+    <value>This Workflow requires that you have Execute permission on the 'bob' Workflow. 
+Please contact your Warewolf System Administrator.</value>
+  </data>
+  <data name="ScheduledResourceLogOnAsBatchErrorTest" xml:space="preserve">
+    <value>This task requires that the user account specified has 'Log On As Batch' job rights. 
+Please contact your Windows System Administrator.</value>
   </data>
 </root>
