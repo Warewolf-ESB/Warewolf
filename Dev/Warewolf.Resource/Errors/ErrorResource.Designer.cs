@@ -1078,7 +1078,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please specify a correct DropBox file name.
+        ///   Looks up a localized string similar to Please specify a correct Dropbox file name.
         /// </summary>
         public static string DropboxCorrectFileName {
             get {
@@ -1096,7 +1096,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please specify the path of file in DropBox.
+        ///   Looks up a localized string similar to Please specify the path of file in Dropbox.
         /// </summary>
         public static string DropBoxFilePathMissing {
             get {
@@ -3067,6 +3067,51 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for End from {0} to {1}..
+        /// </summary>
+        public static string RandomIntegerForEndErrorTest {
+            get {
+                return ResourceManager.GetString("RandomIntegerForEndErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for Start from {0} to {1}..
+        /// </summary>
+        public static string RandomIntegerForStartErrorTest {
+            get {
+                return ResourceManager.GetString("RandomIntegerForStartErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a positive integer for the Length..
+        /// </summary>
+        public static string RandomPositiveIntegerErrorTest {
+            get {
+                return ResourceManager.GetString("RandomPositiveIntegerErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for End.
+        /// </summary>
+        public static string RandomPositiveIntegerForEndErrorTest {
+            get {
+                return ResourceManager.GetString("RandomPositiveIntegerForEndErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for Start.
+        /// </summary>
+        public static string RandomPositiveIntegerForStartErrorTest {
+            get {
+                return ResourceManager.GetString("RandomPositiveIntegerForStartErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} must be a whole number from 1 onwards..
         /// </summary>
         public static string RangeFromOne {
@@ -3729,6 +3774,15 @@ namespace Warewolf.Resource.Errors {
         public static string UnexpectedValueAtIndex {
             get {
                 return ResourceManager.GetString("UnexpectedValueAtIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scalars are not allowed. Please check the following: &apos;Result&apos;.
+        /// </summary>
+        public static string UniqueResultCannotBeScalarErrorTest {
+            get {
+                return ResourceManager.GetString("UniqueResultCannotBeScalarErrorTest", resourceCulture);
             }
         }
         

@@ -108,7 +108,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer or decimal number for Start.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -116,7 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.RandomPositiveIntegerForStartErrorTest, actual);
             }
             else
             {
@@ -132,7 +131,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer or decimal number for End.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -140,7 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.RandomPositiveIntegerForEndErrorTest, actual);
             }
             else
             {
@@ -183,7 +181,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer or decimal number for Start.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -191,7 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.RandomPositiveIntegerForStartErrorTest, actual);
             }
             else
             {
@@ -207,7 +204,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer or decimal number for End.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -215,7 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.RandomPositiveIntegerForEndErrorTest, actual);
             }
             else
             {
@@ -231,7 +227,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            string expected = string.Format("Please ensure that the End is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
+            string expected = string.Format(Warewolf.Resource.Errors.ErrorResource.RandomIntegerForEndErrorTest, double.MinValue, double.MaxValue);
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -255,7 +251,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            string expected = string.Format("Please ensure that the Start is an integer or decimal number from {0} to {1}.", double.MinValue, double.MaxValue);
+            string expected = string.Format(Warewolf.Resource.Errors.ErrorResource.RandomIntegerForStartErrorTest, double.MinValue, double.MaxValue);
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -378,7 +374,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string Expected = "Please ensure that you have entered an integer for Length.";
             string actual;
             GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -386,7 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(Expected, actual);
+                Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.RandomPositiveIntegerErrorTest, actual);
             }
             else
             {
