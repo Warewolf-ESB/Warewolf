@@ -10,7 +10,6 @@ namespace Dev2.Core.Tests.ModelTests
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class ScalarItemModelTests
     {
-
         #region Test Fields
 
         private IScalarItemModel _scalarItemModel;
@@ -59,7 +58,6 @@ namespace Dev2.Core.Tests.ModelTests
 
         #region Name Validation
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Validatename_GivenValidName_ShouldHaveNoErrorMessage()
@@ -75,7 +73,6 @@ namespace Dev2.Core.Tests.ModelTests
             var hasErrorMsg = string.IsNullOrEmpty(scalarItemModel.ErrorMessage);
             Assert.IsTrue(hasErrorMsg);
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -110,6 +107,5 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
         #endregion Name Validation
-
     }
 }
