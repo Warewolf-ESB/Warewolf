@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
             Assert.AreEqual(1, viewModel.Errors.Count);
 
             var error = viewModel.Errors[0];
-            Assert.AreEqual("Result - Invalid expression: opening and closing brackets dont match.", error.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.CommandLineInvalidExpressionErrorTest, error.Message);
             Assert.AreEqual(ErrorType.Critical, error.ErrorType);
 
             Assert.IsFalse(viewModel.IsCommandFileNameFocused);
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
             Assert.AreEqual(1, viewModel.Errors.Count);
 
             var error = viewModel.Errors[0];
-            Assert.AreEqual("Result - Invalid expression: opening and closing brackets don't match.", error.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.CommandLineInvalidExpressionErrorTest, error.Message);
             Assert.AreEqual(ErrorType.Critical, error.ErrorType);
         }
 
