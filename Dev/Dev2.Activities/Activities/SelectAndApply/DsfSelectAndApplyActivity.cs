@@ -145,74 +145,41 @@ namespace Dev2.Activities.SelectAndApply
                 dataObject.ForEachNestingLevel++;
                 try
                 {
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                     }
                     //Eval list using DataSource
                     var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true).ToList();
-                    var expression = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(dataObject.Environment.ToStar(DataSource));
 
                     //Create a new Execution Environment
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment, DataSource, Alias);
 
                     //Push the new environment
                     dataObject.PushEnvironment(executionEnvironment);
-                    if (expression.IsJsonIdentifierExpression)
-                    {
-                        var a = dataObject.Environment.Eval(dataObject.Environment.ToStar(DataSource), update);
-                    }
                     dataObject.ForEachNestingLevel++;
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         DispatchDebugState(dataObject, StateType.Before, update);
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     dataObject.IsDebugNested = true;
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         DispatchDebugState(dataObject, StateType.After, update);
                     }
                     int upd = 0;
-                    if (!expression.IsJsonIdentifierExpression)
+                    foreach(var warewolfAtom in atoms)
                     {
-                        foreach (var warewolfAtom in atoms)
+                        upd++;
+
+                        //Assign the warewolfAtom to Alias using new environment
+                        executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
+
+                        var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
+                        if(exeAct != null)
                         {
-                            upd++;
-
-                            //Assign the warewolfAtom to Alias using new environment
-                            executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
-
-                            var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                            if (exeAct != null)
-                            {
-                                exeAct.Execute(dataObject, upd);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (atoms.Any())
-                        {
-                            var atom = atoms.ToList()[0];
-                            var jString = atom.ToString();
-                            var evalaJsonAsList = dataObject.Environment.EvalJsonAsListOfStrings(jString, update).ToList();
-                            //var evaluator = GetDev2IJsonListEvaluator(jString);
-                            //var evalaJsonAsList = evaluator.EvalaJsonAsList();
-                            foreach (var warewolfAtom in evalaJsonAsList)
-                            {
-                                upd++;
-
-                                //Assign the warewolfAtom to Alias using new environment
-                                executionEnvironment.AssignToAlias(warewolfAtom, upd);
-
-                                var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                                if (exeAct != null)
-                                {
-                                    exeAct.Execute(dataObject, upd);
-                                }
-                                executionEnvironment.AssignBackToDataSource(upd);
-                            }
+                            exeAct.Execute(dataObject, upd);
                         }
                     }
                 }

@@ -381,23 +381,14 @@ and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) =
             | Star -> "[*]"
             | Last -> "[-1:]"
             | _ -> failwith "not supported for JSON types"
-        (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName + "." + index))
+        (jsonIdentifierToJsonPath x.Next (acc + "." + index))
     | Terminal -> accx
 // treat the head of the expression as a special case
 and jsonIdentifierToJsonPathLevel1 (a : JsonIdentifierExpression) = 
     match a with
     | NameExpression x -> x.Name
     | NestedNameExpression x -> (jsonIdentifierToJsonPath x.Next "")
-    | IndexNestedNameExpression x ->
-                                    match x.Next with
-                                        | Terminal -> let index = 
-                                                                match x.Index with
-                                                                    | IntIndex i -> sprintf "[%i]" (i - 1)
-                                                                    | Star -> "[*]"
-                                                                    | Last -> "[-1:]"
-                                                                    | _ -> failwith "not supported for JSON types"
-                                                      (jsonIdentifierToJsonPath x.Next (x.ObjectName + "." + index))
-                                        | _ -> (jsonIdentifierToJsonPath x.Next "")
+    | IndexNestedNameExpression x -> (jsonIdentifierToJsonPath a "")
     | Terminal -> ""
 /// get the name of the object from an expression
 and jsonIdentifierToName (a : JsonIdentifierExpression) = 

@@ -11,6 +11,7 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 // ReSharper disable InconsistentNaming
 
@@ -122,11 +123,11 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             };
 
             DataObject.Environment = new ExecutionEnvironment();
-            DataObject.Environment.Assign("[[@Person().Name]]", "Bob", 0);
-            DataObject.Environment.Assign("[[@Person().Name]]", "Dora", 0);
-            DataObject.Environment.Assign("[[@Person().Name]]", "Superman", 0);
-            DataObject.Environment.Assign("[[@Person().Name]]", "Batman", 0);
-            DataObject.Environment.Assign("[[@Person().Name]]", "Orlando", 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Name]]", "Bob"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Name]]", "Dora"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Name]]", "Superman"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Name]]", "Batman"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Name]]", "Orlando"), 0);
             const string dataSource = "[[@Person(*).Name]]";
             const string alias = "[[a]]";
             DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             //------------Execute Test---------------------------
             ExecuteProcess(DataObject);
             //------------Assert Results-------------------------
-            var names = DataObject.Environment.EvalJsonAsListOfStrings("[[@Person(*).Name]]", 0);
+            var names = DataObject.Environment.EvalAsListOfStrings("[[@Person(*).Name]]", 0);
             Assert.AreEqual("BOB", names[0]);
             Assert.AreEqual("DORA", names[1]);
             Assert.AreEqual("SUPERMAN", names[2]);
@@ -201,11 +202,11 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             //------------Setup for test--------------------------
             //SetupArgumentsForFormatNumber("", "", activity);
             DataObject.Environment = new ExecutionEnvironment();
-            DataObject.Environment.Assign("[[@Person().Age]]", "5.2687454", 0);
-            DataObject.Environment.Assign("[[@Person().Age]]", "2.3", 0);
-            DataObject.Environment.Assign("[[@Person().Age]]", "1", 0);
-            DataObject.Environment.Assign("[[@Person().Age]]", "-3.4554", 0);
-            DataObject.Environment.Assign("[[@Person().Age]]", "0.875768", 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "5.2687454"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "2.3"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "1"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "-3.4554"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "0.875768"), 0);
             const string dataSource = "[[@Person(*).Age]]";
             const string alias = "[[result]]";
             DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
@@ -224,7 +225,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             //------------Execute Test---------------------------
             ExecuteProcess(DataObject);
             //------------Assert Results-------------------------
-            var ages = DataObject.Environment.EvalJsonAsListOfStrings("[[@Person(*).Age]]", 0);
+            var ages = DataObject.Environment.EvalAsListOfStrings("[[@Person(*).Age]]", 0);
             Assert.AreEqual("5.27", ages[0]);
             Assert.AreEqual("2.30", ages[1]);
             Assert.AreEqual("1.00", ages[2]);
