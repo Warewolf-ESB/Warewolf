@@ -1131,14 +1131,6 @@ namespace Dev2.Core.Tests.Environments
 
         #endregion
 
-        [TestMethod]
-        public void ParseConnectionStringIntoAppServerUri()
-        {
-            var toParse = TestResourceStringsTest.ResourceToHydrateConnectionString1;
-            var result = EnvironmentRepository.GetAppServerUriFromConnectionString(toParse);
-            Assert.AreEqual(TestResourceStringsTest.ResourceToHydrateActualAppUri, result);
-        }
-
         #region CreateMockEnvironment
 
         public static readonly string Server1Source = "<Source ID=\"{70238921-FDC7-4F7A-9651-3104EEDA1211}\" Name=\"MyDevServer\" Type=\"Dev2Server\" ConnectionString=\"AppServerUri=http://127.0.0.1:77/dsf;WebServerPort=1234\" ServerID=\"d53bbcc5-4794-4dfa-b096-3aa815692e66\"><TypeOf>Dev2Server</TypeOf><DisplayName>My Dev Server</DisplayName></Source>";
