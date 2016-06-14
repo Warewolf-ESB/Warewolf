@@ -139,11 +139,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         throw new Exception(ErrorResource.RoundingNotValid);
                     }
-
+                    string result;
                     var binaryDataListItem = colItr.FetchNextValue(expressionIterator);
                     var val = binaryDataListItem;
-                    FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
-                    var result = _numberFormatter.Format(formatNumberTo);
+
+                  /*  if (GlobalConstants.IsValidJson(binaryDataListItem))
+                    {
+                        var dev2IJsonListEvaluator = new Dev2IJsonListEvaluator(binaryDataListItem);
+                        //Warewolf is not zero based
+                        var jsonValue = dev2IJsonListEvaluator.EvalaJsonAsList().ToList()[update - 1].ToString();
+                        FormatNumberTO formatNumberTo = new FormatNumberTO(jsonValue, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
+                        result = _numberFormatter.Format(formatNumberTo);
+                    }
+                    else*/
+                    {
+                        FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
+                        result = _numberFormatter.Format(formatNumberTo);
+                    }
+
 
                     if (single != null)
                     {
@@ -152,12 +165,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
                         UpdateResultRegions(dataObject.Environment, result, update == 0 ? counter : update);
-                        counter++;                        
+                        counter++;
                     }
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result, "",dataObject.Environment,update));
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
             }
             catch (Exception e)
@@ -188,10 +201,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItems(IDSFDataObject dataObject, int update, string expression, string roundingDecimalPlaces, string decimalPlacesToShow)
         {
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 AddDebugInputItem(expression, "Number", dataObject.Environment, update);
-                if(!String.IsNullOrEmpty(RoundingType))
+                if (!String.IsNullOrEmpty(RoundingType))
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
                 }

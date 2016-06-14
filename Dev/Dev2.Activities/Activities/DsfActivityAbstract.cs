@@ -91,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         #endregion
 
-        
+
         public Activity Create(DependencyObject target)
         {
             return this;
@@ -117,12 +117,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errorResultTO = new ErrorResultTO();
             Guid executionID = myDO.DataListID;
 
-            if(value != null)
+            if (value != null)
             {
                 Guid rootID;
                 Guid.TryParse(value.ToString(), out rootID);
 
-                if(executionID == rootID)
+                if (executionID == rootID)
                 {
                     throw new Exception(ErrorResource.SameParentAndChildDataListId);
                 }
@@ -137,7 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // At resumption this is the root dl entry ;)
 
                     // Handle Errors
-                    if(errorResultTO.HasErrors())
+                    if (errorResultTO.HasErrors())
                     {
                         DisplayAndWriteError("Resumption", errorResultTO);
                         var errorString = errorResultTO.MakeDataListReady();
@@ -157,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void OnPropertyChanged(string PropertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
             }
@@ -171,6 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment, int update)
         {
             var evalled = executionEnvironment.Eval(expression, update);
+            executionEnvironment.EvalJsonAsListOfStrings(expression, update);
 //            if(ExecutionEnvironment.IsNothing(evalled))
 //                throw  new Exception("Invalid variable: "+expression);
             var expressionIterator = new WarewolfIterator(evalled);
@@ -179,20 +180,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void ValidateRecordsetName(string recordsetName, ErrorResultTO errors)
         {
-            if(string.IsNullOrEmpty(recordsetName))
+            if (string.IsNullOrEmpty(recordsetName))
             {
                 errors.AddError(ErrorResource.NoRecordSet);
             }
 
-            if(DataListCleaningUtils.SplitIntoRegions(recordsetName).Count > 1)
+            if (DataListCleaningUtils.SplitIntoRegions(recordsetName).Count > 1)
             {
                 errors.AddError(ErrorResource.OneVariableAccepted);
             }
             else
             {
-                if(DataListUtil.IsValueRecordset(recordsetName))
+                if (DataListUtil.IsValueRecordset(recordsetName))
                 {
-                    if(DataListUtil.IsValueRecordsetWithFields(recordsetName))
+                    if (DataListUtil.IsValueRecordsetWithFields(recordsetName))
                     {
                         errors.AddError(ErrorResource.RequiredRecordSetNameONLY);
                     }

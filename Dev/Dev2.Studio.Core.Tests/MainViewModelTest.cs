@@ -1638,7 +1638,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
             // ReSharper disable once RedundantArgumentDefaultValue
-            var vm = new MainViewModel(mockEventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, null, null, null, null);
+            var vm = new MainViewModel(mockEventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, null);
             Assert.IsInstanceOfType(vm.BrowserPopupController, typeof(ExternalBrowserPopupController));
         }
 

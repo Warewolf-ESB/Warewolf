@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security.Principal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Common
 {
@@ -602,10 +604,36 @@ WHERE   n.nspname = 'public'
         public static string WarewolfServices = "Warewolf Services";
         public static string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
         // ReSharper restore InconsistentNaming
-    }
 
-    // ReSharper restore UnusedMember.Global
-    // ReSharper restore ConvertToConstant.Global
-    // ReSharper restore FieldCanBeMadeReadOnly.Global
-    // ReSharper restore MemberCanBePrivate.Global
+        public static bool IsValidJson(string strInput)
+        {
+            strInput = strInput.Trim();
+            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+                (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+            {
+                try
+                {
+                    var obj = JToken.Parse(strInput);
+                    return true;
+                }
+                catch (JsonReaderException)
+                {
+                   //Exception in parsing json
+                    return false;
+                }
+                catch (Exception) //some other exception
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        // ReSharper restore UnusedMember.Global
+        // ReSharper restore ConvertToConstant.Global
+        // ReSharper restore FieldCanBeMadeReadOnly.Global
+        // ReSharper restore MemberCanBePrivate.Global
+    }
 }

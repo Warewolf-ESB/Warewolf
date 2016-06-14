@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2;
+using Dev2.Common;
 using Warewolf.Resource.Errors;
 using WarewolfParserInterop;
 
@@ -169,6 +171,18 @@ namespace Warewolf.Storage
                 return x.Select(WarewolfAtomToString).ToList();
             }
             throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
+        }
+
+        public IList<string> EvalJsonAsListOfStrings(string expression, int update)
+        {
+            if (string.IsNullOrEmpty(expression)) return new List<string>();
+            var warewolfAtoms = EvalAsList(ToStar(expression), update, true).ToList();
+            var atom = warewolfAtoms.ToList()[0];
+            var jString = atom.ToString();
+            var dev2IJsonListEvaluator = new Dev2IJsonListEvaluator(jString);
+            var evalaJsonAsList = dev2IJsonListEvaluator.EvalaJsonAsList().ToList();
+            return new List<string>(evalaJsonAsList.Cast<string>());
+
         }
 
         public static string WarewolfAtomToString(DataStorage.WarewolfAtom a)

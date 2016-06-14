@@ -7,6 +7,7 @@ using Dev2.Diagnostics;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -103,8 +104,14 @@ namespace Dev2.Activities.SelectAndApply
 
         #endregion Get Debug Inputs/Outputs
 
+        public IDev2IJsonListEvaluator GetDev2IJsonListEvaluator(string json)
+        {
+            return new Dev2IJsonListEvaluator(json);
+        }
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+
             ErrorResultTO allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
@@ -143,15 +150,18 @@ namespace Dev2.Activities.SelectAndApply
                         AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                     }
                     //Eval list using DataSource
-                    var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true);
-                    var warewolfEvalResult = dataObject.Environment.EvalForJson(dataObject.Environment.ToStar(DataSource));
-                    
+                    var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true).ToList();
+                    var expression = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(dataObject.Environment.ToStar(DataSource));
+
                     //Create a new Execution Environment
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment, DataSource, Alias);
 
                     //Push the new environment
                     dataObject.PushEnvironment(executionEnvironment);
-
+                    if (expression.IsJsonIdentifierExpression)
+                    {
+                        var a = dataObject.Environment.Eval(dataObject.Environment.ToStar(DataSource), update);
+                    }
                     dataObject.ForEachNestingLevel++;
                     if (dataObject.IsDebugMode())
                     {
@@ -164,17 +174,45 @@ namespace Dev2.Activities.SelectAndApply
                         DispatchDebugState(dataObject, StateType.After, update);
                     }
                     int upd = 0;
-                    foreach (var warewolfAtom in atoms)
+                    if (!expression.IsJsonIdentifierExpression)
                     {
-                        upd++;
-
-                        //Assign the warewolfAtom to Alias using new environment
-                        executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
-
-                        var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                        if (exeAct != null)
+                        foreach (var warewolfAtom in atoms)
                         {
-                            exeAct.Execute(dataObject, upd);
+                            upd++;
+
+                            //Assign the warewolfAtom to Alias using new environment
+                            executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
+
+                            var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
+                            if (exeAct != null)
+                            {
+                                exeAct.Execute(dataObject, upd);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (atoms.Any())
+                        {
+                            var atom = atoms.ToList()[0];
+                            var jString = atom.ToString();
+                            var evalaJsonAsList = dataObject.Environment.EvalJsonAsListOfStrings(jString, update).ToList();
+                            //var evaluator = GetDev2IJsonListEvaluator(jString);
+                            //var evalaJsonAsList = evaluator.EvalaJsonAsList();
+                            foreach (var warewolfAtom in evalaJsonAsList)
+                            {
+                                upd++;
+
+                                //Assign the warewolfAtom to Alias using new environment
+                                executionEnvironment.AssignToAlias(warewolfAtom, upd);
+
+                                var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
+                                if (exeAct != null)
+                                {
+                                    exeAct.Execute(dataObject, upd);
+                                }
+                                executionEnvironment.AssignBackToDataSource(upd);
+                            }
                         }
                     }
                 }

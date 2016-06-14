@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
+using Newtonsoft.Json;
 
 namespace Dev2.Data
 {
@@ -83,7 +85,13 @@ namespace Dev2.Data
                         var recSet = RecordSets.FirstOrDefault(set => set.Name == c.Name);
                         var shapeRecSet = ShapeRecordSets.FirstOrDefault(set => set.Name == c.Name);
                         var scalar = Scalars.FirstOrDefault(scalar1 => scalar1.Name == c.Name);
-                        // scalars and recordset fetch
+                        var complexObject = ComplexObjects.FirstOrDefault(o => o.Name == "@" + c.Name);
+                        if (complexObject != null)
+                        {
+                            var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.InnerXml));
+                            complexObject.Value = jsonData;
+                        }
+                        else
                         {
                             if (recSet!=null && shapeRecSet!=null)
                             {
@@ -154,7 +162,7 @@ namespace Dev2.Data
                             }
                             if (jsonAttribute)
                             {
-                                AddComplexObjectFromXmlNode(c, null);
+                                AddComplexObjectFromXmlNode(c);
                             }
                             else
                             {
@@ -226,7 +234,7 @@ namespace Dev2.Data
             }
         }
 
-        private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObject parent)
+        private void AddComplexObjectFromXmlNode(XmlNode c)
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;
@@ -236,29 +244,10 @@ namespace Dev2.Data
                 ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
             }
             var name = GetNameForArrayComplexObject(c, isArray);
-            var complexObjectItemModel = new ComplexObject { Name = name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
-            if (parent != null)
-            {
-                if (!parent.Children.ContainsKey(1))
-                {
-                    parent.Children[1] = new List<IComplexObject>();
-                }
-                parent.Children[1].Add(complexObjectItemModel);
-                complexObjectItemModel.Parent = parent;
-            }
-            else
-            {
-                ComplexObjects.Add(complexObjectItemModel);
-                ShapeComplexObjects.Add(complexObjectItemModel);
-            }
-            if (c.HasChildNodes)
-            {
-                var children = c.ChildNodes;
-                foreach (XmlNode childNode in children)
-                {
-                    AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
-                }
-            }
+            var complexObjectItemModel = new ComplexObject { Name = "@"+name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
+            ComplexObjects.Add(complexObjectItemModel);
+            ShapeComplexObjects.Add(complexObjectItemModel);
+            
         }
 
         private bool ParseBoolAttribute(XmlAttribute attr)
