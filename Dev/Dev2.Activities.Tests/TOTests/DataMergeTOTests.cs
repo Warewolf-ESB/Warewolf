@@ -258,7 +258,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { Padding = "aa", At = "1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "Padding", "must be a single character");
+            Verify_RuleSet(dto, "Padding", "Must be a single character");
         }
 
         [TestMethod]
@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "cannot be empty");
+            Verify_RuleSet(dto, "At", Warewolf.Resource.Errors.ErrorResource.CannotBeNull);
         }
 
         [TestMethod]
@@ -342,7 +342,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "-1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "must be a real number");
+            Verify_RuleSet(dto, "At", Warewolf.Resource.Errors.ErrorResource.MustBeRealNumber);
         }
 
         [TestMethod]

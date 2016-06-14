@@ -375,7 +375,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "cannot be empty");
+            Verify_RuleSet(dto, "At", Warewolf.Resource.Errors.ErrorResource.CannotBeNull);
         }
 
         [TestMethod]
@@ -399,7 +399,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "-1", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", " must be a real number");
+            Verify_RuleSet(dto, "At", Warewolf.Resource.Errors.ErrorResource.MustBeRealNumber);
         }
 
         [TestMethod]
