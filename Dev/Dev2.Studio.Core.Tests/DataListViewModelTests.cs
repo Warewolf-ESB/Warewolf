@@ -1219,7 +1219,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Variable name [[TestScalar!]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar!]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1235,7 +1235,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Variable name [[TestScalar.]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar.]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1251,7 +1251,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Variable name [[TestScalar.ad]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar.ad]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1267,7 +1267,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual("Variable name [[TestScalar()]] contains invalid character(s)", dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Scalar name [[TestScalar()]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]

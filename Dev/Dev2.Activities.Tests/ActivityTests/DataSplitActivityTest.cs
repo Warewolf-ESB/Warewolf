@@ -13,6 +13,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -190,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[OutVar3]]", "Index", "5", 3));
             _resultsCollection.Add(new DataSplitDTO("[[OutVar4]]", "Index", "15", 4));
 
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source.Replace("\r", ""), _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -549,9 +550,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.Clear();
             actual.AddRange(foo.Select(f => f.Trim()));
 
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
+            string exp = expected.ToString();
+            string act = actual.ToString();
 
+            FixBreaks(ref exp, ref act);
+            Assert.AreEqual(exp, act);
+        }
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
+        }
 
         [TestMethod]
         public void RecorsetWithStarAsIndexInSourceString_Expected_Split_For_Last_Value_In_Recordset()
