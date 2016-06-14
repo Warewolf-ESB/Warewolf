@@ -453,7 +453,6 @@
       <DependentUpon>XPath.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\XPath\XPathSteps.cs" />
-    <Compile Include="Toolbox\WcfService\WcfServiceConnector.feature.cs" />
     <Compile Include="Toolbox\WcfService\WcfServiceConnector1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
