@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.Validation
             var errorInfo = validator.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("The - Variable name [[res#]] contains invalid character(s)", errorInfo.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsValidExpressionRuleInvalidCharactersErrorTest, errorInfo.Message);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.Validation
             var errorInfo = validator.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("The - Invalid expression: opening and closing brackets don't match.", errorInfo.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsValidExpressionRuleErrorTest, errorInfo.Message);
         }
 
         [TestMethod]
@@ -197,7 +197,7 @@ namespace Dev2.Tests.Activities.Validation
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("MyRecSet - Recordset index [ -1 ] is not greater than zero", errorInfo.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsValidExpressionRuleIndexZeroErrorTest, errorInfo.Message);
         }
 
         [TestMethod]

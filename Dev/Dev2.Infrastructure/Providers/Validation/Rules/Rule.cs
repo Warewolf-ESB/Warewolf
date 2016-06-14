@@ -32,7 +32,7 @@ namespace Dev2.Providers.Validation.Rules
     {
         protected RuleBase()
         {
-            LabelText = "The";
+            LabelText = "";
             ErrorText = ErrorResource.InvalidValue;
         }
 
@@ -44,9 +44,14 @@ namespace Dev2.Providers.Validation.Rules
 
         protected IActionableErrorInfo CreatError()
         {
+            var message = "";
+            if (!string.IsNullOrEmpty(LabelText))
+            {
+                message = LabelText+" ";
+            }
             return new ActionableErrorInfo(DoError)
             {
-                Message = string.Format("{0} {1}", LabelText, ErrorText)
+               Message = string.Format("{0}{1}", message, ErrorText)
             };
         }
     }

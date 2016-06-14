@@ -269,9 +269,9 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 
             //------------Assert Results-------------------------
             Assert.AreEqual(3, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'In Field(s)' cannot be empty or only white space");
-            StringAssert.Contains(viewModel.Errors[1].Message, "'In Field(s)' Cannot have any scalars in this field");
-            StringAssert.Contains(viewModel.Errors[2].Message, "'Result' cannot be empty or only white space");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsInFieldsNotNullErrorTest);
+            StringAssert.Contains(viewModel.Errors[1].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsInFieldsScalarNotAllowedErrorTest);
+            StringAssert.Contains(viewModel.Errors[2].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsInFieldsResultNotNullErrorTest);
         }
 
         [TestMethod]
@@ -353,16 +353,16 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 
             StringAssert.Contains(viewModel.Errors[0].Message, "'In Field(s)' Cannot have any scalars in this field");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'From' cannot be empty");
+            StringAssert.Contains(viewModel.Errors[1].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsFromNotNullErrorTest);
             Verify_IsFocused(dtoModelItem5, viewModel.Errors[1].Do, "IsFromFocused");
 
-            StringAssert.Contains(viewModel.Errors[2].Message, "'To' cannot be empty");
+            StringAssert.Contains(viewModel.Errors[2].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsToNotNullErrorTest);
             Verify_IsFocused(dtoModelItem5, viewModel.Errors[2].Do, "IsToFocused");
 
-            StringAssert.Contains(viewModel.Errors[3].Message, "'From' cannot be empty");
+            StringAssert.Contains(viewModel.Errors[3].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsFromNotNullErrorTest);
             Verify_IsFocused(dtoModelItem6, viewModel.Errors[3].Do, "IsFromFocused");
 
-            StringAssert.Contains(viewModel.Errors[4].Message, "'To' cannot be empty");
+            StringAssert.Contains(viewModel.Errors[4].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsToNotNullErrorTest);
             Verify_IsFocused(dtoModelItem6, viewModel.Errors[4].Do, "IsToFocused");
 
 
