@@ -1455,4 +1455,19 @@
   <data name="XPathXmlRecordsetIndexErrorTest" xml:space="preserve">
     <value>'XML' - Recordset index -1 is not greater than zero</value>
   </data>
+  <data name="IsSingeRecordSortFieldInvalidErrorTest" xml:space="preserve">
+    <value>Sort field is invalid. You may only sort on a single RecordSet columns</value>
+  </data>
+  <data name="IsSingeValueResultFieldInvalidErrorTest" xml:space="preserve">
+    <value>The result field only allows a single result</value>
+  </data>
+  <data name="IsValidExpressionRuleErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="IsValidExpressionRuleIndexZeroErrorTest" xml:space="preserve">
+    <value>MyRecSet - Recordset index -1 is not greater than zero</value>
+  </data>
+  <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
+    <value>Variable name [[res#]] contains invalid character(s)</value>
+  </data>
 </root>

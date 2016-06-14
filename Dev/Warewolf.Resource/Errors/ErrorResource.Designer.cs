@@ -2275,6 +2275,51 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sort field is invalid. You may only sort on a single RecordSet columns.
+        /// </summary>
+        public static string IsSingeRecordSortFieldInvalidErrorTest {
+            get {
+                return ResourceManager.GetString("IsSingeRecordSortFieldInvalidErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result field only allows a single result.
+        /// </summary>
+        public static string IsSingeValueResultFieldInvalidErrorTest {
+            get {
+                return ResourceManager.GetString("IsSingeValueResultFieldInvalidErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string IsValidExpressionRuleErrorTest {
+            get {
+                return ResourceManager.GetString("IsValidExpressionRuleErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MyRecSet - Recordset index -1 is not greater than zero.
+        /// </summary>
+        public static string IsValidExpressionRuleIndexZeroErrorTest {
+            get {
+                return ResourceManager.GetString("IsValidExpressionRuleIndexZeroErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name [[res#]] contains invalid character(s).
+        /// </summary>
+        public static string IsValidExpressionRuleInvalidCharactersErrorTest {
+            get {
+                return ResourceManager.GetString("IsValidExpressionRuleInvalidCharactersErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is an item that exists with the same name and path.
         /// </summary>
         public static string ItemAlreadyExistInPath {
