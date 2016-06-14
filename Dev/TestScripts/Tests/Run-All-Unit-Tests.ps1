@@ -38,7 +38,7 @@ foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Tests.dll, Warewolf
 $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
 
 # Display full command including full argument string.
-Write-Host `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait

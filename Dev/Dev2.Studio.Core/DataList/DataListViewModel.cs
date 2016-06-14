@@ -745,10 +745,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (itemToRemove is IComplexObjectItemModel)
             {
-                var item = ComplexObjectCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
+                var complexObj = (IComplexObjectItemModel) itemToRemove;
+                var complexObjectItemModels = complexObj.Children;
+                var allChildren = complexObjectItemModels.Flatten(model => model.Children).ToList();
+                var notUsedItems = allChildren.Where(x => !x.IsUsed).ToList();
+                foreach (var complexObjectItemModel in notUsedItems)
                 {
-                    ComplexObjectCollection.Remove(item);
+                    RemoveUnusedChildComplexObjects(complexObj,complexObjectItemModel);
                 }
             }
 
@@ -781,6 +784,15 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
+            }
+        }
+
+        private void RemoveUnusedChildComplexObjects(IComplexObjectItemModel parentItemModel, IComplexObjectItemModel itemToRemove)
+        {
+            for (int index = parentItemModel.Children.Count-1; index >= 0; index--)
+            {
+                RemoveUnusedChildComplexObjects(parentItemModel.Children[index],itemToRemove);
+                parentItemModel.Children.Remove(itemToRemove);
             }
         }
 
@@ -1709,22 +1721,19 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 complexObjectItemModel.IsUsed = false;
             }
-            var usedItems =
-                from itemModel in models
-                where (from part in partsToVerify
-                        select part.DisplayValue
-                      ).Contains(itemModel.Name)
-                select itemModel;
-            foreach (var complexObjectItemModel in usedItems)
+            foreach (var itemModel in models)
             {
-                complexObjectItemModel.IsUsed = true;
+                var part = partsToVerify.Select(a => a.DisplayValue.Contains(itemModel.DisplayName)).FirstOrDefault();
+                if (part)
+                {
+                    itemModel.IsUsed = true;
+                }
             }
             foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
-                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed) || complexObjectItemModel.IsUsed;
+                complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) && complexObjectItemModel.IsUsed;
             }
-            
         }
 
         private List<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
