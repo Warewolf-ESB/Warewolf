@@ -177,14 +177,10 @@ namespace Dev2.Core.Tests.UtilsTests
             var result = converter.CreateListToBindTo(dataListModel);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.AreEqual(5,result.Count);
+            Assert.AreEqual(2,result.Count);
             Assert.AreEqual("Country", result[0].DisplayValue);
-            Assert.AreEqual("Person.Age",result[1].DisplayValue);
-            Assert.IsTrue(result[1].IsObject);
-            Assert.AreEqual("Person.Name",result[2].DisplayValue);
-            Assert.AreEqual("Person.Schools.Name",result[3].DisplayValue);
-            Assert.IsTrue(result[3].IsObject);
-            Assert.AreEqual("Person.Schools.Location",result[4].DisplayValue);
+            Assert.AreEqual("@Person",result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);            
         }
 
         [TestMethod]
@@ -216,14 +212,10 @@ namespace Dev2.Core.Tests.UtilsTests
             var result = converter.CreateListToBindTo(dataListModel);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Country", result[0].DisplayValue);
-            Assert.AreEqual("Person.Age", result[1].DisplayValue);
-            Assert.IsTrue(result[1].IsObject);
-            Assert.AreEqual("Person.Name", result[2].DisplayValue);
-            Assert.AreEqual("Person.Schools(1).Name", result[3].DisplayValue);
-            Assert.IsTrue(result[3].IsObject);
-            Assert.AreEqual("Person.Schools(1).Location", result[4].DisplayValue);
+            Assert.AreEqual("@Person", result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);            
         }
         
         [TestMethod]
@@ -256,9 +248,9 @@ namespace Dev2.Core.Tests.UtilsTests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Country", result[0].DisplayValue);
-            Assert.AreEqual("a.a(1).a(1).a1", result[1].DisplayValue);
+            Assert.AreEqual("@a", result[1].DisplayValue);
             Assert.IsTrue(result[1].IsObject);
-            Assert.IsTrue(result[1].CanHaveMutipleRows);
+            Assert.IsFalse(result[1].CanHaveMutipleRows);
         }
     }
 }

@@ -21,7 +21,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -421,140 +420,39 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(itemToAdd != null && itemToAdd.CanHaveMutipleRows)
             {
-                if (itemToAdd.IsObject)
+                IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
+                if(recordset != null)
                 {
-                    var parts = itemToAdd.DisplayValue.Split('.');
-                    if (parts.Length >= 1)
+                    var recsetCols = new List<IScalar>();
+                    foreach(var column in recordset.Columns)
                     {
-                        var parentItem = DataList.ShapeComplexObjects.FirstOrDefault(o => o.Name == DataListUtil.ReplaceRecordsetIndexWithBlank(parts[0]));
-                        if (parentItem != null)
-                        {
-                            for (int i = 1; i < parts.Length - 1; i++)
-                            {
-
-                                foreach (var child in parentItem.Children)
-                                {
-                                    var foundItem = child.Value.FirstOrDefault(o =>
-                                    {
-                                        var nameToCheck = DataListUtil.ReplaceRecordsetIndexWithBlank(parts[i]);
-                                        return o.Name == nameToCheck;
-                                    });
-                                    if (foundItem != null)
-                                    {
-                                        parentItem = foundItem;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (parentItem.IsArray)
-                            {
-                                var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
-                                IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
-                                var lastItem = dataListItems.Last();
-                                var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                                var indexString = lastItem.Index;
-                                var indexNum = Convert.ToInt32(indexString) + 1;
-                                var lastRow = dataListItems.Where(c => c.Index == indexString);
-                                var addRow = false;
-                                foreach (var item in lastRow)
-                                {
-                                    if (item.Value != string.Empty)
-                                    {
-                                        addRow = true;
-                                    }
-                                }
-                                if (addRow)
-                                {
-                                    AddBlankComplexObjectRow(itemToAdd, parentItem, indexToInsertAt, indexNum);
-                                }
-                            }
-                        }
+                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                        recsetCols.AddRange(cols);
                     }
 
-                }
-                else
-                {
-                    IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
-                    if (recordset != null)
+                    var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+                    IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
+                    var lastItem = dataListItems.Last();
+                    var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                    var indexString = lastItem.Index;
+                    var indexNum = Convert.ToInt32(indexString) + 1;
+                    var lastRow = dataListItems.Where(c => c.Index == indexString);
+                    var addRow = false;
+                    foreach(var item in lastRow)
                     {
-                        var recsetCols = new List<IScalar>();
-                        foreach (var column in recordset.Columns)
+                        if(item.Value != string.Empty)
                         {
-                            var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
-                            recsetCols.AddRange(cols);
+                            addRow = true;
                         }
-
-                        var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
-                        IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
-                        var lastItem = dataListItems.Last();
-                        var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                        var indexString = lastItem.Index;
-                        var indexNum = Convert.ToInt32(indexString) + 1;
-                        var lastRow = dataListItems.Where(c => c.Index == indexString);
-                        var addRow = false;
-                        foreach (var item in lastRow)
-                        {
-                            if (item.Value != string.Empty)
-                            {
-                                addRow = true;
-                            }
-                        }
-                        if (addRow)
-                        {
-                            AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
-                        }
+                    }
+                    if(addRow)
+                    {
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
                     }
                 }
             }
         }
 
-        private void AddBlankComplexObjectRow(IDataListItem itemToAdd,IComplexObject parentItem, int indexToInsertAt, int indexNum)
-        {
-            var key = 1;
-            if (indexNum > 1)
-            {
-                var possibleKey = indexNum - 1;
-                if (parentItem.Children.ContainsKey(possibleKey))
-                {
-                    key = possibleKey;
-                }
-            }
-            var complexObjects = parentItem.Children[key];
-            foreach(var complexObject in complexObjects)
-            {
-                var recordset = itemToAdd.Recordset;
-                if (recordset != parentItem.Name)
-                {
-                    recordset = itemToAdd.DisplayValue;
-                }
-                var replaceValue = DataListUtil.ReplaceRecordsetBlankWithIndex(recordset+".", indexNum - 1);
-                var displayName = recordset.TrimEnd('(',')');
-
-                var values = parentItem.IsArray? "("+indexNum+").":".";
-                var recSetPortion = string.Concat(displayName, values);
-                var displayValue  = itemToAdd.DisplayValue.Replace(replaceValue, recSetPortion).Replace(itemToAdd.Field,complexObject.Name);
-                var dataListItem = new DataListItem
-                {
-                    DisplayValue = displayValue,
-                    Value = string.Empty,
-                    CanHaveMutipleRows = itemToAdd.CanHaveMutipleRows || parentItem.IsArray,
-                    Recordset = recordset,
-                    Field = complexObject.Name,
-                    Description = complexObject.Description,
-                    Index = indexNum.ToString(CultureInfo.InvariantCulture)
-                };
-                
-                if (complexObject.Children.Count > 0)
-                {
-                    AddBlankComplexObjectRow(dataListItem, complexObject, indexToInsertAt,1);
-                }
-                else
-                {
-                    WorkflowInputs.Insert(indexToInsertAt + 1, dataListItem);
-                    indexToInsertAt++;
-                }
-            }           
-        }
 
         /// <summary>
         /// Used for removing a row for the collection
@@ -640,20 +538,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             var recSets = WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
             var scalars = WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
             AddScalarsToObject(scalars, dataListObject);
-            AddRecordsetsToObject(recSets, dataListObject);
-            var dataListItems = objects as IList<IDataListItem> ?? objects.ToList();
-            foreach (var dataListItem in dataListItems)
-            {
-                var parts = dataListItem.DisplayValue.Split('.');
-                if (parts.Length > 0)
-                {
-                    var parentName = string.Join(".", parts.Take(parts.Length - 1));
-                    var normalizedName = DataListUtil.ReplaceRecordsetIndexWithBlank(parentName);
-                    dataListItem.ParentName = normalizedName;
-
-                }
-            }
-            AddObjectsToObject(dataListItems,null, dataListObject);
+            AddRecordsetsToObject(recSets, dataListObject);            
+            AddObjectsToObject(objects, dataListObject);
 
             var dataListString = dataListObject.ToString(Formatting.Indented);
             var xml = JsonConvert.DeserializeXNode(dataListString, "DataList");
@@ -669,92 +555,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddObjectsToObject(IEnumerable<IDataListItem> objects,JObject parentObject, JObject dataListObject)
+        private void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
         {
-            
-            
-            var groupedObjects = objects.GroupBy(item => item.ParentName);
-            var parentObjects = new Dictionary<string,JObject>();
-            foreach (var groupedObject in groupedObjects)
+            foreach(var o in objects)
             {
-                var objName = groupedObject.Key.Replace("()","");
-                var parts = objName.Split('.');
-                var obj = new JObject();
-                string parentName;
-                if (parts.Length > 1)
+                if(o.Value != null)
                 {
-                    objName = parts[parts.Length - 1].Replace("()", "");
-                    parentName = parts[0].Replace("()", "");
+                    var value = JsonConvert.DeserializeObject(o.Value) as JContainer;
+                    dataListObject.Add(o.Field, value);
                 }
-                else
-                {
-                    parentName = objName.Replace("()", "");
-                }
-                
-                foreach (var dataListItem in groupedObject.GroupBy(item => item.Index))
-                {
-                    var jObjForArray = new JObject();
-                    var newArray = new JArray();
-                    var isArray = false;
-                    foreach (var listItem in dataListItem)
-                    {
-
-                        if (listItem.CanHaveMutipleRows)
-                        {
-                            isArray = true;
-                            jObjForArray.Add(listItem.Field.Replace("()", ""), listItem.Value);
-                        }
-                        else
-                        {
-                            if (listItem.Field.EndsWith("()"))
-                            {
-                                if(listItem.Value != null)
-                                {
-                                    var content = listItem.Value.Split(',');
-                                    var jArray = new JArray();
-                                    foreach(var s in content)
-                                    {
-                                        jArray.Add(s);
-                                    }
-                                    obj.Add(listItem.Field.Replace("()", ""), jArray);
-                                }
-                            }
-                            else
-                            {
-                                obj.Add(listItem.Field.Replace("()", ""), listItem.Value);
-                            }
-                        }
-                    }
-                    if (isArray)
-                    {
-                        newArray.Add(jObjForArray);                        
-                        if (parentObjects.ContainsKey(parentName))
-                        {
-                            parentObjects[parentName].Add(objName, newArray);
-                        }
-                        else
-                        {
-                            obj.Add(objName, newArray);
-                            parentObjects.Add(parentName, obj);
-                        }
-                    }
-                    else
-                    {
-                        if (parentObjects.ContainsKey(parentName))
-                        {
-                            parentObjects[parentName].Add(objName,obj);
-                        }
-                        else
-                        {
-                            parentObjects.Add(parentName,obj);
-                        }
-                        
-                    }
-                }
-            }
-            foreach(var o in parentObjects)
-            {
-                dataListObject.Add(o.Key,o.Value);
             }
         }
 
@@ -775,7 +584,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             empty = false;
                         }
-                        jObjForArray.Add(new JProperty(listItem.Field, listItem.Value));
+                        jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? ""));
                     }
                     if(!empty)
                     {
