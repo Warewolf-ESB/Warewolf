@@ -267,7 +267,7 @@ namespace Dev2.Activities
             }
             if (!double.TryParse(fromValue, out fromNum))
             {
-                errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForStart + "from {0} to {1}.", double.MinValue, double.MaxValue));
+                errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForStart + " from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
             }
             return fromNum;

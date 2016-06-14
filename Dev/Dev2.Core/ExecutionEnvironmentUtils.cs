@@ -21,7 +21,7 @@ namespace Dev2
 {
     public static class ExecutionEnvironmentUtils
     {
-        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
+        public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
         {
             var xml = JsonConvert.DeserializeXNode(GetJsonForOutput(dataObject, dataList), "DataList");
             return xml.ToString();
@@ -164,7 +164,7 @@ namespace Dev2
             }
         }
 
-        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList,int update)
+        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject,string dataList)
         {
             return GetJsonForOutput(dataObject, dataList);            
         }
@@ -187,12 +187,9 @@ namespace Dev2
                 }
             }
         }
-        public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList,int update)
+        public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
         {
 
-            var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
-            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(fixedDataList), Newtonsoft.Json.Formatting.Indented, true);
-            var deserializeObject = JsonConvert.DeserializeObject(serializeXNode) as JObject;
             JObject inputObject;
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString());
             if (!toLoad.IsJSON())
@@ -206,18 +203,75 @@ namespace Dev2
             }
             if (inputObject != null)
             {
-                
-            }
-            XmlDocument xDoc = new XmlDocument();
-            toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
-            xDoc.LoadXml(toLoad);
-            dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
-            if (xDoc.DocumentElement != null)
-            {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
                 var dataListTO = new DataListTO(dataList);
-                TryConvert(dataObject, children, dataListTO.Inputs, update);
-            }
+                var inputs = dataListTO.Inputs;
+                var recSets = inputs.Where(DataListUtil.IsValueRecordset).ToList();
+                var processedRecsets = new List<string>();
+                foreach (var input in inputs)
+                {
+                    var inputName = input;
+                    var isValueRecordset = DataListUtil.IsValueRecordset(input);
+                    if (isValueRecordset)
+                    {
+                        inputName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                        if (processedRecsets.Contains(inputName))
+                        {
+                            continue;
+                        }
+                    }
+                    var propsMatching = inputObject.Properties().Where(property => property.Name == inputName).ToList();
+                    foreach(var prop in propsMatching)
+                    {
+                        var value = prop.Value;
+                        var tokenType = value.Type;
+                        if(tokenType == JTokenType.Object)
+                        {
+                            var jContainer = value as JContainer;
+                            dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@"+input), jContainer);
+                        }
+                        else if (tokenType == JTokenType.Array)
+                        {
+                            var arrayValue = value as JArray;
+                            if (!isValueRecordset)
+                            {
+                                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input+"()"), arrayValue);
+                            }
+                            else
+                            {
+                                if (arrayValue != null)
+                                {
+                                    for (int i = 0; i < arrayValue.Count; i++)
+                                    {
+                                        var val = arrayValue[i];
+                                        var valObj = val as JObject;
+                                        if (valObj != null)
+                                        {
+                                            var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
+                                            foreach (var rec in recs)
+                                            {
+                                                var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
+                                                var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
+                                                if (fieldProp != null)
+                                                {
+                                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    processedRecsets.Add(inputName);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(input), value.ToString(),0);
+                        }
+
+                    }
+                }
+
+            }            
         }
         
         public static void UpdateEnvironmentFromOutputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
@@ -235,7 +289,7 @@ namespace Dev2
             }
         }
 
-        static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
+        private static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
         {
             try
             {

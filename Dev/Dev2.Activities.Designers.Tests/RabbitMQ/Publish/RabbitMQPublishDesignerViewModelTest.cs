@@ -113,9 +113,9 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             List<IActionableErrorInfo> errors = vm.Errors;
             Assert.IsNotNull(errors);
             Assert.AreEqual(3, errors.Count);
-            StringAssert.Contains(errors[0].Message, "'RabbitMQ Source' cannot be null");
-            StringAssert.Contains(errors[1].Message, "'Queue Name' cannot be empty or only white space");
-            StringAssert.Contains(errors[2].Message, "'Message' cannot be empty or only white space");
+            StringAssert.Contains(errors[0].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqSourceNotNullErrorTest);
+            StringAssert.Contains(errors[1].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqQueueNameNotNullErrorTest);
+            StringAssert.Contains(errors[2].Message, Warewolf.Resource.Errors.ErrorResource.RabbitMqMessageNotNullErrorTest);
         }
 
         [TestMethod]

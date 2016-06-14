@@ -74,7 +74,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingeRecordSetRule = new IsSingleRecordSetRule(() => "[[rec().a]],[[rec().a]]");
 
-            Assert.AreEqual("sort field is invalid. You may only sort on a single RecordSet columns", isSingeRecordSetRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeRecordSortFieldInvalidErrorTest, isSingeRecordSetRule.ErrorText);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingeRecordSetRule = new IsSingleRecordSetRule(() => "[[rec()]]");
 
-            Assert.AreEqual("sort field is invalid. You may only sort on a single RecordSet columns", isSingeRecordSetRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeRecordSortFieldInvalidErrorTest, isSingeRecordSetRule.ErrorText);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingeRecordSetRule = new IsSingleRecordSetRule(() => "[[rec(*)]]");
 
-            Assert.AreEqual("sort field is invalid. You may only sort on a single RecordSet columns", isSingeRecordSetRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeRecordSortFieldInvalidErrorTest, isSingeRecordSetRule.ErrorText);
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Activities.Validation
             var err = isSingeRecordSetRule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(err);
-            Assert.AreEqual("The sort field is invalid. You may only sort on a single RecordSet columns", err.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeRecordSortFieldInvalidErrorTest, err.Message);
         }
     }
 }

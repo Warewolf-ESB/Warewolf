@@ -218,10 +218,10 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             //------------Assert Results-------------------------
             Assert.AreEqual(4, viewModel.Errors.Count);
 
-            StringAssert.Contains(viewModel.Errors[0].Message, "\'Input\' - Result - Invalid expression: opening and closing brackets don't match.");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.DataMergeInvalidExpressionErrorTest);
             Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsFieldNameFocused");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' cannot be empty");
+            StringAssert.Contains(viewModel.Errors[1].Message, Warewolf.Resource.Errors.ErrorResource.DataMergeUsingNullErrorTest);
             Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
         }
 

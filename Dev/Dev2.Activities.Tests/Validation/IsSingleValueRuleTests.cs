@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingleValueRule = new IsSingleValueRule(() => "[[rec().a]],[[rec().a]]");
 
-            Assert.AreEqual("result field only allows a single result", isSingleValueRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeValueResultFieldInvalidErrorTest, isSingleValueRule.ErrorText);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingleValueRule = new IsSingleValueRule(() => "[[rec]],[[bob]]");
 
-            Assert.AreEqual("result field only allows a single result", isSingleValueRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeValueResultFieldInvalidErrorTest, isSingleValueRule.ErrorText);
         }
 
         [TestMethod]
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingleValueRule = new IsSingleValueRule(() => "[[rec()]]");
 
-            Assert.AreEqual("result field only allows a single result", isSingleValueRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeValueResultFieldInvalidErrorTest, isSingleValueRule.ErrorText);
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Setup for test--------------------------
             var isSingleValueRule = new IsSingleValueRule(() => "[[rec(*)]]");
 
-            Assert.AreEqual("result field only allows a single result", isSingleValueRule.ErrorText);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeValueResultFieldInvalidErrorTest, isSingleValueRule.ErrorText);
         }
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.Validation
             var err = isSingleValueRule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(err);
-            Assert.AreEqual("The result field only allows a single result", err.Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.IsSingeValueResultFieldInvalidErrorTest, err.Message);
         }
     }
 }

@@ -134,7 +134,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
         public void ThenIHaveTheFollowingData(Table table)
         {
             var dataObject = ScenarioContext.Current.Get<IDSFDataObject>("DataObject");
-            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,"",0));
+            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,""));
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
             using(var dataSet = new DataSet())
             {
