@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -19,6 +21,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.DataList
@@ -73,6 +76,7 @@ namespace Dev2.DataList
     /// </summary>
     public class ActivityDataMappingBuilder
     {
+        private List<ComplexObjectItemModel> _complexObjects;
 
         /// <summary>
         /// Gets or sets the data list.
@@ -155,7 +159,8 @@ namespace Dev2.DataList
                         else
                         {
                             var datalist = activity.ResourceModel.DataList;
-
+                            _complexObjects = new List<ComplexObjectItemModel>();
+                            AddComplexObjects(datalist);
                             inputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
                                                                                    enDev2ColumnArgumentDirection.Input);
                             outputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
@@ -174,6 +179,100 @@ namespace Dev2.DataList
                 }
 
             }
+        }
+
+        private void AddComplexObjects(string datalist)
+        {
+            try
+            {
+                var xDoc = new XmlDocument();
+                xDoc.LoadXml(datalist);
+                if (xDoc.DocumentElement != null)
+                {
+                    var children = xDoc.DocumentElement.ChildNodes;
+                    foreach (XmlNode c in children)
+                    {
+                        if (!DataListUtil.IsSystemTag(c.Name))
+                        {
+                            var jsonAttribute = false;
+                            if (c.Attributes != null)
+                            {
+                                var xmlAttribute = c.Attributes["IsJson"];
+                                if (xmlAttribute != null)
+                                {
+                                    bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+                                }
+                            }
+                            if (jsonAttribute)
+                            {
+                                AddComplexObjectFromXmlNode(c, null);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
+            }
+        }
+
+        private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObjectItemModel parent)
+        {
+            var isArray = false;
+            var ioDirection = enDev2ColumnArgumentDirection.None;
+            if (c.Attributes != null)
+            {
+                isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
+                ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
+            }
+            var name = GetNameForArrayComplexObject(c, isArray);
+            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray, Parent = parent, ColumnIODirection = ioDirection };
+            if (parent != null)
+            {
+                parent.Children.Add(complexObjectItemModel);
+            }
+            else
+            {
+                _complexObjects.Add(complexObjectItemModel);
+            }
+            if (c.HasChildNodes)
+            {
+                var children = c.ChildNodes;
+                foreach (XmlNode childNode in children)
+                {
+                    AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
+                }
+            }
+        }
+        private bool ParseBoolAttribute(XmlAttribute attr)
+        {
+            var result = true;
+            if (attr != null)
+            {
+                bool.TryParse(attr.Value, out result);
+            }
+            return result;
+        }
+        private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
+        // ReSharper restore InconsistentNaming
+        {
+            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+
+            if (attr == null)
+            {
+                return result;
+            }
+            if (!Enum.TryParse(attr.Value, true, out result))
+            {
+                result = enDev2ColumnArgumentDirection.None;
+            }
+            return result;
+        }
+        private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        {
+            var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
+            return name;
         }
 
         /// <summary>
@@ -454,6 +553,14 @@ namespace Dev2.DataList
                 // def.RecordSetName -> recordsetName
                 var viewModel = new InputOutputViewModel(def.Name, injectValue, injectMapsTo, def.DefaultValue, def.IsRequired, def.RecordSetName, def.EmptyToNull);
                 viewModel.IsObject = def.IsObject;
+                if (def.IsObject)
+                {
+                    var complexObjectItemModel = _complexObjects.FirstOrDefault(model => model.Name == def.Name);
+                    if (complexObjectItemModel != null)
+                    {
+                        viewModel.JsonString = complexObjectItemModel.GetJson();
+                    }
+                }
                 result.Add(viewModel);
             }
 

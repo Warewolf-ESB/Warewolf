@@ -13,6 +13,8 @@ using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Utils;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
@@ -21,6 +23,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
+using Warewolf.Storage;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
@@ -108,7 +111,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
 
                 return result;
-
             }
         }
 
@@ -139,7 +141,27 @@ namespace Dev2.Studio.ViewModels.DataList
                     _mapsTo = value;
                     OnPropertyChanged("MapsTo");
 
-                    if(Required)
+                    if (IsObject && !string.IsNullOrEmpty(JsonString))
+                    {
+                        try
+                        {
+                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(_mapsTo);
+                            if (language.IsJsonIdentifierExpression)
+                            {
+                                if (DataListSingleton.ActiveDataList != null)
+                                {
+                                    DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
+                                        DataListUtil.RemoveLanguageBrackets(_mapsTo), JsonString);
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            //Is not an object identifier
+                        }
+                    }
+
+                    if (Required)
                     {
                         RequiredMissing = string.IsNullOrEmpty(_mapsTo);
                     }
@@ -218,21 +240,18 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void ViewJsonObjects(IComplexObjectItemModel item)
+        public string JsonString { get; set; }
+
+        private void ViewJsonObjects()
         {
-            if (item != null)
+            if (!string.IsNullOrEmpty(JsonString))
             {
                 var window = new JsonObjectsView();
                 window.Height = 280;
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
-                    var json = item.GetJson();
-                    var obj = JsonConvert.DeserializeObject(json);
-                    if (obj != null)
-                    {
-                        json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
-                    }
+                    var json=JSONUtils.Format(JsonString);
                     contentPresenter.Text = json;
                 }
 
@@ -273,7 +292,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
-                ViewJsonObjects(item as IComplexObjectItemModel);
+                ViewJsonObjects();
             });
         }
 
