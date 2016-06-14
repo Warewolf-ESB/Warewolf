@@ -301,6 +301,7 @@ namespace Dev2.DataList
                 {
                     intersectionRowItem.Required = match.Required;
                     intersectionRowItem.DefaultValue = match.DefaultValue;
+                    intersectionRowItem.IsObject = match.IsObject;
                 }
             }
 

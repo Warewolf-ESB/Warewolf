@@ -90,8 +90,8 @@ namespace Dev2.Data
                         {
                             if(!string.IsNullOrEmpty(c.InnerXml))
                             {
-                                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.InnerXml));
-                                complexObject.Value = jsonData;
+//                                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.InnerXml));
+//                                complexObject.Value = jsonData;
                             }
                         }
                         else
