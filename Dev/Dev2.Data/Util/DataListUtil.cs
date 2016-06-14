@@ -1505,6 +1505,7 @@ namespace Dev2.Data.Util
                 var outputs = DataListFactory.CreateOutputParser().Parse(outputDefs);
                 var outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
                 var outputScalarList = DataListFactory.CreateScalarList(outputs, true);
+                var outputComplexObjectList = DataListFactory.CreateObjectList(outputs);
                 foreach (var recordSetDefinition in outputRecSets.RecordSets)
                 {
                     var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
@@ -1553,7 +1554,7 @@ namespace Dev2.Data.Util
 
                 foreach (var dev2Definition in outputScalarList)
                 {
-                    if (!dev2Definition.IsRecordSet)
+                    if (!dev2Definition.IsRecordSet && !dev2Definition.IsObject)
                     {
                         var warewolfEvalResult = innerEnvironment.Eval(AddBracketsToValueIfNotExist(dev2Definition.Name), update);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
@@ -1572,6 +1573,19 @@ namespace Dev2.Data.Util
                                 environment.Assign(AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item), update);
                             }
                         }
+                    }
+                }
+
+                foreach (var dev2Definition in outputComplexObjectList)
+                {
+                    if (dev2Definition.IsObject)
+                    {
+                        var warewolfEvalResult = innerEnvironment.EvalJContainer(AddBracketsToValueIfNotExist(dev2Definition.Name));
+                        if (warewolfEvalResult != null)
+                        {
+                            environment.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Value), warewolfEvalResult);
+                        }
+                        
                     }
                 }
             }
