@@ -46,12 +46,23 @@ namespace Dev2.Data
             Inputs.AddRange(
                 rootEl.Elements().Where(el =>
                 {
-                    var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
-                    var removeCondition = firstOrDefault != null &&
-                                          (firstOrDefault.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
-                                           firstOrDefault.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                    return removeCondition && !el.HasElements;
-                }).Select(element => element.Name.ToString()));
+                    var ioDirection = el.Attributes("ColumnIODirection").FirstOrDefault();
+                    var isJsonAttribute = el.Attribute("IsJson");
+                    var isJson = false;
+                    if (isJsonAttribute != null)
+                    {
+                        isJson = isJsonAttribute.Value.ToLower() == "true";
+                    }
+                    var removeCondition = ioDirection != null &&
+                                          (ioDirection.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
+                                           ioDirection.Value == enDev2ColumnArgumentDirection.Both.ToString());
+                    return removeCondition && (!el.HasElements || isJson);
+                }).Select(element =>
+                {
+                    var name = element.Name.ToString();                   
+                    return name;
+                    
+                }));
 
             Outputs.AddRange(
                 rootEl.Elements().Where(el =>

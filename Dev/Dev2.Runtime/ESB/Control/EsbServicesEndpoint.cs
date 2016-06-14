@@ -220,7 +220,7 @@ namespace Dev2.Runtime.ESB.Control
                     if(resource.DataList != null)
                     {
                         Dev2Logger.Debug("Mapping Inputs from Environment");
-                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString(), 0);
+                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
                     }
                 }
                 dataObject.RawPayload = new StringBuilder();
@@ -474,7 +474,7 @@ namespace Dev2.Runtime.ESB.Control
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
             generateInvokeContainer.Execute(out errors,update);
-            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, "", update);
+            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, "");
             var jsonSerializerSettings = new JsonSerializerSettings();
             var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
             return deserializeObject;
