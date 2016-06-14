@@ -88,7 +88,7 @@ namespace Dev2.Data
                         var complexObject = ComplexObjects.FirstOrDefault(o => o.Name == "@" + c.Name);
                         if (complexObject != null)
                         {
-                            var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.InnerXml));
+                            var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml));
                             complexObject.Value = jsonData;
                         }
                         else

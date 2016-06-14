@@ -231,11 +231,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                             if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(),0);
+                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString());
                             }
                             else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(),0);
+                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString());
                             }else if(dataObject.ReturnType == EmitionTypes.SWAGGER)
                             {
                                 formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
