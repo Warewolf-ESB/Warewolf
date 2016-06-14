@@ -823,7 +823,7 @@
     <value>{0} contains invalid characters</value>
   </data>
   <data name="ContainsLeadingOrTrailingWhitespace" xml:space="preserve">
-    <value>contains leading or trailing whitespace characters.</value>
+    <value>{0} contains leading or trailing whitespace characters.</value>
   </data>
   <data name="CopyToFailedArrayTooSmall" xml:space="preserve">
     <value>CopyTo() failed:  supplied array was too small</value>
