@@ -310,13 +310,13 @@
     <value>Please confirm that the correct file location has been entered</value>
   </data>
   <data name="DropboxCorrectFileName" xml:space="preserve">
-    <value>Please specify a correct DropBox file name</value>
+    <value>Please specify a correct Dropbox file name</value>
   </data>
   <data name="DropBoxDestinationFileAlreadyExist" xml:space="preserve">
     <value>Destination File already exists and overwrite is set to false</value>
   </data>
   <data name="DropBoxFilePathMissing" xml:space="preserve">
-    <value>Please specify the path of file in DropBox</value>
+    <value>Please specify the path of file in Dropbox</value>
   </data>
   <data name="DropBoxPathContainsColon" xml:space="preserve">
     <value>Path contains a colon (\":\") that is not part of a volume identifier (for example, \"c:\")</value>
@@ -1328,5 +1328,146 @@
   </data>
   <data name="ViewTypeMustInheritFromUserControl" xml:space="preserve">
     <value>View type must inherit from UserControl.</value>
+  </data>
+  <data name="DataMergeInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Input' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="CommandLineInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="CredentialsPasswordNotNullErrorTest" xml:space="preserve">
+    <value>Password Cannot be null</value>
+  </data>
+  <data name="CredentialsUsernameInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Username - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="CredentialsUsernameNotNullErrorTest" xml:space="preserve">
+    <value>Username Cannot be null</value>
+  </data>
+  <data name="DataMergeUsingNullErrorTest" xml:space="preserve">
+    <value>'Using' Cannot be null</value>
+  </data>
+  <data name="DataSplitInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Results' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="DataSplitStringToSplitErrorTest" xml:space="preserve">
+    <value>'String to Split' Cannot be null</value>
+  </data>
+  <data name="DataSplitUsingNullErrorTest" xml:space="preserve">
+    <value>'Using' Must be a real number</value>
+  </data>
+  <data name="DecisionDisplayTextNotNullErrorTest" xml:space="preserve">
+    <value>'DisplayText' Cannot be null</value>
+  </data>
+  <data name="DecisionFalseArmTextNotNullErrorTest" xml:space="preserve">
+    <value>'FalseArmText' Cannot be null</value>
+  </data>
+  <data name="DecisionTrueArmTextNotNullErrorTest" xml:space="preserve">
+    <value>'TrueArmText' Cannot be null</value>
+  </data>
+  <data name="EmailAttachmentsInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Attachments' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailBccInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Bcc' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailCcInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Cc' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailFromAccountInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'From Account' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailPasswordNotNullErrorTest" xml:space="preserve">
+    <value>'Password' Cannot be null</value>
+  </data>
+  <data name="EmailSourceNotNullErrorTest" xml:space="preserve">
+    <value>'Email Source' Cannot be null</value>
+  </data>
+  <data name="EmailToInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'To' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="FileActivityLabelInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Label - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="FileActivityLabelNotNullErrorTest" xml:space="preserve">
+    <value>Label Cannot be null</value>
+  </data>
+  <data name="FileActivityLabelNotValidErrorTest" xml:space="preserve">
+    <value>Please supply a valid Label</value>
+  </data>
+  <data name="FindRecordsFromNotNullErrorTest" xml:space="preserve">
+    <value>'From' Cannot be null</value>
+  </data>
+  <data name="FindRecordsInFieldsNotNullErrorTest" xml:space="preserve">
+    <value>'In Field(s)' Cannot be null</value>
+  </data>
+  <data name="FindRecordsInFieldsResultNotNullErrorTest" xml:space="preserve">
+    <value>'Result' Cannot be null</value>
+  </data>
+  <data name="FindRecordsInFieldsScalarNotAllowedErrorTest" xml:space="preserve">
+    <value>'In Field(s)' Cannot have any scalars in this field</value>
+  </data>
+  <data name="FindRecordsToNotNullErrorTest" xml:space="preserve">
+    <value>'To' Cannot be null</value>
+  </data>
+  <data name="QuickVariableInputListStringNotNullErrorTest" xml:space="preserve">
+    <value>Variable List String cannot be blank/empty</value>
+  </data>
+  <data name="RabbitMqMessageNotNullErrorTest" xml:space="preserve">
+    <value>'Message' Cannot be null</value>
+  </data>
+  <data name="RabbitMqQueueNameNotNullErrorTest" xml:space="preserve">
+    <value>'Queue Name' Cannot be null</value>
+  </data>
+  <data name="RabbitMqSourceNotNullErrorTest" xml:space="preserve">
+    <value>'RabbitMQ Source' Cannot be null</value>
+  </data>
+  <data name="RandomIntegerForEndErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End from {0} to {1}.</value>
+  </data>
+  <data name="RandomIntegerForStartErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start from {0} to {1}.</value>
+  </data>
+  <data name="RandomPositiveIntegerErrorTest" xml:space="preserve">
+    <value>Please enter a positive integer for the Length.</value>
+  </data>
+  <data name="RandomPositiveIntegerForEndErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End</value>
+  </data>
+  <data name="RandomPositiveIntegerForStartErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start</value>
+  </data>
+  <data name="UniqueResultCannotBeScalarErrorTest" xml:space="preserve">
+    <value>Scalars are not allowed. Please check the following: 'Result'</value>
+  </data>
+  <data name="XPathInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'XPath' Is not a valid expression</value>
+  </data>
+  <data name="XPathResultsNotNullErrorTest" xml:space="preserve">
+    <value>'Results' Cannot be null</value>
+  </data>
+  <data name="XPathXmlInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'XML' Is not a valid expression</value>
+  </data>
+  <data name="XPathXmlNotNullErrorTest" xml:space="preserve">
+    <value>'XML' Cannot be null</value>
+  </data>
+  <data name="XPathXmlRecordsetIndexErrorTest" xml:space="preserve">
+    <value>'XML' - Recordset index -1 is not greater than zero</value>
+  </data>
+  <data name="IsSingeRecordSortFieldInvalidErrorTest" xml:space="preserve">
+    <value>Sort field is invalid. You may only sort on a single RecordSet columns</value>
+  </data>
+  <data name="IsSingeValueResultFieldInvalidErrorTest" xml:space="preserve">
+    <value>The result field only allows a single result</value>
+  </data>
+  <data name="IsValidExpressionRuleErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="IsValidExpressionRuleIndexZeroErrorTest" xml:space="preserve">
+    <value>MyRecSet - Recordset index -1 is not greater than zero</value>
+  </data>
+  <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
+    <value>Variable name [[res#]] contains invalid character(s)</value>
   </data>
 </root>

@@ -234,9 +234,9 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
             Assert.AreEqual(3,viewModel.Errors.Count);
-            Assert.AreEqual("'DisplayText' cannot be empty or only white space",viewModel.Errors[0].Message);
-            Assert.AreEqual("'TrueArmText' cannot be empty or only white space", viewModel.Errors[1].Message);
-            Assert.AreEqual("'FalseArmText' cannot be empty or only white space", viewModel.Errors[2].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionDisplayTextNotNullErrorTest,viewModel.Errors[0].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionTrueArmTextNotNullErrorTest, viewModel.Errors[1].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionFalseArmTextNotNullErrorTest, viewModel.Errors[2].Message);
         }
 
         [TestMethod]
@@ -256,7 +256,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
             Assert.AreEqual(1,viewModel.Errors.Count);
-            Assert.AreEqual("'DisplayText' cannot be empty or only white space",viewModel.Errors[0].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionDisplayTextNotNullErrorTest, viewModel.Errors[0].Message);
             viewModel.Errors[0].Do();
             Assert.IsTrue(viewModel.IsDisplayTextFocused);
         }
@@ -279,7 +279,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
             Assert.AreEqual(1, viewModel.Errors.Count);
-            Assert.AreEqual("'TrueArmText' cannot be empty or only white space", viewModel.Errors[0].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionTrueArmTextNotNullErrorTest, viewModel.Errors[0].Message);
             viewModel.Errors[0].Do();
             Assert.IsTrue(viewModel.IsTrueArmFocused);
         }
@@ -302,7 +302,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
             Assert.AreEqual(1, viewModel.Errors.Count);
-            Assert.AreEqual("'FalseArmText' cannot be empty or only white space", viewModel.Errors[0].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionFalseArmTextNotNullErrorTest, viewModel.Errors[0].Message);
             viewModel.Errors[0].Do();
             Assert.IsTrue(viewModel.IsFalseArmFocused);
         }
