@@ -470,14 +470,52 @@ namespace Dev2.Data.Util
                 var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
                 IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
                 IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
+                IList<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
                 CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
+                CreateObjectInputs(outerEnvironment, inputObjectList, env,update);
             }
             finally
             {
                 env.CommitAssign();
             }
             return env;
+        }
+
+        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IList<IDev2Definition> inputObjectList, ExecutionEnvironment env,int update)
+        {
+            foreach (var dev2Definition in inputObjectList)
+            {
+                if (!string.IsNullOrEmpty(dev2Definition.RawValue))
+                {
+                    if (RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
+                    {
+                        var jVal = outerEnvironment.EvalJContainer(dev2Definition.RawValue);
+                        env.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Name),jVal);
+                    }
+                    else
+                    {
+                        var result = outerEnvironment.Eval(dev2Definition.RawValue, update);
+                        if (result.IsWarewolfAtomListresult)
+                        {
+                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                            if (data != null && data.Item.Any())
+                            {
+                                env.AssignWithFrame(new AssignValue(AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
+                            }
+                        }
+                        else
+                        {
+                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                            if (data != null)
+                            {
+                                env.AssignWithFrame(new AssignValue(AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
+                            }
+                        }
+                    }
+                    
+                }
+            }
         }
 
         static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env, int update)
@@ -1467,6 +1505,7 @@ namespace Dev2.Data.Util
                 var outputs = DataListFactory.CreateOutputParser().Parse(outputDefs);
                 var outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
                 var outputScalarList = DataListFactory.CreateScalarList(outputs, true);
+                var outputComplexObjectList = DataListFactory.CreateObjectList(outputs);
                 foreach (var recordSetDefinition in outputRecSets.RecordSets)
                 {
                     var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
@@ -1515,7 +1554,7 @@ namespace Dev2.Data.Util
 
                 foreach (var dev2Definition in outputScalarList)
                 {
-                    if (!dev2Definition.IsRecordSet)
+                    if (!dev2Definition.IsRecordSet && !dev2Definition.IsObject)
                     {
                         var warewolfEvalResult = innerEnvironment.Eval(AddBracketsToValueIfNotExist(dev2Definition.Name), update);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
@@ -1534,6 +1573,19 @@ namespace Dev2.Data.Util
                                 environment.Assign(AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item), update);
                             }
                         }
+                    }
+                }
+
+                foreach (var dev2Definition in outputComplexObjectList)
+                {
+                    if (dev2Definition.IsObject)
+                    {
+                        var warewolfEvalResult = innerEnvironment.EvalJContainer(AddBracketsToValueIfNotExist(dev2Definition.Name));
+                        if (warewolfEvalResult != null)
+                        {
+                            environment.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Value), warewolfEvalResult);
+                        }
+                        
                     }
                 }
             }

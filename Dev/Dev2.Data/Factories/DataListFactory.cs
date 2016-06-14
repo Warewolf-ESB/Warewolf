@@ -89,7 +89,7 @@ namespace Dev2.DataList.Contract
                 if (isOutput)
                 {
 
-                    if (!def.IsRecordSet)
+                    if (!def.IsRecordSet && !def.IsObject)
                     {
                         result.Add(def);
                     }
@@ -97,7 +97,7 @@ namespace Dev2.DataList.Contract
                 else
                 {
 
-                    if (!def.IsRecordSet)
+                    if (!def.IsRecordSet && !def.IsObject)
                     {
                         result.Add(def);
                     }
@@ -108,6 +108,20 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+
+        public static IList<IDev2Definition> CreateObjectList(IList<IDev2Definition> parsedOutput)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
+            foreach (IDev2Definition def in parsedOutput)
+            {
+                if (def.IsObject)
+                {
+                    result.Add(def);
+                }
+            }
+            return result;
+        }
         public static IDev2LanguageParser CreateOutputParser()
         {
             return new OutputLanguageParser();

@@ -365,7 +365,7 @@ and languageExpressionToJPath (lang : LanguageExpression) =
         | Last -> "[-1:]"
         | _ -> failwith "not supported for JSON types"
     | ComplexExpression _ -> failwith "not supported for JSON types"
-    | JsonIdentifierExpression a -> jsonIdentifierToJsonPath a ""
+    | JsonIdentifierExpression a -> jsonIdentifierToJsonPathLevel1 a
 ///Convert a jsonIdentifierExpression to jsonPath
 and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) = 
     let acc = 
@@ -440,7 +440,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
                     WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent recordset"
     | ComplexExpression _ -> failwith "no current use case please contact the warewolf product owner "
-    | WarewolfAtomExpression _ -> failwith "no current use case please contact the warewolf product owner "
+    | WarewolfAtomExpression a -> WarewolfAtomResult(a)
 //specialise eval for calculate. Its just eval with the addition of some quotes. can be merged into eval function at the expense of complexity for c# developers
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
@@ -498,7 +498,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
             |> Seq.map enQuote
             |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
             |> WarewolfAtomListresult
-        | _ -> failwith "recordest results callot be supported by calculate"
+        | _ -> failwith "recordest results can not be supported by calculate"
 
 and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
@@ -533,7 +533,7 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
             |> Seq.map enQuote
             |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
             |> WarewolfAtomListresult
-        | _ -> failwith "recordest results callot be supported by calculate"
+        | _ -> failwith "recordest results can not be supported by calculate"
 
 /// simplify a calculate expression
 and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : string) : string = 

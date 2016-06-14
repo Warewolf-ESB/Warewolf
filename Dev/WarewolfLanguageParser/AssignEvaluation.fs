@@ -159,7 +159,7 @@ and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
 and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     let left = parseLanguageExpression value.Name update
     let jsonId = languageExpressionToJsonIdentifier left
-    let right = eval env update value.Value
+    let right = evalJson env update (parseLanguageExpression value.Value update)
     assignGivenAValue env right jsonId
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 

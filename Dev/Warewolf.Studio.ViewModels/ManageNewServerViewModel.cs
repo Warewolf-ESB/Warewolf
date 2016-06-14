@@ -112,7 +112,10 @@ namespace Warewolf.Studio.ViewModels
                     SetupHeaderTextFromExisting();
                 }
             );
-            FromModel(_serverSource);
+            if (string.IsNullOrEmpty(TestMessage))
+            {
+                FromModel(_serverSource);
+            }
         }
 
         void SetupHeaderTextFromExisting()

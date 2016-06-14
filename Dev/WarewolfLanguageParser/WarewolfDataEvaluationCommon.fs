@@ -320,7 +320,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                 |> Seq.map enQuote
                 |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
                 |> WarewolfAtomListresult
-                | _ -> failwith "recordest results callot be supported by calculate"
+                | _ -> failwith "recordest results can not be supported by calculate"
                                                                                  
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
@@ -378,7 +378,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
             |> Seq.map enQuote
             |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
             |> WarewolfAtomListresult
-        | _ -> failwith "recordest results callot be supported by calculate"
+        | _ -> failwith "recordest results can not be supported by calculate"
 
 and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
@@ -413,7 +413,7 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
             |> Seq.map enQuote
             |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
             |> WarewolfAtomListresult
-        | _ -> failwith "recordest results callot be supported by calculate"
+        | _ -> failwith "recordest results can not be supported by calculate"
 
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
