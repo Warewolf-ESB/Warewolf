@@ -30,7 +30,8 @@ namespace Dev2
         private static string GetJsonForOutput(IDSFDataObject dataObject, string dataList)
         {
             var environment = dataObject.Environment;
-            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(dataList), Newtonsoft.Json.Formatting.Indented, true);
+            var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
+            var serializeXNode = JsonConvert.SerializeXNode(XDocument.Parse(fixedDataList), Newtonsoft.Json.Formatting.Indented, true);
             var deserializeObject = JsonConvert.DeserializeObject(serializeXNode) as JObject;
             if(deserializeObject != null)
             {
