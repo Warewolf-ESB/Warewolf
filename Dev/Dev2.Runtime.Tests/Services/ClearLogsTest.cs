@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = clearLog.Execute(dict, GetWorkspace().Object);
 
             //assert
-            Assert.IsTrue(result.Contains("Cant delete a file if no directory is passed."));
+            Assert.IsTrue(result.Contains("Can't delete a file if no directory is passed."));
         }
 
         [TestMethod]

@@ -3436,6 +3436,26 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Workflow requires that you have Execute permission on the &apos;bob&apos; Workflow. 
+        ///Please contact your Warewolf System Administrator..
+        /// </summary>
+        public static string ScheduledResourceInvalidUserPermissionErrorTest {
+            get {
+                return ResourceManager.GetString("ScheduledResourceInvalidUserPermissionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This task requires that the user account specified has &apos;Log On As Batch&apos; job rights. 
+        ///Please contact your Windows System Administrator..
+        /// </summary>
+        public static string ScheduledResourceLogOnAsBatchErrorTest {
+            get {
+                return ResourceManager.GetString("ScheduledResourceLogOnAsBatchErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scheduler Error Enumerating Groups:{0}.
         /// </summary>
         public static string SchedulerErrorEnumeratingGroups {
