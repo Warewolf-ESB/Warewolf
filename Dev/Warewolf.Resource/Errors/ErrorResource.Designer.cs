@@ -169,6 +169,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while parsing &apos;{0}&apos; It appears to be malformed.
+        /// </summary>
+        public static string CalculateIntellisenseProviderParsingMalformedErrorTest {
+            get {
+                return ResourceManager.GetString("CalculateIntellisenseProviderParsingMalformedErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculation Manager is currently null.
         /// </summary>
         public static string CalculationManagerIsNull {
@@ -529,7 +538,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to contains leading or trailing whitespace characters..
+        ///   Looks up a localized string similar to {0} contains leading or trailing whitespace characters..
         /// </summary>
         public static string ContainsLeadingOrTrailingWhitespace {
             get {
@@ -808,7 +817,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;Using&apos; Must be a real number.
+        ///   Looks up a localized string similar to &apos;Using&apos; must be a real number.
         /// </summary>
         public static string DataSplitUsingNullErrorTest {
             get {
@@ -1978,7 +1987,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is not a valid expression.
+        ///   Looks up a localized string similar to is not a valid expression.
         /// </summary>
         public static string InvalidExpression {
             get {
@@ -2482,7 +2491,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be a real number.
+        ///   Looks up a localized string similar to must be a real number.
         /// </summary>
         public static string MustBeRealNumber {
             get {
@@ -3436,6 +3445,26 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This Workflow requires that you have Execute permission on the &apos;bob&apos; Workflow. 
+        ///Please contact your Warewolf System Administrator..
+        /// </summary>
+        public static string ScheduledResourceInvalidUserPermissionErrorTest {
+            get {
+                return ResourceManager.GetString("ScheduledResourceInvalidUserPermissionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This task requires that the user account specified has &apos;Log On As Batch&apos; job rights. 
+        ///Please contact your Windows System Administrator..
+        /// </summary>
+        public static string ScheduledResourceLogOnAsBatchErrorTest {
+            get {
+                return ResourceManager.GetString("ScheduledResourceLogOnAsBatchErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scheduler Error Enumerating Groups:{0}.
         /// </summary>
         public static string SchedulerErrorEnumeratingGroups {
@@ -4066,7 +4095,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;XPath&apos; Is not a valid expression.
+        ///   Looks up a localized string similar to &apos;XPath&apos; is not a valid expression.
         /// </summary>
         public static string XPathInvalidExpressionErrorTest {
             get {
@@ -4093,7 +4122,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;XML&apos; Is not a valid expression.
+        ///   Looks up a localized string similar to &apos;XML&apos; is not a valid expression.
         /// </summary>
         public static string XPathXmlInvalidExpressionErrorTest {
             get {
