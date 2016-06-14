@@ -801,7 +801,7 @@ namespace Dev2.Tests.Runtime.Hosting
             res.Setup(a => a.ResourcePath).Returns("bob");
             var result = serverExplorerRepository.DeleteFolder("bob", false, Guid.NewGuid());
             //------------Assert Results-------------------------
-            Assert.AreEqual(result.Message, "Requested folder contains existing valid resources " + "bob");
+            Assert.AreEqual(result.Message, "Requested folder does not exist on server. Folder: " + "bob");
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }

@@ -631,6 +631,13 @@ WHERE   n.nspname = 'public'
                 return false;
             }
         }
+
+        public static JToken GeEmptyJToken()
+        {
+            return JToken.FromObject(new object());
+        }
+
+        
         // ReSharper restore UnusedMember.Global
         // ReSharper restore ConvertToConstant.Global
         // ReSharper restore FieldCanBeMadeReadOnly.Global

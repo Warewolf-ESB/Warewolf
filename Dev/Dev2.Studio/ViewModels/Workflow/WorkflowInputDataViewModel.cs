@@ -65,7 +65,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         void OnDebugExecutionFinished()
         {
             var handler = DebugExecutionFinished;
-            if(handler != null)
+            if (handler != null)
             {
                 handler();
             }
@@ -75,7 +75,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
             var handler = DebugExecutionStart;
-            if(handler != null)
+            if (handler != null)
             {
                 handler();
             }
@@ -105,7 +105,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SessionID = sessionId
             };
 
-            if(input.DebugModeSetting == DebugMode.DebugInteractive)
+            if (input.DebugModeSetting == DebugMode.DebugInteractive)
             {
                 DebugTo.IsDebugMode = true;
             }
@@ -142,7 +142,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if(_workflowInputs == null)
+                if (_workflowInputs == null)
                 {
                     _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
                     _workflowInputs.CollectionChanged += (o, args) => NotifyOfPropertyChange(() => WorkflowInputCount);
@@ -205,7 +205,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             set
             {
-                if(value.Equals(_canViewInBrowser))
+                if (value.Equals(_canViewInBrowser))
                 {
                     return;
                 }
@@ -223,7 +223,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             set
             {
-                if(value.Equals(_canDebug))
+                if (value.Equals(_canDebug))
                 {
                     return;
                 }
@@ -285,7 +285,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SetXmlData();
             DebugTo.XmlData = XmlData;
             DebugTo.RememberInputs = RememberInputs;
-            if(DebugTo.DataList != null)
+            if (DebugTo.DataList != null)
             {
                 Broker.PersistDebugSession(DebugTo);
             }
@@ -293,19 +293,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ExecuteWorkflow()
         {
-            if(_resourceModel == null || _resourceModel.Environment == null)
+            if (_resourceModel == null || _resourceModel.Environment == null)
             {
                 return;
             }
 
             var context = Parent as WorkSurfaceContextViewModel;
-            if(context != null)
+            if (context != null)
             {
                 context.BindToModel();
             }
 
             var clientContext = _resourceModel.Environment.Connection;
-            if(clientContext != null)
+            if (clientContext != null)
             {
                 var dataList = XElement.Parse(DebugTo.XmlData);
                 //
@@ -351,7 +351,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public string BuildWebPayLoad()
         {
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows);
-            if(allScalars && WorkflowInputs.Count > 0)
+            if (allScalars && WorkflowInputs.Count > 0)
             {
                 return WorkflowInputs.Aggregate("", (current, workflowInput) => current + workflowInput.Field + "=" + workflowInput.Value + "&").TrimEnd('&');
             }
@@ -359,7 +359,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //Error in the xml payload
                 return "";
@@ -385,7 +385,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SetXmlData();
             DebugTo.XmlData = XmlData;
             DebugTo.RememberInputs = RememberInputs;
-            if(DebugTo.DataList != null) Broker.PersistDebugSession(DebugTo); //2013.01.22: Ashley Lewis - Bug 7837
+            if (DebugTo.DataList != null) Broker.PersistDebugSession(DebugTo); //2013.01.22: Ashley Lewis - Bug 7837
 
             SendFinishedMessage();
             RequestClose(ViewModelDialogResults.Cancel);
@@ -418,13 +418,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="itemToAdd">The item that is currently selected</param>
         public void AddRow(IDataListItem itemToAdd)
         {
-            if(itemToAdd != null && itemToAdd.CanHaveMutipleRows)
+            if (itemToAdd != null && itemToAdd.CanHaveMutipleRows)
             {
                 IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
-                if(recordset != null)
+                if (recordset != null)
                 {
                     var recsetCols = new List<IScalar>();
-                    foreach(var column in recordset.Columns)
+                    foreach (var column in recordset.Columns)
                     {
                         var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
                         recsetCols.AddRange(cols);
@@ -438,14 +438,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var indexNum = Convert.ToInt32(indexString) + 1;
                     var lastRow = dataListItems.Where(c => c.Index == indexString);
                     var addRow = false;
-                    foreach(var item in lastRow)
+                    foreach (var item in lastRow)
                     {
-                        if(item.Value != string.Empty)
+                        if (item.Value != string.Empty)
                         {
                             addRow = true;
                         }
                     }
-                    if(addRow)
+                    if (addRow)
                     {
                         AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
                     }
@@ -463,7 +463,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             indexToSelect = 1;
             var itemsRemoved = false;
-            if(itemToRemove != null && itemToRemove.CanHaveMutipleRows)
+            if (itemToRemove != null && itemToRemove.CanHaveMutipleRows)
             {
                 // ReSharper disable InconsistentNaming
                 IEnumerable<IDataListItem> NumberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
@@ -471,25 +471,25 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var numberOfRows = NumberOfRows.Count();
                 List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.Index == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
 
-                if(numberOfRows == 2)
+                if (numberOfRows == 2)
                 {
                     IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => c.Index == "1" && c.Recordset == itemToRemove.Recordset);
                     bool removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
 
-                    if(removeRow)
+                    if (removeRow)
                     {
 
                         IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == "2" && c.Recordset == itemToRemove.Recordset);
 
-                        foreach(IDataListItem item in listToChange)
+                        foreach (IDataListItem item in listToChange)
                         {
                             item.Value = string.Empty;
                         }
-                        foreach(IDataListItem item in listToRemove)
+                        foreach (IDataListItem item in listToRemove)
                         {
                             WorkflowInputs.Remove(item);
                             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                            if(itemToRemove.Index == item.Index)
+                            if (itemToRemove.Index == item.Index)
                             {
                                 IDataListItem item1 = item;
                                 indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
@@ -502,18 +502,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-                else if(numberOfRows > 2)
+                else if (numberOfRows > 2)
                 {
                     IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
-                    foreach(IDataListItem item in listToChange)
+                    foreach (IDataListItem item in listToChange)
                     {
                         item.Value = string.Empty;
                     }
-                    foreach(IDataListItem item in listToRemove)
+                    foreach (IDataListItem item in listToRemove)
                     {
                         WorkflowInputs.Remove(item);
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                        if(itemToRemove.Index == item.Index)
+                        if (itemToRemove.Index == item.Index)
                         {
                             IDataListItem item1 = item;
                             indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
@@ -538,7 +538,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var recSets = WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
             var scalars = WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
             AddScalarsToObject(scalars, dataListObject);
-            AddRecordsetsToObject(recSets, dataListObject);            
+            AddRecordsetsToObject(recSets, dataListObject);
             AddObjectsToObject(objects, dataListObject);
 
             var dataListString = dataListObject.ToString(Formatting.Indented);
@@ -549,7 +549,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 XmlData = XElement.Parse(xml.ToString()).ToString();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 XmlData = "Invalid characters entered";
             }
@@ -557,12 +557,25 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
         {
-            foreach(var o in objects)
+            foreach (var o in objects)
             {
-                if(o.Value != null)
+                if (o != null)
                 {
-                    var value = JsonConvert.DeserializeObject(o.Value) as JContainer;
-                    dataListObject.Add(o.Field, value);
+                    string json = "";
+                    if (DataListSingleton.ActiveDataList != null)
+                    {
+                        if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                        {
+                            var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
+
+                            if (complexObjectItemModel != null)
+                            {
+                                json = complexObjectItemModel.GetJson();
+                            }
+                        }
+                        var value = JsonConvert.DeserializeObject(string.IsNullOrEmpty(o.Value) ? json : o.Value) as JContainer;
+                        dataListObject.Add(o.Field, value);
+                    }
                 }
             }
         }
@@ -570,26 +583,19 @@ namespace Dev2.Studio.ViewModels.Workflow
         private static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject)
         {
             var groupedRecsets = recSets.GroupBy(item => item.Recordset);
-            foreach(var groupedRecset in groupedRecsets)
+            foreach (var groupedRecset in groupedRecsets)
             {
                 var arrayName = groupedRecset.Key;
                 var newArray = new JArray();
-                foreach(var dataListItem in groupedRecset.GroupBy(item => item.Index))
+                var dataListItems = groupedRecset.GroupBy(item => item.Index);
+                foreach (var dataListItem in dataListItems)
                 {
                     var jObjForArray = new JObject();
-                    var empty = true;
-                    foreach(var listItem in dataListItem)
+                    foreach (var listItem in dataListItem)
                     {
-                        if(!string.IsNullOrEmpty(listItem.Value))
-                        {
-                            empty = false;
-                        }
                         jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? ""));
                     }
-                    if(!empty)
-                    {
-                        newArray.Add(jObjForArray);
-                    }
+                    newArray.Add(jObjForArray);
                 }
                 dataListObject.Add(arrayName, newArray);
             }
@@ -597,9 +603,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private static void AddScalarsToObject(IEnumerable<IDataListItem> scalars, JObject dataListObject)
         {
-            foreach(var dataListItem in scalars)
+            foreach (var dataListItem in scalars)
             {
-                dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value));
+                dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value ?? ""));
             }
         }
 
@@ -608,10 +614,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void SetWorkflowInputData()
         {
-                WorkflowInputs.Clear();
+            WorkflowInputs.Clear();
             DataList.PopulateWithData(XmlData);
-                _dataListConversionUtils.CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
-            }
+            _dataListConversionUtils.CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
+        }
 
         /// <summary>
         /// Used for just adding a blank row to a recordset
@@ -622,13 +628,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             indexToSelect = 1;
             bool itemsAdded = false;
-            if(selectedItem != null && selectedItem.CanHaveMutipleRows)
+            if (selectedItem != null && selectedItem.CanHaveMutipleRows)
             {
                 var recordset = DataList.RecordSets.FirstOrDefault(set => set.Name == selectedItem.Recordset);
-                if(recordset != null)
+                if (recordset != null)
                 {
                     var recsetCols = new List<IScalar>();
-                    foreach(var column in recordset.Columns)
+                    foreach (var column in recordset.Columns)
                     {
                         recsetCols.AddRange(column.Value);
                     }
@@ -646,13 +652,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public IDataListItem GetNextRow(IDataListItem selectedItem)
         {
-            if(selectedItem != null)
+            if (selectedItem != null)
             {
                 int indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
-                if(indexToInsertAt != -1)
+                if (indexToInsertAt != -1)
                 {
-                    var indexOfItemToGet = indexToInsertAt+1;
-                    if(indexOfItemToGet == WorkflowInputs.Count)
+                    var indexOfItemToGet = indexToInsertAt + 1;
+                    if (indexOfItemToGet == WorkflowInputs.Count)
                     {
                         return selectedItem;
                     }
@@ -664,12 +670,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public IDataListItem GetPreviousRow(IDataListItem selectedItem)
         {
-            if(selectedItem != null)
+            if (selectedItem != null)
             {
                 int indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
-                if(indexToInsertAt != -1)
+                if (indexToInsertAt != -1)
                 {
-                    var indexOfItemToGet = indexToInsertAt-1;
+                    var indexOfItemToGet = indexToInsertAt - 1;
                     if (indexOfItemToGet == WorkflowInputs.Count || indexOfItemToGet == -1)
                     {
                         return selectedItem;
@@ -693,13 +699,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;
-            if(dlItem.CanHaveMutipleRows)
+            if (dlItem.CanHaveMutipleRows)
             {
                 IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
                 string colName = null;
-                foreach(var col in recsetCols.Distinct(new ScalarNameComparer()))
+                foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
                 {
-                    if(string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+                    if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                     {
                         WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
                         {
@@ -715,7 +721,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     colName = col.Name;
                     itemsAdded = true;
-                    
+
                 }
             }
             return itemsAdded;
@@ -730,7 +736,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ViewClosed()
         {
-            if(!CloseRequested)
+            if (!CloseRequested)
                 SendFinishedMessage();
         }
 
@@ -745,7 +751,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
 
             var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId);
-            if(resourceModel != null && resourceModel.Environment != null && resourceModel.Environment.AuthorizationService != null)
+            if (resourceModel != null && resourceModel.Environment != null && resourceModel.Environment.AuthorizationService != null)
             {
                 result.CanDebug = resourceModel.Environment.AuthorizationService.GetResourcePermissions(resourceModel.ID).CanDebug();
             }
