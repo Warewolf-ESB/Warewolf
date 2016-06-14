@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
@@ -30,7 +29,6 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WebServiceContainerTests
     {
         static readonly XElement WebSourceWithInputsXml = XmlResource.Fetch("WebSource");

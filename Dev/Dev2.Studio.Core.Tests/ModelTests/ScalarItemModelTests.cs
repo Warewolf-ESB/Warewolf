@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class ScalarItemModelTests
     {
@@ -80,7 +79,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateName_GivenInvalidName_ShouldHaveErrorMessage()
+        public void ValidateScalarName_GivenInvalidName_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
             IScalarItemModel scalarItemModel = new ScalarItemModel("DisplayName");
@@ -91,7 +90,7 @@ namespace Dev2.Core.Tests.ModelTests
             scalarItemModel.ValidateName(scalarItemModel.DisplayName);//Convention
             //---------------Test Result -----------------------
             var hasErrorMsg = !string.IsNullOrEmpty(scalarItemModel.ErrorMessage);
-            Assert.IsTrue(hasErrorMsg);
+            Assert.IsTrue(hasErrorMsg, "Invalid scalar name does not have error message.");
         }
 
         [TestMethod]

@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -23,7 +22,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class ActivityDesignerButtonTests
     {

@@ -72,10 +72,22 @@ namespace Dev2.Activities.Specs.Composition
     [Binding]
     public class WorkflowExecutionSteps : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public WorkflowExecutionSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(this.scenarioContext);
+        }
+
         const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
+        private readonly CommonSteps _commonSteps;
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -291,11 +303,11 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int timeout)
+        void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int timeout)
         {
             if (timeout <= 0)
             {
-                ScenarioContext.Current.Add("ConnectTimeoutCountdown", 3000);
+                scenarioContext.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
             }
             environmentModel.Connect();
@@ -309,7 +321,7 @@ namespace Dev2.Activities.Specs.Composition
 
         void Add(string key, object value)
         {
-            ScenarioContext.Current.Add(key, value);
+            scenarioContext.Add(key, value);
         }
 
         void Append(IDebugState debugState)
@@ -362,10 +374,8 @@ namespace Dev2.Activities.Specs.Composition
 
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
-
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, debugToUse.Inputs
+            
+            _commonSteps.ThenTheDebugInputsAs(table, debugToUse.Inputs
                                                     .SelectMany(item => item.ResultsList).ToList());
         }
 
@@ -394,9 +404,8 @@ namespace Dev2.Activities.Specs.Composition
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+            
+            _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(item => item.Inputs)
                                                     .SelectMany(item => item.ResultsList).ToList());
 
@@ -427,15 +436,14 @@ namespace Dev2.Activities.Specs.Composition
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+            
+            _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(item => item.Outputs)
                                                     .SelectMany(item => item.ResultsList).ToList());
         }
 
 
-        static IDebugState DebugToUse(int stepNumber, List<IDebugState> toolSpecificDebug)
+        IDebugState DebugToUse(int stepNumber, List<IDebugState> toolSpecificDebug)
         {
             var debugToUse = toolSpecificDebug[stepNumber - 1];
             return debugToUse;
@@ -461,9 +469,8 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugOutputAs(table, debugToUse.Outputs
+            
+            _commonSteps.ThenTheDebugOutputAs(table, debugToUse.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
 
@@ -509,7 +516,7 @@ namespace Dev2.Activities.Specs.Composition
                             updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
                     }
-                    CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
+                    _commonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
                 else if(resource.ServerResourceType == "WebService")
                 {
@@ -531,11 +538,11 @@ namespace Dev2.Activities.Specs.Composition
                     {
                         updatedActivity.SourceId = source.ResourceID;
                     }
-                    CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
+                    _commonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
                 else
                 {
-                    CommonSteps.AddActivityToActivityList(wf, serviceName, activity);
+                    _commonSteps.AddActivityToActivityList(wf, serviceName, activity);
                 }
             }
         }
@@ -586,7 +593,7 @@ namespace Dev2.Activities.Specs.Composition
                     activity.DisplayName = remoteWf;
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
-                    CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
+                    _commonSteps.AddActivityToActivityList(wf, remoteWf, activity);
                 }
                 else
                 {
@@ -599,7 +606,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        static DataMappingViewModel GetDataMappingViewModel(IResourceModel remoteResourceModel, Table mappings)
+        DataMappingViewModel GetDataMappingViewModel(IResourceModel remoteResourceModel, Table mappings)
         {
             var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
@@ -639,7 +646,7 @@ namespace Dev2.Activities.Specs.Composition
                             inputOutputViewModel.Name = output;
                         }
                         inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
-                        CommonSteps.AddVariableToVariableList(toVariable);
+                        _commonSteps.AddVariableToVariableList(toVariable);
                     }
                 }
 
@@ -665,7 +672,7 @@ namespace Dev2.Activities.Specs.Composition
                             inputOutputViewModel.Name = input;
                         }
                         inputOutputViewModel.Value = input;
-                        CommonSteps.AddVariableToVariableList(fromVariable);
+                        _commonSteps.AddVariableToVariableList(fromVariable);
                     }
                 }
 
@@ -673,7 +680,7 @@ namespace Dev2.Activities.Specs.Composition
             return dataMappingViewModel;
         }
 
-        static DsfActivity GetServiceActivity(string serviceType)
+        DsfActivity GetServiceActivity(string serviceType)
         {
             DsfActivity activity = null;
             switch(serviceType)
@@ -703,7 +710,7 @@ namespace Dev2.Activities.Specs.Composition
             return activity;
         }
 
-        static StringBuilder GetOutputMapping(Table table, IResourceModel resource)
+        StringBuilder GetOutputMapping(Table table, IResourceModel resource)
         {
             var outputSb = new StringBuilder();
             outputSb.Append("<Outputs>");
@@ -713,7 +720,7 @@ namespace Dev2.Activities.Specs.Composition
                 var output = tableRow["Output from Service"];
                 var toVariable = tableRow["To Variable"];
 
-                CommonSteps.AddVariableToVariableList(toVariable);
+                _commonSteps.AddVariableToVariableList(toVariable);
 
                 if(resource != null)
                 {
@@ -766,14 +773,14 @@ namespace Dev2.Activities.Specs.Composition
 
                 activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
             }
-            CommonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddVariableToVariableList(resultVariable);
             AddActivityToSequenceInsideForEach(sequenceName, forEachName, activity);
         }
 
-        static void AddActivityToSequenceInsideForEach(string sequenceName, string forEachName, Activity activity)
+        void AddActivityToSequenceInsideForEach(string sequenceName, string forEachName, Activity activity)
         {
 
-            var activityList = CommonSteps.GetActivityList();
+            var activityList = _commonSteps.GetActivityList();
             var forEachActivity = activityList[forEachName] as DsfForEachActivity;
             if(forEachActivity != null)
             {
@@ -793,7 +800,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 var variable = tableRow["Variable"];
 
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
 
                 enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
@@ -802,7 +809,7 @@ namespace Dev2.Activities.Specs.Composition
             AddActivityToSequenceInsideForEach(sequenceName, forEachName, activity);
         }
 
-        static StringBuilder GetInputMapping(Table table, IResourceModel resource)
+        StringBuilder GetInputMapping(Table table, IResourceModel resource)
         {
             var inputSb = new StringBuilder();
             inputSb.Append("<Inputs>");
@@ -812,7 +819,7 @@ namespace Dev2.Activities.Specs.Composition
                 var input = tableRow["Input to Service"];
                 var fromVariable = tableRow["From Variable"];
 
-                CommonSteps.AddVariableToVariableList(fromVariable);
+                _commonSteps.AddVariableToVariableList(fromVariable);
 
                 if(resource != null)
                 {
@@ -882,7 +889,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             BuildDataList();
 
-            var activityList = CommonSteps.GetActivityList();
+            var activityList = _commonSteps.GetActivityList();
 
             var flowSteps = new List<FlowStep>();
 
@@ -950,9 +957,8 @@ namespace Dev2.Activities.Specs.Composition
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
+            
+            _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
@@ -986,9 +992,8 @@ namespace Dev2.Activities.Specs.Composition
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+            
+            _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(s => s.Inputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
@@ -1037,12 +1042,12 @@ namespace Dev2.Activities.Specs.Composition
 
         T Get<T>(string keyName)
         {
-            return ScenarioContext.Current.Get<T>(keyName);
+            return scenarioContext.Get<T>(keyName);
         }
 
         void TryGetValue<T>(string keyName, out T value)
         {
-            ScenarioContext.Current.TryGetValue(keyName, out value);
+            scenarioContext.TryGetValue(keyName, out value);
         }
 
 
@@ -1158,9 +1163,8 @@ namespace Dev2.Activities.Specs.Composition
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
-
-            var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
+            
+            _commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
                                                     .SelectMany(s => s.Outputs)
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
@@ -1210,8 +1214,8 @@ namespace Dev2.Activities.Specs.Composition
 
                 dsfSqlBulkInsert.InputMappings = mappings;
 
-                CommonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
+                _commonSteps.AddVariableToVariableList(result);
             }
             else
             {
@@ -1223,7 +1227,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAnSortAs(string parentName, string activityName, Table table)
         {
             var dsfSort = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
-            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
@@ -1232,8 +1236,8 @@ namespace Dev2.Activities.Specs.Composition
         // ReSharper restore InconsistentNaming
         {
             var del = new DsfPathDelete { InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName };
-            CommonSteps.AddVariableToVariableList(table.Rows[0][1]);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, del);
+            _commonSteps.AddVariableToVariableList(table.Rows[0][1]);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, del);
         }
 
         [Given(@"""(.*)"" contains a Foreach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
@@ -1251,8 +1255,8 @@ namespace Dev2.Activities.Specs.Composition
                     forEach.Recordset = executionCount;
                     break;
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, forEach);
-            ScenarioContext.Current.Add(activityName, forEach);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, forEach);
+            scenarioContext.Add(activityName, forEach);
         }
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
@@ -1260,7 +1264,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsWorkflowWithMappingAs(string forEachName, string nestedWF, Table mappings)
         // ReSharper restore InconsistentNaming
         {
-            var forEachAct = (DsfForEachActivity)ScenarioContext.Current[forEachName];
+            var forEachAct = (DsfForEachActivity)scenarioContext[forEachName];
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
@@ -1304,7 +1308,7 @@ namespace Dev2.Activities.Specs.Composition
                 act.RequireAllFieldsToMatch = rule[5].ToUpper().Trim() == "YES";
                 act.RequireAllTrue = rule[6].ToUpper().Trim() == "YES";
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, act);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, act);
         }
 
 
@@ -1312,7 +1316,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
         {
             DsfRecordsetLengthActivity len = new DsfRecordsetLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
-            CommonSteps.AddActivityToActivityList(parentName, activityName, len);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 
 
@@ -1344,7 +1348,7 @@ namespace Dev2.Activities.Specs.Composition
             if(id == Guid.Empty)
             {
                 id = Guid.NewGuid();
-                ScenarioContext.Current.Add("SavedId", id);
+                scenarioContext.Add("SavedId", id);
 
             }
             Save(workflowName, count, id);
@@ -1354,7 +1358,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             BuildDataList();
 
-            var activityList = CommonSteps.GetActivityList();
+            var activityList = _commonSteps.GetActivityList();
 
             var flowSteps = new List<FlowStep>();
 
@@ -1410,14 +1414,14 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("resourceRepo", out repository);
             IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
             var versions = rep.GetVersions(id);
-            ScenarioContext.Current["Versions"] = versions;
+            scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);
         }
 
         [Then(@"explorer as")]
         public void ThenExplorerAs(Table table)
         {
-            var versions = ScenarioContext.Current["Versions"] as IList<IExplorerItem>;
+            var versions = scenarioContext["Versions"] as IList<IExplorerItem>;
             if(versions == null || versions.Count == table.RowCount)
                 Assert.Fail("InvalidVersions");
             else
@@ -1452,13 +1456,13 @@ namespace Dev2.Activities.Specs.Composition
                 }
 
                 List<ActivityDTO> fieldCollection;
-                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+                scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
-            CommonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
@@ -1555,14 +1559,14 @@ namespace Dev2.Activities.Specs.Composition
             Stopwatch st = new Stopwatch();
             st.Start();
             WhenIsExecuted(workflowName);
-            ScenarioContext.Current.Add(executionLabel, st.ElapsedMilliseconds);
+            scenarioContext.Add(executionLabel, st.ElapsedMilliseconds);
         }
 
         [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
         public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
         {
-            int e1 = Convert.ToInt32(ScenarioContext.Current[executionLabelFirst]),
-                e2 = Convert.ToInt32(ScenarioContext.Current[executionLabelSecond]),
+            int e1 = Convert.ToInt32(scenarioContext[executionLabelFirst]),
+                e2 = Convert.ToInt32(scenarioContext[executionLabelSecond]),
                 d = maxDeltaMilliseconds;
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
         }
@@ -1578,34 +1582,34 @@ namespace Dev2.Activities.Specs.Composition
                 var result = tableRow["Result"];
 
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.Result = result;
                 activity.ResultFields = returnFields;
                 activity.InFields = inFields;
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
         public void GivenCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
         {
-            CommonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddVariableToVariableList(resultVariable);
 
             DsfCalculateActivity calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
         }
 
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            CommonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddVariableToVariableList(result);
 
             DsfCountRecordsetActivity countRecordsetActivity = new DsfCountRecordsetActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetActivity);
         }
 
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
@@ -1617,12 +1621,12 @@ namespace Dev2.Activities.Specs.Composition
                 var result = tableRow["result"];
                 var variable = tableRow["Variable"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
                 activity.RecordsetName = variable;
                 activity.Result = result;
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" search ""(.*)"" and result ""(.*)"" as")]
@@ -1630,7 +1634,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var result = resultVariable;
             var recset = recsetToSearch;
-            CommonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddVariableToVariableList(result);
             DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
             foreach (var tableRow in table.Rows)
             {
@@ -1640,7 +1644,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.ResultsCollection.Add(new FindRecordsTO(matchValue, matchType, 1, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains find unique ""(.*)"" as")]
@@ -1657,9 +1661,9 @@ namespace Dev2.Activities.Specs.Composition
                 activity.ResultFields = returnFields;
                 activity.Result = result;
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
@@ -1674,7 +1678,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.ConvertCollection.Add(new CaseConvertTO(variableToConvert, conversionType, variableToConvert, 1, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Gather System Info ""(.*)"" as")]
@@ -1685,13 +1689,13 @@ namespace Dev2.Activities.Specs.Composition
             {
                 var variable = tableRow["Variable"];
 
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
 
                 enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Random ""(.*)"" as")]
@@ -1705,7 +1709,7 @@ namespace Dev2.Activities.Specs.Composition
                 var to = tableRow["To"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.RandomType = type;
                 activity.To = to;
@@ -1714,7 +1718,7 @@ namespace Dev2.Activities.Specs.Composition
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Format Number ""(.*)"" as")]
@@ -1729,7 +1733,7 @@ namespace Dev2.Activities.Specs.Composition
                 var decimalPlacesToShow = tableRow["Decimal to show"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.Expression = number;
                 activity.RoundingType = roundingType;
@@ -1739,7 +1743,7 @@ namespace Dev2.Activities.Specs.Composition
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -1755,7 +1759,7 @@ namespace Dev2.Activities.Specs.Composition
                 var timeModifierAmount = tableRow["Add Time"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.DateTime = input1;
                 activity.InputFormat = inputFormat;
@@ -1766,7 +1770,7 @@ namespace Dev2.Activities.Specs.Composition
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -1782,7 +1786,7 @@ namespace Dev2.Activities.Specs.Composition
                 var output = tableRow["Output In"];
                 var result = tableRow["Result"];
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
 
                 activity.Input1 = input1;
                 activity.Input2 = input2;
@@ -1792,7 +1796,7 @@ namespace Dev2.Activities.Specs.Composition
 
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -1808,16 +1812,16 @@ namespace Dev2.Activities.Specs.Composition
                 var at = tableRow["At"];
                 var include = tableRow["Include"] == "Selected";
                 //var escapeChar = tableRow["Escape"];
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
                 if (!string.IsNullOrEmpty(valueToSplit))
                 {
                     activity.SourceString = valueToSplit;
                 }
-                CommonSteps.AddVariableToVariableList(variable);
+                _commonSteps.AddVariableToVariableList(variable);
                 activity.ResultsCollection.Add(new DataSplitDTO(variable, type, at, 1, include, true));
             }
 
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
@@ -1834,8 +1838,8 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Find = find;
                 activity.ReplaceWith = replaceValue;
             }
-            CommonSteps.AddVariableToVariableList(resultVariable);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -1855,8 +1859,8 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Characters = character;
                 activity.Direction = direction;
             }
-            CommonSteps.AddVariableToVariableList(resultVariable);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an Create ""(.*)"" as")]
@@ -1877,9 +1881,9 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Overwrite = exist == "True";
                 activity.OutputPath = variable;
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
 
@@ -1899,9 +1903,9 @@ namespace Dev2.Activities.Specs.Composition
                 //activity.Username = userName;
                 //activity.Password = password;
 
-                CommonSteps.AddVariableToVariableList(result);
+                _commonSteps.AddVariableToVariableList(result);
             }
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]

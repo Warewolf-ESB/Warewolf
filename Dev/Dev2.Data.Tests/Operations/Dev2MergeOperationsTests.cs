@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
@@ -18,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Operations
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2MergeOperationsTests
     {
         private IDev2MergeOperations _mergeOperations;

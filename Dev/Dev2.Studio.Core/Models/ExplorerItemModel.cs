@@ -14,7 +14,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -1419,7 +1418,6 @@ namespace Dev2.Models
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public void CancelRename(KeyEventArgs eventArgs)
         {
             if(eventArgs.Key == Key.Escape)

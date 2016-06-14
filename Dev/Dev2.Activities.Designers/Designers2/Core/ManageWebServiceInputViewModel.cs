@@ -329,7 +329,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public ImageSource TestIconImageSource
         {
             get

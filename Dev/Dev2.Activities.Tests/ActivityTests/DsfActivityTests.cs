@@ -13,7 +13,6 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
@@ -31,7 +30,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     // ReSharper disable InconsistentNaming
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DsfActivityTests : BaseActivityUnitTest
     {
         /// <summary>

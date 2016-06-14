@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Runtime.Configuration.Settings;
@@ -20,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Runtime.Configuration.Tests.Settings
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ConfigurationTests
     {
         #region CTOR

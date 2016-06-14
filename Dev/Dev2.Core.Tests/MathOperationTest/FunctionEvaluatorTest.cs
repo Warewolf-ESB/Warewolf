@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +21,6 @@ namespace Dev2.Tests.MathOperationTest
     /// Summary description for FunctionEvaluatorTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FunctionEvaluatorTest
     {
         private IFunctionEvaluator _eval = MathOpsFactory.CreateFunctionEvaluator();

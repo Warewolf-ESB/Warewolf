@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
@@ -21,7 +20,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    [ExcludeFromCodeCoverage]
     internal class DbFactory : IDbFactory
     {
         SqlConnection _sqlConnection;

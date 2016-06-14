@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -411,7 +410,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand PublishCommand { get; set; }
         public ICommand OkCommand { get; set; }
 
-        [ExcludeFromCodeCoverage]
         public string HostNameLabel
         {
             get
@@ -420,7 +418,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string PortLabel
         {
             get
@@ -429,7 +426,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string UserNameLabel
         {
             get
@@ -438,7 +434,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string PasswordLabel
         {
             get
@@ -447,7 +442,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string VirtualHostLabel
         {
             get

@@ -1,4 +1,5 @@
-﻿Feature: NewEmailSource
+﻿@Ignore
+Feature: NewEmailSource
 	In order to share settings
 	I want to save my Email source Settings
 	So that I can reuse them

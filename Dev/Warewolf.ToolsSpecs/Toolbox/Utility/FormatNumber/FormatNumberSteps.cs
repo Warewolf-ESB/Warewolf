@@ -26,6 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         private readonly ScenarioContext scenarioContext;
 
         public FormatNumberSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

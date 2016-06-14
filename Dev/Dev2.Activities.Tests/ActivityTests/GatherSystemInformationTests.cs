@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
@@ -29,7 +28,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class GatherSystemInformationTests : BaseActivityUnitTest
     {

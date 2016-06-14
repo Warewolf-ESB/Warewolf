@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
@@ -24,7 +23,6 @@ namespace Dev2.Tests.MathOperationTest
     /// Summary description for FunctionRepositoryTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FunctionRepositoryTest
     {
         /// <summary>

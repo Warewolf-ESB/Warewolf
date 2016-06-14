@@ -18,6 +18,7 @@ namespace Warewolf.Studio.UISpecs.Tools
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class FileAndFolder_MoveFeature
     {
         
@@ -32,7 +33,8 @@ namespace Warewolf.Studio.UISpecs.Tools
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Move", "\tIn order to be able to Move a File or Folder \r\n\tas a Warewolf user\r\n\tI want a to" +
                     "ol that will Move File(s) or Folder(s) from a given location to another location" +
-                    "", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "", ProgrammingLanguage.CSharp, new string[] {
+                        "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

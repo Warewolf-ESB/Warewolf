@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -22,7 +21,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Collections
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ObservableReadOnlyListTests
     {
         [TestMethod]

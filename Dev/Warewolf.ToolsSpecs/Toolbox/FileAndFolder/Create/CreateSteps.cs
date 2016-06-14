@@ -24,6 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         private readonly ScenarioContext scenarioContext;
 
         public CreateSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
@@ -66,7 +67,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         #endregion
 
         [BeforeScenario("fileFeature")]
-        public static void SetupForTesting()
+        public void SetupForTesting()
         {
             StartSftpServer();
         }

@@ -20,7 +20,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     //"This Test class tests WebBaseActivity using a Delete implemantation as an example "    
     [TestClass]
-    [ExcludeFromCodeCoverage]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class DsfWebBaseActivityTests
     {

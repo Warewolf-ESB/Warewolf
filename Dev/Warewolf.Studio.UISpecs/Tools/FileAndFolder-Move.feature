@@ -1,4 +1,4 @@
-﻿
+﻿@Ignore
 Feature: FileAndFolder-Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user

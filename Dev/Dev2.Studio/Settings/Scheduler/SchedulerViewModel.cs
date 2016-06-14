@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -1201,7 +1200,6 @@ namespace Dev2.Settings.Scheduler
         {
             _popupController.ShowSaveErrorDialog(error);
         }
-        [ExcludeFromCodeCoverage]
         public virtual IScheduleTrigger ShowEditTriggerDialog()
         {
             var tmpTrigger = SelectedTask.Trigger.Trigger.Instance;
@@ -1219,7 +1217,6 @@ namespace Dev2.Settings.Scheduler
         {
             return a.ToString() == b.ToString() && a.StartBoundary == b.StartBoundary && a.EndBoundary == b.EndBoundary && a.ExecutionTimeLimit == b.ExecutionTimeLimit;
         }
-        [ExcludeFromCodeCoverage]
         public virtual void GetCredentials(IScheduledResource scheduledResource)
         {
             var cancelled = false;

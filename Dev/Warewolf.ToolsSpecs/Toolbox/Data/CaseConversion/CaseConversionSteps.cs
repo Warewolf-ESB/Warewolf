@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         private readonly ScenarioContext scenarioContext;
 
         public CaseConversionSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

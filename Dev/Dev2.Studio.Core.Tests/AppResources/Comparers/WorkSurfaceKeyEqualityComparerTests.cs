@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Core.Tests.Environments;
 using Dev2.Factory;
@@ -27,7 +26,6 @@ namespace Dev2.Core.Tests.AppResources.Comparers
     /// Summary description for WorkSurfaceKeyEqualityComparerTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkSurfaceKeyEqualityComparerTests
     {
         /// <summary>

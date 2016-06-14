@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -24,7 +23,6 @@ using Moq;
 namespace Dev2.Core.Tests.ConverterTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DeployViewConnectedToVisiblityConverterTest
     {
         [TestMethod]

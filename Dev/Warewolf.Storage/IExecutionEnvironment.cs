@@ -70,5 +70,7 @@ namespace Warewolf.Storage
         void AssignJson(IEnumerable<IAssignValue> values, int update);
 
         void AssignJson(IAssignValue value, int update);
+
+        JContainer EvalJContainer(string exp);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -639,7 +638,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string HostNameLabel
         {
             get
@@ -648,7 +646,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string UserNameLabel
         {
             get
@@ -657,7 +654,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string PasswordLabel
         {
             get
@@ -667,7 +663,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EnableSslLabel
         {
             get
@@ -677,7 +672,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string PortLabel
         {
             get
@@ -686,7 +680,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string TimeoutLabel
         {
             get
@@ -696,7 +689,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string TestLabel
         {
             get
@@ -705,7 +697,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EmailFromLabel
         {
             get
@@ -714,7 +705,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
         public string EmailToLabel
         {
             get

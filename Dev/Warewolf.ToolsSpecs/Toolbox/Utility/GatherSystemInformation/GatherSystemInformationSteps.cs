@@ -29,6 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         private readonly ScenarioContext scenarioContext;
 
         public GatherSystemInformationSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

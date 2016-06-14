@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.GatherSystemInformation;
 using Dev2.Data.Enums;
 using Dev2.Studio.Core.Activities.Utils;
@@ -20,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class GatherSystemInformationDesignerViewModelTests
     {
         [TestMethod]

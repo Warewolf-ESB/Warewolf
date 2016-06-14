@@ -18,6 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         private readonly ScenarioContext scenarioContext;
 
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

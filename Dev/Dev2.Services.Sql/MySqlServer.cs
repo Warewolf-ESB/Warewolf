@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -426,7 +425,6 @@ namespace Dev2.Services.Sql
             GC.SuppressFinalize(this);
         }
 
-        [ExcludeFromCodeCoverage]
         ~MySqlServer()
         {
             // Do not re-create Dispose clean-up code here. 

@@ -10,14 +10,12 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.ComponentModel;
 
 namespace Dev2.Sql.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ExtensiosnTests
     {
         [TestMethod]

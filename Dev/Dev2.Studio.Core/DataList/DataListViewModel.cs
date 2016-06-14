@@ -124,15 +124,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 var recSetsHasErrors = RecsetCollection.Any(model => model.HasError || (model.Children != null && model.Children.Any(itemModel => itemModel.HasError)));
                 var complexObjectHasErrors = ComplexObjectCollection.Any(model => model.HasError || (model.Children != null && model.Children.Any(itemModel => itemModel.HasError)));
                 var scalasHasErrors = ScalarCollection.Any(model => model.HasError);
-                /* return RecsetCollection.Any(model =>
-                 {
-                     if (RecordSetHasChildren(model))
-                     {
-                         return model.HasError || model.Children.Any(child => child.HasError);
-                     }
-                     return model.HasError;
-                 });*/
-
                 var hasErrors = recSetsHasErrors || scalasHasErrors || complexObjectHasErrors;
                 return hasErrors;
             }
@@ -590,7 +581,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     if (itemModel == null)
                     {
-                        itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch);
+                        itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == pathToMatch && model.IsArray==isArray);
                     }
                     if (itemModel == null)
                     {
@@ -599,10 +590,10 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     else
                     {
-                        if (itemModel.DisplayName != pathToMatch)
+                        if (index != 0)
                         {
-                            var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch);
-                            if (item == null)
+                            var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == pathToMatch && model.IsArray == isArray);
+                            if(item == null)
                             {
                                 item = new ComplexObjectItemModel(path) { Parent = itemModel, IsArray = isArray };
                                 itemModel.Children.Add(item);
@@ -754,10 +745,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (itemToRemove is IComplexObjectItemModel)
             {
-                var item = ComplexObjectCollection.SingleOrDefault(x => x.DisplayName == itemToRemove.DisplayName);
-                if (item != null)
+                var complexObj = (IComplexObjectItemModel) itemToRemove;
+                var complexObjectItemModels = complexObj.Children;
+                var allChildren = complexObjectItemModels.Flatten(model => model.Children).ToList();
+                var notUsedItems = allChildren.Where(x => !x.IsUsed).ToList();
+                foreach (var complexObjectItemModel in notUsedItems)
                 {
-                    ComplexObjectCollection.Remove(item);
+                    RemoveUnusedChildComplexObjects(complexObj,complexObjectItemModel);
                 }
             }
 
@@ -790,6 +784,15 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
+            }
+        }
+
+        private void RemoveUnusedChildComplexObjects(IComplexObjectItemModel parentItemModel, IComplexObjectItemModel itemToRemove)
+        {
+            for (int index = parentItemModel.Children.Count-1; index >= 0; index--)
+            {
+                RemoveUnusedChildComplexObjects(parentItemModel.Children[index],itemToRemove);
+                parentItemModel.Children.Remove(itemToRemove);
             }
         }
 
@@ -1544,7 +1547,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddItemToBuilder(result, scalar);
                 result.Append("/>");
             }
-            var complexObjectItemModels = ComplexObjectCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName));
+            var complexObjectItemModels = ComplexObjectCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName) && !model.HasError);
             foreach (var complexObjectItemModel in complexObjectItemModels)
             {
                 AddComplexObjectsToBuilder(result, complexObjectItemModel);
@@ -1579,7 +1582,7 @@ namespace Dev2.Studio.ViewModels.DataList
             result.Append(complexObjectItemModel.ColumnIODirection);
             result.Append("\" ");
             result.Append(">");
-            var complexObjectItemModels = complexObjectItemModel.Children.Where(model => !string.IsNullOrEmpty(model.DisplayName));
+            var complexObjectItemModels = complexObjectItemModel.Children.Where(model => !string.IsNullOrEmpty(model.DisplayName) && !model.HasError);
             foreach (var itemModel in complexObjectItemModels)
             {
                 AddComplexObjectsToBuilder(result, itemModel);
@@ -1718,22 +1721,19 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 complexObjectItemModel.IsUsed = false;
             }
-            var usedItems =
-                from itemModel in models
-                where (from part in partsToVerify
-                        select part.DisplayValue
-                      ).Contains(itemModel.Name)
-                select itemModel;
-            foreach (var complexObjectItemModel in usedItems)
+            foreach (var itemModel in models)
             {
-                complexObjectItemModel.IsUsed = true;
+                var part = partsToVerify.Select(a => a.DisplayValue.Contains(itemModel.DisplayName)).FirstOrDefault();
+                if (part)
+                {
+                    itemModel.IsUsed = true;
+                }
             }
             foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
-                complexObjectItemModel.IsUsed = getChildrenToCheck.Any(model => model.IsUsed) || complexObjectItemModel.IsUsed;
+                complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) && complexObjectItemModel.IsUsed;
             }
-            
         }
 
         private List<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
@@ -1927,6 +1927,16 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                         return null;
                     }));
+
+                    allErrorMessages = allErrorMessages.Union(ComplexObjectCollection.Flatten(model => model.Children).Select(model =>
+                    {
+                        if (model.HasError)
+                        {
+                            return BuildErrorMessage(model);
+                        }
+                        return null;
+                    }));
+
                     string completeErrorMessage = Environment.NewLine + string.Join(Environment.NewLine, allErrorMessages.Where(s => !string.IsNullOrEmpty(s)));
 
                     return completeErrorMessage;

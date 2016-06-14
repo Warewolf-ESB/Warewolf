@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Xml.Linq;
 using Dev2.Runtime.Configuration.ComponentModel;
@@ -23,7 +22,6 @@ using Moq;
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class MainViewModelTests
     {
         [TestMethod]

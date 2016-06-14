@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data;
 using Dev2.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +19,6 @@ namespace Dev2.Core.Tests.UtilsTests
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class DataListConversionUtilTest
     {
         /// <summary>
@@ -179,14 +177,10 @@ namespace Dev2.Core.Tests.UtilsTests
             var result = converter.CreateListToBindTo(dataListModel);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.AreEqual(5,result.Count);
+            Assert.AreEqual(2,result.Count);
             Assert.AreEqual("Country", result[0].DisplayValue);
-            Assert.AreEqual("Person.Age",result[1].DisplayValue);
-            Assert.IsTrue(result[1].IsObject);
-            Assert.AreEqual("Person.Name",result[2].DisplayValue);
-            Assert.AreEqual("Person.Schools.Name",result[3].DisplayValue);
-            Assert.IsTrue(result[3].IsObject);
-            Assert.AreEqual("Person.Schools.Location",result[4].DisplayValue);
+            Assert.AreEqual("@Person",result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);            
         }
 
         [TestMethod]
@@ -218,20 +212,16 @@ namespace Dev2.Core.Tests.UtilsTests
             var result = converter.CreateListToBindTo(dataListModel);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Country", result[0].DisplayValue);
-            Assert.AreEqual("Person.Age", result[1].DisplayValue);
-            Assert.IsTrue(result[1].IsObject);
-            Assert.AreEqual("Person.Name", result[2].DisplayValue);
-            Assert.AreEqual("Person.Schools(1).Name", result[3].DisplayValue);
-            Assert.IsTrue(result[3].IsObject);
-            Assert.AreEqual("Person.Schools(1).Location", result[4].DisplayValue);
+            Assert.AreEqual("@Person", result[1].DisplayValue);
+            Assert.IsTrue(result[1].IsObject);            
         }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListModel_Create")]
-        public void DataListModel_Create_PayLoadWithComplexObjectsWithParentArray_ShouldHaveComplexObjectItems()
+        public void DataListModel_Create_PayLoadWithComplexObjectsArrayWithParentArray_ShouldHaveComplexObjectItems()
         {
             //------------Setup for test--------------------------
             const string Shape = @"<DataList>
@@ -240,14 +230,13 @@ namespace Dev2.Core.Tests.UtilsTests
                                         <Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
                                     </Car>
                                     <Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />
-                                    <Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""Both"" >
-                                        <Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age>
-                                        <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
-                                        <Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" >
-                                            <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
-                                            <Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location>
-                                        </Schools>
-                                    </Person>
+                                    <a Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Both"" >
+                                        <a Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" >
+                                            <a Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" >
+                                                <a1 Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></a1>
+                                            </a>
+                                        </a>                                        
+                                    </a>
                                    </DataList>";
             const string Data = "<DataList></DataList>";
             var dataListModel = new DataListModel();
@@ -257,14 +246,11 @@ namespace Dev2.Core.Tests.UtilsTests
             var result = converter.CreateListToBindTo(dataListModel);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(2, result.Count);
             Assert.AreEqual("Country", result[0].DisplayValue);
-            Assert.AreEqual("Person(1).Age", result[1].DisplayValue);
+            Assert.AreEqual("@a", result[1].DisplayValue);
             Assert.IsTrue(result[1].IsObject);
-            Assert.AreEqual("Person(1).Name", result[2].DisplayValue);
-            Assert.AreEqual("Person(1).Schools(1).Name", result[3].DisplayValue);
-            Assert.IsTrue(result[3].IsObject);
-            Assert.AreEqual("Person(1).Schools(1).Location", result[4].DisplayValue);
+            Assert.IsFalse(result[1].CanHaveMutipleRows);
         }
     }
 }

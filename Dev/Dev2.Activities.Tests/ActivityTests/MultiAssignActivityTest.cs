@@ -13,7 +13,6 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
@@ -26,7 +25,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for AssignActivity
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class MultiAssignActivityTest : BaseActivityUnitTest
     {

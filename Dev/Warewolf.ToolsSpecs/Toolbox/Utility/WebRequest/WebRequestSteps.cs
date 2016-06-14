@@ -25,6 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         private readonly ScenarioContext scenarioContext;
 
         public WebRequestSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;

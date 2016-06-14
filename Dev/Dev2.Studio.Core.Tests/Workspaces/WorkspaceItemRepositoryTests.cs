@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Dev2.Communication;
@@ -26,7 +25,6 @@ namespace Dev2.Core.Tests.Workspaces
 {
     // BUG 9492 - 2013.06.08 - TWR : added
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkspaceItemRepositoryTests
     {
         #region Static Class Init
