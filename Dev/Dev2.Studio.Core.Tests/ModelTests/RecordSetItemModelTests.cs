@@ -81,7 +81,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateName_GivenInvalidName_ShouldHaveErrorMessage()
+        public void ValidateRecordsetName_GivenInvalidName_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
             RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
@@ -92,7 +92,7 @@ namespace Dev2.Core.Tests.ModelTests
             recordSetItemModel.ValidateName(recordSetItemModel.DisplayName);//Convention
             //---------------Test Result -----------------------
             var hasErrorMsg = !string.IsNullOrEmpty(recordSetItemModel.ErrorMessage);
-            Assert.IsTrue(hasErrorMsg);
+            Assert.IsTrue(hasErrorMsg, "Invalid recordset name does not have error message.");
         }
 
         [TestMethod]

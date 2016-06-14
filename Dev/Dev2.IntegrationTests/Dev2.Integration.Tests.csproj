@@ -185,7 +185,6 @@
     <Compile Include="Enums\Activities.cs" />
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
-    <Compile Include="Activities\UtilTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnvironmentConnectionTests.cs" />
     <Compile Include="Mocks\DataObject.cs" />
     <Compile Include="ParserStrings.Designer.cs">
@@ -262,14 +261,6 @@
     <ProjectReference Include="..\ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj">
       <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
       <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
-      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
-      <Name>Dev2.Activities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
-      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
-      <Name>Dev2.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
