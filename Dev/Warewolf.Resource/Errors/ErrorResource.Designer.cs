@@ -538,7 +538,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to contains leading or trailing whitespace characters..
+        ///   Looks up a localized string similar to {0} contains leading or trailing whitespace characters..
         /// </summary>
         public static string ContainsLeadingOrTrailingWhitespace {
             get {
