@@ -40,7 +40,6 @@ namespace Dev2.Core.Tests
         [TestCategory("ResourceModelFactory_CreateResourceModel")]
         public void ResourceModelFactory_CreateResourceModel_WorkflowService()
         {
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "iconPath", "displayName"), ResourceType.WorkflowService, "displayName", null, null);
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService"), ResourceType.WorkflowService, "WorkflowService", "", "WorkflowService");
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "displayName"), ResourceType.WorkflowService, "displayName", "", "WorkflowService");
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "resourceName", "displayName"), ResourceType.WorkflowService, "displayName", "resourceName", "WorkflowService");
@@ -50,20 +49,9 @@ namespace Dev2.Core.Tests
         [TestCategory("ResourceModelFactory_CreateResourceModel")]
         public void ResourceModelFactory_CreateResourceModel_OauthSource()
         {
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource", "iconPath", "displayName"), ResourceType.Source, "displayName", null, null);
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource"), ResourceType.Source, "DropboxSource", "", "DropboxSource");
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource", "SelectedOauthSource"), ResourceType.Source, "SelectedOauthSource", "", "DropboxSource");
 
-        }
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModelFactory_CreateResourceModel")]
-        public void ResourceModelFactory_CreateResourceModel_DatabaseService()
-        {
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DatabaseService", "iconPath", "displayName"), ResourceType.Service, "displayName", null, null);
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DatabaseService"), ResourceType.Service, "Service", "", "DbService");
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DatabaseService", "displayName"), ResourceType.Service, "Service", "", "DbService");
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DatabaseService", "resourceName", "displayName"), ResourceType.Service, "Service", "resourceName", "DbService");
         }
 
         [TestMethod]

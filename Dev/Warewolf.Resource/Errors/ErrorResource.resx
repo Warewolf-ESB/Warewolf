@@ -1470,6 +1470,9 @@
   <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
     <value>Variable name [[res#]] contains invalid character(s)</value>
   </data>
+  <data name="CalculateIntellisenseProviderParsingMalformedErrorTest" xml:space="preserve">
+    <value>An error occurred while parsing '{0}' It appears to be malformed</value>
+  </data>
   <data name="ScheduledResourceInvalidUserPermissionErrorTest" xml:space="preserve">
     <value>This Workflow requires that you have Execute permission on the 'bob' Workflow. 
 Please contact your Warewolf System Administrator.</value>
