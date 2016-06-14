@@ -310,13 +310,13 @@
     <value>Please confirm that the correct file location has been entered</value>
   </data>
   <data name="DropboxCorrectFileName" xml:space="preserve">
-    <value>Please specify a correct DropBox file name</value>
+    <value>Please specify a correct Dropbox file name</value>
   </data>
   <data name="DropBoxDestinationFileAlreadyExist" xml:space="preserve">
     <value>Destination File already exists and overwrite is set to false</value>
   </data>
   <data name="DropBoxFilePathMissing" xml:space="preserve">
-    <value>Please specify the path of file in DropBox</value>
+    <value>Please specify the path of file in Dropbox</value>
   </data>
   <data name="DropBoxPathContainsColon" xml:space="preserve">
     <value>Path contains a colon (\":\") that is not part of a volume identifier (for example, \"c:\")</value>
@@ -1421,6 +1421,24 @@
   </data>
   <data name="RabbitMqSourceNotNullErrorTest" xml:space="preserve">
     <value>'RabbitMQ Source' Cannot be null</value>
+  </data>
+  <data name="RandomIntegerForEndErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End from {0} to {1}.</value>
+  </data>
+  <data name="RandomIntegerForStartErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start from {0} to {1}.</value>
+  </data>
+  <data name="RandomPositiveIntegerErrorTest" xml:space="preserve">
+    <value>Please enter a positive integer for the Length.</value>
+  </data>
+  <data name="RandomPositiveIntegerForEndErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End</value>
+  </data>
+  <data name="RandomPositiveIntegerForStartErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start</value>
+  </data>
+  <data name="UniqueResultCannotBeScalarErrorTest" xml:space="preserve">
+    <value>Scalars are not allowed. Please check the following: 'Result'</value>
   </data>
   <data name="XPathInvalidExpressionErrorTest" xml:space="preserve">
     <value>'XPath' Is not a valid expression</value>
