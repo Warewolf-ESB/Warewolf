@@ -1354,7 +1354,7 @@
     <value>'String to Split' Cannot be null</value>
   </data>
   <data name="DataSplitUsingNullErrorTest" xml:space="preserve">
-    <value>'Using' Must be a real number</value>
+    <value>'Using' must be a real number</value>
   </data>
   <data name="DecisionDisplayTextNotNullErrorTest" xml:space="preserve">
     <value>'DisplayText' Cannot be null</value>
@@ -1441,13 +1441,13 @@
     <value>Scalars are not allowed. Please check the following: 'Result'</value>
   </data>
   <data name="XPathInvalidExpressionErrorTest" xml:space="preserve">
-    <value>'XPath' Is not a valid expression</value>
+    <value>'XPath' is not a valid expression</value>
   </data>
   <data name="XPathResultsNotNullErrorTest" xml:space="preserve">
     <value>'Results' Cannot be null</value>
   </data>
   <data name="XPathXmlInvalidExpressionErrorTest" xml:space="preserve">
-    <value>'XML' Is not a valid expression</value>
+    <value>'XML' is not a valid expression</value>
   </data>
   <data name="XPathXmlNotNullErrorTest" xml:space="preserve">
     <value>'XML' Cannot be null</value>
