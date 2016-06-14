@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security.Principal;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
