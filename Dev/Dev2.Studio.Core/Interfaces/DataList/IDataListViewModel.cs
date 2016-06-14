@@ -34,6 +34,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         string DataListErrorMessage { get; }
         bool IsSorting { get; set; }
         ISuggestionProvider Provider { get; set; }
+        ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection { get; }
 
         /// <summary>
         /// Removes the data list item.
