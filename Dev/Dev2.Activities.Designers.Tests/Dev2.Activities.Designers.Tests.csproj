@@ -147,7 +147,6 @@
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
     <Compile Include="ODBC\TestODBCServerViewModel.cs" />
-    <Compile Include="OracleServer\TestOracleServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
@@ -315,6 +314,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Behaviour Stubs\" />
+    <Folder Include="OracleServer\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
