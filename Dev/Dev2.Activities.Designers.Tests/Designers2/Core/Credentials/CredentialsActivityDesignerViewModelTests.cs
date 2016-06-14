@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsNotBlankAndPasswordIsBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword("aaaa", "", true, "Password cannot be empty or only white space");
+            Verify_ValidateUserNameAndPassword("aaaa", "", true, Warewolf.Resource.Errors.ErrorResource.CredentialsPasswordNotNullErrorTest);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsBlankAndPasswordIsNotBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword("", "xxx", false, "Username cannot be empty or only white space");
+            Verify_ValidateUserNameAndPassword("", "xxx", false, Warewolf.Resource.Errors.ErrorResource.CredentialsUsernameNotNullErrorTest);
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsInvalidExpression_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword("a]]", "", false, "Username - Invalid expression: opening and closing brackets don't match.");
+            Verify_ValidateUserNameAndPassword("a]]", "", false, Warewolf.Resource.Errors.ErrorResource.CredentialsUsernameInvalidExpressionErrorTest);
         }
 
 

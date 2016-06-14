@@ -644,7 +644,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'To' - Invalid expression: opening and closing brackets don't match", ExchangeEmailDesignerViewModel.IsToFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailToInvalidExpressionErrorTest, ExchangeEmailDesignerViewModel.IsToFocusedProperty);
         }
 
         [TestMethod]
@@ -695,7 +695,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Cc' - Invalid expression: opening and closing brackets don't match", ExchangeEmailDesignerViewModel.IsCcFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailCcInvalidExpressionErrorTest, ExchangeEmailDesignerViewModel.IsCcFocusedProperty);
         }
 
         [TestMethod]
@@ -746,7 +746,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Bcc' - Invalid expression: opening and closing brackets don't match", ExchangeEmailDesignerViewModel.IsBccFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailBccInvalidExpressionErrorTest, ExchangeEmailDesignerViewModel.IsBccFocusedProperty);
         }
 
         [TestMethod]
@@ -797,7 +797,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
                 Attachments = "h]]",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Attachments' - Invalid expression: opening and closing brackets don't match", ExchangeEmailDesignerViewModel.IsAttachmentsFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailAttachmentsInvalidExpressionErrorTest, ExchangeEmailDesignerViewModel.IsAttachmentsFocusedProperty);
         }
 
         [TestMethod]
