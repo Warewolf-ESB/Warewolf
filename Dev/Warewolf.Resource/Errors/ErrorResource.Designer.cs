@@ -1978,7 +1978,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is not a valid expression.
+        ///   Looks up a localized string similar to is not a valid expression.
         /// </summary>
         public static string InvalidExpression {
             get {
@@ -2482,7 +2482,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be a real number.
+        ///   Looks up a localized string similar to must be a real number.
         /// </summary>
         public static string MustBeRealNumber {
             get {
