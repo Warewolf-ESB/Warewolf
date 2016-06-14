@@ -478,9 +478,7 @@ securityWrapper
             //run test
             string errorMessage;
             model.Save(resourceToSave.Object, out errorMessage);
-            Assert.AreEqual(@"This task requires that the user account specified has 'Log On As Batch' job rights. 
-Please contact your Windows System Administrator.", errorMessage);
-
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceLogOnAsBatchErrorTest, errorMessage);
         }
 
 
@@ -503,9 +501,7 @@ Please contact your Windows System Administrator.", errorMessage);
             //run test
             string errorMessage;
             model.Save(resourceToSave.Object, out errorMessage);
-            Assert.AreEqual(@"This Workflow requires that you have Execute permission on the 'bob' Workflow. 
-Please contact your Warewolf System Administrator.", errorMessage);
-
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceInvalidUserPermissionErrorTest, errorMessage);
         }
 
         [TestMethod]
