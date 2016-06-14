@@ -196,7 +196,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameEmpty_ShouldHaveErrorMessage()
         {
             //------------Setup for test--------------------------
-            const string expectedErrorMessage = "'Name' cannot be empty.";
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
@@ -206,7 +205,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             requestServiceNameViewModel.OkCommand.Execute(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedErrorMessage, requestServiceNameViewModel.ErrorMessage);
+            Assert.AreEqual(Resource.Errors.ErrorResource.CannotBeNull, requestServiceNameViewModel.ErrorMessage);
             Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
         }
 
@@ -216,7 +215,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameContainsInvalidCharacters_ShouldHaveErrorMessage()
         {
             //------------Setup for test--------------------------
-            const string expectedErrorMessage = "'Name' contains invalid characters.";
+            const string expectedErrorMessage = "'Name' contains invalid characters";
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
