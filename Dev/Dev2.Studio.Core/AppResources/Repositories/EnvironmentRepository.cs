@@ -607,21 +607,6 @@ namespace Dev2.Studio.Core
 
         #endregion
 
-        public static string GetAppServerUriFromConnectionString(string connectionstring)
-        {
-            if (string.IsNullOrWhiteSpace(connectionstring))
-            {
-                return string.Empty;
-            }
-
-            const string ToLookFor = "AppServerUri";
-            var appServerUriIdx = connectionstring.IndexOf(ToLookFor, StringComparison.Ordinal);
-            var length = ToLookFor.Length;
-            var substring = connectionstring.Substring(appServerUriIdx + length + 1);
-            var indexofDelimiter = substring.IndexOf(';');
-            var uri = substring.Substring(0, indexofDelimiter);
-            return uri;
-        }
         #endregion
 
         #region Implementation of IDisposable

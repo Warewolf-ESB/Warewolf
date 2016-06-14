@@ -213,7 +213,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
                 Overwrite = false
             };
 
-            VerifyValidationErrors(qviViewModel, "Variable List String can not be blank/empty");
+            VerifyValidationErrors(qviViewModel, Warewolf.Resource.Errors.ErrorResource.QuickVariableInputListStringNotNullErrorTest);
             Assert.IsTrue(qviViewModel.IsVariableListFocused);
         }
 

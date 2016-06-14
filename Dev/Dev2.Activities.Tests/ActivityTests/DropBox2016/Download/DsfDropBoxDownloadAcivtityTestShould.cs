@@ -426,7 +426,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             catch (Exception ex)
             {
 
-                Assert.AreEqual("Please specify the path of file in Dropbox", ex.Message);
+                Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DropBoxFilePathMissing, ex.Message);
             }
 
         }
