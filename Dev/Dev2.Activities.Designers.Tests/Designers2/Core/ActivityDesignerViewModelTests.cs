@@ -12,7 +12,6 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
@@ -33,7 +32,6 @@ using Moq.Protected;
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ActivityDesignerViewModelTests
     {
 

@@ -1,7 +1,7 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -90,7 +90,6 @@ namespace Dev2.Common.ExtMethods
             }
             return false;
         }
-
 
         /// <summary>
         ///     Determines whether [is real number] [the specified payload].
@@ -188,7 +187,6 @@ namespace Dev2.Common.ExtMethods
             return result;
         }
 
-
         /// <summary>
         ///     Determines whether the specified payload is binary.
         /// </summary>
@@ -218,9 +216,9 @@ namespace Dev2.Common.ExtMethods
                 // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 result = true;
             }
-                // ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch (Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // if error is thrown we know it is not a valid base64 string
             }
@@ -239,7 +237,7 @@ namespace Dev2.Common.ExtMethods
         {
             bool result = IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload);
 
-            if (payload.Length%2 != 0)
+            if (payload.Length % 2 != 0)
             {
                 result = false;
             }

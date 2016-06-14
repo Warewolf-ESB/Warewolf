@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
@@ -27,7 +26,6 @@ using Moq;
 namespace Dev2.Core.Tests.ViewModelTests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     // ReSharper disable ObjectCreationAsStatement
     public class ConnectControlViewModelTests

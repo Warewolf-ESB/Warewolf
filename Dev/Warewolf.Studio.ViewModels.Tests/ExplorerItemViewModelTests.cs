@@ -1502,6 +1502,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveToFolderExists()
         {
             //arrange
@@ -1533,6 +1534,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveToFolderNotExists()
         {
             //arrange
@@ -1564,6 +1566,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveToLtFolder()
         {
             //arrange
@@ -1592,6 +1595,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Ignore] //Ignore until Explorer move functionality brought back
         public async System.Threading.Tasks.Task TestMoveParentNull()
         {
             //arrange

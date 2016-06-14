@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Dev2.Common;
@@ -26,7 +25,6 @@ namespace Dev2.Tests.Runtime.Services
     // ReSharper disable InconsistentNaming
 
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class SecurityWriteTests
     {
 

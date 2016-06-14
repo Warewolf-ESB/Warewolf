@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
@@ -19,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Operations
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2IndexFinderTests
     {
         private IDev2IndexFinder _indexFinder;

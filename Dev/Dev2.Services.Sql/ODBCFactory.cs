@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using System.Data.Odbc;
@@ -9,7 +8,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    [ExcludeFromCodeCoverage]
     // ReSharper disable once InconsistentNaming
     internal class ODBCFactory : IDbFactory
     {

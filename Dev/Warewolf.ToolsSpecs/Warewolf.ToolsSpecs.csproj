@@ -322,7 +322,6 @@
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\MySQL\MySqlConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs" />
     <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

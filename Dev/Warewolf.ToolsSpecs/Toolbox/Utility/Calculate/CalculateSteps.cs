@@ -28,6 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         private readonly ScenarioContext scenarioContext;
 
         public CalculateSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
@@ -187,7 +188,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         {
         }
 
-        [Given(@"I have the Example formula '(.*)'")]
+        [Given(@"I have the Example formula ""(.*)""")]
         public void GivenIHaveTheExampleFormula(string formula)
         {
             scenarioContext.Add("formula", formula);
@@ -195,7 +196,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         }
 
 
-        [Then(@"the example output = '(.*)'")]
+        [Then(@"the example output = ""(.*)""")]
         public void ThenTheExampleOutput(int p0)
         {
             scenarioContext.Pending();

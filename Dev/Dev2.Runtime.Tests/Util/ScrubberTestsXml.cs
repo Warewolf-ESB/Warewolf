@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
@@ -22,7 +21,6 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 namespace Dev2.Tests.Runtime.Util
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public partial class ScrubberTests
     {
         #region Scrub Xml

@@ -24,10 +24,19 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public class FileToolsBase : RecordSetBases
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public FileToolsBase(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         public const string PrivatePublicKeyFile = "C:\\Temp\\key.opk";
         
-        public static SftpServer Server;
-        public static readonly object ServerLock = new object();
+        public SftpServer Server;
+        public readonly object ServerLock = new object();
 
         #region Overrides of RecordSetBases
 
@@ -38,7 +47,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
         /// <summary>
         /// Starts the SFTP server.
         /// </summary>
-        protected static void StartSftpServer()
+        protected void StartSftpServer()
         {
             Dev2Logger.Debug("ServerStartup");
             lock (ServerLock)
@@ -111,7 +120,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
         }
 
-        protected static void RemovedFilesCreatedForTesting()
+        protected void RemovedFilesCreatedForTesting()
         {
             // ReSharper disable EmptyGeneralCatchClause
 
@@ -120,11 +129,11 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
-            if (ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
+            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
             {
                 IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(destLocation,
-                    ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
-                    ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
+                    scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
+                    scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
                     true);
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                 try
@@ -142,11 +151,11 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
 
             string sourceLocation;
-            if (ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
+            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
             {
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
-                    ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                    ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                    scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                    scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                     true);
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 try
@@ -165,7 +174,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         }
 
-        protected static void ShutdownSftpServer()
+        protected void ShutdownSftpServer()
         {
             try
             {

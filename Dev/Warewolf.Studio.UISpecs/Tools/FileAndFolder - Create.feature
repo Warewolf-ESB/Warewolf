@@ -1,4 +1,5 @@
-﻿Feature: FileAndFolder-Create
+﻿@Ignore
+Feature: FileAndFolder-Create
 	In order to be able to create files
 	as a Warewolf user
 	I want a tool that creates a file at a given location

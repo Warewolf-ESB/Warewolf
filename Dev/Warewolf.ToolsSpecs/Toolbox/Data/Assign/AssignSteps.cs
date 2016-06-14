@@ -27,6 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         private readonly ScenarioContext scenarioContext;
 
         public AssignSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
@@ -196,12 +197,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [When(@"execution error message will be """"""(.*)""")]
         [Then(@"execution error message will be """"""(.*)""")]
         public void WhenExecutionErrorMessageWillBe(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Then(@"validation message is """"""(.*)""")]
-        public void ThenValidationMessageIs(string p0)
         {
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }

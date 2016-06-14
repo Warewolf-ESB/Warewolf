@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.RecordsetSearch
@@ -18,7 +17,6 @@ namespace Dev2.Tests.RecordsetSearch
     /// Summary description for AbstractRecsetSearchValidation_GenerateInputRange
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class AbstractRecsetSearchValidation_GenerateInputRange
     {
 

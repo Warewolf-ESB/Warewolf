@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.Data;
@@ -30,7 +29,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for RemoteDebugItemGenerationTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class RemoteDebugItemGenerationTest : BaseActivityUnitTest
     {
         /// <summary>

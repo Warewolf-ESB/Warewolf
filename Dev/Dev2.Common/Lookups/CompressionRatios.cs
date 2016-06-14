@@ -1,7 +1,7 @@
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,10 +16,13 @@ namespace Dev2.Common.Lookups
     {
         [Description("None (No Compression)")]
         None,
+
         [Description("Partial (Best Speed)")]
         BestSpeed,
+
         [Description("Normal (Default)")]
         Default,
+
         [Description("Max (Best Compression)")]
         BestCompression
     }

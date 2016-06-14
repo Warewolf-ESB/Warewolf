@@ -10,14 +10,12 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class IndexIteratorTest
     {
         [TestMethod]

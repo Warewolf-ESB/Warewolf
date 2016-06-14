@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
+using Newtonsoft.Json;
 
 namespace Dev2.Data
 {
@@ -83,7 +85,13 @@ namespace Dev2.Data
                         var recSet = RecordSets.FirstOrDefault(set => set.Name == c.Name);
                         var shapeRecSet = ShapeRecordSets.FirstOrDefault(set => set.Name == c.Name);
                         var scalar = Scalars.FirstOrDefault(scalar1 => scalar1.Name == c.Name);
-                        // scalars and recordset fetch
+                        var complexObject = ComplexObjects.FirstOrDefault(o => o.Name == "@" + c.Name);
+                        if (complexObject != null)
+                        {
+                            var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.InnerXml));
+                            complexObject.Value = jsonData;
+                        }
+                        else
                         {
                             if (recSet!=null && shapeRecSet!=null)
                             {
@@ -141,7 +149,7 @@ namespace Dev2.Data
                     XmlAttribute columnIoDirection = null;
                     if(!DataListUtil.IsSystemTag(c.Name))
                     {
-                        if(c.HasChildNodes)
+                        if (c.HasChildNodes)
                         {
                             var jsonAttribute = false;
                             if (c.Attributes != null)
@@ -154,64 +162,66 @@ namespace Dev2.Data
                             }
                             if (jsonAttribute)
                             {
-                                AddComplexObjectFromXmlNode(c, null);
+                                AddComplexObjectFromXmlNode(c);
                             }
-
-                            var cols = new List<IScalar>();
-                            foreach(XmlNode subc in c.ChildNodes)
+                            else
                             {
-                                // It is possible for the .Attributes property to be null, a check should be added
-                                if(subc.Attributes != null)
+                                var cols = new List<IScalar>();
+                                foreach (XmlNode subc in c.ChildNodes)
                                 {
-                                    descAttribute = subc.Attributes["Description"];
-                                    columnIoDirection = subc.Attributes["ColumnIODirection"];
-                                    if(columnIoDirection != null)
+                                    // It is possible for the .Attributes property to be null, a check should be added
+                                    if (subc.Attributes != null)
                                     {
-                                        Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                        descAttribute = subc.Attributes["Description"];
+                                        columnIoDirection = subc.Attributes["ColumnIODirection"];
+                                        if (columnIoDirection != null)
+                                        {
+                                            Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                        }
                                     }
+                                    var scalar = new Scalar { Name = subc.Name, IsEditable = true, IODirection = columnDirection };
+                                    if (descAttribute != null)
+                                    {
+                                        scalar.Description = descAttribute.Value;
+                                    }
+                                    cols.Add(scalar);
                                 }
-                                var scalar = new Scalar { Name = subc.Name, IsEditable = true, IODirection = columnDirection };
-                                if(descAttribute != null)
+                                if (c.Attributes != null)
                                 {
-                                    scalar.Description = descAttribute.Value;
+                                    descAttribute = c.Attributes["Description"];
+                                    columnIoDirection = c.Attributes["ColumnIODirection"];
                                 }
-                                cols.Add(scalar);
-                            }
-                            if(c.Attributes != null)
-                            {
-                                descAttribute = c.Attributes["Description"];
-                                columnIoDirection = c.Attributes["ColumnIODirection"];
-                            }
 
-                            var descriptionValue = "";
-                            columnDirection = enDev2ColumnArgumentDirection.None;
-                            if(descAttribute != null)
-                            {
-                                descriptionValue = descAttribute.Value;
+                                var descriptionValue = "";
+                                columnDirection = enDev2ColumnArgumentDirection.None;
+                                if (descAttribute != null)
+                                {
+                                    descriptionValue = descAttribute.Value;
+                                }
+                                if (columnIoDirection != null)
+                                {
+                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                }
+                                var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+                                RecordSets.Add(recSet);
+                                var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+                                ShapeRecordSets.Add(shapeRecSet);
                             }
-                            if(columnIoDirection != null)
-                            {
-                                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
-                            }
-                            var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
-                            RecordSets.Add(recSet);
-                            var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
-                            ShapeRecordSets.Add(shapeRecSet);
                         }
                         else
                         {
-                            if(c.Attributes != null)
+                            if (c.Attributes != null)
                             {
                                 descAttribute = c.Attributes["Description"];
                                 columnIoDirection = c.Attributes["ColumnIODirection"];
                             }
                             string descriptionValue = "";
                             columnDirection = enDev2ColumnArgumentDirection.None;
-                            if(descAttribute != null)
+                            if (descAttribute != null)
                             {
                                 descriptionValue = descAttribute.Value;
                             }
-                            if(columnIoDirection != null)
+                            if (columnIoDirection != null)
                             {
                                 Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
                             }
@@ -224,7 +234,7 @@ namespace Dev2.Data
             }
         }
 
-        private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObject parent)
+        private void AddComplexObjectFromXmlNode(XmlNode c)
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;
@@ -234,28 +244,10 @@ namespace Dev2.Data
                 ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
             }
             var name = GetNameForArrayComplexObject(c, isArray);
-            var complexObjectItemModel = new ComplexObject { Name = name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
-            if (parent != null)
-            {
-                if (!parent.Children.ContainsKey(1))
-                {
-                    parent.Children[1] = new List<IComplexObject>();
-                }
-                parent.Children[1].Add(complexObjectItemModel);
-            }
-            else
-            {
-                ComplexObjects.Add(complexObjectItemModel);
-                ShapeComplexObjects.Add(complexObjectItemModel);
-            }
-            if (c.HasChildNodes)
-            {
-                var children = c.ChildNodes;
-                foreach (XmlNode childNode in children)
-                {
-                    AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
-                }
-            }
+            var complexObjectItemModel = new ComplexObject { Name = "@"+name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
+            ComplexObjects.Add(complexObjectItemModel);
+            ShapeComplexObjects.Add(complexObjectItemModel);
+            
         }
 
         private bool ParseBoolAttribute(XmlAttribute attr)

@@ -12,7 +12,6 @@
 using System;
 using System.Activities.DurableInstancing;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.DurableInstancing;
 using System.Xml.Linq;
@@ -25,7 +24,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class FileSystemInstanceStoreIoTests
     {
         const string TestFileName = "TestInstanceStore";

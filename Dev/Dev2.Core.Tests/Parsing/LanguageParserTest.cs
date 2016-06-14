@@ -10,7 +10,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
@@ -19,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Unlimited.UnitTest.Framework.Parsing
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class LanguageParserTest
     {
 

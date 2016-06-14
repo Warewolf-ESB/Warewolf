@@ -517,5 +517,26 @@ namespace Warewolf.Storage
                 throw;
             }
         }
+
+        public JContainer EvalJContainer(string exp)
+        {
+            if (!string.IsNullOrEmpty(exp))
+            {
+                var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+                if (var.IsJsonIdentifierExpression)
+                {
+                    var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+                    if (jsonIdentifierExpression != null)
+                    {
+                        var nameExpression = jsonIdentifierExpression.Item as LanguageAST.JsonIdentifierExpression.NameExpression;
+                        if (nameExpression != null)
+                        {
+                            return _env.JsonObjects[nameExpression.Item.Name];
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
 }
