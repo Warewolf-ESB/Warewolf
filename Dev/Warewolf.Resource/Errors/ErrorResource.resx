@@ -1470,4 +1470,12 @@
   <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
     <value>Variable name [[res#]] contains invalid character(s)</value>
   </data>
+  <data name="ScheduledResourceInvalidUserPermissionErrorTest" xml:space="preserve">
+    <value>This Workflow requires that you have Execute permission on the 'bob' Workflow. 
+Please contact your Warewolf System Administrator.</value>
+  </data>
+  <data name="ScheduledResourceLogOnAsBatchErrorTest" xml:space="preserve">
+    <value>This task requires that the user account specified has 'Log On As Batch' job rights. 
+Please contact your Windows System Administrator.</value>
+  </data>
 </root>
