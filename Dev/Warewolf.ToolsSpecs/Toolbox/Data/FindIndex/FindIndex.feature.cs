@@ -941,7 +941,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 277
 this.ScenarioSetup(scenarioInfo);
 #line 278
- testRunner.Given(string.Format("I have a findindex variable \"{0}\" equal to \"{1}\"", var, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a Find Index variable \"{0}\" equal to \"{1}\"", var, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 279
  testRunner.And("I selected Index \"First Occurrence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 280
@@ -1124,7 +1124,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 316
 this.ScenarioSetup(scenarioInfo);
 #line 317
- testRunner.Given(string.Format("I have a findindex variable \"{0}\" equal to \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a Find Index variable \"{0}\" equal to \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 318
  testRunner.And("I selected Index \"All Occurrence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 319
