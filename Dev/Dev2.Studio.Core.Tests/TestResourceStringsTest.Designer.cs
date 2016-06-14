@@ -61,6 +61,24 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://rsatest1:77/dsf.
+        /// </summary>
+        public static string ResourceToHydrateActualAppUri {
+            get {
+                return ResourceManager.GetString("ResourceToHydrateActualAppUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234.
+        /// </summary>
+        public static string ResourceToHydrateConnectionString1 {
+            get {
+                return ResourceManager.GetString("ResourceToHydrateConnectionString1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ! @ #$% ^&amp;* ( ) +_{ }| [] \: &quot;; &apos;&lt;&gt; ?, ./.
         /// </summary>
         public static string SpecialChars {
