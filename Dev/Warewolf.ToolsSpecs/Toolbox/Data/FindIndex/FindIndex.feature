@@ -275,7 +275,7 @@ Examples:
 | 5  | All Occurrences | w          | Right to Left | 1,5    | [[result]] = 1,5 |
 
 Scenario Outline: Find all Recordsets with invalid Indexes
-	Given I have a findindex variable "<var>" equal to "<value>"
+	Given I have a Find Index variable "<var>" equal to "<value>"
 	And I selected Index "First Occurrence"
 	And I search for characters "<Character>"
 	And I selected direction as "Left to Right"
@@ -314,7 +314,7 @@ Scenario: Tool does not return
 
 #Complex Types WOLF-1042
 Scenario Outline: Find all occurances using complex types
-	Given I have a findindex variable "<variable>" equal to "<value>"
+	Given I have a Find Index variable "<variable>" equal to "<value>"
 	And I selected Index "All Occurrence"
 	And I search for characters "t"
 	And I selected direction as "Left to Right"
