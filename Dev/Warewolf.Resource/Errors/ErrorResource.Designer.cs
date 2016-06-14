@@ -808,7 +808,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;Using&apos; Must be a real number.
+        ///   Looks up a localized string similar to &apos;Using&apos; must be a real number.
         /// </summary>
         public static string DataSplitUsingNullErrorTest {
             get {
@@ -4066,7 +4066,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;XPath&apos; Is not a valid expression.
+        ///   Looks up a localized string similar to &apos;XPath&apos; is not a valid expression.
         /// </summary>
         public static string XPathInvalidExpressionErrorTest {
             get {
@@ -4093,7 +4093,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;XML&apos; Is not a valid expression.
+        ///   Looks up a localized string similar to &apos;XML&apos; is not a valid expression.
         /// </summary>
         public static string XPathXmlInvalidExpressionErrorTest {
             get {
