@@ -24,6 +24,7 @@ namespace Warewolf.Storage
         bool HasRecordSet(string recordsetName);
 
         IList<string> EvalAsListOfStrings(string expression, int update);
+        IList<string> EvalJsonAsListOfStrings(string json, int update);
 
         void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
 

@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities.SelectAndApply;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.DataList.Contract;
@@ -106,6 +107,57 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToCorrectIndex_ComplexObjects()
+        {
+            //------------Setup for test--------------------------
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity
+            {
+                ConvertCollection = new List<ICaseConvertTO>
+                {
+                    new CaseConvertTO("[[a]]", "UPPER", "[[a]]", 1)
+                    {
+                        ExpressionToConvert = "[[a]]"
+                    }
+                }
+            };
+
+            DataObject.Environment = new ExecutionEnvironment();
+            DataObject.Environment.Assign("[[@Person().Name]]", "Bob", 0);
+            DataObject.Environment.Assign("[[@Person().Name]]", "Dora", 0);
+            DataObject.Environment.Assign("[[@Person().Name]]", "Superman", 0);
+            DataObject.Environment.Assign("[[@Person().Name]]", "Batman", 0);
+            DataObject.Environment.Assign("[[@Person().Name]]", "Orlando", 0);
+            const string dataSource = "[[@Person(*).Name]]";
+            const string alias = "[[a]]";
+            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
+            {
+                DataSource = dataSource,
+                Alias = alias,
+
+                //ApplyActivityFunc = activity
+            };
+            var handler = activity as Activity;
+            dsfSelectAndApplyActivity.ApplyActivityFunc.Handler = handler;
+            TestStartNode = new FlowStep
+            {
+                Action = dsfSelectAndApplyActivity
+            };
+            CurrentDl = "";
+            TestData = "";
+            //------------Execute Test---------------------------
+            ExecuteProcess(DataObject);
+            //------------Assert Results-------------------------
+            var names = DataObject.Environment.EvalJsonAsListOfStrings("[[@Person(*).Name]]", 0);
+            Assert.AreEqual("BOB", names[0]);
+            Assert.AreEqual("DORA", names[1]);
+            Assert.AreEqual("SUPERMAN", names[2]);
+            Assert.AreEqual("BATMAN", names[3]);
+            Assert.AreEqual("ORLANDO", names[4]);
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenNumberFormatTool_ToCorrectFormat()
@@ -126,6 +178,55 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             ExecuteProcess(DataObject);
             //------------Assert Results-------------------------
             var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
+            Assert.AreEqual("5.27", ages[0]);
+            Assert.AreEqual("2.30", ages[1]);
+            Assert.AreEqual("1.00", ages[2]);
+            Assert.AreEqual("-3.46", ages[3]);
+            Assert.AreEqual("0.88", ages[4]);
+        } 
+         
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        public void SelectAndApplyActivity_SetupExecute_GivenNumberFormatTool_ToCorrectFormat_ComplexObjects()
+        {
+            var activity = new DsfNumberFormatActivity
+                {
+                    Expression = "[[result]]",
+                    Result = "[[result]]",
+                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingDecimalPlaces = "2",
+                    DecimalPlacesToShow = "2"
+                };
+            
+            
+            //------------Setup for test--------------------------
+            //SetupArgumentsForFormatNumber("", "", activity);
+            DataObject.Environment = new ExecutionEnvironment();
+            DataObject.Environment.Assign("[[@Person().Age]]", "5.2687454", 0);
+            DataObject.Environment.Assign("[[@Person().Age]]", "2.3", 0);
+            DataObject.Environment.Assign("[[@Person().Age]]", "1", 0);
+            DataObject.Environment.Assign("[[@Person().Age]]", "-3.4554", 0);
+            DataObject.Environment.Assign("[[@Person().Age]]", "0.875768", 0);
+            const string dataSource = "[[@Person(*).Age]]";
+            const string alias = "[[result]]";
+            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
+            {
+                DataSource = dataSource,
+                Alias = alias,
+                //ApplyActivity = activity
+            };
+            dsfSelectAndApplyActivity.ApplyActivityFunc.Handler = activity;
+            TestStartNode = new FlowStep
+            {
+                Action = dsfSelectAndApplyActivity
+            };
+            CurrentDl = string.Empty;
+            TestData = string.Empty;
+            //------------Execute Test---------------------------
+            ExecuteProcess(DataObject);
+            //------------Assert Results-------------------------
+            var ages = DataObject.Environment.EvalJsonAsListOfStrings("[[@Person(*).Age]]", 0);
             Assert.AreEqual("5.27", ages[0]);
             Assert.AreEqual("2.30", ages[1]);
             Assert.AreEqual("1.00", ages[2]);
@@ -155,8 +256,75 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             //------------Assert Results-------------------------
             var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
             var evalAsList = DataObject.Environment.EvalAsList("[[b]]", 1);
-        }  
-        
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void EvalaJsonAsList_GivenJsonString_ShouldEvaluateCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            var outJson  = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]}";
+
+
+            DsfSelectAndApplyActivity activity = new DsfSelectAndApplyActivity();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var dev2IJsonListEvaluator = activity.GetDev2IJsonListEvaluator(outJson);
+            var evalaJsonAsList = dev2IJsonListEvaluator.EvalaJsonAsList();
+            Assert.IsNotNull(evalaJsonAsList);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(4, evalaJsonAsList.Count());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void EvalaJsonAsList_GivenJsonString_ShouldEvaluateValues()
+        {
+            //---------------Set up test pack-------------------
+            var outJson  = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]}";
+
+
+            DsfSelectAndApplyActivity activity = new DsfSelectAndApplyActivity();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var dev2IJsonListEvaluator = activity.GetDev2IJsonListEvaluator(outJson);
+            var evalaJsonAsList = dev2IJsonListEvaluator.EvalaJsonAsList().ToList();
+            Assert.IsNotNull(evalaJsonAsList);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("\"10\"".ToCleanString(), evalaJsonAsList[0].ToString().ToCleanString());
+            Assert.AreEqual("\"20\"", evalaJsonAsList[1]);
+            Assert.AreEqual("\"30\"", evalaJsonAsList[2]);
+            Assert.AreEqual("\"40\"", evalaJsonAsList[3]);
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GlobalConstantsIsValidJson_GivenValidJson_ShouldReturnTru()
+        {
+            //---------------Set up test pack-------------------
+            var outJson = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]}";
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var isValidJson = GlobalConstants.IsValidJson(outJson);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isValidJson);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GlobalConstantsIsValidJson_GivenInValidJson_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var outJson = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]kfhdjkghdfjkhg''''}";
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var isValidJson = GlobalConstants.IsValidJson(outJson);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isValidJson);
+        }
 
         #region Private Test Methods
 
