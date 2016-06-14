@@ -145,7 +145,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm);
             var errors = vm.Errors;
             Assert.IsNotNull(errors);
-            Assert.IsTrue(errors.Any(info => info.Message == "'Queue Name' cannot be empty or only white space"));
+            Assert.IsTrue(errors.Any(info => info.Message == Warewolf.Resource.Errors.ErrorResource.RabbitMqQueueNameNotNullErrorTest));
         }
 
         [TestMethod]
@@ -165,7 +165,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm);
             var errors = vm.Errors;
             Assert.IsNotNull(errors);
-            Assert.IsTrue(errors.Any(info => info.Message == "'RabbitMQ Source' cannot be null"));
+            Assert.IsTrue(errors.Any(info => info.Message == Warewolf.Resource.Errors.ErrorResource.RabbitMqSourceNotNullErrorTest));
         }
 
         [TestMethod]
