@@ -169,6 +169,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while parsing &apos;{0}&apos; It appears to be malformed.
+        /// </summary>
+        public static string CalculateIntellisenseProviderParsingMalformedErrorTest {
+            get {
+                return ResourceManager.GetString("CalculateIntellisenseProviderParsingMalformedErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculation Manager is currently null.
         /// </summary>
         public static string CalculationManagerIsNull {

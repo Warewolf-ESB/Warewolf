@@ -183,7 +183,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(176, results.Count);
             IntellisenseProviderResult intellisenseProviderResult = results.Last();
             Assert.AreEqual("Syntax Error", intellisenseProviderResult.Name);
-            Assert.AreEqual("An error occurred while parsing { XXXXX } It appears to be malformed", intellisenseProviderResult.Description);
+            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "XXXXX"), intellisenseProviderResult.Description);
         }
 
         [TestMethod]
@@ -204,7 +204,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("Syntax Error", results[0].Name);
-            Assert.AreEqual("An error occurred while parsing { cantbefound } It appears to be malformed", results[0].Description);
+            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "cantbefound"), results[0].Description);
         }
 
         [TestMethod]
@@ -227,7 +227,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual("sum", results[0].Name);
             Assert.AreEqual("Sums all the numbers given as arguments and returns the sum.", results[0].Description);
             Assert.AreEqual("Syntax Error", results[1].Name);
-            Assert.AreEqual("An error occurred while parsing { sum } It appears to be malformed", results[1].Description);
+            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "sum"), results[1].Description);
         }
 
         [TestMethod]
@@ -248,7 +248,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("Syntax Error", results[0].Name);
-            Assert.AreEqual("An error occurred while parsing { sum } It appears to be malformed", results[0].Description);
+            Assert.AreEqual(string.Format(Warewolf.Resource.Errors.ErrorResource.CalculateIntellisenseProviderParsingMalformedErrorTest, "sum"), results[0].Description);
         }
 
         [TestMethod]
