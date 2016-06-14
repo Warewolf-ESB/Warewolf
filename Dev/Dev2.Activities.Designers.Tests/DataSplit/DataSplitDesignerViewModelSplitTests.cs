@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'String to Split' cannot be empty or only white space");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.DataSplitStringToSplitErrorTest);
         }
 
 
@@ -220,10 +220,10 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             //------------Assert Results-------------------------
             Assert.AreEqual(2, viewModel.Errors.Count);
 
-            StringAssert.Contains(viewModel.Errors[0].Message, "'Results' - Result - Invalid expression: opening and closing brackets don't match");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.DataSplitInvalidExpressionErrorTest);
             Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsOutputVariableFocused");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a real number");
+            StringAssert.Contains(viewModel.Errors[1].Message, Warewolf.Resource.Errors.ErrorResource.DataSplitUsingNullErrorTest);
             Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
         }
 

@@ -646,7 +646,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Email Source' cannot be null", EmailDesignerViewModel.IsEmailSourceFocusedProperty, false);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailSourceNotNullErrorTest, EmailDesignerViewModel.IsEmailSourceFocusedProperty, false);
         }
 
         [TestMethod]
@@ -798,7 +798,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'From Account' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsFromAccountFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailFromAccountInvalidExpressionErrorTest, EmailDesignerViewModel.IsFromAccountFocusedProperty);
         }
 
         [TestMethod]
@@ -855,7 +855,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Password' cannot be empty", EmailDesignerViewModel.IsPasswordFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailPasswordNotNullErrorTest, EmailDesignerViewModel.IsPasswordFocusedProperty);
         }
 
         [TestMethod]
@@ -874,7 +874,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'To' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsToFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailToInvalidExpressionErrorTest, EmailDesignerViewModel.IsToFocusedProperty);
         }
 
         [TestMethod]
@@ -931,7 +931,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Cc' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsCcFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailCcInvalidExpressionErrorTest, EmailDesignerViewModel.IsCcFocusedProperty);
         }
 
         [TestMethod]
@@ -988,7 +988,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Bcc' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsBccFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailBccInvalidExpressionErrorTest, EmailDesignerViewModel.IsBccFocusedProperty);
         }
 
         [TestMethod]
@@ -1045,7 +1045,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "h]]",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Attachments' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsAttachmentsFocusedProperty);
+            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailAttachmentsInvalidExpressionErrorTest, EmailDesignerViewModel.IsAttachmentsFocusedProperty);
         }
 
         [TestMethod]

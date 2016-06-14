@@ -125,7 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
             Assert.AreEqual(1,result.Environment.Errors.Count);
-            Assert.AreEqual("'Result' cannot be a scalar. Please use a recordset instead.", result.Environment.FetchErrors());
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.UniqueResultCannotBeScalarErrorTest, result.Environment.FetchErrors());
         }
 
 

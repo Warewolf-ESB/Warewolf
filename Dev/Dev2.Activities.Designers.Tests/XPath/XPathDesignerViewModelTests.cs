@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual("'XPath' is not a valid expression", viewModel.Errors[0].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.XPathInvalidExpressionErrorTest, viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual("'Results' cannot be empty", viewModel.Errors[0].Message);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.XPathResultsNotNullErrorTest, viewModel.Errors[0].Message);
         }
 
 
@@ -143,7 +143,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' cannot be empty or only white space");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.XPathXmlNotNullErrorTest);
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' is not a valid expression");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.XPathXmlInvalidExpressionErrorTest);
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' - Recordset index [ -1 ] is not greater than zero");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.XPathXmlRecordsetIndexErrorTest);
         }
 
         [TestMethod]
@@ -227,7 +227,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' is not a valid expression");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.XPathXmlInvalidExpressionErrorTest);
         }
 
         static ModelItem CreateModelItem(IEnumerable<XPathDTO> items, string displayName = "XPath")
