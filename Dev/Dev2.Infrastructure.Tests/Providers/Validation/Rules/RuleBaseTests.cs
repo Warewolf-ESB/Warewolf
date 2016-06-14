@@ -49,8 +49,8 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             var rule = new TestRuleBase(() => "");
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("The", rule.LabelText);
-            Assert.AreEqual("value is invalid.", rule.ErrorText);
+            Assert.AreEqual("", rule.LabelText);
+            Assert.AreEqual("Value is invalid.", rule.ErrorText);
             Assert.IsNull(rule.DoError);
         }
 
@@ -73,7 +73,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(error);
-            Assert.AreEqual("The value is invalid.", error.Message);
+            Assert.AreEqual("Value is invalid.", error.Message);
             error.Do();
             Assert.IsTrue(doErrorWasAssigned);
         }

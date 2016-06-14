@@ -136,7 +136,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Assert Results-------------------------
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Count);
-            Assert.AreEqual(LabelText + " cannot be empty", errors[0].Message);
+            Assert.AreEqual(LabelText + " Cannot be null", errors[0].Message);
             errors[0].Do();
             Assert.IsTrue(doErrorWasAssigned);
         }
