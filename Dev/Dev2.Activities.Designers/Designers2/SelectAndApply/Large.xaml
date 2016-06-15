@@ -64,7 +64,7 @@
                                 Grid.Row="0"
                                 FilterType="All"
                                 DefaultText="[[Datasource]]"
-                                WrapInBrackets="False"
+                                WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.DataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.SelectAndApplyDataSourceToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

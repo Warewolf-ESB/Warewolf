@@ -145,6 +145,7 @@ namespace Dev2.Activities.SelectAndApply
                 _debugOutputs = new List<DebugItem>();
 
                 dataObject.ForEachNestingLevel++;
+                var ds = dataObject.Environment.ToStar(DataSource);
                 try
                 {
                     if(dataObject.IsDebugMode())
@@ -152,10 +153,10 @@ namespace Dev2.Activities.SelectAndApply
                         AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                     }
                     //Eval list using DataSource
-                    var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true).ToList();
+                    var atoms = dataObject.Environment.EvalAsList(ds, update, true).ToList();
 
                     //Create a new Execution Environment
-                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment, DataSource, Alias);
+                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment, ds, Alias);
 
                     //Push the new environment
                     dataObject.PushEnvironment(executionEnvironment);
@@ -208,7 +209,7 @@ namespace Dev2.Activities.SelectAndApply
                     }
                     if (dataObject.IsDebugMode())
                     {
-                        var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(DataSource), update, false);
+                        var data = dataObject.Environment.Eval(ds, update, false);
                         if (data.IsWarewolfAtomListresult)
                         {
                             var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
