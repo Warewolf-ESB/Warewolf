@@ -18,7 +18,7 @@ Scenario Outline: Copy file at location
 	And the result variable "<resultVar>" will be "<result>"
 	And the debug inputs as
          | Source Path                 | Username   | Password | Source Private Key File | Destination Path                      | Destination Username | Destination Password | Destination Private Key File | Overwrite  |
-         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> |
+         | <source> = <sourceLocation> | <username> | String   | C:\\Temp\\key.opk       | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> |
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
