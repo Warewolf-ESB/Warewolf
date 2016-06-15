@@ -26,8 +26,7 @@ let addValueToJArray (arr : JArray) (ind : int) (value : JToken) =
             arr.Add(null)
         arr.[index] <- value
         (arr.[index], arr)
-    else arr.[index] <- value 
-         (arr.[index], arr)
+    else (arr.[index], arr)
 
 let addOrGetValueFromJArray (arr : JArray) (ind : int) (value : JToken) = 
     let index = ind - 1
@@ -56,8 +55,7 @@ let addPropertyToJsonNoValue (obj : Newtonsoft.Json.Linq.JObject) (name : string
         child.Value
     | Some a -> a.Value
 
-let addJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (name : string) (index : Index) 
-    (value : JToken) = 
+let addJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (name : string) (index : Index) (value : JToken) = 
     let props = obj.Properties()
     let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
     match theProp with

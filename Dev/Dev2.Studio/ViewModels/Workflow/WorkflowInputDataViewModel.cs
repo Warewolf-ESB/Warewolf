@@ -580,7 +580,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                             }
                         }
                         var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
-                        var value = JsonConvert.DeserializeObject(objValue) as JContainer;
+                        var value = JsonConvert.DeserializeObject(objValue) as JObject;
+                        if (value != null)
+                        {
+                            var prop = value.Properties().FirstOrDefault(property => property.Name == o.Field);
+                            if (prop != null)
+                            {
+                                value = prop.Value as JObject;
+                            }
+                            
+                        }
                         dataListObject.Add(o.Field, value);
                     }
                 }
