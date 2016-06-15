@@ -312,15 +312,11 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
             | WarewolfAtomExpression a -> WarewolfAtomResult a
             | RecordSetNameExpression x ->evalDataSetExpression env update x
             | ComplexExpression  a -> EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)
-            |  _ -> 
-                let res = evalJson env update buffer
-                match res with
-                | WarewolfAtomListresult a -> 
-                a
-                |> Seq.map enQuote
-                |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
-                |> WarewolfAtomListresult
-                | _ -> failwith "recordest results can not be supported by calculate"
+            | JsonIdentifierExpression a -> let res = evalJson env update buffer
+                                            match res with
+                                            | WarewolfAtomListresult x -> WarewolfAtomListresult (x)
+                                            | WarewolfAtomResult x -> WarewolfAtomResult(x)
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))            
                                                                                  
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
@@ -370,16 +366,12 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a) 
-        |  _ -> 
-        let res = evalJson env update buffer
-        match res with
-        | WarewolfAtomListresult a -> 
-            a
-            |> Seq.map enQuote
-            |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
-            |> WarewolfAtomListresult
-        | _ -> failwith "recordest results can not be supported by calculate"
-
+        | JsonIdentifierExpression a -> let res = evalJson env update buffer
+                                        match res with
+                                            | WarewolfAtomListresult x -> WarewolfAtomListresult (x)
+                                            | WarewolfAtomResult x -> WarewolfAtomResult(x)
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
+                                                    
 and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
 
@@ -405,15 +397,11 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-        |  _ -> 
-        let res = evalJson env update buffer
-        match res with
-        | WarewolfAtomListresult a -> 
-            a
-            |> Seq.map enQuote
-            |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
-            |> WarewolfAtomListresult
-        | _ -> failwith "recordest results can not be supported by calculate"
+         | JsonIdentifierExpression a -> let res = evalJson env update buffer
+                                         match res with
+                                            | WarewolfAtomListresult x -> WarewolfAtomListresult (x)
+                                            | WarewolfAtomResult x -> WarewolfAtomResult(x)
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
 
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 

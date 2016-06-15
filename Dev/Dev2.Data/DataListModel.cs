@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Data
 {
@@ -28,16 +31,17 @@ namespace Dev2.Data
             ShapeScalars = new List<IScalar>();
             ShapeRecordSets = new List<IRecordSet>();
             ShapeComplexObjects = new List<IComplexObject>();
+            _IsNew = true;
         }
 
-        
+
 
         public void Create(string data, string shape)
         {
             CreateShape(shape);
             PopulateWithData(data);
         }
-
+        private bool _IsNew;
         public void PopulateWithData(string data)
         {
             var toLoad = data;
@@ -86,15 +90,31 @@ namespace Dev2.Data
                         var complexObject = ComplexObjects.FirstOrDefault(o => o.Name == "@" + c.Name);
                         if (complexObject != null)
                         {
-                            if(!string.IsNullOrEmpty(c.InnerXml))
+                            if (!string.IsNullOrEmpty(c.OuterXml))
                             {
-//                                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.InnerXml));
-//                                complexObject.Value = jsonData;
+                                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml));
+                                var obj = JsonConvert.DeserializeObject(jsonData) as JObject;
+
+                                if (obj != null && obj.First != null)
+                                {
+                                    if (_IsNew)
+                                    {
+                                        complexObject.Value = jsonData;
+                                    }
+                                    else
+                                    {
+                                        
+                                        var value = obj.First.ToString();
+                                        complexObject.Value = value;
+                                    }
+
+                                    _IsNew = false;
+                                }
                             }
                         }
                         else
                         {
-                            if (recSet!=null && shapeRecSet!=null)
+                            if (recSet != null && shapeRecSet != null)
                             {
                                 // fetch recordset index
                                 int fetchIdx;
@@ -105,7 +125,7 @@ namespace Dev2.Data
                                 XmlNodeList nl = c.ChildNodes;
                                 if (!recSet.Columns.ContainsKey(idx))
                                 {
-                                    recSet.Columns.Add(idx,new List<IScalar>());
+                                    recSet.Columns.Add(idx, new List<IScalar>());
                                 }
                                 else
                                 {
@@ -124,7 +144,7 @@ namespace Dev2.Data
                             }
                             else
                             {
-                                if(scalar!=null)
+                                if (scalar != null)
                                 {
                                     scalar.Value = c.InnerXml;
                                 }
@@ -139,16 +159,16 @@ namespace Dev2.Data
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(shape);
-            if(xDoc.DocumentElement != null)
+            if (xDoc.DocumentElement != null)
             {
                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;
 
                 var columnDirection = enDev2ColumnArgumentDirection.None;
-                foreach(XmlNode c in children)
+                foreach (XmlNode c in children)
                 {
                     XmlAttribute descAttribute = null;
                     XmlAttribute columnIoDirection = null;
-                    if(!DataListUtil.IsSystemTag(c.Name))
+                    if (!DataListUtil.IsSystemTag(c.Name))
                     {
                         if (c.HasChildNodes)
                         {
@@ -245,10 +265,10 @@ namespace Dev2.Data
                 ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
             }
             var name = GetNameForArrayComplexObject(c, isArray);
-            var complexObjectItemModel = new ComplexObject { Name = "@"+name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
+            var complexObjectItemModel = new ComplexObject { Name = "@" + name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
             ComplexObjects.Add(complexObjectItemModel);
             ShapeComplexObjects.Add(complexObjectItemModel);
-            
+
         }
 
         private bool ParseBoolAttribute(XmlAttribute attr)

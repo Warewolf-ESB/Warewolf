@@ -1,18 +1,28 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Communication;
+using Dev2.Controller;
+using Dev2.Network;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Dev2.Communication;
-using Dev2.Controller;
-using Dev2.Network;
 
 namespace ConsoleApplicationToTestNetwork
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             string uri = "http://sandbox-dev2:3142";  //"http://sandbox-1:3142"; //"http://localHost:3142/";
             List<string> timings = new List<string>();
@@ -27,7 +37,7 @@ namespace ConsoleApplicationToTestNetwork
             string chunkOfGuids = sb.ToString();
             sb.Append(chunkOfGuids);
 
-            string outFileName = string.Format(@"C:\temp\networkSpeedTo{0}.csv", uri.Replace(':', '-').Replace('/', '_')); 
+            string outFileName = string.Format(@"C:\temp\networkSpeedTo{0}.csv", uri.Replace(':', '-').Replace('/', '_'));
 
             // header
             timings.Add(string.Format("URI:, '{0}'", uri));
@@ -51,7 +61,7 @@ namespace ConsoleApplicationToTestNetwork
                         TimeSpan elapsed = DateTime.Now - start;
                         timingsPerRound.Add(elapsed.TotalMilliseconds);
 
-                        // give the server time to clear it's queue 
+                        // give the server time to clear it's queue
                         Thread.Sleep((int)Math.Round(elapsed.TotalMilliseconds) * 2);
                     }
                     string toAdd = string.Format("{0}, {1}", sb.Length, timingsPerRound.Sum() / roundsPerPacketStep);
