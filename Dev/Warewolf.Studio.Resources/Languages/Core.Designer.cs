@@ -61,11 +61,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Studio: Version {0}
-        ///Server: Version {1}
-        ///
-        ///Software development by: www.dev2.co.za
-        ///.
+        ///   Looks up a localized string similar to Studio: Version {0}	Server: Version {1}	Software development by: www.dev2.co.za.
         /// </summary>
         public static string About_Content {
             get {
@@ -92,17 +88,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To assign a value to a variable, put the value in here.
-        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]
-        ///[[Recordset(*).Field]]
-        ///[[Recordset().Field]]
-        ///= fx.
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To assign a value to a variable, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;	= fx.
         /// </summary>
         public static string AssignHelpNewValue {
             get {
@@ -111,16 +97,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///To assign a value to a variable, put the variable here.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	To assign a value to a variable, put the variable here.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string AssignHelpVariable {
             get {
@@ -129,18 +106,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any json object and/or data goes in here.
-        ///To assign a value to a json object, put the value in here.
-        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
-        ///
-        ///Allowed:
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;Data&lt;/li&gt;
-        ///            &lt;li&gt;[[Collection(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Collection().Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Collection.InnerCollection().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;
-        ///.
+        ///   Looks up a localized string similar to Any object and/or data goes in here.	To assign a value to a object, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]	&lt;br /&gt;	Allowed: &lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object(*).Field]]&lt;/li&gt;	&lt;li&gt;[[@Object().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object.InnerCollection().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string AssignObjectHelpNewValue {
             get {
@@ -149,13 +115,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only objects go in here.
-        ///To assign a value to an object, put the object path in here.
-        ///
-        ///Allowed: 
-        ///[[@Object.Property]]
-        ///[[@Object.Object(n).Property]]
-        ///.
+        ///   Looks up a localized string similar to Only objects go in here.	To assign a value to an object, put the object path in here.	&lt;br /&gt;	Allowed: &lt;br /&gt;	[[@Object.Property]]&lt;br /&gt;	[[@Object.Object(n).Property]].
         /// </summary>
         public static string AssignObjectHelpVariable {
             get {
@@ -164,9 +124,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To assign a value to a variable, put the value in here.
-        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To assign a value to a variable, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
         /// </summary>
         public static string AssignToolTipNewValue {
             get {
@@ -175,10 +133,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///To assign a value to a variable, put the variable here.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	To assign a value to a variable, put the variable here.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string AssignToolTipVariable {
             get {
@@ -205,15 +160,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and data goes in here.
-        ///To convert Text, Hex, Binary and Base64, put the data to be converted in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and data goes in here.	To convert Text, Hex, Binary and Base64, put the data to be converted in here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string BaseConversionHelpBaseInput {
             get {
@@ -222,11 +169,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of data you are converting from.
-        ///e.g. If the data is Binary and you would like Text, then select Binary here.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the type of data you are converting from.	e.g. If the data is Binary and you would like Text, then select Binary here.	Allowed:	na.
         /// </summary>
         public static string BaseConversionHelpFromType {
             get {
@@ -235,11 +178,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of data you are converting to.
-        ///e.g. If the data is Binary and you would like Text, then select Text here.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the type of data you are converting to.	e.g. If the data is Binary and you would like Text, then select Text here.	Allowed:	na.
         /// </summary>
         public static string BaseConversionHelpToType {
             get {
@@ -248,8 +187,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and data goes in here.
-        ///To convert Text, Hex, Binary and Base64, put the data to be converted in here..
+        ///   Looks up a localized string similar to Any variable and data goes in here.	To convert Text, Hex, Binary and Base64, put the data to be converted in here..
         /// </summary>
         public static string BaseConversionToolTipBaseInput {
             get {
@@ -258,8 +196,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of data you are converting from.
-        ///e.g. If the data is Binary and you would like Text, then select Binary here..
+        ///   Looks up a localized string similar to Select the type of data you are converting from.	e.g. If the data is Binary and you would like Text, then select Binary here..
         /// </summary>
         public static string BaseConversionToolTipFromtype {
             get {
@@ -268,8 +205,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of data you are converting to.
-        ///e.g. If the data is Binary and you would like Text, then select Text here..
+        ///   Looks up a localized string similar to Select the type of data you are converting to.	e.g. If the data is Binary and you would like Text, then select Text here..
         /// </summary>
         public static string BaseConversionToolTipTotype {
             get {
@@ -278,20 +214,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To perform a calculation, put the calculation in here in BODMAS format.
-        ///To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.
-        ///Aggregate functions are:
-        /// &lt;table&gt;
-        ///  &lt;tr&gt;
-        ///    &lt;td&gt;sum()&lt;/td&gt;
-        ///    &lt;td&gt;average()&lt;/td&gt;
-        ///    &lt;td&gt;product()&lt;/td&gt;
-        ///    &lt;td&gt;count()&lt;/td&gt;
-        ///  &lt;/tr&gt;
-        ///  &lt;tr&gt;
-        ///    &lt;td&gt;max()&lt;/td&gt;
-        ///    &lt;td&gt;medi [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To perform a calculation, put the calculation in here in BODMAS format.	To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.	Aggregate functions are:	&lt;table&gt;	&lt;tr&gt;	&lt;td&gt;sum()&lt;/td&gt;	&lt;td&gt;average()&lt;/td&gt;	&lt;td&gt;product()&lt;/td&gt;	&lt;td&gt;count()&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;	&lt;td&gt;max()&lt;/td&gt;	&lt;td&gt;median()&lt;/td&gt;	&lt;td&gt;min()&lt;/td&gt;	&lt;td&gt;var()&lt;/td&gt;	&lt;/tr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CalculateForAggregatesHelpFx {
             get {
@@ -300,16 +223,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted number.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CalculateForAggregatesHelpResult {
             get {
@@ -336,17 +250,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To perform a calculation, put the calculation in here in BODMAS format.
-        ///Using (*) notation for recordsets, will perform the calculation and give a result, for each record.
-        ///To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Aggregate Calculate tool.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To perform a calculation, put the calculation in here in BODMAS format.	Using (*) notation for recordsets, will perform the calculation and give a result, for each record.	To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Aggregate Calculate tool.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/l [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CalculateHelpFx {
             get {
@@ -355,16 +259,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted number.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CalculateHelpResult {
             get {
@@ -400,11 +295,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of conversion you would like to make.
-        ///
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the type of conversion you would like to make..
         /// </summary>
         public static string CaseConversionHelpConvertToCaseType {
             get {
@@ -413,15 +304,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To convert the case of some text, put the variable containing the text here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To convert the case of some text, put the variable containing the text here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CaseConversionHelpTextInput {
             get {
@@ -430,8 +313,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of conversion you would like to make.
-        ///.
+        ///   Looks up a localized string similar to Select the type of conversion you would like to make..
         /// </summary>
         public static string CaseConversionToolTipConvertToCasetype {
             get {
@@ -440,8 +322,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To convert the case of some text, put the variable containing the text here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To convert the case of some text, put the variable containing the text here..
         /// </summary>
         public static string CaseConversionToolTipTextInput {
             get {
@@ -468,15 +349,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CMDLineHelpCMD {
             get {
@@ -485,10 +358,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive.	Allowed:	na.
         /// </summary>
         public static string CMDLineHelpPrioritytype {
             get {
@@ -497,13 +367,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Returns the output of the execution if any. Varies depending on what was executed.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Returns the output of the execution if any. Varies depending on what was executed.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CMDLineHelpResult {
             get {
@@ -512,8 +376,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored..
         /// </summary>
         public static string CMDLineToolTipCMD {
             get {
@@ -540,11 +403,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
-        ///You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.
-        ///
-        ///Allowed:
-        ///Notes and comments will not be executed at run time but will show up in the debug output..
+        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.	You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.	Allowed:	Notes and comments will not be executed at run time but will show up in the debug output..
         /// </summary>
         public static string CommentHelpComment {
             get {
@@ -553,8 +412,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
-        ///You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output..
+        ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.	You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output..
         /// </summary>
         public static string CommentToolTipComment {
             get {
@@ -608,11 +466,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection properties of the selected Warewolf Server.&lt;br&gt;
-        ///&lt;br/&gt;
-        ///Allows you to change remote server URL, Port and Authentication.&lt;br&gt;
-        ///&lt;br/&gt;
-        ///&lt;b&gt;localhost&lt;/b&gt; cannot be edited in this way..
+        ///   Looks up a localized string similar to Change the connection properties of the selected Warewolf Server.&lt;br&gt;	&lt;br/&gt;	Allows you to change remote server URL, Port and Authentication.&lt;br&gt;	&lt;br/&gt;	&lt;b&gt;localhost&lt;/b&gt; cannot be edited in this way..
         /// </summary>
         public static string ConnectControlViewEditHelp {
             get {
@@ -621,11 +475,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the Warewolf Server from the drop down list that you want to use. &lt;br/&gt;
-        ///&lt;br/&gt;
-        ///If you want to connect to a Warewolf Server that is not in the drop down list, then select  &lt;b&gt;New Remote Server…&lt;/b&gt;&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Servers with an active connection will show &lt;b&gt;(Connected)&lt;/b&gt; next to them..
+        ///   Looks up a localized string similar to Select the Warewolf Server from the drop down list that you want to use. &lt;br/&gt;	&lt;br/&gt;	If you want to connect to a Warewolf Server that is not in the drop down list, then select  &lt;b&gt;New Remote Server…&lt;/b&gt;&lt;br/&gt;	&lt;br/&gt;	Servers with an active connection will show &lt;b&gt;(Connected)&lt;/b&gt; next to them..
         /// </summary>
         public static string ConnectControlViewSelectHelp {
             get {
@@ -634,11 +484,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disconnects or Connects to the selected remote Warewolf Server. &lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Connected Servers will be Disconnected and vice versa. &lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;b&gt;localhost&lt;/b&gt; cannot be disconnected and should always be connected. If it is not connected, try restarting the Warewolf Server service in Task Manager..
+        ///   Looks up a localized string similar to Disconnects or Connects to the selected remote Warewolf Server. &lt;br/&gt;	&lt;br/&gt;	Connected Servers will be Disconnected and vice versa. &lt;br/&gt;	&lt;br/&gt;	&lt;b&gt;localhost&lt;/b&gt; cannot be disconnected and should always be connected. If it is not connected, try restarting the Warewolf Server service in Task Manager..
         /// </summary>
         public static string ConnectControlViewToggleConnectionHelp {
             get {
@@ -665,16 +511,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are copying to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are copying to here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CopyHelpDestination {
             get {
@@ -683,16 +520,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To copy a file or folder, put the full path and file or folder name here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To copy a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CopyHelpFileFolder {
             get {
@@ -701,10 +529,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.
-        ///
-        ///Allowed:
-        ///If it exists already, force an overwrite.
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.	Allowed:	If it exists already, force an overwrite.
         /// </summary>
         public static string CopyHelpForceoverwrite {
             get {
@@ -713,14 +538,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CopyHelpPassword {
             get {
@@ -729,16 +547,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Copy action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Copy action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CopyHelpResult {
             get {
@@ -747,14 +556,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CopyHelpUsername {
             get {
@@ -763,9 +565,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are copying to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are copying to here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyToolTipDestination {
             get {
@@ -774,9 +574,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To copy a file or folder, put the full path and file or folder name here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To copy a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CopyToolTipFileFolder {
             get {
@@ -803,10 +601,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Copy action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Copy action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string CopyToolTipResult {
             get {
@@ -824,10 +619,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]
-        ///
-        ///Allowed:
-        ///[[Recordset()]].
+        ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CountHelpRecordset {
             get {
@@ -836,16 +628,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns a number specifying how many records/indexes are in the recordset.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset() will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns a number specifying how many records/indexes are in the recordset.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset() will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CountHelpResult {
             get {
@@ -863,10 +646,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here. 
-        ///Returns a number specifying how many records/indexes are in the recordset.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset() will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here. 	Returns a number specifying how many records/indexes are in the recordset.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset() will add a new record and (*) will assign every record..
         /// </summary>
         public static string CountToolTipResult {
             get {
@@ -875,16 +655,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To create a file or folder, put the full path and file or folder name here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CreateHelpFileFolder {
             get {
@@ -893,10 +664,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.
-        ///
-        ///Allowed:
-        ///If it exists already, force an overwrite.
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.	Allowed:	If it exists already, force an overwrite.
         /// </summary>
         public static string CreateHelpForceOverWrite {
             get {
@@ -905,14 +673,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CreateHelpPassword {
             get {
@@ -921,16 +682,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Create action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Create action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CreateHelpResult {
             get {
@@ -939,14 +691,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CreateHelpUsername {
             get {
@@ -955,19 +700,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
-        ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
-        ///[[rec(*).name]] 
-        ///To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
-        ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
-        ///or simply 
-        ///[[rec(*)]]
-        ///
-        ///Allowed:
-        ///Data
-        ///[[Scalar]]
-        ///[[Recordset(n).Field]]
-        ///[[Recordset(*)]].
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 	To create JSON Arrays use a single recordset field with a star for every record e.g. 	[[rec(*).name]] 	To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 	[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 	or simply 	[[rec(*)]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Rec [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CreateJSONHelpInput {
             get {
@@ -976,12 +709,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
-        ///Array and Object names will default to the recordset name used. 
-        ///Object data names will be the field names of the recordset.
-        ///
-        ///Allowed:
-        ///Data.
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 	Array and Object names will default to the recordset name used. 	Object data names will be the field names of the recordset.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CreateJSONHelpName {
             get {
@@ -990,16 +718,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the inputs in JSON format.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the inputs in JSON format.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string CreateJSONHelpResult {
             get {
@@ -1008,13 +727,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
-        ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
-        ///[[rec(*).name]] 
-        ///To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
-        ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
-        ///or simply 
-        ///[[rec(*)]].
+        ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 	To create JSON Arrays use a single recordset field with a star for every record e.g. 	[[rec(*).name]] 	To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 	[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 	or simply 	[[rec(*)]].
         /// </summary>
         public static string CreateJSONToolTipInput {
             get {
@@ -1023,9 +736,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 
-        ///Array and Object names will default to the recordset name used. 
-        ///Object data names will be the field names of the recordset..
+        ///   Looks up a localized string similar to The JSON variable name will default to the Warewolf variable name in the Data column. 	Array and Object names will default to the recordset name used. 	Object data names will be the field names of the recordset..
         /// </summary>
         public static string CreateJSONToolTipName {
             get {
@@ -1034,10 +745,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the inputs in JSON format.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the inputs in JSON format.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string CreateJSONToolTipResult {
             get {
@@ -1046,8 +754,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To create a SFTP Key, put the full path and file or folder name here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
         public static string CreateSftpPrivateKey {
             get {
@@ -1056,9 +763,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To create a file or folder, put the full path and file or folder name here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a file or folder, put the full path and file or folder name here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string CreateToolTipFileFolder {
             get {
@@ -1085,10 +790,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Create action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Create action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string CreateToolTipResult {
             get {
@@ -1106,11 +808,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection string properties of the selected Database.&lt;br&gt;
-        ///&lt;br/&gt;
-        ///Change the connection string from, say, a development database to a live database.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Change the connection string properties of the selected Database.&lt;br&gt;	&lt;br/&gt;	Change the connection string from, say, a development database to a live database.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string DatabaseServiceEditSourceHelp {
             get {
@@ -1236,9 +934,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Server/Computer Name on your network with the Database Engine.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Alternatively, the URL for your online Server, such as Azure SQL..
+        ///   Looks up a localized string similar to The Server/Computer Name on your network with the Database Engine.&lt;br/&gt;	&lt;br/&gt;	Alternatively, the URL for your online Server, such as Azure SQL..
         /// </summary>
         public static string DatabaseSourceServerHelp {
             get {
@@ -1301,9 +997,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When the variable is not used in the service at all, you can select Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This variable is not being used in the service and can safely be deleted..
+        ///   Looks up a localized string similar to When the variable is not used in the service at all, you can select Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	This variable is not being used in the service and can safely be deleted..
         /// </summary>
         public static string DataListDeleteButtonHelp {
             get {
@@ -1312,9 +1006,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/the-variable-list/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/the-variable-list/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string DataListInputCheckBoxHelp {
             get {
@@ -1332,9 +1024,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Marks the variable as an output of the service. To return this variable from the workflow service, make this checkbox selected.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/warewolf-language/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Marks the variable as an output of the service. To return this variable from the workflow service, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/warewolf-language/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string DataListOutputCheckBoxHelp {
             get {
@@ -1361,11 +1051,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input the variable you want to use in your service.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///If you use a variable on the design surface it will automatically appear here.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/the-variable-list/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Input the variable you want to use in your service.&lt;br/&gt;	&lt;br/&gt;	If you use a variable on the design surface it will automatically appear here.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/the-variable-list/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string DataListVariableInputHelp {
             get {
@@ -1383,11 +1069,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.
-        ///E.g. Text is normally left and numbers normally right.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.	E.g. Text is normally left and numbers normally right.	Allowed:	na.
         /// </summary>
         public static string DataMergeHelpAlignType {
             get {
@@ -1396,15 +1078,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataMergeHelpInput {
             get {
@@ -1413,15 +1087,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.
-        ///
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataMergeHelpPadding {
             get {
@@ -1430,16 +1096,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the merged string.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the merged string.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataMergeHelpResult {
             get {
@@ -1448,16 +1105,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
-        ///For Char put any characters or combination of characters you would like.
-        ///Not applicable to New Line or Tab
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.	For Char put any characters or combination of characters you would like.	Not applicable to New Line or Tab	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataMergeHelpUsing {
             get {
@@ -1466,11 +1114,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of merge you would like between each piece of merged data, if any.
-        ///
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the type of merge you would like between each piece of merged data, if any..
         /// </summary>
         public static string DataMergeHelpWithType {
             get {
@@ -1479,8 +1123,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.
-        ///E.g. Text is normally left and numbers normally right..
+        ///   Looks up a localized string similar to For Index you can specify if your data is aligned to the right or left.	E.g. Text is normally left and numbers normally right..
         /// </summary>
         public static string DataMergeToolTipAlignType {
             get {
@@ -1489,8 +1132,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record..
         /// </summary>
         public static string DataMergeToolTipInput {
             get {
@@ -1499,8 +1141,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.
-        ///.
+        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text..
         /// </summary>
         public static string DataMergeToolTipPadding {
             get {
@@ -1509,10 +1150,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the merged string.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the merged string.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DataMergeToolTipResult {
             get {
@@ -1521,9 +1159,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
-        ///For Char put any characters or combination of characters you would like.
-        ///Not applicable to New Line or Tab.
+        ///   Looks up a localized string similar to For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.	For Char put any characters or combination of characters you would like.	Not applicable to New Line or Tab.
         /// </summary>
         public static string DataMergeToolTipUsing {
             get {
@@ -1532,8 +1168,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of merge you would like between each piece of merged data, if any.
-        ///.
+        ///   Looks up a localized string similar to Select the type of merge you would like between each piece of merged data, if any..
         /// </summary>
         public static string DataMergeToolTipWithtype {
             get {
@@ -1542,14 +1177,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataSplitHelpEscape {
             get {
@@ -1558,10 +1186,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you would like the data or item you are splitting on to be included in the result data, select this checkbox.
-        ///
-        ///Allowed:
-        ///Include the information you are splitting on?.
+        ///   Looks up a localized string similar to If you would like the data or item you are splitting on to be included in the result data, select this checkbox.	Allowed:	Include the information you are splitting on?.
         /// </summary>
         public static string DataSplitHelpInclude {
             get {
@@ -1570,10 +1195,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left).
-        ///
-        ///Allowed:
-        ///Which direction would you like to process in?.
+        ///   Looks up a localized string similar to Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left).	Allowed:	Which direction would you like to process in?.
         /// </summary>
         public static string DataSplitHelpProcessDirection {
             get {
@@ -1582,17 +1204,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the split data in the pattern as described by the results.
-        ///The variable pattern will be repeated until the end of the input data.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the split data in the pattern as described by the results.	The variable pattern will be repeated until the end of the input data.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataSplitHelpResult {
             get {
@@ -1601,10 +1213,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.
-        ///
-        ///Allowed:
-        ///Blank rows will be ignored.
+        ///   Looks up a localized string similar to For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.	Allowed:	Blank rows will be ignored.
         /// </summary>
         public static string DataSplitHelpSkipBlankRows {
             get {
@@ -1613,16 +1222,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To split a value into one or more variables, put the value in here.
-        ///You can process entire file content or just trim the white space from a variable.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To split a value into one or more variables, put the value in here.	You can process entire file content or just trim the white space from a variable.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataSplitHelpString {
             get {
@@ -1631,16 +1231,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 
-        ///For Char put any characters or combination of characters you would like.
-        ///Not applicable to New Line, Tab or End
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 	For Char put any characters or combination of characters you would like.	Not applicable to New Line, Tab or End	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DataSplitHelpUsing {
             get {
@@ -1649,10 +1240,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select where you would like to split the data.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select where you would like to split the data.	Allowed:	na.
         /// </summary>
         public static string DataSplitHelpWithType {
             get {
@@ -1688,11 +1276,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the split data in the pattern as described by the results.
-        ///The variable pattern will be repeated until the end of the input data.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the split data in the pattern as described by the results.	The variable pattern will be repeated until the end of the input data.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DataSplitToolTipResults {
             get {
@@ -1710,9 +1294,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To split a value into one or more variables, put the value in here.
-        ///You can process entire file content or just trim the white space from a variable..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To split a value into one or more variables, put the value in here.	You can process entire file content or just trim the white space from a variable..
         /// </summary>
         public static string DataSplitToolTipString {
             get {
@@ -1721,9 +1303,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 
-        ///For Char put any characters or combination of characters you would like.
-        ///Not applicable to New Line, Tab or End.
+        ///   Looks up a localized string similar to For Index use the number of characters that this split will use. 	For Char put any characters or combination of characters you would like.	Not applicable to New Line, Tab or End.
         /// </summary>
         public static string DataSplitToolTipUsing {
             get {
@@ -1741,16 +1321,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeDifferenceHelpDatetime1 {
             get {
@@ -1759,16 +1330,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeDifferenceHelpDatetime2 {
             get {
@@ -1777,16 +1339,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format.
-        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]]&quot;.
+        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeDifferenceHelpInputFormat {
             get {
@@ -1795,10 +1348,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the unit of time to output the difference in.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the unit of time to output the difference in..
         /// </summary>
         public static string DateTimeDifferenceHelpOutputType {
             get {
@@ -1807,16 +1357,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the difference in time between the two date times.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the difference in time between the two date times.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeDifferenceHelpResult {
             get {
@@ -1825,9 +1366,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime1 {
             get {
@@ -1836,9 +1375,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.	Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime2 {
             get {
@@ -1847,9 +1384,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format.
-        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeDifferenceToolTipInputFormat {
             get {
@@ -1867,10 +1402,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the difference in time between the two date times.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the difference in time between the two date times.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DateTimeDifferenceToolTipResult {
             get {
@@ -1879,15 +1411,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.
-        ///Leave this field blank if you do not want to change the date time.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.	Leave this field blank if you do not want to change the date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeHelpAddtime {
             get {
@@ -1896,16 +1420,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To format a date time, or to add/subtract from a date time, put it in here.
-        ///Leaving this field blank will give you the system date time.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To format a date time, or to add/subtract from a date time, put it in here.	Leaving this field blank will give you the system date time.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeHelpDatetime {
             get {
@@ -1914,16 +1429,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format.
-        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeHelpInputformat {
             get {
@@ -1932,16 +1438,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
-        ///Leaving this field blank will assume the same as the Input Format.
-        ///To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeHelpOutputformat {
             get {
@@ -1950,16 +1447,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted and/or added/subtracted date time.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted and/or added/subtracted date time.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DateTimeHelpResult {
             get {
@@ -1968,10 +1456,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the unit of time to add or subtract. This is ignored if the unit is blank or 0..
         /// </summary>
         public static string DateTimeHelpTimeType {
             get {
@@ -1980,8 +1465,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.
-        ///Leave this field blank if you do not want to change the date time..
+        ///   Looks up a localized string similar to Put a positive or negative number here to add or subtract from the input date time.	Leave this field blank if you do not want to change the date time..
         /// </summary>
         public static string DateTimeToolTipAddtime {
             get {
@@ -1990,9 +1474,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To format a date time, or to add/subtract from a date time, put it in here.
-        ///Leaving this field blank will give you the system date time..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To format a date time, or to add/subtract from a date time, put it in here.	Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeToolTipDatetime {
             get {
@@ -2001,9 +1483,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format.
-        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeToolTipInputformat {
             get {
@@ -2012,9 +1492,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
-        ///Leaving this field blank will assume the same as the Input Format.
-        ///To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeToolTipOutputformat {
             get {
@@ -2023,10 +1501,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted and/or added/subtracted date time.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted and/or added/subtracted date time.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DateTimeToolTipResult {
             get {
@@ -2143,16 +1618,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To Delete a file or folder, put the full path and file or folder name to delete in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Delete a file or folder, put the full path and file or folder name to delete in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpFileFolder {
             get {
@@ -2161,14 +1627,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpPassword {
             get {
@@ -2177,12 +1636,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to * in Recordset will execute every index in the given recordset.
-        ///
-        ///Allowed:
-        ///[[Recordset(n)]]   
-        ///[[Recordset(*)]]   
-        ///[[Recordset()]].
+        ///   Looks up a localized string similar to * in Recordset will execute every index in the given recordset.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpRecords {
             get {
@@ -2191,16 +1645,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or Failure depending on the success of the Delete action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure depending on the success of the Delete action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpResult {
             get {
@@ -2209,14 +1654,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string DeleteHelpUsername {
             get {
@@ -2225,9 +1663,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To Delete a file or folder, put the full path and file or folder name to delete in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Delete a file or folder, put the full path and file or folder name to delete in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string DeleteToolTipFileFolder {
             get {
@@ -2254,10 +1690,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or Failure depending on the success of the Delete action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure depending on the success of the Delete action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string DeleteToolTipResult {
             get {
@@ -2338,9 +1771,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatically include everything that this resource would need to execute at the destination.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;b&gt;Warning: &lt;b/&gt;Deploying Sources that are already on the destination Server, will overwrite their connection strings. .
+        ///   Looks up a localized string similar to Automatically include everything that this resource would need to execute at the destination.&lt;br/&gt;	&lt;br/&gt;	&lt;b&gt;Warning: &lt;b/&gt;Deploying Sources that are already on the destination Server, will overwrite their connection strings. .
         /// </summary>
         public static string DeploySelectDependenciesHelp {
             get {
@@ -2412,9 +1843,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///     This is the name of the file that will be downloaded from Dropbox.
-        ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	This is the name of the file that will be downloaded from Dropbox.	NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
         /// </summary>
         public static string DropBoxDownloadFileName {
             get {
@@ -2423,9 +1852,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///     This is the name of the file that will be read from Dropbox.
-        ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	This is the name of the file that will be read from Dropbox.	NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
         /// </summary>
         public static string DropBoxDownloadToolTipLocalDestination {
             get {
@@ -2434,10 +1861,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Returns the contents of the Dropbox folder you specify here.
-        ///    This is the folder structure you want to list on Dropbox.
-        ///  You can specify the type of information returned by selecting either Files (returns only files), Folders (Returns only folders) or Files and Folders for everything.
-        ///.
+        ///   Looks up a localized string similar to Returns the contents of the Dropbox folder you specify here.	This is the folder structure you want to list on Dropbox.	You can specify the type of information returned by selecting either Files (returns only files), Folders (Returns only folders) or Files and Folders for everything..
         /// </summary>
         public static string DropBoxFileListFileName {
             get {
@@ -2455,9 +1879,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
-        ///    
-        ///    NOTE: Dropbox has a max return count of 2000..
+        ///   Looks up a localized string similar to When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 	NOTE: Dropbox has a max return count of 2000..
         /// </summary>
         public static string DropBoxFileListRecursive {
             get {
@@ -2574,8 +1996,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///The file must be available on the local file system..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	The file must be available on the local file system..
         /// </summary>
         public static string DropBoxToolTipLocalSource {
             get {
@@ -2620,10 +2041,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the path to the attachments you want to send, separated by a semicolon ;
-        ///
-        ///Allowed:
-        ///.
+        ///   Looks up a localized string similar to Enter the path to the attachments you want to send, separated by a semicolon ;.
         /// </summary>
         public static string EmailHelpAttachments {
             get {
@@ -2632,15 +2050,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending, separated by a semicolon ;
-        ///If you are on a domain, you still need to provide the email address of the account you are sending to.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending, separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpBcc {
             get {
@@ -2649,14 +2059,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The main body of the email goes in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to The main body of the email goes in here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpBody {
             get {
@@ -2674,15 +2077,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending, separated by a semicolon ;
-        ///If you are on a domain, you still need to provide the email address of the account you are sending to.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending, separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpCc {
             get {
@@ -2691,17 +2086,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To send an email, enter the email address of the account you want to send from.
-        ///If you are on a domain, you still need to provide the email address of the account you are sending from.
-        ///If you leave it blank, the account used to setup the Email Source will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any data or variable can go in here.	To send an email, enter the email address of the account you want to send from.	If you are on a domain, you still need to provide the email address of the account you are sending from.	If you leave it blank, the account used to setup the Email Source will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpFromAddress {
             get {
@@ -2710,10 +2095,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one.
-        ///
-        ///Allowed:
-        ///Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
+        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
         /// </summary>
         public static string EmailHelpMailSource {
             get {
@@ -2722,14 +2104,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the password, if there is one, for the account you are sending from.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Enter the password, if there is one, for the account you are sending from.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpPassword {
             get {
@@ -2738,10 +2113,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the message priority.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the message priority..
         /// </summary>
         public static string EmailHelpPriorityType {
             get {
@@ -2750,14 +2122,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or Failure depending on the success of the send action.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure depending on the success of the send action.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpResult {
             get {
@@ -2766,14 +2131,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the subject for your email.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Enter the subject for your email.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpSubject {
             get {
@@ -2782,15 +2140,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to send to, separated by a semicolon ;
-        ///If you are on a domain, you still need to provide the email address of the account you are sending to.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to List the email addresses you want to send to, separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string EmailHelpTo {
             get {
@@ -2799,9 +2149,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The email address that will be used to send the email from.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This account needs to be a valid email address/account for the Host server..
+        ///   Looks up a localized string similar to The email address that will be used to send the email from.&lt;br/&gt;	&lt;br/&gt;	This account needs to be a valid email address/account for the Host server..
         /// </summary>
         public static string EmailSourceEmailFromHelp {
             get {
@@ -2837,16 +2185,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Does the Host require a secure connection?
-        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
-        ///e.g.&lt;br/&gt;
-        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
-        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt; [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Does the Host require a secure connection?	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp. [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourceEnableSslHelp {
             get {
@@ -2864,15 +2203,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Host name of the server you want to use for sending emails.
-        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
-        ///e.g.&lt;br/&gt;
-        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
-        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;t [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to The Host name of the server you want to use for sending emails.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/t [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourceHostNameHelp {
             get {
@@ -2890,23 +2221,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;style type=&quot;text/css&quot;&gt;
-        ///#smtptable td
-        ///{
-        ///text-align:center;
-        ///border:0px;
-        ///}
-        ///&lt;/style&gt;
-        ///The Port of the email server.
-        ///&lt;br/&gt;
-        ///e.g.&lt;br/&gt;
-        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
-        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;style type=&quot;text/css&quot;&gt;	#smtptable td	{	text-align:center;	border:0px;	}	&lt;/style&gt;	The Port of the email server.	&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;liv [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourcePortHelp {
             get {
@@ -2942,8 +2257,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
-        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
+        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailToolTipBcc {
             get {
@@ -2970,8 +2284,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
-        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
+        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailToolTipCc {
             get {
@@ -2980,10 +2293,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To send an email, enter the email address of the account you want to send from.
-        ///If you are on a domain, you still need to provide the email address of the account you are sending from.
-        ///If you leave it blank, the account used to setup the Email Source will be used..
+        ///   Looks up a localized string similar to Any data or variable can go in here.	To send an email, enter the email address of the account you want to send from.	If you are on a domain, you still need to provide the email address of the account you are sending from.	If you leave it blank, the account used to setup the Email Source will be used..
         /// </summary>
         public static string EmailToolTipFromAddress {
             get {
@@ -3019,8 +2329,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or Failure depending on the success of the send action..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure depending on the success of the send action..
         /// </summary>
         public static string EmailToolTipResult {
             get {
@@ -3038,8 +2347,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;
-        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
+        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;	If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailToolTipTo {
             get {
@@ -3066,8 +2374,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please provide us with the necessary steps to follow in order to reproduce this issue. 
-        ///The more information you can provide us with, the faster we can track the issue and resolve it..
+        ///   Looks up a localized string similar to Please provide us with the necessary steps to follow in order to reproduce this issue. 	The more information you can provide us with, the faster we can track the issue and resolve it..
         /// </summary>
         public static string ExceptionViewStepsWatermark {
             get {
@@ -3076,13 +2383,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Exchange web service endpoint url to connect to your Exchange enviroment.
-        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
-        ///e.g.&lt;br/&gt;
-        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
-        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;/table&gt;&lt;br/&gt;If the Autodiscover url is left empty, the Exchange service endpoint will be auto dicovered based on the user name.
+        ///   Looks up a localized string similar to The Exchange web service endpoint url to connect to your Exchange enviroment.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/td&gt;&lt;/tr&gt;	&lt;/table&gt;&lt;br/&gt;If the Autodiscover url is left empty, the Exchange service endpoint will be auto dicovered based on the user name.
         /// </summary>
         public static string ExchangeEmailSourceHostNameHelp {
             get {
@@ -3091,11 +2392,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection string properties of the selected connection.&lt;br&gt;
-        ///&lt;br/&gt;
-        ///Change the connection string from, say, a development database to a live database.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Change the connection string properties of the selected connection.&lt;br&gt;	&lt;br/&gt;	Change the connection string from, say, a development database to a live database.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string ExchangeServiceEditSourceHelp {
             get {
@@ -3221,14 +2518,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value that the search will start at, this must be a number, date or time and must be the same type as the &quot;To&quot; type.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to The value that the search will start at, this must be a number, date or time and must be the same type as the &quot;To&quot; type.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindHelpFrom {
             get {
@@ -3237,12 +2527,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.
-        ///
-        ///Allowed:
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindHelpInFields {
             get {
@@ -3251,10 +2536,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of information you want to match on.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the type of information you want to match on..
         /// </summary>
         public static string FindHelpLookForMatchType {
             get {
@@ -3263,14 +2545,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The criteria to match on
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to The criteria to match on	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindHelpMatch {
             get {
@@ -3279,10 +2554,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Will only return rows where each field specified meets the match criteria if selected.
-        ///
-        ///Allowed:
-        ///Should all the fields match?.
+        ///   Looks up a localized string similar to Will only return rows where each field specified meets the match criteria if selected..
         /// </summary>
         public static string FindHelpRequireAllFieldsToMatch {
             get {
@@ -3291,10 +2563,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Will only return rows that match all of the criteria if selected.
-        ///
-        ///Allowed:
-        ///Should each criteria be met?.
+        ///   Looks up a localized string similar to Will only return rows that match all of the criteria if selected..
         /// </summary>
         public static string FindHelpRequireAllMatchesToBeTrue {
             get {
@@ -3303,17 +2572,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the indexes of the successful matches.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///If there are multiple results and a scalar is used, then each result will be separated with a comma.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the indexes of the successful matches.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	If there are multiple results and a scalar is used, then each result will be separated with a comma.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindHelpResult {
             get {
@@ -3322,14 +2581,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value that the search will end at, this must be a number, date or time and must be the same type as the &quot;From&quot; type.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to The value that the search will end at, this must be a number, date or time and must be the same type as the &quot;From&quot; type.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindHelpTo {
             get {
@@ -3338,15 +2590,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put  the index of the string you are looking for in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put  the index of the string you are looking for in here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindIndexHelpCharacters {
             get {
@@ -3355,10 +2599,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the direction to search in.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the direction to search in..
         /// </summary>
         public static string FindIndexHelpDirectiontype {
             get {
@@ -3367,10 +2608,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select which index(s) you would like found.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select which index(s) you would like found..
         /// </summary>
         public static string FindIndexHelpIndexType {
             get {
@@ -3379,13 +2617,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the character index(s) of a string inside another string, put the string to be searched here.
-        ///
-        ///Allowed:
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the character index(s) of a string inside another string, put the string to be searched here.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindIndexHelpInField {
             get {
@@ -3394,16 +2626,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the index(s) of the found string.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the index(s) of the found string.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FindIndexHelpResult {
             get {
@@ -3412,8 +2635,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put  the index of the string you are looking for in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put  the index of the string you are looking for in here..
         /// </summary>
         public static string FindIndexToolTipCharacters {
             get {
@@ -3440,8 +2662,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the character index(s) of a string inside another string, put the string to be searched here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To find the character index(s) of a string inside another string, put the string to be searched here..
         /// </summary>
         public static string FindIndexToolTipInField {
             get {
@@ -3450,10 +2671,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the index(s) of the found string.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the index(s) of the found string.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated..
         /// </summary>
         public static string FindIndexToolTipResult {
             get {
@@ -3534,11 +2752,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the indexes of the successful matches.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///If there are multiple results and a scalar is used, then each result will be separated with a comma..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the indexes of the successful matches.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	If there are multiple results and a scalar is used, then each result will be separated with a comma..
         /// </summary>
         public static string FindToolTipResult {
             get {
@@ -3556,13 +2770,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
-        ///[[Customer(2).ID]],
-        ///[[Customer(3).ID]].
-        ///* in Range allows you to input a range of indexes.
-        ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
-        ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],	[[Customer(2).ID]],	[[Customer(3).ID]].	* in Range allows you to input a range of indexes.	* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.	* in Recordset will execute every index in the given recordset.	* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3.. [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -3571,13 +2779,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
-        ///[[Customer(2).ID]],
-        ///[[Customer(3).ID]].
-        ///* in Range allows you to input a range of indexes.
-        ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
-        ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],	[[Customer(2).ID]],	[[Customer(3).ID]].	* in Range allows you to input a range of indexes.	* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.	* in Recordset will execute every index in the given recordset.	* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3.. [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -3586,14 +2788,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FormatNumberHelpDecimalsToShow {
             get {
@@ -3602,15 +2797,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To format a number, put the number in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To format a number, put the number in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FormatNumberHelpNumber {
             get {
@@ -3619,16 +2806,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted number.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FormatNumberHelpResult {
             get {
@@ -3637,14 +2815,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How would you like to round the number?
-        ///None: No rounding is done
-        ///Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
-        ///Up: 1-9 all round up
-        ///Down: 1-9 all round down
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to How would you like to round the number?	None: No rounding is done	Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down	Up: 1-9 all round up	Down: 1-9 all round down	Allowed:	na.
         /// </summary>
         public static string FormatNumberHelpRoundType {
             get {
@@ -3653,14 +2824,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string FormatNumberHelpRoundValue {
             get {
@@ -3678,8 +2842,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To format a number, put the number in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To format a number, put the number in here..
         /// </summary>
         public static string FormatNumberToolTipNumber {
             get {
@@ -3688,10 +2851,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the formatted number.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string FormatNumberToolTipResult {
             get {
@@ -3700,11 +2860,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to How would you like to round the number?
-        ///None: No rounding is done
-        ///Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
-        ///Up: 1-9 all round up
-        ///Down: 1-9 all round down.
+        ///   Looks up a localized string similar to How would you like to round the number?	None: No rounding is done	Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down	Up: 1-9 all round up	Down: 1-9 all round down.
         /// </summary>
         public static string FormatNumberToolTipRoundType {
             get {
@@ -3839,10 +2995,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]
-        ///
-        ///Allowed:
-        ///[[Recordset()]].
+        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string LengthHelpRecordset {
             get {
@@ -3851,13 +3004,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string LengthHelpResult {
             get {
@@ -3902,12 +3049,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events&lt;br /&gt;
-        ///Server Pulse Data&lt;br /&gt;
-        ///Server System Activity.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity.
         /// </summary>
         public static string LoggingViewServerEventLogDebugHelpText {
             get {
@@ -3925,9 +3067,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to error details:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events.
         /// </summary>
         public static string LoggingViewServerEventLogErrorHelpText {
             get {
@@ -3963,11 +3103,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to information detail:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events&lt;br /&gt;
-        ///Server Pulse Data.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to information detail:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data.
         /// </summary>
         public static string LoggingViewServerEventLogInfoHelpText {
             get {
@@ -4003,13 +3139,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs everything to the Windows Event Log:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events&lt;br /&gt;
-        ///Server Pulse Data&lt;br /&gt;
-        ///Server System Activity&lt;br /&gt;
-        ///Server Detailed System information.
+        ///   Looks up a localized string similar to Logs everything to the Windows Event Log:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity&lt;br /&gt;	Server Detailed System information.
         /// </summary>
         public static string LoggingViewServerEventLogTraceHelpText {
             get {
@@ -4027,10 +3157,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events.
         /// </summary>
         public static string LoggingViewServerEventLogWarnHelpText {
             get {
@@ -4048,12 +3175,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Details up to System Activity:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events&lt;br /&gt;
-        ///Server Pulse Data&lt;br /&gt;
-        ///Server System Activity.
+        ///   Looks up a localized string similar to Logs to file: Details up to System Activity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity.
         /// </summary>
         public static string LoggingViewServerFileLogDebugHelpText {
             get {
@@ -4071,9 +3193,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Events up to error details:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events.
+        ///   Looks up a localized string similar to Logs to file: Events up to error details:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events.
         /// </summary>
         public static string LoggingViewServerFileLogErrorHelpText {
             get {
@@ -4109,11 +3229,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Up to information detail:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events&lt;br /&gt;
-        ///Server Pulse Data.
+        ///   Looks up a localized string similar to Logs to file: Up to information detail:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data.
         /// </summary>
         public static string LoggingViewServerFileLogInfoHelpText {
             get {
@@ -4149,13 +3265,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs everything to file:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events&lt;br /&gt;
-        ///Server Pulse Data&lt;br /&gt;
-        ///Server System Activity&lt;br /&gt;
-        ///Server Detailed System information.
+        ///   Looks up a localized string similar to Logs everything to file:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity&lt;br /&gt;	Server Detailed System information.
         /// </summary>
         public static string LoggingViewServerFileLogTraceHelpText {
             get {
@@ -4173,10 +3283,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Events up to warning severity:&lt;br /&gt;
-        ///    Server Fatal Events&lt;br /&gt;
-        ///  Server Error Events&lt;br /&gt;
-        ///Server Warning Events.
+        ///   Looks up a localized string similar to Logs to file: Events up to warning severity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events.
         /// </summary>
         public static string LoggingViewServerFileLogWarnHelpText {
             get {
@@ -4194,12 +3301,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events&lt;br /&gt;
-        ///Studio Pulse Data&lt;br /&gt;
-        ///Studio System Activity.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events&lt;br /&gt;	Studio Pulse Data&lt;br /&gt;	Studio System Activity.
         /// </summary>
         public static string LoggingViewStudioEventLogDebugHelpText {
             get {
@@ -4217,9 +3319,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to error details:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events.
         /// </summary>
         public static string LoggingViewStudioEventLogErrorHelpText {
             get {
@@ -4255,11 +3355,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to information detail:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events&lt;br /&gt;
-        ///Studio Pulse Data.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to information detail:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events&lt;br /&gt;	Studio Pulse Data.
         /// </summary>
         public static string LoggingViewStudioEventLogInfoHelpText {
             get {
@@ -4295,13 +3391,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs everything to the Windows Event Log:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events&lt;br /&gt;
-        ///Studio Pulse Data&lt;br /&gt;
-        ///Studio System Activity&lt;br /&gt;
-        ///Studio Detailed System information.
+        ///   Looks up a localized string similar to Logs everything to the Windows Event Log:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events&lt;br /&gt;	Studio Pulse Data&lt;br /&gt;	Studio System Activity&lt;br /&gt;	Studio Detailed System information.
         /// </summary>
         public static string LoggingViewStudioEventLogTraceHelpText {
             get {
@@ -4319,10 +3409,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events.
         /// </summary>
         public static string LoggingViewStudioEventLogWarnHelpText {
             get {
@@ -4340,12 +3427,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Details up to System Activity:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events&lt;br /&gt;
-        ///Studio Pulse Data&lt;br /&gt;
-        ///Studio System Activity.
+        ///   Looks up a localized string similar to Logs to file: Details up to System Activity:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events&lt;br /&gt;	Studio Pulse Data&lt;br /&gt;	Studio System Activity.
         /// </summary>
         public static string LoggingViewStudioFileLogDebugHelpText {
             get {
@@ -4363,9 +3445,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Events up to error details:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events.
+        ///   Looks up a localized string similar to Logs to file: Events up to error details:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events.
         /// </summary>
         public static string LoggingViewStudioFileLogErrorHelpText {
             get {
@@ -4401,11 +3481,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Up to information detail:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events&lt;br /&gt;
-        ///Studio Pulse Data.
+        ///   Looks up a localized string similar to Logs to file: Up to information detail:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events&lt;br /&gt;	Studio Pulse Data.
         /// </summary>
         public static string LoggingViewStudioFileLogInfoHelpText {
             get {
@@ -4441,13 +3517,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs everything to file:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events&lt;br /&gt;
-        ///Studio Pulse Data&lt;br /&gt;
-        ///Studio System Activity&lt;br /&gt;
-        ///Studio Detailed System information.
+        ///   Looks up a localized string similar to Logs everything to file:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events&lt;br /&gt;	Studio Pulse Data&lt;br /&gt;	Studio System Activity&lt;br /&gt;	Studio Detailed System information.
         /// </summary>
         public static string LoggingViewStudioFileLogTraceHelpText {
             get {
@@ -4465,10 +3535,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Events up to warning severity:&lt;br /&gt;
-        ///    Studio Fatal Events&lt;br /&gt;
-        ///  Studio Error Events&lt;br /&gt;
-        ///Studio Warning Events.
+        ///   Looks up a localized string similar to Logs to file: Events up to warning severity:&lt;br /&gt;	Studio Fatal Events&lt;br /&gt;	Studio Error Events&lt;br /&gt;	Studio Warning Events.
         /// </summary>
         public static string LoggingViewStudioFileLogWarnHelpText {
             get {
@@ -4747,11 +3814,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warewolf needs to get Authorization from the external application to connect using your key and credentials. Make sure your application is setup correctly on the remote system before continuing with this step.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
-        ///Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
-        ///https://www.dropbox.com/1/oauth2/redirect_receiver/.
+        ///   Looks up a localized string similar to Warewolf needs to get Authorization from the external application to connect using your key and credentials. Make sure your application is setup correctly on the remote system before continuing with this step.&lt;br/&gt;	&lt;br/&gt;	Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;	Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:	https://www.dropbox.com/1/oauth2/redirect_receiver/.
         /// </summary>
         public static string ManageOAuthAuthoriseHelp {
             get {
@@ -4769,11 +3832,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
-        ///Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
-        ///https://www.dropbox.com/1/oauth2/redirect_receiver/.
+        ///   Looks up a localized string similar to The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key.&lt;br/&gt;	&lt;br/&gt;	Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;	Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:	https://www.dropbox.com/1/oauth2/redirect_receiver/.
         /// </summary>
         public static string ManageOAuthKeyHelp {
             get {
@@ -5178,9 +4237,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug your Service in either the Studio or the Browser.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/debugging/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Debug your Service in either the Studio or the Browser.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/debugging/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string MenuDebugHelp {
             get {
@@ -5189,9 +4246,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move resources between multiple Warewolf Servers.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Deploy is the safest and recommended way of moving resources between Warewolf Servers..
+        ///   Looks up a localized string similar to Move resources between multiple Warewolf Servers.&lt;br/&gt;	&lt;br/&gt;	Deploy is the safest and recommended way of moving resources between Warewolf Servers..
         /// </summary>
         public static string MenuDeployHelp {
             get {
@@ -5416,9 +4471,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Warewolf Hosted Service. This flow based service is that start of all orchestration in Warewolf.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/getting-started/&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Create a new Warewolf Hosted Service. This flow based service is that start of all orchestration in Warewolf.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/getting-started/&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string MenuNewServiceHelp {
             get {
@@ -5526,16 +4579,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are moving to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are moving to here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string MoveHelpDestination {
             get {
@@ -5544,16 +4588,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To Move a file or folder, put the full path and file or folder name to move in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Move a file or folder, put the full path and file or folder name to move in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string MoveHelpFileFolder {
             get {
@@ -5562,10 +4597,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.
-        ///
-        ///Allowed:
-        ///If it exists already, force an overwrite.
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.	Allowed:	If it exists already, force an overwrite.
         /// </summary>
         public static string MoveHelpForceoverwrite {
             get {
@@ -5574,14 +4606,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string MoveHelpPassword {
             get {
@@ -5590,16 +4615,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Move action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Move action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string MoveHelpResult {
             get {
@@ -5608,14 +4624,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string MoveHelpUsername {
             get {
@@ -5624,9 +4633,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are moving to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are moving to here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string MoveToolTipDestination {
             get {
@@ -5635,9 +4642,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To Move a file or folder, put the full path and file or folder name to move in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To Move a file or folder, put the full path and file or folder name to move in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string MoveToolTipFileFolder {
             get {
@@ -5664,10 +4669,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Move action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Move action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string MoveToolTipResult {
             get {
@@ -5685,15 +4687,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
-        ///E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.	E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string NativeActivityHelpCallthiswebservice {
             get {
@@ -5702,12 +4696,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
-        ///If you have also called a web service / Warewolf workflow, that will finish executing first.
-        ///If the workflow is nested, the calling workflow will resume.
-        ///
-        ///Allowed:
-        ///Ends the executing workflow at this point.
+        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 	If you have also called a web service / Warewolf workflow, that will finish executing first.	If the workflow is nested, the calling workflow will resume..
         /// </summary>
         public static string NativeActivityHelpEndtheworkflow {
             get {
@@ -5716,14 +4705,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.
-        ///If left empty the result will still be placed in the result variable.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.	If left empty the result will still be placed in the result variable.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string NativeActivityHelpPuterrorinthisvariable {
             get {
@@ -5732,8 +4714,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
-        ///E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
+        ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.	E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
         /// </summary>
         public static string NativeActivityToolTipCallthiswebservice {
             get {
@@ -5742,9 +4723,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
-        ///If you have also called a web service / Warewolf workflow, that will finish executing first.
-        ///If the workflow is nested, the calling workflow will resume..
+        ///   Looks up a localized string similar to To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 	If you have also called a web service / Warewolf workflow, that will finish executing first.	If the workflow is nested, the calling workflow will resume..
         /// </summary>
         public static string NativeActivityToolTipEndtheworkflow {
             get {
@@ -5753,8 +4732,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.
-        ///If left empty the result will still be placed in the result variable. This will cause the error to be handled.
+        ///   Looks up a localized string similar to If an error occurs the error message will be placed into this variable as well the result variable.	If left empty the result will still be placed in the result variable. This will cause the error to be handled.
         /// </summary>
         public static string NativeActivityToolTipPuterrorinthisvariable {
             get {
@@ -5844,11 +4822,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection string properties of the selected DLL.&lt;br&gt;
-        ///&lt;br/&gt;
-        ///Change the connection string from, say, a development DLL to a live DLL.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Change the connection string properties of the selected DLL.&lt;br&gt;	&lt;br/&gt;	Change the connection string from, say, a development DLL to a live DLL.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
         /// </summary>
         public static string PluginServiceEditSourceHelp {
             get {
@@ -5938,10 +4912,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;
-        ///or
-        ///The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;
-        ///.
+        ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;	or	The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;.
         /// </summary>
         public static string PluginSourceDllFullNameHelp {
             get {
@@ -5959,9 +4930,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh the view based on the filter.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Newly added resources should show after a refresh..
+        ///   Looks up a localized string similar to Refresh the view based on the filter.&lt;br/&gt;	&lt;br/&gt;	Newly added resources should show after a refresh..
         /// </summary>
         public static string PluginSourceRefreshCommandHelp {
             get {
@@ -5979,11 +4948,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preview (recordset field)
-        ///This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5
-        /// 
-        ///Preview (scalar field - including indexed recordsets and ())
-        ///This is a variable from an input field. Put some test info in and click the Preview button to test your result..
+        ///   Looks up a localized string similar to Preview (recordset field)	This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5	Preview (scalar field - including indexed recordsets and ())	This is a variable from an input field. Put some test info in and click the Preview button to test your result..
         /// </summary>
         public static string PreviewInputHelpText {
             get {
@@ -6010,9 +4975,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To append something onto the front of the variables in your list, type it in here.
-        ///For recordsets, type  recordsetname(). Don&apos;t forget the &quot;.&quot; after the &quot;()&quot;
-        ///You do not need to put the &quot;[[&quot; in..
+        ///   Looks up a localized string similar to To append something onto the front of the variables in your list, type it in here.	For recordsets, type  recordsetname(). Don&apos;t forget the &quot;.&quot; after the &quot;()&quot;	You do not need to put the &quot;[[&quot; in..
         /// </summary>
         public static string QuickVariablePrefixWithHelpText {
             get {
@@ -6048,12 +5011,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.
-        ///Char will split on the characters you specify, like comma or | &lt;/.
-        ///Index will split on the numeric index from the previous split.
-        ///New Line will split on carriage return.
-        ///Space will split on blank space.
-        ///Tab splits on a tab character..
+        ///   Looks up a localized string similar to Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.	Char will split on the characters you specify, like comma or | &lt;/.	Index will split on the numeric index from the previous split.	New Line will split on carriage return.	Space will split on blank space.	Tab splits on a tab character..
         /// </summary>
         public static string QuickVariableSplitAndAtHelpText {
             get {
@@ -6071,8 +5029,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To append something onto the end of the variables in your list, type it in here.
-        ///You do not need to put the &quot;]]&quot; in..
+        ///   Looks up a localized string similar to To append something onto the end of the variables in your list, type it in here.	You do not need to put the &quot;]]&quot; in..
         /// </summary>
         public static string QuickVariableSuffixWithHelpText {
             get {
@@ -6108,13 +5065,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aknowledge will send back result from the consumer to tell 
-        ///    RabbitMQ that a particular message has been received, 
-        ///    processed and that RabbitMQ is free to delete it.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Aknowledge message after consume?.
+        ///   Looks up a localized string similar to Aknowledge will send back result from the consumer to tell 	RabbitMQ that a particular message has been received, 	processed and that RabbitMQ is free to delete it.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpAcknowledge {
             get {
@@ -6123,15 +5074,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If set, the queue is deleted when all consumers have 
-        ///    finished using it. The last consumer can be cancelled either 
-        ///    explicitly or because its channel is closed. If there was no 
-        ///    consumer ever on the queue, it won&apos;t be deleted. Applications 
-        ///    can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Make the queue auto delete.
+        ///   Looks up a localized string similar to If set, the queue is deleted when all consumers have 	finished using it. The last consumer can be cancelled either 	explicitly or because its channel is closed. If there was no 	consumer ever on the queue, it won&apos;t be deleted. Applications 	can explicitly delete auto-delete queues using the Delete method as normal.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpIsAutoDelete {
             get {
@@ -6140,12 +5083,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When RabbitMQ source quits or crashes it will forget the queues.
-        ///    Durable will prevent queues getting lost after the source is up again.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Make the queue durable.
+        ///   Looks up a localized string similar to When RabbitMQ source quits or crashes it will forget the queues.	Durable will prevent queues getting lost after the source is up again.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpIsDurable {
             get {
@@ -6154,13 +5092,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exclusive queues may only be accessed by the current connection, 
-        ///    and are deleted when that connection closes. Passive declaration of an exclusive 
-        ///    queue by other connections are not allowed.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Make the queue exclusive.
+        ///   Looks up a localized string similar to Exclusive queues may only be accessed by the current connection, 	and are deleted when that connection closes. Passive declaration of an exclusive 	queue by other connections are not allowed.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpIsExclusive {
             get {
@@ -6169,19 +5101,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is the actual content you want to add in the Queue
-        ///      When the Consumer consumes the message, this content will
-        ///      be returned as the response.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to This is the actual content you want to add in the Queue	When the Consumer consumes the message, this content will	be returned as the response.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpMessage {
             get {
@@ -6190,18 +5110,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    
-        ///      This will pre-fetch the given number of messages and block further traffic until you 
-        ///      Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 
-        ///      are pre-fetched at one time.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///         Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;Interger Value&lt;/li&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	Acknoledge something. This ensures that a maximum of the given number of unAcknowldged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
             get {
@@ -6210,19 +5119,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 
-        ///      The Queue should already be in the RabbitMQ Source in your server.
-        ///      Note: The Queue name is case sensitive.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpQueueName {
             get {
@@ -6231,13 +5128,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Marking this as True will leave the
-        ///    message you consumed in the queue.
-        ///    Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Requeue the queue.
+        ///   Looks up a localized string similar to Marking this as True will leave the	message you consumed in the queue.	Leaving it UnChecked will remove it from the Queue after it has bee consumed.&lt;br/&gt;.
         /// </summary>
         public static string RabbitMQHelpRequeue {
             get {
@@ -6246,17 +5137,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///        This will be the response of what you have Consumed from your Queue&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        
-        ///        Allowed:&lt;br /&gt;          
-        ///         &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Only variables go in here.	This will be the response of what you have Consumed from your Queue&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;          	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpResponse {
             get {
@@ -6265,16 +5146,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;	&lt;br /&gt;	Allowed:	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpResult {
             get {
@@ -6283,19 +5155,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  The Queue might be empty when the 
-        ///      Consumer makes the initial attempt to Consume the message.
-        ///      Put the number of seconds you want the consumer to delay when attempting to 
-        ///      consume messages from the queue.
-        ///      After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;Interger Value&lt;/li&gt;            
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to  The Queue might be empty when the 	Consumer makes the initial attempt to Consume the message.	Put the number of seconds you want the consumer to delay when attempting to 	consume messages from the queue.	After the specified time (in seconds) has elapsed, the  consumer will retire.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Interger Value&lt;/li&gt;            	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpTimeOut {
             get {
@@ -6304,8 +5164,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
-        ///.
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;.
         /// </summary>
         public static string RabbitMQSourceHelp {
             get {
@@ -6458,8 +5317,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;
-        ///.
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt; &gt;.
         /// </summary>
         public static string RabbitMQToolTipSource {
             get {
@@ -6477,14 +5335,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Determines the character length to generate.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Determines the character length to generate.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RandomHelpLength {
             get {
@@ -6493,14 +5344,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To generate a random number put the lowest/smallest number you would like in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to To generate a random number put the lowest/smallest number you would like in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RandomHelpRangeFrom {
             get {
@@ -6509,14 +5353,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To generate a random number put the highest/largest number you would like in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to To generate a random number put the highest/largest number you would like in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RandomHelpRangeTo {
             get {
@@ -6525,16 +5362,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the randomly generated result.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the randomly generated result.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RandomHelpResult {
             get {
@@ -6543,14 +5371,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of random information to generate.
-        ///Letters: Alphabetical letters only.
-        ///Numbers: Numbers only.
-        ///Letters and Numbers: A random combination of letters and numbers.
-        ///GUID: A randomly generated Globally Unique Identifier.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to The type of random information to generate.	Letters: Alphabetical letters only.	Numbers: Numbers only.	Letters and Numbers: A random combination of letters and numbers.	GUID: A randomly generated Globally Unique Identifier..
         /// </summary>
         public static string RandomHelpType {
             get {
@@ -6586,10 +5407,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the randomly generated result.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the randomly generated result.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string RandomToolTipResult {
             get {
@@ -6598,11 +5416,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type of random information to generate.
-        ///Letters: Alphabetical letters only.
-        ///Numbers: Numbers only.
-        ///Letters and Numbers: A random combination of letters and numbers.
-        ///GUID: A randomly generated Globally Unique Identifier..
+        ///   Looks up a localized string similar to The type of random information to generate.	Letters: Alphabetical letters only.	Numbers: Numbers only.	Letters and Numbers: A random combination of letters and numbers.	GUID: A randomly generated Globally Unique Identifier..
         /// </summary>
         public static string RandomToolTipType {
             get {
@@ -6611,16 +5425,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To read the content of a file, put the full path and file name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To read the content of a file, put the full path and file name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFileHelpFilename {
             get {
@@ -6629,14 +5434,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFileHelpPassword {
             get {
@@ -6645,16 +5443,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the content of the file.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the content of the file.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFileHelpResult {
             get {
@@ -6663,14 +5452,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFileHelpUsername {
             get {
@@ -6679,9 +5461,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To upload a file, put the full path and file name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To upload a file, put the full path and file name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFileToolTipFilename {
             get {
@@ -6699,10 +5479,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the content of the file.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the content of the file.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ReadFileToolTipResult {
             get {
@@ -6720,16 +5497,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To read the content of a folder, put the full path in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To read the content of a folder, put the full path in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFolderHelpFolder {
             get {
@@ -6738,14 +5506,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFolderHelpPassword {
             get {
@@ -6754,12 +5515,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Files will only return files.
-        ///Folders will only return folders.
-        ///Files and Folders will return everything.
-        ///
-        ///Allowed:
-        ///What do you want to read?.
+        ///   Looks up a localized string similar to Files will only return files.	Folders will only return folders.	Files and Folders will return everything.	Allowed:	What do you want to read?.
         /// </summary>
         public static string ReadFolderHelpRead {
             get {
@@ -6768,16 +5524,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFolderHelpResult {
             get {
@@ -6786,14 +5533,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFolderHelpUsername {
             get {
@@ -6802,9 +5542,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To read the content of a folder, put the full path in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To read the content of a folder, put the full path in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFolderToolTipFolder {
             get {
@@ -6822,9 +5560,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Files will only return files.
-        ///Folders will only return folders.
-        ///Files and Folders will return everything..
+        ///   Looks up a localized string similar to Files will only return files.	Folders will only return folders.	Files and Folders will return everything..
         /// </summary>
         public static string ReadFolderToolTipRead {
             get {
@@ -6833,10 +5569,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ReadFolderToolTipResult {
             get {
@@ -6863,20 +5596,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Enter local file or folder path in here.&lt;br/&gt;
-        ///        Download to local Example: C:\MyFolder\Help.&lt;br/&gt;
-        ///        Upload file to SharePoint Example: C:\MyFolder\Help\help.txt.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Enter local file or folder path in here.&lt;br/&gt;	Download to local Example: C:\MyFolder\Help.&lt;br/&gt;	Upload file to SharePoint Example: C:\MyFolder\Help\help.txt.&lt;br/&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadLocalHelpFolder {
             get {
@@ -6903,16 +5623,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To rename a file or folder, put the full path and file or folder name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpFileFolder {
             get {
@@ -6921,10 +5632,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.
-        ///
-        ///Allowed:
-        ///If it exists already, force an overwrite.
+        ///   Looks up a localized string similar to If the file or folder already exists, you can force a new one to overwrite the old one.	Allowed:	If it exists already, force an overwrite.
         /// </summary>
         public static string RenameHelpForceoverwrite {
             get {
@@ -6933,16 +5641,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path and new name of the resource here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path and new name of the resource here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpNewName {
             get {
@@ -6951,14 +5650,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpPassword {
             get {
@@ -6967,16 +5659,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Rename action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Rename action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpResult {
             get {
@@ -6985,14 +5668,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RenameHelpUsername {
             get {
@@ -7001,9 +5677,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To rename a file or folder, put the full path and file or folder name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To rename a file or folder, put the full path and file or folder name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string RenameToolTipFileFolder {
             get {
@@ -7021,9 +5695,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path and new name of the resource here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path and new name of the resource here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string RenameToolTipNewName {
             get {
@@ -7041,10 +5713,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Rename action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Rename action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string RenameToolTipResult {
             get {
@@ -7062,14 +5731,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put the information you are looking for in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Put the information you are looking for in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReplaceHelpFind {
             get {
@@ -7078,15 +5740,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///To search and replace a string, put the variable containing the string to search in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	To search and replace a string, put the variable containing the string to search in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReplaceHelpInFields {
             get {
@@ -7095,14 +5749,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Put the replacement information in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Put the replacement information in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReplaceHelpReplaceWith {
             get {
@@ -7111,16 +5758,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the count of the number of replacements.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the count of the number of replacements.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReplaceHelpResult {
             get {
@@ -7138,8 +5776,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///To search and replace a string, put the variable containing the string to search in here..
+        ///   Looks up a localized string similar to Only variables go in here.	To search and replace a string, put the variable containing the string to search in here..
         /// </summary>
         public static string ReplaceToolTipInFields {
             get {
@@ -7157,10 +5794,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the count of the number of replacements.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the count of the number of replacements.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ReplaceToolTipResult {
             get {
@@ -7259,8 +5893,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of the schedule that will appear in the list of Schedules in the left hand column.
-        ///Renaming a Schedule will lose its History..
+        ///   Looks up a localized string similar to The name of the schedule that will appear in the list of Schedules in the left hand column.	Renaming a Schedule will lose its History..
         /// </summary>
         public static string SchedulerSettingsHelpTextName {
             get {
@@ -7287,8 +5920,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
-        ///Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well..
+        ///   Looks up a localized string similar to To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.	Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well..
         /// </summary>
         public static string SchedulerSettingsHelpTextSettingsView {
             get {
@@ -7405,10 +6037,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What type of scripting language do you want to use?
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to What type of scripting language do you want to use?	Allowed:	na.
         /// </summary>
         public static string ScriptingHelpLanguageType {
             get {
@@ -7417,14 +6046,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the output of the script, if any.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the output of the script, if any.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ScriptingHelpResult {
             get {
@@ -7433,15 +6055,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To run a programming script, put the script you want to execute in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To run a programming script, put the script you want to execute in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ScriptingHelpScript {
             get {
@@ -7459,8 +6073,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the output of the script, if any..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the output of the script, if any..
         /// </summary>
         public static string ScriptingToolTipResult {
             get {
@@ -7469,8 +6082,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To run a programming script, put the script you want to execute in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To run a programming script, put the script you want to execute in here..
         /// </summary>
         public static string ScriptingToolTipScript {
             get {
@@ -7479,16 +6091,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify an alias for the selected data.&lt;br/&gt;
-        ///    This needs to conform to variable notation.&lt;br/&gt;
-        ///    This will be the value that will be acted upon in the activity inserted below.&lt;br/&gt;
-        ///    To ensure that the original values are updated ensure that the result of the activity is set to this value.&lt;br/&gt;
-        ///    
-        ///    Allowed:
-        ///    &lt;ol&gt;
-        ///        &lt;li&gt;[[field]]&lt;/li&gt;
-        ///    &lt;/ol&gt;
-        ///    .
+        ///   Looks up a localized string similar to Specify an alias for the selected data.&lt;br/&gt;	This needs to conform to variable notation.&lt;br/&gt;	This will be the value that will be acted upon in the activity inserted below.&lt;br/&gt;	To ensure that the original values are updated ensure that the result of the activity is set to this value.&lt;br/&gt;	Allowed:	&lt;ol&gt;	&lt;li&gt;[[field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SelectAndApplyAliasHelpText {
             get {
@@ -7497,8 +6100,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify an alias for the selected data. 
-        ///This needs to conform to variable notation..
+        ///   Looks up a localized string similar to Specify an alias for the selected data. &lt;br /&gt;	This needs to conform to variable notation..
         /// </summary>
         public static string SelectAndApplyAliasToolTip {
             get {
@@ -7507,17 +6109,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only collections go in here.&lt;br/&gt;
-        ///        You can use the (*) or () notation for record sets or complex object arrays.&lt;br/&gt;
-        ///        This is the collection of items that will be iterated over.&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        For example to iterate over all ages in the person recordset this field will contain [[person(*).age]].&lt;br/&gt;
-        ///        
-        ///        Allowed:
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Collection(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Collection().Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Collection.InnerCollection [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Only collections go in here.&lt;br/&gt;	You can use the (*) or () notation for record sets or object arrays.&lt;br/&gt;	This is the collection of items that will be iterated over.&lt;br /&gt;	&lt;br /&gt;	For example to iterate over all ages in the person recordset this field will contain [[person(*).age]].&lt;br/&gt;	Allowed:	&lt;ol&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object(*).Field]]&lt;/li&gt;	&lt;li&gt;[[@Object().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object.InnerCollection().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SelectAndApplyDataSourceHelpText {
             get {
@@ -7526,8 +6118,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only collections go in here.
-        ///You can use the (*) or () notation for record sets or complex object arrays..
+        ///   Looks up a localized string similar to Only collections go in here.&lt;br /&gt;	You can use the (*) or () notation for record sets or objects..
         /// </summary>
         public static string SelectAndApplyDataSourceToolTip {
             get {
@@ -7545,9 +6136,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.
-        ///To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
-        ///Error handling operates as a catch all for all items in the sequence..
+        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.	To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.	Error handling operates as a catch all for all items in the sequence..
         /// </summary>
         public static string SequenceHelpSequence {
             get {
@@ -7556,9 +6145,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.
-        ///To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
-        ///Error handling operates as a catch all for all items in the sequence..
+        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.	To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.	Error handling operates as a catch all for all items in the sequence..
         /// </summary>
         public static string SequenceTooltipSequence {
             get {
@@ -7567,9 +6154,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For network computers, type in the name of the computer on the network and select it from the drop down list.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///For remote servers, such as Hybrid cloud environments, Azure hosted servers etc., put the server URL in here..
+        ///   Looks up a localized string similar to For network computers, type in the name of the computer on the network and select it from the drop down list.&lt;br/&gt;	&lt;br/&gt;	For remote servers, such as Hybrid cloud environments, Azure hosted servers etc., put the server URL in here..
         /// </summary>
         public static string ServerAddressHelp {
             get {
@@ -7596,9 +6181,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By default this port will be 3143 for HTTPS connections and 3142 for HTTP connections.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Do not change this unless you know the ports on the remote machine have been altered..
+        ///   Looks up a localized string similar to By default this port will be 3143 for HTTPS connections and 3142 for HTTP connections.&lt;br/&gt;	&lt;br/&gt;	Do not change this unless you know the ports on the remote machine have been altered..
         /// </summary>
         public static string ServerSelectPortHelp {
             get {
@@ -7607,9 +6190,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the public account to authenticate on the remote server.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///If there are no resources on the remote server, there will be no Public authentication..
+        ///   Looks up a localized string similar to Use the public account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	If there are no resources on the remote server, there will be no Public authentication..
         /// </summary>
         public static string ServerSelectPublicHelp {
             get {
@@ -7618,9 +6199,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use a specific windows account to authenticate on the remote server.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Use the domain if relevant e.g. DOMAIN\Username.
+        ///   Looks up a localized string similar to Use a specific windows account to authenticate on the remote server.&lt;br/&gt;	&lt;br/&gt;	Use the domain if relevant e.g. DOMAIN\Username.
         /// </summary>
         public static string ServerSelectUserHelp {
             get {
@@ -7737,8 +6316,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test the connection to the remote Warewolf Server.
-        ///Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server..
+        ///   Looks up a localized string similar to Test the connection to the remote Warewolf Server.	Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server..
         /// </summary>
         public static string ServerTestConnectionHelp {
             get {
@@ -7747,15 +6325,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
-        ///You can also put multiple fields into one field with other text much like the assign tool.
-        ///By default similar matches from the variable list are used where possible.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records	You can also put multiple fields into one field with other text much like the assign tool.	By default similar matches from the variable list are used where possible.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -7764,16 +6334,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ServiceHelpOutput {
             get {
@@ -7782,11 +6343,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selecting this checkbox will cause the workflow to execute as &quot;Fire and Forget&quot;. This will free up the parent workflow to continue without waiting for a response from the nested workflow.
-        ///Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.
-        ///
-        ///Allowed:
-        ///.
+        ///   Looks up a localized string similar to Selecting this checkbox will cause the workflow to execute as &quot;Fire and Forget&quot;. This will free up the parent workflow to continue without waiting for a response from the nested workflow.	Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use..
         /// </summary>
         public static string ServiceHelpRunWorkflowAsync {
             get {
@@ -8101,8 +6658,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
-        ///To do this they can also View and Execute..
+        ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 	To do this they can also View and Execute..
         /// </summary>
         public static string SettingsSecurityResourceHelpContribute {
             get {
@@ -8120,9 +6676,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To set specific permissions for a resource on this server, select the resource here.
-        ///Any permissions applied to this resource will OVERWRITE the server settings above.
-        ///By specifying a resource here, it will not inherit permissions from the server (above)..
+        ///   Looks up a localized string similar to To set specific permissions for a resource on this server, select the resource here.	Any permissions applied to this resource will OVERWRITE the server settings above.	By specifying a resource here, it will not inherit permissions from the server (above)..
         /// </summary>
         public static string SettingsSecurityResourceHelpResource {
             get {
@@ -8131,8 +6685,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to open and view this resource.
-        ///Typically this is used by Business Analysts to sign off work and participate in the development process..
+        ///   Looks up a localized string similar to By Default this group will be able to open and view this resource.	Typically this is used by Business Analysts to sign off work and participate in the development process..
         /// </summary>
         public static string SettingsSecurityResourceHelpView {
             get {
@@ -8141,9 +6694,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To set resource specific permissions, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. 
-        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.
-        ///Public is an internal Warewolf group that applies to everyone..
+        ///   Looks up a localized string similar to To set resource specific permissions, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. 	Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.	Public is an internal Warewolf group that applies to everyone..
         /// </summary>
         public static string SettingsSecurityResourceHelpWindowsGroup {
             get {
@@ -8197,9 +6748,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opens the windows group picker for this computer. If this server is on another domain, you will need to either manually type the Group name in, or launch a studio from a PC that is on that domain to get access to the group picker.
-        ///
-        ///Warewolf has a built in group for and called Public..
+        ///   Looks up a localized string similar to Opens the windows group picker for this computer. If this server is on another domain, you will need to either manually type the Group name in, or launch a studio from a PC that is on that domain to get access to the group picker.	Warewolf has a built in group for and called Public..
         /// </summary>
         public static string SettingsSecurityServerBrowseHelpWindowsGroup {
             get {
@@ -8208,9 +6757,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrators can amend security permissions and change server settings. 
-        ///The local machine Administrators are automatically given this permission.
-        /// Giving Public access to this permission is akin to turning security off and is not recommended..
+        ///   Looks up a localized string similar to Administrators can amend security permissions and change server settings. 	The local machine Administrators are automatically given this permission.	Giving Public access to this permission is akin to turning security off and is not recommended..
         /// </summary>
         public static string SettingsSecurityServerHelpAdministrator {
             get {
@@ -8219,8 +6766,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to add new resources, edit resources and delete existing resources on this server. 
-        ///To do this they can also View and Execute..
+        ///   Looks up a localized string similar to By Default this group will be able to add new resources, edit resources and delete existing resources on this server. 	To do this they can also View and Execute..
         /// </summary>
         public static string SettingsSecurityServerHelpContribute {
             get {
@@ -8238,8 +6784,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to deploy resources onto this server.
-        ///Deploy may mean overwriting existing work and can be done without Contribute privileges..
+        ///   Looks up a localized string similar to By Default this group will be able to deploy resources onto this server.	Deploy may mean overwriting existing work and can be done without Contribute privileges..
         /// </summary>
         public static string SettingsSecurityServerHelpDeployTo {
             get {
@@ -8257,8 +6802,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to open and view resources on the server. 
-        ///Typically this is used by Business Analysts to sign off work and participate in the development process..
+        ///   Looks up a localized string similar to By Default this group will be able to open and view resources on the server. 	Typically this is used by Business Analysts to sign off work and participate in the development process..
         /// </summary>
         public static string SettingsSecurityServerHelpView {
             get {
@@ -8267,9 +6811,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To set server wide permissions for security, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.
-        ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribu [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to To set server wide permissions for security, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.	By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.	Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SettingsSecurityServerHelpWindowsGroup {
             get {
@@ -8341,8 +6883,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To create a SFTP Key, put the full path and file or folder name here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To create a SFTP Key, put the full path and file or folder name here..
         /// </summary>
         public static string SftpPrivateKeyValue {
             get {
@@ -8351,16 +6892,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the number of records deleted.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the number of records deleted.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharepointDeleteHelpResult {
             get {
@@ -8369,10 +6901,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the number of items deleted.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the number of items deleted.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string SharepointDelteToolTipResult {
             get {
@@ -8381,20 +6910,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Enter SharePoint file download path &lt;br /&gt;
-        ///        Example:&lt;br /&gt; 
-        ///        SharedFolder/Help.txt&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Enter SharePoint file download path &lt;br /&gt;	Example:&lt;br /&gt; 	SharedFolder/Help.txt&lt;br /&gt;	SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharePointDownloadHelpFolder {
             get {
@@ -8430,20 +6946,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Enter SharePoint file From path &lt;br /&gt;
-        ///        Example:&lt;br /&gt; 
-        ///        SharedFolder/Help.txt&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Enter SharePoint file From path &lt;br /&gt;	Example:&lt;br /&gt; 	SharedFolder/Help.txt&lt;br /&gt;	SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharePointHelpCopyFrom {
             get {
@@ -8452,20 +6955,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Enter SharePoint file To path &lt;br /&gt;
-        ///        Example:&lt;br /&gt; 
-        ///        SharedFolder/Help.txt&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Enter SharePoint file To path &lt;br /&gt;	Example:&lt;br /&gt; 	SharedFolder/Help.txt&lt;br /&gt;	SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharePointHelpCopyTo {
             get {
@@ -8474,20 +6964,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Enter SharePoint file path &lt;br /&gt;
-        ///        Example:&lt;br /&gt; 
-        ///        SharedFolder/Help.txt&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Enter SharePoint file path &lt;br /&gt;	Example:&lt;br /&gt; 	SharedFolder/Help.txt&lt;br /&gt;	SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharePointHelpDelete {
             get {
@@ -8496,10 +6973,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the field you want to match on.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the field you want to match on..
         /// </summary>
         public static string SharepointHelpFieldToMatchOn {
             get {
@@ -8508,11 +6982,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a list to read data from.
-        ///If the list changed, click the refresh button.
-        ///
-        ///Allowed:
-        ///Select a list to read data from..
+        ///   Looks up a localized string similar to Select a list to read data from.	If the list changed, click the refresh button.	Allowed:	Select a list to read data from..
         /// </summary>
         public static string SharepointHelpList {
             get {
@@ -8521,8 +6991,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured SharePoint server source or &quot;New SharePoint Server Source...&quot; to add a new one.
-        ///.
+        ///   Looks up a localized string similar to Select a preconfigured SharePoint server source or &quot;New SharePoint Server Source...&quot; to add a new one..
         /// </summary>
         public static string SharepointHelpServer {
             get {
@@ -8531,16 +7000,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or Failure.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharepointInsertHelpResult {
             get {
@@ -8549,10 +7009,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or Failure.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or Failure.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string SharepointInsertToolTipResult {
             get {
@@ -8561,21 +7018,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Read SharePoint folders and files. Enter SharePoint folder or file path &lt;br /&gt;
-        ///        Example:&lt;br /&gt; 
-        ///        SharedFolder/HelpFolder/Help.&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/MyFile.txt&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Read SharePoint folders and files. Enter SharePoint folder or file path &lt;br /&gt;	Example:&lt;br /&gt; 	SharedFolder/HelpFolder/Help.&lt;br /&gt;	SharedFolder/HelpFolder/MyFile.txt&lt;br /&gt;	SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharePointReadFolderHelpFolder {
             get {
@@ -8584,9 +7027,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter SharePoint server folder or
-        ///    file path
-        ///    .
+        ///   Looks up a localized string similar to Enter SharePoint server folder or	file path.
         /// </summary>
         public static string SharePointReadFolderInputPathToolTip {
             get {
@@ -8685,8 +7126,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a list to read from.
-        ///If the list has changed or recently added to the source, click the refresh button..
+        ///   Looks up a localized string similar to Select a list to read from.	If the list has changed or recently added to the source, click the refresh button..
         /// </summary>
         public static string SharepointToolTipList {
             get {
@@ -8704,8 +7144,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To read list item data into a variable, put the variable here.
-        ///    .
+        ///   Looks up a localized string similar to To read list item data into a variable, put the variable here..
         /// </summary>
         public static string SharepointToolTipToVariable {
             get {
@@ -8714,20 +7153,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///        Enter SharePoint folder upload location path &lt;br /&gt;
-        ///        Example:&lt;br /&gt; 
-        ///        SharedFolder/HelpFolder/Help&lt;br /&gt;
-        ///        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
-        ///        &lt;br /&gt;
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///   Looks up a localized string similar to Enter SharePoint folder upload location path &lt;br /&gt;	Example:&lt;br /&gt; 	SharedFolder/HelpFolder/Help&lt;br /&gt;	SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SharePointUploadHelpFolder {
             get {
@@ -8745,11 +7171,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
-        ///To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.
-        ///
-        ///Allowed:
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.	To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.	&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SortHelpSortField {
             get {
@@ -8758,12 +7180,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the order of the sorting.
-        ///Forward will go 1-9 then a-Z.
-        ///Backward will go Z-a then 9-1.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the order of the sorting.	Forward will go 1-9 then a-Z.	Backward will go Z-a then 9-1..
         /// </summary>
         public static string SortHelpSortOrderType {
             get {
@@ -8772,8 +7189,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.
-        ///To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort..
+        ///   Looks up a localized string similar to To Sort a recordset enter the field in the recordset you would like to sort on.	To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort..
         /// </summary>
         public static string SortToolTipSortField {
             get {
@@ -8782,9 +7198,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the order of the sorting.
-        ///Forward will go 1-9 then a-Z.
-        ///Backward will go Z-a then 9-1..
+        ///   Looks up a localized string similar to Select the order of the sorting.	Forward will go 1-9 then a-Z.	Backward will go Z-a then 9-1..
         /// </summary>
         public static string SortToolTipSortOrderType {
             get {
@@ -8802,15 +7216,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
-        ///The default is 0 which will do everything in 1 batch.
-        ///If you specify 50, then 50 rows will be bulk inserted at a time.
-        ///
-        ///Allowed:
-        ///Number
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]      
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.	The default is 0 which will do everything in 1 batch.	If you specify 50, then 50 rows will be bulk inserted at a time.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Number   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SQLBulkInsertHelpBatchSize {
             get {
@@ -8819,10 +7225,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check constraints while data is being inserted. By default, constraints are not checked.
-        ///
-        ///Allowed:
-        ///Check constraints while data is being inserted..
+        ///   Looks up a localized string similar to Check constraints while data is being inserted. By default, constraints are not checked..
         /// </summary>
         public static string SQLBulkInsertHelpCheckConstraints {
             get {
@@ -8831,10 +7234,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured database source or &quot;New Database Source...&quot; to add a new one.
-        ///
-        ///Allowed:
-        ///Select a preconfigured database source or &quot;New Database Source...&quot; to add a new one..
+        ///   Looks up a localized string similar to Select a preconfigured database source or &quot;New Database Source...&quot; to add a new one..
         /// </summary>
         public static string SQLBulkInsertHelpDatabase {
             get {
@@ -8843,10 +7243,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When specified, cause the server to fire the insert triggers for the rows being inserted into the database.
-        ///
-        ///Allowed:
-        ///When specified, cause the server to fire the insert triggers for the rows being inserted into the database..
+        ///   Looks up a localized string similar to When specified, cause the server to fire the insert triggers for the rows being inserted into the database..
         /// </summary>
         public static string SQLBulkInsertHelpFiretriggers {
             get {
@@ -8855,16 +7252,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
-        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
-        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
-        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Fiel [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.	Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.	A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.	To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field] [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -8873,10 +7261,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preserve source identity values. When not specified, identity values are assigned by the destination.
-        ///
-        ///Allowed:
-        ///Preserve source identity values..
+        ///   Looks up a localized string similar to Preserve source identity values. When not specified, identity values are assigned by the destination..
         /// </summary>
         public static string SQLBulkInsertHelpKeepidentity {
             get {
@@ -8885,16 +7270,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or the record numbers with errors.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or the record numbers with errors.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SQLBulkInsertHelpResult {
             get {
@@ -8903,10 +7279,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blank records will not be added to the SQL table.
-        ///
-        ///Allowed:
-        ///Blank rows will be ignored.
+        ///   Looks up a localized string similar to Blank records will not be added to the SQL table..
         /// </summary>
         public static string SQLBulkInsertHelpSkipblankrows {
             get {
@@ -8915,11 +7288,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.
-        ///If the table schema has changed or recently added to the source, click the refresh button.
-        ///
-        ///Allowed:
-        ///Select a table to perform the bulk insert into..
+        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.	If the table schema has changed or recently added to the source, click the refresh button..
         /// </summary>
         public static string SQLBulkInsertHelpTable {
             get {
@@ -8928,10 +7297,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.
-        ///
-        ///Allowed:
-        ///Obtain a bulk update lock for the duration of the bulk copy operation..
+        ///   Looks up a localized string similar to Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used..
         /// </summary>
         public static string SQLBulkInsertHelpTablelock {
             get {
@@ -8940,17 +7306,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
-        ///All batches in total must complete within this time period.
-        ///The default is 0 which will be no time constraint.
-        ///If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
-        ///Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.
-        ///
-        ///Allowed:
-        ///Number
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]      
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.	All batches in total must complete within this time period.	The default is 0 which will be no time constraint.	If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.	Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field] [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SqlBulkInsertHelpTimeout {
             get {
@@ -8959,10 +7315,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction.
-        ///
-        ///Allowed:
-        ///When specified, each batch of the bulk-copy operation will occur within a transaction..
+        ///   Looks up a localized string similar to When specified, each batch of the bulk-copy operation will occur within a transaction.	Allowed:	When specified, each batch of the bulk-copy operation will occur within a transaction..
         /// </summary>
         public static string SqlBulkInsertHelpUseInternalTransaction {
             get {
@@ -8980,9 +7333,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.
-        ///The default is 0 which will do everything in 1 batch.
-        ///If you specify 50, then 50 rows will be bulk inserted at a time..
+        ///   Looks up a localized string similar to The number of rows you would like to insert at a time.	The default is 0 which will do everything in 1 batch.	If you specify 50, then 50 rows will be bulk inserted at a time..
         /// </summary>
         public static string SqlBulkInsertToolTipBatchSize {
             get {
@@ -9018,10 +7369,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
-        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
-        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
-        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.	Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.	A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.	To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
         /// </summary>
         public static string SqlBulkInsertToolTipInputColumn {
             get {
@@ -9030,10 +7378,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.
-        ///Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
-        ///A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
-        ///To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
+        ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.	Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.	A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.	To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary..
         /// </summary>
         public static string SQLBulkInsertToolTipInputData {
             get {
@@ -9060,10 +7405,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or the record numbers with errors.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or the record numbers with errors.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string SqlBulkInsertToolTipResult {
             get {
@@ -9081,8 +7423,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.
-        ///If the table schema has changed or recently added to the source, click the refresh button..
+        ///   Looks up a localized string similar to Select a table to perform the bulk insert into.	If the table schema has changed or recently added to the source, click the refresh button..
         /// </summary>
         public static string SQLBulkInsertToolTipTable {
             get {
@@ -9091,11 +7432,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
-        ///All batches in total must complete within this time period.
-        ///The default is 0 which will be no time constraint.
-        ///If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
-        ///Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted..
+        ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.	All batches in total must complete within this time period.	The default is 0 which will be no time constraint.	If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.	Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted..
         /// </summary>
         public static string SqlBulkInsertToolTipTimeout {
             get {
@@ -9113,9 +7450,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;/div&gt;
-        ///&lt;/body&gt;
-        ///&lt;/html&gt;.
+        ///   Looks up a localized string similar to &lt;/div&gt;	&lt;/body&gt;	&lt;/html&gt;.
         /// </summary>
         public static string StandardBodyParagraphClosing {
             get {
@@ -9124,28 +7459,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-        ///
-        ///&lt;head runat=&quot;server&quot;&gt;
-        ///    &lt;style&gt;
-        ///        div {
-        ///            clear: both;
-        ///            margin: 0;
-        ///            font-size: 12px;
-        ///            font-family: &apos;Source Sans Pro&apos;;
-        ///        }
-        ///
-        ///        h1 {
-        ///            font-size: 17px;
-        ///            font-family: &apos;Source Sans Pro&apos;;
-        ///            text-decoration: underline;
-        ///            align-content: center;
-        ///        }
-        ///
-        ///        h2 {
-        ///            font-size: 16px;
-        ///            font-family: &apos;Source Sans Pro&apos;;
-        ///         [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;	&lt;head runat=&quot;server&quot;&gt;	&lt;style&gt;	div {	clear: both;	margin: 0;	font-size: 12px;	font-family: &apos;Source Sans Pro&apos;;	}	h1 {	font-size: 17px;	font-family: &apos;Source Sans Pro&apos;;	text-decoration: underline;	align-content: center;	}	h2 {	font-size: 16px;	font-family: &apos;Source Sans Pro&apos;;	text-decoration: underline;	align-content: center;	}	h3 {	font-size: 15px;	font-family: &apos;Source Sans Pro&apos;;	text-decoration: underline;	align-content: center;	}	p {	font-size: 12px;	font-family: &apos;S [rest of string was truncated]&quot;;.
         /// </summary>
         public static string StandardStyling {
             get {
@@ -9154,14 +7468,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the type of system information selected.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the type of system information selected.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SystemInformationHelpResult {
             get {
@@ -9170,10 +7477,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of system information you would like to use.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to Select the type of system information you would like to use..
         /// </summary>
         public static string SystemInformationHelpSysInfoType {
             get {
@@ -9182,8 +7486,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the type of system information selected..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the type of system information selected..
         /// </summary>
         public static string SystemInformationToolTipResult {
             get {
@@ -9264,10 +7567,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To identify unique information in a recordset, put the comma separated fields that need to be unique in here. 
-        ///
-        ///Allowed:
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to To identify unique information in a recordset, put the comma separated fields that need to be unique in here. 	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UniqueHelpInFields {
             get {
@@ -9276,13 +7576,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UniqueHelpResults {
             get {
@@ -9291,11 +7585,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
-        ///Where multiple rows are the same, the first one will be deemed Unique.
-        ///
-        ///Allowed:
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.	Where multiple rows are the same, the first one will be deemed Unique.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UniqueHelpReturnFields {
             get {
@@ -9322,8 +7612,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
-        ///Where multiple rows are the same, the first one will be deemed Unique..
+        ///   Looks up a localized string similar to Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.	Where multiple rows are the same, the first one will be deemed Unique..
         /// </summary>
         public static string UniqueToolTipReturnFields {
             get {
@@ -9332,15 +7621,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
-        ///Leaving the Archive Password blank will result in no archive password being used to open the file.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.	Leaving the Archive Password blank will result in no archive password being used to open the file.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UnzipHelpArchivePassword {
             get {
@@ -9349,16 +7630,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are unzipping to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are unzipping to here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UnzipHelpDestination {
             get {
@@ -9367,10 +7639,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If a file or folder already exists, you can force a new one to overwrite the old one.
-        ///
-        ///Allowed:
-        ///If it exists already, force an overwrite.
+        ///   Looks up a localized string similar to If a file or folder already exists, you can force a new one to overwrite the old one..
         /// </summary>
         public static string UnzipHelpForceoverwrite {
             get {
@@ -9379,14 +7648,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UnzipHelpPassword {
             get {
@@ -9395,16 +7657,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Unzip action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Unzip action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UnzipHelpResult {
             get {
@@ -9413,14 +7666,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string UnzipHelpUsername {
             get {
@@ -9429,8 +7675,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
-        ///Leaving the Archive Password blank will result in no archive password being used to open the file..
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.	Leaving the Archive Password blank will result in no archive password being used to open the file..
         /// </summary>
         public static string UnzipToolTipArchivePassword {
             get {
@@ -9439,9 +7684,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are unzipping to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are unzipping to here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string UnzipToolTipDestination {
             get {
@@ -9468,10 +7711,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Unzip action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Unzip action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string UnzipToolTipResult {
             get {
@@ -9489,9 +7729,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To unzip a file, put the full path and zip file name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To unzip a file, put the full path and zip file name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string UnzipToolTipZipname {
             get {
@@ -9581,10 +7819,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;h2&gt; Warewolf Help &lt;/h2&gt; 
-        ///    For more information, follow the link below.
-        ///    &lt;br/&gt;&lt;br/&gt;
-        ///    &lt;a href=&quot;http://warewolf.io/knowledge-base/&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
+        ///   Looks up a localized string similar to &lt;h2&gt; Warewolf Help &lt;/h2&gt; 	For more information, follow the link below.	&lt;br/&gt;&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string WarewolfDefaultHelpDescription {
             get {
@@ -9611,11 +7846,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection Endpoint properties of the selected Wcf Source&lt;br&gt;
-        ///&lt;br/&gt;
-        ///Change the Endpoint Url from, say, a development to a live environment.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Change the connection Endpoint properties of the selected Wcf Source&lt;br&gt;	&lt;br/&gt;	Change the Endpoint Url from, say, a development to a live environment.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
         /// </summary>
         public static string WcfServiceEditSourceHelp {
             get {
@@ -9651,12 +7882,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.
-        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
-        ///e.g.&lt;br/&gt;
-        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
-        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
+        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.	&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;	e.g.&lt;br/&gt;	&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;	&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;	&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
         /// </summary>
         public static string WcfSourceHostNameHelp {
             get {
@@ -9683,14 +7909,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WebRequestHelpHeader {
             get {
@@ -9699,14 +7918,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only a single variable goes in here.
-        ///Returns the response text of the web get request.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only a single variable goes in here.	Returns the response text of the web get request.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WebRequestHelpResult {
             get {
@@ -9715,15 +7927,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To traverse and retrieve the raw response from a webpage, enter it in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any data or variable can go in here.	To traverse and retrieve the raw response from a webpage, enter it in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WebRequestHelpURL {
             get {
@@ -9741,8 +7945,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only a single variable goes in here.
-        ///Returns the response text of the web get request..
+        ///   Looks up a localized string similar to Only a single variable goes in here.	Returns the response text of the web get request..
         /// </summary>
         public static string WebRequestToolTipResult {
             get {
@@ -9760,8 +7963,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To traverse and retrieve the raw response from a webpage, enter it in here..
+        ///   Looks up a localized string similar to Any data or variable can go in here.	To traverse and retrieve the raw response from a webpage, enter it in here..
         /// </summary>
         public static string WebRequestToolTipURL {
             get {
@@ -9779,9 +7981,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a reusable connection to a web service.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This allows you to create a general connection string and the create the actual web service from there so you do not need to update the core address in every service from this provider / source..
+        ///   Looks up a localized string similar to Create a reusable connection to a web service.&lt;br/&gt;	&lt;br/&gt;	This allows you to create a general connection string and the create the actual web service from there so you do not need to update the core address in every service from this provider / source..
         /// </summary>
         public static string WebServiceNewWebSourceHelp {
             get {
@@ -9808,9 +8008,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Paste the XML, JSON or plain text response of the web service call here.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///If you do not know the response body exactly, rather execute the Test execution..
+        ///   Looks up a localized string similar to Paste the XML, JSON or plain text response of the web service call here.&lt;br/&gt;	&lt;br/&gt;	If you do not know the response body exactly, rather execute the Test execution..
         /// </summary>
         public static string WebServicePasteInputHelp {
             get {
@@ -9828,9 +8026,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The request body.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This is typically directly after the header text in the Request..
+        ///   Looks up a localized string similar to The request body.&lt;br/&gt;	&lt;br/&gt;	This is typically directly after the header text in the Request..
         /// </summary>
         public static string WebServiceRequestBodyHelp {
             get {
@@ -9839,9 +8035,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Web Service Request Headers.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///You can use variables here in the value field like [[Header_ResponseType]]. These variable values will be requested when you drop the service on the workflow designer..
+        ///   Looks up a localized string similar to Web Service Request Headers.&lt;br/&gt;	&lt;br/&gt;	You can use variables here in the value field like [[Header_ResponseType]]. These variable values will be requested when you drop the service on the workflow designer..
         /// </summary>
         public static string WebServiceRequestHeadersTableHelp {
             get {
@@ -9850,9 +8044,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Web Service Request URL to execute.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///The un-editable part is determined by the Source you are using, so it&apos;s easy to change when moving environments, for example, going from development to testing, or live..
+        ///   Looks up a localized string similar to Web Service Request URL to execute.&lt;br/&gt;	&lt;br/&gt;	The un-editable part is determined by the Source you are using, so it&apos;s easy to change when moving environments, for example, going from development to testing, or live..
         /// </summary>
         public static string WebServiceRequestUrlHelp {
             get {
@@ -9861,11 +8053,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection string properties of the selected Webservice.&lt;br&gt;
-        ///&lt;br/&gt;
-        ///Change the connection string from, say, a development service to a live service.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
+        ///   Looks up a localized string similar to Change the connection string properties of the selected Webservice.&lt;br&gt;	&lt;br/&gt;	Change the connection string from, say, a development service to a live service.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
         /// </summary>
         public static string WebServiceSelectedSourceHelp {
             get {
@@ -9874,11 +8062,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The base URL of the Webservice.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This should be up to the part of the URL that contains the difference between your live and demo environments. e.g. https://myservices.mycompany.com/demo&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This will allow you to ship webservice connectors to live without having to change the base URL every time you do..
+        ///   Looks up a localized string similar to The base URL of the Webservice.&lt;br/&gt;	&lt;br/&gt;	This should be up to the part of the URL that contains the difference between your live and demo environments. e.g. https://myservices.mycompany.com/demo&lt;br/&gt;	&lt;br/&gt;	This will allow you to ship webservice connectors to live without having to change the base URL every time you do..
         /// </summary>
         public static string WebServiceSourceServerHelp {
             get {
@@ -9887,9 +8071,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provides a list of available saved web sources.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///If a Web Source does not exist under this list, then click the &apos;New&apos; button to create a new Web Source..
+        ///   Looks up a localized string similar to Provides a list of available saved web sources.&lt;br/&gt;	&lt;br/&gt;	If a Web Source does not exist under this list, then click the &apos;New&apos; button to create a new Web Source..
         /// </summary>
         public static string WebServiceSourcesHelp {
             get {
@@ -9898,9 +8080,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test the Webservice to get response payload. &lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This allows us to map response data back into the system for you..
+        ///   Looks up a localized string similar to Test the Webservice to get response payload. &lt;br/&gt;	&lt;br/&gt;	This allows us to map response data back into the system for you..
         /// </summary>
         public static string WebServiceTestCommandHelp {
             get {
@@ -9936,15 +8116,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the contents you want written to the file in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the contents you want written to the file in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WriteFileHelpContents {
             get {
@@ -9953,16 +8125,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To write content to a file, put the full path and file name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To write content to a file, put the full path and file name in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WriteFileHelpFilename {
             get {
@@ -9971,9 +8134,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overwrite will replace the file contents with the new content.
-        ///Append Top puts the new content at the beginning of the file.
-        ///Append Bottom will add the new content to the end of the file..
+        ///   Looks up a localized string similar to Overwrite will replace the file contents with the new content.	Append Top puts the new content at the beginning of the file.	Append Bottom will add the new content to the end of the file..
         /// </summary>
         public static string WriteFileHelpMethod {
             get {
@@ -9982,14 +8143,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WriteFileHelpPassword {
             get {
@@ -9998,16 +8152,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Write action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Write action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WriteFileHelpResult {
             get {
@@ -10016,14 +8161,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WriteFileHelpUsername {
             get {
@@ -10032,8 +8170,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the contents you want written to the file in here..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the contents you want written to the file in here..
         /// </summary>
         public static string WriteFileToolTipContents {
             get {
@@ -10042,9 +8179,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To write content to a file, put the full path and file name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To write content to a file, put the full path and file name in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string WriteFileToolTipFilename {
             get {
@@ -10062,10 +8197,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Write action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Write action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string WriteFileToolTipResult {
             get {
@@ -10083,17 +8215,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the result of the Xpath expression.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the result of the Xpath expression.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string XpathHelpResults {
             get {
@@ -10102,15 +8224,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To traverse an XML document and return information from it, enter the raw XML in here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any data or variable can go in here.	To traverse an XML document and return information from it, enter the raw XML in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string XPathHelpXML {
             get {
@@ -10119,14 +8233,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xpath notation describing the route to the data in the XML input.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Xpath notation describing the route to the data in the XML input.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string XPathHelpXPath {
             get {
@@ -10135,11 +8242,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the result of the Xpath expression.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns the result of the Xpath expression.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined..
         /// </summary>
         public static string XpathToolTipResults {
             get {
@@ -10148,8 +8251,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To traverse an XML document and return information from it, enter the raw XML in here..
+        ///   Looks up a localized string similar to Any data or variable can go in here.	To traverse an XML document and return information from it, enter the raw XML in here..
         /// </summary>
         public static string XPathToolTipXML {
             get {
@@ -10167,15 +8269,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
-        ///Leaving the Archive Password blank will result in no password being required to open the file.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.	Leaving the Archive Password blank will result in no password being required to open the file.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ZipHelpArchivePassword {
             get {
@@ -10184,14 +8278,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.
-        ///None creates the new file with the content and adds no compression - fastest.
-        ///Partial attempts some compression.
-        ///Normal will apply standard compression.
-        ///Max will compress the zipped file as much as possible - slowest.
-        ///
-        ///Allowed:
-        ///na.
+        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.	None creates the new file with the content and adds no compression - fastest.	Partial attempts some compression.	Normal will apply standard compression.	Max will compress the zipped file as much as possible - slowest.	Allowed:	na.
         /// </summary>
         public static string ZipHelpCompressionType {
             get {
@@ -10200,16 +8287,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are zipping to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are zipping to here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ZipHelpDestination {
             get {
@@ -10218,16 +8296,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To zip a file or folder, put the full path of what you want zipped in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To zip a file or folder, put the full path of what you want zipped in here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ZipHelpFileFolder {
             get {
@@ -10236,10 +8305,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If a file already exists, you can force a new one to overwrite the old one.
-        ///
-        ///Allowed:
-        ///If it exists already, force an overwrite.
+        ///   Looks up a localized string similar to If a file already exists, you can force a new one to overwrite the old one.	Allowed:	If it exists already, force an overwrite.
         /// </summary>
         public static string ZipHelpForceoverwrite {
             get {
@@ -10248,14 +8314,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ZipHelpPassword {
             get {
@@ -10264,16 +8323,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Zip action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Zip action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ZipHelpResult {
             get {
@@ -10282,14 +8332,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ZipHelpUsername {
             get {
@@ -10298,8 +8341,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
-        ///Leaving the Archive Password blank will result in no password being required to open the file..
+        ///   Looks up a localized string similar to Specify the password needed to open the zip file here.	Leaving the Archive Password blank will result in no password being required to open the file..
         /// </summary>
         public static string ZipToolTipArchivePassword {
             get {
@@ -10308,11 +8350,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.
-        ///None creates the new file with the content and adds no compression - fastest.
-        ///Partial attempts some compression.
-        ///Normal will apply standard compression.
-        ///Max will compress the zipped file as much as possible - slowest..
+        ///   Looks up a localized string similar to The system will try and match your zipping requirements as far as possible.	None creates the new file with the content and adds no compression - fastest.	Partial attempts some compression.	Normal will apply standard compression.	Max will compress the zipped file as much as possible - slowest..
         /// </summary>
         public static string ZipToolTipCompressiontype {
             get {
@@ -10321,9 +8359,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are zipping to here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	Put the full path of the destination you are zipping to here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipToolTipDestination {
             get {
@@ -10332,9 +8368,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To zip a file or folder, put the full path of what you want zipped in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format..
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.	To zip a file or folder, put the full path of what you want zipped in here.	You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipToolTipFileFolder {
             get {
@@ -10361,10 +8395,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns Success or will be blank depending on the success of the Zip action.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here.	Returns Success or will be blank depending on the success of the Zip action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string ZipToolTipResult {
             get {
