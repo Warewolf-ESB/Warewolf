@@ -1756,7 +1756,23 @@ namespace Dev2.Data.Util
             return ioDirection;
         }
 
+        static bool IsObject(XmlNode tmpNode)
+        {
+            if (tmpNode.Attributes != null)
+            {
+                XmlAttribute isObjectAttribute = tmpNode.Attributes["IsJson"];
 
+                if (isObjectAttribute != null)
+                {
+                    bool isObject;
+                    if(bool.TryParse(isObjectAttribute.Value,out isObject))
+                    {
+                        return isObject;
+                    }
+                }
+            }
+            return false;
+        }
         public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
@@ -1774,13 +1790,13 @@ namespace Dev2.Data.Util
                     XmlNode tmpNode = nl[i];
 
                     var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
-
-                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes)
+                    var isObject = IsObject(tmpNode);
+                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
                     {
                         result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
                                                                             false, "", false));
                     }
-                    else if (tmpNode.HasChildNodes)
+                    else if (tmpNode.HasChildNodes && !isObject)
                     {
                         // it is a record set, make it as such
                         string recordsetName = tmpNode.Name;
@@ -1800,7 +1816,14 @@ namespace Dev2.Data.Util
                     else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         // scalar value, make it as such
-                        result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                        if (isObject)
+                        {
+                            result.Add(DataListFactory.CreateDefinition("@"+tmpNode.Name, "", "", false, "", false, ""));
+                        }
+                        else
+                        {
+                            result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                        }
                     }
 
                 }
