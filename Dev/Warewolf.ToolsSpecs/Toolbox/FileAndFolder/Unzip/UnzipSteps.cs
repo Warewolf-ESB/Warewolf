@@ -60,30 +60,69 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add("result", result);
         }
 
+        [When(@"validating the tool")]
+        public void WhenValidatingTheTool()
+        {
+            //var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
+            DsfUnZip dsfUnZip = new DsfUnZip()
+            {
+                DestinationPassword = CommonSteps.DestinationPasswordHolder,
+                DestinationUsername = CommonSteps.DestinationUsernameHolder,
+                DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
+                Overwrite = CommonSteps.OverwriteHolder.ToUpper() =="overwrite",
+                OutputPath = CommonSteps.DestinationHolder,
+                
+            };
+            if(!scenarioContext.ContainsKey("activity"))
+                scenarioContext.Add("activity", dsfUnZip);            
+            dsfUnZip.PerformValidation();
+        }
+
+        [Then(@"unzip execution error message will be """"""(.*)""")]
+        public void ThenUnzipExecutionErrorMessageWillBe(string p0)
+        {
+            var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
+            //Assert.AreEqual(p0, dsfU);
+        }
+
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
             CopyZipFileToSourceLocation();
+            var inputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder);
+            var username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder);
+            var password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder);
+            var outputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder);
+            var destinationUsername = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder);
+            var destinationPassword = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder);
+            var overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder);
+            var result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder);
+            var archivePassword = scenarioContext.Get<string>("archivePassword");
+            /*var privateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile);
+            var destinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile);*/
             var unzip = new DsfUnZip
             {
-                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
-                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
-                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
-                OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),
-                DestinationUsername = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
-                DestinationPassword = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
-                Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
-                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
-                ArchivePassword = scenarioContext.Get<string>("archivePassword"),
-                PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
-                DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                InputPath = inputPath,
+                Username = username,
+                Password = password,
+                OutputPath = outputPath,
+                DestinationUsername = destinationUsername,
+                DestinationPassword = destinationPassword,
+                Overwrite = overwrite,
+                Result = result,
+                ArchivePassword = archivePassword,
+                PrivateKeyFile = "",
+               /* DestinationPrivateKeyFile = destinationPrivateKeyFile*/
             };
 
             TestStartNode = new FlowStep
             {
                 Action = unzip
             };
-
+            var dsfUnZip = scenarioContext.ContainsKey("activity");
+            if(dsfUnZip)
+                scenarioContext.Remove("activity");
             scenarioContext.Add("activity", unzip);
         }
 
