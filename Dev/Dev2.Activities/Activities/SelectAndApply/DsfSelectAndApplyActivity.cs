@@ -8,6 +8,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -38,8 +39,9 @@ namespace Dev2.Activities.SelectAndApply
         }
 
         #region Overrides of DsfNativeActivity<bool>
-
+        [FindMissing]
         public string DataSource { get; set; }
+        [FindMissing]
         public string Alias { get; set; }
         public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
@@ -221,6 +223,10 @@ namespace Dev2.Activities.SelectAndApply
             }
         }
 
+        public override enFindMissingType GetFindMissingType()
+        {
+            return enFindMissingType.ForEach;
+        }
         #endregion Overrides of DsfNativeActivity<bool>
     }
 }
