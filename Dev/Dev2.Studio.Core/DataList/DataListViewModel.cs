@@ -1665,7 +1665,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <date>2013/06/25</date>
         private bool HasItems()
         {
-            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count > 1);
+            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
         }
         #endregion Private Methods
 
@@ -1791,6 +1791,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
                 complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) && complexObjectItemModel.IsUsed;
             }
+            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
         }
 
         private void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)
