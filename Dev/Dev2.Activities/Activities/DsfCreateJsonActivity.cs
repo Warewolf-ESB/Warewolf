@@ -94,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
                 // ReSharper restore AssignNullToNotNullAttribute
                 {
-                    dataObject.Environment.AddError("No Json Mappings supplied to activity.");
+                    dataObject.Environment.AddError("No JSON Mappings supplied to activity.");
                 }
 
                 // ReSharper disable AssignNullToNotNullAttribute
