@@ -266,7 +266,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(DestinationPrivateKeyFile, destinationKey);
         }
 
-      
+
 
         [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)
@@ -282,8 +282,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else
             {
-                Assert.IsNotNull(validationErrors);
-                Assert.AreNotEqual(0, validationErrors.Count);
+                Assert.IsNull(validationErrors);
+                //Assert.AreEqual(0, validationErrors.Count);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             IList<IActionableErrorInfo> validationErrors;
             scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
-            if (string.IsNullOrEmpty(validationMessage))
+            if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
                 if (validationErrors != null)
                 {
@@ -563,7 +563,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
                     .SelectMany(r => r.ResultsList)
-                    .ToList();
+                     .OrderBy(p => p.Label).ToList();
             }
         }
 
@@ -572,20 +572,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             return dsfActivityAbstractString.GetDebugInputs(dl, 0)
                 .SelectMany(r => r.ResultsList)
-                .ToList();
+                 .OrderBy(result => result.Label).ToList();
         }
         public List<IDebugItemResult> GetOutputDebugItems(Activity act, IExecutionEnvironment dl)
         {
-
-
-
 
             try
             {
                 var activity = act as DsfActivityAbstract<string> ?? scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return activity.GetDebugOutputs(dl, 0)
                     .SelectMany(r => r.ResultsList)
-                    .ToList();
+                    .OrderBy(result => result.Label).ToList();
             }
             catch
             {
@@ -593,7 +590,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugOutputs(dl, 0)
                     .SelectMany(r => r.ResultsList)
-                    .ToList();
+                     .OrderBy(result => result.Label).ToList();
             }
         }
 
@@ -611,7 +608,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     BuildDebugItems(row, index, columnHeader, list);
                 }
             }
-            return list;
+            return list.OrderBy(result => result.Label).ToList();
         }
 
 
