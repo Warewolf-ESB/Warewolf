@@ -581,7 +581,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             }
                         }
                         var value = JsonConvert.DeserializeObject(string.IsNullOrEmpty(o.Value) ? json : o.Value) as JContainer;
-                        dataListObject.Add(o.Field, value);
+                        dataListObject.Merge(value);
                     }
                 }
             }
