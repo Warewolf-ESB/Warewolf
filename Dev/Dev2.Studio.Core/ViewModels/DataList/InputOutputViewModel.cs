@@ -1,6 +1,5 @@
-
 /*
-*  Warewolf - The Easy Service Bus
+*  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
@@ -22,7 +21,6 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
-using Newtonsoft.Json;
 using Warewolf.Storage;
 
 // ReSharper disable once CheckNamespace
