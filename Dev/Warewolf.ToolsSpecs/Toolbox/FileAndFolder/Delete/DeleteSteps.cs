@@ -1,6 +1,6 @@
 
 /*
-*  Warewolf - Once bitten, there's no going back
+*  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
@@ -57,8 +57,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             {
                 Action = delete
             };
+            if (!ScenarioContext.Current.ContainsKey("activity"))
+                ScenarioContext.Current.Add("activity", delete);
 
-            scenarioContext.Add("activity", delete);
+            delete.PerformValidation();
+        }
+
+        [When(@"validating the delete tool")]
+        public void WhenValidatingTheDeleteTool()
+        {            
+            BuildDataList();
         }
     }
 }

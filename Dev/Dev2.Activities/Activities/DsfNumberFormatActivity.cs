@@ -142,16 +142,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string result;
                     var binaryDataListItem = colItr.FetchNextValue(expressionIterator);
                     var val = binaryDataListItem;
-
-                  /*  if (GlobalConstants.IsValidJson(binaryDataListItem))
-                    {
-                        var dev2IJsonListEvaluator = new Dev2IJsonListEvaluator(binaryDataListItem);
-                        //Warewolf is not zero based
-                        var jsonValue = dev2IJsonListEvaluator.EvalaJsonAsList().ToList()[update - 1].ToString();
-                        FormatNumberTO formatNumberTo = new FormatNumberTO(jsonValue, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
-                        result = _numberFormatter.Format(formatNumberTo);
-                    }
-                    else*/
                     {
                         FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                         result = _numberFormatter.Format(formatNumberTo);

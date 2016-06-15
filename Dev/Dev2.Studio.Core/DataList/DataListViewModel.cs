@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
@@ -63,6 +62,9 @@ namespace Dev2.Studio.ViewModels.DataList
         private ObservableCollection<IScalarItemModel> _scalarCollection;
         private string _searchText;
         private RelayCommand _sortCommand;
+        private RelayCommand _deleteCommand;
+        private RelayCommand _viewComplexObjectsCommand;
+        private RelayCommand _addNoteCommand;
         private bool _viewSortDelete;
 
         #endregion Fields
@@ -242,19 +244,6 @@ namespace Dev2.Studio.ViewModels.DataList
         public DataListViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-            DeleteCommand = new RelayCommand(item =>
-            {
-                RemoveDataListItem(item as IDataListItemModel);
-                WriteToResourceModel();
-            }, CanDelete);
-            AddNoteCommand = new RelayCommand(item =>
-            {
-
-            }, CanAddNotes);
-            ViewComplexObjectsCommand = new RelayCommand(item =>
-            {
-                ViewJsonObjects(item as IComplexObjectItemModel);
-            }, CanViewComplexObjects);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
             Provider = new Dev2TrieSugggestionProvider();
@@ -319,11 +308,41 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public RelayCommand DeleteCommand { get; set; }
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return _deleteCommand ?? (_deleteCommand = new RelayCommand(item =>
+                {
+                    RemoveDataListItem(item as IDataListItemModel);
+                    WriteToResourceModel();
+                    FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+                    DeleteCommand.RaiseCanExecuteChanged();
+                }, CanDelete));
+            }
+        }
 
-        public RelayCommand AddNoteCommand { get; set; }
+        public RelayCommand AddNoteCommand
+        {
+            get
+            {
+                return _addNoteCommand ?? (_addNoteCommand = new RelayCommand(item =>
+                {
 
-        public RelayCommand ViewComplexObjectsCommand { get; set; }
+                }, CanAddNotes));
+            }
+        }
+
+        public RelayCommand ViewComplexObjectsCommand
+        {
+            get
+            {
+                return _viewComplexObjectsCommand ?? (_viewComplexObjectsCommand = new RelayCommand(item =>
+                {
+                    ViewJsonObjects(item as IComplexObjectItemModel);
+                }, CanViewComplexObjects));
+            }
+        }
 
         #endregion Commands
 
@@ -761,6 +780,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (complexObj.Children.Count == 0)
                 {
                     ComplexObjectCollection.Remove(complexObj);
+                }
+                else
+                {
+                    complexObj.IsUsed = true;
                 }
             }
 
@@ -1266,23 +1289,22 @@ namespace Dev2.Studio.ViewModels.DataList
                 parentObj = new ComplexObjectItemModel(parentObjectName);
                 ComplexObjectCollection.Add(parentObj);
             }
-            var objToProcess = JsonConvert.DeserializeObject(json) as JContainer;
+            var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
             if (objToProcess != null)
-            {
+            {                
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
             }
         }
 
-        private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JContainer objToProcess)
+        private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
         {
-            var properties = objToProcess.Descendants().Where(token => token.Type==JTokenType.Property);
+            var properties = objToProcess.Properties();
             foreach(var property in properties)
             {
-                var prop = property as JProperty;
-                bool isArray = prop.IsEnumerable();
-                if(prop != null)
+                bool isArray = property.IsEnumerable();
+                if(property != null)
                 {
-                    var displayname = prop.Name;
+                    var displayname = property.Name;
                     displayname = isArray ? displayname + "()" : displayname;
                     var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
                     if (childObj == null)
@@ -1290,9 +1312,24 @@ namespace Dev2.Studio.ViewModels.DataList
                         childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = isArray };
                         parentObj.Children.Add(childObj);
                     }
-                    if (property.IsObject())
+                    if (property.Value.IsObject())
                     {
-                        ProcessObjectForComplexObjectCollection(childObj,property as JContainer);
+                        ProcessObjectForComplexObjectCollection(childObj, property.Value as JObject);
+                    }
+                    else
+                    {
+                        if (property.Value.IsEnumerable())
+                        {
+                            var arrayVal = property.Value as JArray;
+                            if (arrayVal != null)
+                            {
+                                var obj = arrayVal.FirstOrDefault() as JObject;
+                                if (obj != null)
+                                {
+                                    ProcessObjectForComplexObjectCollection(childObj, obj);
+                                }
+                            }
+                        }
                     }
                 }
             }

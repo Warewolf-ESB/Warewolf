@@ -375,7 +375,6 @@ Scenario: Execute a selectAndApply over a tool null value for JSON Objects
 	When the selectAndApply tool is executed
 	Then the execution has "AN" error
 
-#Double stars not support at this stage
 Scenario: Number Format tool with complext object multi array
 	Given There is a complexobject in the datalist with this shape
 	| rs                    | value |
@@ -393,3 +392,19 @@ Scenario: Number Format tool with complext object multi array
 	And "[[@Person(2).Score(2)]]" has a value of "0.450"
 	And "[[@Person(3).Score(3)]]" has a value of "0.120"
 
+Scenario: Number Format tool with complext object multi array and field
+	Given There is a complexobject in the datalist with this shape
+	| rs                    | value |
+	| [[@Person.Member().Team().Score]]	| 0.3   |
+	| [[@Person.Member().Team().Score]]	| 0.45  |
+	| [[@Person.Member().Team().Score]]	| 0.12  |
+	And Alias is "[[Score]]"
+	And Datasource is "[[@Person.Member().Team().Score]]"
+	And I use a Number Format tool configured as
+		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[@Person.Member(1).Team(1).Score]]" has a value of "0.300"
+	And "[[@Person.Member(2).Team(2).Score]]" has a value of "0.450"
+	And "[[@Person.Member(3).Team(3).Score]]" has a value of "0.120"

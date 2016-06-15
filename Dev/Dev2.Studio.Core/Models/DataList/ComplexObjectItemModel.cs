@@ -115,7 +115,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     AppendObjectOpenChar(jsonString);
                 }
-                jsonString.Append("\"" + DisplayName + "\"");
+                jsonString.Append("\"" + DisplayName.TrimEnd('(',')') + "\"");
                 jsonString.Append(":");
                 if (Children.Count > 0)
                 {

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
@@ -580,7 +579,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 json = complexObjectItemModel.GetJson();
                             }
                         }
-                        var value = JsonConvert.DeserializeObject(string.IsNullOrEmpty(o.Value) ? json : o.Value) as JContainer;
+                        var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
+                        var value = JsonConvert.DeserializeObject(objValue) as JContainer;
                         dataListObject.Merge(value);
                     }
                 }
