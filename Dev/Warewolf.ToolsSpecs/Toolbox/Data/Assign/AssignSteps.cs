@@ -198,7 +198,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Then(@"execution error message will be """"""(.*)""")]
         public void WhenExecutionErrorMessageWillBe(string p0)
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
+            Assert.IsNotNull(result);
+            if (result.Environment.AllErrors.Any())
+                Assert.AreEqual(p0, result.Environment.AllErrors.Any().ToString());
         }
     }
 }

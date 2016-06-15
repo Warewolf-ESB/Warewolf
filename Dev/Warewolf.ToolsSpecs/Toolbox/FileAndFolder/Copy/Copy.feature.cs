@@ -127,7 +127,7 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
-                        string.Format("{0}", sourcePrivateKeyFile),
+                        "C:\\Temp\\key.opk",
                         string.Format("{0} = {1}", destination, destinationLocation),
                         string.Format("{0}", destUsername),
                         "String",
