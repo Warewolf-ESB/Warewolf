@@ -1721,18 +1721,36 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 complexObjectItemModel.IsUsed = false;
             }
-            foreach (var itemModel in models)
+            var usedItems =
+                from itemModel in models
+                where (from part in partsToVerify
+                        select part.DisplayValue
+                      ).Contains(itemModel.Name)
+                select itemModel;
+            foreach (var complexObjectItemModel in usedItems)
             {
-                var part = partsToVerify.Select(a => a.DisplayValue.Contains(itemModel.DisplayName)).FirstOrDefault();
-                if (part)
+                if (complexObjectItemModel.Parent != null)
                 {
-                    itemModel.IsUsed = true;
+                    SetComplexObjectParentIsUsed(complexObjectItemModel);
+                }
+                else
+                {
+                    complexObjectItemModel.IsUsed = true;
                 }
             }
             foreach (var complexObjectItemModel in ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
                 complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) && complexObjectItemModel.IsUsed;
+            }
+        }
+
+        private void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)
+        {
+            complexObjectItemModel.IsUsed = true;
+            if (complexObjectItemModel.Parent != null)
+            {
+                SetComplexObjectParentIsUsed(complexObjectItemModel.Parent);
             }
         }
 
