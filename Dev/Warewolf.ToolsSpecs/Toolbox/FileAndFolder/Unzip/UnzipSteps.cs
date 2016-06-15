@@ -1,5 +1,6 @@
+
 /*
-*  Warewolf - Once bitten, there's no going back
+*  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
@@ -9,12 +10,15 @@
 */
 
 using System;
+using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Activities.Designers2.Core;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -68,12 +72,12 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                 DestinationPassword = CommonSteps.DestinationPasswordHolder,
                 DestinationUsername = CommonSteps.DestinationUsernameHolder,
                 DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
-                Overwrite = CommonSteps.OverwriteHolder.ToUpper() =="overwrite",
+                Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
                 OutputPath = CommonSteps.DestinationHolder,
-                
+
             };
-            if(!scenarioContext.ContainsKey("activity"))
-                scenarioContext.Add("activity", dsfUnZip);            
+            if (!scenarioContext.ContainsKey("activity"))
+                scenarioContext.Add("activity", dsfUnZip);
             dsfUnZip.PerformValidation();
         }
 
