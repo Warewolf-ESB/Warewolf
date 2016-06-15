@@ -382,7 +382,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
-            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue);
+            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue.Trim('@'));
             objects.ForEach(model =>
             {
                 model.IsUsed = isUsed;
@@ -817,6 +817,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
             }
+            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
         }
 
