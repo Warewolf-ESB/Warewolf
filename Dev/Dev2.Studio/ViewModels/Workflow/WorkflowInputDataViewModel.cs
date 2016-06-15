@@ -17,6 +17,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Binary_Objects;
@@ -547,11 +548,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             Thread.Sleep(150);
             try
             {
+                if (xml.Descendants().Count() == 1)
+                {
+                    xml = XDocument.Parse("<DataList></DataList>");
+                }
                 XmlData = XElement.Parse(xml.ToString()).ToString();
             }
-            catch (Exception)
+            // ReSharper disable once UnusedVariable
+            catch (Exception e)
             {
                 XmlData = "Invalid characters entered";
+                Dev2Logger.Error(e.StackTrace, e);
             }
         }
 
