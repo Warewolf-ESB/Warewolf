@@ -22,7 +22,6 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
-using Newtonsoft.Json;
 using Warewolf.Storage;
 
 // ReSharper disable once CheckNamespace

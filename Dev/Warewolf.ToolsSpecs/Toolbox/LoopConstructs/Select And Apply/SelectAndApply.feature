@@ -151,23 +151,6 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a json ob
 	When the selectAndApply tool is executed
 	Then the execution has "AN" error
 
-Scenario: Execute a selectAndApply tool with a Number Format tool with RecordSet array within a RecordSet
-	Given There is a complexobject in the datalist with this shape
-	| rs					| value |
-	| [[Person.Score()]]	| 0.3	|
-	| [[Person.Score()]]	| 0.45	|
-	| [[Person.Score()]]	| 0.12	|
-	And Alias is "[[Score]]"
-	And Datasource is "[[Person.Score(*)]]"
-	And I use a Number Format tool configured as
-		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
-		| [[Score]] | Up       | 2              | 3                | [[Score]] |
-	When the selectAndApply tool is executed
-	Then the execution has "NO" error
-	And "[[Person.Score(1)]]" has a value of "0.300"
-	And "[[Person.Score(2)]]" has a value of "0.450"
-	And "[[Person.Score(3)]]" has a value of "0.120"
-
 Scenario: Execute a selectAndApply tool with a Number Format tool with json object array within a json object
 	Given There is a complexobject in the datalist with this shape
 	| rs					| value |
