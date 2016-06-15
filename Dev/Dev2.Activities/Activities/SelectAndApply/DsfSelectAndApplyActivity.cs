@@ -214,6 +214,14 @@ namespace Dev2.Activities.SelectAndApply
                         {
                             var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                             AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", DataSource, "", "", "="));
+                        }else
+                        {
+                            if (data.IsWarewolfAtomResult)
+                            {
+                                var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                                if(atom != null)
+                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), "", "", DataSource, "", "", "="));
+                            }
                         }
 
                         DispatchDebugState(dataObject, StateType.End, update, DateTime.Now);
