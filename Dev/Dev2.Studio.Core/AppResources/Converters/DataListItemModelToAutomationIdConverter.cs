@@ -34,7 +34,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                         ? string.Concat(AutoIdPrefix, "NewRecordSet", AutoIdSufix)
                         : string.Concat(AutoIdPrefix, "RecordSet_", itemModel.DisplayName, AutoIdSufix);
                 }
-                else if(itemModel is IScalarItemModel)
+                if(itemModel is IScalarItemModel)
                 {
                     return string.IsNullOrEmpty(itemModel.DisplayName)
                         ? string.Concat(AutoIdPrefix, "NewField", AutoIdSufix)
@@ -44,7 +44,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                     ? string.Concat(AutoIdPrefix, "NewVariable", AutoIdSufix)
                     : string.Concat(AutoIdPrefix, "Variable_", itemModel.DisplayName, AutoIdSufix);
             }
-            return itemModel;
+            return null;
 
         }
 
