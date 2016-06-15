@@ -439,7 +439,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 foreach (var dataListItemModel in unusedComplexObjects)
                 {
-                    ComplexObjectCollection.Remove(dataListItemModel);
+                    RemoveDataListItem(dataListItemModel);
                 }
             }
 
