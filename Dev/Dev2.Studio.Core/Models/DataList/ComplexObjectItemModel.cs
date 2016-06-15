@@ -29,6 +29,31 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
+        public override bool Input
+        {
+            get
+            {
+                return _columnIODir == enDev2ColumnArgumentDirection.Both
+                       || _columnIODir == enDev2ColumnArgumentDirection.Input;
+            }
+            set
+            {
+                SetColumnIODirectionFromInput(value);
+            }
+        }
+
+        public override bool Output
+        {
+            get
+            {
+                return _columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Output;
+            }
+            set
+            {
+                SetColumnIODirectionFromOutput(value);
+            }
+        }
+
         public ObservableCollection<IComplexObjectItemModel> Children
         {
             get
@@ -90,7 +115,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     AppendObjectOpenChar(jsonString);
                 }
-                jsonString.Append("\"" + DisplayName + "\"");
+                jsonString.Append("\"" + DisplayName.TrimEnd('(',')') + "\"");
                 jsonString.Append(":");
                 if (Children.Count > 0)
                 {

@@ -57,8 +57,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             {
                 Action = delete
             };
+            if (!ScenarioContext.Current.ContainsKey("activity"))
+                ScenarioContext.Current.Add("activity", delete);
 
-            scenarioContext.Add("activity", delete);
+            delete.PerformValidation();
+        }
+
+        [When(@"validating the delete tool")]
+        public void WhenValidatingTheDeleteTool()
+        {            
+            BuildDataList();
         }
     }
 }

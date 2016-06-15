@@ -65,7 +65,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             {
                 Action = rename
             };
-            scenarioContext.Add("activity", rename);
+            if (!scenarioContext.ContainsKey("activity"))
+                scenarioContext.Add("activity", rename);
         }
     }
 }
