@@ -203,6 +203,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 ViewComplexObjectsCommand.RaiseCanExecuteChanged();
             }
+            if (DeleteCommand != null)
+            {
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public ObservableCollection<IRecordSetItemModel> RecsetCollection
@@ -446,6 +450,7 @@ namespace Dev2.Studio.ViewModels.DataList
             EventPublisher.Publish(new UpdateIntellisenseMessage());
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             ViewComplexObjectsCommand.RaiseCanExecuteChanged();
+            DeleteCommand.RaiseCanExecuteChanged();
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
@@ -752,6 +757,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     RemoveUnusedChildComplexObjects(complexObj,complexObjectItemModel);
                 }
+                if (complexObj.Children.Count == 0)
+                {
+                    ComplexObjectCollection.Remove(complexObj);
+                }
             }
 
             if (itemToRemove is IScalarItemModel)
@@ -784,6 +793,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
             }
+            DeleteCommand.RaiseCanExecuteChanged();
         }
 
         private void RemoveUnusedChildComplexObjects(IComplexObjectItemModel parentItemModel, IComplexObjectItemModel itemToRemove)
