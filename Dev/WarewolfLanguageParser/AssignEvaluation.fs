@@ -231,8 +231,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
             else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
     | _ -> failwith "assigning an entire recordset to a variable is not defined"
 
-and addAtomToRecordSetWithFraming (rset : WarewolfRecordset) (columnName : string) (value : WarewolfAtom) (pos : int) 
-    (isFramed : bool) = 
+and addAtomToRecordSetWithFraming (rset : WarewolfRecordset) (columnName : string) (value : WarewolfAtom) (pos : int) (isFramed : bool) = 
     let position = pos
     
     let rsAdded = 
