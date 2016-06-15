@@ -6091,7 +6091,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify an alias for the selected data.&lt;br/&gt;	This needs to conform to variable notation.&lt;br/&gt;	This will be the value that will be acted upon in the activity inserted below.&lt;br/&gt;	To ensure that the original values are updated ensure that the result of the activity is set to this value.&lt;br/&gt;	Allowed:	&lt;ol&gt;	&lt;li&gt;[[field]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Specify an alias for the selected data.&lt;br/&gt;	This needs to conform to variable notation.&lt;br/&gt;	This will be the value that will be acted upon in the activity inserted below.&lt;br/&gt;	To ensure that the original values are updated ensure that the result of the activity is set to this value.&lt;br/&gt;	Allowed:	&lt;ol&gt;	&lt;li&gt;[[alias]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SelectAndApplyAliasHelpText {
             get {
