@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
@@ -21,6 +22,8 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Views;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 
 // ReSharper disable once CheckNamespace
@@ -39,6 +42,7 @@ namespace Dev2.Studio.ViewModels.DataList
         bool _isMapsToFocused;
         bool _isValueFocused;
         private bool _isObject;
+        private string _jsonString;
 
         #region Properties
 
@@ -139,30 +143,44 @@ namespace Dev2.Studio.ViewModels.DataList
                     _mapsTo = value;
                     OnPropertyChanged("MapsTo");
 
-                    if (IsObject && !string.IsNullOrEmpty(JsonString))
-                    {
-                        try
-                        {
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(_mapsTo);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                if (DataListSingleton.ActiveDataList != null)
-                                {
-                                    DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
-                                        DataListUtil.RemoveLanguageBrackets(_mapsTo), JsonString);
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            //Is not an object identifier
-                        }
-                    }
+                    UpdateDataListWithJsonObject();
 
                     if (Required)
                     {
                         RequiredMissing = string.IsNullOrEmpty(_mapsTo);
                     }
+                }
+            }
+        }
+
+        private void UpdateDataListWithJsonObject()
+        {
+            if (IsObject && !string.IsNullOrEmpty(JsonString))
+            {
+                try
+                {
+                    var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(_mapsTo);
+                    if (language.IsJsonIdentifierExpression)
+                    {
+                        if (DataListSingleton.ActiveDataList != null)
+                        {
+                            var objToProcess = JsonConvert.DeserializeObject(JsonString) as JObject;
+                            if (objToProcess != null)
+                            {
+                                var firstOrDefault = objToProcess.Properties().FirstOrDefault();
+                                if (firstOrDefault != null)
+                                {
+                                    var processString = firstOrDefault.Value.ToString();
+                                    DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
+                                        DataListUtil.RemoveLanguageBrackets(_mapsTo), processString);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    //Is not an object identifier
                 }
             }
         }
@@ -238,7 +256,15 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public string JsonString { get; set; }
+        public string JsonString
+        {
+            get { return _jsonString; }
+            set
+            {
+                _jsonString = value;
+                UpdateDataListWithJsonObject();
+            }
+        }
 
         private void ViewJsonObjects()
         {
