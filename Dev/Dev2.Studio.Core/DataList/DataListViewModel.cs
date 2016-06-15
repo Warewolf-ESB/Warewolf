@@ -63,6 +63,9 @@ namespace Dev2.Studio.ViewModels.DataList
         private ObservableCollection<IScalarItemModel> _scalarCollection;
         private string _searchText;
         private RelayCommand _sortCommand;
+        private RelayCommand _deleteCommand;
+        private RelayCommand _viewComplexObjectsCommand;
+        private RelayCommand _addNoteCommand;
         private bool _viewSortDelete;
 
         #endregion Fields
@@ -242,19 +245,6 @@ namespace Dev2.Studio.ViewModels.DataList
         public DataListViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-            DeleteCommand = new RelayCommand(item =>
-            {
-                RemoveDataListItem(item as IDataListItemModel);
-                WriteToResourceModel();
-            }, CanDelete);
-            AddNoteCommand = new RelayCommand(item =>
-            {
-
-            }, CanAddNotes);
-            ViewComplexObjectsCommand = new RelayCommand(item =>
-            {
-                ViewJsonObjects(item as IComplexObjectItemModel);
-            }, CanViewComplexObjects);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
             Provider = new Dev2TrieSugggestionProvider();
@@ -319,11 +309,41 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public RelayCommand DeleteCommand { get; set; }
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return _deleteCommand ?? (_deleteCommand = new RelayCommand(item =>
+                {
+                    RemoveDataListItem(item as IDataListItemModel);
+                    WriteToResourceModel();
+                    FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+                    DeleteCommand.RaiseCanExecuteChanged();
+                }, CanDelete));
+            }
+        }
 
-        public RelayCommand AddNoteCommand { get; set; }
+        public RelayCommand AddNoteCommand
+        {
+            get
+            {
+                return _addNoteCommand ?? (_addNoteCommand = new RelayCommand(item =>
+                {
 
-        public RelayCommand ViewComplexObjectsCommand { get; set; }
+                }, CanAddNotes));
+            }
+        }
+
+        public RelayCommand ViewComplexObjectsCommand
+        {
+            get
+            {
+                return _viewComplexObjectsCommand ?? (_viewComplexObjectsCommand = new RelayCommand(item =>
+                {
+                    ViewJsonObjects(item as IComplexObjectItemModel);
+                }, CanViewComplexObjects));
+            }
+        }
 
         #endregion Commands
 
@@ -761,6 +781,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (complexObj.Children.Count == 0)
                 {
                     ComplexObjectCollection.Remove(complexObj);
+                }
+                else
+                {
+                    complexObj.IsUsed = true;
                 }
             }
 
