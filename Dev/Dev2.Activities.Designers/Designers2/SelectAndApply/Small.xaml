@@ -51,7 +51,7 @@
                                 Grid.Row="0"
                                 FilterType="All"
                                 DefaultText="[[Datasource]]"
-                                WrapInBrackets="False"
+                                WrapInBrackets="True"
                                 Text="{Binding ModelItem.DataSource}"
                                 ToolTip="{x:Static languages:Core.SelectAndApplyDataSourceToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

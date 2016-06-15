@@ -1,6 +1,6 @@
 
 /*
-*  Warewolf - Once bitten, there's no going back
+*  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
@@ -65,7 +65,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             {
                 Action = rename
             };
-            scenarioContext.Add("activity", rename);
+            if (!scenarioContext.ContainsKey("activity"))
+                scenarioContext.Add("activity", rename);
         }
     }
 }
