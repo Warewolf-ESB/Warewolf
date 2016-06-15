@@ -1,6 +1,5 @@
-
 /*
-*  Warewolf - The Easy Service Bus
+*  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
@@ -12,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -48,6 +48,30 @@ namespace Dev2.FindMissingStrategies
                 {
                     DsfNativeActivity<string> stringAct = forEachActivity.DataFunc.Handler as DsfNativeActivity<string>;
                     if(stringAct != null)
+                    {
+                        findMissingType = stringAct.GetFindMissingType();
+                        strategy = stratFac.CreateFindMissingStrategy(findMissingType);
+                        results.AddRange(strategy.GetActivityFields(stringAct));
+                    }
+                }
+                else
+                {
+                    findMissingType = boolAct.GetFindMissingType();
+                    strategy = stratFac.CreateFindMissingStrategy(findMissingType);
+                    results.AddRange(strategy.GetActivityFields(boolAct));
+                }
+            }
+
+            DsfSelectAndApplyActivity selectAndApply = activity as DsfSelectAndApplyActivity;
+            if (selectAndApply != null)
+            {
+                IFindMissingStrategy strategy;
+                enFindMissingType findMissingType;
+                var boolAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<bool>;
+                if (boolAct == null)
+                {
+                    DsfNativeActivity<string> stringAct = selectAndApply.ApplyActivityFunc.Handler as DsfNativeActivity<string>;
+                    if (stringAct != null)
                     {
                         findMissingType = stringAct.GetFindMissingType();
                         strategy = stratFac.CreateFindMissingStrategy(findMissingType);
