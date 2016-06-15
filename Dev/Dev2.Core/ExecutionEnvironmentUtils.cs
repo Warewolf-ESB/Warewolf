@@ -199,6 +199,10 @@ namespace Dev2
         {
             JObject inputObject;
             string toLoad = DataListUtil.StripCrap(rawPayload.ToString());
+            if (string.IsNullOrEmpty(toLoad))
+            {
+                return;
+            }
             if(!toLoad.IsJSON())
             {
                 var sXNode = JsonConvert.SerializeXNode(XDocument.Parse(toLoad), Newtonsoft.Json.Formatting.Indented, true);
