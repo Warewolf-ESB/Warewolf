@@ -68,5 +68,31 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             if (!scenarioContext.ContainsKey("activity"))
                 scenarioContext.Add("activity", rename);
         }
+        [When(@"validating the rename tool")]
+        public void WhenValidatingTheRenameTool()
+        {
+
+            string privateKeyFile;
+            string destPrivateKeyFile;
+            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out destPrivateKeyFile);
+                        
+            DsfPathRename dsfRename = new DsfPathRename
+            {
+                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),
+                DestinationUsername = scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
+                DestinationPassword = scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
+                Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
+                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                PrivateKeyFile = privateKeyFile,
+                DestinationPrivateKeyFile = destPrivateKeyFile
+            };
+            if (!scenarioContext.ContainsKey("activity"))
+                scenarioContext.Add("activity", dsfRename);
+            dsfRename.PerformValidation();
+        }
     }
 }

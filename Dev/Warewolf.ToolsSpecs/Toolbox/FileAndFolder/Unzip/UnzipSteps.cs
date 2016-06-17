@@ -10,20 +10,19 @@
 */
 
 using System;
-using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Unzip;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
@@ -79,6 +78,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             if (!scenarioContext.ContainsKey("activity"))
                 scenarioContext.Add("activity", dsfUnZip);
             dsfUnZip.PerformValidation();
+
+            var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
+            ScenarioContext.Current.Add("viewModel", viewModel);
         }
 
         [Then(@"unzip execution error message will be """"""(.*)""")]
