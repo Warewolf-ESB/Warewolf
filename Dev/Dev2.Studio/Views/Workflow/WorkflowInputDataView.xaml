@@ -82,9 +82,11 @@
                                                                     WrapInBrackets="False" 
                                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     Margin="0" 
+                                                                    AllowMultilinePaste="True"                                                                    
+                                                                    TextWrapping="Wrap"
                                                                     Focusable="True" 
                                                                     IsTabStop="True"
-                                                                    AcceptsReturn="False"
+                                                                    AcceptsReturn="True"
                                                                     SelectAllOnGotFocus="True"
                                                                     PreviewKeyDown="IntellisenseTextBoxPreviewKeyDown" 
                                                                     TextChanged="TextBoxTextChanged">

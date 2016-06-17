@@ -350,7 +350,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string BuildWebPayLoad()
         {
-            var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows);
+            var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
             {
                 return WorkflowInputs.Aggregate("", (current, workflowInput) => current + workflowInput.Field + "=" + workflowInput.Value + "&").TrimEnd('&');
@@ -580,8 +580,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                             }
                         }
                         var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
-                        var value = JsonConvert.DeserializeObject(objValue) as JContainer;
-                        dataListObject.Merge(value);
+                        var value = JsonConvert.DeserializeObject(objValue) as JObject;
+                        if (value != null)
+                        {
+                            var prop = value.Properties().FirstOrDefault(property => property.Name == o.Field);
+                            if (prop != null)
+                            {
+                                value = prop.Value as JObject;
+                            }
+                            
+                        }
+                        dataListObject.Add(o.Field, value);
                     }
                 }
             }

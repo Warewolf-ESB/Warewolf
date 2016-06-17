@@ -382,7 +382,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
-            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue);
+            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue.Trim('@'));
             objects.ForEach(model =>
             {
                 model.IsUsed = isUsed;
@@ -817,6 +817,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     CheckDataListItemsForDuplicates(recset.Children);
                 }
             }
+            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
         }
 
@@ -1664,7 +1665,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <date>2013/06/25</date>
         private bool HasItems()
         {
-            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count > 1);
+            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
         }
         #endregion Private Methods
 
@@ -1790,6 +1791,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
                 complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) && complexObjectItemModel.IsUsed;
             }
+            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
         }
 
         private void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)

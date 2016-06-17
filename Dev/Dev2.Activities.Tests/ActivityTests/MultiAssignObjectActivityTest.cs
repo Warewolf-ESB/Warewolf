@@ -308,6 +308,48 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
+
+        [TestMethod]
+        [Owner("Clint Stedman")]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MultiAssignObjectWithJsonArrayMultiplePropertiesAtSameLevel()
+        {
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(1).Tel(1).Name]]", "Home", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(1).Tel(2).Name]]", "Work", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Name]]", "Dora", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Tel(1).Name]]", "Mobile", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Tel(2).Name]]", "Skype", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Tel(3).Name]]", "Personal", fieldCollection.Count));
+
+
+            SetupArguments(
+                           ActivityStrings.scalarShape
+                         , ActivityStrings.scalarShape
+                         , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            const string expected = "Bob";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Name", out actual, out error);
+            Assert.AreEqual(expected, actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Tel(1).Name", out actual, out error);
+            Assert.AreEqual("Home", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Tel(2).Name", out actual, out error);
+            Assert.AreEqual("Work", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Name", out actual, out error);
+            Assert.AreEqual("Dora", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Tel(1).Name", out actual, out error);
+            Assert.AreEqual("Mobile", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Tel(2).Name", out actual, out error);
+            Assert.AreEqual("Skype", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Tel(3).Name", out actual, out error);
+            Assert.AreEqual("Personal", actual);
+
+        }
+
         #endregion MultiAssignObject Functionality Tests
 
         #region Private Test Methods

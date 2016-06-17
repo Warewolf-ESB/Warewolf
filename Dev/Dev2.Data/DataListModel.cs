@@ -41,7 +41,6 @@ namespace Dev2.Data
             ShapeScalars = new List<IScalar>();
             ShapeRecordSets = new List<IRecordSet>();
             ShapeComplexObjects = new List<IComplexObject>();
-            _isNew = true;
         }
 
         public void Create(string data, string shape)
@@ -50,7 +49,6 @@ namespace Dev2.Data
             PopulateWithData(data);
         }
 
-        private bool _isNew;
 
         public void PopulateWithData(string data)
         {
@@ -102,22 +100,12 @@ namespace Dev2.Data
                         {
                             if (!string.IsNullOrEmpty(c.OuterXml))
                             {
-                                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml));
+                                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml),Newtonsoft.Json.Formatting.None,true);
                                 var obj = JsonConvert.DeserializeObject(jsonData) as JObject;
-
-                                if (obj != null && obj.First != null)
+                                if(obj != null)
                                 {
-                                    if (_isNew)
-                                    {
-                                        complexObject.Value = jsonData;
-                                    }
-                                    else
-                                    {
-                                        var value = obj.First.ToString();
-                                        complexObject.Value = value;
-                                    }
-
-                                    _isNew = false;
+                                    var value = obj.ToString();
+                                    complexObject.Value = value;
                                 }
                             }
                         }
