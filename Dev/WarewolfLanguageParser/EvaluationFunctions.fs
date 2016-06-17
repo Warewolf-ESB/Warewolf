@@ -381,9 +381,7 @@ and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) =
             | Star -> "[*]"
             | Last -> "[-1:]"
             | _ -> failwith "not supported for JSON types"
-        match x.Next with
-            | Terminal -> (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName+ "." + index))
-            | _ -> (jsonIdentifierToJsonPath x.Next (acc + "." + index))
+        (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName+ "." + index))       
     | Terminal -> accx
 // treat the head of the expression as a special case
 and jsonIdentifierToJsonPathLevel1 (a : JsonIdentifierExpression) = 
@@ -399,7 +397,7 @@ and jsonIdentifierToJsonPathLevel1 (a : JsonIdentifierExpression) =
                                             | _ -> failwith "not supported for JSON types"
                                     match x.Next with
                                         | Terminal -> "."+index
-                                        | _->    (jsonIdentifierToJsonPath a "")
+                                        | _->    (jsonIdentifierToJsonPath x.Next index)
     | Terminal -> ""
 /// get the name of the object from an expression
 and jsonIdentifierToName (a : JsonIdentifierExpression) = 
@@ -414,21 +412,21 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
     match lang with
     | ScalarExpression a -> 
         if env.JsonObjects.ContainsKey a then WarewolfAtomResult(DataString(env.JsonObjects.[a].ToString()))
-        else failwith "non existent recordset"
+        else failwith "non existent object"
     | RecordSetExpression a -> 
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
-        else failwith "non existent recordset"
+        else failwith "non existent object"
     | RecordSetNameExpression a -> 
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
-        else failwith "non existent recordset"
+        else failwith "non existent object"
     | JsonIdentifierExpression a -> 
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
@@ -440,8 +438,8 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
                     WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
                 else
                     WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
-        else failwith "non existent recordset"
-    | ComplexExpression _ -> failwith "no current use case please contact the warewolf product owner "
+        else failwith "non existent object"
+    | ComplexExpression _ -> failwith "No current use case please contact the Warewolf product owner."
     | WarewolfAtomExpression a -> WarewolfAtomResult(a)
 //specialise eval for calculate. Its just eval with the addition of some quotes. can be merged into eval function at the expense of complexity for c# developers
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
@@ -453,7 +451,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
                     | RecordSetExpression a ->  WarewolfAtomListresult(  (evalRecordsSet a env) )
                     | ScalarExpression a ->  WarewolfAtomResult (evalScalar a env)
                     | WarewolfAtomExpression a ->  WarewolfAtomResult a
-                    | _ ->failwith "you should not get here"
+                    | _ ->failwith ("Failed to evaluate" + languageExpressionToString exp.[0])
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
                 let evaled = (List.map (languageExpressionToString >> (evalForCalculate  env update)>>evalResultToStringAsList)  exp )
