@@ -267,9 +267,10 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                                                        VerticalAlignment="Center"
+                                                        WrapInBrackets="False"
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                        Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                                                        Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                        Text="{Binding Value, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.ServiceHelpOutput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
@@ -283,6 +284,25 @@
                                             <Binding Path="IndexNumber" />
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="KeyDown">
+                                            <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="IsNew" Value="False" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ui:IntellisenseTextBox.Style>
+                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+                                                    <Setter Property="Control.BorderThickness" Value="1" />
+                                                    <Setter Property="Control.Background" Value="{StaticResource WarningBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=RequiredMissing, Mode=OneWay}" Value="True">
+                                                    <Setter Property="Control.BorderThickness" Value="1" />
+                                                    <Setter Property="Control.BorderBrush" Value="{StaticResource ErrorBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:IntellisenseTextBox.Style>
                                 </ui:IntellisenseTextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

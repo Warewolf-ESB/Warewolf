@@ -25,6 +25,10 @@ if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
 # Check if this version already tagged.
 $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 if (-not [string]::IsNullOrEmpty($FullVersionString))  {
+    $FullVersionString = $FullVersionString.Trim()
+    if ($FullVersionString -Match " ") {
+        $FullVersionString = $FullVersionString.Split(" ")[-1]
+    }
 	# This version is already tagged.
     Write-Host You are up to date with version `"$FullVersionString`".
 } else{
@@ -62,7 +66,7 @@ $CSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.cs"
 Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
 $Line1 = "using System.Reflection;"
 $Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
-$Line3 = "[assembly: AssemblyProduct(""Warewolf ESB"")]"
+$Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
 $Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
 $Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
 $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)]"
@@ -85,7 +89,7 @@ Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
 $Line1 = "namespace Warewolf.FSharp"
 $Line2 = "open System.Reflection;"
 $Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
-$Line4 = "[<assembly: AssemblyProduct(""Warewolf ESB"")>]"
+$Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
 $Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
 $Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
 $Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
