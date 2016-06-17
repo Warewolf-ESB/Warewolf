@@ -927,7 +927,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 71
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
- testRunner.When("validating the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("validating the rename tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 73
  testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 74

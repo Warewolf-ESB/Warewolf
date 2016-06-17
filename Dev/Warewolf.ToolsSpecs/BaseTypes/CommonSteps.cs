@@ -18,16 +18,25 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Network;
 using Dev2.PathOperations;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.DataList;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -538,6 +547,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
+
+
         public List<IDebugItemResult> GetInputDebugItems(Activity act, IExecutionEnvironment env)
         {
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -866,6 +877,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             var viewModel = scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
-        }
+        }        
+            //var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
+            //currentViewModel.Validate();        
     }
 }
