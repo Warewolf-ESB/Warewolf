@@ -25,6 +25,10 @@ if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
 # Check if this version already tagged.
 $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 if (-not [string]::IsNullOrEmpty($FullVersionString))  {
+    $FullVersionString = $FullVersionString.Trim()
+    if ($FullVersionString -Match " ") {
+        $FullVersionString = $FullVersionString.Split(" ")[-1]
+    }
 	# This version is already tagged.
     Write-Host You are up to date with version `"$FullVersionString`".
 } else{
