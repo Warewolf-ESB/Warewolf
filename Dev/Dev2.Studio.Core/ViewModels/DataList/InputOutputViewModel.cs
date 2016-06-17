@@ -124,9 +124,18 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             set
             {
-                _value = value;
+                if (!value.Equals(_value))
+                {
+                    _value = value;
+                    OnPropertyChanged("Value");
 
-                OnPropertyChanged("Value");
+                    UpdateDataListWithJsonObject(_value);
+
+                    if (Required)
+                    {
+                        RequiredMissing = string.IsNullOrEmpty(_value);
+                    }
+                }
             }
         }
 
@@ -143,7 +152,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     _mapsTo = value;
                     OnPropertyChanged("MapsTo");
 
-                    UpdateDataListWithJsonObject();
+                    UpdateDataListWithJsonObject(_mapsTo);
 
                     if (Required)
                     {
@@ -153,13 +162,13 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void UpdateDataListWithJsonObject()
+        private void UpdateDataListWithJsonObject(string expression)
         {
             if (IsObject && !string.IsNullOrEmpty(JsonString))
             {
                 try
                 {
-                    var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(_mapsTo);
+                    var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(expression);
                     if (language.IsJsonIdentifierExpression)
                     {
                         if (DataListSingleton.ActiveDataList != null)
@@ -172,7 +181,7 @@ namespace Dev2.Studio.ViewModels.DataList
                                 {
                                     var processString = firstOrDefault.Value.ToString();
                                     DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
-                                        DataListUtil.RemoveLanguageBrackets(_mapsTo), processString);
+                                        DataListUtil.RemoveLanguageBrackets(expression), processString);
                                 }
                             }
                         }
@@ -262,7 +271,14 @@ namespace Dev2.Studio.ViewModels.DataList
             set
             {
                 _jsonString = value;
-                UpdateDataListWithJsonObject();
+                if (!string.IsNullOrEmpty(_mapsTo))
+                {
+                    UpdateDataListWithJsonObject(_mapsTo);
+                }
+                if (!string.IsNullOrEmpty(_value))
+                {
+                    UpdateDataListWithJsonObject(_value);
+                }
             }
         }
 
