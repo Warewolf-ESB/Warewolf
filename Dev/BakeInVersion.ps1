@@ -27,7 +27,10 @@ $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 if (-not [string]::IsNullOrEmpty($FullVersionString))  {
     $FullVersionString = $FullVersionString.Trim()
     if ($FullVersionString -Match " ") {
+        # This commit has more than on tag, using last tag
+        Write-Host This commit has more than one tags as `"$FullVersionString`".
         $FullVersionString = $FullVersionString.Split(" ")[-1]
+        Write-Host Using last tag as `"$FullVersionString`".
     }
 	# This version is already tagged.
     Write-Host You are up to date with version `"$FullVersionString`".
