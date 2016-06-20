@@ -226,7 +226,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Write File\Write File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Write File.feature</DependentUpon>
@@ -546,7 +546,7 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Write File\Write File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Write File.feature.cs</LastGenOutput>
+      <LastGenOutput>Write File1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Zip\Zip.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
