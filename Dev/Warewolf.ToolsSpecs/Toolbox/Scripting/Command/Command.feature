@@ -70,10 +70,10 @@ Scenario: Execute cmd with negative recordset index
 @ignore
 #Complex Types WOLF-1042
 Scenario Outline: Execute a command that requires complex types
-	Given I have this command script to execute '<object>' with '<val>'
+	Given I have this command script to execute "<object>" with "<val>"
 	When the command tool is executed
-	Then the '<resultVariable>' of the command tool will be '<Result>'
-	And the execution has '<Error>' error
+	Then the "<resultVariable>" of the command tool will be "<Result>"
+	And the execution has "<Error>" error
 	And the debug inputs as  
 	| object   | Command |
 	| <object> | <val>   |  

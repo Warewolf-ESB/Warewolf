@@ -12,6 +12,14 @@ namespace Dev2.Activities.Specs.Toolbox.Sharepoint
     [Binding]
     public class SharePointCopyFileSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SharePointCopyFileSteps(ScenarioContext scenarioContext) : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         public SharepointSource GetSource()
         {
             var source = new SharepointSource()
