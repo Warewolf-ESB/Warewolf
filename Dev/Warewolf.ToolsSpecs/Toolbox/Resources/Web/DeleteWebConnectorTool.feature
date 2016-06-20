@@ -114,12 +114,10 @@ Scenario: Changing Delete Web Connector Tool Sources
 	And Delete Generate Outputs is Enabled
 	And Delete Mappings is Disabled
 
-
-#wolf-1034
+	
 Scenario: Delete Web Connector Tool returns text
 	And I drag Web Delete Request Connector Tool onto the design surface
-    And Delete New is Enabled
-	And Delete Edit is Enabled
+    And Delete New is Enabled	
 	When I Select "TestingReturnText" as a Delete web Source
 	Then Delete Header is Enabled
 	And  Delete Url is Visible 
@@ -130,5 +128,5 @@ Scenario: Delete Web Connector Tool returns text
 	And I click Delete Done
 	Then Delete Mapping is Enabled
 	And Delete mapped outputs are
-	| Output   | Output Alias |
-	| Response | Response     |
+	| Output | Output Alias |
+	| a      | [[rec().a]]  |
