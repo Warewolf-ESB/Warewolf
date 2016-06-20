@@ -65,7 +65,6 @@ Scenario Outline: Read Folder file validation
     When the read folder file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
          | Input Path                          | Username   | Password | Read           | Private Key File       |
          | <File or Folder> = <sourceLocation> | <username> | String   | Files & Folders | <sourcePrivateKeyFile> |
