@@ -465,6 +465,34 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(_dataListViewModel.ComplexObjectCollection[0].Children[0].IsArray);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_GenerateComplexObject")]
+        public void DataListViewModel_GenerateComplexObject_FromJson()
+        {
+            Setup();
+            Assert.AreEqual(0, _dataListViewModel.ComplexObjectCollection.Count);
+
+            var jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
+            _dataListViewModel.GenerateComplexObjectFromJson("@Person", jsonString);
+
+            Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_GenerateComplexObject")]
+        public void DataListViewModel_GenerateComplexObject_ParentContainsDotFromJson()
+        {
+            Setup();
+            Assert.AreEqual(0, _dataListViewModel.ComplexObjectCollection.Count);
+
+            var jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
+            _dataListViewModel.GenerateComplexObjectFromJson("@Persons.Person", jsonString);
+
+            Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
+        }
+
         #endregion RemoveUnused Tests
 
         #region RemoveRowIfEmpty Tests
