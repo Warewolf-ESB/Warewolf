@@ -118,8 +118,7 @@ Scenario: Changing Put Web Connector Sources
 #wolf-1034
 Scenario: Put Web Connector Tool returns text
 	And I drag Web Put Request Connector Tool onto the design surface
-    And Put New is Enabled
-	And Put Edit is Enabled
+    And Put New is Enabled	
 	When I Select "TestingReturnText" as a Put web Source
 	Then Put Header is Enabled
 	And  Put Url is Visible 
@@ -131,4 +130,4 @@ Scenario: Put Web Connector Tool returns text
 	Then Put Mapping is Enabled
 	And Put mapped outputs are
 	| Output   | Output Alias |
-	| Response | Response     |
+	| a | [[rec().a]]     |

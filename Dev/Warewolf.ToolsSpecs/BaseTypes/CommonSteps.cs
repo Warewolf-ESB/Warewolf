@@ -75,9 +75,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            var hasAnError = expectedError == actuallyHasErrors;
+            List<string> allErros = new List<string>();
+            allErros.AddRange(result.Environment.Errors.ToList());
+            allErros.AddRange(result.Environment.AllErrors.ToList());
+
+            if(expectedError)
+            {
+                var errorThrown = allErros.Contains(fetchErrors);
+                Assert.IsTrue(errorThrown);
+            }
+            /*  var hasAnError = expectedError == actuallyHasErrors;
             var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(hasAnError || errorMessageMatches, message);
+            Assert.IsTrue(hasAnError || errorMessageMatches, message);*/
         }
 
         [Then(@"the debug inputs as")]
