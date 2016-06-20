@@ -40,33 +40,36 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
 
         protected override void BuildDataList()
         {
-            BuildShapeAndTestData();
-
-            string privateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile,out privateKeyFile);
-            var delete = new DsfPathDelete
-            {
-                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
-                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
-                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
-                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
-                PrivateKeyFile = privateKeyFile
-            };
-
-            TestStartNode = new FlowStep
-            {
-                Action = delete
-            };
             if (!ScenarioContext.Current.ContainsKey("activity"))
-                ScenarioContext.Current.Add("activity", delete);
+            {
+                BuildShapeAndTestData();
 
-            delete.PerformValidation();
+                string privateKeyFile;
+                scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
+                var delete = new DsfPathDelete
+                {
+                    InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                    Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
+                    Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                    Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                    PrivateKeyFile = privateKeyFile
+                };
+
+                TestStartNode = new FlowStep
+                {
+                    Action = delete
+                };
+
+                ScenarioContext.Current.Add("activity", delete);
+            }
         }
 
         [When(@"validating the delete tool")]
         public void WhenValidatingTheDeleteTool()
         {            
             BuildDataList();
+            var delete = ScenarioContext.Current.Get<DsfPathDelete>("activity");
+            delete.PerformValidation();
         }
     }
 }
