@@ -80,6 +80,23 @@ let addJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (na
     | Some a -> 
         let arr = a.Value :?> JArray
         let indexes = (indexToInt index arr)
+        let arr2 = List.map (fun a -> addValueToJArray arr a (value)) indexes
+        List.map fst arr2
+
+let getOrAddJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (name : string) (index : Index) (value : JToken) = 
+    let props = obj.Properties()
+    let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
+    match theProp with
+    | None -> 
+        let arr = new JArray()
+        let indexes = (indexToInt index arr)
+        let arr2 = List.map (fun a -> addValueToJArray arr a (value)) indexes
+        let prop = new JProperty(name, snd arr2.Head)
+        obj.Add(prop) |> ignore
+        List.map fst arr2
+    | Some a -> 
+        let arr = a.Value :?> JArray
+        let indexes = (indexToInt index arr)
         let arr2 = List.map (fun a -> getOrAddValueToJArray arr a (value)) indexes
         List.map fst arr2
 
@@ -94,7 +111,7 @@ let rec expressionToObject (obj : JToken) (exp : JsonIdentifierExpression) (res 
             let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JValue(evalResultToString res))
             List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
         | _ -> 
-            let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
+            let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
             List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
 
 and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalResult) (obj : JContainer) = 
