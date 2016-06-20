@@ -26,6 +26,17 @@ let addValueToJArray (arr : JArray) (ind : int) (value : JToken) =
             arr.Add(null)
         arr.[index] <- value
         (arr.[index], arr)
+    else arr.[index] <- value
+         (arr.[index], arr)
+
+let getOrAddValueToJArray (arr : JArray) (ind : int) (value : JToken) = 
+    let index = ind - 1
+    if (ind > arr.Count) then 
+        let x = arr.Count
+        for _ in x..ind - 1 do
+            arr.Add(null)
+        arr.[index] <- value
+        (arr.[index], arr)
     else (arr.[index], arr)
 
 let addOrGetValueFromJArray (arr : JArray) (ind : int) (value : JToken) = 
@@ -69,20 +80,18 @@ let addJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (na
     | Some a -> 
         let arr = a.Value :?> JArray
         let indexes = (indexToInt index arr)
-        let arr2 = List.map (fun a -> addValueToJArray arr a (value)) indexes
+        let arr2 = List.map (fun a -> getOrAddValueToJArray arr a (value)) indexes
         List.map fst arr2
 
 let rec expressionToObject (obj : JToken) (exp : JsonIdentifierExpression) (res : WarewolfEvalResult) = 
     match exp with
     | Terminal -> obj
     | NameExpression a -> objectFromExpression exp res (obj :?> JContainer)
-    | NestedNameExpression a -> 
-        expressionToObject (addPropertyToJsonNoValue (obj :?> JObject) a.ObjectName) (a.Next) res
+    | NestedNameExpression a -> expressionToObject (addPropertyToJsonNoValue (obj :?> JObject) a.ObjectName) (a.Next) res
     | IndexNestedNameExpression a -> 
         match a.Next with
         | Terminal -> 
-            let allProperties = 
-                addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JValue(evalResultToString res))
+            let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JValue(evalResultToString res))
             List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
         | _ -> 
             let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
@@ -201,7 +210,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                                     if env.RecordSets.ContainsKey(value.Name) then env
                                     else evalJsonAssign value  update env
         | JsonIdentifierExpression d -> evalJsonAssign value update env                                
-        | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
+        | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to %s" value.Name)
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
