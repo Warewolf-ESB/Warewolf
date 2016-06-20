@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             allErros.AddRange(result.Environment.Errors.ToList());
             allErros.AddRange(result.Environment.AllErrors.ToList());
 
-            if(expectedError)
+            if (expectedError)
             {
                 var errorThrown = allErros.Contains(fetchErrors);
                 //Assert.IsTrue(errorThrown);
@@ -107,18 +107,36 @@ namespace Dev2.Activities.Specs.BaseTypes
                     ThenTheDebugInputsAs(table, inputDebugItems);
                 }
             }
-            else if(containsKey)
+            else if (containsKey)
             {
-                var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
-                var result = scenarioContext.Get<IDSFDataObject>("result");
-                if (!result.Environment.HasErrors())
+                object baseAct;
+                scenarioContext.TryGetValue("activity", out baseAct);
+                var stringAct = baseAct as DsfFlowNodeActivity<string>;
+                var boolAct = baseAct as DsfFlowNodeActivity<bool>;
+                if (stringAct != null)
                 {
-                    var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
-                    ThenTheDebugInputsAs(table, inputDebugItems);
+                    DsfActivityAbstract<string> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    if (!result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
                 }
+                else if(boolAct != null)
+                {
+                    DsfActivityAbstract<bool> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    if (!result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
+                }
+               
             }
-     
-           
+
+
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
