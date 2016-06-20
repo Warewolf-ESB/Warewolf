@@ -269,7 +269,7 @@ namespace Dev2.Data
 
         private bool ParseBoolAttribute(XmlAttribute attr)
         {
-            var result = true;
+            var result = false;
             if (attr != null)
             {
                 bool.TryParse(attr.Value, out result);
