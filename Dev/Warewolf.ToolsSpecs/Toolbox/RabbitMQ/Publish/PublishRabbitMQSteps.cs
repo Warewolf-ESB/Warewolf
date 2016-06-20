@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Linq;
-using Dev2.Common.Interfaces.Core;
 using TechTalk.SpecFlow;
 
-namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
+namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Publish
 {
     [Binding]
-    public class PublishRabbitMQSteps : BaseActivityUnitTest
+    public class PublishRabbitMqSteps : BaseActivityUnitTest
     {
         private readonly ScenarioContext scenarioContext;
 
-        public PublishRabbitMQSteps(ScenarioContext scenarioContext)
+        public PublishRabbitMqSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
