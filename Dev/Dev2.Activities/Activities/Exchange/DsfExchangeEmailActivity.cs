@@ -5,8 +5,6 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Exchange;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
@@ -14,22 +12,23 @@ using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
-using Microsoft.Exchange.WebServices.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
 namespace Dev2.Activities.Exchange
 {
     [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfExchangeEmailActivity : DsfActivityAbstract<string>
     {
+        private readonly IDev2EmailSender _emailSender;
+
         public DsfExchangeEmailActivity()
-            : base("Exchange Email")
+            : this(new Dev2EmailSender())
         {
             To = string.Empty;
             Cc = string.Empty;
@@ -39,11 +38,15 @@ namespace Dev2.Activities.Exchange
             Body = string.Empty;
         }
 
+        public DsfExchangeEmailActivity(IDev2EmailSender emailSender)
+            : base("Exchange Email")
+        {
+            _emailSender = emailSender;
+        }
+
         #region Fields
 
         IDSFDataObject _dataObject;
-        private IExchangeServiceFactory _exchangeServiceFactory;
-        private ExchangeService _exchangeService;
 
         #endregion
 
@@ -72,8 +75,7 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public new string Result { get; set; }
 
-        public IExchangeEmailSender EmailSender { get; set; }
-        
+
         #region Overrides of DsfNativeActivity<string>
 
         private bool IsDebug
@@ -96,7 +98,7 @@ namespace Dev2.Activities.Exchange
         // ReSharper restore MethodTooLong
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-   
+
             ExecuteTool(dataObject, 0);
         }
 
@@ -131,13 +133,15 @@ namespace Dev2.Activities.Exchange
                 var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
                 colItr.AddVariableToIterateOn(ccItr);
 
+
+
                 var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
                 colItr.AddVariableToIterateOn(bccItr);
 
                 var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject, update));
                 colItr.AddVariableToIterateOn(subjectItr);
 
-                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body ?? string.Empty, update));
+                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body, update));
                 colItr.AddVariableToIterateOn(bodyItr);
 
                 var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
@@ -148,11 +152,11 @@ namespace Dev2.Activities.Exchange
                     while (colItr.HasMoreData())
                     {
                         ErrorResultTO errors;
-                        var result = SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {
-                             indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
+                            indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
                         }
                     }
                     if (IsDebug && !allErrors.HasErrors())
@@ -232,117 +236,6 @@ namespace Dev2.Activities.Exchange
                 indexToUpsertTo++;
             }
             return indexToUpsertTo;
-        }
-
-        // ReSharper disable TooManyArguments
-        string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr,IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
-        // ReSharper restore TooManyArguments
-        {
-            InitializeService();
-
-            errors = new ErrorResultTO();
-            var toValue = colItr.FetchNextValue(toItr);
-            var ccValue = colItr.FetchNextValue(ccItr);
-            var bccValue = colItr.FetchNextValue(bccItr);
-            var subjectValue = colItr.FetchNextValue(subjectItr);
-            var bodyValue = colItr.FetchNextValue(bodyItr);
-            var attachmentsValue = colItr.FetchNextValue(attachmentsItr);
-            var mailMessage = new EmailMessage(_exchangeService) {Subject = subjectValue};
-
-            AddToAddresses(toValue, mailMessage);
-
-            mailMessage.Body = bodyValue;
-
-            if (!String.IsNullOrEmpty(ccValue))
-            {
-                AddCcAddresses(ccValue, mailMessage);
-            }
-            if (!String.IsNullOrEmpty(bccValue))
-            {
-                AddBccAddresses(bccValue, mailMessage);
-            }
-            if (!String.IsNullOrEmpty(attachmentsValue))
-            {
-                AddAttachmentsValue(attachmentsValue, mailMessage);
-            }
-            string result;
-            try
-            {
-                EmailSender = new ExchangeEmailSender(runtimeSource);
-
-                EmailSender.Send(_exchangeService,mailMessage);
-
-                result = "Success";
-            }
-            catch (Exception e)
-            {
-                result = "Failure";
-                errors.AddError(e.Message);
-            }
-
-            return result;
-        }
-
-        private void InitializeService()
-        {
-            _exchangeServiceFactory = new ExchangeServiceFactory();
-            _exchangeService = _exchangeServiceFactory.Create();
-        }
-
-        private List<string> GetSplitValues(string stringToSplit, char[] splitOn)
-        {
-            return stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
-        }
-        void AddAttachmentsValue(string attachmentsValue, EmailMessage mailMessage)
-        {
-            try
-            {
-                var attachements = GetSplitValues(attachmentsValue, new[] { ',', ';' });
-                attachements.ForEach(s => mailMessage.Attachments.AddFileAttachment(s));
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(string.Format(ErrorResource.AttachmentInvalidFormat, attachmentsValue), exception);
-            }
-        }
-
-        void AddToAddresses(string toValue, EmailMessage mailMessage)
-        {
-            try
-            {
-                var toAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-                toAddresses.ForEach(s => mailMessage.ToRecipients.Add(s));
-            }
-            catch (FormatException exception)
-            {
-                throw new Exception(string.Format(ErrorResource.ToAddressInvalidFormat, toValue), exception);
-            }
-        }
-
-        void AddCcAddresses(string toValue, EmailMessage mailMessage)
-        {
-            try
-            {
-                var ccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-                ccAddresses.ForEach(s => mailMessage.CcRecipients.Add(s));
-            }
-            catch (FormatException exception)
-            {
-                throw new Exception(string.Format(ErrorResource.CCAddressInvalidFormat, toValue), exception);
-            }
-        }
-
-        void AddBccAddresses(string toValue, EmailMessage mailMessage)
-        {
-            try
-            {
-                var bccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-                bccAddresses.ForEach(s => mailMessage.BccRecipients.Add(s));
-            }
-            catch (FormatException exception)
-            {
-                throw new Exception(string.Format(ErrorResource.BCCAddressInvalidFormat, toValue), exception);
-            }
         }
 
         public override enFindMissingType GetFindMissingType()

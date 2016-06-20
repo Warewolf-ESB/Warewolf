@@ -7,6 +7,12 @@ using netDumbster.smtp;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Xml;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
+using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Tools.Specs.BaseTypes;
 
@@ -61,13 +67,103 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                 ResourceID = Guid.NewGuid()
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource);
-            var sendEmail = new DsfExchangeEmailActivity()
+            var emailSender = new Mock<IDev2EmailSender>();
+            // ReSharper disable once RedundantAssignment
+            var eR = new ErrorResultTO();
+            emailSender
+                .Setup(sender => sender.SendEmail(It.IsAny<IExchangeSource>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
+                .Returns("Success")
+                .Callback((IExchangeSource source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
+            {
+                listIterator.FetchNextValue(i1);
+                listIterator.FetchNextValue(i2);
+                listIterator.FetchNextValue(i3);
+                listIterator.FetchNextValue(i4);
+                listIterator.FetchNextValue(i5);
+                listIterator.FetchNextValue(i6);
+            });
+            var sendEmail = new DsfExchangeEmailActivity(emailSender.Object)
             {
                 Result = ResultVariable,
                 Body = string.IsNullOrEmpty(body) ? "" : body,
                 Subject = string.IsNullOrEmpty(subject) ? "" : subject,
                 To = string.IsNullOrEmpty(to) ? "" : to,
                 SavedSource = selectedEmailSource,
+                Cc = string.Empty,
+                Bcc = String.Empty,
+                Attachments = String.Empty
+            };
+
+            TestStartNode = new FlowStep
+            {
+                Action = sendEmail
+            };
+            scenarioContext.Add("activity", sendEmail);
+        }
+
+        protected  void BuildDataList(string result)
+        {
+            List<Tuple<string, string>> variableList;
+            scenarioContext.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                scenarioContext.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
+            string body;
+            scenarioContext.TryGetValue("body", out body);
+            string subject;
+            scenarioContext.TryGetValue("subject", out subject);
+            string password;
+            scenarioContext.TryGetValue("password", out password);
+            string simulationOutput;
+            scenarioContext.TryGetValue("simulationOutput", out simulationOutput);
+            string to;
+            scenarioContext.TryGetValue("to", out to);
+
+            var server = SimpleSmtpServer.Start(25);
+            scenarioContext.Add("server", server);
+
+            var selectedEmailSource = new ExchangeSource()
+            {
+                AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
+                UserName = "bernartdt@dvtdev.onmicrosoft.com",
+                Password = "Kailey@40",
+                ResourceName = Guid.NewGuid().ToString(),
+                ResourceID = Guid.NewGuid()
+            };
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource);
+            var emailSender = new Mock<IDev2EmailSender>();
+            // ReSharper disable once RedundantAssignment
+            var eR = new ErrorResultTO();
+            emailSender
+                .Setup(sender => sender.SendEmail(It.IsAny<IExchangeSource>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
+                .Returns(result)
+                .Callback((IExchangeSource source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
+            {
+                listIterator.FetchNextValue(i1);
+                listIterator.FetchNextValue(i2);
+                listIterator.FetchNextValue(i3);
+                listIterator.FetchNextValue(i4);
+                listIterator.FetchNextValue(i5);
+                listIterator.FetchNextValue(i6);
+                
+            });
+            var sendEmail = new DsfExchangeEmailActivity(emailSender.Object)
+            {
+                Result = ResultVariable,
+                Body = string.IsNullOrEmpty(body) ? "" : body,
+                Subject = string.IsNullOrEmpty(subject) ? "" : subject,
+                To = string.IsNullOrEmpty(to) ? "" : to,
+                SavedSource = selectedEmailSource,
+                Cc = string.Empty,
+                Bcc = String.Empty,
+                Attachments = String.Empty
             };
 
             TestStartNode = new FlowStep
@@ -82,7 +178,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         {
             List<Tuple<string, string>> variableList;
             scenarioContext.TryGetValue("variableList", out variableList);
-            
+
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
@@ -117,6 +213,14 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
+        [When(@"the exchange email tool is executed ""(.*)""")]
+        public void WhenTheExchangeEmailToolIsExecuted(string p0)
+        {
+            BuildDataList(p0);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            scenarioContext.Add("result", result);
+        }
+
 
         [Then(@"the exchange email result will be ""(.*)""")]
         public void ThenTheExchangeEmailResultWillBe(string expectedResult)
@@ -129,7 +233,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                                        out actualValue, out error);
             if (string.IsNullOrEmpty(expectedResult))
             {
-                Assert.IsNull(actualValue);
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
             else
             {
