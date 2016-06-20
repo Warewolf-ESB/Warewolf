@@ -177,18 +177,4 @@ Examples:
 | [[text]]      | West    | [[rec(*).string]]       | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
 | [[text]]      | 12      | [[var]]                 | 1      | [[sentence]] = Dear Mr 12, We welcome you as a customer   |
 
-#Complex types WOLF-1042
-Scenario Outline: Replace values using complex types
-	Given I have a replace variable "<var>" equal to "<value>"
-	And I have a sentence "<var>"
-	And I want to find the characters "<characters>" 
-	And I want to replace them with "<replacement>" 
-	When the replace tool is executed
-	Then the replace result should be "<count>"
-	And "<var>" should be "<result>"
-	And the execution has "NO" error
-Examples: 
-| No | var                                | value    | characters | replacement | count | result    |
-| 1  | [[Member().Details().Title         | Ms.Wolfe | Ms.Wolfe   | Mrs.Blake   | 1     | Mrs.Blake |
-| 2  | [[Member(1).Details(1).Title       | Mr West  | e          | ei          | 1     | Mr Weist  |
-| 3  | [[Member(*).Details([[int]]).Title | Dave     | D          | Ste         | 1     | Steave    |
+
