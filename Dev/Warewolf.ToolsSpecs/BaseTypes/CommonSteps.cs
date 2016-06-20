@@ -18,16 +18,25 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Network;
 using Dev2.PathOperations;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.DataList;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -75,20 +84,49 @@ namespace Dev2.Activities.Specs.BaseTypes
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            var hasAnError = expectedError == actuallyHasErrors;
+            List<string> allErros = new List<string>();
+            allErros.AddRange(result.Environment.Errors.ToList());
+            allErros.AddRange(result.Environment.AllErrors.ToList());
+
+            if(expectedError)
+            {
+                var errorThrown = allErros.Contains(fetchErrors);
+                Assert.IsTrue(errorThrown);
+            }
+            /*  var hasAnError = expectedError == actuallyHasErrors;
             var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(hasAnError || errorMessageMatches, message);
+            Assert.IsTrue(hasAnError || errorMessageMatches, message);*/
         }
 
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
-            if (!result.Environment.HasErrors())
+            var containsInnerActivity = scenarioContext.ContainsKey("innerActivity");
+            var containsKey = scenarioContext.ContainsKey("activity");
+
+            if (containsInnerActivity)
             {
-                var inputDebugItems = GetInputDebugItems(null, result.Environment);
-                ThenTheDebugInputsAs(table, inputDebugItems);
+                DsfNativeActivity<string> selectAndAppltTool;
+                scenarioContext.TryGetValue("innerActivity", out selectAndAppltTool);
+                var result = scenarioContext.Get<IDSFDataObject>("result");
+                if (!result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(selectAndAppltTool, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
             }
+            else if(containsKey)
+            {
+                var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                var result = scenarioContext.Get<IDSFDataObject>("result");
+                if (!result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
+            }
+     
+           
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
@@ -538,6 +576,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
+
+
         public List<IDebugItemResult> GetInputDebugItems(Activity act, IExecutionEnvironment env)
         {
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -569,10 +609,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
-            return dsfActivityAbstractString.GetDebugInputs(dl, 0)
+            var debugInputs = dsfActivityAbstractString.GetDebugInputs(dl, 0);
+            return debugInputs
                 .SelectMany(r => r.ResultsList)
                  .OrderBy(result => result.Label).ToList();
         }
+
         public List<IDebugItemResult> GetOutputDebugItems(Activity act, IExecutionEnvironment dl)
         {
 
@@ -866,6 +908,12 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             var viewModel = scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
+        }
+
+        public void CreateModelView()
+        {
+            var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
+            currentViewModel.Validate();
         }
     }
 }
