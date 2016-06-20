@@ -82,12 +82,10 @@ let rec expressionToObject (obj : JToken) (exp : JsonIdentifierExpression) (res 
         match a.Next with
         | Terminal -> 
             let allProperties = 
-                addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index 
-                    (new JValue(evalResultToString res))
+                addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JValue(evalResultToString res))
             List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
         | _ -> 
-            let allProperties = 
-                addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
+            let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
             List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
 
 and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalResult) (obj : JContainer) = 
