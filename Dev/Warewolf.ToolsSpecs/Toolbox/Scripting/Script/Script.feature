@@ -336,7 +336,7 @@ Scenario Outline:Excute Javascript with incorrect values
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "AN" error
-	And the execution has "<errorOccured>" error
+	And the execution has "<ErrorOccured>" error
 	And the debug inputs as  
 	| Language | Script           |
 	| JavaScript   | <script> |
