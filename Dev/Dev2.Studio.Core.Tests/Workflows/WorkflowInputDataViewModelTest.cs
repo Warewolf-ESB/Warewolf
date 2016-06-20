@@ -10,18 +10,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -239,6 +243,291 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             inputs = workflowInputDataViewModel.WorkflowInputs;
             Assert.AreEqual(2, inputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_AddBlankRow")]
+        public void SetWorkflowInputData_AddBlankRow_WhenNotAllColumnsInput_ExpectNewRowWithOnlyInputColumns()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            //------------Execute Test---------------------------
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+            int indexToSelect;
+            workflowInputDataViewModel.AddBlankRow(inputs[0],out indexToSelect);
+
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(3, inputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_RemoveRow")]
+        public void SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+            int indexToSelect;
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out indexToSelect);
+
+            //------------Execute Test---------------------------
+            workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect);
+
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(3, inputs.Count);
+            var count = workflowInputDataViewModel.WorkflowInputCount;
+            Assert.AreEqual(3, count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_GetNexRow")]
+        public void SetWorkflowInputData_GetNexRow_WhenNotAllColumnsInput_ExpectRowRemoved()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+            int indexToSelect;
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out indexToSelect);
+
+            //------------Execute Test---------------------------
+            var dataListItem = workflowInputDataViewModel.GetNextRow(inputs[0]);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dataListItem);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_GetPreviousRow")]
+        public void SetWorkflowInputData_GetPreviousRow_WhenNotAllColumnsInput_ExpectRowRemoved()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+            int indexToSelect;
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out indexToSelect);
+
+            //------------Execute Test---------------------------
+            var dataListItem = workflowInputDataViewModel.GetPreviousRow(inputs[1]);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dataListItem);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_GetPreviousRow")]
+        public void SetWorkflowInputData_GetPreviousRow_NotFound_ExpectItem()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+
+            //------------Execute Test---------------------------
+            var dataListItem = workflowInputDataViewModel.GetPreviousRow(inputs[0]);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dataListItem);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_GetPreviousRow")]
+        public void SetWorkflowInputData_GetPreviousRow_Null_ExpectNull()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+
+            //------------Execute Test---------------------------
+            var dataListItem = workflowInputDataViewModel.GetPreviousRow(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(dataListItem);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_GetPreviousRow")]
+        public void SetWorkflowInputData_WithObject_ShouldAddToPayload()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec><Person Description="""" IsEditable=""True"" ColumnIODirection=""Input"" IsJson=""True""><Name></Name><Age></Age></Person></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var personObject = new ComplexObjectItemModel("Person",null,enDev2ColumnArgumentDirection.Input);
+            personObject.Children.Add(new ComplexObjectItemModel("Age",personObject,enDev2ColumnArgumentDirection.Input));
+            personObject.Children.Add(new ComplexObjectItemModel("Name",personObject,enDev2ColumnArgumentDirection.Input));
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { personObject};
+            mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(2, inputs.Count);
+            
+            //------------Execute Test---------------------------
+            workflowInputDataViewModel.SetXmlData();
+            var dataListItem = workflowInputDataViewModel.WorkflowInputs[1];
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dataListItem);
+            Assert.AreEqual("<DataList><rec><a></a></rec><Person><Age></Age><Name></Name></Person></DataList>",workflowInputDataViewModel.XmlData.Replace(Environment.NewLine,"").Replace(" ",""));
         }
 
         [TestMethod]
