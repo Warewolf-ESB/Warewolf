@@ -141,19 +141,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (dataObject.IsDebugMode())
                                 {
                                     debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
-                                }
-                                isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
+                                }                                
                                 if (isCalcEvaluation)
                                 {
-                                    assignValue = new AssignValue(t.FieldName, t.FieldValue);
+                                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
                                 }
-
-                                if (isCalcEvaluation)
+                                else
                                 {
-                                    assignValue = DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
+                                    dataObject.Environment.AssignJson(assignValue, update);
                                 }
-
-                                dataObject.Environment.AssignJson(assignValue, update);
                                 if (debugItem != null)
                                 {
                                     _debugInputs.Add(debugItem);
@@ -198,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private AssignValue DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
+        private void DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
         {
             var functionEvaluator = new FunctionEvaluator();
             var warewolfEvalResult = environment.Eval(cleanExpression, update);
@@ -208,30 +204,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (result != null)
                 {
-                    var calcExpression = ExecutionEnvironment.WarewolfAtomToString(result.Item);
-                    string exp;
-                    DataListUtil.IsCalcEvaluation(calcExpression, out exp);
-                    string eval;
-                    string error;
-                    var res = functionEvaluator.TryEvaluateFunction(exp, out eval, out error);
-                    if (eval == exp.Replace("\"", "") && exp.Contains("\""))
-                    {
-                        try
-                        {
-                            string eval2;
-                            var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out eval2, out error);
-                            if (b)
-                            {
-                                eval = eval2;
-                            }
-                        }
-                        catch (Exception err)
-                        {
-                            Dev2Logger.Warn(err);
-                        }
-                    }
-                    if (!res) throw new Exception(ErrorResource.InvalidCalculate);
-                    return new AssignValue(fieldName, eval);
+                    var eval = PerformCalcForAtom(result.Item, functionEvaluator);
+                    var doCalculation = new AssignValue(fieldName, eval);
+                    environment.AssignJson(doCalculation, update);
                 }
             }
             if (warewolfEvalResult.IsWarewolfAtomListresult)
@@ -239,9 +214,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (result != null)
                 {
+                    var counter = 1;
+                    foreach (var item in result.Item)
+                    {
+                        var eval = PerformCalcForAtom(item, functionEvaluator);
+                        var doCalculation = new AssignValue(fieldName, eval);
+                        environment.AssignJson(doCalculation, update == 0 ? counter : update);
+                        counter++;
+                    }
                 }
             }
-            return null;
+        }
+
+        private static string PerformCalcForAtom(DataStorage.WarewolfAtom warewolfAtom, FunctionEvaluator functionEvaluator)
+        {
+            var calcExpression = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom);
+            string exp;
+            DataListUtil.IsCalcEvaluation(calcExpression, out exp);
+            string eval;
+            string error;
+            var res = functionEvaluator.TryEvaluateFunction(exp, out eval, out error);
+            if (eval == exp.Replace("\"", "") && exp.Contains("\""))
+            {
+                try
+                {
+                    string eval2;
+                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out eval2, out error);
+                    if (b)
+                    {
+                        eval = eval2;
+                    }
+                }
+                catch (Exception err)
+                {
+                    Dev2Logger.Warn(err);
+                }
+            }
+            if (!res)
+            {
+                throw new Exception(ErrorResource.InvalidCalculate);
+            }
+            return eval;
         }
 
         private DebugItem AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
@@ -254,7 +267,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!DataListUtil.IsEvaluated(assignValue.Value))
                 {
-                    var evalResult = environment.Eval(assignValue.Name, update);
+                    if (assignValue.Name.EndsWith("()]]"))
+                    {
+                        throw new Exception("Append data to array");
+                    }
+                    CommonFunctions.WarewolfEvalResult evalResult = environment.Eval(assignValue.Name, update);
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
@@ -271,6 +288,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else if (DataListUtil.IsEvaluated(assignValue.Value))
                 {
+                    if (assignValue.Name.EndsWith("()]]"))
+                    {
+                        throw new Exception("Append data to array");
+                    }
                     var oldValueResult = environment.Eval(assignValue.Name, update);
                     var newValueResult = environment.Eval(assignValue.Value, update);
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);

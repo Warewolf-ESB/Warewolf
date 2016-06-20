@@ -397,8 +397,8 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-         | JsonIdentifierExpression a -> let res = evalJson env update buffer
-                                         match res with
+        | JsonIdentifierExpression a -> let res = evalJson env update buffer
+                                        match res with
                                             | WarewolfAtomListresult x -> WarewolfAtomListresult (x)
                                             | WarewolfAtomResult x -> WarewolfAtomResult(x)
                                             | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))

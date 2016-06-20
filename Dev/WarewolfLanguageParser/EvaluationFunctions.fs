@@ -407,13 +407,13 @@ and jsonIdentifierToName (a : JsonIdentifierExpression) =
     | IndexNestedNameExpression x -> x.ObjectName
     | Terminal -> ""
 ///evaluate Json. Convert warewolf expression to jsonpath and evaluate it
-and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpression) = 
-    let jPath = "$." + languageExpressionToJPath (lang)
+and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpression) =     
     match lang with
     | ScalarExpression a -> 
         if env.JsonObjects.ContainsKey a then WarewolfAtomResult(DataString(env.JsonObjects.[a].ToString()))
         else failwith "non existent object"
     | RecordSetExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
@@ -421,6 +421,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
     | RecordSetNameExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
@@ -428,6 +429,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
     | JsonIdentifierExpression a -> 
+        let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
@@ -435,11 +437,13 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
                 WarewolfAtomResult(Seq.exactlyOne data)
             else
                 if Seq.isEmpty data then
-                    WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+                    if jPath = "$."+(jsonIdentifierToName a) then
+                        WarewolfAtomResult(WarewolfAtom.DataString(jo.ToString()))
+                    else failwith "non existent object"                        
                 else
                     WarewolfAtomListresult (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
-    | ComplexExpression _ -> failwith "No current use case please contact the Warewolf product owner."
+    | ComplexExpression a -> eval env update (languageExpressionToString lang)
     | WarewolfAtomExpression a -> WarewolfAtomResult(a)
 //specialise eval for calculate. Its just eval with the addition of some quotes. can be merged into eval function at the expense of complexity for c# developers
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
@@ -451,7 +455,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
                     | RecordSetExpression a ->  WarewolfAtomListresult(  (evalRecordsSet a env) )
                     | ScalarExpression a ->  WarewolfAtomResult (evalScalar a env)
                     | WarewolfAtomExpression a ->  WarewolfAtomResult a
-                    | _ ->failwith ("Failed to evaluate" + languageExpressionToString exp.[0])
+                    | _ ->failwith "you should not get here"
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
                 let evaled = (List.map (languageExpressionToString >> (evalForCalculate  env update)>>evalResultToStringAsList)  exp )
@@ -490,16 +494,12 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a) 
-        |  _ -> 
-        let res = evalJson env update buffer
-        match res with
-        | WarewolfAtomListresult a -> 
-            a
-            |> Seq.map enQuote
-            |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
-            |> WarewolfAtomListresult
-        | _ -> failwith "recordest results can not be supported by calculate"
-
+        | JsonIdentifierExpression a -> let res = evalJson env update buffer
+                                        match res with
+                                            | WarewolfAtomListresult x -> WarewolfAtomListresult (x|> Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) ))
+                                            | WarewolfAtomResult x -> WarewolfAtomResult(x|>enQuote)
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
+                                                    
 and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
 
@@ -525,16 +525,11 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-        |  _ -> 
-        let res = evalJson env update buffer
-        match res with
-        | WarewolfAtomListresult a -> 
-            a
-            |> Seq.map enQuote
-            |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
-            |> WarewolfAtomListresult
-        | _ -> failwith "recordest results can not be supported by calculate"
-
+        | JsonIdentifierExpression a -> let res = evalJson env update buffer
+                                        match res with
+                                            | WarewolfAtomListresult x -> WarewolfAtomListresult (x|> Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) ))
+                                            | WarewolfAtomResult x -> WarewolfAtomResult(x|>enQuote)
+                                            | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
 /// simplify a calculate expression
 and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : string) : string = 
     let lang = langs.Trim()

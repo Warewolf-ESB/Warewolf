@@ -322,6 +322,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Tel(1).Name]]", "Mobile", fieldCollection.Count));
             fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Tel(2).Name]]", "Skype", fieldCollection.Count));
             fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Tel(3).Name]]", "Personal", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Pet.Owner(2).Name]]", "Explorer", fieldCollection.Count));
 
 
             SetupArguments(
@@ -340,7 +341,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Tel(2).Name", out actual, out error);
             Assert.AreEqual("Work", actual);
             GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Name", out actual, out error);
-            Assert.AreEqual("Dora", actual);
+            Assert.AreEqual("Explorer", actual);
             GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Tel(1).Name", out actual, out error);
             Assert.AreEqual("Mobile", actual);
             GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(2).Tel(2).Name", out actual, out error);
