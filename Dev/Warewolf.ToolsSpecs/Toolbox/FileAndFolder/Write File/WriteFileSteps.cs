@@ -107,7 +107,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             }
 
             var fileWrite = new DsfFileWrite
-            {
+            {                                
                 Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
                 Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                 Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
