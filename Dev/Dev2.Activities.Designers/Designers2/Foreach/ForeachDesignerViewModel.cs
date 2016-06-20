@@ -158,20 +158,7 @@ namespace Dev2.Activities.Designers2.Foreach
 
                     if(data != null && data.Count > 1)
                     {
-
-                        return true; //This is to short circuit the multiple activities to Sequence re-introduce when we tackle this issue
-                        //                        DsfSequenceActivity dsfSequenceActivity = new DsfSequenceActivity();
-                        //                        foreach(var item in data)
-                        //                        {
-                        //                            object currentValue = item.GetCurrentValue();
-                        //                            var activity = currentValue as Activity;
-                        //                            if(activity != null)
-                        //                            {
-                        //                                dsfSequenceActivity.Activities.AddMode(activity);
-                        //                            }
-                        //                        }
-                        //                        ModelItem modelItem = ModelItemUtils.CreateModelItem(dsfSequenceActivity);
-                        //                        return modelItem;
+                        return true;
                     }
                 }
             }

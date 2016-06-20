@@ -18,6 +18,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Studio.Core;
@@ -107,41 +108,64 @@ namespace Dev2.Activities.Designers2.Sequence
 
         public bool SetModelItemForServiceTypes(IDataObject dataObject)
         {
-            if(dataObject != null && dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat))
+            if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
             {
                 var explorerItemModel = dataObject.GetData(GlobalConstants.ExplorerItemModelFormat);
+                Guid envID = new Guid();
+                Guid resourceID = new Guid();
+                if (explorerItemModel != null)
+                {
+
+                    ExplorerItemModel itemModel = explorerItemModel as ExplorerItemModel;
+                    if (itemModel != null)
+                    {
+                        envID = itemModel.EnvironmentId;
+                        resourceID = itemModel.ResourceId;
+                    }
+                }
+                if (explorerItemModel == null)
+                {
+                    explorerItemModel = dataObject.GetData(GlobalConstants.UpgradedExplorerItemModelFormat);
+                    if (explorerItemModel == null)
+                    {
+                        return false;
+                    }
+                    IExplorerItemViewModel itemModel = explorerItemModel as IExplorerItemViewModel;
+                    if (itemModel != null)
+                    {
+                        if (itemModel.Server != null)
+                            envID = itemModel.Server.EnvironmentID;
+                        resourceID = itemModel.ResourceId;
+                    }
+                }
                 try
                 {
-                    ExplorerItemModel itemModel = explorerItemModel as ExplorerItemModel;
-                    if(itemModel != null)
+                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envID);
+                    if(environmentModel != null)
                     {
-                        IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == itemModel.EnvironmentId);
-                        if(environmentModel != null)
+                        var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
+
+                        if(resource != null)
                         {
-                            var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == itemModel.ResourceId) as IContextualResourceModel;
-
-                            if(resource != null)
+                            DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
+                            d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                            d.IconPath = resource.IconPath;
+                            if(Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                             {
-                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
-                                d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                                d.IconPath = resource.IconPath;
-                                if(Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                dynamic mvm = Application.Current.MainWindow.DataContext;
+                                if(mvm != null && mvm.ActiveItem != null)
                                 {
-                                    dynamic mvm = Application.Current.MainWindow.DataContext;
-                                    if(mvm != null && mvm.ActiveItem != null)
-                                    {
-                                        WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
-                                    }
+                                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
                                 }
+                            }
 
-                                ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
-                                if(modelItem != null)
-                                {
-                                    dynamic mi = ModelItem;
-                                    ModelItemCollection activitiesCollection = mi.Activities;
-                                    activitiesCollection.Insert(activitiesCollection.Count, d);
-                                    return true;
-                                }
+                            ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
+                            if(modelItem != null)
+                            {
+                                dynamic mi = ModelItem;
+                                ModelItemCollection activitiesCollection = mi.Activities;
+                                activitiesCollection.Insert(activitiesCollection.Count, d);
+                                return true;
                             }
                         }
                     }
