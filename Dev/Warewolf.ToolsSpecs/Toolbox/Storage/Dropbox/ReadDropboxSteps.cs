@@ -102,7 +102,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Given(@"Readlist Dropbox File is Enabled")]
         public void GivenReadDropboxFileIsEnabled()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            var propertyInfo = GetViewModel().GetType().GetProperty("ToPath");
+            Assert.IsNotNull(propertyInfo);
         }
 
         [When(@"I Click Readlist New")]
