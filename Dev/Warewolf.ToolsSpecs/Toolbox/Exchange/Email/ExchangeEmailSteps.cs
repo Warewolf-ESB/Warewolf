@@ -7,7 +7,6 @@ using netDumbster.smtp;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Xml;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.DataList.Contract;

@@ -136,6 +136,7 @@ namespace Dev2.Activities.SelectAndApply
             }
             lock (_selectApplyExecutionObject)
             {
+                var startTime = DateTime.Now;
                 _previousParentId = dataObject.ParentInstanceID;
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
@@ -163,7 +164,7 @@ namespace Dev2.Activities.SelectAndApply
                     }
                     dataObject.ParentInstanceID = UniqueID;
                     dataObject.IsDebugNested = true;
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         DispatchDebugState(dataObject, StateType.After, update);
                     }
@@ -219,8 +220,8 @@ namespace Dev2.Activities.SelectAndApply
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), "", "", DataSource, "", "", "="));
                             }
                         }
-
-                        DispatchDebugState(dataObject, StateType.End, update, DateTime.Now);
+                        
+                        DispatchDebugState(dataObject, StateType.End, update, startTime,DateTime.Now);
                     }
                     dataObject.ParentInstanceID = _previousParentId;
                     dataObject.IsDebugNested = false;

@@ -453,7 +453,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region DispatchDebugState
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? dt=null,bool decision = false)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime=null,DateTime? endTime=null,bool decision = false)
         {
             bool clearErrors = false;
             try
@@ -467,7 +467,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (_debugState == null)
                 {
-                    InitializeDebugState(stateType, dataObject, remoteID, false, "",dt);
+                    InitializeDebugState(stateType, dataObject, remoteID, false, "",startTime,endTime);
                 }
                 else
                 {
@@ -528,7 +528,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(_debugState == null)
                 {
-                    InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage,dt);
+                    InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage,startTime,endTime);
                 }
                 else
                 {
@@ -539,7 +539,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
                     _debugState.StateType = stateType;
-                    _debugState.EndTime = dt?? DateTime.Now;
+                        if (endTime != null)
+                        {
+
+
+                            _debugState.StartTime = startTime ?? DateTime.Now;
+                            _debugState.EndTime = endTime.Value;
+                        }
+                        else
+                        {
+                            _debugState.EndTime = startTime ?? DateTime.Now;
+                        }
                     _debugState.HasError = hasError;
                     _debugState.ErrorMessage = errorMessage;
                     try
@@ -662,7 +672,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DispatchDebugState(dataObject,before,update);
         }
 
-        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage,DateTime?dt=null)
+        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage, DateTime? startTime = null, DateTime? endTime=null)
         {
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
@@ -713,8 +723,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
-                StartTime = dt ?? DateTime.Now,
-                EndTime = dt ?? DateTime.Now,
+                StartTime = startTime ?? DateTime.Now,
+                EndTime = endTime ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = ShouldExecuteSimulation,

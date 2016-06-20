@@ -36,11 +36,10 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         void DoDrop(object sender, DragEventArgs e)
         {
             DropPointOnDragEnter(sender, e);
-            var modelItem = this.DropPoint.Item;
-           /* if (/*ViewModel.SetModelItemForServiceTypes(e.Data)false)
+            if (ViewModel.SetModelItemForServiceTypes(e.Data))
             {
                 e.Handled = true;
-            }*/
+            }
         }
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)

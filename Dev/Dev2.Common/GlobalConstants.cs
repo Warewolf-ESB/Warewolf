@@ -394,6 +394,7 @@ WHERE   n.nspname = 'public'
 
         public const string SchemaQueryOracle = @"SELECT OBJECT_NAME AS Name,OWNER AS Db,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE OWNER = '{0}' AND OBJECT_TYPE IN('FUNCTION','PROCEDURE')";
         public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
+        public const string UpgradedExplorerItemModelFormat = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
         public const string VersionDownloadPath = "Installers\\";
         public const string VersionFolder = "VersionControl";
         public static readonly Guid NullDataListID = Guid.Empty;
