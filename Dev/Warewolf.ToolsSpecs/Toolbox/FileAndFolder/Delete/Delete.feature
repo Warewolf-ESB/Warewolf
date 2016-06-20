@@ -59,6 +59,7 @@ Scenario Outline: Delete file Validation
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
 	When validating the delete tool
+	When validating the delete tool from view model
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the delete file tool is executed

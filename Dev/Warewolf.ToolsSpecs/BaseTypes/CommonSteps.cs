@@ -29,6 +29,9 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.ViewModels.DataList;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -920,8 +923,16 @@ namespace Dev2.Activities.Specs.BaseTypes
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
-        public void CreateModelView()
+        [When(@"validating the delete tool from view model")]
+        public void WhenValidatingTheDeleteToolFromViewModel()
         {
+            ValidateFromModelView();
+        }
+
+
+        public void ValidateFromModelView()
+        {
+            
             var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
             currentViewModel.Validate();
         }
