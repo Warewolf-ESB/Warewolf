@@ -62,6 +62,7 @@ Scenario Outline: Write file validation
 	Given I have a variable "[[index]]" with a value "1"
 	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
+	And use private public key for source is "<sourcePrivateKeyFile>" 
 	And Method is "<method>"
 	And input contents as "<content>"   
 	And result as "<resultVar>"

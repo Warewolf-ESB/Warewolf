@@ -113,7 +113,7 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a RecordS
 		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
 		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
-	Then the execution has "AN" error
+	Then the execution has "NO" error
 
 Scenario: Execute a selectAndApply tool with a Number Format tool with a json object
 	Given There is a complexobject in the datalist with this shape
@@ -125,7 +125,7 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a json ob
 		| Number    | Rounding | Rounding Value | Decimals to show | Result    |
 		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
-	Then the execution has "AN" error
+	Then the execution has "NO" error
 
 Scenario: Execute a selectAndApply tool with a Number Format tool with a RecordSet literal
 	Given There is a complexobject in the datalist with this shape
@@ -137,7 +137,7 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a RecordS
 		| Number    | Rounding | Rounding Value | Decimals to show | Result    |
 		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
-	Then the execution has "AN" error
+	Then the execution has "NO" error
 
 Scenario: Execute a selectAndApply tool with a Number Format tool with a json object literal
 	Given There is a complexobject in the datalist with this shape
@@ -149,7 +149,7 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a json ob
 		| Number    | Rounding | Rounding Value | Decimals to show | Result    |
 		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
-	Then the execution has "AN" error
+	Then the execution has "NO" error
 
 Scenario: Execute a selectAndApply tool with a Number Format tool with json object array within a json object
 	Given There is a complexobject in the datalist with this shape
