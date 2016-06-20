@@ -195,23 +195,3 @@ Examples:
 | [[rs([[var]])]]              | 0   | AN    | [[result]] = Error        |
 
 
-#Complex Types WOLF-1042
-Scenario Outline: Ensure the correct values are returned using complex types
-	Given I have a complex type with this shape
-	| complex types  |   |
-	| rs().row().set | 1 |
-	| rs().row().set | 2 |
-	| rs().row().set | 3 |
-	And count on record "[[rs().row()]]"	
-	When the count tool is executed
-	Then the result count should be 3
-	And the execution has "NO" error
-	And the debug inputs as 
-	| Recordset               |
-	| [[rs().row(1).set]] = 1 |
-	| [[rs().row(2).set]] = 2 |
-	| [[rs().row(3).set]] = 3 |
-	And the debug output as "<Debug>" with "<Output>"
-Examples: 
-| Debug              | Output                             |
-| [[rec().a]]        | [[rec(1).a]] = 3                   |
