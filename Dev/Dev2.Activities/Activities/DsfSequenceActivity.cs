@@ -154,7 +154,6 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.After, 0);
             }
-           // context.ScheduleActivity(_innerSequence, a=>OnCompleted(a,0));
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -194,7 +193,6 @@ namespace Dev2.Activities
             dataObject.IsDebugNested = false;
             dataObject.ParentInstanceID = _previousParentID;
             dataObject.ForEachNestingLevel--;
-            //DoErrorHandling(dataObject);
         }
 
         public override enFindMissingType GetFindMissingType()
