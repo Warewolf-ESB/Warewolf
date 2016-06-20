@@ -84,20 +84,49 @@ namespace Dev2.Activities.Specs.BaseTypes
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            var hasAnError = expectedError == actuallyHasErrors;
+            List<string> allErros = new List<string>();
+            allErros.AddRange(result.Environment.Errors.ToList());
+            allErros.AddRange(result.Environment.AllErrors.ToList());
+
+            if(expectedError)
+            {
+                var errorThrown = allErros.Contains(fetchErrors);
+                Assert.IsTrue(errorThrown);
+            }
+            /*  var hasAnError = expectedError == actuallyHasErrors;
             var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(hasAnError || errorMessageMatches, message);
+            Assert.IsTrue(hasAnError || errorMessageMatches, message);*/
         }
 
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
-            if (!result.Environment.HasErrors())
+            var containsInnerActivity = scenarioContext.ContainsKey("innerActivity");
+            var containsKey = scenarioContext.ContainsKey("activity");
+
+            if (containsInnerActivity)
             {
-                var inputDebugItems = GetInputDebugItems(null, result.Environment);
-                ThenTheDebugInputsAs(table, inputDebugItems);
+                DsfNativeActivity<string> selectAndAppltTool;
+                scenarioContext.TryGetValue("innerActivity", out selectAndAppltTool);
+                var result = scenarioContext.Get<IDSFDataObject>("result");
+                if (!result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(selectAndAppltTool, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
             }
+            else if(containsKey)
+            {
+                var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                var result = scenarioContext.Get<IDSFDataObject>("result");
+                if (!result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
+            }
+     
+           
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
@@ -580,10 +609,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
-            return dsfActivityAbstractString.GetDebugInputs(dl, 0)
+            var debugInputs = dsfActivityAbstractString.GetDebugInputs(dl, 0);
+            return debugInputs
                 .SelectMany(r => r.ResultsList)
                  .OrderBy(result => result.Label).ToList();
         }
+
         public List<IDebugItemResult> GetOutputDebugItems(Activity act, IExecutionEnvironment dl)
         {
 

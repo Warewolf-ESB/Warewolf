@@ -119,8 +119,7 @@ Scenario: Changing Post Post Web Connector Tool Sources
 #wolf-1034 re-opened worked as a connector not as a tool
 Scenario: Post Web Connector Tool returns text
 	And I drag Web Post Request Connector Tool onto the design surface
-    And New is Enabled
-	And Edit is Enabled
+    And Post New is Enabled	
 	When I Select "TestingReturnText" as a Post web Source
 	Then Post Header is Enabled
 	And Post Url is Visible 
@@ -132,4 +131,4 @@ Scenario: Post Web Connector Tool returns text
 	Then Post Mapping is Enabled
 	And Post mapped outputs are
 	| Output   | Output Alias |
-	| Response | Response     |
+	| a | [[rec().a]]     |

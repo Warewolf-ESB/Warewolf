@@ -219,11 +219,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Rename.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
       <DependentUpon>Unzip.feature</DependentUpon>
