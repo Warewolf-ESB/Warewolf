@@ -13,6 +13,14 @@ namespace Dev2.Activities.Specs.Toolbox.Sharepoint
     [Binding]
     public class SharePointReadFolderSteps : FileToolsBase
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SharePointReadFolderSteps(ScenarioContext scenarioContext) : base(scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
