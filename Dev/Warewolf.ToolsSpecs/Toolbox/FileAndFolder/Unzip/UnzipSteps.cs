@@ -62,25 +62,34 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add("result", result);
         }
 
+        [When(@"validating the unzip tool")]
+        public void WhenValidatingTheUnzipTool()
+        {
+            BuildDataList();
+            var unzip = ScenarioContext.Current.Get<DsfUnZip>("activity");
+            unzip.PerformValidation();
+        }
+
+
         [When(@"validating the tool")]
         public void WhenValidatingTheTool()
         {
-            //var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
-            DsfUnZip dsfUnZip = new DsfUnZip()
-            {
-                DestinationPassword = CommonSteps.DestinationPasswordHolder,
-                DestinationUsername = CommonSteps.DestinationUsernameHolder,
-                DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
-                Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
-                OutputPath = CommonSteps.DestinationHolder,
+            ////var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
+            //DsfUnZip dsfUnZip = new DsfUnZip()
+            //{
+            //    DestinationPassword = CommonSteps.DestinationPasswordHolder,
+            //    DestinationUsername = CommonSteps.DestinationUsernameHolder,
+            //    DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
+            //    Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
+            //    OutputPath = CommonSteps.DestinationHolder,
 
-            };
-            if (!scenarioContext.ContainsKey("activity"))
-                scenarioContext.Add("activity", dsfUnZip);
-            dsfUnZip.PerformValidation();
+            //};
+            //if (!scenarioContext.ContainsKey("activity"))
+            //    scenarioContext.Add("activity", dsfUnZip);
+            //dsfUnZip.PerformValidation();
 
-            var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
-            ScenarioContext.Current.Add("viewModel", viewModel);
+            //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
+            //ScenarioContext.Current.Add("viewModel", viewModel);
         }
 
         [Then(@"unzip execution error message will be """"""(.*)""")]
@@ -104,8 +113,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             var overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder);
             var result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder);
             var archivePassword = scenarioContext.Get<string>("archivePassword");
-            /*var privateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile);
-            var destinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile);*/
+            var privateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile);
+            var destinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile);
             var unzip = new DsfUnZip
             {
                 InputPath = inputPath,
@@ -117,8 +126,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                 Overwrite = overwrite,
                 Result = result,
                 ArchivePassword = archivePassword,
-                PrivateKeyFile = "",
-               /* DestinationPrivateKeyFile = destinationPrivateKeyFile*/
+                PrivateKeyFile = privateKeyFile,
+                DestinationPrivateKeyFile = destinationPrivateKeyFile
             };
 
             TestStartNode = new FlowStep

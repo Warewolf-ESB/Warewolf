@@ -877,8 +877,12 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             var viewModel = scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
-        }        
-            //var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
-            //currentViewModel.Validate();        
+        }
+
+        public void CreateModelView()
+        {
+            var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
+            currentViewModel.Validate();
+        }
     }
 }

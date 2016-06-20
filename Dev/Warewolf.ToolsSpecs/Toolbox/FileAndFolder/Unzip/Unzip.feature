@@ -64,10 +64,12 @@ Scenario Outline: Unzip file validation
 	And zip credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"	
 	And overwrite is "<selected>"
 	And result as "<resultVar>"
 	And Archive Password as "<Archive Password>"
-	When validating the tool
+	When validating the unzip tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the Unzip file tool is executed
@@ -75,8 +77,8 @@ Scenario Outline: Unzip file validation
 	And the execution has "<errorOccured>" error
 	And unzip execution error message will be "<DesignValidation>"
 	And the debug inputs as
-        | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password |
-        | <File or Folder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | String          |
+        | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password | Destination Private Key File | Source Private Key File |
+        | <File or Folder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | String           | <destinationPrivateKeyFile>  | <sourcePrivateKeyFile>  |
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
