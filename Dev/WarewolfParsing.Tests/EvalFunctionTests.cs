@@ -877,7 +877,6 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
-        [ExpectedException(typeof(Exception))]
         public void Eval_JsonArrayComplex_ComplexExp()
         {
             //------------Setup for test--------------------------
@@ -885,13 +884,12 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalJson(env, 0, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[arrayObj().Name]] [[arrayObj().Name]]"));
             //------------Assert Results-------------------------
-            Assert.AreEqual("bobe", CommonFunctions.evalResultToString(res));
+            Assert.AreEqual("bobe bobe", CommonFunctions.evalResultToString(res));
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
-        [ExpectedException(typeof(Exception))]
         public void Eval_JsonArrayComplex_Atom()
         {
             //------------Setup for test--------------------------
@@ -899,7 +897,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalJson(env, 0, EvaluationFunctions.parseLanguageExpressionWithoutUpdate("1"));
             //------------Assert Results-------------------------
-            Assert.AreEqual("bobe", CommonFunctions.evalResultToString(res));
+            Assert.AreEqual("1", CommonFunctions.evalResultToString(res));
         }
 
         public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
