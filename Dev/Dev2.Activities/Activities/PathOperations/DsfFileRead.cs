@@ -55,25 +55,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update)); 
+            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword, update));
             colItr.AddVariableToIterateOn(passItr);
 
-            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile ?? string.Empty, update));
             colItr.AddVariableToIterateOn(privateKeyItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if(dataObject.IsDebugMode())
+            if (dataObject.IsDebugMode())
             {
                 AddDebugInputItem(InputPath, "Input Path", dataObject.Environment, update);
                 AddDebugInputItemUserNamePassword(dataObject.Environment, update);
-                if(!string.IsNullOrEmpty(PrivateKeyFile))
+                if (!string.IsNullOrEmpty(PrivateKeyFile))
                 {
                     AddDebugInputItem(PrivateKeyFile, "Private Key File", dataObject.Environment, update);
                 }
             }
 
-            while(colItr.HasMoreData())
+            while (colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                 IActivityIOPath ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
@@ -86,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string result = broker.Get(endpoint);
                     outputs[0].OutputStrings.Add(result);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
@@ -115,7 +115,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null && updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 InputPath = updates[0].Item2;
             }
@@ -123,10 +123,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
                 var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
+                if (itemUpdate != null)
                 {
                     Result = itemUpdate.Item2;
                 }

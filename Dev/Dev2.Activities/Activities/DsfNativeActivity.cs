@@ -489,7 +489,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //End Bug 8595
                     try
                     {
-                        Copy(GetDebugInputs(dataObject.Environment, update), _debugState.Inputs);
+                        var debugInputs = GetDebugInputs(dataObject.Environment, update);
+                        Copy(debugInputs, _debugState.Inputs);
                     }
                     catch (Exception err)
                     {

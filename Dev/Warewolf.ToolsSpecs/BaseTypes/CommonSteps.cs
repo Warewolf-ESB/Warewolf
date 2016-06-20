@@ -83,12 +83,32 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
-            if (!result.Environment.HasErrors())
+            var containsInnerActivity = scenarioContext.ContainsKey("innerActivity");
+            var containsKey = scenarioContext.ContainsKey("activity");
+
+            if (containsInnerActivity)
             {
-                var inputDebugItems = GetInputDebugItems(null, result.Environment);
-                ThenTheDebugInputsAs(table, inputDebugItems);
+                DsfNativeActivity<string> selectAndAppltTool;
+                scenarioContext.TryGetValue("innerActivity", out selectAndAppltTool);
+                var result = scenarioContext.Get<IDSFDataObject>("result");
+                if (!result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(selectAndAppltTool, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
             }
+            else if(containsKey)
+            {
+                var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                var result = scenarioContext.Get<IDSFDataObject>("result");
+                if (!result.Environment.HasErrors())
+                {
+                    var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                    ThenTheDebugInputsAs(table, inputDebugItems);
+                }
+            }
+     
+           
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
@@ -569,10 +589,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IExecutionEnvironment dl)
         {
-            return dsfActivityAbstractString.GetDebugInputs(dl, 0)
+            var debugInputs = dsfActivityAbstractString.GetDebugInputs(dl, 0);
+            return debugInputs
                 .SelectMany(r => r.ResultsList)
                  .OrderBy(result => result.Label).ToList();
         }
+
         public List<IDebugItemResult> GetOutputDebugItems(Activity act, IExecutionEnvironment dl)
         {
 
