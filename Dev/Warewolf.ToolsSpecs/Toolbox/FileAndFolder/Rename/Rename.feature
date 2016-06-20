@@ -69,7 +69,7 @@ Scenario Outline: Rename file validation
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And result as "<resultVar>"
-	When validating the tool
+	When validating the rename tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the rename file tool is executed
@@ -83,8 +83,8 @@ Scenario Outline: Rename file validation
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | File or Folder | Val1 | Val2 | sourceLocation     | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result  | errorOccured | ValidationResult | DesignValidation | OutputError |
-		| No | [[sourcePath]] | ""   | ""   | C:\renamefile5.txt | ""       | ""       | [[destPath]] | C:\renamed6.txt     | ""           | ""           | True     | [[result]] | Success | NO           | False            | ""               | ""          |
+		| No | File or Folder                 | Val1                                                | Val2                          | sourceLocation      | username              | password | destination                      | destinationLocation                                          | destUsername      | destPassword | selected | resultVar              | result  | errorOccured | ValidationResult | DesignValidation                                                              | OutputError                                                                           |
+		| No | [[sourcePath]]                 | ""                                                  | ""                            | C:\renamefile5.txt  | ""                    | ""       | [[destPath]]                     | C:\renamed6.txt                                              | ""                | ""           | True     | [[result]]             | Success | NO           | False            | ""                                                                            | ""                                                                                    |
 		| 4  | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile6.txt  | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed7.txt           | ""                | ""           | True     | [[result]]             | Success | NO           | False            | ""                                                                            | ""                                                                                    |
 		| 5  | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile7.txt  | ""                    | ""       | [[destPath]]                     | C:\renamed6.txt                                              | ""                | ""           | Truee    | [[result]]             | Success | NO           | False            | ""                                                                            | ""                                                                                    |
 		| 1  | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile8.txt  | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed8.txt           | ""                | ""           | True     | [[result]]             | Success | NO           | False            | ""                                                                            | ""                                                                                    |
