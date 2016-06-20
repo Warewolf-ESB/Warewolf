@@ -4,8 +4,7 @@
 	I want a tool that performs this action
 
 Scenario: Open new RabbitMQ Publish Tool
-	Given I open New Workflow
-	And I drag RabbitMQPublish tool onto the design surface
+	Given I drag RabbitMQPublish tool onto the design surface
     And New Button is Enabled
 	And Edit Button is Disabled
 	And RabbitMQ Source is Enabled
@@ -16,8 +15,7 @@ Scenario: Open new RabbitMQ Publish Tool
 	Then the New RabbitMQ Publish Source window is opened
 	
 Scenario: Editing RabbitMQ Publish Tool Source
-	Given I open New Workflow
-	And I drag RabbitMQPublish tool onto the design surface
+	Given I drag RabbitMQPublish tool onto the design surface
     And New Button is Enabled
 	And Edit Button is Disabled
 	And RabbitMQ Source is Enabled
@@ -30,8 +28,7 @@ Scenario: Editing RabbitMQ Publish Tool Source
 	Then the "Test (localhost)" RabbitMQ Publish Source window is opened
 
 Scenario: Change RabbitMQ Publish Source
-	Given I open New Workflow
-	And I drag RabbitMQPublish tool onto the design surface
+	Given I drag RabbitMQPublish tool onto the design surface
     And New Button is Enabled
 	And Edit Button is Disabled
 	And RabbitMQ Source is Enabled

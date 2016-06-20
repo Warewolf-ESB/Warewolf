@@ -422,7 +422,7 @@
 	<s:Boolean x:Key="/Default/CodeStyle/CSharpUsing/AllowAlias/@EntryValue">False</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">&#xD;
 /*&#xD;
-*  Warewolf - The Easy Service Bus&#xD;
+*  Warewolf - Once bitten, there's no going back&#xD;
 *  Copyright $CURRENT_YEAR$ by Warewolf Ltd &lt;alpha@warewolf.io&gt;&#xD;
 *  Licensed under GNU Affero General Public License 3.0 or later. &#xD;
 *  Some rights reserved.&#xD;
@@ -504,8 +504,6 @@
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateThisQualifierSettings/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/UnitTesting/DisabledProviders/=MSTest/@EntryIndexedValue">False</s:Boolean>
-	<s:String x:Key="/Default/Environment/UnitTesting/JavaScriptUnitTestProviders/JavaScriptTestEngine/@EntryValue">PhantomJS</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/JavaScriptUnitTestProviders/PhantomJSLocation/@EntryValue">C:\Development\Dev\Binaries\JavascriptTesting\phantomjs.exe</s:String>	
 	<s:String x:Key="/Default/Environment/UserInterface/ShortcutSchemeName/@EntryValue">VS</s:String>
 	<s:Boolean x:Key="/Default/Environment/UserInterface/TipsManager/ShowTipsOnStartup/@EntryValue">False</s:Boolean>
 	<s:String x:Key="/Default/Housekeeping/ExtensionManager/IncludePrereleasePackages/@EntryValue">False</s:String>	
