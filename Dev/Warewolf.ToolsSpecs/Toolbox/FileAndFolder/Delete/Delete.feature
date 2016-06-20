@@ -64,7 +64,6 @@ Scenario Outline: Delete file Validation
     When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	#And execution error message will be "<DesignValidation>"
 	And the debug inputs as
          | Input Path                          | Username   | Password |
          | <File or Folder> = <sourceLocation> | <username> | String   |
