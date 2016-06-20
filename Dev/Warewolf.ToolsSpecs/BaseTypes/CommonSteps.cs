@@ -83,7 +83,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             if (expectedError)
             {
                 var errorThrown = allErros.Contains(fetchErrors);
-                //Assert.IsTrue(errorThrown);
+                Assert.IsTrue(errorThrown);
             }
             /*  var hasAnError = expectedError == actuallyHasErrors;
             var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
@@ -324,7 +324,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (validationErrors != null)
                 {
-                    Assert.AreEqual(0, validationErrors.Count);
+                    Assert.AreNotEqual(0, validationErrors.Count);
                 }
             }
             else
@@ -350,10 +350,15 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Assert.IsNotNull(validationErrors);
                 var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
+                FixBreaks(ref validationMessage, ref completeMessage);
                 Assert.AreEqual(validationMessage, completeMessage);
             }
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
+        }
         [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {

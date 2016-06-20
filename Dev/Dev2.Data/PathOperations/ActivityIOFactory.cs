@@ -57,7 +57,7 @@ namespace Dev2.PathOperations
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable,string privateKeyFile="")
         {
             VerifyArgument.IsNotNull("path",path);
-            // Fetch path type
+            VerifyArgument.IsNotNullOrWhitespace("path", path);
             enActivityIOPathType type = Dev2ActivityIOPathUtils.ExtractPathType(path);
             if(type == enActivityIOPathType.Invalid)
             {
