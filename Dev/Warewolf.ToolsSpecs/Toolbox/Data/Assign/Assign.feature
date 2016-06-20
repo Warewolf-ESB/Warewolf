@@ -660,47 +660,6 @@ Scenario: Assign a Variable That Does Not Exist
 	Then the execution has "AN" error
 	And the execution has "Scalar value { var } is NULL" error
 
-
-#Complex types WOLF-1042
-Scenario Outline:  Assigning value to a complex type
-	Given I assign the value "<value>" to a variable "<object>"	
-	When the assign tool is executed
-	And the execution has "NO" error
-	And the debug output as 
-	| # |                                                |
-	| 1 | <result> |
-	Examples: 
-	| Object                                                         | Value | result                                           |
-	| [[granparent().parent().NumberOfChildren]]                     | 4     | [[granparent().parent().NumberOfChildren]] = 4   |
-	| [[granparent().parent(1).NumberOfChildren]]                    | 6     | [[granparent().parent(1).NumberOfChildren]] = 6  |
-	| [[granparent().parent(*).NumberOfChildren]]                    | 10    | [[granparent().parent(1).NumberOfChildren]] = 10 |
-	| [[granparent().parent([[int]]).NumberOfChildren]],[[int]] = 2  | 4     | [[granparent().parent(2).NumberOfChildren]] = 4  |
-	| [[granparent(*).parent(1).NumberOfChildren]]                   | 7     | [[granparent(*).parent(1).NumberOfChildren]] = 7 |
-	| [[granparent(*).parent(*).NumberOfChildren]]                   | 14    | [[granparent().parent(1).NumberOfChildren]] = 14 |
-	| [[granparent([[rec().var]]).parent(*).NumberOfChildren]]       | 4     | [[granparent(2).parent().NumberOfChildren]] = 4  |
-	| [[granparent([[rec().var().set]]).parent(*).NumberOfChildren]] | 4     | [[granparent(2).parent().NumberOfChildren]] = 4  |	
-Scenario: Assign a Variable That is Null to another variable
-	Given I have a variable "[[b]]" with a value of "NULL"
-	And I assign the value "[[b]]" to a variable "[[var]]"
-	When the assign tool is executed
-	Then the execution has "No" error
-
-
-Scenario Outline:  Assigning value to a complex type that is incorrectly formatted
-	Given I assign the value "<value>" to a variable "<object>"	
-	When the assign tool is executed
-	And the execution has "An" error
-	And the debug output as 
-	| # |                                                |
-	| 1 | <result> |
-	Examples: 
-	| Object                                                        | Value | result                                           |
-	| [[granparent.parent().NumberOfChildren]]                      | 4     | [[granparent.parent().NumberOfChildren]] = Error |
-	| [[granparent().parent(1).NumberOfChildren()]]                 | 6     | [[granparent().parent(1).NumberOfChildren()]] = Error  |
-	| [[granparent(Test).parent(*).NumberOfChildren]]               | 10    | [[granparent(Test).parent(1).NumberOfChildren]] = Error |
-	
-
-
 Scenario: Assign a variable equal to a complex expression with scalar and recordset with star
 	Given I assign the value 1 to a variable "[[a]]"
 	And I assign the value 2 to a variable "[[b]]"

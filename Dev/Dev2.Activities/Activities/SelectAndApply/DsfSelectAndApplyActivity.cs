@@ -125,10 +125,6 @@ namespace Dev2.Activities.SelectAndApply
             {
                 allErrors.AddError(string.Format(ErrorResource.CanNotBeEmpty, "Alias"));
             }
-            if (!DataSource.Contains("(*)") && !DataSource.Contains("()"))
-            {
-                allErrors.AddError(ErrorResource.DataSourceMustBeJSonOrRecordSet);
-            }
             if (allErrors.HasErrors())
             {
                 DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
