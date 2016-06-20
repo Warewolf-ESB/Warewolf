@@ -24,9 +24,8 @@ Scenario: Send Exchange email with no To Accounts
 	Given exchange to address is ""
 	And the exchange subject is "Just testing"	
 	And exchange body is "testing email from the cool specflow"
-	When the exchange email tool is executed
-	Then the exchange email result will be ""
-	And the exchange execution has "AN" error
+	When the exchange email tool is executed ""
+	Then the exchange email result will be ""	
 	And the debug inputs as  
 	| To | Subject      | Body                                 |
 	| "" | Just testing | testing email from the cool specflow |
@@ -93,9 +92,8 @@ Scenario: Send exchange email with variable as Body that is xml
 	| [[result]] = Success |
 
 Scenario: Send exchange email with everything blank
-	When the exchange email tool is executed
-	Then the exchange email result will be ""
-	And the exchange execution has "AN" error
+	When the exchange email tool is executed ""
+	Then the exchange email result will be ""	
 	And the debug inputs as  
 	| To | Subject | Body |
 	| "" | ""      | ""   |
