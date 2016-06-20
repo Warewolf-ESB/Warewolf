@@ -49,9 +49,9 @@ Scenario Outline: Delete file at location Null
 	| SFTP PK		| [[path]]	| sftp://localhost															| dev2							| Q/ulw&]  | [[result]] | 			| NO           | C:\\Temp\key.opk	|
 
 Scenario Outline: Delete file Validation
-    Given I have a variable "[[a]]" with a value "<Val1>"
-	Given I have a variable "[[b]]" with a value "<Val2>"
-	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+    i Given I have a variable "[[a]]" with a value "<Val1>"
+	loGiven I have a variable "[[b]]" with a value "<Val2>"
+	iGiven I have a variable "[[rec(1).a]]" with a value "<Val1>"
 	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
 	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 

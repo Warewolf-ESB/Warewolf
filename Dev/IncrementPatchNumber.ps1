@@ -28,7 +28,10 @@ if (-not [string]::IsNullOrEmpty($FullVersionString))  {
 	$FullVersionString = $FullVersionString.Trim()
     Write-Host Old version was `"$FullVersionString`".
     if ($FullVersionString -Match " ") {
+        # This commit has more than on tag, using last tag
+        Write-Host This commit has more than one tags as `"$FullVersionString`".
         $FullVersionString = $FullVersionString.Split(" ")[-1]
+        Write-Host Using last tag as `"$FullVersionString`".
     }
 	# This version is tagged. Increment patch number.
 	[int]$NewPatchNumber = $FullVersionString.Split(".")[2]
