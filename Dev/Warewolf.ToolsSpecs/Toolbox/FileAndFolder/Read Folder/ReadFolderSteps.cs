@@ -65,6 +65,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
                     break;
             }
 
+            var x = scenarioContext.Get<string>(CommonSteps.SourceHolder);
+
             var folderRead = new DsfFolderRead
                 {
                     InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
