@@ -151,5 +151,83 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("{\"Parent\":{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}}", jsonString);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ComplexObjectItemModel_ValidateNames")]
+        public void ComplexObjectItemModel_ValidateNames_WithInvalidComplexObjectParentNameWithDot_ShouldHaveError()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent.");
+
+            //------------Execute Test---------------------------
+            
+            //------------Assert Results-------------------------
+            Assert.IsTrue(complexObject.HasError);
+            Assert.AreEqual("Complex Object name [[Parent.]] contains invalid character(s)", complexObject.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ComplexObjectItemModel_ValidateNames")]
+        public void ComplexObjectItemModel_ValidateNames_WithInvalidComplexObjectChildNameWithDot_ShouldHaveError()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent");
+            complexObject.Children.Add(new ComplexObjectItemModel("Name.", complexObject));
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            //Parent
+            Assert.IsFalse(complexObject.HasError);
+            Assert.IsNull(complexObject.ErrorMessage);
+            //Child
+            Assert.IsTrue(complexObject.Children[0].HasError);
+            Assert.AreEqual("Complex Object name [[Name.]] contains invalid character(s)", complexObject.Children[0].ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ComplexObjectItemModel_ValidateNames")]
+        public void ComplexObjectItemModel_ValidateNames_WithValidComplexObject_IsUsed()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Parent");
+            complexObject.Children.Add(new ComplexObjectItemModel("Name", complexObject));
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            //Parent
+            Assert.IsTrue(complexObject.IsUsed);
+            
+            //Child
+            Assert.IsTrue(complexObject.Children[0].IsUsed);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ComplexObjectItemModel_ValidateNames")]
+        public void ComplexObjectItemModel_ValidateNames_WithValidLongComplexObject_IsUsed()
+        {
+            //------------Setup for test--------------------------
+            var complexObject = new ComplexObjectItemModel("Pet");
+            complexObject.Children.Add(new ComplexObjectItemModel("O()", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("n()", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("l()", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("m(*)", complexObject));
+            complexObject.Children.Add(new ComplexObjectItemModel("X", complexObject));
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            //Parent
+            Assert.IsTrue(complexObject.IsUsed);
+
+            //Child
+            Assert.IsTrue(complexObject.Children[0].IsUsed);
+            Assert.IsTrue(complexObject.Children[1].IsUsed);
+            Assert.IsTrue(complexObject.Children[2].IsUsed);
+            Assert.IsTrue(complexObject.Children[3].IsUsed);
+            Assert.IsTrue(complexObject.Children[4].IsUsed);
+        }
     }
 }

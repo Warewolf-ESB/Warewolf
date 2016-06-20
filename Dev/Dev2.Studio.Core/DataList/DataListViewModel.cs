@@ -64,7 +64,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private RelayCommand _sortCommand;
         private RelayCommand _deleteCommand;
         private RelayCommand _viewComplexObjectsCommand;
-        private RelayCommand _addNoteCommand;
         private bool _viewSortDelete;
 
         #endregion Fields
@@ -272,12 +271,6 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsComplexObject;
         }
 
-        bool CanAddNotes(Object itemx)
-        {
-            var item = itemx as IDataListItemModel;
-            return item != null && !item.AllowNotes;
-        }
-
         bool CanDelete(Object itemx)
         {
             var item = itemx as IDataListItemModel;
@@ -319,17 +312,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
                     DeleteCommand.RaiseCanExecuteChanged();
                 }, CanDelete));
-            }
-        }
-
-        public RelayCommand AddNoteCommand
-        {
-            get
-            {
-                return _addNoteCommand ?? (_addNoteCommand = new RelayCommand(item =>
-                {
-
-                }, CanAddNotes));
             }
         }
 

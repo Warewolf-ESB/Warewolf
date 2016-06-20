@@ -392,6 +392,79 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(beforeCount > afterCount);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_HasUnusedDataListItems")]
+        public void DataListViewModel_HasUnusedDataListItems_RemoveMalformedRecordSet_ExpectedRecordSetRemove()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("Province");
+            part.Setup(c => c.Description).Returns("A state in a republic");
+            part.Setup(c => c.IsScalar).Returns(false);
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            int beforeCount = _dataListViewModel.DataList.Count;
+            parts.Add(part.Object);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
+
+            var canExec = _dataListViewModel.FindUnusedAndMissingCommand.CanExecute(_dataListViewModel);
+            Assert.IsTrue(canExec);
+            _dataListViewModel.FindUnusedAndMissingCommand.Execute(_dataListViewModel);
+            int afterCount = _dataListViewModel.DataList.Count;
+            Assert.IsTrue(beforeCount > afterCount);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_HasUnusedDataListItems")]
+        public void DataListViewModel_HasUnusedDataListItems_RemoveMalformedComplexObject_ExpectedComplexObjectRemove()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.DisplayValue).Returns("Parent.School()");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.IsJson).Returns(true);
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            int beforeCount = _dataListViewModel.DataList.Count;
+            parts.Add(part.Object);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
+            _dataListViewModel.ComplexObjectCollection[0].IsUsed = false;
+
+            var canExec = _dataListViewModel.FindUnusedAndMissingCommand.CanExecute(_dataListViewModel);
+            Assert.IsTrue(canExec);
+            _dataListViewModel.FindUnusedAndMissingCommand.Execute(_dataListViewModel);
+            int afterCount = _dataListViewModel.DataList.Count;
+            Assert.AreEqual(beforeCount, afterCount);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_AddMissingDataListItems")]
+        public void DataListViewModel_AddMissingDataListItems_ComplexObject_ExpectedAddComplexObjectIsArray()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.DisplayValue).Returns("Parent.School()");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.IsJson).Returns(true);
+            parts.Add(part.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            //Second add trying to add the same items to the data list again            
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+            Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection[0].Children.Count);
+            Assert.AreEqual("School()", _dataListViewModel.ComplexObjectCollection[0].Children[0].DisplayName);
+            Assert.IsTrue(_dataListViewModel.ComplexObjectCollection[0].Children[0].IsArray);
+        }
+
         #endregion RemoveUnused Tests
 
         #region RemoveRowIfEmpty Tests
@@ -1546,6 +1619,187 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_SetUsedDataListItems")]
+        public void DataListViewModel_SetUsedDataListItems_HasComplexObjectsWithFieldsThatMatchParts_ShouldSetChildrenIsUsedTrue()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object) { BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>() };
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateComplexObjectPart(complexObject);
+            dataListParts.Add(part.Object);
+            //------------Execute Test---------------------------
+            dataListViewModel.SetIsUsedDataListItems(dataListParts, false);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dataListViewModel.ComplexObjectCollection[0].IsUsed);
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Children[0].IsUsed);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_SetInputOutput")]
+        public void DataListViewModel_SetInputOutput_HasComplexObjects_ExpectedHasInputOutput()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object) { BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>() };
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Input = true;
+            complexObjectDataModel.Output = true;
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateComplexObjectPart(complexObject);
+            dataListParts.Add(part.Object);
+            //------------Execute Test---------------------------
+            dataListViewModel.SetIsUsedDataListItems(dataListParts, false);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Input);
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Output);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_RemoveDataListItem")]
+        public void DataListViewModel_RemoveDataListItem_WithComplexObjectItem_ShouldRemoveFromComplexObjectItemCollection()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Input = true;
+            complexObjectDataModel.Output = true;
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateComplexObjectPart(complexObject);
+            dataListParts.Add(part.Object);
+            //----------------------Precondition----------------------------
+            Assert.AreEqual(1, dataListViewModel.ComplexObjectCollection.Count);
+
+            complexObjectDataModel.IsUsed = false;
+            complexObjectDataModel.Children[0].IsUsed = false;
+            //------------Execute Test---------------------------
+            dataListViewModel.RemoveDataListItem(complexObjectDataModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_RemoveDataListItem")]
+        public void DataListViewModel_RemoveDataListItem_WithComplexObjectItem_ShouldNotRemoveFromComplexObjectItemCollection()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Input = true;
+            complexObjectDataModel.Output = true;
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateComplexObjectPart(complexObject);
+            dataListParts.Add(part.Object);
+            //----------------------Precondition----------------------------
+            Assert.AreEqual(1, dataListViewModel.ComplexObjectCollection.Count);
+
+            //------------Execute Test---------------------------
+            dataListViewModel.RemoveDataListItem(complexObjectDataModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dataListViewModel.ComplexObjectCollection.Count);
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].IsUsed);
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Children[0].IsUsed);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_UpdateDataListItems")]
+        public void DataListViewModel_UpdateDataListItems_NoMissingComplexObjectsWorkflowItems_ShouldMarkComplexObjectsValuesUsedTrue()
+        {
+            //------------Setup for test--------------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            const string complexObject = "testing";
+            const string complexObjectChild1 = "item()";
+            const string complexObjectChild2 = "new";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild1, complexObjectDataModel));
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild2, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var parts = new List<IDataListVerifyPart> { CreateComplexObjectPart(complexObject).Object };
+            //------------Execute Test---------------------------
+            dataListViewModel.UpdateDataListItems(resourceModel, parts);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].IsUsed);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_ViewComplexObject")]
+        public void DataListViewModel_ViewComplexObject_NoMissingComplexObjectsWorkflowItems_ShouldShowViewComplexObjectsTrue()
+        {
+            //------------Setup for test--------------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            const string complexObject = "testing";
+            const string complexObjectChild1 = "item()";
+            const string complexObjectChild2 = "new";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild1, complexObjectDataModel));
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild2, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var parts = new List<IDataListVerifyPart> { CreateComplexObjectPart(complexObject).Object };
+            //------------Execute Test---------------------------
+            dataListViewModel.UpdateDataListItems(resourceModel, parts);
+            var canExec = dataListViewModel.ViewComplexObjectsCommand.CanExecute(dataListViewModel.ComplexObjectCollection[0]);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canExec);
+            Assert.IsNotNull(dataListViewModel.ComplexObjectCollection[0]);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_DeleteComplexObject")]
+        public void DataListViewModel_DeleteComplexObject_NoMissingComplexObjectsWorkflowItems_ShouldShoDeleteComplexObjectsTrue()
+        {
+            //------------Setup for test--------------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            const string complexObject = "testing";
+            const string complexObjectChild1 = "item()";
+            const string complexObjectChild2 = "new";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild1, complexObjectDataModel));
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild2, complexObjectDataModel));
+            dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
+            var parts = new List<IDataListVerifyPart> { CreateComplexObjectPart(complexObject).Object };
+            //------------Execute Test---------------------------
+            dataListViewModel.UpdateDataListItems(resourceModel, parts);
+            complexObjectDataModel.IsUsed = false;
+            complexObjectDataModel.Children[0].IsUsed = false;
+            complexObjectDataModel.Children[1].IsUsed = false;
+
+            var canExec = dataListViewModel.DeleteCommand.CanExecute(dataListViewModel.ComplexObjectCollection[0]);
+            Assert.IsTrue(canExec);
+
+            dataListViewModel.DeleteCommand.Execute(complexObjectDataModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_RemoveDataListItem")]
         public void DataListViewModel_RemoveDataListItem_WithNullItem_ShouldDoNothing()
@@ -1908,6 +2162,22 @@ namespace Dev2.Core.Tests
             IRecordSetFieldItemModel fieldDataListModel = DataListItemModelFactory.CreateRecordSetFieldItemModel(fieldName, "", recSetDataModel);
             fieldDataListModel.DisplayName = recSetDataModel.DisplayName + "()." + fieldName;
             return fieldDataListModel;
+        }
+
+        static IComplexObjectItemModel CreateComplexObjectDataListModel(string displayName, IComplexObjectItemModel parent = null)
+        {
+            IComplexObjectItemModel complexObject = new ComplexObjectItemModel(displayName, parent);
+            return complexObject;
+        }
+
+        static Mock<IDataListVerifyPart> CreateComplexObjectPart(string fieldName)
+        {
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Field).Returns(fieldName);
+            part.Setup(c => c.DisplayValue).Returns(fieldName);
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.IsJson).Returns(true);
+            return part;
         }
 
         static Mock<IDataListVerifyPart> CreateRecsetPart(string recsetName, string fieldName)
