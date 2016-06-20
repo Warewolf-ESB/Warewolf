@@ -43,7 +43,7 @@ namespace Dev2.Studio.Core.Factories
                     }
                     else
                     {
-                        activityToUpdate = new DsfWorkflowActivity();
+                        activityToUpdate = new DsfActivity();
                     }
                 }
                 else

@@ -113,7 +113,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
                             if (modelItem != null)
                             {
                                 dynamic mi = ModelItem;
-                                mi.ApplyActivityFunc.Handler = modelItem;
+                                mi.ApplyActivityFunc.Handler = d;
                                 return true;
                             }
                         }
