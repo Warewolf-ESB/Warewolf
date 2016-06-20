@@ -1,32 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Microsoft.Exchange.WebServices.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
-    public class Dev2EmailSender:IDev2EmailSender
+    public class Dev2EmailSender : IDev2EmailSender
     {
-       
-
         #region Implementation of IDev2EmailSender
 
         public Dev2EmailSender()
         {
         }
+
         public Dev2EmailSender(ExchangeService exchangeService, IExchangeEmailSender emailSender)
         {
             ExchangeService = exchangeService;
             EmailSender = emailSender;
-           
         }
+
         private IExchangeServiceFactory _exchangeServiceFactory;
+
         private void InitializeService()
         {
             _exchangeServiceFactory = new ExchangeServiceFactory();
@@ -36,12 +46,11 @@ namespace Dev2.Common
         public IExchangeEmailSender EmailSender { get; set; }
         public ExchangeService ExchangeService { get; set; }
 
-    
         public string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
         // ReSharper restore TooManyArguments
         {
             InitializeService();
-             errors = new ErrorResultTO();
+            errors = new ErrorResultTO();
             var toValue = colItr.FetchNextValue(toItr);
             var ccValue = colItr.FetchNextValue(ccItr);
             var bccValue = colItr.FetchNextValue(bccItr);
@@ -84,7 +93,7 @@ namespace Dev2.Common
             return result;
         }
 
-        void AddToAddresses(string toValue, EmailMessage mailMessage)
+        private void AddToAddresses(string toValue, EmailMessage mailMessage)
         {
             try
             {
@@ -97,7 +106,7 @@ namespace Dev2.Common
             }
         }
 
-        void AddCcAddresses(string toValue, EmailMessage mailMessage)
+        private void AddCcAddresses(string toValue, EmailMessage mailMessage)
         {
             try
             {
@@ -110,7 +119,7 @@ namespace Dev2.Common
             }
         }
 
-        void AddBccAddresses(string toValue, EmailMessage mailMessage)
+        private void AddBccAddresses(string toValue, EmailMessage mailMessage)
         {
             try
             {
@@ -123,7 +132,7 @@ namespace Dev2.Common
             }
         }
 
-        void AddAttachmentsValue(string attachmentsValue, EmailMessage mailMessage)
+        private void AddAttachmentsValue(string attachmentsValue, EmailMessage mailMessage)
         {
             try
             {
@@ -141,8 +150,6 @@ namespace Dev2.Common
             return stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-        #endregion
+        #endregion Implementation of IDev2EmailSender
     }
-
-
 }

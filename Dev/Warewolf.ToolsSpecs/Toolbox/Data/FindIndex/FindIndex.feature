@@ -312,21 +312,7 @@ Scenario: Tool does not return
 	|                                      |
 	| [[result]] = Index is not an integer |
 
-#Complex Types WOLF-1042
-Scenario Outline: Find all occurances using complex types
-	Given I have a Find Index variable "<variable>" equal to "<value>"
-	And I selected Index "All Occurrence"
-	And I search for characters "t"
-	And I selected direction as "Left to Right"
-	When the data find index tool is executed
-	Then the find index result is "<result>"
-	And the execution has "No" error
-	Examples: 
-	| variable                              | value                                                     | result               |
-	| [[rec().set().comment]]               | I have reserved my right to comment at this point in time | 24,26,35,38,40,49,54 |
-	| [[rec(1).set(*).comment]]             | Great Day                                                 | 5                    |
-	| [[rec([[var]]).set([[int]]).comment]] | I have reserved my right to comment at this point in time | 24,26,35,38,40,49,54 |
-
+	
 
 Scenario: Find first Occurrence of a character non existent imput
 	Given the sentence "[[a]]"
