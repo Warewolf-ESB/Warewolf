@@ -19,6 +19,7 @@ using System.Net;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.PathOperations;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -29,9 +30,6 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.ViewModels.DataList;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -116,6 +114,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 scenarioContext.TryGetValue("activity", out baseAct);
                 var stringAct = baseAct as DsfFlowNodeActivity<string>;
                 var boolAct = baseAct as DsfFlowNodeActivity<bool>;
+                var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
                     DsfActivityAbstract<string> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
@@ -129,6 +128,16 @@ namespace Dev2.Activities.Specs.BaseTypes
                 else if(boolAct != null)
                 {
                     DsfActivityAbstract<bool> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    if (!result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
+                }
+                else if(multipleFilesActivity != null)
+                {
+                    DsfAbstractMultipleFilesActivity dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -602,16 +611,24 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
+                var multipleFilesActivity = act as DsfAbstractMultipleFilesActivity;
+                if(multipleFilesActivity != null)
+                {
+                    return DebugItemResults(multipleFilesActivity, result.Environment);
+                }
+
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
                 if (dsfActivityAbstractString != null)
                 {
                     return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
+
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
                 if (dsfActivityAbstractBool != null)
                 {
                     return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
+
                 var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
