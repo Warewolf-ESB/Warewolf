@@ -1592,7 +1592,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile27.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed19.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed19.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -1605,7 +1605,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_22()
         {
-            this.RenameFileValidation("22", "[[rec(1).a]][[rec(2).a]].txt", "c:\\rename", "file27", "C:\\renamefile27.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed19.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("22", "[[rec(1).a]][[rec(2).a]].txt", "c:\\rename", "file27", "C:\\renamefile27.txt", "\"\"", "\"\"", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed19.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed19.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1650,7 +1650,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile29.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed21.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed21.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -1663,7 +1663,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_24()
         {
-            this.RenameFileValidation("24", "C:[[rec(1).a]][[rec(2).a]].txt", "\\rename", "file29", "C:\\renamefile29.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed21.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("24", "C:[[rec(1).a]][[rec(2).a]].txt", "\\rename", "file29", "C:\\renamefile29.txt", "\"\"", "\"\"", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed21.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed21.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1731,13 +1731,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "c:\\copyfile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "C:\\copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile32.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed24.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed24.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -1750,7 +1750,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_27()
         {
-            this.RenameFileValidation("27", "c:\\copyfile0.txt", "\"\"", "\"\"", "C:\\renamefile32.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed24.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("27", "C:\\copyfile0.txt", "\"\"", "\"\"", "C:\\renamefile32.txt", "\"\"", "\"\"", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed24.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed24.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1998,7 +1998,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile41.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[rec(1).a]]:[[rec(2).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed33.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed33.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -2011,7 +2011,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_36()
         {
-            this.RenameFileValidation("36", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/", "renamed33.txt", "C:\\renamefile41.txt", "\"\"", "\"\"", "[[rec(1).a]]:[[rec(2).a]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed33.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("36", "[[sourcePath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/", "renamed33.txt", "C:\\renamefile41.txt", "\"\"", "\"\"", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed33.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed33.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2056,7 +2056,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile43.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "c:\\copyfile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "C:\\copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed35.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -2069,7 +2069,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_38()
         {
-            this.RenameFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile43.txt", "\"\"", "\"\"", "c:\\copyfile0.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed35.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile43.txt", "\"\"", "\"\"", "C:\\copyfile0.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed35.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2114,7 +2114,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile45.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "c:\\copyfile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed37.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed37.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -2127,7 +2127,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_40()
         {
-            this.RenameFileValidation("40", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile45.txt", "\"\"", "\"\"", "c:\\copyfile0.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed37.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("40", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile45.txt", "\"\"", "\"\"", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed37.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed37.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -3325,25 +3325,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenameFileAtLocationWithInvalidDirectories(string no, string name, string source, string sourceLocation, string username, string password, string destination, string destinationLocation, string destUsername, string destPassword, string selected, string resultVar, string result, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at location with invalid directories", exampleTags);
-#line 169
+#line 163
 this.ScenarioSetup(scenarioInfo);
-#line 170
+#line 164
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 171
+#line 165
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
+#line 166
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
+#line 167
     testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 168
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 169
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 170
     testRunner.When("the rename file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 177
+#line 171
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 178
+#line 172
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3362,14 +3362,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", destUsername),
                         "String",
                         string.Format("{0}", selected)});
-#line 179
+#line 173
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table4.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 182
+#line 176
  testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
