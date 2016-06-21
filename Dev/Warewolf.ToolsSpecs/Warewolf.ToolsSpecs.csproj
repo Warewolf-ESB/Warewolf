@@ -227,9 +227,9 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
-      <DependentUpon>Unzip.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Unzip.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Write File\Write File1.feature.cs">
