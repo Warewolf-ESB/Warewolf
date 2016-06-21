@@ -55,17 +55,17 @@ namespace ActivityUnitTests
         }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        Guid ExecutionId { get; set; }
+        protected Guid ExecutionId { get; set; }
 
-        protected string TestData { private get; set; }
+        protected string TestData { get; set; }
 
         protected string CurrentDl { get; set; }
 
         protected FlowStep TestStartNode { get; set; }
 
-        protected IDSFDataObject DataObject { get; private set; }
+        protected IDSFDataObject DataObject { get;  set; }
 
-        DynamicActivity FlowchartProcess
+        protected DynamicActivity FlowchartProcess
         {
             get
             {
@@ -330,7 +330,7 @@ namespace ActivityUnitTests
             return result;
         }
 
-        protected IPrincipal User { private get; set; }
+        protected IPrincipal User {  get; set; }
 
         protected void CreateDataListWithRecsetAndCreateShape(IEnumerable<string> recsetData, string recsetName, string fieldName, out string dataListShape, out string dataListWithData)
         {
