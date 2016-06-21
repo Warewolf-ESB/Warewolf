@@ -94,7 +94,9 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="PostgresSqlSource\NewPostgresDatabaseSourceSteps.cs" />
-    <Compile Include="PostgresSqlSource\PostgresSqlSource.feature.cs">
+    <Compile Include="PostgresSqlSource\PostgresSqlSource1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>PostgresSqlSource.feature</DependentUpon>
     </Compile>
   </ItemGroup>
