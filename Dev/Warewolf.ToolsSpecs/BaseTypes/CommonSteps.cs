@@ -431,7 +431,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
-                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i) && i != "\"\"").ToList();
                 value = value.Replace('"', ' ').Trim();
 
                 if (string.IsNullOrEmpty(value))
