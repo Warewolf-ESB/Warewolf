@@ -542,7 +542,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddObjectsToObject(objects, dataListObject);
 
             var dataListString = dataListObject.ToString(Formatting.Indented);
-            var xml = JsonConvert.DeserializeXNode(dataListString, "DataList");
+            JsonData = dataListString;
+            var xml = JsonConvert.DeserializeXNode(dataListString, "DataList", true);
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
             try
@@ -560,6 +561,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Dev2Logger.Error(e.StackTrace, e);
             }
         }
+
+        public string JsonData { get; set; }
 
         private void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
         {
@@ -579,18 +582,25 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 json = complexObjectItemModel.GetJson();
                             }
                         }
-                        var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
-                        var value = JsonConvert.DeserializeObject(objValue) as JObject;
-                        if (value != null)
+                        try
                         {
-                            var prop = value.Properties().FirstOrDefault(property => property.Name == o.Field);
-                            if (prop != null)
+                            var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
+                            var value = JsonConvert.DeserializeObject(objValue) as JObject;
+                            if (value != null)
                             {
-                                value = prop.Value as JObject;
+                                var prop = value.Properties().FirstOrDefault(property => property.Name == o.Field);
+                                if (prop != null)
+                                {
+                                    value = prop.Value as JObject;
+                                }
+
                             }
-                            
+                            dataListObject.Add(o.Field, value);
                         }
-                        dataListObject.Add(o.Field, value);
+                        catch (Exception)
+                        {
+                            ShowInvalidDataPopupMessage();
+                        }
                     }
                 }
             }
