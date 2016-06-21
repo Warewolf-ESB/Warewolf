@@ -52,6 +52,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             this.scenarioContext = scenarioContext;
         }
 
+        List<IActionableErrorInfo> _allErrors;
         public const string DestinationHolder = "destination";
         public const string ActualDestinationHolder = "actualDestination";
         public const string OverwriteHolder = "overwrite";
@@ -342,6 +343,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             IList<IActionableErrorInfo> validationErrors;
             scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
+            if (validationErrors == null)
+                validationErrors = _allErrors;
             if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
                 if (validationErrors != null)
@@ -926,15 +929,16 @@ namespace Dev2.Activities.Specs.BaseTypes
         [When(@"validating the delete tool from view model")]
         public void WhenValidatingTheDeleteToolFromViewModel()
         {
-            ValidateFromModelView();
+            _allErrors = new List<IActionableErrorInfo>();
+            _allErrors = ValidateFromModelView();
         }
 
 
-        public void ValidateFromModelView()
+        public List<IActionableErrorInfo> ValidateFromModelView()
         {
-            
             var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
-            currentViewModel.Validate();
+            currentViewModel.Validate();            
+            return currentViewModel.Errors;
         }
     }
 }
