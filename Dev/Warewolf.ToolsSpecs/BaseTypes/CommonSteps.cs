@@ -19,6 +19,7 @@ using System.Net;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.PathOperations;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -83,7 +84,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             if (expectedError)
             {
                 var errorThrown = allErros.Contains(fetchErrors);
-                //Assert.IsTrue(errorThrown);
+                Assert.IsTrue(errorThrown);
             }
             /*  var hasAnError = expectedError == actuallyHasErrors;
             var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
@@ -113,6 +114,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 scenarioContext.TryGetValue("activity", out baseAct);
                 var stringAct = baseAct as DsfFlowNodeActivity<string>;
                 var boolAct = baseAct as DsfFlowNodeActivity<bool>;
+                var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
                     DsfActivityAbstract<string> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
@@ -126,6 +128,16 @@ namespace Dev2.Activities.Specs.BaseTypes
                 else if(boolAct != null)
                 {
                     DsfActivityAbstract<bool> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    if (!result.Environment.HasErrors())
+                    {
+                        var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
+                        ThenTheDebugInputsAs(table, inputDebugItems);
+                    }
+                }
+                else if(multipleFilesActivity != null)
+                {
+                    DsfAbstractMultipleFilesActivity dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -324,7 +336,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (validationErrors != null)
                 {
-                    Assert.AreEqual(0, validationErrors.Count);
+                    Assert.AreNotEqual(0, validationErrors.Count);
                 }
             }
             else
@@ -350,10 +362,15 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Assert.IsNotNull(validationErrors);
                 var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
+                FixBreaks(ref validationMessage, ref completeMessage);
                 Assert.AreEqual(validationMessage, completeMessage);
             }
         }
-
+        private void FixBreaks(ref string expected, ref string actual)
+        {
+            expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
+            actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
+        }
         [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {
@@ -594,16 +611,24 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
+                var multipleFilesActivity = act as DsfAbstractMultipleFilesActivity;
+                if(multipleFilesActivity != null)
+                {
+                    return DebugItemResults(multipleFilesActivity, result.Environment);
+                }
+
                 DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
                 if (dsfActivityAbstractString != null)
                 {
                     return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
+
                 DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
                 if (dsfActivityAbstractBool != null)
                 {
                     return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
+
                 var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
@@ -920,8 +945,16 @@ namespace Dev2.Activities.Specs.BaseTypes
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
-        public void CreateModelView()
+        [When(@"validating the delete tool from view model")]
+        public void WhenValidatingTheDeleteToolFromViewModel()
         {
+            ValidateFromModelView();
+        }
+
+
+        public void ValidateFromModelView()
+        {
+            
             var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
             currentViewModel.Validate();
         }

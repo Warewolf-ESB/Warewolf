@@ -40,7 +40,7 @@ namespace Dev2.PathOperations
         /// <param name="pass">The pass.</param>
         /// <param name="privateKeyFile">If private key file is required. This is the path</param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass,string privateKeyFile="")
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, string privateKeyFile = "")
         {
             return CreatePathFromString(path, user, pass, false, privateKeyFile);
         }
@@ -54,17 +54,16 @@ namespace Dev2.PathOperations
         /// <param name="isNotCertVerifiable">if set to <c>true</c> [is not cert verifiable].</param>
         /// <param name="privateKeyFile">If private key file is required. This is the path</param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable,string privateKeyFile="")
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable, string privateKeyFile = "")
         {
-            VerifyArgument.IsNotNull("path",path);
-            // Fetch path type
+            VerifyArgument.IsNotNull("path", path);
             enActivityIOPathType type = Dev2ActivityIOPathUtils.ExtractPathType(path);
-            if(type == enActivityIOPathType.Invalid)
+            if (type == enActivityIOPathType.Invalid)
             {
                 // Default to file system
                 type = enActivityIOPathType.FileSystem;
-                if(!Path.IsPathRooted(path))
-                    throw  new IOException(ErrorResource.InvalidPath);
+                if (!Path.IsPathRooted(path))
+                    throw new IOException(ErrorResource.InvalidPath);
             }
 
             return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable, privateKeyFile);
@@ -91,10 +90,10 @@ namespace Dev2.PathOperations
         public static IActivityIOOperationsEndPoint CreateOperationEndPointFromIOPath(IActivityIOPath target)
         {
 
-            lock(EndPointsLock)
+            lock (EndPointsLock)
             {
                 // load end-points if need be... aka first load
-                if(_endPoints == null)
+                if (_endPoints == null)
                 {
                     _endPoints = new List<Type>();
                     _referenceCheckers = new List<IActivityIOOperationsEndPoint>();
@@ -105,9 +104,9 @@ namespace Dev2.PathOperations
                                                                              .Where(t => type.IsAssignableFrom(t))
                                                                              .ToList();
 
-                    foreach(Type t in types)
+                    foreach (Type t in types)
                     {
-                        if(t != typeof(IActivityIOOperationsEndPoint))
+                        if (t != typeof(IActivityIOOperationsEndPoint))
                         {
                             _endPoints.Add(t);
                             _referenceCheckers.Add((IActivityIOOperationsEndPoint)Activator.CreateInstance(t));
@@ -119,7 +118,7 @@ namespace Dev2.PathOperations
             // now find the right match ;)
             int pos = 0;
 
-            while(pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
+            while (pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
             {
                 pos++;
             }
