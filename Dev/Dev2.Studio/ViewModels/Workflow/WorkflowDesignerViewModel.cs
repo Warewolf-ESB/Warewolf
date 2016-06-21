@@ -1919,17 +1919,33 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
 #pragma warning disable 618
             var navigationItemViewModel = DataObject as ExplorerItemModel;
-
+            Guid? envID = null;
+            Guid? resourceID = null;
+            if (navigationItemViewModel != null)
+            {
+                envID = navigationItemViewModel.EnvironmentId;
+                resourceID = navigationItemViewModel.ResourceId;
+            }
+            if (navigationItemViewModel == null)
+            {
+                var explorerItem = DataObject as IExplorerItemViewModel;
+                if (explorerItem != null)
+                {
+                    if(explorerItem.Server != null)
+                        envID = explorerItem.Server.EnvironmentID;
+                    resourceID = explorerItem.ResourceId;
+                }
+            }
             // ReSharper disable CSharpWarnings::CS0618
             ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
             // ReSharper restore CSharpWarnings::CS0618
 
-            if (navigationItemViewModel != null && modelProperty != null)
+            if (envID!=null && resourceID!=null&& modelProperty != null)
             {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
+                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envID);
                 if (environmentModel != null)
                 {
-                    var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
+                    var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
                     if (resource != null)
                     {
                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
