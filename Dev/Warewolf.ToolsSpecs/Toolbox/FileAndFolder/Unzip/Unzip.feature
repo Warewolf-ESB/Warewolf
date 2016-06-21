@@ -76,8 +76,8 @@ Scenario Outline: Unzip file validation
 	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error	
 	And the debug inputs as
-        | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password | Destination Private Key File | Source Private Key File |
-        | <File or Folder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | String           | <destinationPrivateKeyFile>  | <sourcePrivateKeyFile>  |
+         | Source Path                         | Username   | Password | Source Private Key File | Destination Path                      | Destination Username | Destination Password | Destination Private Key File | Overwrite  | Archive Password |
+         | <File or Folder> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> | String           |
 	
 	Examples: 
 		| No | File or Folder              | Val1          | Val2        | sourceLocation    | username              | password | destination                  | destinationLocation | destUsername      | destPassword | selected | resultVar              | Archive Password | result  | errorOccured | ValidationResult | DesignValidation                                                                                                         | OutputError                                                                           |

@@ -950,24 +950,24 @@ this.ScenarioSetup(scenarioInfo);
                         "Source Path",
                         "Username",
                         "Password",
+                        "Source Private Key File",
                         "Destination Path",
                         "Destination Username",
                         "Destination Password",
-                        "Overwrite",
-                        "Archive Password",
                         "Destination Private Key File",
-                        "Source Private Key File"});
+                        "Overwrite",
+                        "Archive Password"});
             table3.AddRow(new string[] {
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String",
+                        "<sourcePrivateKeyFile>",
                         string.Format("{0} = {1}", destination, destinationLocation),
                         string.Format("{0}", destUsername),
                         "String",
-                        string.Format("{0}", selected),
-                        "String",
                         "<destinationPrivateKeyFile>",
-                        "<sourcePrivateKeyFile>"});
+                        string.Format("{0}", selected),
+                        "String"});
 #line 78
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
