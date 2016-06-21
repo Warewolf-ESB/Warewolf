@@ -63,8 +63,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             scenarioContext.Add("activity", fileRead);
 
             var viewModel = new ReadFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileRead));
-            if (!ScenarioContext.Current.ContainsKey("viewModel"))
-                ScenarioContext.Current.Add("viewModel", viewModel);
+            if (!scenarioContext.ContainsKey("viewModel"))
+                scenarioContext.Add("viewModel", viewModel);
         }
     }
 }
