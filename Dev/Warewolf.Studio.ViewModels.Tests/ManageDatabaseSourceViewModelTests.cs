@@ -1001,7 +1001,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestCancelTestCommandExecute()
+        public void TestCancelDBSourceTestCommandExecute()
         {
             //act
             _targetUpdateManagerAggregatorDbSource.CancelTestCommand.Execute(null);           

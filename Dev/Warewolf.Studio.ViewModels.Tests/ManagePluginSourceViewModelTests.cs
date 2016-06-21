@@ -344,7 +344,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestCancelCommandExecute()
+        public void TestCancelPluginSourceCommandExecute()
         {
             //arrange
             var closeActionInvoked = false;

@@ -208,7 +208,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public async Task TestCancelTestCommandExecute()
+        public void TestCancelServerSourceTestCommandExecute()
         {
             //arrange
             Task task = null;
