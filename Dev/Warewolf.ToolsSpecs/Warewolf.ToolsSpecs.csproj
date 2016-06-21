@@ -208,16 +208,16 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read File\ReadFileSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature.cs">
-      <DependentUpon>Read Folder.feature</DependentUpon>
+    <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Read Folder.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
@@ -227,9 +227,9 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
-      <DependentUpon>Unzip.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Unzip.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Write File\Write File1.feature.cs">
