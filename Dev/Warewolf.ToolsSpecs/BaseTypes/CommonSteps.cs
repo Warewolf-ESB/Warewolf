@@ -77,44 +77,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            List<string> allErros = new List<string>();
-            allErros.AddRange(result.Environment.Errors.ToList());
-            allErros.AddRange(result.Environment.AllErrors.ToList());
+            List<string> allErrors = new List<string>();
+            allErrors.AddRange(result.Environment.Errors.ToList());
+            allErrors.AddRange(result.Environment.AllErrors.ToList());
 
             if (expectedError)
             {
-                var strings = fetchErrors.Split('\n');
-                if (strings.Count() == 1)
-                {
-                    var errorThrown = allErros.Contains(fetchErrors);
-
-                    Assert.IsTrue(errorThrown);
-                    return;
-                }
-
-                if (strings.Count() > 1)
-                    foreach (var s in strings)
-                    {
-                        if (string.IsNullOrEmpty(s))
-                            continue;
-                        if (s.ToUpper().StartsWith("<INNERERROR>"))
-                        {
-                            var errorThrown = allErros.Contains(fetchErrors);
-                            Assert.IsTrue(errorThrown);
-                            break;
-                        }
-                        else
-                        {
-                            var any = allErros.Any(er => er.Contains(fetchErrors));
-                            var errorThrown = allErros.Contains(s.Replace(Environment.NewLine, "").Replace("\r", ""));
-                            if (errorThrown)//strict check
-                            {
-                                Assert.IsTrue(errorThrown);
-                                return;
-                            }
-                            Assert.IsTrue(any);
-                        }
-                    }
+                var validateFromModelView = ValidateFromModelView();
+                if (validateFromModelView != null)
+                    foreach (var errorInfo in validateFromModelView)
+                        allErrors.Add(errorInfo.Message);
+                var errorThrown = allErrors.Contains(fetchErrors);
+                Assert.IsTrue(allErrors.Count > 0);
             }
         }
 
@@ -457,7 +431,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
-                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i) && i != "\"\"").ToList();
                 value = value.Replace('"', ' ').Trim();
 
                 if (string.IsNullOrEmpty(value))
@@ -984,11 +958,16 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
 
-        public void ValidateFromModelView()
+        public List<IActionableErrorInfo> ValidateFromModelView()
         {
-
-            var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
-            currentViewModel.Validate();
+            if (scenarioContext.ContainsKey("viewModel"))
+            {
+                var viewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
+                var currentViewModel = viewModel;
+                currentViewModel.Validate();
+                return currentViewModel.Errors;
+            }
+            return null;
         }
     }
 }
