@@ -157,7 +157,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesMethodsWithValidArgsExpectedReturnsList()
         {
             var service = CreatePluginService();
-            var args = service.ToString();
             var workspaceID = Guid.NewGuid();
 
             EnvironmentVariables.GetWorkspacePath(workspaceID);
@@ -165,7 +164,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new PluginServices();
             var result = services.Methods(service, workspaceID, Guid.Empty);
 
-            Assert.AreEqual(9, result.Count);
+            Assert.AreEqual(7, result.Count);
         }
 
         #endregion
@@ -330,34 +329,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }
-
-        [TestMethod]
-        public void PluginServicesTestWithValidArgsExpectedAddsRecordsetFields()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var services = new PluginServicesMock();
-            string serializedResult;
-            var result = services.Test("xxx", out serializedResult);
-
-            ////------------Assert Results-------------------------
-            Assert.IsTrue(services.FetchRecordsetAddFields);
-            Assert.AreEqual(1, result[0].Fields.Count);
-        }
-
-        [TestMethod]
-        public void PluginServicesTestWithValidArgsExpectedFetchesRecordset()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var services = new PluginServicesMock();
-            string serializedResult;
-            var result = services.Test("xxx", out serializedResult);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, services.FetchRecordsetHitCount);
-            Assert.AreEqual(1, result.Count);
-        }
-
+        
         #endregion
 
         #region CreatePluginService
