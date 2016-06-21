@@ -265,6 +265,7 @@ namespace Dev2.Studio.Views
                     }
                 }
             }
+            Toolbox.Activate();
         }
 
         public void ClearToolboxSearch()
@@ -621,21 +622,6 @@ namespace Dev2.Studio.Views
             {
                 // ignored
             }
-        }
-
-        private void Toolbox_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            Toolbox.Activate();
-        }
-
-        private void Variables_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            Variables.Activate();
-        }
-
-        private void Explorer_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            Explorer.Activate();
         }
     }
 }
