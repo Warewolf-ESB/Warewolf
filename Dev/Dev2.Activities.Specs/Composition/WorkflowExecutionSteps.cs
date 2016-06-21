@@ -378,7 +378,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(item => item.ResultsList).ToList());
         }
 
-        [Then(@"the ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug inputs as")]
+        [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInInStepForDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -410,7 +410,7 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-        [Then(@"the ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
+        [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInInStepForDebugOutputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -493,7 +493,7 @@ namespace Dev2.Activities.Specs.Composition
                 var inputMapping = inputSb.ToString();
                 resource.Outputs = outputMapping;
                 resource.Inputs = inputMapping;
-
+                resource.ResourceType = ResourceType.Service;
                 activity.ResourceID = resource.ID;
                 activity.ServiceName = resource.ResourceName;
                 activity.DisplayName = serviceName;
@@ -757,8 +757,7 @@ namespace Dev2.Activities.Specs.Composition
             return outputSb;
         }
 
-        [Given(@"""(.*)"" in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
-        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        [Given(@"'(.*)' in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
         {
             DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
@@ -791,7 +790,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        [Given(@"""(.*)"" in ""(.*)"" contains Gather System Info ""(.*)"" as")]
+        [Given(@"'(.*)' in ""(.*)"" contains Gather System Info ""(.*)"" as")]
         public void GivenInContainsGatherSystemInfoAs(string sequenceName, string forEachName, string activityName, Table table)
         {
             var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
@@ -1434,6 +1433,12 @@ namespace Dev2.Activities.Specs.Composition
             }
 
         }
+        [Given(@"""(.*)"" contains a Sequence ""(.*)"" as")]
+        public void GivenContainsASequenceAs(string parentName, string activityName)
+        {
+            var dsfSequence = new DsfSequenceActivity { DisplayName = activityName };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
+        }
 
         [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
@@ -1893,24 +1898,55 @@ namespace Dev2.Activities.Specs.Composition
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Recordset"];
-                //var userName = tableRow["Username"];
-                //var password = tableRow["Password"];
                 var result = tableRow["Result"];
 
                 activity.Result = result;
                 activity.InputPath = variable;
-                //activity.Username = userName;
-                //activity.Password = password;
 
                 _commonSteps.AddVariableToVariableList(result);
             }
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
-        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
-        public void GivenContainsBaseConvertAs(string p0, string p1, Table table)
+        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variable = tableRow["Variable"];
+                var type = tableRow["Type"];
+                var at = tableRow["Using"];
+                var padding = tableRow["Padding"];
+                var alignment = tableRow["Alignment"];
+
+                activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
+            }
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
+        public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
+        {
+            DsfBaseConvertActivity activity = new DsfBaseConvertActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variableToConvert = tableRow["Variable"];
+                var from = tableRow["From"];
+                var to = tableRow["To"];
+
+                activity.ConvertCollection.Add(new BaseConvertTO(variableToConvert, from, to, variableToConvert, 1, true));
+            }
+
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
+        public void GivenContainsCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
+        {
+            var dsfCalculate = new DsfCalculateActivity { DisplayName = activityName, Expression = formula, CurrentResult = resultVariable };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfCalculate);
         }
     }
 }

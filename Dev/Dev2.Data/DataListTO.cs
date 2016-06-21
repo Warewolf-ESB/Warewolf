@@ -68,10 +68,16 @@ namespace Dev2.Data
                 rootEl.Elements().Where(el =>
                 {
                     var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
+                    var isJsonAttribute = el.Attribute("IsJson");
+                    var isJson = false;
+                    if (isJsonAttribute != null)
+                    {
+                        isJson = isJsonAttribute.Value.ToLower() == "true";
+                    }
                     var removeCondition = firstOrDefault != null &&
                                           (firstOrDefault.Value == enDev2ColumnArgumentDirection.Output.ToString() ||
                                            firstOrDefault.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                    return removeCondition && !el.HasElements;
+                    return removeCondition && (!el.HasElements || isJson);
                 }).Select(element => element.Name.ToString()));
 
             var xElements = rootEl.Elements().Where(el => el.HasElements);
