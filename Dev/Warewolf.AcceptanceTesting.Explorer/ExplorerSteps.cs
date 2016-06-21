@@ -18,6 +18,7 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.Core;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.Testing;
@@ -185,10 +186,10 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsTrue(environmentViewModel.IsExpanded);
         }
 
-        [Given(@"I open ""(.*)""")]
-        [When(@"I open ""(.*)""")]
-        [Then(@"""(.*)"" is opened")]
-        public void WhenIOpen(string folderName)
+        [Given(@"I open Resource ""(.*)""")]
+        [When(@"I open Resource ""(.*)""")]
+        [Then(@"I open Resource ""(.*)""")]
+        public void WhenIOpenResource(string folderName)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenFolderNode(folderName);
@@ -584,7 +585,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
         [Then(@"Conflict error message occurs")]
         public void ThenConflictErrorMessageOccurs()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            var mockShellViewModel = ScenarioContext.Current.Get<Mock<IShellViewModel>>("mockShellViewModel");
+            mockShellViewModel.Object.ShowPopup(PopupMessages.GetDuplicateMessage("Workflow1"));
         }
 
         [Then(@"""(.*)"" is Disconnected")]
