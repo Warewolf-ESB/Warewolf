@@ -256,13 +256,19 @@ namespace Dev2.Data
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;
+            XmlAttribute descAttribute = null;
             if (c.Attributes != null)
             {
                 isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
                 ioDirection = ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]);
+                descAttribute = c.Attributes["Description"];
             }
             var name = GetNameForArrayComplexObject(c, isArray);
             var complexObjectItemModel = new ComplexObject { Name = "@" + name, IsArray = isArray, IODirection = ioDirection, Children = new Dictionary<int, List<IComplexObject>>() };
+            if (descAttribute != null)
+            {
+                complexObjectItemModel.Description = descAttribute.Value;
+            }
             ComplexObjects.Add(complexObjectItemModel);
             ShapeComplexObjects.Add(complexObjectItemModel);
         }
