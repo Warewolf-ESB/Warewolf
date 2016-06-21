@@ -84,20 +84,20 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table1.AddRow(new string[] {
-                        "[[Score().Value]]",
+                        "[[@Score().Value]]",
                         "0.3"});
             table1.AddRow(new string[] {
-                        "[[Score().Value]]",
+                        "[[@Score().Value]]",
                         "0.45"});
             table1.AddRow(new string[] {
-                        "[[Score().Value]]",
+                        "[[@Score().Value]]",
                         "0.12"});
 #line 7
  testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table1, "Given ");
 #line 12
  testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("Datasource is \"[[Score(*).Value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Datasource is \"[[@Score(*).Value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
@@ -108,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[Score(*).Value]]"});
+                        "[[@Score(*).Value]]"});
             table2.AddRow(new string[] {
                         "As = [[Score]]"});
 #line 18
@@ -180,20 +180,20 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table5.AddRow(new string[] {
-                        "[[Score().Value]]",
+                        "[[@Score().Value]]",
                         "0.3"});
             table5.AddRow(new string[] {
-                        "[[Score().Value]]",
+                        "[[@Score().Value]]",
                         "0.45"});
             table5.AddRow(new string[] {
-                        "[[Score().Value]]",
+                        "[[@Score().Value]]",
                         "0.12"});
 #line 39
  testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table5, "Given ");
 #line 44
  testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
- testRunner.And("Datasource is \"[[Score(*).Value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Datasource is \"[[@Score(*).Value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
@@ -214,11 +214,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 50
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 51
- testRunner.And("\"[[Score(1).Value]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"[[@Score(1).Value]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
- testRunner.And("\"[[Score(2).Value]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"[[@Score(2).Value]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
- testRunner.And("\"[[Score(3).Value]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"[[@Score(3).Value]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -296,20 +296,20 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table9.AddRow(new string[] {
-                        "[[Score()]]",
+                        "[[@Score()]]",
                         "0.3"});
             table9.AddRow(new string[] {
-                        "[[Score()]]",
+                        "[[@Score()]]",
                         "0.45"});
             table9.AddRow(new string[] {
-                        "[[Score()]]",
+                        "[[@Score()]]",
                         "0.12"});
 #line 73
  testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table9, "Given ");
 #line 78
  testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 79
- testRunner.And("Datasource is \"[[Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Datasource is \"[[@Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
@@ -858,18 +858,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the underlying dropped activity is a(n) \"Activity\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
-                        "index"});
-            table32.AddRow(new string[] {
-                        "1"});
-            table32.AddRow(new string[] {
-                        "2"});
-            table32.AddRow(new string[] {
-                        "3"});
 #line 249
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table32, "Then ");
-#line 254
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -881,47 +870,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAnActivityUsingAJSONObjectWith3Rows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over an activity using a JSON Object with 3 rows", ((string[])(null)));
-#line 256
+#line 251
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table33.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table32.AddRow(new string[] {
+                        "[[rs().field]]",
                         "1"});
-            table33.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table32.AddRow(new string[] {
+                        "[[rs().field]]",
                         "2"});
-            table33.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table32.AddRow(new string[] {
+                        "[[rs().field]]",
                         "3"});
+#line 252
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table32, "Given ");
 #line 257
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table33, "Given ");
-#line 262
  testRunner.And("Alias is \"[[rs]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
- testRunner.And("Datasource is \"[[@rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
- testRunner.And("I Map the input recordset \"[[@rs(*).field]]\" to \"[[@test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
- testRunner.And("I Map the output recordset \"[[@test(*).data]]\" to \"[[@res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 266
+#line 258
+ testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 259
+ testRunner.And("I Map the input recordset \"[[rs(*).field]]\" to \"[[test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 260
+ testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 261
  testRunner.And("the underlying dropped activity is a(n) \"Activity\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
+#line 262
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
-                        "index"});
-            table34.AddRow(new string[] {
-                        "1"});
-            table34.AddRow(new string[] {
-                        "2"});
-            table34.AddRow(new string[] {
-                        "3"});
-#line 268
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table34, "Then ");
-#line 273
+#line 263
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -933,52 +911,39 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAnActivityUsingARecordsetWith4Rows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over an activity using a recordset with 4 rows", ((string[])(null)));
-#line 275
+#line 265
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table35.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "[[rs().field]]",
                         "1"});
-            table35.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "[[rs().field]]",
                         "2"});
-            table35.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "[[rs().field]]",
                         "3"});
-            table35.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "[[rs().field]]",
                         "6"});
-#line 276
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table35, "Given ");
-#line 282
+#line 266
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table33, "Given ");
+#line 272
  testRunner.And("Alias is \"[[rs]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 283
+#line 273
  testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 284
+#line 274
  testRunner.And("I Map the input recordset \"[[rs(*).field]]\" to \"[[test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 285
+#line 275
  testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 286
+#line 276
  testRunner.And("the underlying dropped activity is a(n) \"Activity\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
+#line 277
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
-                        "index"});
-            table36.AddRow(new string[] {
-                        "1"});
-            table36.AddRow(new string[] {
-                        "2"});
-            table36.AddRow(new string[] {
-                        "3"});
-            table36.AddRow(new string[] {
-                        "4"});
-#line 288
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table36, "Then ");
-#line 294
+#line 278
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -990,52 +955,39 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAnActivityUsingAJSONObjectWith4Rows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over an activity using a JSON Object with 4 rows", ((string[])(null)));
-#line 296
+#line 280
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table37.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table34.AddRow(new string[] {
+                        "[[rs().field]]",
                         "1"});
-            table37.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table34.AddRow(new string[] {
+                        "[[rs().field]]",
                         "2"});
-            table37.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table34.AddRow(new string[] {
+                        "[[rs().field]]",
                         "3"});
-            table37.AddRow(new string[] {
-                        "[[@rs().field]]",
+            table34.AddRow(new string[] {
+                        "[[rs().field]]",
                         "6"});
-#line 297
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table37, "Given ");
-#line 303
+#line 281
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table34, "Given ");
+#line 287
  testRunner.And("Alias is \"[[rs]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 304
- testRunner.And("Datasource is \"[[@rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 305
- testRunner.And("I Map the input recordset \"[[@rs(*).field]]\" to \"[[@test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
- testRunner.And("I Map the output recordset \"[[@test(*).data]]\" to \"[[@res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 288
+ testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 289
+ testRunner.And("I Map the input recordset \"[[rs(*).field]]\" to \"[[test(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 290
+ testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 291
  testRunner.And("the underlying dropped activity is a(n) \"Activity\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 292
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
-                        "index"});
-            table38.AddRow(new string[] {
-                        "1"});
-            table38.AddRow(new string[] {
-                        "2"});
-            table38.AddRow(new string[] {
-                        "3"});
-            table38.AddRow(new string[] {
-                        "4"});
-#line 309
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table38, "Then ");
-#line 315
+#line 293
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1047,26 +999,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolNullAlias()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool null alias", ((string[])(null)));
-#line 317
+#line 295
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table39.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "[[rs().field]]",
                         "1"});
-#line 318
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table39, "Given ");
-#line 321
+#line 296
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table35, "Given ");
+#line 299
  testRunner.And("Alias is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 300
  testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
+#line 301
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 302
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 325
+#line 303
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1078,26 +1030,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolNullAliasForJSONObjects()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool null alias for JSON Objects", ((string[])(null)));
-#line 327
+#line 305
  this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table40.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "[[@rs().field]]",
                         "1"});
-#line 328
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table40, "Given ");
-#line 331
+#line 306
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table36, "Given ");
+#line 309
  testRunner.And("Alias is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 332
+#line 310
  testRunner.And("Datasource is \"[[@rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 333
+#line 311
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 334
+#line 312
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 335
+#line 313
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1109,26 +1061,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolNullDatasource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool null datasource", ((string[])(null)));
-#line 338
+#line 316
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table41.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "[[rs().field]]",
                         "1"});
-#line 339
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table41, "Given ");
-#line 342
+#line 317
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table37, "Given ");
+#line 320
  testRunner.And("Alias is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 343
+#line 321
  testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 344
+#line 322
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
+#line 323
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 346
+#line 324
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1140,26 +1092,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolNullDatasourceForJSONObjects()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool null datasource for JSON Objects", ((string[])(null)));
-#line 348
+#line 326
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table42.AddRow(new string[] {
+            table38.AddRow(new string[] {
                         "[[@rs().field]]",
                         "1"});
-#line 349
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table42, "Given ");
-#line 352
+#line 327
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table38, "Given ");
+#line 330
  testRunner.And("Alias is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
+#line 331
  testRunner.And("Datasource is \"[[@rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
+#line 332
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 355
+#line 333
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 356
+#line 334
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1171,26 +1123,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolNullValue()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool null value", ((string[])(null)));
-#line 358
+#line 336
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table43.AddRow(new string[] {
+            table39.AddRow(new string[] {
                         "[[rs().field]]",
                         "NULL"});
-#line 359
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table43, "Given ");
-#line 362
+#line 337
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table39, "Given ");
+#line 340
  testRunner.And("Alias is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 363
+#line 341
  testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 364
+#line 342
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 365
+#line 343
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 366
+#line 344
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1202,26 +1154,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolNullValueForJSONObjects()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool null value for JSON Objects", ((string[])(null)));
-#line 368
+#line 346
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table44.AddRow(new string[] {
+            table40.AddRow(new string[] {
                         "[[@rs().field]]",
                         "NULL"});
-#line 369
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table44, "Given ");
-#line 372
+#line 347
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table40, "Given ");
+#line 350
  testRunner.And("Alias is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 373
+#line 351
  testRunner.And("Datasource is \"[[@rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 374
+#line 352
  testRunner.And("the underlying dropped activity is a(n) \"SelectAndApplyTestTool\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 375
+#line 353
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 376
+#line 354
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1233,27 +1185,148 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void NumberFormatToolWithComplextObjectMultiArray()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complext object multi array", ((string[])(null)));
-#line 378
+#line 356
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table41.AddRow(new string[] {
+                        "[[@Person().Score()]]",
+                        "0.3"});
+            table41.AddRow(new string[] {
+                        "[[@Person().Score()]]",
+                        "0.45"});
+            table41.AddRow(new string[] {
+                        "[[@Person().Score()]]",
+                        "0.12"});
+#line 357
+ testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table41, "Given ");
+#line 362
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 363
+ testRunner.And("Datasource is \"[[@Person(*).Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding",
+                        "Rounding Value",
+                        "Decimals to show",
+                        "Result"});
+            table42.AddRow(new string[] {
+                        "[[Score]]",
+                        "Up",
+                        "2",
+                        "3",
+                        "[[Score]]"});
+#line 364
+ testRunner.And("I use a Number Format tool configured as", ((string)(null)), table42, "And ");
+#line 367
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 368
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 369
+ testRunner.And("\"[[@Person(1).Score(1)]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 370
+ testRunner.And("\"[[@Person(2).Score(1)]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 371
+ testRunner.And("\"[[@Person(3).Score(1)]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complext object multi array and field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
+        public virtual void NumberFormatToolWithComplextObjectMultiArrayAndField()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complext object multi array and field", ((string[])(null)));
+#line 373
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table43.AddRow(new string[] {
+                        "[[@Person.Member().Team().Score]]",
+                        "0.3"});
+            table43.AddRow(new string[] {
+                        "[[@Person.Member().Team().Score]]",
+                        "0.45"});
+            table43.AddRow(new string[] {
+                        "[[@Person.Member().Team().Score]]",
+                        "0.12"});
+#line 374
+ testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table43, "Given ");
+#line 379
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 380
+ testRunner.And("Datasource is \"[[@Person.Member().Team().Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding",
+                        "Rounding Value",
+                        "Decimals to show",
+                        "Result"});
+            table44.AddRow(new string[] {
+                        "[[Score]]",
+                        "Up",
+                        "2",
+                        "3",
+                        "[[Score]]"});
+#line 381
+ testRunner.And("I use a Number Format tool configured as", ((string)(null)), table44, "And ");
+#line 384
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 385
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 386
+ testRunner.And("\"[[@Person.Member(1).Team(1).Score]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 387
+ testRunner.And("\"[[@Person.Member(2).Team(1).Score]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 388
+ testRunner.And("\"[[@Person.Member(3).Team(1).Score]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complex object multi array and field and multi values")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
+        public virtual void NumberFormatToolWithComplexObjectMultiArrayAndFieldAndMultiValues()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complex object multi array and field and multi values", ((string[])(null)));
+#line 390
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
             table45.AddRow(new string[] {
-                        "[[@Person().Score()]]",
+                        "[[@Person.Member(1).Team(1).Score]]",
                         "0.3"});
             table45.AddRow(new string[] {
-                        "[[@Person().Score()]]",
+                        "[[@Person.Member(1).Team(2).Score]]",
                         "0.45"});
             table45.AddRow(new string[] {
-                        "[[@Person().Score()]]",
+                        "[[@Person.Member(2).Team(1).Score]]",
                         "0.12"});
-#line 379
+            table45.AddRow(new string[] {
+                        "[[@Person.Member(2).Team(2).Score]]",
+                        "0.11"});
+            table45.AddRow(new string[] {
+                        "[[@Person.Member(2).Team(3).Score]]",
+                        "0.13"});
+            table45.AddRow(new string[] {
+                        "[[@Person.Member(3).Team(1).Score]]",
+                        "0.14"});
+#line 391
  testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table45, "Given ");
-#line 384
+#line 399
  testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 385
- testRunner.And("Datasource is \"[[@Person(*).Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 400
+ testRunner.And("Datasource is \"[[@Person.Member().Team().Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
@@ -1267,49 +1340,49 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "3",
                         "[[Score]]"});
-#line 386
+#line 401
  testRunner.And("I use a Number Format tool configured as", ((string)(null)), table46, "And ");
-#line 389
+#line 404
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 390
+#line 405
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 391
- testRunner.And("\"[[@Person(1).Score(1)]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
- testRunner.And("\"[[@Person(2).Score(2)]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 393
- testRunner.And("\"[[@Person(3).Score(3)]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 406
+ testRunner.And("\"[[@Person.Member(1).Team(1).Score]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 407
+ testRunner.And("\"[[@Person.Member(1).Team(2).Score]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 408
+ testRunner.And("\"[[@Person.Member(2).Team(1).Score]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 409
+ testRunner.And("\"[[@Person.Member(2).Team(2).Score]]\" has a value of \"0.110\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 410
+ testRunner.And("\"[[@Person.Member(2).Team(3).Score]]\" has a value of \"0.130\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 411
+ testRunner.And("\"[[@Person.Member(3).Team(1).Score]]\" has a value of \"0.140\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complext object multi array and field")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complex non array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
-        public virtual void NumberFormatToolWithComplextObjectMultiArrayAndField()
+        public virtual void NumberFormatToolWithComplexNonArray()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complext object multi array and field", ((string[])(null)));
-#line 395
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complex non array", ((string[])(null)));
+#line 413
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
             table47.AddRow(new string[] {
-                        "[[@Person.Member().Team().Score]]",
+                        "[[@Person.Member.Team.Score]]",
                         "0.3"});
-            table47.AddRow(new string[] {
-                        "[[@Person.Member().Team().Score]]",
-                        "0.45"});
-            table47.AddRow(new string[] {
-                        "[[@Person.Member().Team().Score]]",
-                        "0.12"});
-#line 396
+#line 414
  testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table47, "Given ");
-#line 401
+#line 417
  testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 402
- testRunner.And("Datasource is \"[[@Person.Member().Team().Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 418
+ testRunner.And("Datasource is \"[[@Person.Member.Team.Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
@@ -1323,89 +1396,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "3",
                         "[[Score]]"});
-#line 403
+#line 419
  testRunner.And("I use a Number Format tool configured as", ((string)(null)), table48, "And ");
-#line 406
- testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 407
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 408
- testRunner.And("\"[[@Person.Member(1).Team(1).Score]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 409
- testRunner.And("\"[[@Person.Member(2).Team(2).Score]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
- testRunner.And("\"[[@Person.Member(3).Team(3).Score]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complex object multi array and field and multi values")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
-        public virtual void NumberFormatToolWithComplexObjectMultiArrayAndFieldAndMultiValues()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complex object multi array and field and multi values", ((string[])(null)));
-#line 412
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table49.AddRow(new string[] {
-                        "[[@Person.Member(1).Team(1).Score]]",
-                        "0.3"});
-            table49.AddRow(new string[] {
-                        "[[@Person.Member(1).Team(2).Score]]",
-                        "0.45"});
-            table49.AddRow(new string[] {
-                        "[[@Person.Member(2).Team(1).Score]]",
-                        "0.12"});
-            table49.AddRow(new string[] {
-                        "[[@Person.Member(2).Team(2).Score]]",
-                        "0.11"});
-            table49.AddRow(new string[] {
-                        "[[@Person.Member(2).Team(3).Score]]",
-                        "0.13"});
-            table49.AddRow(new string[] {
-                        "[[@Person.Member(3).Team(1).Score]]",
-                        "0.14"});
-#line 413
- testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table49, "Given ");
-#line 421
- testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 422
- testRunner.And("Datasource is \"[[@Person.Member().Team().Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Number",
-                        "Rounding",
-                        "Rounding Value",
-                        "Decimals to show",
-                        "Result"});
-            table50.AddRow(new string[] {
-                        "[[Score]]",
-                        "Up",
-                        "2",
-                        "3",
-                        "[[Score]]"});
-#line 423
- testRunner.And("I use a Number Format tool configured as", ((string)(null)), table50, "And ");
-#line 426
  testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 427
+#line 423
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 428
- testRunner.And("\"[[@Person.Member(1).Team(1).Score]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 429
- testRunner.And("\"[[@Person.Member(1).Team(2).Score]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 430
- testRunner.And("\"[[@Person.Member(2).Team(1).Score]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 431
- testRunner.And("\"[[@Person.Member(2).Team(2).Score]]\" has a value of \"0.110\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 432
- testRunner.And("\"[[@Person.Member(2).Team(3).Score]]\" has a value of \"0.130\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 433
- testRunner.And("\"[[@Person.Member(3).Team(1).Score]]\" has a value of \"0.140\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 424
+ testRunner.And("\"[[@Person.Member.Team.Score]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
