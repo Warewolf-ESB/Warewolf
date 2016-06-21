@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = clearLog.Execute(dict, GetWorkspace().Object);
 
             //assert
-            Assert.IsTrue(result.Contains("No such directory exists on the server."));
+            Assert.IsTrue(result.Contains("Error clearing"));
         }
 
         [TestMethod]
