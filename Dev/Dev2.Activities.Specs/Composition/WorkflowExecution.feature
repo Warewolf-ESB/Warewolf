@@ -556,8 +556,8 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | 1 | [[a]] = b    |
 	  | 2 | [[b]] = test |
 	  And the "scl2" in WorkFlow "WorkflowWith2Assigntoolswithrscalars" debug inputs as
-	  | # | Variable         | New Value |
-	  | 1 | [[b]] = test | warewolf  |
+	  | # | Variable | New Value |
+	  | 1 | [[b]] =  | warewolf  |
 	  And the "scl2" in Workflow "WorkflowWith2Assigntoolswithrscalars" debug outputs as  
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
@@ -1425,58 +1425,58 @@ Scenario: Workflow with ForEach which contains assign
 		| 1 | [[rec(2).a]] = Test |
 
 Scenario: Workflow with ForEach which contains Sequence
-      Given I have a workflow "WorkflowWithForEachContainingSequence"
-	  And "WorkflowWithForEachContainingSequence" contains an Assign "RecVal" as
+      Given I have a workflow "WorkflowWithForEachContainingSeq"
+	  And "WorkflowWithForEachContainingSeq" contains an Assign "RecVal" as
 	  | variable     | value |
 	  | [[rec(1).a]] | 123   |
 	  | [[rec(1).b]] | 456   |
-	  And "WorkflowWithForEachContainingSequence" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
+	  And "WorkflowWithForEachContainingSeq" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
 	  And "ForEachTest1" contains a Sequence "Seq1" as
-	  And "Seq1" in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(1).c]]" as
+	  And 'Seq1' in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(1).c]]" as
 	  | Variable     | Type | Using | Padding | Alignment |
 	  | [[rec(1).a]] | None |       |         | Left      |
 	  | [[rec(1).b]] | None |       |         | Left      |
-	   And "Seq1" in "ForEachTest1" contains Gather System Info "System info" as
+	   And 'Seq1' in "ForEachTest1" contains Gather System Info "System info" as
 	  | Variable     | Selected    |
 	  | [[rec(1).d]] | Date & Time |
-	  When "WorkflowWithForEachContainingSequence" is executed
+	  When "WorkflowWithForEachContainingSeq" is executed
 	  Then the workflow execution has "NO" error
-	  And the "RecVal" in WorkFlow "WorkflowWithForEachContainingSequence" debug inputs as 
+	  And the "RecVal" in WorkFlow "WorkflowWithForEachContainingSeq" debug inputs as 
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = | 123       |
 	  | 2 | [[rec(1).b]] = | 456       |
-	  And the "RecVal" in Workflow "WorkflowWithForEachContainingSequence" debug outputs as 
+	  And the "RecVal" in Workflow "WorkflowWithForEachContainingSeq" debug outputs as 
 	  | # |                      |
 	  | 1 | [[rec(1).a]]  =  123 |
 	  | 2 | [[rec(1).b]]  =  456 |
-	   And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSequence" debug inputs as 
+	   And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSeq" debug inputs as 
 	  |                 | Number |
 	  | No. of Executes | 2      |
-      And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSequence" has  "2" nested children 
-	  And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+      And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSeq" has  "2" nested children 
+	  And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                    | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
 	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
-	   And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	   And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  |                       |
 	  | [[rec(1).c]] = 123456 |
-	  And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+	  And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(1).d]] = | Date & Time |
-	  And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	  And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String | 
-	  And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+	  And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                    | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
 	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
-	   And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	   And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  |                       |
 	  | [[rec(1).c]] = 123456 |
-	  And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+	  And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(1).d]] = | Date & Time |
-	  And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	  And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String |	
 
@@ -1490,11 +1490,11 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | [[rec(2).b]] | Warewolf |
 	  And "WorkFWithForEachwithRecContainingSequence" contains a Foreach "ForEachTest1" as "InRecordset" executions "[[rec(*)]]"
 	  And "ForEachTest1" contains a Sequence "Seq1" as
-	  And "Seq1" in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(*).c]]" as
+	  And 'Seq1' in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(*).c]]" as
 	  | Variable     | Type | Using | Padding | Alignment |
 	  | [[rec(*).a]] | None |       |         | Left      |
 	  | [[rec(*).b]] | None |       |         | Left      |
-	  And "Seq1" in "ForEachTest1" contains Gather System Info "System info" as
+	  And 'Seq1' in "ForEachTest1" contains Gather System Info "System info" as
 	  | Variable     | Selected    |
 	  | [[rec(*).d]] | Date & Time |
 	  When "WorkFWithForEachwithRecContainingSequence" is executed
@@ -1517,30 +1517,30 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  |                | [[rec(1)]] = |
 	  |                | [[rec(2)]] = |
       And the "ForEachTest1" in WorkFlow "WorkFWithForEachwithRecContainingSequence" has  "2" nested children
-	  And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+	  And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                    | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
 	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
-	  And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	  And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  |                       |
 	  | [[rec(1).c]] = 123456 |
-       And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+       And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(1).d]] = | Date & Time |
-	   And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	   And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String |
-	  And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+	  And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                         | With | Using | Pad | Align |
 	  | 1 | [[rec(2).a]] = Test     | None | ""    | ""  | Left  |
 	  | 2 | [[rec(2).b]] = Warewolf | None | ""    | ""  | Left  |
-	  And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	  And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  |                             |
 	  | [[rec(2).c]] = TestWarewolf |
-      And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+      And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(2).d]] = | Date & Time |
-	   And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	   And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(2).d]] = String |
 
@@ -3750,24 +3750,24 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 Scenario: Error from workflow service is expected to buble out
-	  Given I have a workflow "TestAssignWithRemoteOutputsError"
-	  And "TestAssignWithRemoteOutputsError" contains an Assign "AssignData" as
+	  Given I have a workflow "TestAssignWithRemoteOutputsErrors"
+	  And "TestAssignWithRemoteOutputsErrors" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignWithRemoteOutputsError" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  | inputData        | [[inputData]] | output              | [[output]]       |
 	  |                  |               | values(*).up     | [[values().&up]] |
 	  |                  |               | values(*).low     | [[values().low]] |
-	  When "TestAssignWithRemoteOutputsError" is executed
-	  Then the "TestAssignWithRemoteOutputsError" workflow execution has "AN" error
-	  And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsError" debug inputs as
+	  When "TestAssignWithRemoteOutputsErrors" is executed
+	  Then the "TestAssignWithRemoteOutputsErrors" workflow execution has "AN" error
+	  And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the "AssignData" in Workflow "TestAssignWithRemoteOutputsError" debug outputs as    
+	  And the "AssignData" in Workflow "TestAssignWithRemoteOutputsErrors" debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteOutputsError" debug inputs as
+	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
 	  And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
@@ -4004,9 +4004,9 @@ Scenario: Error not bubbling up
 	When "Wolf-1212_Test" is executed
 	Then the workflow execution has "NO" error
 	And the "ErrorHandled" in Workflow "Wolf-1212_Test" debug outputs as
-	  |                                                                                                                                     |
-	  | [[Result]] = Fail                                                                                                                   |
-	  | [[Error]] = Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
+	  |                                                                                                                  |
+	  | [[Result]] = Fail                                                                                                |
+	  | [[Error]] = Could not parse input datetime with given input format (if you left the input format blank then even |
 
 
 Scenario: Error not bubbling up error message
