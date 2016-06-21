@@ -35,7 +35,7 @@ IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Studio.exe" 
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
 
 REM  Wait 5 seconds ;)
-TIMEOUT 5
+ping -n 5 -w 1000 192.0.2.2 > nul
 
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
@@ -62,7 +62,7 @@ rem using the "ping" command as make-shift wait or sleep command, wait for serve
 IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio 
 rem wait for 5 seconds before trying again
 @echo Waiting 5 seconds...
-TIMEOUT 5
+ping -n 5 -w 1000 192.0.2.2 > nul
 goto WaitForServerStart 
 
 :StartStudio
