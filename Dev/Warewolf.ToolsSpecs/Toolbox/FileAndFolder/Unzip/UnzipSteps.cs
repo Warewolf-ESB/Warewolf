@@ -16,6 +16,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Activities.Designers2.Core;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -76,22 +77,22 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         public void WhenValidatingTheTool()
         {
             ////var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
-            //DsfUnZip dsfUnZip = new DsfUnZip()
-            //{
-            //    DestinationPassword = CommonSteps.DestinationPasswordHolder,
-            //    DestinationUsername = CommonSteps.DestinationUsernameHolder,
-            //    DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
-            //    Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
-            //    OutputPath = CommonSteps.DestinationHolder,
+                //DsfUnZip dsfUnZip = new DsfUnZip()
+                //{
+                //    DestinationPassword = CommonSteps.DestinationPasswordHolder,
+                //    DestinationUsername = CommonSteps.DestinationUsernameHolder,
+                //    DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
+                //    Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
+                //    OutputPath = CommonSteps.DestinationHolder,
 
-            //};
-            //if (!scenarioContext.ContainsKey("activity"))
-            //    scenarioContext.Add("activity", dsfUnZip);
-            //dsfUnZip.PerformValidation();
+                //};
+                //if (!scenarioContext.ContainsKey("activity"))
+                //    scenarioContext.Add("activity", dsfUnZip);
+                //dsfUnZip.PerformValidation();
 
-            //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
-            //scenarioContext.Add("viewModel", viewModel);
-        }
+                //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
+                //scenarioContext.Add("viewModel", viewModel);
+            }
 
         [Then(@"unzip execution error message will be """"""(.*)""")]
         public void ThenUnzipExecutionErrorMessageWillBe(string p0)

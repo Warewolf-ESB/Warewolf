@@ -27,89 +27,55 @@ Scenario: Creating New DB Source as User Auth
    Given I open New database Source
    Then "New Database Source" tab is Opened
    And Title is "New Database Source"
+   And Type options has "Microsoft SQL Server" as the default
+   And I select type "PostgreSql Database"
+   Then Authentication type "Windows" is "Disabled"
+   And I Select Authentication Type as "User"
+   And Username field is "Visible"
+   And Password field is "Visible"
+   And Database dropdown is "Collapsed"
    When I Type Server as "Localhost"
    Then the Intellisense contains these options
-   | Options         |
-   | Test |
-   | admin |
-   | postgres |
+   | Options |
+   |         |
    And Type options contains
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   | PostgreSql Database                |
-   And I Type Select The Server as "Localhost"
-   And Type options has "Microsoft SQL Server" as the default
-   And database dropdown is "Collapsed"
-   And I Select Authentication type as "User"
-   And "Save" Save is "Disabled"
-   And "Test Connection" Connection is "Enabled"
-   Then Username Is "Collapsed"
-   And Password  Is "Collapsed"
-   Then Database dropdown is "Collapsed"
-   And "Test Connection" Con Is "Enabled"
-   And "Cancel Test" Cancel Is "Disabled"
-   When I Click test connnection "Test Connection"
-   Then "Cancel Test" Disabled Is "Disabled"
-   Then Test Connecton Is "Successful"
+   | PostgreSql Database  |
+   When I type Username as "testuser"
+   And I type Password as "test123"
+   Then database dropdown is "Collapsed"
+   And "Test Connection" is "Enabled"
+   When Test Connecton is "Successful"
    Then Database dropdown is "Visible"
-   Then I select "postgres" As Database
-   And "Save" Save Is Enabled "Enabled"   
-   When I save the source As "SavedDBSource"
-   Then The save dialog is opened
-   Then "SavedDBSource" Save Tab is opened
-   And Title is "SavedDBSource"
-   When I Type Server as "RSA"
-   Then "SavedDBSource *" Is the tab Header
-
-@PostgreSource
-Scenario: Incorrect Server Address Doesnt Allow save user Auth
-      Given I open New database Source
-      And I Type Server as "LocalHostTest"
-      And I Select Authentication type as "User"
-      Then username field is "Visible"
-      And password field is "Visible"
-	  When I Type Username as "testuser"
-	  And I Type Password as "test123"
-      Then database dropdown is "Collapsed"
-      And "Test Connection" Connection is "Enabled"
-      When Test connecton is "Unsuccessful"
-      Then database dropdown is "Collapsed"
-      And "Save" Save is "Disabled"
+   Then I select "Dev2TestingDB" as Database
+   Then "Save" is "Enabled" 
+   When I save the source as "SavedDBSource"
+   Then the save dialog is opened
+   Then "SavedDBSource" tab is opened
+   And title is "SavedDBSource"
+   When I type Server as "RSA"
+   Then "SavedDBSource *" is the tab Header
+   And title is "SavedDBSource"
 
 @PostgreSource
 Scenario: Editing saved DB Source Remembers credentials
-	Given I Open "Database Source - testPostgres" 
-    And server as "localhost"
-    And Authentication type is selected as "User"
-    And Username field Is "testuser"
-    And Password field Is "******"
-    And "Test Connection" connection is "Enabled"
-	And Database "postgres" Is selected 
-    And "Save" save is "Disabled"
-	When I Edit server as "192.168.1.1"
-	Then Authentication type is selected as "User"
-    Then Username Is "testuser"
-    And Password  Is "******"
-    Then "Test Connection" Connection is "Enabled" 
-    And "Save" Save is "Disabled"
-    Then Database dropdown is "Collapsed"
-    And "Test Connection" Connection is "Enabled"
-    When Test connecton is "Successful"
-	Then "Save" Save is "Enabled"
-	
-@PostgreSource
-Scenario: Cancel Test
-   Given I open New database Source
-   And I Type Server as "LocalHostTest"
-   And "Save" save is "Disabled"
-   And "Test Connection" connection is "Enabled"
-   And I Select Authentication type as "User"
-   When I Type Username as "testuser"
-   And I Type Password as "******"
-   When Test connecton is "Long Running"
-   And I cancel the Test
-   Then the Validation message as "Test Cancelled" 
-   Then Test Connecton is "Enabled"
-   And "Save" Save is "Disabled"
-  
+	Given I open "Database Source - testPostgres" 
+	And type option has "PostgreSql Database" selected
+    And Server as "localhost"
+    And Authentication Type is selected as "User"
+    And Username field is "testuser"
+    And Password field is "******"
+	And Database "Dev2TestingDB" is selected 
+    And "Save" is "Disabled"
+	When I Select Authentication Type as "Windows"
+    Then "Test Connection" is "Enabled" 
+    And "Save" is "Disabled"
+    And Database dropdown is "Collapsed"
+    And "Test Connection" is "Enabled"
+    And Test Connecton is "Successful"
+    And "Save" is "Enabled"
+    And Database dropdown is "Visible"
+    And I select "Dev2TestingDB2" as Database
+    And "Save" is "Enabled" 

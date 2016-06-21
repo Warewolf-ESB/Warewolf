@@ -108,6 +108,19 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             }
         }
 
+        [Given(@"type option has ""(.*)"" selected")]
+        public void GivenTypeOptionHasSelected(string dbType)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageDatabaseSourceViewModel;
+            if (manageDatabaseSourceViewModel != null)
+            {
+                manageDatabaseSourceViewModel.ServerType =
+                    manageDatabaseSourceViewModel.Types.FirstOrDefault(value => value.Name == dbType);
+            }
+            manageDatabaseSourceControl.SelectType(dbType);
+        }
+
         [Given(@"Server as ""(.*)""")]
         public void GivenServerAs(string server)
         {
