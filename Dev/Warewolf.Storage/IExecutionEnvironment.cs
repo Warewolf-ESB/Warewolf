@@ -72,5 +72,7 @@ namespace Warewolf.Storage
         void AssignJson(IAssignValue value, int update);
 
         JContainer EvalJContainer(string exp);
+
+        List<string> GetIndexes(string exp);
     }
 }

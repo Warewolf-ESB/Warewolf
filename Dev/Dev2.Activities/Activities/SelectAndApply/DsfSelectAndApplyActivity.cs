@@ -7,7 +7,6 @@ using Dev2.Diagnostics;
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -143,16 +142,18 @@ namespace Dev2.Activities.SelectAndApply
 
                 dataObject.ForEachNestingLevel++;
                 var ds = dataObject.Environment.ToStar(DataSource);
+                var expressions = dataObject.Environment.GetIndexes(ds);
+                if (expressions.Count == 0)
+                {
+                    expressions.Add(ds);
+                }
                 try
                 {
                     if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                     }
-                    //Eval list using DataSource
-                    var atoms = dataObject.Environment.EvalAsList(ds, update, true).ToList();
-
-                    //Create a new Execution Environment
+                   
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment, ds, Alias);
 
                     //Push the new environment
@@ -168,18 +169,16 @@ namespace Dev2.Activities.SelectAndApply
                     {
                         DispatchDebugState(dataObject, StateType.After, update);
                     }
-                    int upd = 0;
-                    foreach(var warewolfAtom in atoms)
+                    foreach(var exp in expressions)
                     {
-                        upd++;
 
                         //Assign the warewolfAtom to Alias using new environment
-                        executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
+                        executionEnvironment.SetDataSource(exp);
 
                         var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
                         if(exeAct != null)
                         {
-                            exeAct.Execute(dataObject, upd);
+                            exeAct.Execute(dataObject, 0);
                         }
                     }
                 }
@@ -206,21 +205,24 @@ namespace Dev2.Activities.SelectAndApply
                     }
                     if (dataObject.IsDebugMode())
                     {
-                        var data = dataObject.Environment.Eval(ds, update, false);
-                        if (data.IsWarewolfAtomListresult)
+                        foreach(var expression in expressions)
                         {
-                            var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", DataSource, "", "", "="));
-                        }else
-                        {
-                            if (data.IsWarewolfAtomResult)
+                            var data = dataObject.Environment.Eval(expression, update, false);
+                            if (data.IsWarewolfAtomListresult)
                             {
-                                var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                                if(atom != null)
-                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), "", "", DataSource, "", "", "="));
+                                var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                                AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", expression, "", "", "="));
                             }
-                        }
-                        
+                            else
+                            {
+                                if (data.IsWarewolfAtomResult)
+                                {
+                                    var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                                    if (atom != null)
+                                        AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), "", "", expression, "", "", "="));
+                                }
+                            }
+                        }                        
                         DispatchDebugState(dataObject, StateType.End, update, startTime,DateTime.Now);
                     }
                     dataObject.ParentInstanceID = _previousParentId;
