@@ -35,7 +35,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
             IEnumerable<XNode> nodes = response.DescendantNodes();
             int count = nodes.Count();
             // More than 2 nodes indicate that the service returned dependancies
-            Assert.AreEqual(29, count);
+            Assert.AreEqual(19, count);
 
         }
 
