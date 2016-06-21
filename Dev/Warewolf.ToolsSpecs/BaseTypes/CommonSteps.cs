@@ -83,8 +83,38 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if (expectedError)
             {
-                var errorThrown = allErros.Contains(fetchErrors);
-                Assert.IsTrue(errorThrown);
+                var strings = fetchErrors.Split('\n');
+                if (strings.Count() == 1)
+                {
+                    var errorThrown = allErros.Contains(fetchErrors);
+
+                    Assert.IsTrue(errorThrown);
+                    return;
+                }
+
+                if (strings.Count() > 1)
+                    foreach (var s in strings)
+                    {
+                        if (string.IsNullOrEmpty(s))
+                            continue;
+                        if (s.ToUpper().StartsWith("<INNERERROR>"))
+                        {
+                            var errorThrown = allErros.Contains(fetchErrors);
+                            Assert.IsTrue(errorThrown);
+                            break;
+                        }
+                        else
+                        {
+                            var any = allErros.Any(er => er.Contains(fetchErrors));
+                            var errorThrown = allErros.Contains(s.Replace(Environment.NewLine, "").Replace("\r", ""));
+                            if (errorThrown)//strict check
+                            {
+                                Assert.IsTrue(errorThrown);
+                                return;
+                            }
+                            Assert.IsTrue(any);
+                        }
+                    }
             }
         }
 
