@@ -77,20 +77,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="WebService\WebService.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebService.feature</DependentUpon>
-    </Compile>
-    <Compile Include="WebService\WebServiceSteps.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="WebService\WebService.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WebService.feature.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Tests\Dev2.Activities.Tests.csproj">
