@@ -86,9 +86,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var errorThrown = allErros.Contains(fetchErrors);
                 Assert.IsTrue(errorThrown);
             }
-            /*  var hasAnError = expectedError == actuallyHasErrors;
-            var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(hasAnError || errorMessageMatches, message);*/
         }
 
         [Then(@"the debug inputs as")]
@@ -125,7 +122,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-                else if(boolAct != null)
+                else if (boolAct != null)
                 {
                     DsfActivityAbstract<bool> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -135,7 +132,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-                else if(multipleFilesActivity != null)
+                else if (multipleFilesActivity != null)
                 {
                     DsfAbstractMultipleFilesActivity dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -145,7 +142,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-               
+
             }
 
 
@@ -341,8 +338,10 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else
             {
-                Assert.IsNull(validationErrors);
-                //Assert.AreEqual(0, validationErrors.Count);
+                if (validationErrors == null)
+                {
+                    Assert.IsNull(validationErrors);
+                }
             }
         }
 
@@ -360,10 +359,13 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else
             {
-                Assert.IsNotNull(validationErrors);
-                var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
-                FixBreaks(ref validationMessage, ref completeMessage);
-                Assert.AreEqual(validationMessage, completeMessage);
+                if (validationErrors != null)
+                {
+                    Assert.IsNotNull(validationErrors);
+                    var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
+                    FixBreaks(ref validationMessage, ref completeMessage);
+                    Assert.AreEqual(validationMessage, completeMessage);
+                }
             }
         }
         private void FixBreaks(ref string expected, ref string actual)
@@ -612,7 +614,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             try
             {
                 var multipleFilesActivity = act as DsfAbstractMultipleFilesActivity;
-                if(multipleFilesActivity != null)
+                if (multipleFilesActivity != null)
                 {
                     return DebugItemResults(multipleFilesActivity, result.Environment);
                 }
@@ -954,7 +956,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public void ValidateFromModelView()
         {
-            
+
             var currentViewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
             currentViewModel.Validate();
         }
