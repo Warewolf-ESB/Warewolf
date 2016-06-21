@@ -1673,8 +1673,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "C:\\copyfile0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile30.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -1692,7 +1692,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_25()
         {
-            this.RenameFileValidation("25", "C:\\copyfile0.txt", "", "\"\"", "C:\\renamefile30.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed22.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("25", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renamefile30.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed22.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2062,14 +2062,16 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Failed to authenticate with user [ integrationtester ] for resource [ C:\\copyfile" +
+            "0.txt ]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void RenameFileValidation_38()
         {
-            this.RenameFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile43.txt", "\"\"", "\"\"", "C:\\copyfile0.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed35.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.RenameFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile43.txt", "\"\"", "\"\"", "C:\\copyfile0.txt", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed35.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "False", "Failed to authenticate with user [ integrationtester ] for resource [ C:\\copyfile" +
+                    "0.txt ]", "\"\"", ((string[])(null)));
 #line hidden
         }
         
