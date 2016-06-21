@@ -1744,8 +1744,8 @@ namespace Dev2.Studio.ViewModels.DataList
             var unusedItems =
                 from itemModel in models
                 where !(from part in partsToVerify
-                        select part.DisplayValue.Replace("*", "")
-                       ).Contains(itemModel.Name.Replace("*", ""))
+                        select DataListUtil.ReplaceRecordsetIndexWithStar(part.DisplayValue).Replace("*", "")
+                       ).Contains(DataListUtil.ReplaceRecordsetIndexWithStar(itemModel.Name).Replace("*", ""))
                 select itemModel;
             foreach (var complexObjectItemModel in unusedItems)
             {
@@ -1754,8 +1754,8 @@ namespace Dev2.Studio.ViewModels.DataList
             var usedItems =
                 from itemModel in models
                 where (from part in partsToVerify
-                        select part.DisplayValue.Replace("*", "")
-                      ).Contains(itemModel.Name.Replace("*", ""))
+                        select DataListUtil.ReplaceRecordsetIndexWithStar(part.DisplayValue).Replace("*", "")
+                      ).Contains(DataListUtil.ReplaceRecordsetIndexWithStar(itemModel.Name).Replace("*", ""))
                 select itemModel;
             foreach (var complexObjectItemModel in usedItems)
             {

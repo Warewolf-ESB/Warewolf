@@ -9,7 +9,7 @@ namespace Warewolf.Storage
     public class ScopedEnvironment : IExecutionEnvironment
     {
         private readonly IExecutionEnvironment _inner;
-        private readonly string _datasource;
+        private string _datasource;
         private readonly string _alias;
         private readonly Func<string, int, string, string> _doReplace;
         public ScopedEnvironment(IExecutionEnvironment inner, string datasource, string alias)
@@ -43,8 +43,7 @@ namespace Warewolf.Storage
 
         private string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
         {
-            var languageExpressionToString = ReplaceStarWithFixedIndex(datasource, update);
-            return exp.Replace(_alias, languageExpressionToString);
+            return exp.Replace(_alias, datasource);
         }
 
         static string ReplaceStarWithFixedIndex(string exp, int idx)
@@ -244,10 +243,20 @@ namespace Warewolf.Storage
             return _inner.EvalJContainer(exp);
         }
 
+        public List<string> GetIndexes(string exp)
+        {
+           return _inner.GetIndexes(exp);
+        }
+
         public IList<string> EvalJsonAsListOfStrings(string json, int update)
         {
             return _inner.EvalJsonAsListOfStrings(json, update);
         }
         #endregion
+
+        public void SetDataSource(string ds)
+        {
+            _datasource = ds;
+        }
     }
 }

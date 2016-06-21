@@ -15,12 +15,14 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Activities.Designers2.Rename;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Execution;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Workspaces;
 using Moq;
 using TechTalk.SpecFlow;
@@ -189,6 +191,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             if (!scenarioContext.ContainsKey("activity"))
                 scenarioContext.Add("activity", dsfRename);
             dsfRename.PerformValidation();
+
+            var viewModel = new RenameDesignerViewModel(ModelItemUtils.CreateModelItem(dsfRename));
+            if (!ScenarioContext.Current.ContainsKey("viewModel"))
+                ScenarioContext.Current.Add("viewModel", viewModel);
         }
     }
 }
