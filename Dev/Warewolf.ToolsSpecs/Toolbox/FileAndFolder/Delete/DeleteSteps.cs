@@ -12,6 +12,8 @@
 using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
+using Dev2.Activities.Designers2.Delete;
+using Dev2.Studio.Core.Activities.Utils;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -70,6 +72,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             BuildDataList();
             var delete = ScenarioContext.Current.Get<DsfPathDelete>("activity");
             delete.PerformValidation();
+
+            var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
+            if (!ScenarioContext.Current.ContainsKey("viewModel"))
+                ScenarioContext.Current.Add("viewModel", viewModel);
         }
     }
 }

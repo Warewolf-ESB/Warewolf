@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using ActivityUnitTests;
@@ -20,6 +21,10 @@ using Dev2.Data.Util;
 using TechTalk.SpecFlow;
 using Dev2.Common.Interfaces;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using WarewolfParserInterop;
 
 namespace Warewolf.Tools.Specs.BaseTypes
@@ -56,7 +61,9 @@ namespace Warewolf.Tools.Specs.BaseTypes
         {
             var shape = new XElement("root");
             var data = new XElement("root");
-
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
+            DataListSingleton.SetDataList(dataListViewModel);
             // ReSharper disable NotAccessedVariable
             int row = 0;
             dynamic variableList;
@@ -67,6 +74,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 {
                     foreach (dynamic variable in variableList)
                     {
+                        var variableName = DataListUtil.AddBracketsToValueIfNotExist(variable.Item1);
                         if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
                         {
                             string value = variable.Item2 == "blank" ? "" : variable.Item2;
@@ -76,12 +84,43 @@ namespace Warewolf.Tools.Specs.BaseTypes
                             }
                             else
                             {
-                                DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value, 0);
+                                DataObject.Environment.Assign(variableName, value, 0);
+                            }
+                        }
+                        if (DataListUtil.IsValueScalar(variableName))
+                        {
+                            var scalarName = DataListUtil.RemoveLanguageBrackets(variableName);
+                            var scalarItemModel = new ScalarItemModel(scalarName);
+                            if (!scalarItemModel.HasError)
+                            {
+                                DataListSingleton.ActiveDataList.ScalarCollection.Add(scalarItemModel);
+                            }
+                        }
+                        if (DataListUtil.IsValueRecordsetWithFields(variableName))
+                        {
+                            var rsName = DataListUtil.ExtractRecordsetNameFromValue(variableName);
+                            var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(variableName);
+                            var rs = DataListSingleton.ActiveDataList.RecsetCollection.FirstOrDefault(model => model.Name == rsName);
+                            if (rs == null)
+                            {
+                                var recordSetItemModel = new RecordSetItemModel(rsName);
+                                DataListSingleton.ActiveDataList.RecsetCollection.Add(recordSetItemModel);
+                                recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName,
+                                    recordSetItemModel));
+                            }
+                            else
+                            {
+                                var recordSetFieldItemModel = rs.Children.FirstOrDefault(model => model.Name == fieldName);
+                                if (recordSetFieldItemModel == null)
+                                {
+                                    rs.Children.Add(new RecordSetFieldItemModel(fieldName, rs));
+                                }
                             }
                         }
                         //Build(variable, shape, data, row);
                         row++;
                     }
+                    DataListSingleton.ActiveDataList.WriteToResourceModel();
                 }
                     // ReSharper disable EmptyGeneralCatchClause
                 catch
