@@ -85,8 +85,10 @@ namespace Dev2.Core.Tests.Environments
 
             if(useParameterless)
             {
-                EnvironmentRepository.Instance.Save(targetEnv.Object);
+                
                 EnvironmentRepository.Instance.IsLoaded = true;  // so that we don't connect to a server!
+                EnvironmentRepository.Instance.Clear();
+                EnvironmentRepository.Instance.Save(targetEnv.Object);
             }
 
             var provider = new TestServerProvider();
