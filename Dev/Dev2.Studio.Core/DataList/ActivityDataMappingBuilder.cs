@@ -125,8 +125,6 @@ namespace Dev2.DataList
         /// </value>
         public Type ActivityType { get; private set; }
 
-        public bool IsWorkflow { get; private set; }
-
         /// <summary>
         /// Setups the activity data.
         /// </summary>
@@ -141,42 +139,30 @@ namespace Dev2.DataList
 
                 if(activity.ResourceModel != null)
                 {
-                    IsWorkflow = activity.ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.WorkflowService;
-
                     string inputs;
                     string outputs;
 
                     // handle workflows differently ;)
-                    if(IsWorkflow)
+
+                    if(activity.IsNotAvailable())
                     {
-                        if(activity.IsNotAvailable())
-                        {
-                            inputs = activity.ResourceModel.Inputs;
-                            outputs = activity.ResourceModel.Outputs;
-                            
-                        }
-                        else
-                        {
-                            var datalist = activity.ResourceModel.DataList;
-                            _complexObjects = new List<ComplexObjectItemModel>();
-                            AddComplexObjects(datalist);
-                            inputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
-                                                                                   enDev2ColumnArgumentDirection.Input);
-                            outputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
-                                                                                    enDev2ColumnArgumentDirection.Output);
-                        }
-                    }
-                    else
-                    {
-                        // handle services ;)
                         inputs = activity.ResourceModel.Inputs;
                         outputs = activity.ResourceModel.Outputs;
                     }
+                    else
+                    {
+                        var datalist = activity.ResourceModel.DataList;
+                        _complexObjects = new List<ComplexObjectItemModel>();
+                        AddComplexObjects(datalist);
+                        inputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
+                            enDev2ColumnArgumentDirection.Input);
+                        outputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
+                            enDev2ColumnArgumentDirection.Output);
+                    }                
 
                     ActivityInputDefinitions = inputs;
                     ActivityOutputDefinitions = outputs;
                 }
-
             }
         }
 
@@ -431,7 +417,7 @@ namespace Dev2.DataList
             {
                 var injectValue = def.RawValue;
 
-                if(!string.IsNullOrEmpty(injectValue) || IsWorkflow)
+                if(!string.IsNullOrEmpty(injectValue))
                 {
                     if(autoAddBrackets)
                     {
@@ -439,14 +425,9 @@ namespace Dev2.DataList
                         // 
                         if(isOutputMapping && def.IsRecordSet && fuzzyMatch != null)
                         {
-                            var field = DataListUtil.ExtractFieldNameFromValue(injectValue);
+                            var field = def.Name;
 
-                            if(IsWorkflow)
-                            {
-                                field = def.Name;
-                            }
-
-                            string recordsetName = fuzzyMatch.FetchMatch(def.Name,def.RecordSetName);
+                            string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
                             if(!string.IsNullOrEmpty(recordsetName))
                             {
                                 masterRecordsetName = recordsetName;
@@ -454,12 +435,10 @@ namespace Dev2.DataList
                             else
                             {
                                 // we have no match, use the current mapping value ;)
-                                masterRecordsetName = !IsWorkflow ? DataListUtil.ExtractRecordsetNameFromValue(injectValue) : def.RecordSetName;
+                                masterRecordsetName = def.RecordSetName;
                             }
 
-
                             injectValue = FormatString(masterRecordsetName, field);
-
                         }
                         else
                         {
@@ -479,7 +458,7 @@ namespace Dev2.DataList
                             }
                             else
                             {
-                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(!IsWorkflow ? injectValue : def.Name);
+                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
                             }
                         }
                     }
