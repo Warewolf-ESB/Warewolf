@@ -1695,7 +1695,7 @@ namespace Dev2.Core.Tests.Workflows
             mockRemoteConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://remoteserver:3142/"));
             mockRemoteEnvironment.Setup(model => model.Connection).Returns(mockRemoteConnection.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockRemoteEnvironment.Object);
-            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(mockResourceModel.Object);
+            repo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(mockResourceModel.Object);
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(model => model.ID).Returns(Guid.Empty);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
