@@ -26,11 +26,19 @@ using Moq;
 using TechTalk.SpecFlow;
 
 // ReSharper disable InconsistentNaming
-namespace Dev2.Runtime.Services.Specs.WebService
+namespace Dev2.Activities.Specs
 {
     [Binding]
     public class WebServiceSteps : Steps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public WebServiceSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         #region const data
         const string RequestResponse = @"{
     ""Name"": ""Dev2"",
@@ -61,21 +69,21 @@ namespace Dev2.Runtime.Services.Specs.WebService
         {
             var webSourceXML = XmlResource.Fetch("Google_Address_Lookup");
             var webSource = new WebSource(webSourceXML);
-            var service = new ServiceModel.Data.WebService { Source = webSource };
-            ScenarioContext.Current.Add("WebService", service);
+            var service = new Runtime.ServiceModel.Data.WebService { Source = webSource };
+            scenarioContext.Add("WebService", service);
         }
 
         [Given(@"the webservice returns JSON with a primitive array")]
         public void GivenTheWebserviceReturnsJSONWithAPrimitiveArray()
         {
-            var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
+            var webService = scenarioContext.Get<Runtime.ServiceModel.Data.WebService>("WebService");
             webService.RequestResponse = RequestResponse;
         }
 
         [When(@"the mapping is generated")]
         public void WhenTheMappingIsGenerated()
         {
-            var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
+            var webService = scenarioContext.Get<Runtime.ServiceModel.Data.WebService>("WebService");
             IOutputDescription outputDescription = webService.GetOutputDescription();
             webService.OutputDescription = outputDescription;
             outputDescription.ToRecordsetList(webService.Recordsets);
@@ -86,10 +94,10 @@ namespace Dev2.Runtime.Services.Specs.WebService
         {
             var webSourceXML = XmlResource.Fetch("Google_Address_Lookup");
             var webSource = new WebSource(webSourceXML);
-            var service = new ServiceModel.Data.WebService { Source = webSource, RequestUrl = webSource.DefaultQuery };
+            var service = new Runtime.ServiceModel.Data.WebService { Source = webSource, RequestUrl = webSource.DefaultQuery };
             ErrorResultTO errors;
             WebServices.ExecuteRequest(service, false, out errors);
-            ScenarioContext.Current.Add("WebService", service);
+            scenarioContext.Add("WebService", service);
         }
 
         [When(@"the service is executed")]
@@ -97,7 +105,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
         {
             When(@"the mapping is generated");
             ErrorResultTO errors;
-            var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
+            var webService = scenarioContext.Get<Runtime.ServiceModel.Data.WebService>("WebService");
             var dataObj = new Mock<IDSFDataObject>();
 
             var serviceExecution = new WebserviceExecution(dataObj.Object, true);
@@ -109,14 +117,14 @@ namespace Dev2.Runtime.Services.Specs.WebService
             serviceExecution.Source = webSource;
             serviceExecution.InstanceOutputDefintions = webService.OutputSpecification;
             Guid executeID = serviceExecution.Execute(out errors,0);
-            ScenarioContext.Current.Add("DataListID", executeID);
-            ScenarioContext.Current.Add("DataObject", dataObj.Object);
+            scenarioContext.Add("DataListID", executeID);
+            scenarioContext.Add("DataObject", dataObj.Object);
         }
 
         [Then(@"the mapping should contain the primitive array")]
         public void ThenTheMappingShouldContainThePrimitiveArray()
         {
-            var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
+            var webService = scenarioContext.Get<Runtime.ServiceModel.Data.WebService>("WebService");
             RecordsetList recordsetList = webService.Recordsets;
             Assert.IsNotNull(recordsetList);
             var departmentsRecordSet = recordsetList.Find(recordset => recordset.Name == "Departments");
@@ -132,7 +140,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
         [Then(@"I have the following data")]
         public void ThenIHaveTheFollowingData(Table table)
         {
-            var dataObject = ScenarioContext.Current.Get<IDSFDataObject>("DataObject");
+            var dataObject = scenarioContext.Get<IDSFDataObject>("DataObject");
             var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,"",0));
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
             using(var dataSet = new DataSet())
@@ -159,16 +167,16 @@ namespace Dev2.Runtime.Services.Specs.WebService
         [Given(@"I have a webservice with ""(.*)"" as a response")]
         public void GivenIHaveAWebserviceWithAsAResponse(string responseFileName)
         {
-            var service = new ServiceModel.Data.WebService();
+            var service = new Runtime.ServiceModel.Data.WebService();
             var readToEnd = ReadFromAssemblyResource(responseFileName);
             service.RequestResponse = readToEnd;
-            ScenarioContext.Current.Add("WebService", service);
+            scenarioContext.Add("WebService", service);
         }
 
         [When(@"I apply ""(.*)"" to the response")]
         public void WhenIApplyToTheResponse(string jsonPath)
         {
-            var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
+            var webService = scenarioContext.Get<Runtime.ServiceModel.Data.WebService>("WebService");
             webService.JsonPath = jsonPath;
             webService.ApplyPath();
             webService.RequestResponse = webService.JsonPathResult;
@@ -177,7 +185,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
         [Then(@"the mapping should be ""(.*)""")]
         public void ThenTheMappingShouldBe(string resultingMapping)
         {
-            var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
+            var webService = scenarioContext.Get<Runtime.ServiceModel.Data.WebService>("WebService");
             IOutputDescription outputDescription = webService.GetOutputDescription();
             var foundValidPath = outputDescription.DataSourceShapes.Find(shape => shape.Paths.Find(path => path.ActualPath == resultingMapping) != null);
             Assert.IsNotNull(foundValidPath);

@@ -177,6 +177,7 @@ namespace Dev2.Core.Tests.UtilsTests
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
             Assert.AreEqual(2,result.Count);
+            Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);
             Assert.AreEqual("Country", result[0].DisplayValue);
             Assert.AreEqual("@Person",result[1].DisplayValue);
             Assert.IsTrue(result[1].IsObject);            
@@ -212,6 +213,7 @@ namespace Dev2.Core.Tests.UtilsTests
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);
             Assert.AreEqual("Country", result[0].DisplayValue);
             Assert.AreEqual("@Person", result[1].DisplayValue);
             Assert.IsTrue(result[1].IsObject);            
@@ -246,6 +248,7 @@ namespace Dev2.Core.Tests.UtilsTests
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);
             Assert.AreEqual("Country", result[0].DisplayValue);
             Assert.AreEqual("@a", result[1].DisplayValue);
             Assert.IsTrue(result[1].IsObject);
