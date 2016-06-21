@@ -267,9 +267,9 @@ Scenario: Calculate with negative recordset index for Format
 	|              |
 
 Scenario: Calculate the number of weeks between two given dates format has quoted strings
-	Given I have a first date "2013-11-29" 
-	And I have a second date "2014-11-01" 
-	And the date format as "yyyy-mm-dd"
+	Given I have a first date "2013-11-29 date" 
+	And I have a second date "2014-11-01 date" 
+	And the date format as "yyyy-mm-dd 'date'"
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be "8088"
