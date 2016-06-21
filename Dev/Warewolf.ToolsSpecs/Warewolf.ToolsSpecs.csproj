@@ -371,60 +371,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Scripting\Script\ScriptSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharePointCopyFile2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharePointCopyFile.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharePointCopyFileSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharepointCreate1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharepointCreate.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharepointCreateSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharepointDelete1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharepointDelete.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharepointDeleteSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharePointDownLoad2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharePointDownLoad.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharePointDownLoadSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharePointMoveFile2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharePointMoveFile.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharepointRead1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharepointRead.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharePointReadFolder2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharePointReadFolder.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharePointReadFolderSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharepointReadSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharepointToolSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharepointUpdate1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharepointUpdate.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharepointUpdateSteps.cs" />
-    <Compile Include="Toolbox\Sharepoint\SharePointUpload2.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharePointUpload.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Sharepoint\SharePointUploadSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -697,42 +643,6 @@
       <LastGenOutput>Script.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Sharepoint.zip" />
-    <None Include="Toolbox\Sharepoint\SharePointCopyFile.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharePointCopyFile2.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharepointCreate.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharepointCreate1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharepointDelete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharepointDelete1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharePointDownLoad.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharePointDownLoad2.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharePointMoveFile.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharePointMoveFile2.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharepointRead.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharepointRead1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharePointReadFolder.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharePointReadFolder2.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharepointUpdate.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharepointUpdate1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Sharepoint\SharePointUpload.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SharePointUpload2.feature.cs</LastGenOutput>
-    </None>
     <None Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteDropbox.feature.cs</LastGenOutput>
