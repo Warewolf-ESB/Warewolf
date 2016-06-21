@@ -1893,24 +1893,62 @@ namespace Dev2.Activities.Specs.Composition
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Recordset"];
-                //var userName = tableRow["Username"];
-                //var password = tableRow["Password"];
                 var result = tableRow["Result"];
 
                 activity.Result = result;
                 activity.InputPath = variable;
-                //activity.Username = userName;
-                //activity.Password = password;
 
                 _commonSteps.AddVariableToVariableList(result);
             }
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
-        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
-        public void GivenContainsBaseConvertAs(string p0, string p1, Table table)
+        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variable = tableRow["Variable"];
+                var type = tableRow["Type"];
+                var at = tableRow["Using"];
+                var padding = tableRow["Padding"];
+                var alignment = tableRow["Alignment"];
+
+                activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
+            }
+            _commonSteps.AddVariableToVariableList(resultVariable);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
+        public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
+        {
+            DsfBaseConvertActivity activity = new DsfBaseConvertActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
+            {
+                var variableToConvert = tableRow["Variable"];
+                var from = tableRow["From"];
+                var to = tableRow["To"];
+
+                activity.ConvertCollection.Add(new BaseConvertTO(variableToConvert, from, to, variableToConvert, 1, true));
+            }
+
+            _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
+
+        [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
+        public void GivenContainsCountRecordOnInto(string parentName, string activityName, string recordsetName, string resultVariable)
+        {
+            var dsfCountRecord = new DsfCountRecordsetActivity { DisplayName = activityName, RecordsetName = recordsetName, CurrentResult = resultVariable };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfCountRecord);
+        }
+
+        [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
+        public void GivenContainsCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
+        {
+            var dsfCalculate = new DsfCalculateActivity { DisplayName = activityName, Expression = formula, CurrentResult = resultVariable };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfCalculate);
         }
     }
 }

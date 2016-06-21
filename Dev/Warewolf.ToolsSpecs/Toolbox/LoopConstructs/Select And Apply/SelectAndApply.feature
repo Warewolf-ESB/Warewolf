@@ -82,9 +82,9 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a Records
 		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
 	Then the execution has "NO" error
-	And "[[Score(1)]]" has a value of "0.300"
-	And "[[Score(2)]]" has a value of "0.450"
-	And "[[Score(3)]]" has a value of "0.120"
+	And "[[@Score(1)]]" has a value of "0.300"
+	And "[[@Score(2)]]" has a value of "0.450"
+	And "[[@Score(3)]]" has a value of "0.120"
 
 Scenario: Execute a selectAndApply tool with a Number Format tool with a json object array of literals
 	Given There is a complexobject in the datalist with this shape

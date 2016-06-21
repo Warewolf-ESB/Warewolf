@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -26,7 +29,9 @@ namespace Warewolf.AcceptanceTesting.ExchangeSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
+            
             task.Start();
+
             var manageExchangeSourceViewModel = new ManageExchangeSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object);
             manageExhangeSourceControl.DataContext = manageExchangeSourceViewModel;
             Utils.ShowTheViewForTesting(manageExhangeSourceControl);
@@ -35,8 +40,9 @@ namespace Warewolf.AcceptanceTesting.ExchangeSource
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            task.Dispose();
         }
-
+        
         [BeforeScenario("ExchangeSource")]
         public void SetupForDatabaseSource()
         {
@@ -58,7 +64,8 @@ namespace Warewolf.AcceptanceTesting.ExchangeSource
         public void ThenTabIsOpened(string headerText)
         {
             var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
-            Assert.AreEqual(headerText, viewModel.Header);
+            // ReSharper disable once RedundantNameQualifier
+            Assert.AreEqual(headerText, ((Warewolf.Studio.ViewModels.ManageExchangeSourceViewModel)viewModel).HeaderText);
         }
 
         [Then(@"Title is ""(.*)""")]
@@ -106,9 +113,11 @@ namespace Warewolf.AcceptanceTesting.ExchangeSource
         [Then(@"I click on the Test Button")]
         public void ThenIClickOnTheTestButton()
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
-            manageDatabaseSourceControl.SendCommand.Execute(null);
+                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+                manageDatabaseSourceControl.SendCommand.Execute(null);
         }
+
+      
 
     }
 }
