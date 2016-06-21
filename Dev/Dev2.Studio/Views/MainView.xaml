@@ -285,7 +285,6 @@
                                                      CloseButtonVisibility="Hidden"
                                                      Header="VARIABLES"
                                                      IsPinned="True"
-                                                MouseEnter="Variables_OnMouseEnter"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden" >
                                 <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}" AutomationProperties.AutomationId="UI_VariablesControl_AutoID" />
@@ -313,7 +312,6 @@
                                                      CloseButtonVisibility="Hidden"
                                                      Header="EXPLORER"
                                                      IsPinned="True"
-                                                MouseEnter="Explorer_OnMouseEnter"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden" >
                                 <views1:ExplorerView DataContext="{Binding ExplorerViewModel}" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
@@ -321,7 +319,7 @@
                             <igDock:ContentPane x:Name="Toolbox"
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"
-                                                     CloseButtonVisibility="Hidden" MouseEnter="Toolbox_OnMouseEnter"
+                                                     CloseButtonVisibility="Hidden" 
                                                      Header="TOOL BOX"
                                                      IsPinned="True"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
