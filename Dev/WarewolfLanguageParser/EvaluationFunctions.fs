@@ -346,7 +346,8 @@ and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEv
         | WarewolfAtomExpression a -> WarewolfAtomResult a
         | ComplexExpression a -> EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a)
         | RecordSetNameExpression a when env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
-        | _ -> evalJson env update buffer
+        | JsonIdentifierExpression a -> evalJson env update buffer
+        | _ -> raise (new Dev2.Common.Common.NullValueInVariableException("variable not found",languageExpressionToString buffer))
 ///convert a warewolf language expressiom to JsonPath
 and languageExpressionToJPath (lang : LanguageExpression) = 
     match lang with
