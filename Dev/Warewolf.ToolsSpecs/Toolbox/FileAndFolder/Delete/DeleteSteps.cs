@@ -42,7 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
 
         protected override void BuildDataList()
         {
-            if (!ScenarioContext.Current.ContainsKey("activity"))
+            if (!scenarioContext.ContainsKey("activity"))
             {
                 BuildShapeAndTestData();
 
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
                     Action = delete
                 };
 
-                ScenarioContext.Current.Add("activity", delete);
+                scenarioContext.Add("activity", delete);
             }
         }
 
@@ -70,12 +70,12 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
         public void WhenValidatingTheDeleteTool()
         {            
             BuildDataList();
-            var delete = ScenarioContext.Current.Get<DsfPathDelete>("activity");
+            var delete = scenarioContext.Get<DsfPathDelete>("activity");
             delete.PerformValidation();
 
             var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
-            if (!ScenarioContext.Current.ContainsKey("viewModel"))
-                ScenarioContext.Current.Add("viewModel", viewModel);
+            if (!scenarioContext.ContainsKey("viewModel"))
+                scenarioContext.Add("viewModel", viewModel);
         }
     }
 }

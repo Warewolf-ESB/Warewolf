@@ -193,8 +193,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             dsfRename.PerformValidation();
 
             var viewModel = new RenameDesignerViewModel(ModelItemUtils.CreateModelItem(dsfRename));
-            if (!ScenarioContext.Current.ContainsKey("viewModel"))
-                ScenarioContext.Current.Add("viewModel", viewModel);
+            if (!scenarioContext.ContainsKey("viewModel"))
+                scenarioContext.Add("viewModel", viewModel);
         }
     }
 }
