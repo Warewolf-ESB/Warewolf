@@ -68,7 +68,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         {
 
             BuildDataList();
-            var unzip = ScenarioContext.Current.Get<DsfUnZip>("activity");
+            var unzip = scenarioContext.Get<DsfUnZip>("activity");
             unzip.PerformValidation();
         }
 
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             //dsfUnZip.PerformValidation();
 
             //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
-            //ScenarioContext.Current.Add("viewModel", viewModel);
+            //scenarioContext.Add("viewModel", viewModel);
         }
 
         [Then(@"unzip execution error message will be """"""(.*)""")]
