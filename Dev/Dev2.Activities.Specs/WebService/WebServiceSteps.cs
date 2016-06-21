@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel;
@@ -141,7 +142,8 @@ namespace Dev2.Activities.Specs
         public void ThenIHaveTheFollowingData(Table table)
         {
             var dataObject = scenarioContext.Get<IDSFDataObject>("DataObject");
-            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,"",0));
+            const string dataList = "<Datalist></Datalist>";
+            var resultXml = XElement.Parse(ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, dataList, 0));
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
             using(var dataSet = new DataSet())
             {
