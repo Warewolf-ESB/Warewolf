@@ -14840,19 +14840,19 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service using * indexes: TestMySqlWFWithDBServiceMails2" +
-            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service using * indexes: TestMySqlWFWithDBServiceMailsS" +
+            "tarIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMailsStarIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMailsStarIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(*).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseMySqlDBDatabaseServiceUsingIndexes_TestMySqlWFWithDBServiceMails2()
+        public virtual void DatabaseMySqlDBDatabaseServiceUsingIndexes_TestMySqlWFWithDBServiceMailsStarIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceUsingIndexes("TestMySqlWFWithDBServiceMails2", "MySQLEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceUsingIndexes("TestMySqlWFWithDBServiceMailsStarIndex", "MySQLEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14902,18 +14902,18 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service using int indexes: TestMySqlWFWithDBServiceMail" +
-            "s3")]
+            "sIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMailsIntIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMailsIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseMySqlDBDatabaseServiceUsingIntIndexes_TestMySqlWFWithDBServiceMails3()
+        public virtual void DatabaseMySqlDBDatabaseServiceUsingIntIndexes_TestMySqlWFWithDBServiceMailsIntIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithDBServiceMails3", "MySQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithDBServiceMailsIntIndex", "MySQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14962,18 +14962,19 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service last  indexes: TestMySqlWFWithDBServiceMails5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service last  indexes: TestMySqlWFWithDBServiceLastInde" +
+            "x")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceLastIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec().email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseMySqlDBDatabaseServiceLastIndexes_TestMySqlWFWithDBServiceMails5()
+        public virtual void DatabaseMySqlDBDatabaseServiceLastIndexes_TestMySqlWFWithDBServiceLastIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithDBServiceMails5", "MySQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithDBServiceLastIndex", "MySQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -15022,19 +15023,19 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service scalar outputs: TestMySqlWFWithDBServiceMails63" +
-            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service scalar outputs: TestMySqlWFWithDBServiceMailsSc" +
+            "alar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails63")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMailsScalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMailsScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseMySqlDBDatabaseServiceScalarOutputs_TestMySqlWFWithDBServiceMails63()
+        public virtual void DatabaseMySqlDBDatabaseServiceScalarOutputs_TestMySqlWFWithDBServiceMailsScalar()
         {
-            this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithDBServiceMails63", "MySQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithDBServiceMailsScalar", "MySQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -15074,50 +15075,53 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithDBServiceMails7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithDBServiceMailsInv" +
+            "alidIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMailsInvalidIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMailsInvalidIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithDBServiceMails7()
+        public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithDBServiceMailsInvalidIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithDBServiceMails7", "MySQLEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithDBServiceMailsInvalidIndex", "MySQLEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithDBServiceMails8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithDBServiceMailsInv" +
+            "alidVar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMailsInvalidVar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMailsInvalidVar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[123]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithDBServiceMails8()
+        public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithDBServiceMailsInvalidVar()
         {
-            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithDBServiceMails8", "MySQLEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithDBServiceMailsInvalidVar", "MySQLEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithDBServiceMails9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithDBServiceMailsInv" +
+            "alidVarWithIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMailsInvalidVarWithIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMailsInvalidVarWithIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name.bob]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithDBServiceMails9()
+        public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithDBServiceMailsInvalidVarWithIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithDBServiceMails9", "MySQLEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithDBServiceMailsInvalidVarWithIndex", "MySQLEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
@@ -15170,30 +15174,30 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service inputs and outputs: TestMySqlWFWithDBServiceMai" +
-            "ls15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service inputs and outputs: TestMySqlWFWithDBServiceCou" +
+            "ntriesMySql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceMails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceMails15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithDBServiceCountriesMySql")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithDBServiceCountriesMySql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlGetCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseMySqlDBDatabaseServiceInputsAndOutputs_TestMySqlWFWithDBServiceMails15()
+        public virtual void DatabaseMySqlDBDatabaseServiceInputsAndOutputs_TestMySqlWFWithDBServiceCountriesMySql()
         {
-            this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithDBServiceMails15", "MySqlGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithDBServiceCountriesMySql", "MySqlGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void DatabaseOracleDBDatabaseServiceUsingIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
+        public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database OracleDB Database service using * indexes", exampleTags);
-#line 4126
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB Database service inputs and outputs", exampleTags);
+#line 4128
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4127
+#line 4129
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table821 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15202,59 +15206,59 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
             table821.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
+                        "Prefix",
+                        "afg",
+                        "[[countries(*).countryid]]",
                         string.Format("{0}", nameVariable)});
             table821.AddRow(new string[] {
                         "",
                         "",
-                        "[[rec(*).email]]",
+                        "[[countries(*).description]]",
                         string.Format("{0}", emailVariable)});
-#line 4128
-  testRunner.And(string.Format("\"{0}\" contains a \"oracle database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table821, "And ");
-#line 4132
+#line 4130
+  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table821, "And ");
+#line 4134
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4133
+#line 4135
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table822 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table822.AddRow(new string[] {
-                        "[[rec(1).name]] = Monk"});
+                        "[[countries(1).id]] = 1"});
             table822.AddRow(new string[] {
-                        "[[rec(1).email]] = dora@explorers.com"});
-#line 4134
+                        "[[countries(1).description]] = Afghanistan"});
+#line 4136
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table822, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service using * indexes: TestOracleWFWithDBServiceMail" +
-            "s2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB Database service inputs and outputs: TestSqlWFWithSqlDBServiceMail" +
+            "sCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(*).name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(*).email]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestSqlWFWithSqlDBServiceMailsCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestSqlWFWithSqlDBServiceMailsCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "GetCountriesSqlServer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseOracleDBDatabaseServiceUsingIndexes_TestOracleWFWithDBServiceMails2()
+        public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithSqlDBServiceMailsCountries()
         {
-            this.DatabaseOracleDBDatabaseServiceUsingIndexes("TestOracleWFWithDBServiceMails2", "MySQLEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlDBServiceMailsCountries", "GetCountriesSqlServer", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void DatabaseOracleDBDatabaseServiceUsingIntIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
+        public virtual void DatabaseSqlDBServiceDBErrors(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database OracleDB Database service using int indexes", exampleTags);
-#line 4143
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service DBErrors", exampleTags);
+#line 4144
+ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4144
+#line 4145
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table823 = new TechTalk.SpecFlow.Table(new string[] {
@@ -15262,1015 +15266,225 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table823.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table823.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4145
-  testRunner.And(string.Format("\"{0}\" contains a \"oracle database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table823, "And ");
+#line 4146
+  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table823, "And ");
+#line 4148
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4149
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4150
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table824 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table824.AddRow(new string[] {
-                        "[[rec(1).name]] = Monk"});
-            table824.AddRow(new string[] {
-                        "[[rec(1).email]] = dora@explorers.com"});
-#line 4151
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table824, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service using int indexes: TestOracleWFWithDBServiceMa" +
-            "ils3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseOracleDBDatabaseServiceUsingIntIndexes_TestOracleWFWithDBServiceMails3()
-        {
-            this.DatabaseOracleDBDatabaseServiceUsingIntIndexes("TestOracleWFWithDBServiceMails3", "MySQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabaseOracleDBDatabaseServiceLastIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database OracleDB Database service last  indexes", exampleTags);
-#line 4160
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4161
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table825 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table825.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table825.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4162
-  testRunner.And(string.Format("\"{0}\" contains a \"oracle database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table825, "And ");
-#line 4166
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4167
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table826 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table826.AddRow(new string[] {
-                        "[[rec(1).name]] = Monk"});
-            table826.AddRow(new string[] {
-                        "[[rec(1).email]] = dora@explorers.com"});
-#line 4168
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table826, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service last  indexes: TestOracleWFWithDBServiceMails5" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec().name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec().email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseOracleDBDatabaseServiceLastIndexes_TestOracleWFWithDBServiceMails5()
-        {
-            this.DatabaseOracleDBDatabaseServiceLastIndexes("TestOracleWFWithDBServiceMails5", "MySQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabaseOracleDBDatabaseServiceScalarOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database OracleDB Database service scalar outputs", exampleTags);
-#line 4177
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4178
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table827 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table827.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table827.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4179
-  testRunner.And(string.Format("\"{0}\" contains a \"oracle database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table827, "And ");
-#line 4183
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4184
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table828 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table828.AddRow(new string[] {
-                        "[[name]] = Monk"});
-            table828.AddRow(new string[] {
-                        "[[email]] = dora@explorers.com"});
-#line 4185
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table828, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service scalar outputs: TestOracleWFWithDBServiceMails" +
-            "63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseOracleDBDatabaseServiceScalarOutputs_TestOracleWFWithDBServiceMails63()
-        {
-            this.DatabaseOracleDBDatabaseServiceScalarOutputs("TestOracleWFWithDBServiceMails63", "MySQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabaseOracleDBDatabaseServiceErrorOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database OracleDB Database service Error outputs", exampleTags);
-#line 4193
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4194
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table829 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table829.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table829.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4195
-  testRunner.And(string.Format("\"{0}\" contains a \"oracle database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table829, "And ");
-#line 4199
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4200
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service Error outputs: TestOracleWFWithDBServiceMails7" +
-            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service DBErrors: TestWFWithDBServiceMailsErrorProcSql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseOracleDBDatabaseServiceErrorOutputs_TestOracleWFWithDBServiceMails7()
-        {
-            this.DatabaseOracleDBDatabaseServiceErrorOutputs("TestOracleWFWithDBServiceMails7", "MySQLEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service Error outputs: TestOracleWFWithDBServiceMails8" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[123]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseOracleDBDatabaseServiceErrorOutputs_TestOracleWFWithDBServiceMails8()
-        {
-            this.DatabaseOracleDBDatabaseServiceErrorOutputs("TestOracleWFWithDBServiceMails8", "MySQLEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service Error outputs: TestOracleWFWithDBServiceMails9" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name.bob]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseOracleDBDatabaseServiceErrorOutputs_TestOracleWFWithDBServiceMails9()
-        {
-            this.DatabaseOracleDBDatabaseServiceErrorOutputs("TestOracleWFWithDBServiceMails9", "MySQLEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabaseOracleDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database OracleDB Database service inputs and outputs", exampleTags);
-#line 4207
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4208
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table830 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table830.AddRow(new string[] {
-                        "name",
-                        "afg%",
-                        "[[countries(*).countryid]]",
-                        string.Format("{0}", nameVariable)});
-            table830.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[countries(*).description]]",
-                        string.Format("{0}", emailVariable)});
-#line 4209
-  testRunner.And(string.Format("\"{0}\" contains a \"oracle database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table830, "And ");
-#line 4213
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4214
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table831 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table831.AddRow(new string[] {
-                        "[[countries(1).id]] = 1"});
-            table831.AddRow(new string[] {
-                        "[[countries(2).id]] = 1"});
-            table831.AddRow(new string[] {
-                        "[[countries(1).description]] = Afghanistan"});
-            table831.AddRow(new string[] {
-                        "[[countries(2).description]] = Afghanistan"});
-#line 4215
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table831, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service inputs and outputs: TestOracleWFWithDBServiceM" +
-            "ails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "OracleGetCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseOracleDBDatabaseServiceInputsAndOutputs_TestOracleWFWithDBServiceMails15()
-        {
-            this.DatabaseOracleDBDatabaseServiceInputsAndOutputs("TestOracleWFWithDBServiceMails15", "OracleGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabasePostgreDBDatabaseServiceUsingIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreDB Database service using * indexes", exampleTags);
-#line 4227
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4228
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table832 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table832.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table832.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4229
-  testRunner.And(string.Format("\"{0}\" contains a \"postgre database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table832, "And ");
-#line 4233
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4234
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table833 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table833.AddRow(new string[] {
-                        "[[rec(1).name]] = Monk"});
-            table833.AddRow(new string[] {
-                        "[[rec(1).email]] = dora@explorers.com"});
-#line 4235
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table833, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service using * indexes: TestPostgreWFWithDBServiceMa" +
-            "ils2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(*).name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(*).email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabasePostgreDBDatabaseServiceUsingIndexes_TestPostgreWFWithDBServiceMails2()
-        {
-            this.DatabasePostgreDBDatabaseServiceUsingIndexes("TestPostgreWFWithDBServiceMails2", "MySQLEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabasePostgreDBDatabaseServiceUsingIntIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreDB Database service using int indexes", exampleTags);
-#line 4244
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4245
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table834 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table834.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table834.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4246
-  testRunner.And(string.Format("\"{0}\" contains a \"postgre database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table834, "And ");
-#line 4250
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4251
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table835 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table835.AddRow(new string[] {
-                        "[[rec(1).name]] = Monk"});
-            table835.AddRow(new string[] {
-                        "[[rec(1).email]] = dora@explorers.com"});
-#line 4252
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table835, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service using int indexes: TestPostgreWFWithDBService" +
-            "Mails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabasePostgreDBDatabaseServiceUsingIntIndexes_TestPostgreWFWithDBServiceMails3()
-        {
-            this.DatabasePostgreDBDatabaseServiceUsingIntIndexes("TestPostgreWFWithDBServiceMails3", "MySQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabasePostgreDBDatabaseServiceLastIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreDB Database service last  indexes", exampleTags);
-#line 4261
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4262
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table836 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table836.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table836.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4263
-  testRunner.And(string.Format("\"{0}\" contains a \"postgre database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table836, "And ");
-#line 4267
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4268
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table837 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table837.AddRow(new string[] {
-                        "[[rec(1).name]] = Monk"});
-            table837.AddRow(new string[] {
-                        "[[rec(1).email]] = dora@explorers.com"});
-#line 4269
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table837, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service last  indexes: TestPostgreWFWithDBServiceMail" +
-            "s5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec().name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec().email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabasePostgreDBDatabaseServiceLastIndexes_TestPostgreWFWithDBServiceMails5()
-        {
-            this.DatabasePostgreDBDatabaseServiceLastIndexes("TestPostgreWFWithDBServiceMails5", "MySQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabasePostgreDBDatabaseServiceScalarOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreDB Database service scalar outputs", exampleTags);
-#line 4278
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4279
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table838 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table838.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table838.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4280
-  testRunner.And(string.Format("\"{0}\" contains a \"postgre database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table838, "And ");
-#line 4284
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4285
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table839 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table839.AddRow(new string[] {
-                        "[[name]] = Monk"});
-            table839.AddRow(new string[] {
-                        "[[email]] = dora@explorers.com"});
-#line 4286
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table839, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service scalar outputs: TestPostgreWFWithDBServiceMai" +
-            "ls63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabasePostgreDBDatabaseServiceScalarOutputs_TestPostgreWFWithDBServiceMails63()
-        {
-            this.DatabasePostgreDBDatabaseServiceScalarOutputs("TestPostgreWFWithDBServiceMails63", "MySQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabasePostgreDBDatabaseServiceErrorOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreDB Database service Error outputs", exampleTags);
-#line 4294
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4295
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table840 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table840.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).name]]",
-                        string.Format("{0}", nameVariable)});
-            table840.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(*).email]]",
-                        string.Format("{0}", emailVariable)});
-#line 4296
-  testRunner.And(string.Format("\"{0}\" contains a \"postgre database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table840, "And ");
-#line 4300
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4301
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service Error outputs: TestPostgreWFWithDBServiceMail" +
-            "s7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabasePostgreDBDatabaseServiceErrorOutputs_TestPostgreWFWithDBServiceMails7()
-        {
-            this.DatabasePostgreDBDatabaseServiceErrorOutputs("TestPostgreWFWithDBServiceMails7", "MySQLEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service Error outputs: TestPostgreWFWithDBServiceMail" +
-            "s8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[123]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabasePostgreDBDatabaseServiceErrorOutputs_TestPostgreWFWithDBServiceMails8()
-        {
-            this.DatabasePostgreDBDatabaseServiceErrorOutputs("TestPostgreWFWithDBServiceMails8", "MySQLEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service Error outputs: TestPostgreWFWithDBServiceMail" +
-            "s9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name.bob]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabasePostgreDBDatabaseServiceErrorOutputs_TestPostgreWFWithDBServiceMails9()
-        {
-            this.DatabasePostgreDBDatabaseServiceErrorOutputs("TestPostgreWFWithDBServiceMails9", "MySQLEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabasePostgreDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreDB Database service inputs and outputs", exampleTags);
-#line 4308
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4309
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table841 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table841.AddRow(new string[] {
-                        "name",
-                        "afg%",
-                        "[[countries(*).countryid]]",
-                        string.Format("{0}", nameVariable)});
-            table841.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[countries(*).description]]",
-                        string.Format("{0}", emailVariable)});
-#line 4310
-  testRunner.And(string.Format("\"{0}\" contains a \"postgre database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table841, "And ");
-#line 4314
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4315
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table842 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table842.AddRow(new string[] {
-                        "[[countries(1).id]] = 1"});
-            table842.AddRow(new string[] {
-                        "[[countries(2).id]] = 1"});
-            table842.AddRow(new string[] {
-                        "[[countries(1).description]] = Afghanistan"});
-            table842.AddRow(new string[] {
-                        "[[countries(2).description]] = Afghanistan"});
-#line 4316
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table842, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreDB Database service inputs and outputs: TestPostgreWFWithDBServic" +
-            "eMails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestPostgreWFWithDBServiceMails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestPostgreWFWithDBServiceMails15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "PostgreGetCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabasePostgreDBDatabaseServiceInputsAndOutputs_TestPostgreWFWithDBServiceMails15()
-        {
-            this.DatabasePostgreDBDatabaseServiceInputsAndOutputs("TestPostgreWFWithDBServiceMails15", "PostgreGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB Database service inputs and outputs", exampleTags);
-#line 4329
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4330
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table843 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table843.AddRow(new string[] {
-                        "Prefix",
-                        "afg",
-                        "[[countries(*).countryid]]",
-                        string.Format("{0}", nameVariable)});
-            table843.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[countries(*).description]]",
-                        string.Format("{0}", emailVariable)});
-#line 4331
-  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table843, "And ");
-#line 4335
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4336
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table844 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table844.AddRow(new string[] {
-                        "[[countries(1).id]] = 1"});
-            table844.AddRow(new string[] {
-                        "[[countries(1).description]] = Afghanistan"});
-#line 4337
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table844, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB Database service inputs and outputs: TestSqlWFWithDBServiceMailsCo" +
-            "untries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestSqlWFWithDBServiceMailsCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestSqlWFWithDBServiceMailsCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "GetCountriesSqlServer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithDBServiceMailsCountries()
-        {
-            this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithDBServiceMailsCountries", "GetCountriesSqlServer", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
-#line hidden
-        }
-        
-        public virtual void DatabaseSqlDBServiceDBErrors(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service DBErrors", exampleTags);
-#line 4345
- this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4346
-     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table845 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-#line 4347
-  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table845, "And ");
-#line 4349
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4350
-     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service DBErrors: Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsError")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMailsErrorProcSql")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsErrorProcSql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "willalwayserror")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseSqlDBServiceDBErrors_Variant0()
+        public virtual void DatabaseSqlDBServiceDBErrors_TestWFWithDBServiceMailsErrorProcSql()
         {
-            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBServiceMailsError", "willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBServiceMailsErrorProcSql", "willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service DBErrors: Variant 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service DBErrors: TestWFWithDBServiceMailsErrorProcMySql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsError")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMailsErrorProcMySql")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsErrorProcMySql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "willalwaysErrorMySql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
-        public virtual void DatabaseSqlDBServiceDBErrors_Variant1()
+        public virtual void DatabaseSqlDBServiceDBErrors_TestWFWithDBServiceMailsErrorProcMySql()
         {
-            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBServiceMailsError", "willalwaysErrorMySql", "[[name]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBServiceMailsErrorProcMySql", "willalwaysErrorMySql", "[[name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
         public virtual void DatabaseSqlDBServiceUsingIntIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using int indexes", exampleTags);
-#line 4357
+#line 4156
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4358
+#line 4157
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table846 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table824 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table846.AddRow(new string[] {
+            table824.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(*).name]]",
                         string.Format("{0}", nameVariable)});
-            table846.AddRow(new string[] {
+            table824.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(*).email]]",
                         string.Format("{0}", emailVariable)});
-#line 4359
-  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table846, "And ");
-#line 4363
+#line 4158
+  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table824, "And ");
+#line 4162
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4364
+#line 4163
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table847 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table825 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table847.AddRow(new string[] {
+            table825.AddRow(new string[] {
                         "[[rec(1).name]] = dora"});
-            table847.AddRow(new string[] {
+            table825.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.co.za"});
-#line 4365
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table847, "And ");
+#line 4164
+  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table825, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service using int indexes: TestWFWithDBServiceMails3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service using int indexes: TestWFWithDBServiceMailsSqlIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMails3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMailsSqlIntIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsSqlIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "SqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseSqlDBServiceUsingIntIndexes_TestWFWithDBServiceMails3()
+        public virtual void DatabaseSqlDBServiceUsingIntIndexes_TestWFWithDBServiceMailsSqlIntIndex()
         {
-            this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBServiceMails3", "SqlEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBServiceMailsSqlIntIndex", "SqlEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
         public virtual void DatabaseSqlDBServiceUsingLastIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using last indexes", exampleTags);
-#line 4374
+#line 4173
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4375
+#line 4174
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table848 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table826 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table848.AddRow(new string[] {
+            table826.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(*).name]]",
                         string.Format("{0}", nameVariable)});
-            table848.AddRow(new string[] {
+            table826.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(*).email]]",
                         string.Format("{0}", emailVariable)});
-#line 4376
-  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table848, "And ");
-#line 4380
+#line 4175
+  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table826, "And ");
+#line 4179
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4381
+#line 4180
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table849 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table827 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table849.AddRow(new string[] {
+            table827.AddRow(new string[] {
                         "[[rec(1).name]] = dora"});
-            table849.AddRow(new string[] {
+            table827.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.co.za"});
-#line 4382
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table849, "And ");
+#line 4181
+  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table827, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service using last indexes: TestWFWithDBServiceMails4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service using last indexes: TestWFWithDBServiceMailsSqlLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMails4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMails4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMailsSqlLastIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsSqlLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "SqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec().email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseSqlDBServiceUsingLastIndexes_TestWFWithDBServiceMails4()
+        public virtual void DatabaseSqlDBServiceUsingLastIndexes_TestWFWithDBServiceMailsSqlLastIndex()
         {
-            this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBServiceMails4", "SqlEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBServiceMailsSqlLastIndex", "SqlEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
         public virtual void DatabaseSqlDBServiceUsingScalarOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using scalar outputs", exampleTags);
-#line 4391
+#line 4190
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4392
+#line 4191
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table850 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table828 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table850.AddRow(new string[] {
+            table828.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(*).name]]",
                         string.Format("{0}", nameVariable)});
-            table850.AddRow(new string[] {
+            table828.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(*).email]]",
                         string.Format("{0}", emailVariable)});
-#line 4393
-  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table850, "And ");
-#line 4397
+#line 4192
+  testRunner.And(string.Format("\"{0}\" contains a \"sqlserver database\" service \"{1}\" with mappings", workflowName, serviceName), ((string)(null)), table828, "And ");
+#line 4196
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4398
+#line 4197
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table851 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table829 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table851.AddRow(new string[] {
+            table829.AddRow(new string[] {
                         "[[name]] = dora"});
-            table851.AddRow(new string[] {
+            table829.AddRow(new string[] {
                         "[[email]] = dora@explorers.co.za"});
-#line 4399
-  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table851, "And ");
+#line 4198
+  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table829, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service using scalar outputs: TestWFWithDBServiceMails5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database SqlDB  service using scalar outputs: TestWFWithDBServiceMailsSqlScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMails5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMails5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBServiceMailsSqlScalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBServiceMailsSqlScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "SqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseSqlDBServiceUsingScalarOutputs_TestWFWithDBServiceMails5()
+        public virtual void DatabaseSqlDBServiceUsingScalarOutputs_TestWFWithDBServiceMailsSqlScalar()
         {
-            this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBServiceMails5", "SqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBServiceMailsSqlScalar", "SqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
     }

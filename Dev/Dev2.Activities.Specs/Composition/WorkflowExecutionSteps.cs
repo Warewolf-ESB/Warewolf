@@ -493,7 +493,7 @@ namespace Dev2.Activities.Specs.Composition
                 var inputMapping = inputSb.ToString();
                 resource.Outputs = outputMapping;
                 resource.Inputs = inputMapping;
-
+                resource.ResourceType = ResourceType.Service;
                 activity.ResourceID = resource.ID;
                 activity.ServiceName = resource.ResourceName;
                 activity.DisplayName = serviceName;
