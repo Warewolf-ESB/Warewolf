@@ -84,6 +84,27 @@ namespace Warewolf.Studio.Views
             }
         }
 
+        public void SelectType(string type)
+        {
+            try
+            {
+                ServerTypeComboBox.SelectedItem = type;
+            }
+            catch (Exception)
+            {
+                //Stupid exception when running from tests
+            }
+        }
+
+        public bool GetAuthenticationEnabledState(AuthenticationType authenticationType)
+        {
+            if (authenticationType == AuthenticationType.Windows)
+            {
+                return WindowsRadioButton.IsChecked != null && (bool) WindowsRadioButton.IsChecked;
+            }
+            return UserRadioButton.IsChecked != null && (bool) UserRadioButton.IsChecked;
+        }
+
         public Visibility GetUsernameVisibility()
         {
             BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
