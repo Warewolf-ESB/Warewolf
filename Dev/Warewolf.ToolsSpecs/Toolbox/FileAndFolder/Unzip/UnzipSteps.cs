@@ -21,6 +21,9 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Providers.Errors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
@@ -42,7 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add(CommonSteps.SourceUsernameHolder, userName.Replace('"', ' ').Trim());
             scenarioContext.Add(CommonSteps.SourcePasswordHolder, password.Replace('"', ' ').Trim());
         }
-        
+
         [When(@"the Unzip file tool is executed")]
         public void WhenTheUnzipFileToolIsExecuted()
         {
@@ -54,7 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         [When(@"the Unzip file tool is executed with a single file")]
         public void WhenTheUnzipFileToolIsExecutedWithASingleFile()
         {
-            scenarioContext.Add("singleFile",true );
+            scenarioContext.Add("singleFile", true);
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
@@ -63,11 +66,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         [When(@"validating the unzip tool")]
         public void WhenValidatingTheUnzipTool()
         {
+
             BuildDataList();
             var unzip = ScenarioContext.Current.Get<DsfUnZip>("activity");
             unzip.PerformValidation();
         }
-
 
         [When(@"validating the tool")]
         public void WhenValidatingTheTool()
@@ -93,8 +96,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         [Then(@"unzip execution error message will be """"""(.*)""")]
         public void ThenUnzipExecutionErrorMessageWillBe(string p0)
         {
-            var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
-            //Assert.AreEqual(p0, dsfU);
+            var fetchErrors = DataObject.Environment.FetchErrors();
+            var contains = fetchErrors.Contains(p0);
+            if (string.IsNullOrEmpty(p0))
+            {
+                Assert.IsTrue(contains);
+            }
+            else
+            {
+                Assert.IsFalse(contains);
+            }
         }
 
 
@@ -133,7 +144,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                 Action = unzip
             };
             var dsfUnZip = scenarioContext.ContainsKey("activity");
-            if(dsfUnZip)
+            if (dsfUnZip)
                 scenarioContext.Remove("activity");
             scenarioContext.Add("activity", unzip);
         }
@@ -154,15 +165,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             a.Start();
             a.Wait(TimeOut);
 
-            if(a.Status == TaskStatus.Running)
+            if (a.Status == TaskStatus.Running)
             {
                 cancel.Cancel();
                 a.Dispose();
                 RunwithRetry(retrycount - 1);
             }
-            else if(a.Status == TaskStatus.Faulted)
+            else if (a.Status == TaskStatus.Faulted)
             {
-                if(a.Exception != null)
+                if (a.Exception != null)
                 {
                     throw a.Exception;
                 }
@@ -171,26 +182,62 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 
         void RunCopy()
         {
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
-                                                                            scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
-                                                                            scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
-                                                                            true);
-            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-
-            
-            string resourceName = "Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Unzip.Test.zip";
-             if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
-                 resourceName = "TestFile.zip";
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            List<string> filesToCleanup = new List<string>();
-            using(Stream stream = assembly.GetManifestResourceStream(resourceName))
+            try
             {
-                if(stream != null)
+                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
+                                                                                scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                                                                                scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                                                                                true);
+                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+
+
+                string resourceName = "Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Unzip.Test.zip";
+                if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
+                    resourceName = "TestFile.zip";
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                List<string> filesToCleanup = new List<string>();
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
                 {
-                    sourceEndPoint.Put(stream, sourceEndPoint.IOPath, new Dev2CRUDOperationTO(true), null, filesToCleanup);
+                    if (stream != null)
+                    {
+                        sourceEndPoint.Put(stream, sourceEndPoint.IOPath, new Dev2CRUDOperationTO(true), null, filesToCleanup);
+                    }
+                }
+                filesToCleanup.ForEach(File.Delete);
+            }
+            catch (AggregateException aggregateException)
+            {
+                var e = aggregateException.Flatten();
+                var realError = e.GetBaseException();
+                IList<IActionableErrorInfo> validationErrors;
+                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out validationErrors);
+                if (validationErrors == null)
+                {
+                    validationErrors = new List<IActionableErrorInfo>()
+                    {
+                        new ActionableErrorInfo() { Message = realError.Message, StackTrace = realError.StackTrace}
+    };
+                    var containsKey = scenarioContext.ContainsKey(CommonSteps.ValidationErrors);
+                    if (!containsKey)
+                        scenarioContext.Add(CommonSteps.ValidationErrors, validationErrors);
                 }
             }
-            filesToCleanup.ForEach(File.Delete);
+            catch (Exception e)
+            {
+                IList<IActionableErrorInfo> validationErrors;
+                scenarioContext.TryGetValue(CommonSteps.ValidationErrors, out validationErrors);
+                if (validationErrors == null)
+                {
+                    validationErrors = new List<IActionableErrorInfo>()
+                    {
+                        new ActionableErrorInfo() { Message = e.Message, StackTrace = e.StackTrace}
+                    };
+                    var containsKey = scenarioContext.ContainsKey(CommonSteps.ValidationErrors);
+                    if (!containsKey)
+                        scenarioContext.Add(CommonSteps.ValidationErrors, validationErrors);
+                }
+
+            }
         }
     }
 }
