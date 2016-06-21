@@ -34,7 +34,7 @@ REM ** Kill The Server **
 IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
 
 REM  Wait 5 seconds ;)
-ping -n 5 -w 1000 192.0.2.2 > nul
+TIMEOUT 5
 
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
@@ -63,5 +63,5 @@ set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 30 exit 1
 rem wait for 5 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
-ping -n 5 -w 1000 192.0.2.2 > nul
+TIMEOUT 5
 goto MainLoopBody
