@@ -449,7 +449,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 ResourceModels.Add(instanceObj);
             }
             var saveResource = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
-            if (!saveResource.HasError)
+            if (saveResource != null && !saveResource.HasError)
             {
                 _environmentModel.FireWorkflowSaved();
             }
