@@ -235,7 +235,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.CancelTestCommand.Execute(null);
 
             //assert
-            Assert.IsTrue(isCancelled);
+            Assert.IsTrue(isCancelled, "Cancel test command does not cancel sharepoint source test.");
         }
 
         [TestMethod]
