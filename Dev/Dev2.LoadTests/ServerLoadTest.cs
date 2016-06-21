@@ -23,31 +23,6 @@ namespace Dev2.Integration.Tests.Load_Tests
     {
         const double TicksPerSec = 10000000;
 
-        [TestMethod]
-        public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
-        {
-            string path = ServerSettings.WebserverURI + "Load Test Resources/LargeDataTest";
-
-            DateTime start = DateTime.Now;
-            string result = TestHelper.PostDataToWebserver(path);
-            DateTime end = DateTime.Now;
-            double duration = (end.Ticks - start.Ticks) / TicksPerSec;
-
-            const string exp = "<myPrimes index=\"1\"><value>Result</value></myPrimes>"; // Last value in the file
-
-            Assert.IsTrue(result.IndexOf(exp, StringComparison.Ordinal) > 0, result + " does not contain " + exp);
-            // Travis.Frisinger - Bug 8579
-            // Was 10.0 Moved to 2.5
-            if(duration <= 225)
-            {
-                Assert.IsTrue(duration <= 225, " It Took { " + duration + " }");
-            }
-            else
-            {
-                Assert.Inconclusive("Get new hardware buddy! { " + duration + " }");
-            }
-        }
-
         // Travis.Frisinger - Bug 8579
         [TestMethod]
         public void FileWith200kLine_Expect200kRecordsetEntries_In_Under_25Seconds()
