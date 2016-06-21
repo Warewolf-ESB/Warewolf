@@ -181,7 +181,7 @@ namespace Dev2.Tests.DataList
             to.XmlData = "";
             to = broker.InitDebugSession(to);
 
-            Assert.AreEqual("<DataList><scalar1/><rs><f1/><f2/></rs></DataList>", to.XmlData);
+            Assert.AreEqual("<DataList></DataList>", to.XmlData);
 
             DeleteDir(rootFolder);
         }

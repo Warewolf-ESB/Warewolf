@@ -1338,6 +1338,77 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complex object multi array and field and multi values")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
+        public virtual void NumberFormatToolWithComplexObjectMultiArrayAndFieldAndMultiValues()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complex object multi array and field and multi values", ((string[])(null)));
+#line 412
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table49.AddRow(new string[] {
+                        "[[@Person.Member(1).Team(1).Score]]",
+                        "0.3"});
+            table49.AddRow(new string[] {
+                        "[[@Person.Member(1).Team(2).Score]]",
+                        "0.45"});
+            table49.AddRow(new string[] {
+                        "[[@Person.Member(2).Team(1).Score]]",
+                        "0.12"});
+            table49.AddRow(new string[] {
+                        "[[@Person.Member(2).Team(2).Score]]",
+                        "0.11"});
+            table49.AddRow(new string[] {
+                        "[[@Person.Member(2).Team(3).Score]]",
+                        "0.13"});
+            table49.AddRow(new string[] {
+                        "[[@Person.Member(3).Team(1).Score]]",
+                        "0.14"});
+#line 413
+ testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table49, "Given ");
+#line 421
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 422
+ testRunner.And("Datasource is \"[[@Person.Member().Team().Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding",
+                        "Rounding Value",
+                        "Decimals to show",
+                        "Result"});
+            table50.AddRow(new string[] {
+                        "[[Score]]",
+                        "Up",
+                        "2",
+                        "3",
+                        "[[Score]]"});
+#line 423
+ testRunner.And("I use a Number Format tool configured as", ((string)(null)), table50, "And ");
+#line 426
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 427
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 428
+ testRunner.And("\"[[@Person.Member(1).Team(1).Score]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 429
+ testRunner.And("\"[[@Person.Member(1).Team(2).Score]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 430
+ testRunner.And("\"[[@Person.Member(2).Team(1).Score]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 431
+ testRunner.And("\"[[@Person.Member(2).Team(2).Score]]\" has a value of \"0.110\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 432
+ testRunner.And("\"[[@Person.Member(2).Team(3).Score]]\" has a value of \"0.130\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 433
+ testRunner.And("\"[[@Person.Member(3).Team(1).Score]]\" has a value of \"0.140\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
