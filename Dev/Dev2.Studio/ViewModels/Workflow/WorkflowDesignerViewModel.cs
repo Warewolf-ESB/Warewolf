@@ -1940,12 +1940,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
             // ReSharper restore CSharpWarnings::CS0618
 
-            if (envID!=null && resourceID!=null&& modelProperty != null)
+            if (envID!=null && modelProperty != null)
             {
                 IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envID);
                 if (environmentModel != null)
                 {
-                    var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
+                    var resource = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
                     if (resource != null)
                     {
                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
