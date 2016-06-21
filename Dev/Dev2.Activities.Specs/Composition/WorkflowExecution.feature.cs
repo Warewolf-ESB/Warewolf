@@ -2083,7 +2083,7 @@ this.FeatureBackground();
                         "New Value"});
             table125.AddRow(new string[] {
                         "1",
-                        "[[b]] = test",
+                        "[[b]] =",
                         "warewolf"});
 #line 558
    testRunner.And("the \"scl2\" in WorkFlow \"WorkflowWith2Assigntoolswithrscalars\" debug inputs as", ((string)(null)), table125, "And ");
@@ -5333,7 +5333,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 1428
-      testRunner.Given("I have a workflow \"WorkflowWithForEachContainingSequence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+      testRunner.Given("I have a workflow \"WorkflowWithForEachContainingSeq\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table301 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -5345,10 +5345,10 @@ this.FeatureBackground();
                         "[[rec(1).b]]",
                         "456"});
 #line 1429
-   testRunner.And("\"WorkflowWithForEachContainingSequence\" contains an Assign \"RecVal\" as", ((string)(null)), table301, "And ");
+   testRunner.And("\"WorkflowWithForEachContainingSeq\" contains an Assign \"RecVal\" as", ((string)(null)), table301, "And ");
 #line 1433
-   testRunner.And("\"WorkflowWithForEachContainingSequence\" contains a Foreach \"ForEachTest1\" as \"Num" +
-                    "OfExecution\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"WorkflowWithForEachContainingSeq\" contains a Foreach \"ForEachTest1\" as \"NumOfExe" +
+                    "cution\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1434
    testRunner.And("\"ForEachTest1\" contains a Sequence \"Seq1\" as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5371,7 +5371,7 @@ this.FeatureBackground();
                         "",
                         "Left"});
 #line 1435
-   testRunner.And("\"Seq1\" in \"ForEachTest1\" contains Data Merge \"Data Merge\" into \"[[rec(1).c]]\" as", ((string)(null)), table302, "And ");
+   testRunner.And("\'Seq1\' in \"ForEachTest1\" contains Data Merge \"Data Merge\" into \"[[rec(1).c]]\" as", ((string)(null)), table302, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table303 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
@@ -5380,9 +5380,9 @@ this.FeatureBackground();
                         "[[rec(1).d]]",
                         "Date & Time"});
 #line 1439
-    testRunner.And("\"Seq1\" in \"ForEachTest1\" contains Gather System Info \"System info\" as", ((string)(null)), table303, "And ");
+    testRunner.And("\'Seq1\' in \"ForEachTest1\" contains Gather System Info \"System info\" as", ((string)(null)), table303, "And ");
 #line 1442
-   testRunner.When("\"WorkflowWithForEachContainingSequence\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"WorkflowWithForEachContainingSeq\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1443
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -5399,7 +5399,7 @@ this.FeatureBackground();
                         "[[rec(1).b]] =",
                         "456"});
 #line 1444
-   testRunner.And("the \"RecVal\" in WorkFlow \"WorkflowWithForEachContainingSequence\" debug inputs as", ((string)(null)), table304, "And ");
+   testRunner.And("the \"RecVal\" in WorkFlow \"WorkflowWithForEachContainingSeq\" debug inputs as", ((string)(null)), table304, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table305 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5411,8 +5411,7 @@ this.FeatureBackground();
                         "2",
                         "[[rec(1).b]]  =  456"});
 #line 1448
-   testRunner.And("the \"RecVal\" in Workflow \"WorkflowWithForEachContainingSequence\" debug outputs as" +
-                    "", ((string)(null)), table305, "And ");
+   testRunner.And("the \"RecVal\" in Workflow \"WorkflowWithForEachContainingSeq\" debug outputs as", ((string)(null)), table305, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table306 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
@@ -5421,11 +5420,11 @@ this.FeatureBackground();
                         "No. of Executes",
                         "2"});
 #line 1452
-    testRunner.And("the \"ForEachTest1\" in WorkFlow \"WorkflowWithForEachContainingSequence\" debug inpu" +
-                    "ts as", ((string)(null)), table306, "And ");
+    testRunner.And("the \"ForEachTest1\" in WorkFlow \"WorkflowWithForEachContainingSeq\" debug inputs as" +
+                    "", ((string)(null)), table306, "And ");
 #line 1455
-      testRunner.And("the \"ForEachTest1\" in WorkFlow \"WorkflowWithForEachContainingSequence\" has  \"2\" n" +
-                    "ested children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+      testRunner.And("the \"ForEachTest1\" in WorkFlow \"WorkflowWithForEachContainingSeq\" has  \"2\" nested" +
+                    " children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table307 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5449,14 +5448,14 @@ this.FeatureBackground();
                         "\"\"",
                         "Left"});
 #line 1456
-   testRunner.And("the \"Data Merge\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table307, "And ");
+   testRunner.And("the \"Data Merge\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table307, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table308 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table308.AddRow(new string[] {
                         "[[rec(1).c]] = 123456"});
 #line 1460
-    testRunner.And("the \"Data Merge\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table308, "And ");
+    testRunner.And("the \"Data Merge\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table308, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table309 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5467,7 +5466,7 @@ this.FeatureBackground();
                         "[[rec(1).d]] =",
                         "Date & Time"});
 #line 1463
-   testRunner.And("the \"System info\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table309, "And ");
+   testRunner.And("the \"System info\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table309, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table310 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5476,7 +5475,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(1).d]] = String"});
 #line 1466
-   testRunner.And("the \"System info\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table310, "And ");
+   testRunner.And("the \"System info\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table310, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table311 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5500,14 +5499,14 @@ this.FeatureBackground();
                         "\"\"",
                         "Left"});
 #line 1469
-   testRunner.And("the \"Data Merge\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table311, "And ");
+   testRunner.And("the \"Data Merge\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table311, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table312 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table312.AddRow(new string[] {
                         "[[rec(1).c]] = 123456"});
 #line 1473
-    testRunner.And("the \"Data Merge\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table312, "And ");
+    testRunner.And("the \"Data Merge\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table312, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table313 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5518,7 +5517,7 @@ this.FeatureBackground();
                         "[[rec(1).d]] =",
                         "Date & Time"});
 #line 1476
-   testRunner.And("the \"System info\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table313, "And ");
+   testRunner.And("the \"System info\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table313, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table314 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5527,7 +5526,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(1).d]] = String"});
 #line 1479
-   testRunner.And("the \"System info\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table314, "And ");
+   testRunner.And("the \"System info\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table314, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5588,7 +5587,7 @@ this.FeatureBackground();
                         "",
                         "Left"});
 #line 1493
-   testRunner.And("\"Seq1\" in \"ForEachTest1\" contains Data Merge \"Data Merge\" into \"[[rec(*).c]]\" as", ((string)(null)), table316, "And ");
+   testRunner.And("\'Seq1\' in \"ForEachTest1\" contains Data Merge \"Data Merge\" into \"[[rec(*).c]]\" as", ((string)(null)), table316, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table317 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
@@ -5597,7 +5596,7 @@ this.FeatureBackground();
                         "[[rec(*).d]]",
                         "Date & Time"});
 #line 1497
-   testRunner.And("\"Seq1\" in \"ForEachTest1\" contains Gather System Info \"System info\" as", ((string)(null)), table317, "And ");
+   testRunner.And("\'Seq1\' in \"ForEachTest1\" contains Gather System Info \"System info\" as", ((string)(null)), table317, "And ");
 #line 1500
    testRunner.When("\"WorkFWithForEachwithRecContainingSequence\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1501
@@ -5687,14 +5686,14 @@ this.FeatureBackground();
                         "\"\"",
                         "Left"});
 #line 1520
-   testRunner.And("the \"Data Merge\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table321, "And ");
+   testRunner.And("the \"Data Merge\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table321, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table322 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table322.AddRow(new string[] {
                         "[[rec(1).c]] = 123456"});
 #line 1524
-   testRunner.And("the \"Data Merge\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table322, "And ");
+   testRunner.And("the \"Data Merge\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table322, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table323 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5705,7 +5704,7 @@ this.FeatureBackground();
                         "[[rec(1).d]] =",
                         "Date & Time"});
 #line 1527
-       testRunner.And("the \"System info\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table323, "And ");
+       testRunner.And("the \"System info\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug inputs as", ((string)(null)), table323, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table324 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5714,7 +5713,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(1).d]] = String"});
 #line 1530
-    testRunner.And("the \"System info\" in \"Seq1\" in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table324, "And ");
+    testRunner.And("the \"System info\" in \'Seq1\' in step 1 for \"ForEachTest1\" debug outputs as", ((string)(null)), table324, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table325 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5738,14 +5737,14 @@ this.FeatureBackground();
                         "\"\"",
                         "Left"});
 #line 1533
-   testRunner.And("the \"Data Merge\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table325, "And ");
+   testRunner.And("the \"Data Merge\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table325, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table326 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table326.AddRow(new string[] {
                         "[[rec(2).c]] = TestWarewolf"});
 #line 1537
-   testRunner.And("the \"Data Merge\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table326, "And ");
+   testRunner.And("the \"Data Merge\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table326, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table327 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5756,7 +5755,7 @@ this.FeatureBackground();
                         "[[rec(2).d]] =",
                         "Date & Time"});
 #line 1540
-      testRunner.And("the \"System info\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table327, "And ");
+      testRunner.And("the \"System info\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug inputs as", ((string)(null)), table327, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table328 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -5765,7 +5764,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec(2).d]] = String"});
 #line 1543
-    testRunner.And("the \"System info\" in \"Seq1\" in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table328, "And ");
+    testRunner.And("the \"System info\" in \'Seq1\' in step 2 for \"ForEachTest1\" debug outputs as", ((string)(null)), table328, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -13646,7 +13645,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 3753
-   testRunner.Given("I have a workflow \"TestAssignWithRemoteOutputsError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"TestAssignWithRemoteOutputsErrors\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table768 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -13655,7 +13654,7 @@ this.FeatureBackground();
                         "[[inputData]]",
                         "hello"});
 #line 3754
-   testRunner.And("\"TestAssignWithRemoteOutputsError\" contains an Assign \"AssignData\" as", ((string)(null)), table768, "And ");
+   testRunner.And("\"TestAssignWithRemoteOutputsErrors\" contains an Assign \"AssignData\" as", ((string)(null)), table768, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table769 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -13678,12 +13677,12 @@ this.FeatureBackground();
                         "values(*).low",
                         "[[values().low]]"});
 #line 3757
-   testRunner.And("\"TestAssignWithRemoteOutputsError\" contains \"WorkflowUsedBySpecs\" from server \"Re" +
-                    "mote Connection Integration\" with mapping as", ((string)(null)), table769, "And ");
+   testRunner.And("\"TestAssignWithRemoteOutputsErrors\" contains \"WorkflowUsedBySpecs\" from server \"R" +
+                    "emote Connection Integration\" with mapping as", ((string)(null)), table769, "And ");
 #line 3762
-   testRunner.When("\"TestAssignWithRemoteOutputsError\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"TestAssignWithRemoteOutputsErrors\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3763
-   testRunner.Then("the \"TestAssignWithRemoteOutputsError\" workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("the \"TestAssignWithRemoteOutputsErrors\" workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table770 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -13694,7 +13693,7 @@ this.FeatureBackground();
                         "[[inputData]] =",
                         "hello"});
 #line 3764
-   testRunner.And("the \"AssignData\" in WorkFlow \"TestAssignWithRemoteOutputsError\" debug inputs as", ((string)(null)), table770, "And ");
+   testRunner.And("the \"AssignData\" in WorkFlow \"TestAssignWithRemoteOutputsErrors\" debug inputs as", ((string)(null)), table770, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table771 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -13703,15 +13702,16 @@ this.FeatureBackground();
                         "1",
                         "[[inputData]] = hello"});
 #line 3767
-   testRunner.And("the \"AssignData\" in Workflow \"TestAssignWithRemoteOutputsError\" debug outputs as", ((string)(null)), table771, "And ");
+   testRunner.And("the \"AssignData\" in Workflow \"TestAssignWithRemoteOutputsErrors\" debug outputs as" +
+                    "", ((string)(null)), table771, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table772 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table772.AddRow(new string[] {
                         "[[inputData]] = hello"});
 #line 3770
-    testRunner.And("the \"WorkflowUsedBySpecs\" in WorkFlow \"TestAssignWithRemoteOutputsError\" debug in" +
-                    "puts as", ((string)(null)), table772, "And ");
+    testRunner.And("the \"WorkflowUsedBySpecs\" in WorkFlow \"TestAssignWithRemoteOutputsErrors\" debug i" +
+                    "nputs as", ((string)(null)), table772, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table773 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -14746,8 +14746,8 @@ this.FeatureBackground();
             table807.AddRow(new string[] {
                         "[[Result]] = Fail"});
             table807.AddRow(new string[] {
-                        "[[Error]] = Could not parse input datetime with given input format (even after tr" +
-                            "ying default datetime formats from other cultures)"});
+                        "[[Error]] = Could not parse input datetime with given input format (if you left t" +
+                            "he input format blank then even"});
 #line 4006
  testRunner.And("the \"ErrorHandled\" in Workflow \"Wolf-1212_Test\" debug outputs as", ((string)(null)), table807, "And ");
 #line hidden

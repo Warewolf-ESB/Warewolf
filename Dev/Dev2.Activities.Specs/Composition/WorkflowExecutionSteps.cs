@@ -378,7 +378,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(item => item.ResultsList).ToList());
         }
 
-        [Then(@"the ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug inputs as")]
+        [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInInStepForDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -410,7 +410,7 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-        [Then(@"the ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
+        [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInInStepForDebugOutputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -757,8 +757,7 @@ namespace Dev2.Activities.Specs.Composition
             return outputSb;
         }
 
-        [Given(@"""(.*)"" in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
-        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        [Given(@"'(.*)' in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
         {
             DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
@@ -791,7 +790,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        [Given(@"""(.*)"" in ""(.*)"" contains Gather System Info ""(.*)"" as")]
+        [Given(@"'(.*)' in ""(.*)"" contains Gather System Info ""(.*)"" as")]
         public void GivenInContainsGatherSystemInfoAs(string sequenceName, string forEachName, string activityName, Table table)
         {
             var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
@@ -1434,6 +1433,12 @@ namespace Dev2.Activities.Specs.Composition
             }
 
         }
+        [Given(@"""(.*)"" contains a Sequence ""(.*)"" as")]
+        public void GivenContainsASequenceAs(string parentName, string activityName)
+        {
+            var dsfSequence = new DsfSequenceActivity { DisplayName = activityName };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
+        }
 
         [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
@@ -1935,13 +1940,6 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
-        }
-
-        [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
-        public void GivenContainsCountRecordOnInto(string parentName, string activityName, string recordsetName, string resultVariable)
-        {
-            var dsfCountRecord = new DsfCountRecordsetActivity { DisplayName = activityName, RecordsetName = recordsetName, CurrentResult = resultVariable };
-            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfCountRecord);
         }
 
         [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
