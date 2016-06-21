@@ -114,7 +114,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_Assign_HasUpdateValue_ExpectAssignReplaced()
         {
             //------------Setup for test--------------------------
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
 
             //------------Execute Test---------------------------
             scopedEnvironment.Assign("[[a]]", "bob", 1);
@@ -128,7 +128,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_Assign_HasUpdateValue_ExpectAssignReplacedOnRight()
         {
             //------------Setup for test--------------------------
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
 
             //------------Execute Test---------------------------
             scopedEnvironment.Assign("[[a]]", "[[a]]", 1);
@@ -261,7 +261,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalRecordSetIndexes")]
         public void ScopedEnvironment_EvalRecordSetIndexesTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalRecordSetIndexes("[[a]]", 1));
    
 
@@ -282,7 +282,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAsListOfStrings")]
         public void ScopedEnvironment_EvalAsListOfStringsTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAsListOfStrings("[[a]]", 1));
 
 
@@ -292,7 +292,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAsListOfStrings")]
         public void ScopedEnvironment_EvalAsListOfStringsTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAsListOfStrings("[[b]]", 1));
 
         }
@@ -302,7 +302,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAssignFromNestedStar")]
         public void ScopedEnvironment_EvalAssignFromNestedStarTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAssignFromNestedStar("[[a]]",It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
 
 
@@ -312,7 +312,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAssignFromNestedStar")]
         public void ScopedEnvironment_EvalAssignFromNestedStarTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAssignFromNestedStar("[[b]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(),1));
 
         }
@@ -323,7 +323,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAssignFromNestedLast")]
         public void ScopedEnvironment_EvalAssignFromNestedLastTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAssignFromNestedLast("[[a]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
 
 
@@ -333,7 +333,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAssignFromNestedLast")]
         public void ScopedEnvironment_EvalAssignFromNestedLastTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAssignFromNestedLast("[[b]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
 
         }
@@ -343,7 +343,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAssignFromNestedNumeric")]
         public void ScopedEnvironment_EvalAssignFromNestedNumericTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAssignFromNestedNumeric("[[a]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
 
 
@@ -353,7 +353,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAssignFromNestedNumeric")]
         public void ScopedEnvironment_EvalAssignFromNestedNumericTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAssignFromNestedNumeric("[[b]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
 
         }
@@ -363,7 +363,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalDelete")]
         public void ScopedEnvironment_EvalDeleteTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalDelete("[[a]]", 1));
 
 
@@ -383,7 +383,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_SortRecordSet")]
         public void ScopedEnvironment_SortRecordSetTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.SortRecordSet("[[a]]",It.IsAny<bool>(), 1));
 
 
@@ -403,7 +403,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAsList")]
         public void ScopedEnvironment_EvalAsListTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAsList("[[a]]",  1));
 
 
@@ -413,7 +413,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalAsList")]
         public void ScopedEnvironment_EvalAsListTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAsList("[[b]]",  1));
 
         }
@@ -423,7 +423,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalWhere")]
         public void ScopedEnvironment_EvalWhereTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalWhere("[[a]]", ax => true, 1));
 
 
@@ -433,26 +433,17 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalWhere")]
         public void ScopedEnvironment_EvalWhereTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalWhere("[[b]]",ax=>true, 1));
 
         }
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("ScopedEnvironment_ApplyUpdate")]
-        public void ScopedEnvironment_ApplyUpdateTest()
-        {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
-            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.ApplyUpdate("[[a]]", ax => ax, 1));
-
-
-        }
+        
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ScopedEnvironment_ApplyUpdate")]
         public void ScopedEnvironment_ApplyUpdateTestNegative()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.ApplyUpdate("[[b]]", ax => ax, 1));
 
         }
@@ -463,7 +454,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalToExpression")]
         public void ScopedEnvironment_EvalToExpressionTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalToExpression("[[a]]",  1));
 
 
@@ -483,7 +474,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory("ScopedEnvironment_EvalForDataMerge")]
         public void ScopedEnvironment_EvalForDataMergeTest()
         {
-            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalForDataMerge("[[a]]", 1));
 
 

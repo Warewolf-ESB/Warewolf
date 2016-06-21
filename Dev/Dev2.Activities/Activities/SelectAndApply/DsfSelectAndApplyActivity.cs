@@ -219,7 +219,7 @@ namespace Dev2.Activities.SelectAndApply
                                 {
                                     var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                                     if (atom != null)
-                                        AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), "", "", expression, "", "", "="));
+                                        AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
                                 }
                             }
                         }                        
