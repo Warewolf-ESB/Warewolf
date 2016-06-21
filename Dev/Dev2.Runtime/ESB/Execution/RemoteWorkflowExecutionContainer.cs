@@ -134,7 +134,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var result = string.Empty;
 
-            var serviceToExecute = connection.WebAddress + "Services/" + serviceName;
+            var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var req = BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
             Dev2Logger.Debug("Executing the remote request.");
             if (req != null)
@@ -204,7 +204,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var result = string.Empty;
 
-            var serviceToExecute = connection.WebAddress + "Services/" + serviceName;
+            var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var requestUri = serviceToExecute + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password,isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
             Dev2Logger.Debug("Executing the remote request.");
@@ -225,6 +225,11 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             return result;
+        }
+
+        private static string GetServiceToExecute(Connection connection, string serviceName)
+        {
+            return connection.WebAddress + "Secure/" + serviceName+".json";
         }
 
         private WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)

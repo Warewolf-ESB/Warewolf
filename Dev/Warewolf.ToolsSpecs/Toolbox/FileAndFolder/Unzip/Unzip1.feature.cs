@@ -950,24 +950,24 @@ this.ScenarioSetup(scenarioInfo);
                         "Source Path",
                         "Username",
                         "Password",
+                        "Source Private Key File",
                         "Destination Path",
                         "Destination Username",
                         "Destination Password",
-                        "Overwrite",
-                        "Archive Password",
                         "Destination Private Key File",
-                        "Source Private Key File"});
+                        "Overwrite",
+                        "Archive Password"});
             table3.AddRow(new string[] {
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String",
+                        "<sourcePrivateKeyFile>",
                         string.Format("{0} = {1}", destination, destinationLocation),
                         string.Format("{0}", destUsername),
                         "String",
-                        string.Format("{0}", selected),
-                        "String",
                         "<destinationPrivateKeyFile>",
-                        "<sourcePrivateKeyFile>"});
+                        string.Format("{0}", selected),
+                        "String"});
 #line 78
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
@@ -3070,8 +3070,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\copyfile70.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[a]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\ZIP78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
@@ -3082,11 +3082,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "The result field only allows a single result")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.The result field only allows a single result")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile70.txt ]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile70.txt ]")]
         public virtual void UnzipFileValidation_68()
         {
-            this.UnzipFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile70.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\ZIP78", "integrationtester", "I73573r0", "True", "[[result]][[a]]", "\"\"", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", ((string[])(null)));
+            this.UnzipFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile70.txt", "[[a]", "String", "[[destPath]]", "C:\\ZIP78", "integrationtester", "I73573r0", "True", "[[result]][[a]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile70.txt ]", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile70.txt ]", ((string[])(null)));
 #line hidden
         }
         
