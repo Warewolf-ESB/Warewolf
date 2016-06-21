@@ -25,7 +25,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
     [Binding]
     public class NewPostgresDatabaseSourceSteps
     {
-
         [BeforeFeature("PostgreSource")]
         public static void SetupForSystem()
         {
@@ -65,7 +64,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             Assert.IsNotNull(manageDatabaseSourceControl);
             Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
-        
+
         [Given(@"I Type Server as ""(.*)""")]
         public void GivenITypeServerAs(string serverName)
         {
@@ -81,7 +80,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
                 Assert.AreEqual(serverName, viewModel.ServerName.Name);
             }
         }
-        
+
         [Given(@"I Select Authentication type as ""(.*)""")]
         public void GivenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
@@ -93,7 +92,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType(authenticationType);
         }
-        
+
         [Given(@"I Open ""(.*)""")]
         public void GivenIOpen(string name)
         {
@@ -115,7 +114,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
                 Utils.ResetViewModel<ManageDatabaseSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
         }
-        
+
         [Given(@"server as ""(.*)""")]
         public void GivenServerAs(string server)
         {
@@ -124,7 +123,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer("server");
         }
-        
+
         [Given(@"Username field Is ""(.*)""")]
         public void GivenUsernameFieldIs(string user)
         {
@@ -133,7 +132,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterUserName(user);
         }
-        
+
         [Given(@"Password field Is ""(.*)""")]
         public void GivenPasswordFieldIs(string pwd)
         {
@@ -142,39 +141,23 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterPassword(pwd);
         }
-        
-        [Given(@"""(.*)"" connection is ""(.*)""")]
-        public void GivenConnectionIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"Database ""(.*)"" Is selected")]
-        public void GivenDatabaseIsSelected(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"""(.*)"" save is ""(.*)""")]
-        public void GivenSaveIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [When(@"I Type Server as ""(.*)""")]
+        [Then(@"I Type Server as ""(.*)""")]
+        [Given(@"I Type Server as ""(.*)""")]
         public void WhenITypeServerAs(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(p0);
         }
-        
+
         [When(@"I Click test connnection ""(.*)""")]
         public void WhenIClickTestConnnection(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
         }
-        
+
         [When(@"I save the source As ""(.*)""")]
         public void WhenISaveTheSourceAs(string name)
         {
@@ -184,89 +167,76 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
-        
-        [When(@"I Type Username as ""(.*)""")]
-        public void WhenITypeUsernameAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I Type Password as ""(.*)""")]
-        public void WhenITypePasswordAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"Test connecton is ""(.*)""")]
-        public void WhenTestConnectonIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I Edit server as ""(.*)""")]
-        public void WhenIEditServerAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I cancel the Test")]
-        public void WhenICancelTheTest()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [Then(@"""(.*)"" tab is Opened")]
         public void ThenTabIsOpened(string headerText)
         {
             var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
-        
+
         [Then(@"Title is ""(.*)""")]
         public void ThenTitleIs(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetHeader(), p0);
         }
-        
+
         [Then(@"the Intellisense contains these options")]
         public void ThenTheIntellisenseContainsTheseOptions(Table table)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
             var rows = table.Rows[0].Values;
             foreach (var server in rows)
             {
                 manageDatabaseSourceControl.VerifyServerExistsintComboBox(server);
             }
         }
-        
+
         [Then(@"Type options contains")]
         public void ThenTypeOptionsContains(Table table)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
             var rows = table.Rows[0].Values;
-
             Assert.IsTrue(manageDatabaseSourceControl.GetServerOptions().All(a => rows.Contains(a)));
         }
-        
+
         [Then(@"I Type Select The Server as ""(.*)""")]
         public void ThenITypeSelectTheServerAs(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(p0);
         }
-        
+
         [Then(@"Type options has ""(.*)"" as the default")]
         public void ThenTypeOptionsHasAsTheDefault(string defaultDbType)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
             Assert.IsTrue(manageDatabaseSourceControl.GetSelectedDbOption() == defaultDbType);
         }
-       
-        
+
+        [Then(@"I select type ""(.*)""")]
+        public void ThenISelectType(string type)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            manageDatabaseSourceControl.SelectType(type);
+        }
+
+        [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
+        public void ThenAuthenticationTypeIs(string authenticationTypeString, string enabledString)
+        {
+            var expectedState = !String.Equals(enabledString, "Disabled", StringComparison.InvariantCultureIgnoreCase);
+
+            var authenticationType = String.Equals(authenticationTypeString, "User",
+                StringComparison.InvariantCultureIgnoreCase)
+                ? AuthenticationType.Windows
+                : AuthenticationType.User;
+
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var databaseAuthenticationEnabledState = manageDatabaseSourceControl.GetAuthenticationEnabledState(authenticationType);
+            Assert.AreEqual(expectedState, databaseAuthenticationEnabledState);
+        }
+
         [Then(@"I Select Authentication type as ""(.*)""")]
         public void ThenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
@@ -279,25 +249,24 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             manageDatabaseSourceControl.SetAuthenticationType(authenticationType);
         }
 
-
         [Then(@"""(.*)"" Con Is ""(.*)""")]
         public void ThenConIs(string controlName, string enabledString)
         {
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
-        
+
         [Then(@"""(.*)"" Cancel Is ""(.*)""")]
         public void ThenCancelIs(string controlName, string enabledString)
         {
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
-        
+
         [Then(@"""(.*)"" Disabled Is ""(.*)""")]
         public void ThenDisabledIs(string controlName, string enabledString)
         {
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
-        
+
         [Then(@"Test Connecton Is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
         {
@@ -325,7 +294,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             manageDatabaseSourceControl.PerformTestConnection();
             Thread.Sleep(1000);
         }
-        
+
         [Then(@"I select ""(.*)"" As Database")]
         public void ThenISelectAsDatabase(string databaseName)
         {
@@ -334,39 +303,34 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var viewModel = (ManageDatabaseSourceViewModel)manageDatabaseSourceControl.DataContext;
             Assert.AreEqual(databaseName, viewModel.DatabaseName);
         }
-        
+
         [Then(@"""(.*)"" Save Is Enabled ""(.*)""")]
         public void ThenSaveIsEnabled(string controlName, string enabledString)
         {
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
-        
+
         [Then(@"The save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
-        
+
         [Then(@"""(.*)"" Save Tab is opened")]
         public void ThenSaveTabIsOpened(string headerText)
         {
             var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
-        
+
         [Then(@"""(.*)"" Is the tab Header")]
         public void ThenIsTheTabHeader(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetHeader(), p0);
         }
-        
-        [Then(@"username field is ""(.*)""")]
-        public void ThenUsernameFieldIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+
         [Given(@"Authentication type is selected as ""(.*)""")]
         public void GivenAuthenticationTypeIsSelectedAs(string authenticationTypeString)
         {
@@ -379,13 +343,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             manageDatabaseSourceControl.SetAuthenticationType(authenticationType);
         }
 
-
-        [Then(@"password field is ""(.*)""")]
-        public void ThenPasswordFieldIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string visibility)
         {
@@ -395,50 +352,17 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
-        
+
         [Then(@"""(.*)"" Connection is ""(.*)""")]
         public void ThenConnectionIs(string controlName, string enabledString)
         {
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
-        
+
         [Then(@"""(.*)"" Save is ""(.*)""")]
         public void ThenSaveIs(string controlName, string enabledString)
         {
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
-
-        [Then(@"Authentication type is selected as ""(.*)""")]
-        public void ThenAuthenticationTypeIsSelectedAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"Username Is ""(.*)""")]
-        public void ThenUsernameIs(string visibility)
-        {
-            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var databaseDropDownVisibility = manageDatabaseSourceControl.GetUsernameVisibility();
-            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
-        }
-        
-        [Then(@"Password  Is ""(.*)""")]
-        public void ThenPasswordIs(string visibility)
-        {
-            var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var databaseDropDownVisibility = manageDatabaseSourceControl.GetPasswordVisibility();
-            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
-        }
-        
-        [Then(@"the Validation message as ""(.*)""")]
-        public void ThenTheValidationMessageAs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
     }
 }

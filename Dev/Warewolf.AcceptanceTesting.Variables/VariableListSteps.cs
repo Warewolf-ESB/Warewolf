@@ -17,38 +17,29 @@ using Warewolf.AcceptanceTesting.Core;
 namespace Warewolf.AcceptanceTesting.Variables
 {
     [Binding]
-    public class VariableListSteps 
+    public class VariableListSteps
     {
-        
         private static string _mainVm = "mainVm";
         [BeforeFeature("VariableList")]
         public static void SetupForFeature()
         {
-               Utils.SetupResourceDictionary();
+            Utils.SetupResourceDictionary();
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
+            var viewModel = new DataListViewModel(mockEventAggregator.Object);
+            viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            manageVariableListViewControl.DataContext = viewModel;
 
-            
-                 var mockEventAggregator = new Mock<IEventAggregator>();
-          
-
-               IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
-               var viewModel = new DataListViewModel(mockEventAggregator.Object);
-               viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
-               manageVariableListViewControl.DataContext = viewModel;
-
-               Utils.ShowTheViewForTesting(manageVariableListViewControl);
-               FeatureContext.Current.Add(Utils.ViewNameKey, manageVariableListViewControl);
-               FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
-               FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
-
+            Utils.ShowTheViewForTesting(manageVariableListViewControl);
+            FeatureContext.Current.Add(Utils.ViewNameKey, manageVariableListViewControl);
+            FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
+            FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
         }
-       
 
         [BeforeScenario("VariableList")]
         public void SetupForScenerio()
         {
-           
             /*var mockEventAggregator = new Mock<IEventAggregator>();
-
 
             IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
             var viewModel = new DataListViewModel(mockEventAggregator.Object);
@@ -56,18 +47,14 @@ namespace Warewolf.AcceptanceTesting.Variables
             manageVariableListViewControl.DataContext = viewModel;
             Utils.ShowTheViewForTesting(manageVariableListViewControl);*/
 
-
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<DataListView>(Utils.ViewNameKey));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey));
             //ScenarioContext.Current.Add("eventAggregator", mockEventAggregator);
-
         }
 
         [Given(@"I have variables as")]
         public void GivenIHaveVariablesAs(Table table)
         {
-           
-           
             var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
             var rows = table.Rows;
             foreach (var tableRow in rows)
@@ -133,7 +120,6 @@ namespace Warewolf.AcceptanceTesting.Variables
                     }
                 }
             }
-
         }
 
         [Then(@"""(.*)"" is ""(.*)""")]
@@ -204,7 +190,6 @@ namespace Warewolf.AcceptanceTesting.Variables
         }
 
         [When(@"I clear the filter")]
-        [When(@"I press the clear filter button")]
         public void WhenIClearTheFilter()
         {
             var variableListViewModel = Utils.GetView<DataListViewModel>();
@@ -272,7 +257,10 @@ namespace Warewolf.AcceptanceTesting.Variables
         {
             var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
             var variableListViewRecsetCollection = sourceControl.RecsetCollection;
-            variableListViewRecsetCollection.RemoveAt(0);
+            if (variableListViewRecsetCollection.Count > 0)
+            {
+                variableListViewRecsetCollection.RemoveAt(0);
+            }
             var rows = table.Rows;
             var i = 0;
 
@@ -349,7 +337,7 @@ namespace Warewolf.AcceptanceTesting.Variables
         [When(@"I press ""(.*)""")]
         public void WhenIPress(string p0)
         {
-           ScenarioContext.Current.Pending();
+            ScenarioContext.Current.Pending();
         }
 
         [When(@"the Debug Input window is opened")]

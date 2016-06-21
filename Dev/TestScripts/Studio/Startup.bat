@@ -41,9 +41,7 @@ REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (elevate rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\")
-rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\"
-rd /S /Q "%PROGRAMDATA%\Warewolf\Resources"
-rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces"
+IF EXIST "%PROGRAMDATA%\Warewolf\Resources" IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings\" exit 1
 
 REM Init paths to Warewolf server under test
 IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"

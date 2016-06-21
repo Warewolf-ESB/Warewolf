@@ -22,7 +22,7 @@ namespace Dev2
     {
         public static string GetXmlOutputFromEnvironment(IDSFDataObject dataObject,string dataList, int update)
         {
-            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update), "DataList");
+            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update), "DataList",true);
             return xml.ToString();
         }
 
@@ -362,7 +362,7 @@ namespace Dev2
         }
         public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
         {
-            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Input, update), "DataList");
+            var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIODirection(dataObject, dataList, enDev2ColumnArgumentDirection.Input, update), "DataList",true);
             return xml.ToString();
         }
 

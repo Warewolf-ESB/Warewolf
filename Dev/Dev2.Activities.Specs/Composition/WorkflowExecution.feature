@@ -556,8 +556,8 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | 1 | [[a]] = b    |
 	  | 2 | [[b]] = test |
 	  And the "scl2" in WorkFlow "WorkflowWith2Assigntoolswithrscalars" debug inputs as
-	  | # | Variable         | New Value |
-	  | 1 | [[b]] = test | warewolf  |
+	  | # | Variable | New Value |
+	  | 1 | [[b]] =  | warewolf  |
 	  And the "scl2" in Workflow "WorkflowWith2Assigntoolswithrscalars" debug outputs as  
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
@@ -1425,58 +1425,58 @@ Scenario: Workflow with ForEach which contains assign
 		| 1 | [[rec(2).a]] = Test |
 
 Scenario: Workflow with ForEach which contains Sequence
-      Given I have a workflow "WorkflowWithForEachContainingSequence"
-	  And "WorkflowWithForEachContainingSequence" contains an Assign "RecVal" as
+      Given I have a workflow "WorkflowWithForEachContainingSeq"
+	  And "WorkflowWithForEachContainingSeq" contains an Assign "RecVal" as
 	  | variable     | value |
 	  | [[rec(1).a]] | 123   |
 	  | [[rec(1).b]] | 456   |
-	  And "WorkflowWithForEachContainingSequence" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
+	  And "WorkflowWithForEachContainingSeq" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
 	  And "ForEachTest1" contains a Sequence "Seq1" as
-	  And "Seq1" in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(1).c]]" as
+	  And 'Seq1' in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(1).c]]" as
 	  | Variable     | Type | Using | Padding | Alignment |
 	  | [[rec(1).a]] | None |       |         | Left      |
 	  | [[rec(1).b]] | None |       |         | Left      |
-	   And "Seq1" in "ForEachTest1" contains Gather System Info "System info" as
+	   And 'Seq1' in "ForEachTest1" contains Gather System Info "System info" as
 	  | Variable     | Selected    |
 	  | [[rec(1).d]] | Date & Time |
-	  When "WorkflowWithForEachContainingSequence" is executed
+	  When "WorkflowWithForEachContainingSeq" is executed
 	  Then the workflow execution has "NO" error
-	  And the "RecVal" in WorkFlow "WorkflowWithForEachContainingSequence" debug inputs as 
+	  And the "RecVal" in WorkFlow "WorkflowWithForEachContainingSeq" debug inputs as 
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = | 123       |
 	  | 2 | [[rec(1).b]] = | 456       |
-	  And the "RecVal" in Workflow "WorkflowWithForEachContainingSequence" debug outputs as 
+	  And the "RecVal" in Workflow "WorkflowWithForEachContainingSeq" debug outputs as 
 	  | # |                      |
 	  | 1 | [[rec(1).a]]  =  123 |
 	  | 2 | [[rec(1).b]]  =  456 |
-	   And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSequence" debug inputs as 
+	   And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSeq" debug inputs as 
 	  |                 | Number |
 	  | No. of Executes | 2      |
-      And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSequence" has  "2" nested children 
-	  And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+      And the "ForEachTest1" in WorkFlow "WorkflowWithForEachContainingSeq" has  "2" nested children 
+	  And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                    | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
 	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
-	   And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	   And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  |                       |
 	  | [[rec(1).c]] = 123456 |
-	  And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+	  And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(1).d]] = | Date & Time |
-	  And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	  And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String | 
-	  And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+	  And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                    | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
 	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
-	   And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	   And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  |                       |
 	  | [[rec(1).c]] = 123456 |
-	  And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+	  And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(1).d]] = | Date & Time |
-	  And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	  And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String |	
 
@@ -1490,11 +1490,11 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | [[rec(2).b]] | Warewolf |
 	  And "WorkFWithForEachwithRecContainingSequence" contains a Foreach "ForEachTest1" as "InRecordset" executions "[[rec(*)]]"
 	  And "ForEachTest1" contains a Sequence "Seq1" as
-	  And "Seq1" in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(*).c]]" as
+	  And 'Seq1' in "ForEachTest1" contains Data Merge "Data Merge" into "[[rec(*).c]]" as
 	  | Variable     | Type | Using | Padding | Alignment |
 	  | [[rec(*).a]] | None |       |         | Left      |
 	  | [[rec(*).b]] | None |       |         | Left      |
-	  And "Seq1" in "ForEachTest1" contains Gather System Info "System info" as
+	  And 'Seq1' in "ForEachTest1" contains Gather System Info "System info" as
 	  | Variable     | Selected    |
 	  | [[rec(*).d]] | Date & Time |
 	  When "WorkFWithForEachwithRecContainingSequence" is executed
@@ -1517,30 +1517,30 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  |                | [[rec(1)]] = |
 	  |                | [[rec(2)]] = |
       And the "ForEachTest1" in WorkFlow "WorkFWithForEachwithRecContainingSequence" has  "2" nested children
-	  And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+	  And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                    | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
 	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
-	  And the "Data Merge" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	  And the "Data Merge" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  |                       |
 	  | [[rec(1).c]] = 123456 |
-       And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug inputs as
+       And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(1).d]] = | Date & Time |
-	   And the "System info" in "Seq1" in step 1 for "ForEachTest1" debug outputs as
+	   And the "System info" in 'Seq1' in step 1 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(1).d]] = String |
-	  And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+	  And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                         | With | Using | Pad | Align |
 	  | 1 | [[rec(2).a]] = Test     | None | ""    | ""  | Left  |
 	  | 2 | [[rec(2).b]] = Warewolf | None | ""    | ""  | Left  |
-	  And the "Data Merge" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	  And the "Data Merge" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  |                             |
 	  | [[rec(2).c]] = TestWarewolf |
-      And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug inputs as
+      And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug inputs as
 	  | # |                |             |
 	  | 1 | [[rec(2).d]] = | Date & Time |
-	   And the "System info" in "Seq1" in step 2 for "ForEachTest1" debug outputs as
+	   And the "System info" in 'Seq1' in step 2 for "ForEachTest1" debug outputs as
 	  | # |                       |
 	  | 1 | [[rec(2).d]] = String |
 
@@ -3032,7 +3032,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  | [[TheDefaultDate]] = DateTime |  
 	  And the "Date and Time(5)" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
-	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "Date format yyyy MM dd yields : " yyyy MM dd |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
@@ -3750,24 +3750,24 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 Scenario: Error from workflow service is expected to buble out
-	  Given I have a workflow "TestAssignWithRemoteOutputsError"
-	  And "TestAssignWithRemoteOutputsError" contains an Assign "AssignData" as
+	  Given I have a workflow "TestAssignWithRemoteOutputsErrors"
+	  And "TestAssignWithRemoteOutputsErrors" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignWithRemoteOutputsError" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  | inputData        | [[inputData]] | output              | [[output]]       |
 	  |                  |               | values(*).up     | [[values().&up]] |
 	  |                  |               | values(*).low     | [[values().low]] |
-	  When "TestAssignWithRemoteOutputsError" is executed
-	  Then the "TestAssignWithRemoteOutputsError" workflow execution has "AN" error
-	  And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsError" debug inputs as
+	  When "TestAssignWithRemoteOutputsErrors" is executed
+	  Then the "TestAssignWithRemoteOutputsErrors" workflow execution has "AN" error
+	  And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the "AssignData" in Workflow "TestAssignWithRemoteOutputsError" debug outputs as    
+	  And the "AssignData" in Workflow "TestAssignWithRemoteOutputsErrors" debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteOutputsError" debug inputs as
+	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
 	  And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
@@ -4004,9 +4004,9 @@ Scenario: Error not bubbling up
 	When "Wolf-1212_Test" is executed
 	Then the workflow execution has "NO" error
 	And the "ErrorHandled" in Workflow "Wolf-1212_Test" debug outputs as
-	  |                                                                                                                                     |
-	  | [[Result]] = Fail                                                                                                                   |
-	  | [[Error]] = Could not parse input datetime with given input format (even after trying default datetime formats from other cultures) |
+	  |                                                                                                                  |
+	  | [[Result]] = Fail                                                                                                |
+	  | [[Error]] = Could not parse input datetime with given input format (if you left the input format blank then even |
 
 
 Scenario: Error not bubbling up error message
@@ -4036,8 +4036,8 @@ Scenario Outline: Database MySqlDB Database service using * indexes
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestMySqlWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
+    | WorkflowName                           | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMailsStarIndex | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
 
 Scenario Outline: Database MySqlDB Database service using int indexes
@@ -4053,8 +4053,8 @@ Scenario Outline: Database MySqlDB Database service using int indexes
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestMySqlWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
+    | WorkflowName                          | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithDBServiceMailsIntIndex | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 
 Scenario Outline: Database MySqlDB Database service last  indexes
@@ -4071,7 +4071,7 @@ Scenario Outline: Database MySqlDB Database service last  indexes
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
     | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestMySqlWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
+    | TestMySqlWFWithDBServiceLastIndex | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
  
 
 Scenario Outline: Database MySqlDB Database service scalar outputs 
@@ -4088,7 +4088,7 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
 	  | [[email]] = dora@explorers.com |
 Examples: 
     | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestMySqlWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
+    | TestMySqlWFWithDBServiceMailsScalar | MySQLEmail  | [[name]]     | [[email]]     | NO           |
  
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
@@ -4099,10 +4099,10 @@ Scenario Outline: Database MySqlDB Database service Error outputs
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 Examples: 
-    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
-    | TestMySqlWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
-    | TestMySqlWFWithDBServiceMails8 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
-    | TestMySqlWFWithDBServiceMails9 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
+    | WorkflowName                                     | ServiceName | nameVariable         | emailVariable | errorOccured |
+    | TestMySqlWFWithDBServiceMailsInvalidIndex        | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
+    | TestMySqlWFWithDBServiceMailsInvalidVar          | MySQLEmail  | [[123]]              | [[email]]     | YES          |
+    | TestMySqlWFWithDBServiceMailsInvalidVarWithIndex | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
 
 Scenario Outline: Database MySqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
@@ -4119,310 +4119,9 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 	  | [[countries(1).description]] = Afghanistan |
 	  | [[countries(2).description]] = Afghanistan |
 Examples: 
-    | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestMySqlWFWithDBServiceMails15 | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
+    | WorkflowName                      | ServiceName       | nameVariable        | emailVariable                | errorOccured |
+    | TestMySqlWFWithDBServiceCountriesMySql | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
-#OracleDB
-Scenario Outline: Database OracleDB Database service using * indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "oracle database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOracleWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
-
-
-Scenario Outline: Database OracleDB Database service using int indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "oracle database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOracleWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
-
-
-Scenario Outline: Database OracleDB Database service last  indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "oracle database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestOracleWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
- 
-
-Scenario Outline: Database OracleDB Database service scalar outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "oracle database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                      |
-	  | [[name]] = Monk |
-	  | [[email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestOracleWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
- 
-Scenario Outline: Database OracleDB Database service Error outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "oracle database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
-    | TestOracleWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
-    | TestOracleWFWithDBServiceMails8 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
-    | TestOracleWFWithDBServiceMails9 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
-
-Scenario Outline: Database OracleDB Database service inputs and outputs
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "oracle database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                            |
-	  | [[countries(1).id]] = 1                    |
-	  | [[countries(2).id]] = 1                    |
-	  | [[countries(1).description]] = Afghanistan |
-	  | [[countries(2).description]] = Afghanistan |
-Examples: 
-    | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestOracleWFWithDBServiceMails15 | OracleGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
-
-
-#PostgreDB
-Scenario Outline: Database PostgreDB Database service using * indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "postgre database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestPostgreWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
-
-
-Scenario Outline: Database PostgreDB Database service using int indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "postgre database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestPostgreWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
-
-
-Scenario Outline: Database PostgreDB Database service last  indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "postgre database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestPostgreWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
- 
-
-Scenario Outline: Database PostgreDB Database service scalar outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "postgre database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                      |
-	  | [[name]] = Monk |
-	  | [[email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestPostgreWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
- 
-Scenario Outline: Database PostgreDB Database service Error outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "postgre database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
-    | TestPostgreWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
-    | TestPostgreWFWithDBServiceMails8 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
-    | TestPostgreWFWithDBServiceMails9 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
-
-Scenario Outline: Database PostgreDB Database service inputs and outputs
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "postgre database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                            |
-	  | [[countries(1).id]] = 1                    |
-	  | [[countries(2).id]] = 1                    |
-	  | [[countries(1).description]] = Afghanistan |
-	  | [[countries(2).description]] = Afghanistan |
-Examples: 
-    | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestPostgreWFWithDBServiceMails15 | PostgreGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
-
-
-#odbcDB
-Scenario Outline: Database odbcDB Database service using * indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOdbcWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
-
-
-Scenario Outline: Database odbcDB Database service using int indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOdbcWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
-
-
-Scenario Outline: Database odbcDB Database service last  indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestOdbcWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
- 
-
-Scenario Outline: Database odbcDB Database service scalar outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                      |
-	  | [[name]] = Monk |
-	  | [[email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestOdbcWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
- 
-Scenario Outline: Database odbcDB Database service Error outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
-    | TestOdbcWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
-    | TestOdbcWFWithDBServiceMails8 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
-    | TestOdbcWFWithDBServiceMails9 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
-
-Scenario Outline: Database odbcDB Database service inputs and outputs
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                            |
-	  | [[countries(1).id]] = 1                    |
-	  | [[countries(2).id]] = 1                    |
-	  | [[countries(1).description]] = Afghanistan |
-	  | [[countries(2).description]] = Afghanistan |
-Examples: 
-    | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestOdbcWFWithDBServiceMails15 | OdbcGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
 
 #SqlDB
@@ -4440,7 +4139,7 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
 	  | [[countries(1).description]] = Afghanistan |
 Examples: 
     | WorkflowName                         | ServiceName           | nameVariable        | emailVariable                | errorOccured |
-    | TestSqlWFWithDBServiceMailsCountries | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
+    | TestSqlWFWithSqlDBServiceMailsCountries | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
  Scenario Outline: Database SqlDB  service DBErrors
      Given I have a workflow "<WorkflowName>"
@@ -4450,8 +4149,8 @@ Examples:
      Then the workflow execution has "<errorOccured>" error
 Examples: 
      | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
-     | TestWFWithDBServiceMailsError | willalwayserror      | [[name]]     | [[email]]     | YES          |
-     | TestWFWithDBServiceMailsError | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
+     | TestWFWithDBServiceMailsErrorProcSql | willalwayserror      | [[name]]     | [[email]]     | YES          |
+     | TestWFWithDBServiceMailsErrorProcMySql | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
 
 	 
 Scenario Outline: Database SqlDB  service using int indexes 
@@ -4468,7 +4167,7 @@ Scenario Outline: Database SqlDB  service using int indexes
 	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestWFWithDBServiceMails3 | SqlEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
+    | TestWFWithDBServiceMailsSqlIntIndex | SqlEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 
 Scenario Outline: Database SqlDB  service using last indexes 
@@ -4485,7 +4184,7 @@ Scenario Outline: Database SqlDB  service using last indexes
 	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestWFWithDBServiceMails4 | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
+    | TestWFWithDBServiceMailsSqlLastIndex | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
 
 
 Scenario Outline: Database SqlDB  service using scalar outputs 
@@ -4502,4 +4201,4 @@ Scenario Outline: Database SqlDB  service using scalar outputs
 	  | [[email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestWFWithDBServiceMails5 | SqlEmail    | [[name]]     | [[email]]     | NO           |
+    | TestWFWithDBServiceMailsSqlScalar | SqlEmail    | [[name]]     | [[email]]     | NO           |
