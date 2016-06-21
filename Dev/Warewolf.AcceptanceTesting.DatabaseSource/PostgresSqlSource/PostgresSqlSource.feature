@@ -1,4 +1,4 @@
-﻿@DbSource
+﻿@PostgreSource
 Feature: New PostgresSql Database Source
 	In order to avoid silly mistakes
 	As a math idiot
@@ -22,7 +22,7 @@ Feature: New PostgresSql Database Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
-@DbSource
+@PostgreSource
 Scenario: Creating New DB Source as User Auth
    Given I open New database Source
    Then "New Database Source" tab is Opened
@@ -62,7 +62,7 @@ Scenario: Creating New DB Source as User Auth
    When I Type Server as "RSA"
    Then "SavedDBSource *" Is the tab Header
 
-    @DbSource
+@PostgreSource
 Scenario: Incorrect Server Address Doesnt Allow save user Auth
       Given I open New database Source
       And I Type Server as "LocalHostTest"
@@ -77,7 +77,7 @@ Scenario: Incorrect Server Address Doesnt Allow save user Auth
       Then database dropdown is "Collapsed"
       And "Save" Save is "Disabled"
 
-	  @DbSource
+@PostgreSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I Open "Database Source - testPostgres" 
     And server as "localhost"
@@ -98,7 +98,7 @@ Scenario: Editing saved DB Source Remembers credentials
     When Test connecton is "Successful"
 	Then "Save" Save is "Enabled"
 	
-@DbSource
+@PostgreSource
 Scenario: Cancel Test
    Given I open New database Source
    And I Type Server as "LocalHostTest"
