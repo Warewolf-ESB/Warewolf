@@ -1201,7 +1201,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.The result field only allows a single result")]
         public virtual void ReadFileValidation_29()
         {
-            this.ReadFileValidation("29", "Local Files", "[[sourcePath]]", "", "", "C:\\filetoread.txt", "\"\"", "\"\"", "[[result]][[a]]", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", ((string[])(null)));
+            this.ReadFileValidation("29", "Local Files", "[[sourcePath]]", "", "", "C:\\filetoread.txt", "[[a]]", "\"\"", "[[result]][[a]]", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", ((string[])(null)));
 #line hidden
         }
         

@@ -129,8 +129,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             scenarioContext.Add("activity", fileWrite);
 
             var viewModel = new WriteFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
-            if (!ScenarioContext.Current.ContainsKey("viewModel"))
-                ScenarioContext.Current.Add("viewModel", viewModel);
+            if (!scenarioContext.ContainsKey("viewModel"))
+                scenarioContext.Add("viewModel", viewModel);
         }
     }
 }
