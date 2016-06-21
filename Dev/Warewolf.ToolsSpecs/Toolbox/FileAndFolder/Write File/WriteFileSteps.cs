@@ -16,7 +16,9 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2;
+using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Studio.Core.Activities.Utils;
 
 // ReSharper disable CheckNamespace
 namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
@@ -125,6 +127,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             };
 
             scenarioContext.Add("activity", fileWrite);
+
+            var viewModel = new WriteFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
+            if (!ScenarioContext.Current.ContainsKey("viewModel"))
+                ScenarioContext.Current.Add("viewModel", viewModel);
         }
     }
 }
