@@ -120,10 +120,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var valuedTypeList = new List<object>();
             foreach(var methodParameter in setupInfo.Parameters)
             {
-                var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                if(anonymousType != null)
+                try
                 {
-                    valuedTypeList.Add(anonymousType);
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                    if(anonymousType != null)
+                    {
+                        valuedTypeList.Add(anonymousType);
+                    }
+                }
+                catch(Exception)
+                {
+                    valuedTypeList.Add(methodParameter.Value);
                 }
             }
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());

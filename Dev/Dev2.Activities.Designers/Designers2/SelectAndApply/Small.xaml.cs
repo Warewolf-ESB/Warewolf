@@ -40,11 +40,11 @@ namespace Dev2.Activities.Designers2.SelectAndApply
 
         void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {
-            var viewModel = DataContext as SelectAndApplyDesignerViewModel;
-            if (viewModel != null)
-            {
-               viewModel.DoDrop(e.Data);
-            }
+//            var viewModel = DataContext as SelectAndApplyDesignerViewModel;
+//            if (viewModel != null)
+//            {
+//               viewModel.DoDrop(e.Data);
+//            }
         }
 
         void DropPoint_OnDragOver(object sender, DragEventArgs e)
