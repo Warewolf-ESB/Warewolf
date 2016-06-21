@@ -962,7 +962,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (scenarioContext.ContainsKey("viewModel"))
             {
-                var viewModel = ScenarioContext.Current.Get<FileActivityDesignerViewModel>("viewModel");
+                var viewModel = scenarioContext.Get<FileActivityDesignerViewModel>("viewModel");
                 var currentViewModel = viewModel;
                 currentViewModel.Validate();
                 return currentViewModel.Errors;

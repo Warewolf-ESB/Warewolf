@@ -38,5 +38,7 @@ namespace Dev2.Studio.Core.Interfaces
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
         IList<IEnvironmentModel> LookupEnvironments(IEnvironmentModel defaultEnvironment, IList<string> environmentGuids = null);
+
+        void Clear();
     }
 }

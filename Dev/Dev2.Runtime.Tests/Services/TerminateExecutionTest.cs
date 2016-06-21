@@ -83,6 +83,7 @@ namespace Dev2.Tests.Runtime.Services
         public void ExecuteExpectFailResultIfNoServiceExist()
         {
             const string Expected = "Message: Failed to stop the workflow execution. It may have completed already.";
+            ExecutableServiceRepository.Instance.Clear();
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
 
@@ -107,6 +108,7 @@ namespace Dev2.Tests.Runtime.Services
         public void ThreeServicesAddedOneRemovedExpectsTwoInRepository()
         {
             var guid = Guid.NewGuid();
+            ExecutableServiceRepository.Instance.Clear();
             var service1 = GetExecutableService();
             var service2 = GetExecutableService();
             var service3 = GetExecutableService();

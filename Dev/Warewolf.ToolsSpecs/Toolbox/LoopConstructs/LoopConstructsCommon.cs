@@ -19,6 +19,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
     [Binding]
     public class LoopConstructsCommon
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public LoopConstructsCommon(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [Given(@"There is a recordset in the datalist with this shape")]
         public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
@@ -31,11 +39,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
 
                 List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                    scenarioContext.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -43,12 +51,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
             foreach (TableRow tableRow in rows)
             {
                 List<Tuple<string, string>> variableList;
-                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out variableList);
 
                 if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("variableList", variableList);
+                    scenarioContext.Add("variableList", variableList);
                 }
                 variableList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
             }
@@ -57,22 +65,22 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
         [Given(@"I Map the input recordset ""(.*)"" to ""(.*)""")]
         public void GivenIMapTheInputRecordsetTo(string inMapFrom, string inMapTo)
         {
-            ScenarioContext.Current.Add("inMapFrom", inMapFrom);
-            ScenarioContext.Current.Add("inMapTo", inMapTo);
+            scenarioContext.Add("inMapFrom", inMapFrom);
+            scenarioContext.Add("inMapTo", inMapTo);
         }
 
         [Given(@"I Map the output recordset ""(.*)"" to ""(.*)""")]
         public void GivenIMapTheOutputRecordsetTo(string outMapFrom, string outMapTo)
         {
-            ScenarioContext.Current.Add("outMapFrom", outMapFrom);
-            ScenarioContext.Current.Add("outMapTo", outMapTo);
+            scenarioContext.Add("outMapFrom", outMapFrom);
+            scenarioContext.Add("outMapTo", outMapTo);
         }
 
         [Then(@"The mapping uses the following indexes")]
         public void ThenTheMappingUsesTheFollowingIndexes(Table table)
         {
 
-            var updateValues = ScenarioContext.Current.Get<List<int>>("indexUpdate").Select(a => a.ToString());
+            var updateValues = scenarioContext.Get<List<int>>("indexUpdate").Select(a => a.ToString());
             foreach (var tableRow in table.Rows)
             {
                 Assert.IsTrue(updateValues.Contains(tableRow[0]));
@@ -84,12 +92,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
         public void GivenIHaveAVariableWithTheValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             if (!string.IsNullOrEmpty(variable))
             {
