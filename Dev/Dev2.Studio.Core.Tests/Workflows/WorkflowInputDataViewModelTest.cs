@@ -527,7 +527,7 @@ namespace Dev2.Core.Tests.Workflows
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(dataListItem);
-            Assert.AreEqual("<DataList><rec><a></a></rec><Person><Age></Age><Name></Name></Person></DataList>",workflowInputDataViewModel.XmlData.Replace(Environment.NewLine,"").Replace(" ",""));
+            Assert.AreEqual("<DataList><recjson:Array=\"true\"xmlns:json=\"http://james.newtonking.com/projects/json\"><a></a></rec><Person><Age></Age><Name></Name></Person></DataList>",workflowInputDataViewModel.XmlData.Replace(Environment.NewLine,"").Replace(" ",""));
         }
 
         [TestMethod]
