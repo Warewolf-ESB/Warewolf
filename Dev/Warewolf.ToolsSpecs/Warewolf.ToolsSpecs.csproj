@@ -642,7 +642,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Script.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Sharepoint.zip" />
     <None Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteDropbox.feature.cs</LastGenOutput>
