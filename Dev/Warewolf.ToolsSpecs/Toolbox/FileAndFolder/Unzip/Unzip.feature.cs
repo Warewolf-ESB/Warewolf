@@ -2596,11 +2596,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "c(*()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\copyfile54.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "c(*()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\ZIP62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
@@ -2615,7 +2615,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         public virtual void UnzipFileValidation_53()
         {
-            this.UnzipFileValidation("53", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile54.txt", "\"\"", "\"\"", "c(*()", "C:\\ZIP62", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
+            this.UnzipFileValidation("53", "[[sourcePath]]", "\"\"", "c(*()", "C:\\copyfile54.txt", "\"\"", "\"\"", "[[b]]", "C:\\ZIP62", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
         }
