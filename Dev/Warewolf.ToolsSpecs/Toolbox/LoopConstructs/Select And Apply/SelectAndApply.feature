@@ -408,3 +408,26 @@ Scenario: Number Format tool with complext object multi array and field
 	And "[[@Person.Member(1).Team(1).Score]]" has a value of "0.300"
 	And "[[@Person.Member(2).Team(2).Score]]" has a value of "0.450"
 	And "[[@Person.Member(3).Team(3).Score]]" has a value of "0.120"
+
+Scenario: Number Format tool with complex object multi array and field and multi values
+	Given There is a complexobject in the datalist with this shape
+	| rs                    | value |
+	| [[@Person.Member(1).Team(1).Score]]	| 0.3   |
+	| [[@Person.Member(1).Team(2).Score]]	| 0.45  |
+	| [[@Person.Member(2).Team(1).Score]]	| 0.12  |
+	| [[@Person.Member(2).Team(2).Score]]	| 0.11  |
+	| [[@Person.Member(2).Team(3).Score]]	| 0.13  |
+	| [[@Person.Member(3).Team(1).Score]]	| 0.14  |
+	And Alias is "[[Score]]"
+	And Datasource is "[[@Person.Member().Team().Score]]"
+	And I use a Number Format tool configured as
+		| Number    | Rounding | Rounding Value | Decimals to show | Result    |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[@Person.Member(1).Team(1).Score]]" has a value of "0.300"
+	And "[[@Person.Member(1).Team(2).Score]]" has a value of "0.450"
+	And "[[@Person.Member(2).Team(1).Score]]" has a value of "0.120"
+	And "[[@Person.Member(2).Team(2).Score]]" has a value of "0.110"
+	And "[[@Person.Member(2).Team(3).Score]]" has a value of "0.130"
+	And "[[@Person.Member(3).Team(1).Score]]" has a value of "0.140"
