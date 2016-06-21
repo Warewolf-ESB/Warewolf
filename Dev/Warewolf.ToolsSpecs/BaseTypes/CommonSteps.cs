@@ -643,7 +643,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
                     .SelectMany(r => r.ResultsList)
-                     .OrderBy(p => p.Label).ToList();
+                    .ToList();
             }
         }
 
@@ -653,7 +653,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             var debugInputs = dsfActivityAbstractString.GetDebugInputs(dl, 0);
             return debugInputs
                 .SelectMany(r => r.ResultsList)
-                 .OrderBy(result => result.Label).ToList();
+                 .ToList();
         }
 
         public List<IDebugItemResult> GetOutputDebugItems(Activity act, IExecutionEnvironment dl)
@@ -664,15 +664,15 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = act as DsfActivityAbstract<string> ?? scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return activity.GetDebugOutputs(dl, 0)
                     .SelectMany(r => r.ResultsList)
-                    .OrderBy(result => result.Label).ToList();
+                    .ToList();
             }
             catch
             {
 
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugOutputs(dl, 0)
-                    .SelectMany(r => r.ResultsList)
-                     .OrderBy(result => result.Label).ToList();
+                     .SelectMany(r => r.ResultsList)
+                     .ToList();
             }
         }
 
@@ -690,7 +690,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     BuildDebugItems(row, index, columnHeader, list);
                 }
             }
-            return list.OrderBy(result => result.Label).ToList();
+            return list.ToList();
         }
 
 

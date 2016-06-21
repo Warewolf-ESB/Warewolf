@@ -3032,7 +3032,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  | [[TheDefaultDate]] = DateTime |  
 	  And the "Date and Time(5)" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
-	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "Date format yyyy MM dd yields : " yyyy MM dd |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
@@ -4323,106 +4323,6 @@ Examples:
     | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
     | TestPostgreWFWithDBServiceMails15 | PostgreGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
-
-#odbcDB
-Scenario Outline: Database odbcDB Database service using * indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOdbcWFWithDBServiceMails2 | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
-
-
-Scenario Outline: Database odbcDB Database service using int indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOdbcWFWithDBServiceMails3 | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
-
-
-Scenario Outline: Database odbcDB Database service last  indexes
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestOdbcWFWithDBServiceMails5 | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
- 
-
-Scenario Outline: Database odbcDB Database service scalar outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                      |
-	  | [[name]] = Monk |
-	  | [[email]] = dora@explorers.com |
-Examples: 
-    | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestOdbcWFWithDBServiceMails63 | MySQLEmail  | [[name]]     | [[email]]     | NO           |
- 
-Scenario Outline: Database odbcDB Database service Error outputs 
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-Examples: 
-    | WorkflowName                   | ServiceName | nameVariable         | emailVariable | errorOccured |
-    | TestOdbcWFWithDBServiceMails7 | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
-    | TestOdbcWFWithDBServiceMails8 | MySQLEmail  | [[123]]              | [[email]]     | YES          |
-    | TestOdbcWFWithDBServiceMails9 | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
-
-Scenario Outline: Database odbcDB Database service inputs and outputs
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "odbc database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                            |
-	  | [[countries(1).id]] = 1                    |
-	  | [[countries(2).id]] = 1                    |
-	  | [[countries(1).description]] = Afghanistan |
-	  | [[countries(2).description]] = Afghanistan |
-Examples: 
-    | WorkflowName                    | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestOdbcWFWithDBServiceMails15 | OdbcGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
 
 #SqlDB
