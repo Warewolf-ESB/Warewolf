@@ -2894,11 +2894,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username cannot be empty or only white space")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username cannot be empty or only white space")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Failed to authenticate with user [ [[a]] ] for resource [ C:\\copyfile63.txt ]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Failed to authenticate with user [ [[a]] ] for resource [ C:\\copyfile63.txt ]")]
         public virtual void UnzipFileValidation_62()
         {
-            this.UnzipFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile63.txt", "[[a]]", "String", "[[destPath]]", "C:\\ZIP71", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Username cannot be empty or only white space", "1.Username cannot be empty or only white space", ((string[])(null)));
+            this.UnzipFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile63.txt", "[[a]]", "String", "[[destPath]]", "C:\\ZIP71", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a]] ] for resource [ C:\\copyfile63.txt ]", "1.Failed to authenticate with user [ [[a]] ] for resource [ C:\\copyfile63.txt ]", ((string[])(null)));
 #line hidden
         }
         
@@ -3100,7 +3100,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\copyfile71.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[a]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\ZIP79")]
@@ -3112,11 +3112,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile71.txt ]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile71.txt ]")]
         public virtual void UnzipFileValidation_69()
         {
-            this.UnzipFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile71.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\ZIP79", "integrationtester", "I73573r0", "True", "[[a]]*]]", "\"\"", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\'t match", "1.Result - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.UnzipFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\copyfile71.txt", "[[a]", "\"\"", "[[destPath]]", "C:\\ZIP79", "integrationtester", "I73573r0", "True", "[[a]]*]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile71.txt ]", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile71.txt ]", ((string[])(null)));
 #line hidden
         }
         
