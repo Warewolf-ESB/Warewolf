@@ -90,9 +90,7 @@ namespace Dev2.Session
                 else
                 {
                     // if no XML data copy over the DataList
-                    to.XmlData = to.XmlData != null && to.XmlData == string.Empty
-                        ? (to.DataList ?? "<DataList></DataList>")
-                        : (to.XmlData ?? "<DataList></DataList>");                    
+                    to.XmlData = "<DataList></DataList>";                 
                 }
                 to.BinaryDataList = new DataListModel();
                 to.BinaryDataList.Create(to.XmlData, to.DataList);
