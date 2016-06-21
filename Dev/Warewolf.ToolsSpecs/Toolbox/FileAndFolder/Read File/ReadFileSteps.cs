@@ -12,7 +12,6 @@ using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
 using Dev2.Activities.Designers2.ReadFile;
-using Dev2.Activities.Designers2.Rename;
 using Dev2.Studio.Core.Activities.Utils;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

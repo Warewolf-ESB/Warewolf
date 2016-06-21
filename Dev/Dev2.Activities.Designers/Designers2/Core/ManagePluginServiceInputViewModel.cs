@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -356,7 +355,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            [ExcludeFromCodeCoverage]
             set
             {
                 
@@ -369,7 +367,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateInputArea;
             }
-            [ExcludeFromCodeCoverage]
             set
             {
                 
