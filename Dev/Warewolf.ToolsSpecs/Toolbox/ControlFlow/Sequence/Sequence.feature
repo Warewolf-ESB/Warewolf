@@ -164,11 +164,11 @@ Scenario: Execute a Sequence with Assign and Find Record Index
 	  | 3 | [[rec(3).a]] = 3 |
 	  | 4 | [[rec(4).a]] = 4 |      
 	  And the "Find Record" debug inputs as 
-	  | #           |                  | # |     |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec(1).a]] = 1 |   |     |  |     |                             |                                |
-	  |             | [[rec(2).a]] = 2 |   |     |  |     |                             |                                |
-	  |             | [[rec(3).a]] = 3 |   |     |  |     |                             |                                |
-	  |             | [[rec(4).a]] = 4 | 1 |  =  | 1 |     | NO                          | NO                             |
+	  | #           |                  | # |   |   | And | Require All Fields To Match | Require All Matches To Be True |
+	  | In Field(s) | [[rec(1).a]] = 1 |   |   |   |     |                             |                                |
+	  |             | [[rec(2).a]] = 2 |   |   |   |     |                             |                                |
+	  |             | [[rec(3).a]] = 3 |   |   |   |     |                             |                                |
+	  |             | [[rec(4).a]] = 4 | 1 | = | 1 |     | NO                          | NO                             |
 	  And the "Find Record" debug outputs as      
 	  |                |					      
 	  | [[result]] = 1 |
@@ -384,12 +384,13 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
 	  And the "Replacing" debug outputs as 
-	  |                                 |  
-	  | [[rec(1).a]] = tREPLACEDst     |  
+	  |                                |
+	  | [[rec(1).a]] = tREPLACEDst     |
 	  | [[rec(2).a]] = warREPLACEDwolf |
 	  | [[rec(1).b]] = tREPLACEDst     |
 	  | [[rec(2).b]] = warREPLACEDwolf |
-	  | [[replaceResult]] = 4 |
+	  | [[replaceResult]] = 4          |
+	  
 
 Scenario: Execute a Sequence with Gather System Information, Date and Time Difference, Date and Time, Random, and Format Number tools.
       Given I have a Sequence "Test"
