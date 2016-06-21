@@ -226,13 +226,13 @@
       <DependentUpon>Rename.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Unzip.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Write File\Write File1.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Write File.feature</DependentUpon>
@@ -548,11 +548,11 @@
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\TestFile.zip" />
     <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Unzip.feature.cs</LastGenOutput>
+      <LastGenOutput>Unzip1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Write File\Write File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Write File1.feature.cs</LastGenOutput>
+      <LastGenOutput>Write File.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Zip\Zip.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
