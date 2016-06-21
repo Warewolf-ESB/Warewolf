@@ -11,6 +11,9 @@
 using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
+using Dev2.Activities.Designers2.ReadFile;
+using Dev2.Activities.Designers2.Rename;
+using Dev2.Studio.Core.Activities.Utils;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -58,6 +61,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             };
 
             scenarioContext.Add("activity", fileRead);
+
+            var viewModel = new ReadFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileRead));
+            if (!ScenarioContext.Current.ContainsKey("viewModel"))
+                ScenarioContext.Current.Add("viewModel", viewModel);
         }
     }
 }
