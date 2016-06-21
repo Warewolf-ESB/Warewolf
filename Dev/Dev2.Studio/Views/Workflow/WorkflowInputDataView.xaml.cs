@@ -169,11 +169,17 @@ namespace Dev2.Studio.Views.Workflow
                                 }
                                 break;
                         }
-
-                        if (xml.FirstChild != null)
+                        if (!string.IsNullOrEmpty(vm.JsonData))
                         {
-                            var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
-                            _jsonEditor.Text = json;
+                            _jsonEditor.Text = vm.JsonData;
+                        }
+                        else
+                        {
+                            if (xml.FirstChild != null)
+                            {
+                                var json = JsonConvert.SerializeXmlNode(xml.FirstChild, Newtonsoft.Json.Formatting.Indented, true);
+                                _jsonEditor.Text = json;
+                            }
                         }
                         JsonOutput.Content = _jsonEditor;
                         _currentTab = InputTab.Json;
@@ -204,7 +210,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             try
             {
-                var xmlDocument = JsonConvert.DeserializeXmlNode(_jsonEditor.Text == "\"\"" ? "" : _jsonEditor.Text, "DataList");
+                var xmlDocument = JsonConvert.DeserializeXmlNode(_jsonEditor.Text == "\"\"" ? "" : _jsonEditor.Text, "DataList",true);
                 return xmlDocument == null ? String.Empty : xmlDocument.InnerXml;
             }
             catch (Exception)

@@ -26,7 +26,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
     public class NewPostgresDatabaseSourceSteps
     {
 
-        [BeforeFeature("DbSource")]
+        [BeforeFeature("PostgreSource")]
         public static void SetupForSystem()
         {
             Utils.SetupResourceDictionary();
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
 
-        [BeforeScenario("DbSource")]
+        [BeforeScenario("PostgreSource")]
         public void SetupForDatabaseSource()
         {
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));

@@ -35,24 +35,24 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             string find;
-            ScenarioContext.Current.TryGetValue("find", out find);
+            scenarioContext.TryGetValue("find", out find);
             string replaceWith;
-            ScenarioContext.Current.TryGetValue("replaceWith", out replaceWith);
+            scenarioContext.TryGetValue("replaceWith", out replaceWith);
 
             string resultVar;
-            ScenarioContext.Current.TryGetValue("resultVar", out resultVar);
+            scenarioContext.TryGetValue("resultVar", out resultVar);
 
             if (string.IsNullOrEmpty(resultVar))
             {
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             }
 
             string sentence;
-            if(ScenarioContext.Current.TryGetValue("sentence", out sentence))
+            if(scenarioContext.TryGetValue("sentence", out sentence))
             {
                 _inFields = sentence;
             }
@@ -77,19 +77,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
                 {
                     Action = replace
                 };
-            ScenarioContext.Current.Add("activity", replace);
+            scenarioContext.Add("activity", replace);
         }
 
         [Given(@"I have a sentence ""(.*)""")]
         public void GivenIHaveASentence(string sentence)
         {
-            ScenarioContext.Current.Add("sentence", sentence);
+            scenarioContext.Add("sentence", sentence);
         }
 
         [Given(@"replace result is ""(.*)""")]
         public void GivenReplaceResultIs(string resultVar)
         {
-            ScenarioContext.Current.Add("resultVar", resultVar);
+            scenarioContext.Add("resultVar", resultVar);
         }
 
 
@@ -97,12 +97,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         public void GivenIHaveAReplaceVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out variableList);
 
             if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
@@ -110,13 +110,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Given(@"I want to find the characters ""(.*)""")]
         public void GivenIWantToFindTheCharacters(string find)
         {
-            ScenarioContext.Current.Add("find", find);
+            scenarioContext.Add("find", find);
         }
 
         [Given(@"I want to replace them with ""(.*)""")]
         public void GivenIWantToReplaceThemWith(string replaceWith)
         {
-            ScenarioContext.Current.Add("replaceWith", replaceWith);
+            scenarioContext.Add("replaceWith", replaceWith);
         }
 
         [When(@"the replace tool is executed")]
@@ -124,7 +124,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
+            scenarioContext.Add("result", result);
         }
 
         [Then(@"the replace result should be ""(.*)""")]
@@ -133,7 +133,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string error;
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string error;
             string actualValue;
             value = value.Replace('"', ' ').Trim();
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, variable,
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);

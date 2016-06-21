@@ -59,8 +59,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services", "Dev2.Runtime.Services\Dev2.Runtime.Services.csproj", "{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services.Specs", "Dev2.Runtime.Services.Specs\Dev2.Runtime.Services.Specs.csproj", "{DD7772F4-E445-48F6-B594-B4C31E962336}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler", "Dev2.Scheduler\Dev2.Scheduler.csproj", "{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
@@ -382,10 +380,6 @@ Global
 		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Release|Any CPU.ActiveCfg = Release|Any CPU

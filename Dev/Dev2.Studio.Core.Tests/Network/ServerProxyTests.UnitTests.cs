@@ -120,7 +120,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNotNull(subscription);
         }
 
-        [TestMethod, Timeout(5000)]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerProxy_Connect")]
         public void ServerProxy_ConnectSetsId()
