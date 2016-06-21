@@ -13,6 +13,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin
 {
@@ -89,11 +90,11 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
-                var castResult = result as DummyClassForPluginTest;
+                var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
                 //------------Assert Results-------------------------
                 if (castResult != null)
                 {
-                    StringAssert.Contains(castResult.Name, "test data");
+                    StringAssert.Contains(castResult.Name.ToString(), "test data");
                 }
                 else
                 {

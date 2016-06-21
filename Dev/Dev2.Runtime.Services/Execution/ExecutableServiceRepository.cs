@@ -106,5 +106,10 @@ namespace Dev2.Runtime.Execution
             var service = _activeExecutions.FirstOrDefault(e => e.ID == id && e.WorkspaceID == workspaceID);
             return service;
         }
+
+        public void Clear()
+        {
+            _activeExecutions.Clear();
+        }
     }
 }

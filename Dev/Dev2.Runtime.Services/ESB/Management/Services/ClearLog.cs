@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else if(!Directory.Exists(directory))
             {
-                AppendError(msg, directory, string.Format(ErrorResource.DirectoryDoesNotExist, directory));
+                AppendError(msg, directory, string.Format(ErrorResource.DirectoryNotFound, directory));
             }
             else
             {
