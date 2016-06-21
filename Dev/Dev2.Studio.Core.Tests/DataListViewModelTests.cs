@@ -1758,17 +1758,22 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string complexObject = "testing";
-            const string complexObjectChild1 = "item()";
+            const string complexObjectChild1 = "item(1)";
             const string complexObjectChild2 = "new";
             var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
             complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild1, complexObjectDataModel));
             complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild2, complexObjectDataModel));
             dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
-            var parts = new List<IDataListVerifyPart> { CreateComplexObjectPart(complexObject).Object };
+            var parts = new List<IDataListVerifyPart>();
+            parts.Add(CreateComplexObjectPart(complexObject).Object);
+            parts.Add(CreateComplexObjectPart(complexObjectChild1).Object);
+            parts.Add(CreateComplexObjectPart(complexObjectChild2).Object);
             //------------Execute Test---------------------------
             dataListViewModel.UpdateDataListItems(resourceModel, parts);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].IsUsed);
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Children[0].IsUsed);
+            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Children[1].IsUsed);
         }
 
         [TestMethod]
