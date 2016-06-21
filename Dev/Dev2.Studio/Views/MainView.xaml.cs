@@ -26,7 +26,6 @@ using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
