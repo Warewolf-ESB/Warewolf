@@ -1593,19 +1593,30 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (DataListSingleton.ActiveDataList != null)
             {
-                Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
+                if (Application.Current != null && Application.Current.Dispatcher != null)
                 {
-                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-                    if (OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
                     {
-                        OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
-                    }
-
-                    IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                    DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
-
-                }), DispatcherPriority.Background);                
+                        UpdateDataListWithMissingParts(isLoadEvent);
+                    }), DispatcherPriority.Background);
+                }
+                else
+                {
+                    UpdateDataListWithMissingParts(isLoadEvent);
+                }
             }
+        }
+
+        private void UpdateDataListWithMissingParts(bool isLoadEvent)
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+            if(OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
+            {
+                OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
+            }
+
+            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
