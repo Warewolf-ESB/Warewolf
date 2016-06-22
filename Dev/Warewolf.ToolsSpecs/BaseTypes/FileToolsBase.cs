@@ -17,6 +17,7 @@ using Dev2.PathOperations;
 using Nuane.Net;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.Tools.Specs.BaseTypes
 {

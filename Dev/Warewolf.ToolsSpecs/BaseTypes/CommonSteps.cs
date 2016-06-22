@@ -887,9 +887,14 @@ namespace Dev2.Activities.Specs.BaseTypes
                     actualValue = actualValue.Replace("BC", "B.C.");
                 }
             }
-            if (string.IsNullOrEmpty(type) && actualValue != null)
+            if (string.IsNullOrEmpty(type))
             {
-                actualValue.Replace("\\r\\n", Environment.NewLine).Should().Be(expectedValue, name + " are not equal at index" + index);
+                if (actualValue != null && !string.IsNullOrEmpty(expectedValue))
+                {
+                    actualValue.Replace("\\r\\n", Environment.NewLine)
+                        .Should()
+                        .Be(expectedValue, name + " are not equal at index" + index);
+                }
             }
             else
             {
