@@ -1341,13 +1341,9 @@ namespace Dev2.Settings.Scheduler
             {
                 if (CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,
                                                    domainBuf, ref maxDomain, passwordBuf, ref maxPassword))
-                {
-                    //TODO: ms documentation says we should call this but i can't get it to work
-                    //SecureZeroMem(outCredBuffer, outCredSize);
-
-                    //clear the memory allocated by CredUIPromptForWindowsCredentials 
+                {                    
                     CoTaskMemFree(outCredBuffer);
-                    networkCredential = new NetworkCredential()
+                    networkCredential = new NetworkCredential
                     {
                         UserName = usernameBuf.ToString(),
                         Password = passwordBuf.ToString(),
