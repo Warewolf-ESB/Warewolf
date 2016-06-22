@@ -1940,13 +1940,6 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
-        }
-
-        [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
-        public void GivenContainsCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
-        {
-            var dsfCalculate = new DsfCalculateActivity { DisplayName = activityName, Expression = formula, CurrentResult = resultVariable };
-            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfCalculate);
-        }
+        }        
     }
 }

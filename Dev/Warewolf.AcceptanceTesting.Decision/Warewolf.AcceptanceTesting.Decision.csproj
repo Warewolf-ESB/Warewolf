@@ -83,21 +83,21 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DecisionDialog.feature.cs">
+    <Compile Include="DecDialog.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DecisionDialog.feature</DependentUpon>
+      <DependentUpon>DecDialog.feature</DependentUpon>
     </Compile>
-    <Compile Include="DecisionDialogSteps.cs" />
+    <Compile Include="DecDialogSteps.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DecisionDialog.feature">
+    <None Include="DecDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DecisionDialog.feature.cs</LastGenOutput>
+      <LastGenOutput>DecDialog.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
