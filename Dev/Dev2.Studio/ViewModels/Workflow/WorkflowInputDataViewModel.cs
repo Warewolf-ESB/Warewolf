@@ -544,8 +544,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dataListString = dataListObject.ToString(Formatting.Indented);
             JsonData = dataListString;
             var xml = JsonConvert.DeserializeXNode(dataListString, "DataList", true);
-            // For some damn reason this does not always bind like it should! ;)
-            Thread.Sleep(150);
             try
             {
                 if (xml.Descendants().Count() == 1)

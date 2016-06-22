@@ -101,9 +101,7 @@ namespace Dev2.Studio.ActivityDesigners
 {
     public static class ActivityDesignerHelper
     {
-        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm, bool liteInit = false)
-        {
-            var designerAttributes = new Dictionary<Type, Type>
+        static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
@@ -181,8 +179,9 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
             };
-
-            workflowVm.InitializeDesigner(designerAttributes, liteInit);
+        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm, bool liteInit = false)
+        {
+            workflowVm.InitializeDesigner(DesignerAttributes, liteInit);
         }
     }
 }
