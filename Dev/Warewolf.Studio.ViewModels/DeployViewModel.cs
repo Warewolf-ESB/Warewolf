@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
         bool _deploySuccessfull;
         string _conflictNewResourceText;
         readonly IShellViewModel _shell;
-        readonly IPopupController _popupController;
+        public  virtual IPopupController PopupController { get; set; }
         bool _showNewItemsList;
         bool _showConflictItemsList;
         IList<Conflict> _conflictItems;
@@ -42,11 +42,14 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IDeployViewModel
 
+
+
         public SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "destination", destination }, { "source", source }, { "selectedItems", selectedItems }, { "stats", stats }, { "popupController", popupController } });
             _destination = destination;
-            _popupController = popupController;
+            // ReSharper disable once VirtualMemberCallInContructor
+            PopupController = popupController;
 
             _source = source;
             _errorMessage = "";
@@ -66,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
                 ShowConflicts = false;
                 if (!string.IsNullOrEmpty(_stats.RenameErrors))
                 {
-                    _popupController.ShowDeployNameConflict(_stats.RenameErrors);
+                    PopupController.ShowDeployNameConflict(_stats.RenameErrors);
                 }
             };
             SourceConnectControlViewModel = _source.ConnectControlViewModel;
@@ -215,16 +218,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 ErrorMessage = "";
 
-                if(CheckVersionConflict())
-                    return;
+                bool canDeploy;
+                CheckVersionConflict();
+                CheckResourceNameConflict();
 
-                if(CheckResourceNameConflict())
-                    return;
-
-                var canDeploy = false;
+                canDeploy = false;
                 if (ConflictItems != null && ConflictItems.Count >= 1)
                 {
-                    var msgResult = _popupController.ShowDeployConflict(ConflictItems.Count);
+                    var msgResult = PopupController.ShowDeployConflict(ConflictItems.Count);
                     if (msgResult == MessageBoxResult.Yes || msgResult == MessageBoxResult.OK)
                     {
                         canDeploy = true;
@@ -262,16 +263,17 @@ namespace Warewolf.Studio.ViewModels
         {
             var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
 
-            var conf = from b in _destination.SelectedEnvironment.AsList()
-                       join explorerTreeItem in selected on b.ResourcePath equals explorerTreeItem.ResourcePath
-                where b.ResourceId != explorerTreeItem.ResourceId
+            var itemViewModels = _destination.SelectedEnvironment.AsList();
+            var conf = from b in itemViewModels
+                       join explorerTreeItem in selected on b.ResourcePath.ToUpper() equals explorerTreeItem.ResourcePath.ToUpper()
+                       where b.ResourceId != explorerTreeItem.ResourceId
                 select b;
 
             var explorerItemViewModels = conf as IExplorerItemViewModel[] ?? conf.ToArray();
             if(explorerItemViewModels.Any())
             {
-                var msgResult = _popupController.ShowDeployResourceNameConflict(string.Join("; ", explorerItemViewModels.Select(a => a.ResourcePath)));
-                if(msgResult == MessageBoxResult.OK)
+                var msgResult = PopupController.ShowDeployResourceNameConflict(string.Join("; ", explorerItemViewModels.Select(a => a.ResourcePath)));
+                if (msgResult == MessageBoxResult.OK)
                 {
                     IsDeploying = false;
                     return true;
@@ -280,7 +282,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        bool CheckVersionConflict()
+        void CheckVersionConflict()
         {
             Version sourceVersionNumber = Source.ServerVersion;
 
@@ -291,29 +293,26 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (sourceVersionNumber < destMinVersionNumber)
                 {
-                    var msgResult = _popupController.ShowDeployServerMinVersionConflict(sourceVersionNumber.ToString(), destMinVersionNumber.ToString());
+                    var msgResult = PopupController.ShowDeployServerMinVersionConflict(sourceVersionNumber.ToString(), destMinVersionNumber.ToString());
                     if (msgResult == MessageBoxResult.Cancel)
                     {
                         IsDeploying = false;
-                        return true;
+                        return;
                     }
                 }
             }
 
-            else if (sourceVersionNumber != null && destVersionNumber != null)
+            if (sourceVersionNumber != null && destVersionNumber != null)
             {
                 if (sourceVersionNumber > destVersionNumber)
                 {
-                    var msgResult = _popupController.ShowDeployServerVersionConflict(sourceVersionNumber.ToString(), destVersionNumber.ToString());
+                    var msgResult = PopupController.ShowDeployServerVersionConflict(sourceVersionNumber.ToString(), destVersionNumber.ToString());
                     if (msgResult == MessageBoxResult.Cancel)
                     {
                         IsDeploying = false;
-                        return true;
                     }
                 }
             }
-
-            return false;
         }
 
         private void SelectDependencies()
