@@ -76,6 +76,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
             if (!scenarioContext.ContainsKey("viewModel"))
                 scenarioContext.Add("viewModel", viewModel);
+            viewModel.Validate();
         }
     }
 }

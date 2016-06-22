@@ -337,7 +337,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (validationErrors != null)
                 {
-                    Assert.AreNotEqual(0, validationErrors.Count);
+                    Assert.AreNotEqual(0, validationErrors.Count, "Validation had one or more errors. First error: " + validationErrors[0].Message);
                 }
             }
             else
@@ -436,11 +436,11 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if (string.IsNullOrEmpty(value))
                 {
-                    Assert.IsTrue(recordSetValues.Count == 0);
+                    Assert.IsTrue(recordSetValues.Count == 0, "Recordset result variable has one or more values. First value: " + recordSetValues[0]);
                 }
                 else
                 {
-                    Assert.AreEqual(recordSetValues[0], value);
+                    Assert.AreEqual(recordSetValues[0], value, "First recordset result variable value is not equal to expected value.");
                 }
             }
             else
@@ -461,7 +461,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 if (string.IsNullOrEmpty(type))
                 {
-                    Assert.AreEqual(value, actualValue);
+                    Assert.AreEqual(value, actualValue, error);
                 }
                 else
                 {
@@ -474,9 +474,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                         {
                             converter.ConvertFrom(actualValue);
                         }
-                        catch
+                        catch (Exception e)
                         {
-                            Assert.Fail("Value is not expected type");
+                            Assert.Fail("Cannot convert value " + actualValue + " to type " + type + ". There was an exception: " + e.Message);
                         }
                     }
                 }
@@ -884,9 +884,14 @@ namespace Dev2.Activities.Specs.BaseTypes
                     actualValue = actualValue.Replace("BC", "B.C.");
                 }
             }
-            if (string.IsNullOrEmpty(type) && actualValue != null)
+            if (string.IsNullOrEmpty(type))
             {
-                actualValue.Replace("\\r\\n", Environment.NewLine).Should().Be(expectedValue, name + " are not equal at index" + index);
+                if (actualValue != null && !string.IsNullOrEmpty(expectedValue))
+                {
+                    actualValue.Replace("\\r\\n", Environment.NewLine)
+                        .Should()
+                        .Be(expectedValue, name + " are not equal at index" + index);
+                }
             }
             else
             {
