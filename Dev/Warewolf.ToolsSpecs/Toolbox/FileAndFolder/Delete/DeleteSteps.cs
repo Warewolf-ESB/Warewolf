@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Activities;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
 using Dev2.Activities.Designers2.Delete;
@@ -71,7 +72,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
         {            
             BuildDataList();
             var delete = scenarioContext.Get<DsfPathDelete>("activity");
-            delete.PerformValidation();
+            var ErrorInfo = delete.PerformValidation();
+            if (ErrorInfo.Count <= 0)
+            {
+                throw new ValidationException("Delete tool is not valid.");
+            }
 
             var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
             if (!scenarioContext.ContainsKey("viewModel"))
