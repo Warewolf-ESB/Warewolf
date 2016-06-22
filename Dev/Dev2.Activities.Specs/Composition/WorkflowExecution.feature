@@ -64,31 +64,31 @@ Scenario: Simple workflow executing against the server with a database service
 	 | [[count]] = 9 |
 
 Scenario: Workflow with an assign and webservice
-	 Given I have a workflow "TestWebServiceWF"
-	 And "TestWebServiceWF" contains an Assign "Inputs" as
+	 Given I have a workflow "WorkflowWithWebService"
+	 And "WorkflowWithWebService" contains an Assign "Inputs" as
 	  | variable      | value |
 	  | [[extension]] | json  |
 	  | [[prefix]]    | a     |
-	 And "TestWebServiceWF" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+	 And "WorkflowWithWebService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
 	  | Input to Service | From Variable | Output from Service      | To Variable                 |
 	  | extension        | [[extension]] | Countries(*).CountryID   | [[Countries().CountryID]]   |
 	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
-	  When "TestWebServiceWF" is executed
+	  When "WorkflowWithWebService" is executed
 	  Then the workflow execution has "NO" error
-	   And the "Inputs" in WorkFlow "TestWebServiceWF" debug inputs as
+	   And the "Inputs" in WorkFlow "WorkflowWithWebService" debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[extension]] = | json      |
 	  | 2 | [[prefix]] =    | a         |
-	  And the "Inputs" in Workflow "TestWebServiceWF" debug outputs as    
+	  And the "Inputs" in Workflow "WorkflowWithWebService" debug outputs as    
 	  | # |                      |
 	  | 1 | [[extension]] = json |
 	  | 2 | [[prefix]] = a       |
-	   And the "InternalCountriesServiceTest" in WorkFlow "TestWebServiceWF" debug inputs as
+	   And the "InternalCountriesServiceTest" in WorkFlow "WorkflowWithWebService" debug inputs as
 	  | #            |                                                  |
 	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
 	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
 	  | Headers      |                                                  |
-	  And the "InternalCountriesServiceTest" in Workflow "TestWebServiceWF" debug outputs as
+	  And the "InternalCountriesServiceTest" in Workflow "WorkflowWithWebService" debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
