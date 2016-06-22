@@ -30,6 +30,14 @@ namespace Dev2.Activities.Specs.Permissions
     [Binding]
     public class SettingsPermissionsSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public SettingsPermissionsSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [BeforeScenario("Security")]
         public void ClearSecuritySettings()
         {
@@ -43,7 +51,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
-            ScenarioContext.Current.Add("initialSettings", currentSettings);
+            scenarioContext.Add("initialSettings", currentSettings);
             Data.Settings.Settings settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
@@ -60,7 +68,7 @@ namespace Dev2.Activities.Specs.Permissions
         {
             AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = EnvironmentRepository.Instance.Source;
-            ScenarioContext.Current.Add("environment", environmentModel);
+            scenarioContext.Add("environment", environmentModel);
         }
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]
@@ -86,7 +94,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
+            var environmentModel = scenarioContext.Get<IEnvironmentModel>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -140,7 +148,7 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
-            ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
+            scenarioContext.Add("currentEnvironment", reconnectModel);
         }
 
         bool IsUserInGroup(string name, string group)
@@ -181,7 +189,7 @@ namespace Dev2.Activities.Specs.Permissions
 
         static async Task<IEnvironmentModel> LoadResources()
         {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             if (environmentModel.IsConnected)
             {
@@ -221,7 +229,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
+            var environmentModel = scenarioContext.Get<IEnvironmentModel>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
@@ -248,7 +256,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();
@@ -273,11 +281,11 @@ namespace Dev2.Activities.Specs.Permissions
         public void DoCleanUp()
         {
             IEnvironmentModel currentEnvironment;
-            ScenarioContext.Current.TryGetValue("currentEnvironment", out currentEnvironment);
+            scenarioContext.TryGetValue("currentEnvironment", out currentEnvironment);
             IEnvironmentModel environmentModel;
-            ScenarioContext.Current.TryGetValue("environment", out environmentModel);
+            scenarioContext.TryGetValue("environment", out environmentModel);
             Data.Settings.Settings currentSettings;
-            ScenarioContext.Current.TryGetValue("initialSettings", out currentSettings);
+            scenarioContext.TryGetValue("initialSettings", out currentSettings);
 
             if (environmentModel != null)
             {
