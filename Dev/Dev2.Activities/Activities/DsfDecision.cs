@@ -34,7 +34,8 @@ namespace Dev2.Activities
             UniqueID = _inner.UniqueID;
         }
  
-        public DsfDecision() { }
+        public DsfDecision()
+        : base("Decision") { }
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>
