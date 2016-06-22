@@ -34,6 +34,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -1148,14 +1149,20 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Focus();
 
                 int indexOfOpenItem = -1;
-                foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
+                if(_wd.ContextMenu != null)
                 {
-                    indexOfOpenItem = _wd.ContextMenu.Items.IndexOf(menuItem);
-                    break;
-                }
-                if (indexOfOpenItem != -1)
-                {
-                    _wd.ContextMenu.Items.RemoveAt(indexOfOpenItem);
+                    if(_wd.ContextMenu.Items != null)
+                    {
+                        foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
+                        {
+                            indexOfOpenItem = _wd.ContextMenu.Items.IndexOf(menuItem);
+                            break;
+                        }
+                        if (indexOfOpenItem != -1)
+                        {
+                            _wd.ContextMenu.Items.RemoveAt(indexOfOpenItem);
+                        }
+                    }
                 }
 
                 //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
@@ -1586,16 +1593,30 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (DataListSingleton.ActiveDataList != null)
             {
-                // given the flipping messaging, do this here, silly but works ;(
-                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-                if (OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
+                if (Application.Current != null && Application.Current.Dispatcher != null)
                 {
-                    OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
+                    Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
+                    {
+                        UpdateDataListWithMissingParts(isLoadEvent);
+                    }), DispatcherPriority.Background);
                 }
-
-                IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+                else
+                {
+                    UpdateDataListWithMissingParts(isLoadEvent);
+                }
             }
+        }
+
+        private void UpdateDataListWithMissingParts(bool isLoadEvent)
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+            if(OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
+            {
+                OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
+            }
+
+            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
