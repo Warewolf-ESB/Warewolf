@@ -35,21 +35,21 @@ Scenario: Workflow with multiple tools executing against the server
 	  | [[count]] = 2 |
 
 Scenario: Simple workflow executing against the server with a database service
-	 Given I have a workflow "TestWFWithDBService"
-	 And "TestWFWithDBService" contains a "sqlserver database" service "Fetch" with mappings
+	 Given I have a workflow "TestWorkflowWithDBService"
+	 And "TestWorkflowWithDBService" contains a "sqlserver database" service "Fetch" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
 	  |                  |               | dbo_proc_SmallFetch(*).Value | [[dbo_proc_SmallFetch().Value]] |
-	 And "TestWFWithDBService" contains Count Record "Count" on "[[dbo_proc_SmallFetch()]]" into "[[count]]"
-	  When "TestWFWithDBService" is executed
+	 And "TestWorkflowWithDBService" contains Count Record "Count" on "[[dbo_proc_SmallFetch()]]" into "[[count]]"
+	  When "TestWorkflowWithDBService" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Fetch" in WorkFlow "TestWFWithDBService" debug inputs as
+	  And the "Fetch" in WorkFlow "TestWorkflowWithDBService" debug inputs as
 	  |  |
 	  |  |
-	  And the "Fetch" in Workflow "TestWFWithDBService" debug outputs as
+	  And the "Fetch" in Workflow "TestWorkflowWithDBService" debug outputs as
 	  |                      |
 	  | [[dbo_proc_SmallFetch(9).Value]] = 5 |
-	  And the "Count" in WorkFlow "TestWFWithDBService" debug inputs as
-	  | Recordset            |
+	  And the "Count" in WorkFlow "TestWorkflowWithDBService" debug inputs as
+	  | Recordset                            |
 	  | [[dbo_proc_SmallFetch(1).Value]] = 1 |
 	  | [[dbo_proc_SmallFetch(2).Value]] = 2 |
 	  | [[dbo_proc_SmallFetch(3).Value]] = 1 |
@@ -59,59 +59,59 @@ Scenario: Simple workflow executing against the server with a database service
 	  | [[dbo_proc_SmallFetch(7).Value]] = 1 |
 	  | [[dbo_proc_SmallFetch(8).Value]] = 2 |
 	  | [[dbo_proc_SmallFetch(9).Value]] = 5 |
-	 And the "Count" in Workflow "TestWFWithDBService" debug outputs as    
+	 And the "Count" in Workflow "TestWorkflowWithDBService" debug outputs as    
 	 |               |
 	 | [[count]] = 9 |
 
 Scenario: Workflow with an assign and webservice
-	 Given I have a workflow "TestWebServiceWF"
-	 And "TestWebServiceWF" contains an Assign "Inputs" as
+	 Given I have a workflow "WorkflowWithWebService"
+	 And "WorkflowWithWebService" contains an Assign "Inputs" as
 	  | variable      | value |
 	  | [[extension]] | json  |
 	  | [[prefix]]    | a     |
-	 And "TestWebServiceWF" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+	 And "WorkflowWithWebService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
 	  | Input to Service | From Variable | Output from Service      | To Variable                 |
 	  | extension        | [[extension]] | Countries(*).CountryID   | [[Countries().CountryID]]   |
 	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
-	  When "TestWebServiceWF" is executed
+	  When "WorkflowWithWebService" is executed
 	  Then the workflow execution has "NO" error
-	   And the "Inputs" in WorkFlow "TestWebServiceWF" debug inputs as
+	   And the "Inputs" in WorkFlow "WorkflowWithWebService" debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[extension]] = | json      |
 	  | 2 | [[prefix]] =    | a         |
-	  And the "Inputs" in Workflow "TestWebServiceWF" debug outputs as    
+	  And the "Inputs" in Workflow "WorkflowWithWebService" debug outputs as    
 	  | # |                      |
 	  | 1 | [[extension]] = json |
 	  | 2 | [[prefix]] = a       |
-	   And the "InternalCountriesServiceTest" in WorkFlow "TestWebServiceWF" debug inputs as
+	   And the "InternalCountriesServiceTest" in WorkFlow "WorkflowWithWebService" debug inputs as
 	  | #            |                                                  |
 	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
 	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
 	  | Headers      |                                                  |
-	  And the "InternalCountriesServiceTest" in Workflow "TestWebServiceWF" debug outputs as
+	  And the "InternalCountriesServiceTest" in Workflow "WorkflowWithWebService" debug outputs as
 	  |                                            |
 	  | [[Countries(10).CountryID]] = 10           |
 	  | [[Countries(10).Description]] = Azerbaijan |
 
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestAssignWithRemoteNoError1"
-	 And "TestAssignWithRemoteNoError1" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignWithRemoteWF"
+	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignWithRemoteNoError1" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	And "TestAssignWithRemoteWF" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| inputData            | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).up     | [[values().up]]  |
 	|                  |               | values(*).low     | [[values().low]] |
-	  When "TestAssignWithRemoteNoError1" is executed
+	  When "TestAssignWithRemoteWF" is executed
 	  Then the workflow execution has "NO" error
-	   And the "AssignData" in WorkFlow "TestAssignWithRemoteNoError1" debug inputs as
+	   And the "AssignData" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the "AssignData" in Workflow "TestAssignWithRemoteNoError1" debug outputs as    
+	  And the "AssignData" in Workflow "TestAssignWithRemoteWF" debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteNoError1" debug inputs as
+	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
 	  And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
@@ -125,13 +125,11 @@ Scenario: Workflow with an assign and remote workflow
 	  | 1 | [[output]] = HELLO          |
 	  | 2 | [[values(1).up]] = HELLO |
 	  | 3 | [[values(1).low]] = hello |	  	 
-	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteNoError1" debug outputs as
+	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteWF" debug outputs as
 	  |                           |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
-	  | [[output]] = HELLO        |
-	  
-	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteNoError1" has a debug Server Name of ""Remote Connection Integration""
+	  | [[output]] = HELLO        |	  
 
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
