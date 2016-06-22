@@ -22,6 +22,14 @@ namespace Warewolf.AcceptanceTesting.WebSource
     [Binding]
     public class WebSourceSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public WebSourceSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         [BeforeFeature("WebSource")]
         public static void SetupForSystem()
         {
@@ -47,25 +55,25 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [BeforeScenario("WebSource")]
         public void SetupForWebSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageWebServiceSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageWebserviceSourceViewModel>(Utils.ViewModelNameKey));
+            scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey));
+            scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IManageWebServiceSourceModel>>("updateManager"));
+            scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageWebserviceSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string title)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(title, viewModel.HeaderText);
             Assert.AreEqual(title, manageWebserviceSourceControl.GetHeaderText());
         }
@@ -73,7 +81,7 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Given(@"I open New Web Source")]
         public void GivenIOpenNewWebSource()
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageWebserviceSourceControl);
             Assert.IsNotNull(manageWebserviceSourceControl.DataContext); 
         }
@@ -84,9 +92,9 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"I type Address as ""(.*)""")]
         public void GivenITypeAddressAs(string address)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterServerName(address);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(address, viewModel.HostName);
         }
 
@@ -95,16 +103,16 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"I type Default Query as ""(.*)""")]
         public void GivenITypeDefaultQueryAs(string defaultQuery)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterDefaultQuery(defaultQuery);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(defaultQuery, viewModel.DefaultQuery);
         }
 
         [Given(@"I open ""(.*)"" web source")]
         public void GivenIOpenWebSource(string resourceName)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<IManageWebServiceSourceModel>();
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -120,8 +128,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
             };
             var manageWebserviceSourceViewModel = new ManageWebserviceSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object,webServiceSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
             manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
-            ScenarioContext.Current.Remove("viewModel");
-            ScenarioContext.Current.Add("viewModel",manageWebserviceSourceViewModel);
+            scenarioContext.Remove("viewModel");
+            scenarioContext.Add("viewModel",manageWebserviceSourceViewModel);
         }
 
         [Given(@"Address is ""(.*)""")]
@@ -129,8 +137,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"Address is ""(.*)""")]
         public void GivenAddressIs(string address)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(address, viewModel.HostName);
             Assert.AreEqual(address, manageWebserviceSourceControl.GetAddress());
         }
@@ -140,8 +148,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"Default Query is ""(.*)""")]
         public void GivenDefaultQueryIs(string defaultQuery)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(defaultQuery, viewModel.DefaultQuery);
             Assert.AreEqual(defaultQuery, manageWebserviceSourceControl.GetDefaultQuery());
         }
@@ -149,8 +157,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Given(@"Username is ""(.*)""")]
         public void GivenUsernameIs(string userName)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
             Assert.AreEqual(userName, manageWebserviceSourceControl.GetUsername());
         }
@@ -158,8 +166,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"TestQuery is ""(.*)""")]
         public void ThenTestQueryIs(string testQuery)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(testQuery, viewModel.TestDefault);
             var queryEqual = testQuery.Equals(manageWebserviceSourceControl.GetTestDefault(), StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(queryEqual);
@@ -168,8 +176,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Given(@"Password is ""(.*)""")]
         public void GivenPasswordIs(string password)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.UserName);
             Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
         }
@@ -177,16 +185,16 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [When(@"I click TestQuery")]
         public void WhenIClickTestQuery()
         {
-            var mockExecutor = ScenarioContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor");
-            mockExecutor.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>())).Callback<Uri>(uri => ScenarioContext.Current.Add("uriCalled", uri)).Verifiable();
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var mockExecutor = scenarioContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor");
+            mockExecutor.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>())).Callback<Uri>(uri => scenarioContext.Add("uriCalled", uri)).Verifiable();
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.ClickHyperLink();
         }
 
         [When(@"I Cancel the Test")]
         public void WhenICancelTheTest()
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.CancelTest();
         }
 
@@ -194,9 +202,9 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"the browser window opens with ""(.*)""")]
         public void ThenTheBrowserWindowOpensWith(string expectedUriCalled)
         {
-            var mockExecutor = ScenarioContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor");
+            var mockExecutor = scenarioContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor");
             mockExecutor.Verify();
-            var uri = ScenarioContext.Current.Get<Uri>("uriCalled");
+            var uri = scenarioContext.Get<Uri>("uriCalled");
             var correctUriCalled = String.Equals(expectedUriCalled, uri.ToString(), StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(correctUriCalled);
         }
@@ -206,8 +214,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"Validation message is thrown")]
         public void WhenValidationMessageIsThrown()
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             Assert.IsFalse(string.IsNullOrEmpty(errorMessageFromControl));
@@ -218,8 +226,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"Validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string msg)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(msg, StringComparison.OrdinalIgnoreCase);
@@ -231,8 +239,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [When(@"Validation message is Not thrown")]
         public void WhenValidationMessageIsNotThrown()
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             var errorMessageFromControl = manageWebserviceSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnViewModel = !errorMessageOnViewModel.Contains("Passed");
@@ -247,7 +255,7 @@ namespace Warewolf.AcceptanceTesting.WebSource
         public void WhenUsernameFieldIs(string visibility)
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageWebserviceSourceControl.GetUsernameVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -258,7 +266,7 @@ namespace Warewolf.AcceptanceTesting.WebSource
         public void WhenPasswordFieldIs(string visibility)
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageWebserviceSourceControl.GetPasswordVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -269,17 +277,17 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"I type Username as ""(.*)""")]
         public void GivenITypeUsernameAs(string userName)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterUserName(userName);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
         }
 
         [When(@"Username field as ""(.*)""")]
         public void WhenUsernameFieldAs(string userName)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
             Assert.AreEqual(userName, manageWebserviceSourceControl.GetUsername());
         }
@@ -287,8 +295,8 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [When(@"Password field as ""(.*)""")]
         public void WhenPasswordFieldAs(string password)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
             Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
         }
@@ -299,9 +307,9 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"I type Password as ""(.*)""")]
         public void WhenITypePasswordAs(string password)
         {
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterPassword(password);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
         }
 
@@ -310,14 +318,14 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(controlName, enabledString, scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
 
         [Then(@"Test Connecton is ""(.*)""")]
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageWebServiceSourceModel>>("updateManager");
+            var mockUpdateManager = scenarioContext.Get<Mock<IManageWebServiceSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
@@ -326,7 +334,7 @@ namespace Warewolf.AcceptanceTesting.WebSource
             }
             else if(isLongRunning)
             {
-                var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+                var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
             }
@@ -335,16 +343,16 @@ namespace Warewolf.AcceptanceTesting.WebSource
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()))
                     .Throws(new WarewolfTestException("Server not found", null));
             }
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformTestConnection();
         }
 
         [When(@"I save the source")]
         public void WhenISaveTheSource()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformSave();
 
         }
@@ -352,17 +360,17 @@ namespace Warewolf.AcceptanceTesting.WebSource
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
 
         [When(@"I save as ""(.*)""")]
         public void WhenISaveAs(string resourceName)
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ResourceName).Returns(new ResourceName("", resourceName));
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK);
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformSave();
         }
 
@@ -380,9 +388,9 @@ namespace Warewolf.AcceptanceTesting.WebSource
                 ? AuthenticationType.User
                 : AuthenticationType.Anonymous;
 
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.SetAuthenticationType(authenticationType);
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType);
         }
 
@@ -390,13 +398,13 @@ namespace Warewolf.AcceptanceTesting.WebSource
         public void Cleanup()
         {
             var mockExecutor = new Mock<IExternalProcessExecutor>();
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageWebServiceSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockUpdateManager = scenarioContext.Get<Mock<IManageWebServiceSourceModel>>("updateManager");
+            var mockRequestServiceNameViewModel = scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var viewModel = new ManageWebserviceSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");
             FeatureContext.Current.Add("viewModel", viewModel);

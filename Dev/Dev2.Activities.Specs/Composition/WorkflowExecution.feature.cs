@@ -172,7 +172,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 38
-  testRunner.Given("I have a workflow \"TestWFWithDBService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("I have a workflow \"TestWorkflowWithDBService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -185,13 +185,13 @@ this.FeatureBackground();
                         "dbo_proc_SmallFetch(*).Value",
                         "[[dbo_proc_SmallFetch().Value]]"});
 #line 39
-  testRunner.And("\"TestWFWithDBService\" contains a \"sqlserver database\" service \"Fetch\" with mappin" +
-                    "gs", ((string)(null)), table6, "And ");
+  testRunner.And("\"TestWorkflowWithDBService\" contains a \"sqlserver database\" service \"Fetch\" with " +
+                    "mappings", ((string)(null)), table6, "And ");
 #line 42
-  testRunner.And("\"TestWFWithDBService\" contains Count Record \"Count\" on \"[[dbo_proc_SmallFetch()]]" +
-                    "\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("\"TestWorkflowWithDBService\" contains Count Record \"Count\" on \"[[dbo_proc_SmallFet" +
+                    "ch()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
-   testRunner.When("\"TestWFWithDBService\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"TestWorkflowWithDBService\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -200,14 +200,14 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         ""});
 #line 45
-   testRunner.And("the \"Fetch\" in WorkFlow \"TestWFWithDBService\" debug inputs as", ((string)(null)), table7, "And ");
+   testRunner.And("the \"Fetch\" in WorkFlow \"TestWorkflowWithDBService\" debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
                         "[[dbo_proc_SmallFetch(9).Value]] = 5"});
 #line 48
-   testRunner.And("the \"Fetch\" in Workflow \"TestWFWithDBService\" debug outputs as", ((string)(null)), table8, "And ");
+   testRunner.And("the \"Fetch\" in Workflow \"TestWorkflowWithDBService\" debug outputs as", ((string)(null)), table8, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
@@ -230,14 +230,14 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "[[dbo_proc_SmallFetch(9).Value]] = 5"});
 #line 51
-   testRunner.And("the \"Count\" in WorkFlow \"TestWFWithDBService\" debug inputs as", ((string)(null)), table9, "And ");
+   testRunner.And("the \"Count\" in WorkFlow \"TestWorkflowWithDBService\" debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table10.AddRow(new string[] {
                         "[[count]] = 9"});
 #line 62
-  testRunner.And("the \"Count\" in Workflow \"TestWFWithDBService\" debug outputs as", ((string)(null)), table10, "And ");
+  testRunner.And("the \"Count\" in Workflow \"TestWorkflowWithDBService\" debug outputs as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -254,7 +254,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 67
-  testRunner.Given("I have a workflow \"TestWebServiceWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("I have a workflow \"WorkflowWithWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -266,7 +266,7 @@ this.FeatureBackground();
                         "[[prefix]]",
                         "a"});
 #line 68
-  testRunner.And("\"TestWebServiceWF\" contains an Assign \"Inputs\" as", ((string)(null)), table11, "And ");
+  testRunner.And("\"WorkflowWithWebService\" contains an Assign \"Inputs\" as", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -284,10 +284,10 @@ this.FeatureBackground();
                         "Countries(*).Description",
                         "[[Countries().Description]]"});
 #line 72
-  testRunner.And("\"TestWebServiceWF\" contains a \"webservice\" service \"InternalCountriesServiceTest\"" +
-                    " with mappings", ((string)(null)), table12, "And ");
+  testRunner.And("\"WorkflowWithWebService\" contains a \"webservice\" service \"InternalCountriesServic" +
+                    "eTest\" with mappings", ((string)(null)), table12, "And ");
 #line 76
-   testRunner.When("\"TestWebServiceWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"WorkflowWithWebService\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 77
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -304,7 +304,7 @@ this.FeatureBackground();
                         "[[prefix]] =",
                         "a"});
 #line 78
-    testRunner.And("the \"Inputs\" in WorkFlow \"TestWebServiceWF\" debug inputs as", ((string)(null)), table13, "And ");
+    testRunner.And("the \"Inputs\" in WorkFlow \"WorkflowWithWebService\" debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -316,7 +316,7 @@ this.FeatureBackground();
                         "2",
                         "[[prefix]] = a"});
 #line 82
-   testRunner.And("the \"Inputs\" in Workflow \"TestWebServiceWF\" debug outputs as", ((string)(null)), table14, "And ");
+   testRunner.And("the \"Inputs\" in Workflow \"WorkflowWithWebService\" debug outputs as", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -331,8 +331,8 @@ this.FeatureBackground();
                         "Headers",
                         ""});
 #line 86
-    testRunner.And("the \"InternalCountriesServiceTest\" in WorkFlow \"TestWebServiceWF\" debug inputs as" +
-                    "", ((string)(null)), table15, "And ");
+    testRunner.And("the \"InternalCountriesServiceTest\" in WorkFlow \"WorkflowWithWebService\" debug inp" +
+                    "uts as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
@@ -341,8 +341,8 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "[[Countries(10).Description]] = Azerbaijan"});
 #line 91
-   testRunner.And("the \"InternalCountriesServiceTest\" in Workflow \"TestWebServiceWF\" debug outputs a" +
-                    "s", ((string)(null)), table16, "And ");
+   testRunner.And("the \"InternalCountriesServiceTest\" in Workflow \"WorkflowWithWebService\" debug out" +
+                    "puts as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

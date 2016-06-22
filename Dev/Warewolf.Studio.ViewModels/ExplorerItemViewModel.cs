@@ -1259,6 +1259,11 @@ namespace Warewolf.Studio.ViewModels
                 if (!String.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
                 {
                     IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
+
+                    if (IsVersion)
+                    {
+                        IsVisible = Parent.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
+                    }
                 }
             }
             if (!String.IsNullOrEmpty(filter))
