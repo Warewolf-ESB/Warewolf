@@ -1417,7 +1417,7 @@ namespace Dev2.Runtime.Hosting
                         if(index != -1)
                         {
                             var existing = resources[index];
-                            if(existing.FilePath != resource.FilePath)
+                            if(!String.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 fileManager.Delete(existing.FilePath);
                             }
