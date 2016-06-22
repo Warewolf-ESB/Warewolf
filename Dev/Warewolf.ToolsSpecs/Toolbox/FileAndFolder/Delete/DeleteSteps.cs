@@ -66,16 +66,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             }
         }
 
-        [When(@"validating the delete tool")]
-        public void WhenValidatingTheDeleteTool()
-        {            
+        [Given(@"I have a delete tool on the design surface")]
+        public void GivenIHaveADeleteToolOnTheDesignSurface()
+        {
             BuildDataList();
             var delete = scenarioContext.Get<DsfPathDelete>("activity");
-            delete.PerformValidation();
-
             var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
             if (!scenarioContext.ContainsKey("viewModel"))
                 scenarioContext.Add("viewModel", viewModel);
         }
+
     }
 }

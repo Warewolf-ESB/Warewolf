@@ -58,9 +58,8 @@ Scenario Outline: Delete file Validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And source credentials as "<username>" and "<password>"
 	And result as "<resultVar>"
-	When validating the delete tool
-	#When validating the delete tool from view model
-	Then validation is "<ValidationResult>"
+	And I have a delete tool on the design surface
+	And validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the delete file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
