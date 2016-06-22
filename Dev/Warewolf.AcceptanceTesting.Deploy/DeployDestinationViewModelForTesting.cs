@@ -16,7 +16,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
         public DeployDestinationViewModelForTesting(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator)
             : base(shellViewModel, aggregator)
         {
-
+            
         }
 
         #region Overrides of DeploySourceExplorerViewModel
@@ -39,14 +39,16 @@ namespace Warewolf.AcceptanceTesting.Deploy
                 ResourceName = "Examples",
                 ResourcePath = "Examples",
                 ResourceId = Guid.NewGuid(),
+                
                 Children = new ObservableCollection<IExplorerItemViewModel>
                 {
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Utility - Date and Times", ResourcePath = "Examples\\Utility - Date and Time" }
                     ,             new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("7CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "dora", ResourcePath = "Examples\\dora" }
-                    ,new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\\NameIdConflict",ResourceType = "DbSource"},
+                    ,new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\\bob",ResourceType = "DbSource"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("9CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "DifferentNameSameID", ResourcePath = "Examples\\DifferentNameSameID",ResourceType = "DbSource"},
 
-                }
+                }, 
+                CanDeploy = true
             };
             return ax;
         }
@@ -56,15 +58,17 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             get
             {
-                return Version.Parse("0.0.0.0");
+                return new Version(SelectedServer.GetMinSupportedVersion());
             }
         }
         public override Version ServerVersion
         {
             get
             {
-                return Version.Parse("0.0.0.0");
+                return new Version(SelectedServer.GetServerVersion());
             }
         }
+
+
     }
 }
