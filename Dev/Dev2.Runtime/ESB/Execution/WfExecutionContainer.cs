@@ -89,11 +89,11 @@ namespace Dev2.Runtime.ESB.Execution
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple,()=>{result = ExecuteWf(to);});
             foreach(var err in DataObject.Environment.Errors)
             {
-                errors.AddError(err);
+                errors.AddError(err, true);
             }
             foreach (var err in DataObject.Environment.AllErrors)
             {
-                errors.AddError(err);
+                errors.AddError(err,true);
             }
 
             Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
@@ -132,8 +132,6 @@ namespace Dev2.Runtime.ESB.Execution
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-
-                // trap the no start node error so we can replace it with something nicer ;)
                 to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
             }
             catch(Exception ex)
@@ -170,7 +168,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             if(resource == null)
             {
-                return;
+                throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
             var next = resource.Execute(dsfDataObject, update);

@@ -22,7 +22,7 @@ namespace Warewolf.Storage
 
         #region Implementation of IExecutionEnvironment
 
-        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = true)
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false)
         {
             return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists);
         }
