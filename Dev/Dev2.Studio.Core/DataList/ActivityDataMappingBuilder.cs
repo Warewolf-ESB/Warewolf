@@ -410,104 +410,53 @@ namespace Dev2.DataList
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
 
-
-            var masterRecordsetName = string.Empty;
-
             foreach(var def in concreteDefinitions)
             {
                 var injectValue = def.RawValue;
-
-                if(!string.IsNullOrEmpty(injectValue))
+                if(autoAddBrackets)
                 {
-                    if(autoAddBrackets)
+                    // When output mapping we need to replace the recordset name if present with MasterRecordset
+                    // 
+                    string masterRecordsetName;
+                    if(isOutputMapping && def.IsRecordSet && fuzzyMatch != null)
                     {
-                        // When output mapping we need to replace the recordset name if present with MasterRecordset
-                        // 
-                        if(isOutputMapping && def.IsRecordSet && fuzzyMatch != null)
+                        var field = def.Name;
+
+                        string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
+                        if(!string.IsNullOrEmpty(recordsetName))
                         {
-                            var field = def.Name;
-
-                            string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
-                            if(!string.IsNullOrEmpty(recordsetName))
-                            {
-                                masterRecordsetName = recordsetName;
-                            }
-                            else
-                            {
-                                // we have no match, use the current mapping value ;)
-                                masterRecordsetName = def.RecordSetName;
-                            }
-
-                            injectValue = FormatString(masterRecordsetName, field);
+                            masterRecordsetName = recordsetName;
                         }
                         else
                         {
-                            if(def.IsRecordSet)
-                            {
-                                if(fuzzyMatch != null)
-                                {
-                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
-                                    masterRecordsetName = !String.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
-                                }
-                                else
-                                {
-                                    masterRecordsetName = def.RecordSetName;
-                                }
+                            // we have no match, use the current mapping value ;)
+                            masterRecordsetName = def.RecordSetName;
+                        }
 
-                                injectValue = FormatString(masterRecordsetName, def.Name);
+                        injectValue = FormatString(masterRecordsetName, field);
+                    }
+                    else
+                    {
+                        if(def.IsRecordSet)
+                        {
+                            if(fuzzyMatch != null)
+                            {
+                                string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
+                                masterRecordsetName = !String.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
                             }
                             else
                             {
-                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
+                                masterRecordsetName = def.RecordSetName;
                             }
+
+                            injectValue = FormatString(masterRecordsetName, def.Name);
                         }
-                    }
-                }
-                else
-                {
-                    if(!def.IsRecordSet)
-                    {
-                        if(!String.IsNullOrEmpty(def.RawValue) && String.IsNullOrEmpty(SavedInputMapping))
+                        else
                         {
                             injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
                         }
                     }
-                    else
-                    {
-                        if(!isOutputMapping)
-                        {
-                            var field = def.Name;
-
-                            if(fuzzyMatch != null && def.IsRecordSet)
-                            {
-                                if(string.IsNullOrEmpty(masterRecordsetName))
-                                {
-                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
-                                    masterRecordsetName = !string.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
-                                }
-
-                                injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName,
-                                                                                           string.Empty, field);
-                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
-                            }
-                            else
-                            {
-                                if(!String.IsNullOrEmpty(def.RawValue) && String.IsNullOrEmpty(SavedInputMapping))
-                                {
-                                    injectValue = FormatString(def.RecordSetName, def.Name);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(!String.IsNullOrEmpty(def.RawValue) && String.IsNullOrEmpty(SavedOutputMapping))
-                            {
-                                injectValue = FormatString(def.RecordSetName, def.Name);
-                            }
-                        }
-                    }
-                }
-
+                }                
                 var injectMapsTo = def.MapsTo;
 
                 // no saved mappings add brackets ;)
@@ -531,10 +480,10 @@ namespace Dev2.DataList
                 // def.RecordSetName -> recordsetName
                 var viewModel = new InputOutputViewModel(def.Name, injectValue, injectMapsTo, def.DefaultValue, def.IsRequired, def.RecordSetName, def.EmptyToNull);
                 viewModel.IsObject = def.IsObject;
-                if (def.IsObject)
+                if(def.IsObject)
                 {
                     var complexObjectItemModel = _complexObjects.FirstOrDefault(model => model.Name == def.Name);
-                    if (complexObjectItemModel != null)
+                    if(complexObjectItemModel != null)
                     {
                         viewModel.JsonString = complexObjectItemModel.GetJson();
                     }
