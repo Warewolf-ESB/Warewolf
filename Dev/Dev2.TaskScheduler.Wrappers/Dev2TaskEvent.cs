@@ -45,7 +45,12 @@ namespace Dev2.TaskScheduler.Wrappers
 
         string ITaskEvent.Correlation
         {
-            get { return _nativeObject.Correlation; }
+            get
+            {
+                if(_nativeObject.ActivityId != null)
+                    return _nativeObject.ActivityId.Value.ToString();
+                return "";
+            }
         }
 
         public string UserId
