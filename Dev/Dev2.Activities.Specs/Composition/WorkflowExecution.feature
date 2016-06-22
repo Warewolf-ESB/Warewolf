@@ -94,24 +94,24 @@ Scenario: Workflow with an assign and webservice
 	  | [[Countries(10).Description]] = Azerbaijan |
 
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestAssignWithRemoteNoError1"
-	 And "TestAssignWithRemoteNoError1" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignWithRemoteWF"
+	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignWithRemoteNoError1" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	And "TestAssignWithRemoteWF" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| inputData            | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).up     | [[values().up]]  |
 	|                  |               | values(*).low     | [[values().low]] |
-	  When "TestAssignWithRemoteNoError1" is executed
+	  When "TestAssignWithRemoteWF" is executed
 	  Then the workflow execution has "NO" error
-	   And the "AssignData" in WorkFlow "TestAssignWithRemoteNoError1" debug inputs as
+	   And the "AssignData" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the "AssignData" in Workflow "TestAssignWithRemoteNoError1" debug outputs as    
+	  And the "AssignData" in Workflow "TestAssignWithRemoteWF" debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteNoError1" debug inputs as
+	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
 	  And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
@@ -125,13 +125,11 @@ Scenario: Workflow with an assign and remote workflow
 	  | 1 | [[output]] = HELLO          |
 	  | 2 | [[values(1).up]] = HELLO |
 	  | 3 | [[values(1).low]] = hello |	  	 
-	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteNoError1" debug outputs as
+	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteWF" debug outputs as
 	  |                           |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
-	  | [[output]] = HELLO        |
-	  
-	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteNoError1" has a debug Server Name of ""Remote Connection Integration""
+	  | [[output]] = HELLO        |	  
 
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
