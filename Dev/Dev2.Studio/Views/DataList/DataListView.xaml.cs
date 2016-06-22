@@ -51,13 +51,13 @@ namespace Dev2.Studio.Views.DataList
 
         private void XtgOnDataSourceChanged(object sender, RoutedPropertyChangedEventArgs<IEnumerable> routedPropertyChangedEventArgs)
         {
-            if (Xtg != null)
-            {
-                if (Xtg.Records != null)
-                {
-                    Xtg.Records.ExpandAll(true);
-                }
-            }
+//            if (Xtg != null)
+//            {
+//                if (Xtg.Records != null)
+//                {
+//                    Xtg.Records.ExpandAll(true);
+//                }
+//            }
         }
 
         #region Events

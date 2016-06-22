@@ -578,7 +578,31 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(File.Exists(pathToDelete));
         }
 
-
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceCatalog_SaveResource")]
+        public void SaveResource_WithSameResourcePath_ExpectedNotDeleteOfExisting()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            var path = Path.Combine(workspacePath, resourcePath);
+            const string resourceName = "CitiesDatabase";
+            var xml = XmlResource.Fetch(resourceName);
+            var resource = new DbSource(xml) { ResourcePath = resourcePath };
+            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            //------------Execute Test---------------------------
+            var resource2 = new DbSource(xml) { ResourcePath = "MyTest\\FOLDER1\\CitiesDatabase", ResourceID = resource.ResourceID };
+            catalog.SaveResource(workspaceID, resource);
+            var pathToDelete = resource.FilePath;
+            resource2.FilePath = resource.FilePath.Replace("Folder1", "Foldler1");
+            resource2.ResourceName = "CitiesDatabase";
+            Assert.IsTrue(File.Exists(pathToDelete));
+            catalog.SaveResource(workspaceID, resource2);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(pathToDelete));
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

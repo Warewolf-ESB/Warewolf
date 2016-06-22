@@ -71,7 +71,7 @@ namespace Dev2
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
-            CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
+            //CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
             var mainViewModel = new MainViewModel();
