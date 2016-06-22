@@ -517,7 +517,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_EditCommand")]
@@ -556,8 +555,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(resourceId, actualResourceInvoked.ID);
         }
 
-       
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_EditCommand")]
@@ -594,7 +591,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNotNull(serverItem);
             Assert.IsNull(actualResourceInvoked);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -665,7 +661,6 @@ namespace Dev2.Core.Tests.ModelTests
             // ReSharper disable MaximumChainedReferences
             studioResourceRepo.Setup(s => s.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
                 .Returns((StringBuilder)null)
-
                 .Verifiable();
             // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
@@ -710,7 +705,6 @@ namespace Dev2.Core.Tests.ModelTests
             // ReSharper disable MaximumChainedReferences
             studioResourceRepo.Setup(s => s.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
                 .Returns(new StringBuilder("<Service><DataList><a Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList><Action><XamlDefinition>Hail HTML 1</XamlDefinition></Action></Service>"))
-
                 .Verifiable();
             // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
@@ -847,8 +841,6 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Execute Test---------------------------
             resourceItem.Parent.DeleteCommand.Execute(null);
             //------------Assert Results-------------------------
-
-
             Assert.IsNotNull(serverItem);
             Assert.IsNotNull(actualResourceInvoked);
             Assert.AreEqual(4, actualResourceInvoked.Count);
@@ -897,7 +889,6 @@ namespace Dev2.Core.Tests.ModelTests
             resourceItem.Parent.DeleteCommand.Execute(null);
             //------------Assert Results-------------------------
             mockResourceRepository.Verify(a => a.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, It.IsAny<ResourceModelEqualityComparer>(), true), Times.Once());
-
         }
 
         [TestMethod]
@@ -937,7 +928,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNull(actualResourceInvoked);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_DeleteCommand")]
@@ -974,7 +964,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNotNull(setupExplorerItemModelWithFolderAndOneChild);
             Assert.IsNull(actualResourceInvoked);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -1095,7 +1084,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNotNull(serverItem);
             Assert.IsNull(actualResourceInvoked);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -1226,7 +1214,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNull(actualResourceInvoked);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_DebugCommand")]
@@ -1271,7 +1258,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNull(editResource);
             Assert.IsNull(actualResourceInvoked);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -1401,7 +1387,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("WorkflowService", actualResourceType);
             Assert.AreEqual("Path", actualResourceCategory);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -1754,7 +1739,6 @@ namespace Dev2.Core.Tests.ModelTests
 
             //------------Assert Results-------------------------
             Assert.IsTrue(resourceItem.IsRenaming);
-
         }
 
         [TestMethod]
@@ -1799,7 +1783,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("EmailSource", actualResourceType);
             Assert.AreEqual("Path", actualResourceCategory);
         }
-        //,,,,,,,
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_RenameCommand")]
@@ -1909,7 +1893,6 @@ namespace Dev2.Core.Tests.ModelTests
             folderItem.DisplayName = "bob";
             //------------Assert Results-------------------------
             mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
-
         }
 
         [TestMethod]
@@ -1954,7 +1937,6 @@ namespace Dev2.Core.Tests.ModelTests
             folderItem.DisplayName = "bob";
             //------------Assert Results-------------------------
             mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
-
         }
 
         [TestMethod]
@@ -2002,7 +1984,6 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()), Times.Never());
             Assert.AreEqual(previousName, folderItem.DisplayName);
-
         }
 
         [TestMethod]
@@ -2038,8 +2019,6 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(a => a.WorkflowXaml).Returns(new StringBuilder("Category=dave\\bob"));
 
             resourceItem.UpdateCategoryIfOpened("bobthebuilder");
-
-
             //------------Assert Results-------------------------
             mockResourceModel.VerifySet(a => a.Category = "bobthebuilder");
             mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>());
@@ -2076,10 +2055,7 @@ namespace Dev2.Core.Tests.ModelTests
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
 
-
             resourceItem.UpdateCategoryIfOpened("bobthebuilder");
-
-
             //------------Assert Results-------------------------
             mockResourceModel.VerifySet(a => a.Category = "bobthebuilder");
             mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>(), Times.Never());
@@ -2115,7 +2091,6 @@ namespace Dev2.Core.Tests.ModelTests
                     wasResourceReAdded = true;
                 }
             });
-
 
             EventPublishers.Aggregator = aggregator.Object;
 
@@ -2161,7 +2136,6 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var aggregator = new Mock<EventAggregator>();
-
             Guid resourceGuid = Guid.Empty;
 
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceDisplayName>())).Callback<object>(msg =>
@@ -2241,12 +2215,9 @@ namespace Dev2.Core.Tests.ModelTests
             CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(resourceItem.IsRenaming);
-
             resourceItem.RenameCommand.Execute(null);
-
             resourceItem.DisplayName = "bob";
             //------------Assert Results-------------------------
-
             mockStudioRepository.Verify(a => a.RenameItem(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
 
             Assert.AreEqual(mockResourceModel.Object.WorkflowXaml.ToString(), @"Name=""bob"" x:Class=""bob""ToolboxFriendlyName=""bob""DisplayName=""bob""");
@@ -2304,10 +2275,8 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsFalse(resourceItem.IsRenaming);
 
             resourceItem.RenameCommand.Execute(null);
-
             resourceItem.DisplayName = "bob";
             //------------Assert Results-------------------------
-
             mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
             mockResourceModel.Verify(a => a.WorkflowXaml, Times.Never());
             Assert.AreEqual("", oldName);
@@ -2574,32 +2543,6 @@ namespace Dev2.Core.Tests.ModelTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_IsAutorizedDeployFrom")]
-        public void ExplorerItemModel_IsAutorizedDeployFrom_DbService_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbService" };
-            //------------Execute Test---------------------------
-            bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isAuthorizedDeployFrom);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExplorerItemModel_IsAutorizedDeployTo")]
-        public void ExplorerItemModel_IsAutorizedDeployTo_DbService_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbService" };
-            //------------Execute Test---------------------------
-            bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isAuthorizedDeployFrom);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExplorerItemModel_IsAutorizedDeployFrom")]
         public void ExplorerItemModel_IsAutorizedDeployFrom_WorkflowService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -2643,32 +2586,6 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebSource" };
-            //------------Execute Test---------------------------
-            bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isAuthorizedDeployFrom);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExplorerItemModel_IsAutorizedDeployFrom")]
-        public void ExplorerItemModel_IsAutorizedDeployFrom_WebService_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebService" };
-            //------------Execute Test---------------------------
-            bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isAuthorizedDeployFrom);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExplorerItemModel_IsAutorizedDeployTo")]
-        public void ExplorerItemModel_IsAutorizedDeployTo_WebService_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2779,32 +2696,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsTrue(isAuthorizedDeployFrom);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExplorerItemModel_IsAutorizedDeployFrom")]
-        public void ExplorerItemModel_IsAutorizedDeployFrom_PluginService_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginService" };
-            //------------Execute Test---------------------------
-            bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isAuthorizedDeployFrom);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExplorerItemModel_IsAutorizedDeployTo")]
-        public void ExplorerItemModel_IsAutorizedDeployTo_PluginService_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginService" };
-            //------------Execute Test---------------------------
-            bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isAuthorizedDeployFrom);
-        }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -2862,6 +2753,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsTrue(explorerItemModel.Children.First(a => a.DisplayName == "New Folder").IsRenaming = true);
             Assert.IsTrue(called);
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_AddNewFolder")]
@@ -2872,7 +2764,8 @@ namespace Dev2.Core.Tests.ModelTests
             var rep = new Mock<IStudioResourceRepository>();
             bool called = false;
             var worker = new Mock<IAsyncWorker>();
-            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
+            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(),
+                out outvalue, rep.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
             rep.Setup(a => a.AddItem(It.IsAny<IExplorerItemModel>())).Callback((IExplorerItemModel a) =>
             {
                 Assert.AreEqual(a.DisplayName, "New Folder");
@@ -2897,13 +2790,14 @@ namespace Dev2.Core.Tests.ModelTests
                 explorerItemModel.Children.Add(a);
 
             }
-      );
+                );
             explorerItemModel.AddNewFolder();
             Assert.IsTrue(called);
             Assert.AreEqual(explorerItemModel.Children.Count, 3);
             Assert.IsTrue(explorerItemModel.Children.Count(a => a.DisplayName == "New Folder") > 0);
             Assert.IsTrue(explorerItemModel.Children.First(a => a.DisplayName == "New Folder").IsRenaming = true);
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_AddNewFolder")]
@@ -2972,11 +2866,9 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_ActivityName")]
         public void ExplorerItemModel_ActivityName_Expect_NonDSFActivity()
         {
-
-            Assert.AreEqual(Item("PluginService").ActivityName, typeof(DsfPluginActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item("WebService").ActivityName, typeof(DsfWebserviceActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item("DbService").ActivityName, typeof(DsfDatabaseActivity).AssemblyQualifiedName);
-
+            //Assert.AreEqual(Item("PluginService").ActivityName, typeof(DsfPluginActivity).AssemblyQualifiedName);
+            //Assert.AreEqual(Item("WebService").ActivityName, typeof(DsfWebserviceActivity).AssemblyQualifiedName);
+            //Assert.AreEqual(Item("DbService").ActivityName, typeof(DsfDatabaseActivity).AssemblyQualifiedName);
         }
 
         [TestMethod]
@@ -3079,7 +2971,6 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_IsLocalHost")]
         public void ExplorerItemModel_DeployTitle_ServerWithGuid_Expect_All()
         {
-
             var serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 ResourceType = "Folder",
@@ -3092,29 +2983,25 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("Deploy All bob", serverItem.DeployTitle);
 
             serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
-           {
-               ResourceType = "Server",
-               IsServer = true,
-               DisplayName = "bob",
-               ResourceId = Guid.Empty,
-               Permissions = Permissions.Administrator,
-               EnvironmentId = Guid.NewGuid()
-           };
+            {
+                ResourceType = "Server",
+                IsServer = true,
+                DisplayName = "bob",
+                ResourceId = Guid.Empty,
+                Permissions = Permissions.Administrator,
+                EnvironmentId = Guid.NewGuid()
+            };
             Assert.AreEqual("Deploy All bob", serverItem.DeployTitle);
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_IsLocalHost")]
         public void ExplorerItemModel_DeployTitle_ServerWithGuid_Expect_NotAll()
         {
-
-            var it = Item("DbService");
-            Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item("DbSource");
+            var it = Item("DbSource");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
             it = Item("EmailSource");
-            Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item("PluginService");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
             it = Item("PluginSource");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
@@ -3122,9 +3009,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("Deploy bob", it.DeployTitle);
             it = Item("Unknown");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item("WebService");
-            Assert.AreEqual("Deploy bob", it.DeployTitle);
-
         }
 
         [TestMethod]
@@ -3158,9 +3042,9 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_IsLocalHost")]
         public void ExplorerItemModel_ActivityNames_ServerWithGuid_ExpectCorrectTypes()
         {
-
             IsServer("Server", false, Guid.NewGuid());
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_IsLocalHost")]
@@ -3174,7 +3058,6 @@ namespace Dev2.Core.Tests.ModelTests
             IsServer("ServerSource", false, Guid.Empty);
         }
 
-
         [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
@@ -3184,8 +3067,8 @@ namespace Dev2.Core.Tests.ModelTests
             var item = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
             item.SetIsChecked(null, true, false);
             Assert.IsNull(item.IsChecked);
-
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
@@ -3197,7 +3080,6 @@ namespace Dev2.Core.Tests.ModelTests
             ExplorerItemModel.OnCheckedStateChangedAction = a => { updateStats = a.UpdateStats; };
             item.SetIsChecked(null, true, false);
             Assert.IsTrue(updateStats);
-
         }
 
         [TestMethod]
@@ -3216,7 +3098,6 @@ namespace Dev2.Core.Tests.ModelTests
             item.Children[0].ResourcePath = "bob\\dave\\item";
             item.Children[0].SetIsChecked(null, true, true);
             Assert.IsTrue(updateStats);
-
         }
 
         [TestMethod]
@@ -3235,7 +3116,6 @@ namespace Dev2.Core.Tests.ModelTests
             item.Children[0].ResourcePath = "bob";
             item.Children[0].SetIsChecked(null, true, true);
             Assert.IsTrue(updateStats);
-
         }
 
         [TestMethod]
@@ -3266,7 +3146,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsTrue(item.IsChecked != null && item.IsChecked.Value);
             var isChecked = item.Children[0].IsChecked;
             Assert.IsTrue(isChecked != null && isChecked.Value);
-
         }
 
         [TestMethod, Timeout(3000)]
@@ -3284,9 +3163,7 @@ namespace Dev2.Core.Tests.ModelTests
             var isChecked = item.Children[0].IsChecked;
             Assert.IsFalse(isChecked != null && isChecked.Value);
             Assert.IsFalse(item.IsOverwrite);
-
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -3304,7 +3181,6 @@ namespace Dev2.Core.Tests.ModelTests
             var isChecked = item.Children[0].IsChecked;
             Assert.IsFalse(isChecked != null && isChecked.Value);
             Assert.IsFalse(item.IsOverwrite);
-
         }
 
         [TestMethod]
@@ -3452,17 +3328,17 @@ namespace Dev2.Core.Tests.ModelTests
         static void CanShowVersionHistoryTestExecution(string resourceType, Permissions permission, bool expectedResult, bool isService, bool isSource, bool isReservedService, bool isServer, bool isFolder, bool isResourceVersion)
         {
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
-                {
-                    ResourceType = resourceType,
-                    IsService = isService,
-                    IsSource = isSource,
-                    IsReservedService = isReservedService,
-                    IsServer = isServer,
-                    IsResourceVersion = isResourceVersion,
-                    IsFolder = isFolder,
-                    Permissions = permission,
-                    DisplayName = "My Resource"
-                };
+            {
+                ResourceType = resourceType,
+                IsService = isService,
+                IsSource = isSource,
+                IsReservedService = isReservedService,
+                IsServer = isServer,
+                IsResourceVersion = isResourceVersion,
+                IsFolder = isFolder,
+                Permissions = permission,
+                DisplayName = "My Resource"
+            };
             Assert.AreEqual(expectedResult, explorerItemModel.CanShowHistory);
         }
 
@@ -3586,11 +3462,11 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
-                {
-                    ResourceType = "Server",
-                    IsServer = true,
-                    Permissions = Permissions.View
-                };
+            {
+                ResourceType = "Server",
+                IsServer = true,
+                Permissions = Permissions.View
+            };
             //------------Execute Test---------------------------
             bool isAuthorized = explorerItemModel.IsAuthorized;
             //------------Assert Results-------------------------
@@ -4156,7 +4032,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(checkStateChangedArgs.ResourceId, guid);
             Assert.AreEqual("Message", checkStateChangedArgs.ResourceType);
             Assert.IsFalse(checkStateChangedArgs.UpdateStats);
-
         }
 
         [TestMethod]
@@ -4166,7 +4041,6 @@ namespace Dev2.Core.Tests.ModelTests
         {
             ExplorerItemModel model = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourcePath = "bob" };
             Assert.AreEqual(model.ResourcePathWithoutName, "");
-
         }
 
         [TestMethod]
@@ -4176,7 +4050,6 @@ namespace Dev2.Core.Tests.ModelTests
         {
             ExplorerItemModel model = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourcePath = "a\\bob" };
             Assert.AreEqual(model.ResourcePathWithoutName, "a");
-
         }
 
         [TestMethod]
@@ -4186,9 +4059,7 @@ namespace Dev2.Core.Tests.ModelTests
         {
             ExplorerItemModel model = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourcePath = "a\\b\\bob" };
             Assert.AreEqual(model.ResourcePathWithoutName, "a\\b");
-
         }
-
 
         static void IsServer(string type, bool result, Guid id)
         {
@@ -4207,32 +4078,31 @@ namespace Dev2.Core.Tests.ModelTests
         static ExplorerItemModel Item(string type)
         {
             return new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
-             {
-                 ResourceType = type,
-                 DisplayName = "bob",
-                 ResourceId = Guid.Empty,
-                 Permissions = Permissions.Administrator,
-                 EnvironmentId = Guid.NewGuid()
-             };
-
+            {
+                ResourceType = type,
+                DisplayName = "bob",
+                ResourceId = Guid.Empty,
+                Permissions = Permissions.Administrator,
+                EnvironmentId = Guid.NewGuid()
+            };
         }
 
         static void AssertCanAdd(string type, bool result, bool isServer, bool isFolder, bool isSource, bool isService, bool isReservedService, bool isResourceVersion)
         {
             var serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
-                {
-                    ResourceType = type,
-                    DisplayName = "bob",
-                    IsServer = isServer,
-                    IsFolder = isFolder,
-                    IsSource = isSource,
-                    IsService = isService,
-                    IsReservedService = isReservedService,
-                    IsResourceVersion = isResourceVersion,
-                    ResourceId = Guid.Empty,
-                    Permissions = Permissions.Administrator,
-                    EnvironmentId = Guid.NewGuid()
-                };
+            {
+                ResourceType = type,
+                DisplayName = "bob",
+                IsServer = isServer,
+                IsFolder = isFolder,
+                IsSource = isSource,
+                IsService = isService,
+                IsReservedService = isReservedService,
+                IsResourceVersion = isResourceVersion,
+                ResourceId = Guid.Empty,
+                Permissions = Permissions.Administrator,
+                EnvironmentId = Guid.NewGuid()
+            };
             Assert.AreEqual(result, serverItem.CanCreateNewFolder);
         }
 
@@ -4429,7 +4299,6 @@ namespace Dev2.Core.Tests.ModelTests
             serverItem.Children.Add(folderItem);
             return serverItem;
         }
-
     }
 }    // ReSharper restore MethodTooLong
-// ReSharper restore MaximumChainedReferences
+     // ReSharper restore MaximumChainedReferences
