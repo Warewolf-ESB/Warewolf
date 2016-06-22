@@ -136,8 +136,8 @@ namespace Dev2.DataList
                 SavedInputMapping = activity.SavedInputMapping;
                 SavedOutputMapping = activity.SavedOutputMapping;
                 ActivityType = activity.UnderlyingWebActivityObjectType;
-
-                if(activity.ResourceModel != null)
+                _complexObjects = new List<ComplexObjectItemModel>();
+                if (activity.ResourceModel != null)
                 {
                     string inputs;
                     string outputs;
@@ -152,7 +152,6 @@ namespace Dev2.DataList
                     else
                     {
                         var datalist = activity.ResourceModel.DataList;
-                        _complexObjects = new List<ComplexObjectItemModel>();
                         AddComplexObjects(datalist);
                         inputs = DataListUtil.GenerateSerializableDefsFromDataList(datalist,
                             enDev2ColumnArgumentDirection.Input);
