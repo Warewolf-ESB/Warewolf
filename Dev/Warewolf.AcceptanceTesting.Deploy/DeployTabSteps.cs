@@ -9,7 +9,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Explorer;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,13 +31,15 @@ namespace Warewolf.AcceptanceTesting.Deploy
             var shell = GetMockShellVm(true,"localhost");
             var dest = new DeployDestinationViewModelForTesting(GetMockShellVm(false, "DestinationServer"), GetMockAggegator());
             FeatureContext.Current["Destination"] = dest;
-            var stats = new DeployStatsViewerViewModel(dest);
+            var stats = new DeployStatsViewerViewModel(dest) ;
             var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest)) { Children = new List<IExplorerItemViewModel> { CreateExplorerVms() } };
             FeatureContext.Current["Src"] = src;
-            var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, GetPopup());
+            var popupController = GetPopup().Object;
+            var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, popupController);
             FeatureContext.Current["vm"] = vm;
             var view = new DeployView { DataContext = vm };
             FeatureContext.Current["View"] = view;
+            FeatureContext.Current["sss"] = stats;
             Core.Utils.ShowTheViewForTesting(view);
         }
 
@@ -50,15 +52,16 @@ namespace Warewolf.AcceptanceTesting.Deploy
             var stats = new DeployStatsViewerViewModel(dest);
             var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest)) { Children = new List<IExplorerItemViewModel> { CreateExplorerVms() } };
             FeatureContext.Current["Src"] = src;
-            var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, GetPopup());
+            var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, GetPopup().Object);
             FeatureContext.Current["vm"] = vm;
             var view = FeatureContext.Current["View"] as DeployView;
             if(view != null)
             {
                 view.DataContext = vm;
             }
-            GetPopupFromContext().Setup(a => a.ShowDeployConflict(It.IsAny<int>()));
-            GetPopupFromContext().Setup(a => a.ShowDeployNameConflict(It.IsAny<string>()));
+            GetPopup().Setup(a => a.ShowDeployConflict(It.IsAny<int>()));
+            GetPopup().Setup(a => a.ShowDeployNameConflict(It.IsAny<string>()));
+            vm.PopupController = GetPopup().Object;
             _deployed = false;
         }
 
@@ -67,11 +70,17 @@ namespace Warewolf.AcceptanceTesting.Deploy
             return (SingleExplorerDeployViewModel)FeatureContext.Current["vm"];
         }
 
-        static IPopupController GetPopup()
+        static Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController> GetPopup()
         {
-            var popup = new Mock<IPopupController>();
+            var containsKey = FeatureContext.Current.ContainsKey("Popup");
+            if (containsKey)
+            {
+                var popUp = FeatureContext.Current["Popup"];
+                return (Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>)popUp;
+            }
+            var popup = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
             FeatureContext.Current["Popup"] = popup;
-            return popup.Object;
+            return popup;
         }
 
         static IDeployStatsViewerViewModel GetStatsVm(IExplorerViewModel dest)
@@ -121,7 +130,10 @@ namespace Warewolf.AcceptanceTesting.Deploy
             server.Setup(a => a.ResourceID).Returns(Guid.NewGuid());
             server.Setup(a => a.EnvironmentID).Returns(Guid.Empty);
             server.Setup(a => a.QueryProxy).Returns(qp.Object);
-            if(!String.IsNullOrEmpty(name))
+            server.Setup(a => a.CanDeployFrom).Returns(true);
+            server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
+            if(!string.IsNullOrEmpty(name))
             {
                 if(!FeatureContext.Current.ContainsKey(name))
                 {
@@ -137,6 +149,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
             server.Setup(a => a.LoadExplorer()).Returns(new Task<IExplorerItem>(CreateExplorerSourceItems));
             server.Setup(a => a.DisplayName).Returns("Remote");
             server.Setup(a => a.ResourceName).Returns("Remote");
+            server.Setup(a => a.CanDeployTo).Returns(true);
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission
@@ -149,6 +162,8 @@ namespace Warewolf.AcceptanceTesting.Deploy
             server.Setup(a => a.EnvironmentID).Returns(Guid.NewGuid());
             server.Setup(a => a.IsConnected).Returns(true);
             server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
+            server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
             FeatureContext.Current["DestinationServer"] = server;
             return new List<IServer>
             {
@@ -172,13 +187,15 @@ namespace Warewolf.AcceptanceTesting.Deploy
         static IExplorerItemViewModel CreateExplorerVms()
         {
             ExplorerItemViewModel ax = null;
-            ax = new ExplorerItemViewModel(new Mock<IServer>().Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
+            var server = new Mock<IServer>();
+            server.SetupGet(server1 => server1.CanDeployFrom).Returns(true);
+            ax = new ExplorerItemViewModel(server.Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
             {
                 ResourceName = "Examples",
                 Children = new ObservableCollection<IExplorerItemViewModel>
                 {
                     // ReSharper disable once ExpressionIsAlwaysNull
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) { ResourceName = "Utility - Date and Time", ResourcePath = "Examples\\Utility - Date and Time" }
+                    new ExplorerItemViewModel(server.Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) { ResourceName = "Utility - Date and Time", ResourcePath = "Examples\\Utility - Date and Time" }
                 }
             };
             return ax;
@@ -195,9 +212,14 @@ namespace Warewolf.AcceptanceTesting.Deploy
             return (DeployView)FeatureContext.Current["View"];
         }
 
-        static Mock<IPopupController> GetPopupFromContext()
+        [When(@"destination Server Version is ""(.*)""")]
+        public void WhenDestinationServerVersionIs(string p0)
         {
-            return (Mock<IPopupController>)FeatureContext.Current["Popup"];
+            GetPopup().Setup(controller => controller.ShowDeployServerVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
+            GetVm().PopupController = GetPopup().Object;
+            var dest = GetDestinationServer();
+            dest.Setup(server => server.GetMinSupportedVersion()).Returns(p0);
+            dest.Setup(server => server.GetServerVersion()).Returns(p0);
         }
 
         [When(@"""(.*)"" is Disconnected")]
@@ -227,15 +249,27 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [Then(@"the validation message is ""(.*)""")]
         public void ThenTheValidationMessageIs(string message)
         {
-
-            Assert.IsTrue(GetView().ErrorMessage.ToLower().Equals(message.ToLower())
-                || GetView().StatusPassedMessage.ToLower().Equals(message.ToLower()));
+            var deployView = GetView();
+            
+            var errorMsg = deployView.ErrorMessage.ToLower();
+            Assert.AreEqual(message.ToLower(), errorMsg);
         }
+
+        [Then(@"the Deploy validation message is ""(.*)""")]
+        public void ThenTheDeployValidationMessageIs(string message)
+        {
+            var deployView = GetView();
+
+            var errorMsg = deployView.StatusPassedMessage.ToLower();
+            Assert.AreEqual(message.ToLower(), errorMsg);
+        }
+
 
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string p0, string p1)
         {
-            Assert.AreEqual(p1, GetView().CanDeploy);
+            var CanDeploy = GetVm().DeployCommand.CanExecute(null) ? "Enabled" : "Disabled";
+            Assert.AreEqual(p1, CanDeploy);
 
         }
 
@@ -322,19 +356,27 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [Then(@"deploy is successfull")]
         public void ThenDeployIsSuccessfull()
         {
-            Assert.IsTrue(_deployed);
+            Assert.IsTrue(GetVm().DeploySuccessfull);
         }
 
         [Then(@"deploy is not successfull")]
         public void ThenDeployIsNotSuccessfull()
         {
-            Assert.IsFalse(_deployed);
+            Assert.IsFalse(GetVm().DeploySuccessfull);
         }
 
         [Then(@"Resource exists in the destination server popup is shown")]
         public void ThenResourceExistsInTheDestinationServerPopupIsShown(Table table)
         {
-            GetPopupFromContext().Verify(a => a.ShowDeployConflict(It.IsAny<int>()));
+            try
+            {
+                GetPopup().Verify(a => a.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);
+            }
+            catch (Exception)
+            {
+                GetPopup().Verify(a => a.ShowDeployResourceNameConflict(It.IsAny<string>()), Times.AtLeastOnce);
+            }
+            GetVm().PopupController = GetPopup().Object;
             var conflictItems = GetVm().ConflictItems;
             foreach(var conflictItem in conflictItems)
             {
@@ -347,15 +389,24 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [Given(@"I cannot deploy to destination")]
         public void GivenICannotDeployToDestination()
         {
+            const bool deployFrom = true;
+            const bool deployTo = false;
+            SetDestPermisions(deployFrom, deployTo);
+        }
+
+        private void SetDestPermisions(bool deployFrom, bool deployTo)
+        {
             var destinationServer = GetDestinationServer();
+            destinationServer.Setup(server => server.CanDeployFrom).Returns(deployFrom);
+            destinationServer.Setup(server => server.CanDeployTo).Returns(deployTo);
             destinationServer.Setup(server => server.Permissions).Returns(new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission
                 {
-                    DeployFrom = true,
+                    DeployFrom = deployFrom,
                     Administrator = false,
                     Contribute = false,
-                    DeployTo = false,
+                    DeployTo = deployTo,
                     IsServer = true,
                     ResourceID = Guid.Empty
                 }
@@ -382,19 +433,25 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [When(@"I click Cancel on Resource exists in the destination server popup")]
         public void WhenIClickCancelOnResourceExistsInTheDestinationServerPopup()
         {
-            GetPopupFromContext().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.Cancel);
+
+            GetPopup().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.Cancel);
+            GetPopup().Setup(a => a.ShowDeployResourceNameConflict(It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
+            GetVm().PopupController = GetPopup().Object;
         }
 
         [When(@"I click OK on Resource exists in the destination server popup")]
         public void WhenIClickOKOnResourceExistsInTheDestinationServerPopup()
         {
-            GetPopupFromContext().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.OK);
+            GetPopup().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.OK);
+            GetPopup().Setup(a => a.ShowDeployResourceNameConflict(It.IsAny<string>())).Returns(MessageBoxResult.OK);
+            GetVm().PopupController = GetPopup().Object;
         }
 
         [Then(@"the User is prompted to ""(.*)"" one of the resources")]
         public void ThenTheUserIsPromptedToOneOfTheResources(string p0)
         {
-            GetPopupFromContext().Verify(a => a.ShowDeployNameConflict(It.IsAny<string>()));
+            GetPopup().Verify(a => a.ShowDeployNameConflict(It.IsAny<string>()));
+            GetVm().PopupController = GetPopup().Object;
         }
 
         [Then(@"Services is ""(.*)""")]
@@ -434,17 +491,29 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             GetView().CheckVisibility("Context Menu", visibility);
         }
+       
+
 
         [Given(@"I have deploy tab opened")]
         public void GivenIHaveDeployTabOpened()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            var msg = new Mock<IPopupMessage>();
+            GetPopup().Object.Show(msg.Object);
         }
 
         [Then(@"a warning message appears ""(.*)""")]
         public void ThenAWarningMessageAppears(string p0)
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            try
+            {
+                GetPopup().Verify(controller => controller.ShowDeployServerVersionConflict("1.0.0.0", "0.0.0.1"));
+            }
+                // ReSharper disable once UnusedVariable
+            catch(Exception e)
+            {
+                var message = GetVm().ErrorMessage;
+                Assert.AreEqual(p0, message);
+            }
         }
     }
 }

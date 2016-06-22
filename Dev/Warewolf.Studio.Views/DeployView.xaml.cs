@@ -149,13 +149,15 @@ namespace Warewolf.Studio.Views
 
         public void SelectPath(string path)
         {
-            ((IDeployViewModel)DataContext).Source.SelectedEnvironment.AsList().Apply(a =>
+            var explorerItemViewModels = ((IDeployViewModel)DataContext).Source.SelectedEnvironment.AsList();
+            explorerItemViewModels.Apply(a =>
             {
                 if (a.ResourcePath == path) 
                     a.IsResourceUnchecked = true; 
                 
             });
-            ((IDeployViewModel)DataContext).StatsViewModel.Calculate(((IDeployViewModel)DataContext).Source.SelectedItems.ToList());
+            var explorerTreeItems = ((IDeployViewModel)DataContext).Source.SelectedItems.ToList();
+            ((IDeployViewModel)DataContext).StatsViewModel.Calculate(explorerTreeItems);
         }
         public void UnSelectPath(string path)
         {
@@ -170,7 +172,8 @@ namespace Warewolf.Studio.Views
 
         public void SelectDestinationServer(string servername)
         {
-            ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.SelectedConnection = ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.Servers.FirstOrDefault(a => a.ResourceName == servername);
+            var firstOrDefault = ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.Servers.FirstOrDefault(a => a.ResourceName == servername);
+            ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.SelectedConnection = firstOrDefault;
         }
 
         public void DeployItems()
