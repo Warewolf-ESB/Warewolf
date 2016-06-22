@@ -19,7 +19,6 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
-using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -133,7 +132,6 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSelected;
         bool _canShowVersions;
         readonly IShellViewModel _shellViewModel;
-        readonly Dictionary<string, Type> _activityNames;
         bool _canShowDependencies;
         bool _allowResourceCheck;
         bool _candrop;
@@ -241,19 +239,6 @@ namespace Warewolf.Studio.ViewModels
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
             CanShowServerVersion = false;
-
-            _activityNames = new Dictionary<string, Type>
-                {
-                    {
-                        "DbService", typeof(DsfDatabaseActivity)
-                    },
-                    {
-                        "PluginService", typeof(DsfPluginActivity)
-                    },
-                    {
-                        "WebService", typeof(DsfWebserviceActivity)
-                    }
-                };
             _candrop = true;
             _canDrag = true;
         }
@@ -262,7 +247,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return (_activityNames.ContainsKey(ResourceType) ? _activityNames[ResourceType] : typeof(DsfActivity)).AssemblyQualifiedName;
+                return typeof(DsfActivity).AssemblyQualifiedName;
             }
         }
 
