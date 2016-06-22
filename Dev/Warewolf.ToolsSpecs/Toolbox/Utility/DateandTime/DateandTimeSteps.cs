@@ -82,12 +82,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             scenarioContext.Add("activity", dateTime);
         }
 
+
         [Given(@"I have a date ""(.*)""")]
         public void GivenIHaveADate(string inputDate)
         {
             scenarioContext.Add("inputDate", inputDate);
         }
-
         [Given(@"I have a Date time variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADateTimeVariableWithValue(string name, string value)
         {
@@ -101,6 +101,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
             variableList.Add(new Tuple<string, string>(name, value));
         }
+
+
+
 
         [Given(@"the input format as ""(.*)""")]
         public void GivenTheInputFormatAs(string inputFormat)
@@ -155,7 +158,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             if(actualValue != null)
             {
                 //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
-                Console.WriteLine("Sensitive assert on date times on machine " + System.Environment.MachineName);
                 actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
                 if(expectedResult.Contains("A.D.") || expectedResult.Contains("AD"))
                 {
@@ -173,7 +175,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                 }
                 if (expectedResult.Contains("B.C.") || expectedResult.Contains("BC"))
                 {
-                    var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
+                    var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("B.C.");
                     if (eraValue == -1) //The Era value does not use punctuation
                     {
                         actualValue = actualValue.Replace("B.C.", "BC");
@@ -204,6 +206,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Then(@"the datetime result should contain milliseconds")]
         public void ThenTheDatetimeResultShouldContainMilliseconds()
         {
+
             string error;
             string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -211,6 +214,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.IsTrue(actualValue.Contains("."));
+            
+
         }
+
     }
 }
