@@ -436,7 +436,10 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if (string.IsNullOrEmpty(value))
                 {
-                    Assert.IsTrue(recordSetValues.Count == 0, "Recordset result variable has one or more values. First value: " + recordSetValues[0]);
+                    if (recordSetValues.Count > 0)
+                    {
+                        Assert.Fail("Recordset result variable has one or more values. First value: " + recordSetValues[0]);
+                    }
                 }
                 else
                 {
