@@ -175,7 +175,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                 }
                 if (expectedResult.Contains("B.C.") || expectedResult.Contains("BC"))
                 {
-                    var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
+                    var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("B.C.");
                     if (eraValue == -1) //The Era value does not use punctuation
                     {
                         actualValue = actualValue.Replace("B.C.", "BC");
