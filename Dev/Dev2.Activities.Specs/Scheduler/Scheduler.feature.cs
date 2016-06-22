@@ -78,7 +78,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
       testRunner.Given("I have a schedule \"ScheduleWithHistory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-   testRunner.And("\"ScheduleWithHistory\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"ScheduleWithHistory\" executes an Workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
@@ -129,7 +129,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table2.AddRow(new string[] {
                         "1",
-                        "[[DiceRoll]] = Int32"});
+                        "[[Message]] = String"});
 #line 19
    testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table2, "And ");
 #line hidden
@@ -147,7 +147,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
       testRunner.Given("I have a schedule \"Diceroll00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
-   testRunner.And("\"Diceroll00\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll00\" executes an Workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
@@ -202,7 +202,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 36
       testRunner.Given("I have a schedule \"Diceroll1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
-   testRunner.And("\"Diceroll1\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll1\" executes an Workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
@@ -242,7 +242,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table5.AddRow(new string[] {
                         "1",
-                        "[[DiceRoll]] = Int32"});
+                        "[[Message]] = String"});
 #line 48
    testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table5, "And ");
 #line hidden
@@ -260,7 +260,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
       testRunner.Given("I have a schedule \"Diceroll1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
-   testRunner.And("\"Diceroll1\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll1\" executes an Workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
@@ -303,7 +303,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 64
       testRunner.Given("I have a schedule \"LocalUserSchedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 65
-   testRunner.And("\"LocalUserSchedule\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"LocalUserSchedule\" executes an Workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
