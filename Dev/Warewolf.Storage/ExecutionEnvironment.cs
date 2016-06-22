@@ -571,7 +571,7 @@ namespace Warewolf.Storage
                     }
                 }                
             }
-            return indexMap.Where(s => !s.Contains("(*).")).ToList();
+            return indexMap.Where(s => !s.Contains("(*)")).ToList();
         }
 
         private void BuildIndexMap(LanguageAST.JsonIdentifierExpression var,string exp, List<string> indexMap,JContainer container)
