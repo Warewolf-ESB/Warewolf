@@ -16,6 +16,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
@@ -32,10 +33,9 @@ using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable ExplicitCallerInfoArgument
-
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
+
 namespace Dev2.Activities.Designers2.Oracle
 {
     public class OracleDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
@@ -69,9 +69,9 @@ namespace Dev2.Activities.Designers2.Oracle
             Model = model;
 
             SetupCommonProperties();
+            this.RunViewSetup();
         }
 
-        // ReSharper disable once ConvertPropertyToExpressionBody
         Guid UniqueId { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()
         {
@@ -110,7 +110,6 @@ namespace Dev2.Activities.Designers2.Oracle
             });
 
             SetDisplayName("");
-            InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
@@ -275,6 +274,7 @@ namespace Dev2.Activities.Designers2.Oracle
                 ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
                 ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
                 ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+
                 GenerateOutputsVisible = true;
                 SetDisplayName(OutputDisplayName);
             }
@@ -313,10 +313,6 @@ namespace Dev2.Activities.Designers2.Oracle
         {
         }
 
-        void InitializeImageSource()
-        {
-        }
-
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -346,20 +342,14 @@ namespace Dev2.Activities.Designers2.Oracle
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.Oracle)
-                {
-                    SourceChangedAction = () =>
-                    {
-                        OutputsRegion.IsEnabled = false;
-                    }
-                };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.Oracle) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion)
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    SourceChangedAction = () =>
-                    {
-                        OutputsRegion.IsEnabled = false;
-                    }
+                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    UpdateDesignValidationErrors(errorInfos);
+                    Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
                 regions.Add(ActionRegion);
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
@@ -381,6 +371,7 @@ namespace Dev2.Activities.Designers2.Oracle
             Regions = regions;
             return regions;
         }
+
         public ErrorRegion ErrorRegion { get; private set; }
 
         #endregion
@@ -482,11 +473,6 @@ namespace Dev2.Activities.Designers2.Oracle
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
-        }
-
-        public void ValidateTestComplete()
-        {
-            OutputsRegion.IsEnabled = true;
         }
 
         public void SetDisplayName(string outputFieldName)
