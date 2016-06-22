@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
@@ -15,7 +16,8 @@ namespace Dev2.Activities
               public DsfFlowSwitchActivity Inner;
 
               public DsfSwitch(DsfFlowSwitchActivity inner)
-              {
+            : base("Switch")
+        {
                   Inner = inner;
               }
 
@@ -65,8 +67,8 @@ namespace Dev2.Activities
                   Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
                   var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
 
-
-                  Debug(dataObject, firstOrDefault, ds);
+                InitializeDebug(dataObject);
+                Debug(dataObject, firstOrDefault, ds);
                   if (firstOrDefault != null)
                   {
                       var a = firstOrDefault;
@@ -122,6 +124,15 @@ namespace Dev2.Activities
             {
 
             }
+        }
+
+        #endregion
+
+        #region Overrides of DsfNativeActivity<string>
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            return _debugInputs;
         }
 
         #endregion
