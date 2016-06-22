@@ -268,7 +268,7 @@ namespace Warewolf.Studio.Views
                         explorerItemViewModel.IsRenaming = false;
                     }
                     else
-                        throw new Exception("Folder was not found after adding");
+                        throw new Exception(ErrorResource.FolderWasNotFound);
                 }
                 else
                 {

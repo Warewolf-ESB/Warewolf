@@ -152,8 +152,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 //Connectors = items.Count(a => a.ResourceType >= "DbService" && a.ResourceType <= "WebService");
                 // FIX?
-                if (items.Any())
-                {
+              
                     Connectors = items.Count(a =>
                                             !string.IsNullOrEmpty(a.ResourceType)
                                             && a.ResourceType.Contains("Service")
@@ -168,20 +167,20 @@ namespace Warewolf.Studio.ViewModels
                     Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                             && IsSource(a.ResourceType));
                     Unknown = items.Count(a => a.ResourceType == "Unknown" || string.IsNullOrEmpty(a.ResourceType));
-                }
+                
                 if (_destination.SelectedEnvironment != null)
                 {
                     var explorerItemViewModels = _destination.SelectedEnvironment.AsList();
                     var conf = from b in explorerItemViewModels
-                               join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
-                               where (string.IsNullOrEmpty(b.ResourceType) || string.IsNullOrEmpty(explorerTreeItem.ResourceType)) && b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder"
+                               join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
+                               where b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder"
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
                     _new = items.Except(explorerItemViewModels);
                     var ren = from b in explorerItemViewModels
-                              join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
-                              where  b.ResourceType != null && (b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder")
+                              join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
+                              where b.ResourceType != null && (b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder")
                               select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
                     var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
                     if (errors.Any())
@@ -237,7 +236,9 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _new.Where(a => a.ResourceType != "Folder").ToList();
+                var explorerTreeItems = _new.Where(a => a.ResourceType != "Folder").ToList();
+                var sum = Sources + Unknown + Connectors + Services;
+                return explorerTreeItems;
             }
         }
         public Action CalculateAction { get; set; }
