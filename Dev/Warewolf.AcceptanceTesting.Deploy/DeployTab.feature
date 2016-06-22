@@ -52,7 +52,7 @@ Scenario: Deploy is successfull
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 And I deploy 
 	 Then deploy is successfull
-	 And the validation message is "1 Resource Deployed Successfully."
+	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Conflicting resources on Source and Destination server
      Given I have deploy tab opened
@@ -67,7 +67,7 @@ Scenario: Conflicting resources on Source and Destination server
 	 | # | Source Resource | Destination Resource |
 	 | 1 | bob             | DifferentNameSameID  |
 	 Then deploy is successfull
-	 And the validation message is "1 Resource Deployed Successfully."
+	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Conflicting resources on Source and Destination server deploy is not successful
       Given I have deploy tab opened
@@ -96,7 +96,7 @@ Scenario: Deploying a connector with a source
 	 Then "sqlServers\DemoDB" from Source Server is "Selected"
 	 And I deploy 
 	 Then deploy is successfull
-	 And the validation message is "2 Resources Deployed Successfully."
+	 And the Deploy validation message is "2 Resources Deployed Successfully."
 
 Scenario: Filtering and clearing filter on source side
      Given I have deploy tab opened
@@ -132,7 +132,7 @@ Scenario: Deploying with filter enabled
 	 When I select "Examples\Utility - Date and Time" from Source Server
 	 When I deploy 
 	 Then deploy is successfull
-	 And the validation message is "1 Resource Deployed Successfully."
+	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Selected for deploy items type is showing on deploy tab
      Given I have deploy tab opened
@@ -201,12 +201,12 @@ Scenario: Warning message no longer appears
 	 When I click OK on Resource exists in the destination server popup
 	 And I deploy 
 	 Then deploy is successfull
-	 And the validation message is "1 Resource Deployed Successfully."
+	 And the Deploy validation message is "1 Resource Deployed Successfully."
 	 When I select "Examples\bob" from Source Server
 	 When I click OK on Resource exists in the destination server popup
 	 And I deploy 
 	 Then deploy is successfull
-	 And the validation message is "1 Resource Deployed Successfully."
+	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 Scenario: Renaming resource after deploying and re-deploy
      Given I have deploy tab opened
@@ -222,12 +222,12 @@ Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-     When selected Destination Server is "Sandbox-dev2"
+     When selected Destination Server is "Remote"
      And destination is connected
-	 And I select "Localhost\Testing\For Each\SharepointCreate" from Source Server
+	 And destination Server Version is "0.0.0.1"
+	 And I select "Utility - Date and Time" from Source Server
 	 When I deploy 	
 	 Then a warning message appears "Deploying to an older server version could result in resources not working on destination server"
-	 When I click "OK"
 	 Then deploy is successfull
 
 

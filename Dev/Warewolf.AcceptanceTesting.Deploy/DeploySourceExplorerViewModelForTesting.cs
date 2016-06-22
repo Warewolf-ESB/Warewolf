@@ -19,14 +19,15 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
 
         }
-
+        
         public override Version ServerVersion
         {
             get
             {
-                return Version.Parse("0.0.0.0");
+                return new Version(SelectedServer.GetServerVersion());
             }
         }
+
 
         #region Overrides of DeploySourceExplorerViewModel
 
@@ -59,7 +60,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "File and Folder - Create", ResourcePath = "Examples\\File and Folder - Create" },
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "FetchPlayers", ResourcePath = "DB Service\\FetchPlayers",ResourceType = "DbService"},                  
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "Source", ResourcePath = "Remote\\Source",ResourceType = "DbSource"},
-                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\\NameIdConflict",ResourceType = "DbSource"},
+                    new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.NewGuid(),ResourceName = "NameIdConflict", ResourcePath = "Examples\bob",ResourceType = "DbSource"},
                     new ExplorerItemViewModel(new Mock<IServer>().Object, ax, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object) {ResourceId = Guid.Parse("7CC8CA4E-8261-433F-8EF1-612DE003907C"),ResourceName = "DifferentNameSameID", ResourcePath = "Examples\\DifferentNameSameID",ResourceType = "DbSource"},
 
                 
