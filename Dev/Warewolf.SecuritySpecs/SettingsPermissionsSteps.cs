@@ -187,7 +187,7 @@ namespace Dev2.Activities.Specs.Permissions
             Assert.IsTrue(totalNumberOfResources - allMatch <= 1); //This is to cater for the scenerios where we specify a resource permission
         }
 
-        static async Task<IEnvironmentModel> LoadResources()
+        async Task<IEnvironmentModel> LoadResources()
         {
             var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
