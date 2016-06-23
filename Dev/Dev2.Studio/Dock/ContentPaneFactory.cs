@@ -164,7 +164,6 @@ namespace Dev2.Studio.Dock
         {
         }
 
-        //Juries TODO improve (remove typing tied to contentfactory)
         private void ViewModelDeactivated(object sender, DeactivationEventArgs e)
         {
             if(e.WasClosed)
@@ -538,7 +537,7 @@ namespace Dev2.Studio.Dock
                     {
                         if(mainVm.CloseCurrent)
                         {
-                            vm.Dispose();
+                            //vm.Dispose();
                         }
                         else
                         {

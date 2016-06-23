@@ -20,6 +20,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics.Windows.DataPresenter;
 using Infragistics.Windows.DataPresenter.Events;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -32,6 +33,9 @@ namespace Dev2.Studio.Views.DataList
     public partial class DataListView : IView,ICheckControlEnabledView
     {
         readonly IEventAggregator _eventPublisher;
+        private readonly FieldLayout _recordSetItemFieldLayout;
+        private FieldLayout _recordSetFieldFieldLayout;
+        private FieldLayout _complexObjectFieldLayout;
 
         public DataListView()
             : this(EventPublishers.Aggregator)
@@ -48,6 +52,10 @@ namespace Dev2.Studio.Views.DataList
             Xtg.DataContextChanged+=OnDataContextChanged;
             Xtg.DataSourceChanged+=XtgOnDataSourceChanged;
             KeyboardNavigation.SetTabNavigation(Xtg, KeyboardNavigationMode.Cycle);
+            var fieldLayouts = Xtg.FieldLayouts;
+            _recordSetItemFieldLayout = fieldLayouts[2];
+            _recordSetFieldFieldLayout = fieldLayouts[1];
+            _complexObjectFieldLayout = fieldLayouts[4];
         }
 
         private void XtgOnDataSourceChanged(object sender, RoutedPropertyChangedEventArgs<IEnumerable> routedPropertyChangedEventArgs)
@@ -196,10 +204,10 @@ namespace Dev2.Studio.Views.DataList
                         if (e.Item != null)
                         {
                             var type = e.Item.GetType();
-                            var fieldLayouts = Xtg.FieldLayouts;
+                            
                             if (type == typeof(RecordSetItemModel))
                             {
-                                var fieldLayout = fieldLayouts[2];
+                                var fieldLayout = _recordSetItemFieldLayout;
                                 if (fieldLayout != null)
                                 {
                                     e.FieldLayout = fieldLayout;
@@ -207,7 +215,7 @@ namespace Dev2.Studio.Views.DataList
                             }
                             else if (type == typeof(RecordSetFieldItemModel))
                             {
-                                var fieldLayout = fieldLayouts[1];
+                                var fieldLayout = _recordSetFieldFieldLayout;
                                 if (fieldLayout != null)
                                 {
                                     e.FieldLayout = fieldLayout;
@@ -215,14 +223,14 @@ namespace Dev2.Studio.Views.DataList
                             }
                             else if (type == typeof(ComplexObjectItemModel))
                             {
-                                var fieldLayout = fieldLayouts[4];
+                                var fieldLayout = _complexObjectFieldLayout;
                                 if (fieldLayout != null)
                                 {
                                     e.FieldLayout = fieldLayout;
                                 }
                             }
                         }
-                    }), DispatcherPriority.Background);
+                    }), DispatcherPriority.Render);
                 }
             }
         

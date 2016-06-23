@@ -371,11 +371,11 @@ namespace Dev2.Activities.Designers2.Core
                 if(disposing)
                 {
                     // Dispose managed resources.
-                    OnDispose();
-                    if(_dataContext != null)
-                    {
-                        _dataContext.Dispose();
-                    }
+                    //OnDispose();
+//                    if(_dataContext != null)
+//                    {
+//                        _dataContext.Dispose();
+//                    }
                 }
 
                 // Call the appropriate methods to clean up
