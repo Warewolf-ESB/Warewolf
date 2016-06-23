@@ -76,14 +76,6 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
   <Import Project="..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets')" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets'))" />
-  </Target>
   <Import Project="..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets')" />
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs">

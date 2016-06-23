@@ -7,7 +7,7 @@ namespace Warewolf.Storage
 {
     public interface IExecutionEnvironment
     {
-        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = true);
+        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false);
 
         CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
 

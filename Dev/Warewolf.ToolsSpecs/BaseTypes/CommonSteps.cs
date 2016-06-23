@@ -438,7 +438,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     if (recordSetValues.Count > 0)
                     {
-                        Assert.Fail("Recordset result variable has one or more values. First value: " + recordSetValues[0]);
+                        Assert.Fail("Expecting no value but recordset result variable has one or more values. First value: " + recordSetValues[0]);
                     }
                 }
                 else
@@ -887,14 +887,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                     actualValue = actualValue.Replace("BC", "B.C.");
                 }
             }
-            if (string.IsNullOrEmpty(type))
+            if (string.IsNullOrEmpty(type) && actualValue != null)
             {
-                if (actualValue != null && !string.IsNullOrEmpty(expectedValue))
-                {
-                    actualValue.Replace("\\r\\n", Environment.NewLine)
-                        .Should()
-                        .Be(expectedValue, name + " are not equal at index" + index);
-                }
+                actualValue.Replace("\\r\\n", Environment.NewLine).Should().Be(expectedValue, name + " are not equal at index" + index);
             }
             else
             {
