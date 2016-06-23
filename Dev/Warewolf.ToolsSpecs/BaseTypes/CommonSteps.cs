@@ -356,9 +356,9 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
             if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
-                if (validationErrors != null)
+                if (validationErrors != null && validationErrors.Count > 0)
                 {
-                    Assert.AreEqual(0, validationErrors.Count);
+                    Assert.AreEqual(0, validationErrors.Count, "Expected no errors but got one or more. First error: " + validationErrors[0].Message);
                 }
             }
             else
