@@ -9,6 +9,7 @@
 */
 
 using System.Xml;
+using Dev2.Common;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -60,6 +61,18 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             xDoc.LoadXml(result);
             // 1 == 1, else an error will be thrown
             Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void ExecutionWithNoStartNode_ExpectedInvalidValidResult()
+        {
+
+            string path = ServerSettings.WebserverURI + "Acceptance%20Testing%20Resources/WorkflowWithNoStartNodeConnected";
+
+            string result = TestHelper.PostDataToWebserver(path);
+
+            Assert.IsTrue(result.Contains("An internal error occurred while executing the service request"));
+            Assert.IsTrue(result.Contains(GlobalConstants.NoStartNodeError));
         }
 
         [TestMethod]

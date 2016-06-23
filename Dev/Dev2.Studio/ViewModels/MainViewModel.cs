@@ -704,6 +704,7 @@ namespace Dev2.Studio.ViewModels
                 case "SqlDatabase":
                 case "ODBC":
                 case "Oracle":
+                case "PostgreSql":
                 case "MySqlDatabase":
                     EditDbSource(resourceModel);
                     break;
