@@ -115,7 +115,6 @@
         <ResourceDictionary Source="Images/Utility-Random.xaml" />
         <ResourceDictionary Source="Images/Utility-SendMail.xaml" />
         <ResourceDictionary Source="Images/Utility-SystemInformation.xaml" />
-        <ResourceDictionary Source="Images/WarewolfTransparent.xaml" />
         <ResourceDictionary Source="Images/warewolf_logo_white.xaml" />
         <ResourceDictionary Source="Images/warewolf_logo_black.xaml" />
 
