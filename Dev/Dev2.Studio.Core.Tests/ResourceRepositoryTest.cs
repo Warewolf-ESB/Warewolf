@@ -1894,7 +1894,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            var msg = MakeMsg("model definition");
+            var msg = MakeCompressedMsg("model definition");
             var payload = JsonConvert.SerializeObject(msg);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
@@ -1918,7 +1918,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            var msg = MakeMsg(string.Empty);
+            var msg = MakeCompressedMsg(string.Empty);
             var payload = JsonConvert.SerializeObject(msg);
 
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
@@ -2051,7 +2051,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.ForceLoad();
 
             const string modelDefinition = "model definition";
-            var msg = MakeMsg(modelDefinition);
+            var msg = MakeCompressedMsg(modelDefinition);
             var payload = JsonConvert.SerializeObject(msg);
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
@@ -3057,6 +3057,16 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);
+            return result;
+        }
+
+        static CompressedExecuteMessage MakeCompressedMsg(string msg)
+        {
+            var result = new CompressedExecuteMessage { HasError = false };
+            var executeMessage = new ExecuteMessage();
+            executeMessage.SetMessage(msg);
+            var exePayload = JsonConvert.SerializeObject(executeMessage);
+            result.SetMessage(exePayload);
             return result;
         }
 
