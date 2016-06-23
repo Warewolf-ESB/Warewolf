@@ -420,7 +420,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
-        public void ThenTheResultVariableWillBe(string variable, string value)
+        public void ThenTheResultVariableWillBe(string variable, string expectedValue)
         {
             string error;
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -432,9 +432,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i) && i != "\"\"").ToList();
-                value = value.Replace('"', ' ').Trim();
+                expectedValue = expectedValue.Replace('"', ' ').Trim();
 
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(expectedValue))
                 {
                     if (recordSetValues.Count > 0)
                     {
@@ -443,28 +443,28 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else
                 {
-                    Assert.AreEqual(recordSetValues[0], value, "First recordset result variable value is not equal to expected value.");
+                    Assert.AreEqual(recordSetValues[0], expectedValue, "First recordset result variable value is not equal to expected value.");
                 }
             }
             else
             {
                 string actualValue;
-                value = value.Replace('"', ' ').Trim();
+                expectedValue = expectedValue.Replace('"', ' ').Trim();
                 GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(expectedValue))
                 {
                     actualValue = "";
                 }
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 var type = "";
-                if (value == "String" || value == "Int32" || value == "Guid" || value == "DateTime")
+                if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
                 {
-                    type = value;
+                    type = expectedValue;
                 }
                 if (string.IsNullOrEmpty(type))
                 {
-                    Assert.AreEqual(value, actualValue, error);
+                    Assert.AreEqual(expectedValue, actualValue, error);
                 }
                 else
                 {
