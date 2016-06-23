@@ -66,10 +66,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         /// <summary>
         ///     Returns the list of IValueConverters contained in this converter.
         /// </summary>
-        public ObservableCollection<IValueConverter> Converters
-        {
-            get { return converters; }
-        }
+        public ObservableCollection<IValueConverter> Converters => converters;
 
         #endregion // Converters
 

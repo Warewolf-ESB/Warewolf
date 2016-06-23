@@ -31,10 +31,7 @@ namespace Unlimited.Applications.BusinessDesignStudio
             textArea.Document.Replace(completionSegment, Text);
         }
 
-        public object Content
-        {
-            get { return Text; }
-        }
+        public object Content => Text;
 
         public object Description
         {
@@ -42,15 +39,9 @@ namespace Unlimited.Applications.BusinessDesignStudio
             private set;
         }
 
-        public ImageSource Image
-        {
-            get { return null; }
-        }
+        public ImageSource Image => null;
 
-        public double Priority
-        {
-            get { return 0; }
-        }
+        public double Priority => 0;
 
         public string Text
         {

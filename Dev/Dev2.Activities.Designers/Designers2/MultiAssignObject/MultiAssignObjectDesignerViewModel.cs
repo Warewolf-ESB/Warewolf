@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
             InitializeItems(mi.FieldsCollection);
         }
 
-        public override string CollectionName { get { return "FieldsCollection"; } }
+        public override string CollectionName => "FieldsCollection";
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {

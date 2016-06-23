@@ -35,13 +35,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Properties
 
-        public static IsItemDragged Instance
-        {
-            get
-            {
-                return _instance.Value;
-            }
-        }
+        public static IsItemDragged Instance => _instance.Value;
 
         // ReSharper disable once ConvertToAutoProperty
         public bool IsDragged

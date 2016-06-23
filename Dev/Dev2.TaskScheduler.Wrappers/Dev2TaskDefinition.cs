@@ -29,10 +29,7 @@ namespace Dev2.TaskScheduler.Wrappers
             _taskDefinition = taskDefinition;
         }
 
-        public IActionCollection Actions
-        {
-            get { return _taskServiceConvertorFactory.CreateActionCollection(Instance.Actions); }
-        }
+        public IActionCollection Actions => _taskServiceConvertorFactory.CreateActionCollection(Instance.Actions);
 
         public string Data
         {
@@ -40,15 +37,9 @@ namespace Dev2.TaskScheduler.Wrappers
             set { _taskDefinition.Data = value; }
         }
 
-        public ITaskSettings Settings
-        {
-            get { return _taskServiceConvertorFactory.CreateTaskSettings(_taskDefinition.Settings); }
-        }
+        public ITaskSettings Settings => _taskServiceConvertorFactory.CreateTaskSettings(_taskDefinition.Settings);
 
-        public ITriggerCollection Triggers
-        {
-            get { return _taskServiceConvertorFactory.CreateTriggerCollection(_taskDefinition.Triggers); }
-        }
+        public ITriggerCollection Triggers => _taskServiceConvertorFactory.CreateTriggerCollection(_taskDefinition.Triggers);
 
         public string XmlText
         {
@@ -80,15 +71,9 @@ namespace Dev2.TaskScheduler.Wrappers
             return true;
         }
 
-        public IAction Action
-        {
-            get { return Actions.FirstOrDefault(); }
-        }
+        public IAction Action => Actions.FirstOrDefault();
 
-        public ITrigger Trigger
-        {
-            get { return Triggers.FirstOrDefault(); }
-        }
+        public ITrigger Trigger => Triggers.FirstOrDefault();
 
         public void AddAction(IAction action)
         {
@@ -105,14 +90,8 @@ namespace Dev2.TaskScheduler.Wrappers
             _taskDefinition.Dispose();
         }
 
-        public TaskDefinition Instance
-        {
-            get { return _taskDefinition; }
-        }
+        public TaskDefinition Instance => _taskDefinition;
 
-        public string UserName
-        {
-            get { return _taskDefinition.Principal.UserId; }
-        }
+        public string UserName => _taskDefinition.Principal.UserId;
     }
 }

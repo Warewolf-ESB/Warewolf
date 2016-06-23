@@ -30,12 +30,6 @@ namespace Dev2.DataList
         {
             return "Doesn't End With";
         }
-        public override int ArgumentCount
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int ArgumentCount => 2;
     }
 }

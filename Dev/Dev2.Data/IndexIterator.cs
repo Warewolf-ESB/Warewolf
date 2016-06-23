@@ -43,10 +43,7 @@ namespace Dev2.Data
         /// <value>
         /// The count.
         /// </value>
-        public int Count
-        {
-            get { return IndexList.Count(); }
-        }
+        public int Count => IndexList.Count();
 
         /// <summary>
         /// Gets a value indicating whether [is empty].
@@ -146,15 +143,9 @@ namespace Dev2.Data
             _current = 0;
         }
 
-        public int Count
-        {
-            get { return _values.Count; }
-        }
+        public int Count => _values.Count;
 
-        public bool IsEmpty
-        {
-            get { return _values.Count == 0; }
-        }
+        public bool IsEmpty => _values.Count == 0;
 
         public bool HasMore()
         {

@@ -68,10 +68,10 @@ namespace Dev2.Data.SystemTemplates.Models
         public enDecisionType EvaluationFn { get; set; }
 
         [JsonIgnore]
-        public string Version { get { return "1.0.0"; } }
+        public string Version => "1.0.0";
 
         [JsonIgnore]
-        public Dev2ModelType ModelName { get { return Dev2ModelType.Dev2Decision; } }
+        public Dev2ModelType ModelName => Dev2ModelType.Dev2Decision;
 
         #endregion
 

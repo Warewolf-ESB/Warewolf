@@ -623,10 +623,7 @@ securityWrapper
             return GetEnumerator();
         }
 
-        public new long Count
-        {
-            get { return base.Count; }
-        }
+        public new long Count => base.Count;
     }
 
     public class MockTaskEvent : ITaskEvent

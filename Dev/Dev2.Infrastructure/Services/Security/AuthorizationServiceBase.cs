@@ -137,13 +137,7 @@ namespace Dev2.Services.Security
             _securityService.Remove(resourceId);
         }
 
-        public ISecurityService SecurityService
-        {
-            get
-            {
-                return _securityService;
-            }
-        }
+        public ISecurityService SecurityService => _securityService;
 
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);

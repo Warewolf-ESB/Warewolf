@@ -153,13 +153,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Int that contains the count of variables marked as inputs
         /// </summary>
-        public int WorkflowInputCount
-        {
-            get
-            {
-                return _workflowInputs.Count;
-            }
-        }
+        public int WorkflowInputCount => _workflowInputs.Count;
 
         /// <summary>
         /// Boolean that contains the option for remembering the inputs for that workflow

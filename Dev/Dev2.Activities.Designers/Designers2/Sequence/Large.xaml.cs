@@ -30,13 +30,7 @@ namespace Dev2.Activities.Designers2.Sequence
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        SequenceDesignerViewModel ViewModel
-        {
-            get
-            {
-                return DataContext as SequenceDesignerViewModel;
-            }
-        }
+        SequenceDesignerViewModel ViewModel => DataContext as SequenceDesignerViewModel;
 
         void DoDrop(object sender, DragEventArgs e)
         {

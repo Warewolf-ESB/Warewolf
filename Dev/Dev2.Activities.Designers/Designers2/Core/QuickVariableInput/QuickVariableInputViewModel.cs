@@ -258,13 +258,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         public static readonly DependencyProperty RemoveEmptyEntriesProperty =
             DependencyProperty.Register("RemoveEmptyEntries", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));
 
-        public PreviewViewModel PreviewViewModel
-        {
-            get
-            {
-                return _previewViewModel;
-            }
-        }
+        public PreviewViewModel PreviewViewModel => _previewViewModel;
 
         static void OnUiStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

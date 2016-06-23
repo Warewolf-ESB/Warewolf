@@ -68,13 +68,7 @@ namespace Dev2.ViewModels
             base.OnViewAttached(view, ViewModel);
         }
 
-        public override string DisplayName
-        {
-            get
-            {
-                return "Deploy";
-            }            
-        }
+        public override string DisplayName => "Deploy";
 
         protected override void OnViewLoaded(object view)
         {
@@ -87,15 +81,7 @@ namespace Dev2.ViewModels
         }
 
         // ReSharper disable once UnusedMember.Global
-        public string ResourceType
-        {
-            get
-            {
-
-                return "DeployViewer";
-            }
-        }
-
+        public string ResourceType => "DeployViewer";
 
         #region Implementation of IHelpSource
 
@@ -107,13 +93,7 @@ namespace Dev2.ViewModels
 
         #region Implementation of IStudioTab
 
-        public bool IsDirty
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsDirty => false;
 
         public bool DoDeactivate(bool showMessage)
         {

@@ -24,7 +24,7 @@ namespace Dev2.Studio.Views.ResourceManagement
     {
         private bool _openDependencyGraph;
 
-        public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
+        public bool OpenDependencyGraph => _openDependencyGraph;
 
         public DeleteResourceDialog(IContextualResourceModel model)
         {

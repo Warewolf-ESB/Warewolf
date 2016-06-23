@@ -517,13 +517,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public Func<IStudioResourceRepository> GetStudioResourceRepository = () => Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
 
-        IStudioResourceRepository StudioResourceRepository
-        {
-            get
-            {
-                return GetStudioResourceRepository();
-            }
-        }
+        IStudioResourceRepository StudioResourceRepository => GetStudioResourceRepository();
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {

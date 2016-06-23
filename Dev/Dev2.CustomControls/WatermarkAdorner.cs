@@ -52,19 +52,13 @@ namespace Dev2.CustomControls
 
         #region Protected Properties
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         #endregion
 
         #region Private Properties
 
-        private Control Control
-        {
-            get { return (Control)AdornedElement; }
-        }
+        private Control Control => (Control)AdornedElement;
 
         #endregion
 

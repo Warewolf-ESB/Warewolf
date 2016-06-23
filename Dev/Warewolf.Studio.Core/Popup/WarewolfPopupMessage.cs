@@ -18,42 +18,23 @@ namespace Warewolf.Studio.Core.Popup
         /// <summary>
         /// Focus the okay button when default
         /// </summary>
-        public bool FocusOk { 
-            get
-            {
-                return Message.DefaultResult == MessageBoxResult.OK;
-            } 
-        }
+        public bool FocusOk => Message.DefaultResult == MessageBoxResult.OK;
+
         /// <summary>
         /// Focus the yes button when default
         /// </summary>
-        public bool FocusYes
-        {
-            get
-            {
-                return Message.DefaultResult == MessageBoxResult.Yes;
-            }
-        }
+        public bool FocusYes => Message.DefaultResult == MessageBoxResult.Yes;
+
         /// <summary>
         /// Focus the no button when default
         /// </summary>
-        public bool FocusNo
-        {
-            get
-            {
-                return Message.DefaultResult == MessageBoxResult.No;
-            }
-        }
+        public bool FocusNo => Message.DefaultResult == MessageBoxResult.No;
+
         /// <summary>
         /// Focus the cancel button when default
         /// </summary>
-        public bool FocusCancel
-        {
-            get
-            {
-                return Message.DefaultResult == MessageBoxResult.Cancel;
-            }
-        }
+        public bool FocusCancel => Message.DefaultResult == MessageBoxResult.Cancel;
+
         /// <summary>
         /// message to display
         /// </summary>

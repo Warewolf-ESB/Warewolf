@@ -43,15 +43,9 @@ namespace Dev2.TaskScheduler.Wrappers
             _nativeService.Dispose();
         }
 
-        public bool Connected
-        {
-            get { return _nativeService.Connected; }
-        }
+        public bool Connected => _nativeService.Connected;
 
-        public ITaskFolder RootFolder
-        {
-            get { return _taskServiceConvertorFactory.CreateRootFolder(_nativeService.RootFolder); }
-        }
+        public ITaskFolder RootFolder => _taskServiceConvertorFactory.CreateRootFolder(_nativeService.RootFolder);
 
         public ITaskFolder GetFolder(string folderName)
         {
@@ -68,9 +62,6 @@ namespace Dev2.TaskScheduler.Wrappers
             return _taskServiceConvertorFactory.CreateTaskDefinition(_nativeService.NewTask());
         }
 
-        public TaskService Instance
-        {
-            get { return _nativeService; }
-        }
+        public TaskService Instance => _nativeService;
     }
 }

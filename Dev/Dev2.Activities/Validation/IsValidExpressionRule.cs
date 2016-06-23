@@ -38,7 +38,7 @@ namespace Dev2.Validation
             _datalist = datalist;
         }
 
-        public string ExpressionValue { get { return _outputValue; } }
+        public string ExpressionValue => _outputValue;
 
         public override IActionableErrorInfo Check()
         {

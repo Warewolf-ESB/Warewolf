@@ -119,10 +119,8 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        public bool CanRemove
-        {
-            get { return !string.IsNullOrEmpty(CounterName); }
-        }
+        public bool CanRemove => !string.IsNullOrEmpty(CounterName);
+
         public bool IsNew
         {
             get

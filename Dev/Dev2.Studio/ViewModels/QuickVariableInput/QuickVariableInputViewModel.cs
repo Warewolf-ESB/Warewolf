@@ -64,13 +64,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        public QuickVariableInputModel Model
-        {
-            get
-            {
-                return _model;
-            }
-        }
+        public QuickVariableInputModel Model => _model;
 
         public List<string> SplitTypeList
         {

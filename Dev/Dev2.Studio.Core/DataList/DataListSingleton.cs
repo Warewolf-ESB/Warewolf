@@ -47,13 +47,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public static IDataListViewModel ActiveDataList
-        {
-            get
-            {
-                return _activeDataList;
-            }
-        }
+        public static IDataListViewModel ActiveDataList => _activeDataList;
 
         #endregion Properties
 

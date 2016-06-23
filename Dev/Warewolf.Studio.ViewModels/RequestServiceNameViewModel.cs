@@ -172,10 +172,7 @@ namespace Warewolf.Studio.ViewModels
             return ViewResult;
         }
 
-        public ResourceName ResourceName
-        {
-            get { return _resourceName; }
-        }
+        public ResourceName ResourceName => _resourceName;
 
         public string Name
         {

@@ -19,8 +19,6 @@ namespace Dev2.Data.MathOperations {
             _function = function;
         }
 
-        public string Function {
-            get { return _function; }
-        }
+        public string Function => _function;
     }
 }

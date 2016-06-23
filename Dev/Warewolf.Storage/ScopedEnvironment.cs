@@ -165,20 +165,9 @@ namespace Warewolf.Storage
             }
         }
 
-        public HashSet<string> Errors
-        {
-            get
-            {
-                return _inner.Errors;
-            }
-        }
-        public HashSet<string> AllErrors
-        {
-            get
-            {
-                return _inner.AllErrors;
-            }
-        }
+        public HashSet<string> Errors => _inner.Errors;
+
+        public HashSet<string> AllErrors => _inner.AllErrors;
 
         public void AddError(string error)
         {

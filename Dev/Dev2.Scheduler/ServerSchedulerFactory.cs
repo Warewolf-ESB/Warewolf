@@ -60,15 +60,9 @@ namespace Dev2.Scheduler
             CreateDir();
         }
 
-        public IDev2TaskService TaskService
-        {
-            get { return _service; }
-        }
+        public IDev2TaskService TaskService => _service;
 
-        public ITaskServiceConvertorFactory ConvertorFactory
-        {
-            get { return _factory; }
-        }
+        public ITaskServiceConvertorFactory ConvertorFactory => _factory;
 
         public IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper)
         {

@@ -34,10 +34,7 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public int Count
-        {
-            get { return Instance.Count; }
-        }
+        public int Count => Instance.Count;
 
 
         public IEnumerator<IAction> GetEnumerator()
@@ -56,10 +53,7 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public ActionCollection Instance
-        {
-            get { return _nativeInstance; }
-        }
+        public ActionCollection Instance => _nativeInstance;
 
         public bool ContainsType(Type actionType)
         {

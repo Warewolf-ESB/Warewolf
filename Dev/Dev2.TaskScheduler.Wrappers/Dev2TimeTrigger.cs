@@ -34,9 +34,6 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.RandomDelay = value; }
         }
 
-        public new TimeTrigger Instance
-        {
-            get { return (TimeTrigger) base.Instance; }
-        }
+        public new TimeTrigger Instance => (TimeTrigger) base.Instance;
     }
 }

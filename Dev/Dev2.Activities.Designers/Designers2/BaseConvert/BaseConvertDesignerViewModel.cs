@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.BaseConvert
 
         public IList<string> ConvertTypes { get; set; }
 
-        public override string CollectionName { get { return "ConvertCollection"; } }
+        public override string CollectionName => "ConvertCollection";
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {

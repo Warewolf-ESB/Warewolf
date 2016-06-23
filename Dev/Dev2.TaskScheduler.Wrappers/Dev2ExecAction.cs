@@ -20,10 +20,7 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         {
         }
 
-        public new ExecAction Instance
-        {
-            get { return (ExecAction) base.Instance; }
-        }
+        public new ExecAction Instance => (ExecAction) base.Instance;
 
         public string Path
         {

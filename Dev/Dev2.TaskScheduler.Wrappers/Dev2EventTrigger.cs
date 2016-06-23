@@ -28,10 +28,7 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.Delay = value; }
         }
 
-        public new EventTrigger Instance
-        {
-            get { return (EventTrigger) base.Instance; }
-        }
+        public new EventTrigger Instance => (EventTrigger) base.Instance;
 
         public string Subscription
         {
@@ -39,10 +36,7 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.Subscription = value; }
         }
 
-        public NamedValueCollection ValueQueries
-        {
-            get { return Instance.ValueQueries; }
-        }
+        public NamedValueCollection ValueQueries => Instance.ValueQueries;
 
         public bool GetBasic(out string log, out string source, out int? eventId)
         {

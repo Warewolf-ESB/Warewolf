@@ -54,21 +54,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
         }
 
         #endregion
-        public override Version MinSupportedVersion
-        {
-            get
-            {
-                return new Version(SelectedServer.GetMinSupportedVersion());
-            }
-        }
-        public override Version ServerVersion
-        {
-            get
-            {
-                return new Version(SelectedServer.GetServerVersion());
-            }
-        }
-
-
+        public override Version MinSupportedVersion => new Version(SelectedServer.GetMinSupportedVersion());
+        public override Version ServerVersion => new Version(SelectedServer.GetServerVersion());
     }
 }

@@ -89,10 +89,8 @@ namespace Dev2.Studio.Dock
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [Bindable(true)]
-        public ItemBindingCollection ItemBindings
-        {
-            get { return _itemBindings; }
-        }
+        public ItemBindingCollection ItemBindings => _itemBindings;
+
         #endregion //ItemBindings
 
         #region ItemsSource
@@ -153,10 +151,8 @@ namespace Dev2.Studio.Dock
         /// <summary>
         /// Returns a boolean indicating if the object is being initialized.
         /// </summary>
-        protected bool IsInitializing
-        {
-            get { return _isInitializing; }
-        }
+        protected bool IsInitializing => _isInitializing;
+
         #endregion //IsInitializing
 
         #endregion //Protected

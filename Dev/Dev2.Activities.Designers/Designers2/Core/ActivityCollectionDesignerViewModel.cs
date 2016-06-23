@@ -76,13 +76,7 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty ShowQuickVariableInputProperty =
             DependencyProperty.Register("ShowQuickVariableInput", typeof(bool), typeof(ActivityCollectionDesignerViewModel), new PropertyMetadata(false, OnTitleBarToggleChanged));
 
-        public override bool ShowSmall
-        {
-            get
-            {
-                return base.ShowSmall && !ShowQuickVariableInput;
-            }
-        }
+        public override bool ShowSmall => base.ShowSmall && !ShowQuickVariableInput;
 
         public override void Collapse()
         {

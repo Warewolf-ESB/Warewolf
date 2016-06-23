@@ -58,10 +58,7 @@ namespace Dev2.Intellisense.Helper
             }
         }
 
-        public IDirectory Directory
-        {
-            get { return _directory; }            
-        }
+        public IDirectory Directory => _directory;
 
         public void QueryList(string searchPath)
         {
