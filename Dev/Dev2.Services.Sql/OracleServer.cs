@@ -570,7 +570,7 @@ namespace Dev2.Services.Sql
         public bool GetIsout(string InOut)
         {
             bool isout = !(InOut != null && InOut.Contains("IN/OUT"));
-            if (InOut == "IN ")
+            if (InOut != null && InOut.Trim().ToUpper() == "IN ".Trim().ToUpper())
             {
                 return false;
             }
