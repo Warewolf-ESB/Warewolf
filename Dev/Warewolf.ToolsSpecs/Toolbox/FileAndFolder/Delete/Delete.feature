@@ -24,7 +24,7 @@ Scenario Outline: Delete file at location
 	| Local      | [[path]] | c:\filetodelete.txt                                                    | ""                           | ""       | [[result]] |        | NO           |                      |
 	| UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetodelete.txt        | ""                           | ""       | [[result]] |        | NO           |                      |
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.txt                 | ""                           | ""       | [[result]] |        | NO           |                      |
+	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.txt                 | dev2                         | Q/ulw&]  | [[result]] |        | NO           |                      |
 	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] |        | NO           |                      |
 	| SFTP       | [[path]] | sftp://localhost/filetodelete.txt                                      | dev2                         | Q/ulw&]  | [[result]] |        | NO           |                      |
 	| SFTP PK    | [[path]] | sftp://localhost/filetodelete1.txt                                     | dev2                         | Q/ulw&]  | [[result]] |        | NO           | C:\\Temp\\key.opk    |
