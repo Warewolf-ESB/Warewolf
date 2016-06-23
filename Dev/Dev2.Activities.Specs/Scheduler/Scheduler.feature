@@ -5,7 +5,7 @@
 	
 Scenario: Schedule with history
       Given I have a schedule "ScheduleWithHistory"
-	  And "ScheduleWithHistory" executes an Workflow "My Category\Dice Roll" 
+	  And "ScheduleWithHistory" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
 	  And "ScheduleWithHistory" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
@@ -18,11 +18,11 @@ Scenario: Schedule with history
 	  And "ScheduleWithHistory" has "2" row of history	   
 	  And the history debug output for "ScheduleWithHistory" for row "1" is 
 	  | # |                   |
-	  | 1 | [[DiceRoll]] = Int32 |
+	  | 1 | [[Message]] = String |
 
 Scenario: Creating task with schedule statud disabled
       Given I have a schedule "Diceroll00"
-	  And "Diceroll00" executes an Workflow "My Category\Dice Roll" 
+	  And "Diceroll00" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Disabled"
 	  And "Diceroll00" has a username of "IntegrationTester" and a Password of "I73573r0"
@@ -34,7 +34,7 @@ Scenario: Creating task with schedule statud disabled
 
 Scenario: Setting schedule task "At log on"
       Given I have a schedule "Diceroll1"
-	  And "Diceroll1" executes an Workflow "My Category\Dice Roll" 
+	  And "Diceroll1" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
 	  And "Diceroll1" has a username of "IntegrationTester" and a Password of "I73573r0"
@@ -47,11 +47,11 @@ Scenario: Setting schedule task "At log on"
 	  And "Diceroll1" has "2" row of history	   
 	  And the history debug output for "ScheduleWithHistory" for row "1" is 
 		| # |                    |
-		| 1 | [[DiceRoll]] = Int32 |
+		| 1 | [[Message]] = String |
 
 Scenario: Schedule the task with Incorrect username or password
       Given I have a schedule "Diceroll1"
-	  And "Diceroll1" executes an Workflow "My Category\Dice Roll" 
+	  And "Diceroll1" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
 	  And "Diceroll1" has a username of "bobthebuilder" and a Password of "I73573r0"
@@ -62,7 +62,7 @@ Scenario: Schedule the task with Incorrect username or password
 
 Scenario: Schedule with LocalUser
       Given I have a schedule "LocalUserSchedule"
-	  And "LocalUserSchedule" executes an Workflow "My Category\Dice Roll" 
+	  And "LocalUserSchedule" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
 	  And "LocalUserSchedule" has a username of "LocalSchedulerAdmin" and a Password of "987Sched#@!"

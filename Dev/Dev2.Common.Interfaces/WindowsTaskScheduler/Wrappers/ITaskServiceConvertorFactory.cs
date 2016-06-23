@@ -35,7 +35,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         IRepetitionPattern CreateRepetitionPattern(RepetitionPattern repetitionPattern);
 
-        IAction CreateAction(Microsoft.Win32.TaskScheduler.Action action);
+        IAction CreateAction(Action action);
 
         IDev2TaskService CreateTaskService(string targetServer, string userName, string accountDomain, string password,
             bool forceV1);
