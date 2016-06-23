@@ -449,7 +449,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     else
                     {
-                        Assert.Fail("Expecting some value but recordset result variable has no values.");
+                        Assert.Fail("Expecting value " + expectedValue + " but recordset " + variable+ " has no values.");
                     }
                 }
             }
