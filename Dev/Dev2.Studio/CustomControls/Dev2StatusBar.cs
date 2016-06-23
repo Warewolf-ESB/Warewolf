@@ -24,13 +24,7 @@ namespace Dev2.Studio.CustomControls
 
         private Label _label;
 
-        public Label StatusBarLabel
-        {
-            get
-            {
-                return _label;
-            }
-        }
+        public Label StatusBarLabel => _label;
 
 
         public string StatusBarLabelText

@@ -46,36 +46,13 @@ namespace Dev2.Activities.Debug
             _type = DebugItemResultType.Variable;
         }
 
-        public string Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public string Value => _value;
 
-        public override string LabelText
-        {
-            get
-            {
-                return _labelText;
-            }
-        }
+        public override string LabelText => _labelText;
 
-        public string Variable
-        {
-            get
-            {
-                return _variable;
-            }
-        }
-        public DebugItemResultType Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
+        public string Variable => _variable;
+
+        public DebugItemResultType Type => _type;
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {

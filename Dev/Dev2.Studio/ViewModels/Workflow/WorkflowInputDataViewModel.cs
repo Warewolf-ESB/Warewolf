@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
@@ -154,13 +153,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Int that contains the count of variables marked as inputs
         /// </summary>
-        public int WorkflowInputCount
-        {
-            get
-            {
-                return _workflowInputs.Count;
-            }
-        }
+        public int WorkflowInputCount => _workflowInputs.Count;
 
         /// <summary>
         /// Boolean that contains the option for remembering the inputs for that workflow
@@ -615,11 +608,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 foreach (var dataListItem in dataListItems)
                 {
                     var jObjForArray = new JObject();
+                    var empty = true;
                     foreach (var listItem in dataListItem)
                     {
+                        if (!string.IsNullOrEmpty(listItem.Value))
+                        {
+                            empty = false;
+                        }
                         jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? ""));
                     }
-                    newArray.Add(jObjForArray);
+                    if (!empty)
+                    {
+                        newArray.Add(jObjForArray);
+                    }
                 }
                 dataListObject.Add(arrayName, newArray);
             }

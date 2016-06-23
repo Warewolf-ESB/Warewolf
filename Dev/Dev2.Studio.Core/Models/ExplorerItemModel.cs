@@ -160,13 +160,7 @@ namespace Dev2.Models
 
         public bool IsNew { get; set; }
 
-        public bool CanSelectDependencies
-        {
-            get
-            {
-                return CanShowDependencies;
-            }
-        }
+        public bool CanSelectDependencies => CanShowDependencies;
 
         public bool IsAuthorizedDeployFrom
         {
@@ -192,21 +186,10 @@ namespace Dev2.Models
             }
         }
 
-        public int ChildrenCount
-        {
-            get
-            {
-                return GetChildrenCount();
-            }
-        }
+        public int ChildrenCount => GetChildrenCount();
 
-        public string ActivityName
-        {
-            get
-            {
-                return (_activityNames.ContainsKey(ResourceType) ? _activityNames[ResourceType] : typeof(DsfActivity)).AssemblyQualifiedName;
-            }
-        }
+        public string ActivityName => (_activityNames.ContainsKey(ResourceType) ? _activityNames[ResourceType] : typeof(DsfActivity)).AssemblyQualifiedName;
+
         public void RemoveChild(IExplorerItemModel child)
         {
             Children.Remove(child);
@@ -445,10 +428,7 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
-        public bool IsServerVersionVisible
-        {
-            get { return IsServer; }
-        }
+        public bool IsServerVersionVisible => IsServer;
 
         public IVersionInfo VersionInfo
         {
@@ -463,13 +443,8 @@ namespace Dev2.Models
             }
         }
 
-        public string DisplayNameValidationRegex
-        {
-            get
-            {
-                return Common.ExtMethods.StringExtension.IsValidResourcename.ToString();
-            }
-        }
+        public string DisplayNameValidationRegex => Common.ExtMethods.StringExtension.IsValidResourcename.ToString();
+
         public bool CanAddResoure
         {
             get
@@ -687,13 +662,7 @@ namespace Dev2.Models
             }
         }
 
-        public ICommand NewResourceCommand
-        {
-            get
-            {
-                return new RelayCommand(ShowNewResourceWizard);
-            }
-        }
+        public ICommand NewResourceCommand => new RelayCommand(ShowNewResourceWizard);
 
         /// <summary>
         /// Gets the debug command.
@@ -1540,13 +1509,7 @@ namespace Dev2.Models
                 return true;
             }
         }
-        public IAsyncWorker AsyncWorker
-        {
-            get
-            {
-                return _asyncWorker;
-            }
-        }
+        public IAsyncWorker AsyncWorker => _asyncWorker;
 
         #endregion
 

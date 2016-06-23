@@ -79,21 +79,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        public string Name
-        {
-            get
-            {
-                return Tool.Name;
-            }
-        }
+        public string Name => Tool.Name;
 
-        public DrawingImage Icon
-        {
-            get
-            {
-                return GetImage(Tool.Icon, Tool.IconUri);
-            }
-        }
+        public DrawingImage Icon => GetImage(Tool.Icon, Tool.IconUri);
 
         DrawingImage GetImage(string icon,string iconUri)
         {
@@ -101,20 +89,11 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                UriKind.RelativeOrAbsolute)))[icon];
         }
 
-        public IWarewolfType Designer
-        {
-            get { return Tool.Designer; }
-        }
-        
-        public IWarewolfType Activity
-        {
-            get { return Tool.Activity; }
-        }
+        public IWarewolfType Designer => Tool.Designer;
 
-        public DataObject ActivityType
-        {
-            get { return _activityType; }
-        }
+        public IWarewolfType Activity => Tool.Activity;
+
+        public DataObject ActivityType => _activityType;
 
         public bool IsEnabled
         {

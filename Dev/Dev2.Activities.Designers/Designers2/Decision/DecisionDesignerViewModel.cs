@@ -155,7 +155,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         }
 
-        public override string CollectionName { get { return "ResultsCollection"; } }
+        public override string CollectionName => "ResultsCollection";
 
         public ICommand SearchTypeUpdatedCommand { get; private set; }
 

@@ -36,10 +36,7 @@ namespace System.Windows.Automation.Peers
         /// Gets the AutoCompleteBox that owns this
         /// AutoCompleteBoxAutomationPeer.
         /// </summary>
-        private AutoCompleteBox OwnerAutoCompleteBox
-        {
-            get { return (AutoCompleteBox)Owner; }
-        }
+        private AutoCompleteBox OwnerAutoCompleteBox => (AutoCompleteBox)Owner;
 
         /// <summary>
         /// Gets a value indicating whether the UI automation provider allows
@@ -50,10 +47,7 @@ namespace System.Windows.Automation.Peers
         /// intended to be used directly from your code.
         /// </remarks>
         /// <value>True if multiple selection is allowed; otherwise, false.</value>
-        bool ISelectionProvider.CanSelectMultiple
-        {
-            get { return false; }
-        }
+        bool ISelectionProvider.CanSelectMultiple => false;
 
         /// <summary>
         /// Gets a value indicating whether the UI automation provider
@@ -64,10 +58,7 @@ namespace System.Windows.Automation.Peers
         /// intended to be used directly from your code.
         /// </remarks>
         /// <value>True if selection is required; otherwise, false.</value>
-        bool ISelectionProvider.IsSelectionRequired
-        {
-            get { return false; }
-        }
+        bool ISelectionProvider.IsSelectionRequired => false;
 
         /// <summary>
         /// Initializes a new instance of the AutoCompleteBoxAutomationPeer
@@ -184,13 +175,7 @@ namespace System.Windows.Automation.Peers
         /// This API supports the .NET Framework infrastructure and is not 
         /// intended to be used directly from your code.
         /// </remarks>
-        ExpandCollapseState IExpandCollapseProvider.ExpandCollapseState
-        {
-            get
-            {
-                return OwnerAutoCompleteBox.IsDropDownOpen ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed;
-            }
-        }
+        ExpandCollapseState IExpandCollapseProvider.ExpandCollapseState => OwnerAutoCompleteBox.IsDropDownOpen ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed;
 
         /// <summary>
         /// Raises the ExpandCollapse automation event.
@@ -223,25 +208,14 @@ namespace System.Windows.Automation.Peers
         /// read-only.
         /// </summary>
         /// <value>True if the value is read-only; false if it can be modified.</value>
-        bool IValueProvider.IsReadOnly
-        {
-            get
-            {
-                return !OwnerAutoCompleteBox.IsEnabled;
-            }
-        }
+        bool IValueProvider.IsReadOnly => !OwnerAutoCompleteBox.IsEnabled;
 
         /// <summary>
         /// Gets the value of the control.
         /// </summary>
         /// <value>The value of the control.</value>
-        string IValueProvider.Value
-        {
-            get
-            {
-                return OwnerAutoCompleteBox.Text ?? string.Empty;
-            }
-        }
+        string IValueProvider.Value => OwnerAutoCompleteBox.Text ?? string.Empty;
+
         #endregion
 
         /// <summary>

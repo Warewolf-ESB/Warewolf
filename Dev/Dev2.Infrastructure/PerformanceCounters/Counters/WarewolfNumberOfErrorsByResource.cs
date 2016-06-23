@@ -22,13 +22,7 @@ namespace Dev2.PerformanceCounters.Counters
             _perfCounterType = WarewolfPerfCounterType.ExecutionErrors;
         }
 
-        public WarewolfPerfCounterType PerfCounterType
-        {
-            get
-            {
-                return _perfCounterType;
-            }
-        }
+        public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
         public IList<CounterCreationData> CreationData()
         {
@@ -82,20 +76,9 @@ namespace Dev2.PerformanceCounters.Counters
          
         }
 
-        public string Category
-        {
-            get
-            {
-                return GlobalConstants.WarewolfServices;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return "Total Errors";
-            }
-        }
+        public string Category => GlobalConstants.WarewolfServices;
+
+        public string Name => "Total Errors";
 
         #endregion
         public void Reset()

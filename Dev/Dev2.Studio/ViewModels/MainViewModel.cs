@@ -704,6 +704,7 @@ namespace Dev2.Studio.ViewModels
                 case "SqlDatabase":
                 case "ODBC":
                 case "Oracle":
+                case "PostgreSql":
                 case "MySqlDatabase":
                     EditDbSource(resourceModel);
                     break;
@@ -950,13 +951,7 @@ namespace Dev2.Studio.ViewModels
             return pasteView.ShowView(current);
         }
 
-        public IServer LocalhostServer
-        {
-            get
-            {
-                return CustomContainer.Get<IServer>();
-            }
-        }
+        public IServer LocalhostServer => CustomContainer.Get<IServer>();
 
         public void SetActiveEnvironment(Guid environmentId)
         {
@@ -1712,13 +1707,7 @@ namespace Dev2.Studio.ViewModels
             base.OnActivationProcessed(item, success);
         }
 
-        public ICommand SaveAllCommand
-        {
-            get
-            {
-                return new DelegateCommand(SaveAll);
-            }
-        }
+        public ICommand SaveAllCommand => new DelegateCommand(SaveAll);
 
         void SaveAll(object obj)
         {
@@ -2494,13 +2483,8 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => MenuExpanded);
             }
         }
-        public IMenuViewModel MenuViewModel
-        {
-            get
-            {
-                return _menuViewModel ?? (_menuViewModel = new MenuViewModel(this));
-            }
-        }
+        public IMenuViewModel MenuViewModel => _menuViewModel ?? (_menuViewModel = new MenuViewModel(this));
+
         public IToolboxViewModel ToolboxViewModel
         {
             get

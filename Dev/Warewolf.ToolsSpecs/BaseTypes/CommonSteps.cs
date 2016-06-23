@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     foreach (var errorInfo in validateFromModelView)
                         allErrors.Add(errorInfo.Message);
                 var errorThrown = allErrors.Contains(fetchErrors);
-                Assert.IsTrue(allErrors.Count > 0);
+                Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
         }
 
@@ -146,10 +146,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-
             }
-
-
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
@@ -208,7 +205,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
         }
 
-
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
         {
@@ -266,7 +262,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Dev2Logger.Debug("Create Source File for file op test error", e);
             }
-
         }
 
         [Given(@"source credentials as ""(.*)"" and ""(.*)""")]
@@ -326,8 +321,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(DestinationPrivateKeyFile, destinationKey);
         }
 
-
-
         [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)
         {
@@ -356,9 +349,9 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
             if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
-                if (validationErrors != null)
+                if (validationErrors != null && validationErrors.Count > 0)
                 {
-                    Assert.AreEqual(0, validationErrors.Count);
+                    Assert.AreEqual(0, validationErrors.Count, "Expected no errors but got one or more. First error: " + validationErrors[0].Message);
                 }
             }
             else
@@ -372,11 +365,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
         }
+
         private void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
         }
+
         [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {
@@ -420,7 +415,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
-        public void ThenTheResultVariableWillBe(string variable, string value)
+        public void ThenTheResultVariableWillBe(string variable, string expectedValue)
         {
             string error;
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -432,58 +427,75 @@ namespace Dev2.Activities.Specs.BaseTypes
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i) && i != "\"\"").ToList();
-                value = value.Replace('"', ' ').Trim();
+                expectedValue = expectedValue.Replace('"', ' ').Trim();
 
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(expectedValue))
                 {
-                    if (recordSetValues.Count > 0)
+                    if (recordSetValues != null && recordSetValues.Count > 0)
                     {
                         Assert.Fail("Expecting no value but recordset result variable has one or more values. First value: " + recordSetValues[0]);
                     }
                 }
                 else
                 {
-                    Assert.AreEqual(recordSetValues[0], value, "First recordset result variable value is not equal to expected value.");
+                    if (recordSetValues != null && recordSetValues.Count > 0)
+                    {
+                        Assert.AreEqual(recordSetValues[0], expectedValue, "First recordset result variable value is not equal to expected value.");
+                    }
+                    else
+                    {
+                        Assert.Fail("Expecting value " + expectedValue + " but recordset " + variable+ " has no values.");
+                    }
                 }
             }
             else
             {
                 string actualValue;
-                value = value.Replace('"', ' ').Trim();
+                expectedValue = expectedValue.Replace('"', ' ').Trim();
                 GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(expectedValue))
                 {
                     actualValue = "";
                 }
-                actualValue = actualValue.Replace('"', ' ').Trim();
-                var type = "";
-                if (value == "String" || value == "Int32" || value == "Guid" || value == "DateTime")
+                if(actualValue != null)
                 {
-                    type = value;
-                }
-                if (string.IsNullOrEmpty(type))
-                {
-                    Assert.AreEqual(value, actualValue, error);
-                }
-                else
-                {
-                    Type component = Type.GetType("System." + type);
-                    if (component != null)
+                    actualValue = actualValue.Replace('"', ' ').Trim();
+                    var type = "";
+                    if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
                     {
-                        TypeConverter converter = TypeDescriptor.GetConverter(component);
-
-                        try
+                        type = expectedValue;
+                    }
+                    if (string.IsNullOrEmpty(type))
+                    {
+                        if (error == string.Empty)
                         {
-                            converter.ConvertFrom(actualValue);
+                            error = "No error was returned from the environment when resolving the value of " + variable;
                         }
-                        catch (Exception e)
+                        Assert.AreEqual(expectedValue, actualValue, error);
+                    }
+                    else
+                    {
+                        Type component = Type.GetType("System." + type);
+                        if (component != null)
                         {
-                            Assert.Fail("Cannot convert value " + actualValue + " to type " + type + ". There was an exception: " + e.Message);
+                            TypeConverter converter = TypeDescriptor.GetConverter(component);
+
+                            try
+                            {
+                                converter.ConvertFrom(actualValue);
+                            }
+                            catch (Exception e)
+                            {
+                                Assert.Fail("Cannot convert value " + actualValue + " to type " + type + ". There was an exception: " + e.Message);
+                            }
                         }
                     }
                 }
-
+                else
+                {
+                    Assert.Fail(error);
+                }
             }
         }
 

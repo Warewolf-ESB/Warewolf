@@ -33,47 +33,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
         }
 
-        public override bool IsSource
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsService
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsFolder
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsReservedService
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsServer
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsResourceVersion
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsSource => false;
+        public override bool IsService => true;
+
+        public override bool IsFolder => false;
+
+        public override bool IsReservedService => false;
+
+        public override bool IsServer => false;
+        public override bool IsResourceVersion => false;
     }
 }

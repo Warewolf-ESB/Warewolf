@@ -57,7 +57,7 @@ namespace Dev2.Runtime.WebServer
         public int ContentLength { get; private set; }
         public string ContentType { get; private set; }
         public Encoding ContentEncoding { get; private set; }
-        public Stream InputStream { get { return ReadInputStream(); } }
+        public Stream InputStream => ReadInputStream();
         public NameValueCollection QueryString { get; private set; }
         public NameValueCollection BoundVariables { get; private set; }
 

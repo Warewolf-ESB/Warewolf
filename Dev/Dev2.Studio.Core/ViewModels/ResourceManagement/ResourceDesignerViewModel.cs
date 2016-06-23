@@ -39,13 +39,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         #region Properties
 
-        public IEnvironmentModel EnvironmentModel
-        {
-            get
-            {
-                return _environmentModel;
-            }
-        }
+        public IEnvironmentModel EnvironmentModel => _environmentModel;
 
         public StringBuilder ServiceDefinition
         {

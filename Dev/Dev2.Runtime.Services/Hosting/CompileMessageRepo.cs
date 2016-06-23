@@ -43,13 +43,7 @@ namespace Dev2.Runtime.Hosting
         public string PersistencePath { get; private set; }
 
         private static CompileMessageRepo _instance;
-        public static CompileMessageRepo Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new CompileMessageRepo());
-            }
-        }
+        public static CompileMessageRepo Instance => _instance ?? (_instance = new CompileMessageRepo());
 
         public CompileMessageRepo()
             : this(null, false)
@@ -298,13 +292,7 @@ namespace Dev2.Runtime.Hosting
             return new CompileMessageList { MessageList = result, ServiceID = serviceId };
         }
         
-        public IObservable<IList<ICompileMessageTO>> AllMessages
-        {
-            get
-            {
-                return _allMessages;
-            }
-        }
+        public IObservable<IList<ICompileMessageTO>> AllMessages => _allMessages;
 
         public void Dispose()
         {

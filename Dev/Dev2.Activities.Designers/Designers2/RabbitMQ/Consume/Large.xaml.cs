@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             Loaded += OnLoaded;
         }
 
-        RabbitMQConsumeDesignerViewModel ViewModel { get { return DataContext as RabbitMQConsumeDesignerViewModel; } }
+        RabbitMQConsumeDesignerViewModel ViewModel => DataContext as RabbitMQConsumeDesignerViewModel;
 
         protected override IInputElement GetInitialFocusElement()
         {

@@ -26,10 +26,7 @@ namespace Dev2.TaskScheduler.Wrappers
             _factory = factory;
         }
 
-        public long Count
-        {
-            get { return _taskLog.Count; }
-        }
+        public long Count => _taskLog.Count;
 
 
         public IEnumerator<ITaskEvent> GetEnumerator()

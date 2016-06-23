@@ -82,13 +82,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public new string Result { get; set; }
 
-        protected override bool CanInduceIdle
-        {
-            get
-            {
-                return true;
-            }
-        }
+        protected override bool CanInduceIdle => true;
 
         #endregion Properties
 

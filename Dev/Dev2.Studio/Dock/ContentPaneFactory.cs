@@ -164,7 +164,6 @@ namespace Dev2.Studio.Dock
         {
         }
 
-        //Juries TODO improve (remove typing tied to contentfactory)
         private void ViewModelDeactivated(object sender, DeactivationEventArgs e)
         {
             if(e.WasClosed)
@@ -538,7 +537,7 @@ namespace Dev2.Studio.Dock
                     {
                         if(mainVm.CloseCurrent)
                         {
-                            vm.Dispose();
+                            //vm.Dispose();
                         }
                         else
                         {
@@ -670,10 +669,8 @@ namespace Dev2.Studio.Dock
         /// <summary>
         /// Returns the pane being initialized
         /// </summary>
-        public ContentPane Pane
-        {
-            get { return _pane; }
-        }
+        public ContentPane Pane => _pane;
+
         #endregion //Properties
     }
 }

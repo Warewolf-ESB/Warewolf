@@ -23,13 +23,7 @@ namespace Dev2.Data.ServiceModel.Messages
 
         public Guid ServiceID { get; set; }
 
-        public int Count
-        {
-            get
-            {
-                return MessageList == null ? 0 : MessageList.Count;
-            }
-        }
+        public int Count => MessageList == null ? 0 : MessageList.Count;
 
         public IList<string> Dependants { get; set; }
     }

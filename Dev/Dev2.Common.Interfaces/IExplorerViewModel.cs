@@ -35,5 +35,7 @@ namespace Dev2.Common.Interfaces
 	    void SelectItem(Guid id);
 
 	    void RefreshEnvironment(Guid environmentId);
+
+	    void RefreshSelectedEnvironment();
 	}
 }

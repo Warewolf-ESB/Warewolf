@@ -254,13 +254,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        public IDbServiceModel Model
-        {
-            get
-            {
-                return _model;
-            }
-        }
+        public IDbServiceModel Model => _model;
 
         #endregion
 

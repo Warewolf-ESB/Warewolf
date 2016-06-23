@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
             InitializeItems(mi.JsonMappings);
         }
 
-        public override string CollectionName { get { return "JsonMappings"; } }
+        public override string CollectionName => "JsonMappings";
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {

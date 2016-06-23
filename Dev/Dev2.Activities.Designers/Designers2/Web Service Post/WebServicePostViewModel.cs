@@ -59,7 +59,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             SetupCommonProperties();
             this.RunViewSetup();
         }
-        Guid UniqueID { get { return GetProperty<Guid>(); } }
+        Guid UniqueID => GetProperty<Guid>();
+
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -292,8 +293,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type { get { return GetProperty<string>(); } }
-      
+        private string Type => GetProperty<string>();
+
 
         void AddTitleBarMappingToggle()
         {

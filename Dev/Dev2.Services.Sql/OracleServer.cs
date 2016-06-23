@@ -47,10 +47,7 @@ namespace Dev2.Services.Sql
                 return _connection != null && _connection.State == ConnectionState.Open;
             }
         }
-        public string ConnectionString
-        {
-            get { return _connection == null ? null : _connection.ConnectionString; }
-        }
+        public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
         {
@@ -570,7 +567,7 @@ namespace Dev2.Services.Sql
         public bool GetIsout(string InOut)
         {
             bool isout = !(InOut != null && InOut.Contains("IN/OUT"));
-            if (InOut == "IN ")
+            if (InOut != null && InOut.Trim().ToUpper() == "IN ".Trim().ToUpper())
             {
                 return false;
             }

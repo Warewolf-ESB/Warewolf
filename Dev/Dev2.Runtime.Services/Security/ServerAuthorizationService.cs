@@ -26,7 +26,7 @@ namespace Dev2.Runtime.Security
         // Singleton instance - lazy initialization is used to ensure that the creation is thread-safe
         private static readonly Lazy<ServerAuthorizationService> TheInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
 
-        public static IAuthorizationService Instance { get { return TheInstance.Value; } }
+        public static IAuthorizationService Instance => TheInstance.Value;
 
         private readonly TimeSpan _timeOutPeriod;
         private readonly IPerformanceCounter _perfCounter;
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        public int CachedRequestCount { get { return _cachedRequests.Count; } }
+        public int CachedRequestCount => _cachedRequests.Count;
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {

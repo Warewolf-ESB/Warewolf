@@ -582,7 +582,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
             public ASTGrammerBehaviourRegistry CachedRegistry;
             public Tokenizer<Token, TokenKind> Tokenizer;
 
-            public override GrammerGroup GrammerGroup { get { return _testGroup; } }
+            public override GrammerGroup GrammerGroup => _testGroup;
 
             public TestGrammer(int operation)
             {

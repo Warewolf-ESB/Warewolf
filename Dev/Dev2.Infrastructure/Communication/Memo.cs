@@ -28,10 +28,7 @@ namespace Dev2.Communication
 
         public DateTime Date { get; set; }
 
-        public string DateString
-        {
-            get { return Date.ToString("yyyy-MM-dd.HH.mm.ss.ffff"); }
-        }
+        public string DateString => Date.ToString("yyyy-MM-dd.HH.mm.ss.ffff");
 
         public string ToString(ISerializer serializer)
         {

@@ -28,15 +28,9 @@ namespace Dev2.Calculate
             Builder = new SyntaxTreeBuilder();
         }
 
-        public ParseEventLog EventLog
-        {
-            get { return Builder.EventLog; }
-        }
+        public ParseEventLog EventLog => Builder.EventLog;
 
-        public bool HasEventLogs
-        {
-            get { return Builder.EventLog.HasEventLogs; }
-        }
+        public bool HasEventLogs => Builder.EventLog.HasEventLogs;
 
         public SyntaxTreeBuilder Builder { get; private set; }
 

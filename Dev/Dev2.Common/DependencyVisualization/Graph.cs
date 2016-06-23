@@ -38,10 +38,7 @@ namespace Dev2.Common.DependencyVisualization
 
         public List<CircularDependency> CircularDependencies { get; private set; }
 
-        public bool HasCircularDependency
-        {
-            get { return CircularDependencies.Any(); }
-        }
+        public bool HasCircularDependency => CircularDependencies.Any();
 
         public List<Node> Nodes { get; private set; }
 

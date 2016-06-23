@@ -98,21 +98,9 @@ namespace Warewolf.Studio.ViewModels
             CanDrop = false;
         }
 
-        public IShellViewModel ShellViewModel
-        {
-            get
-            {
-                return _shellViewModel;
-            }
-        }
+        public IShellViewModel ShellViewModel => _shellViewModel;
 
-        public int ChildrenCount
-        {
-            get
-            {
-                return GetChildrenCount();
-            }
-        }
+        public int ChildrenCount => GetChildrenCount();
 
         private int GetChildrenCount()
         {

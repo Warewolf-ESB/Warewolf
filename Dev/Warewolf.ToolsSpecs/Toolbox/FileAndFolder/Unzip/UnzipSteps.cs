@@ -1,14 +1,18 @@
-
 /*
-*  Warewolf - The Easy Service Bus
+*  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.PathOperations;
+using Dev2.Providers.Errors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -16,15 +20,9 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Dev2.Activities.Designers2.Core;
-using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Providers.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
@@ -67,7 +65,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         [When(@"validating the unzip tool")]
         public void WhenValidatingTheUnzipTool()
         {
-
             BuildDataList();
             var unzip = scenarioContext.Get<DsfUnZip>("activity");
             unzip.PerformValidation();
@@ -77,22 +74,22 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         public void WhenValidatingTheTool()
         {
             ////var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
-                //DsfUnZip dsfUnZip = new DsfUnZip()
-                //{
-                //    DestinationPassword = CommonSteps.DestinationPasswordHolder,
-                //    DestinationUsername = CommonSteps.DestinationUsernameHolder,
-                //    DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
-                //    Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
-                //    OutputPath = CommonSteps.DestinationHolder,
+            //DsfUnZip dsfUnZip = new DsfUnZip()
+            //{
+            //    DestinationPassword = CommonSteps.DestinationPasswordHolder,
+            //    DestinationUsername = CommonSteps.DestinationUsernameHolder,
+            //    DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
+            //    Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
+            //    OutputPath = CommonSteps.DestinationHolder,
 
-                //};
-                //if (!scenarioContext.ContainsKey("activity"))
-                //    scenarioContext.Add("activity", dsfUnZip);
-                //dsfUnZip.PerformValidation();
+            //};
+            //if (!scenarioContext.ContainsKey("activity"))
+            //    scenarioContext.Add("activity", dsfUnZip);
+            //dsfUnZip.PerformValidation();
 
-                //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
-                //scenarioContext.Add("viewModel", viewModel);
-            }
+            //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
+            //scenarioContext.Add("viewModel", viewModel);
+        }
 
         [Then(@"unzip execution error message will be """"""(.*)""")]
         public void ThenUnzipExecutionErrorMessageWillBe(string p0)
@@ -108,7 +105,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                 Assert.IsFalse(contains);
             }
         }
-
 
         protected override void BuildDataList()
         {
@@ -150,12 +146,12 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add("activity", unzip);
         }
 
-        void CopyZipFileToSourceLocation()
+        private void CopyZipFileToSourceLocation()
         {
             RunwithRetry(1);
         }
 
-        void RunwithRetry(int retrycount)
+        private void RunwithRetry(int retrycount)
         {
             if (retrycount == 0)
                 return;
@@ -181,7 +177,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             }
         }
 
-        void RunCopy()
+        private void RunCopy()
         {
             try
             {
@@ -190,7 +186,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                                                                                 scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                                                                                 true);
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-
 
                 string resourceName = "Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Unzip.Test.zip";
                 if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
@@ -237,7 +232,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                     if (!containsKey)
                         scenarioContext.Add(CommonSteps.ValidationErrors, validationErrors);
                 }
-
             }
         }
     }

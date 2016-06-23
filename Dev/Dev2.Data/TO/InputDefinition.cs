@@ -38,50 +38,20 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Properties
-        public string Name {
-            get {
-                return _name;
-            }
-        }
+        public string Name => _name;
 
-        public string MapsTo {
-            get {
-                return _mapsTo;
-            }
-        }
+        public string MapsTo => _mapsTo;
 
-        public string StartTagSearch {
-            get {
-                return _startTagSearch;
-            }
-        }
+        public string StartTagSearch => _startTagSearch;
 
-        public string EndTagSearch {
+        public string EndTagSearch => _endTagSearch;
 
-            get {
-                return _endTagSearch;
-            }
-        }
+        public string StartTagReplace => _startTagReplace;
 
-        public string StartTagReplace {
+        public string EndTagReplace => _endTagReplace;
 
-            get {
-                return _startTagReplace;
-            }
-        }
+        public bool IsEvaluated => _isEvaluated;
 
-        public string EndTagReplace {
-
-            get {
-                return _endTagReplace;
-            }
-        }
-
-        public bool IsEvaluated {
-            get {
-                return _isEvaluated;
-            }
-        }
         #endregion
     }
 }

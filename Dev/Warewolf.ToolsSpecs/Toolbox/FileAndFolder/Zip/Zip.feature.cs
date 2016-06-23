@@ -176,13 +176,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_1()
         {
-            this.ZipFileAtLocation("1", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("1", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -205,13 +205,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_2()
         {
-            this.ZipFileAtLocation("2", "UNC to Local", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New1.zip", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("2", "UNC to Local", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New1.zip", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -234,13 +234,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_3()
         {
-            this.ZipFileAtLocation("3", "FTP to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New2.zip", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("3", "FTP to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New2.zip", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -263,13 +263,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_4()
         {
-            this.ZipFileAtLocation("4", "FTPS to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip0.txt", "integrationtester", "I73573r0", "[[path1]]", "c:\\My New3.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("4", "FTPS to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip0.txt", "integrationtester", "I73573r0", "[[path1]]", "c:\\My New3.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -292,13 +292,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_5()
         {
-            this.ZipFileAtLocation("5", "SFTP to Local", "[[path]]", "sftp://localhost/filetozip0.txt", "dev2", "Q/ulw&]", "[[path1]]", "c:\\My New4.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("5", "SFTP to Local", "[[path]]", "sftp://localhost/filetozip0.txt", "dev2", "Q/ulw&]", "[[path1]]", "c:\\My New4.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -321,13 +321,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_6()
         {
-            this.ZipFileAtLocation("6", "Local to UNC", "[[path]]", "c:\\filetozip1.txt", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip10.txt", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("6", "Local to UNC", "[[path]]", "c:\\filetozip1.txt", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip10.txt", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -350,13 +350,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_7()
         {
-            this.ZipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip1.txt", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip11.txt", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip1.txt", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip11.txt", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -379,13 +379,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_8()
         {
-            this.ZipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip1.txt", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip12.txt", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip1.txt", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip12.txt", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -408,13 +408,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_9()
         {
-            this.ZipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip1.txt", "integrationtester", "I73573r0", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip13.txt", "\"\"", "\"\"", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip1.txt", "integrationtester", "I73573r0", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip13.txt", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -437,13 +437,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_10()
         {
-            this.ZipFileAtLocation("10", "SFTP to UNC", "[[path]]", "sftp://localhost/filetozip1.txt", "dev2", "Q/ulw&]", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip14.txt", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("10", "SFTP to UNC", "[[path]]", "sftp://localhost/filetozip1.txt", "dev2", "Q/ulw&]", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip14.txt", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -466,13 +466,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_11()
         {
-            this.ZipFileAtLocation("11", "Local to FTP", "[[path]]", "c:\\filetozip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip10.txt", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("11", "Local to FTP", "[[path]]", "c:\\filetozip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip10.txt", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -495,13 +495,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_12()
         {
-            this.ZipFileAtLocation("12", "UNC to FTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip11.txt", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("12", "UNC to FTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip11.txt", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -524,13 +524,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_13()
         {
-            this.ZipFileAtLocation("13", "FTP to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip12.txt", "\"\"", "\"\"", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("13", "FTP to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip12.txt", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -553,13 +553,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_14()
         {
-            this.ZipFileAtLocation("14", "FTPS to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip2.txt", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip13.txt", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("14", "FTPS to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip2.txt", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip13.txt", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -582,13 +582,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_15()
         {
-            this.ZipFileAtLocation("15", "SFTP to FTP", "[[path]]", "sftp://localhost/filetozip2.txt", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip14.txt", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("15", "SFTP to FTP", "[[path]]", "sftp://localhost/filetozip2.txt", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip14.txt", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -611,13 +611,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_16()
         {
-            this.ZipFileAtLocation("16", "Local to FTPS", "[[path]]", "c:\\filetozip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip20.txt", "integrationtester", "I73573r0", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("16", "Local to FTPS", "[[path]]", "c:\\filetozip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip20.txt", "integrationtester", "I73573r0", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -640,13 +640,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_17()
         {
-            this.ZipFileAtLocation("17", "UNC to FTPS", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip21.txt", "integrationtester", "I73573r0", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("17", "UNC to FTPS", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip21.txt", "integrationtester", "I73573r0", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -669,13 +669,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_18()
         {
-            this.ZipFileAtLocation("18", "FTP to FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip22.txt", "integrationtester", "I73573r0", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("18", "FTP to FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip22.txt", "integrationtester", "I73573r0", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -698,13 +698,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_19()
         {
-            this.ZipFileAtLocation("19", "FTPS to FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip3.txt", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip23.txt", "integrationtester", "I73573r0", "True", "", "Default", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("19", "FTPS to FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip3.txt", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip23.txt", "integrationtester", "I73573r0", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -727,13 +727,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_20()
         {
-            this.ZipFileAtLocation("20", "SFTP to FTPS", "[[path]]", "sftp://localhost/filetozip3.txt", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip24.txt", "integrationtester", "I73573r0", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("20", "SFTP to FTPS", "[[path]]", "sftp://localhost/filetozip3.txt", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip24.txt", "integrationtester", "I73573r0", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -756,13 +756,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_21()
         {
-            this.ZipFileAtLocation("21", "Local to SFTP", "[[path]]", "c:\\filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/filetozip10.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("21", "Local to SFTP", "[[path]]", "c:\\filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/filetozip10.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -785,13 +785,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_22()
         {
-            this.ZipFileAtLocation("22", "UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/filetozip11.txt", "dev2", "Q/ulw&]", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("22", "UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/filetozip11.txt", "dev2", "Q/ulw&]", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -814,13 +814,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_23()
         {
-            this.ZipFileAtLocation("23", "FTP to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/filetozip12.txt", "dev2", "Q/ulw&]", "True", "", "Default", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("23", "FTP to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/filetozip12.txt", "dev2", "Q/ulw&]", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -843,13 +843,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_24()
         {
-            this.ZipFileAtLocation("24", "FTPS to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip4.txt", "integrationtester", "I73573r0", "[[path1]]", "sftp://localhost/filetozip13.txt", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("24", "FTPS to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip4.txt", "integrationtester", "I73573r0", "[[path1]]", "sftp://localhost/filetozip13.txt", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -872,13 +872,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_25()
         {
-            this.ZipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://localhost/filetozip4.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/filetozip14.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://localhost/filetozip4.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/filetozip14.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -901,13 +901,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void ZipFileAtLocation_26()
         {
-            this.ZipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://localhost/filetozip41.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/filetozip141.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.ZipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://localhost/filetozip41.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/filetozip141.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -1241,12 +1241,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "0.99")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_1()
         {
-            this.ZipFileAtLocationIsCompressedAtRatio("1", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "Success", "NO", "0.99", ((string[])(null)));
+            this.ZipFileAtLocationIsCompressedAtRatio("1", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "0.99", ((string[])(null)));
 #line hidden
         }
         
@@ -1269,12 +1269,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "1.71")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_2()
         {
-            this.ZipFileAtLocationIsCompressedAtRatio("2", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "Success", "NO", "1.71", ((string[])(null)));
+            this.ZipFileAtLocationIsCompressedAtRatio("2", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "1.71", ((string[])(null)));
 #line hidden
         }
         
@@ -1297,12 +1297,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestSpeed")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "1.66")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_3()
         {
-            this.ZipFileAtLocationIsCompressedAtRatio("3", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "Success", "NO", "1.66", ((string[])(null)));
+            this.ZipFileAtLocationIsCompressedAtRatio("3", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "1.66", ((string[])(null)));
 #line hidden
         }
         
@@ -1325,12 +1325,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "1.71")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_4()
         {
-            this.ZipFileAtLocationIsCompressedAtRatio("4", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Success", "NO", "1.71", ((string[])(null)));
+            this.ZipFileAtLocationIsCompressedAtRatio("4", "Local to Local", "[[path]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[path1]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "1.71", ((string[])(null)));
 #line hidden
         }
     }

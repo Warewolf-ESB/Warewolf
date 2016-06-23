@@ -55,13 +55,7 @@ namespace Dev2.ViewModels
             base.OnViewAttached(view, ViewModel);
         }
 
-        public override string DisplayName
-        {
-            get
-            {
-                return ViewModel.Header;
-            }            
-        }
+        public override string DisplayName => ViewModel.Header;
 
         protected override void OnViewLoaded(object view)
         {
@@ -102,13 +96,7 @@ namespace Dev2.ViewModels
 
         #region Implementation of IStudioTab
 
-        public bool IsDirty
-        {
-            get
-            {
-                return ViewModel.HasChanged && ViewModel.CanSave();
-            }
-        }
+        public bool IsDirty => ViewModel.HasChanged && ViewModel.CanSave();
 
         public bool DoDeactivate(bool showMessage)
         {

@@ -55,13 +55,7 @@ namespace Dev2.Webs.Callbacks
 
         #region Implementation of IPropertyEditorWizard
 
-        public ILayoutObjectViewModel SelectedLayoutObject
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public ILayoutObjectViewModel SelectedLayoutObject => null;
 
         public virtual void Save(string value, bool closeBrowserWindow = true)
         {

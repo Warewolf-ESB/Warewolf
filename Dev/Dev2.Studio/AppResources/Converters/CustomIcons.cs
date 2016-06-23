@@ -30,37 +30,13 @@ namespace Dev2.Common
             {PopupIcons.InformationIcon, "pack://application:,,,/Warewolf Studio;component/Images/PopupInformation-32.png"}
         };
 
-        public static string Error
-        {
-            get
-            {
-                return CustomIconsDictionary[PopupIcons.ErrorIcon];
-            }
-        }
+        public static string Error => CustomIconsDictionary[PopupIcons.ErrorIcon];
 
-        public static string Information
-        {
-            get
-            {
-                return CustomIconsDictionary[PopupIcons.InformationIcon];
-            }
-        }
+        public static string Information => CustomIconsDictionary[PopupIcons.InformationIcon];
 
-        public static string Question
-        {
-            get
-            {
-                return CustomIconsDictionary[PopupIcons.QuestionIcon];
-            }
-        }
+        public static string Question => CustomIconsDictionary[PopupIcons.QuestionIcon];
 
-        public static string Warning
-        {
-            get
-            {
-                return CustomIconsDictionary[PopupIcons.WarningIcon];
-            }
-        }
+        public static string Warning => CustomIconsDictionary[PopupIcons.WarningIcon];
     }
 
 }
