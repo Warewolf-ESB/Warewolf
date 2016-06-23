@@ -427,9 +427,10 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         // ModelItem properties
-        string ServiceUri { get { return GetProperty<string>(); } }
-        string ServiceName { get { return GetProperty<string>(); } }
-        string ActionName { get { return GetProperty<string>(); } }
+        string ServiceUri => GetProperty<string>();
+        string ServiceName => GetProperty<string>();
+        string ActionName => GetProperty<string>();
+
         string FriendlySourceName
         {
             get
@@ -443,12 +444,12 @@ namespace Dev2.Activities.Designers2.Service
                 
             }
         }
-        public string Type { get { return GetProperty<string>(); } }
+        public string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
-        Guid EnvironmentID { get { return GetProperty<Guid>(); } }
+        Guid EnvironmentID => GetProperty<Guid>();
 
-        Guid ResourceID { get { return GetProperty<Guid>(); } }
-        Guid UniqueID { get { return GetProperty<Guid>(); } }
+        Guid ResourceID => GetProperty<Guid>();
+        Guid UniqueID => GetProperty<Guid>();
         // ReSharper restore InconsistentNaming
         public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }

@@ -22,10 +22,7 @@ namespace Gma.DataStructures.StringSearch
             m_InnerTrie = innerTrie;
         }
 
-        protected int MinQueryLength
-        {
-            get { return m_MinQueryLength; }
-        }
+        protected int MinQueryLength => m_MinQueryLength;
 
         public IEnumerable<TValue> Retrieve(string query)
         {

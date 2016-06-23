@@ -74,27 +74,11 @@ namespace Warewolf.Testing
         }
 
         public string DisplayName { get;  set; }
-        public bool HasLoaded
-        {
-            get
-            {
-                return _hasLoaded;
-            }
-        }
-        public bool CanDeployTo
-        {
-            get
-            {
-                return _canDeployTo;
-            }
-        }
-        public bool CanDeployFrom
-        {
-            get
-            {
-                return _canDeployFrom;
-            }
-        }
+        public bool HasLoaded => _hasLoaded;
+
+        public bool CanDeployTo => _canDeployTo;
+
+        public bool CanDeployFrom => _canDeployFrom;
 
         public IServer Clone()
         {
@@ -216,10 +200,7 @@ namespace Warewolf.Testing
             }
         }
 
-        public bool IsConnected
-        {
-            get { return true; }
-        }
+        public bool IsConnected => true;
         public bool AllowEdit { get; set; }
 
         public void ReloadTools()
@@ -262,10 +243,8 @@ namespace Warewolf.Testing
         public event ItemAddedEvent ItemAddedEvent;
 
         [JsonIgnore]
-        public IStudioUpdateManager UpdateRepository
-        {
-            get { return _updateManager; }
-        }
+        public IStudioUpdateManager UpdateRepository => _updateManager;
+
         public Mock<IExplorerRepository> MockExplorerRepo { get; set; }
 
         public string GetServerVersion()

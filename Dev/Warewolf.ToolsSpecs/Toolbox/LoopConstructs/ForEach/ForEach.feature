@@ -491,30 +491,21 @@ Scenario: Execute a foreach over a tool null in Range
 	Then the execution has "AN" error
 
 Scenario: Execute a foreach over an activity with number of executions equals +1 invalid
-	And I have selected the foreach type as "NumOfExecution" as "+1"
+	And I have selected the foreach type as "NumOfExecution" as "&(1"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
 	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
 	When the foreach tool is executed
-	Then The mapping uses the following indexes
-	| index |
-	| 0     |	
-	And the execution has "AN" error
-	And the debug inputs as
-	|                 | Number |    
+	Then the execution has "AN" error
+
 
 Scenario: Execute a foreach with number of executions equals @#$1 invalid
-	And I have selected the foreach type as "NumOfExecution" as "+1"
+	And I have selected the foreach type as "NumOfExecution" as "#$1"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
 	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
 	When the foreach tool is executed
-	Then The mapping uses the following indexes
-	| index |
-	| 0     |	
-	And the execution has "AN" error
-	And the debug inputs as
-	|                 | Number |
+	Then the execution has "AN" error
 
 Scenario: Execute a foreach with number of executions as recordset with star
 	And I have selected the foreach type as "NumOfExecution" as "[[rec(*).a]]"

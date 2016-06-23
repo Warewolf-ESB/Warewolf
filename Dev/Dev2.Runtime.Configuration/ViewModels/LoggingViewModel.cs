@@ -132,13 +132,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public BindableCollection<string> WorkflowNames
-        {
-            get
-            {
-                return _workflowNames ?? (_workflowNames = new BindableCollection<string>());
-            }
-        }
+        public BindableCollection<string> WorkflowNames => _workflowNames ?? (_workflowNames = new BindableCollection<string>());
 
         public string PostWorkflowName
         {
@@ -183,24 +177,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public bool HasServiceInputOptions
-        {
-            get
-            {
-                return RunPostWorkflow &&
-                       !String.IsNullOrEmpty(PostWorkflowName) &&
-                       ServiceInputOptions.Count > 0;
-            }
-        }
+        public bool HasServiceInputOptions => RunPostWorkflow &&
+                                              !String.IsNullOrEmpty(PostWorkflowName) &&
+                                              ServiceInputOptions.Count > 0;
 
-        public ObservableCollection<string> ServiceInputOptions
-        {
-            get
-            {
-                return _serviceInputOptions ??
-                    (_serviceInputOptions = new ObservableCollection<string>());
-            }
-        }
+        public ObservableCollection<string> ServiceInputOptions => _serviceInputOptions ??
+                                                                   (_serviceInputOptions = new ObservableCollection<string>());
 
         public bool LogAll
         {
@@ -219,10 +201,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public ILoggingSettings LoggingSettings
-        {
-            get { return Object as ILoggingSettings; }
-        }
+        public ILoggingSettings LoggingSettings => Object as ILoggingSettings;
 
         #endregion properties
 

@@ -19,13 +19,7 @@ namespace Dev2.Runtime.WebServer.Hubs
     // ReSharper disable InconsistentNaming
     public class Server
     {
-        public static Server Instance
-        {
-            get
-            {
-                return TheInstance.Value;
-            }
-        }
+        public static Server Instance => TheInstance.Value;
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
         readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(GlobalHost.ConnectionManager.GetHubContext<EsbHub>().Clients, WorkspaceRepository.Instance));

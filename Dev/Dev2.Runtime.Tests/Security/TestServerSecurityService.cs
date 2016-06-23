@@ -39,7 +39,7 @@ namespace Dev2.Tests.Runtime.Security
             base.OnFileRenamed(sender, e);
         }
 
-        public List<bool> OnFileChangedEnableRaisingEventsEnabled { get { return _onFileChangedEnableRaisingEventsEnabled; } }
+        public List<bool> OnFileChangedEnableRaisingEventsEnabled => _onFileChangedEnableRaisingEventsEnabled;
 
         protected override void OnFileChangedEnableRaisingEvents(bool enabled)
         {

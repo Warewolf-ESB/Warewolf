@@ -20,10 +20,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         static readonly Dictionary<Type, List<FieldInfo>> DicEventFieldInfos = new Dictionary<Type, List<FieldInfo>>();
 
-        static BindingFlags AllBindings
-        {
-            get { return BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static; }
-        }
+        static BindingFlags AllBindings => BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
         //--------------------------------------------------------------------------------
         static IEnumerable<FieldInfo> GetTypeEventFields(Type t)

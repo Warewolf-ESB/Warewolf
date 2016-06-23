@@ -46,18 +46,18 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             InitializeItems(mi.ResultsCollection);
         }
 
-        public override string CollectionName { get { return "ResultsCollection"; } }
+        public override string CollectionName => "ResultsCollection";
 
         public ICommand SearchTypeUpdatedCommand { get; private set; }
 
         public ObservableCollection<string> WhereOptions { get; private set; }
 
-        string FieldsToSearch { get { return GetProperty<string>(); } }
+        string FieldsToSearch => GetProperty<string>();
 
         public bool IsFieldsToSearchFocused { get { return (bool)GetValue(IsFieldsToSearchFocusedProperty); } set { SetValue(IsFieldsToSearchFocusedProperty, value); } }
         public static readonly DependencyProperty IsFieldsToSearchFocusedProperty = DependencyProperty.Register("IsFieldsToSearchFocused", typeof(bool), typeof(FindRecordsMultipleCriteriaDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        string Result { get { return GetProperty<string>(); } }
+        string Result => GetProperty<string>();
 
         public bool IsResultFocused { get { return (bool)GetValue(IsResultFocusedProperty); } set { SetValue(IsResultFocusedProperty, value); } }
         public static readonly DependencyProperty IsResultFocusedProperty = DependencyProperty.Register("IsResultFocused", typeof(bool), typeof(FindRecordsMultipleCriteriaDesignerViewModel), new PropertyMetadata(default(bool)));

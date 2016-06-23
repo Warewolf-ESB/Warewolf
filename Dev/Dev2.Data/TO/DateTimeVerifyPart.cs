@@ -29,12 +29,8 @@ namespace Dev2.DataList.Contract
 
         public enDev2ColumnArgumentDirection ColumnIODirection { get; private set; }
 
-        public bool HasRecordsetIndex
-        {
+        public bool HasRecordsetIndex => RecordsetIndex != string.Empty;
 
-            get { return RecordsetIndex != string.Empty; }
-
-        }
         public bool IsJson
         {
             get
@@ -47,11 +43,7 @@ namespace Dev2.DataList.Contract
             }
         }
 
-        public bool IsScalar
-        {
-
-            get { return Recordset.Length == 0; }
-        }
+        public bool IsScalar => Recordset.Length == 0;
 
         internal DateTimeVerifyPart(string displayValue, string description)
         {

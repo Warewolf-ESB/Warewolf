@@ -45,17 +45,9 @@ namespace Warewolf.Studio.Views
             //}
         }
 
-        public ExplorerViewTestClass ExplorerViewTestClass
-        {
-            get { return _explorerViewTestClass; }
-        }
-        public IServer SelectedServer
-        {
-            get
-            {
-                return ConnectControl.SelectedServer;
-            }
-        }
+        public ExplorerViewTestClass ExplorerViewTestClass => _explorerViewTestClass;
+
+        public IServer SelectedServer => ConnectControl.SelectedServer;
 
         public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
         {

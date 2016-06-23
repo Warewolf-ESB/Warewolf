@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers2.CaseConvert
             ItemsList = CaseConverter.ConvertTypes.ToObservableCollection();
         }
 
-        public override string CollectionName { get { return "ConvertCollection"; } }
+        public override string CollectionName => "ConvertCollection";
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {

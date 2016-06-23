@@ -34,13 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
         #endregion
 
-        public IDownloadResponse<FileMetadata> FileResult
-        {
-            get
-            {
-                return base.Response;
-            }
-        }
+        public IDownloadResponse<FileMetadata> FileResult => base.Response;
 
         #region Overrides of DsfDropBoxUploadActivity
 

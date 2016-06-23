@@ -33,11 +33,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         private AdornerLayer _rootAdornerLayer;
         private IList<AdornerToggleButton> _adornerToggleButtons;
 
-        private IList<AdornerToggleButton> AdornerToggleButtons
-        {
-            get { return _adornerToggleButtons ?? 
-                (_adornerToggleButtons = new List<AdornerToggleButton>()); }
-        }
+        private IList<AdornerToggleButton> AdornerToggleButtons => _adornerToggleButtons ?? 
+                                                                   (_adornerToggleButtons = new List<AdornerToggleButton>());
 
         #endregion Class Members
 
@@ -433,7 +430,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 };
             }
 
-            protected override int VisualChildrenCount { get { return _visualChildren.Count; } }
+            protected override int VisualChildrenCount => _visualChildren.Count;
             protected override Visual GetVisualChild(int index) { return _visualChildren[index]; }
 
             protected override Size MeasureOverride(Size constraint)
@@ -474,7 +471,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 _visualChildren.Add(adornerContent);
             }
 
-            protected override int VisualChildrenCount { get { return _visualChildren.Count; } }
+            protected override int VisualChildrenCount => _visualChildren.Count;
             protected override Visual GetVisualChild(int index) { return _visualChildren[index]; }
 
             protected override Size MeasureOverride(Size constraint)

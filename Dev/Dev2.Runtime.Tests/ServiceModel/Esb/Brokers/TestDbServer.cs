@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
         #region Implementation of IDbServer
 
-        public virtual bool IsConnected { get { return true; } }
+        public virtual bool IsConnected => true;
         public virtual string ConnectionString { get; private set; }
 
         public virtual bool Connect(string connectionString)

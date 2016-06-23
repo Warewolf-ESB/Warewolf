@@ -55,21 +55,9 @@ namespace Dev2.Runtime.DynamicProxy
             return retval;
         }
 
-        public Type ObjectType
-        {
-            get
-            {
-                return _objType;
-            }
-        }
+        public Type ObjectType => _objType;
 
-        public object ObjectInstance
-        {
-            get
-            {
-                return _obj;
-            }
-        }
+        public object ObjectInstance => _obj;
 
         public BindingFlags BindingFlags
         {

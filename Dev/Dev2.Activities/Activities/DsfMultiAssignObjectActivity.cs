@@ -74,13 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool CreateBookmark { get; set; }
         public string ServiceHost { get; set; }
 
-        protected override bool CanInduceIdle
-        {
-            get
-            {
-                return true;
-            }
-        }
+        protected override bool CanInduceIdle => true;
 
         #endregion Properties
 

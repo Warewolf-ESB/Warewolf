@@ -60,11 +60,8 @@ namespace Dev2.Studio.ViewModels.Help
             IsViewAvailable = true;
         }
 
-        public override WorkSurfaceContext WorkSurfaceContext
-        {
-            get { return WorkSurfaceContext.Help; }
-        }
-       
+        public override WorkSurfaceContext WorkSurfaceContext => WorkSurfaceContext.Help;
+
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);    
@@ -159,12 +156,6 @@ namespace Dev2.Studio.ViewModels.Help
             HelpViewDisposed = true;
         }
 
-        public string ResourceType
-        {
-            get
-            {
-                return "StartPage";
-            }
-        }
+        public string ResourceType => "StartPage";
     }
 }

@@ -22,10 +22,7 @@ namespace Dev2.TaskScheduler.Wrappers
             _nativeTnstance = nativeTnstance;
         }
 
-        public TaskActionType ActionType
-        {
-            get { return _nativeTnstance.ActionType; }
-        }
+        public TaskActionType ActionType => _nativeTnstance.ActionType;
 
         public string Id
         {
@@ -39,9 +36,6 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public Action Instance
-        {
-            get { return _nativeTnstance; }
-        }
+        public Action Instance => _nativeTnstance;
     }
 }

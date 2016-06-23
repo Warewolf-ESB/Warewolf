@@ -88,15 +88,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         // ReSharper disable once MemberCanBePrivate.Global
-        protected string DecryptedArchivePassword
-        {
-            get
-            {
-                return DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DpapiWrapper.Decrypt(ArchivePassword);
-            }
-        }
+        protected string DecryptedArchivePassword => DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DpapiWrapper.Decrypt(ArchivePassword);
 
-        
 
         /// <summary>
         /// Gets or sets the name of the archive.

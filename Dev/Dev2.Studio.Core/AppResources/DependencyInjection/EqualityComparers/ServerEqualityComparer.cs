@@ -47,13 +47,7 @@ namespace Dev2.AppResources.DependencyInjection.EqualityComparers
 
         #region Properties
 
-        public static ServerEqualityComparer Current
-        {
-            get
-            {
-                return _current;
-            }
-        }
+        public static ServerEqualityComparer Current => _current;
 
         #endregion Properties
     }

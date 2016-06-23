@@ -53,14 +53,8 @@ namespace Dev2.TO
             return ((LanguageAST.LanguageExpression.RecordSetNameExpression)parsed).Item.Name;
         }
 
-        public CommonFunctions.WarewolfEvalResult EvalResult
-        {
-            get
-            {
-                return _evalResult ?? (_evalResult = _env.EvalForJson(
-                    Simple.SourceName));
-            }
-        }
+        public CommonFunctions.WarewolfEvalResult EvalResult => _evalResult ?? (_evalResult = _env.EvalForJson(
+            Simple.SourceName));
 
         public object EvalResultAsObject
         {
@@ -152,13 +146,7 @@ namespace Dev2.TO
             }
         }
 
-        public CommonFunctions.WarewolfEvalResult EvalResult
-        {
-            get
-            {
-                return Evaluations.First().EvalResult;
-            }
-        }
+        public CommonFunctions.WarewolfEvalResult EvalResult => Evaluations.First().EvalResult;
 
         bool? _isCompound;
         public bool IsCompound
@@ -186,13 +174,7 @@ namespace Dev2.TO
             }
         }
 
-        public string DestinationName
-        {
-            get
-            {
-                return Compound.DestinationName;
-            }
-        }
+        public string DestinationName => Compound.DestinationName;
 
         public object EvaluatedResultIndexed(int i)
         {

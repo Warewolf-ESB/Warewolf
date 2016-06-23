@@ -218,13 +218,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public bool IsBlank
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(DisplayName) && string.IsNullOrWhiteSpace(Description);
-            }
-        }
+        public bool IsBlank => string.IsNullOrWhiteSpace(DisplayName) && string.IsNullOrWhiteSpace(Description);
 
         public bool IsExpanded
         {

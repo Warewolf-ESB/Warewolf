@@ -55,16 +55,16 @@ namespace Dev2.Studio.Core.Interfaces
         private readonly string[] _arguments;
         private readonly string[] _argumentDescriptions;
 
-        public IIntellisenseProvider Provider { get { return _provider; } }
-        public string Name { get { return _name; } }
-        public string Description { get { return _description; } }
-        public string DropdownDescription { get { return String.Empty; } }
-        public string[] Arguments { get { return _arguments; } }
-        public string[] ArgumentDescriptions { get { return _argumentDescriptions; } }
-        public int StartIndex { get { return _startIndex; } }
-        public int EndIndex { get { return _endIndex; } }
-        public bool IsError { get { return _isError; } }
-        public bool IsPopup { get { return _isPopup; } }
+        public IIntellisenseProvider Provider => _provider;
+        public string Name => _name;
+        public string Description => _description;
+        public string DropdownDescription => String.Empty;
+        public string[] Arguments => _arguments;
+        public string[] ArgumentDescriptions => _argumentDescriptions;
+        public int StartIndex => _startIndex;
+        public int EndIndex => _endIndex;
+        public bool IsError => _isError;
+        public bool IsPopup => _isPopup;
 
         public IntellisenseProviderResult(IIntellisenseProvider provider, string name, string dropdownDescription, string description, string[] arguments, string[] argumentDescriptions)
         {

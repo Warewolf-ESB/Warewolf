@@ -25,13 +25,7 @@ namespace Dev2.Activities.Designers2.Foreach
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        ForeachDesignerViewModel ViewModel
-        {
-            get
-            {
-                return DataContext as ForeachDesignerViewModel;
-            }
-        }
+        ForeachDesignerViewModel ViewModel => DataContext as ForeachDesignerViewModel;
 
         void DoDrop(object sender, DragEventArgs e)
         {

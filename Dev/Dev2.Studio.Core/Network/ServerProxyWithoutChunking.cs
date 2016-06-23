@@ -575,13 +575,7 @@ namespace Dev2.Network
         /// <code>True</code> unless server returns Unauthorized or Forbidden status.
         /// </summary>
         public bool IsAuthorized { get; set; }
-        public IAsyncWorker AsyncWorker
-        {
-            get
-            {
-                return _asyncWorker;
-            }
-        }
+        public IAsyncWorker AsyncWorker => _asyncWorker;
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         public event EventHandler PermissionsChanged;

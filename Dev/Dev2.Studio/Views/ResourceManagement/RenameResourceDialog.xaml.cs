@@ -24,7 +24,7 @@ namespace Dev2.Studio.Views.ResourceManagement
         // ReSharper disable once ConvertToConstant.Local
         private readonly bool _openDependencyGraph = false;
 
-        public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
+        public bool OpenDependencyGraph => _openDependencyGraph;
 
         public RenameResourceDialog(IContextualResourceModel model, string newName, Window owner)
         {

@@ -37,25 +37,13 @@ namespace Dev2.MathOperations
 
         #region Properties
 
-        public string FunctionName
-        {
-            get { return _functionName; }
-        }
+        public string FunctionName => _functionName;
 
-        public IList<string> arguments
-        {
-            get { return _arguments; }
-        }
+        public IList<string> arguments => _arguments;
 
-        public IList<string> ArgumentDescriptions
-        {
-            get { return _argumentDescriptions; }
-        }
+        public IList<string> ArgumentDescriptions => _argumentDescriptions;
 
-        public string Description
-        {
-            get { return _description; }
-        }
+        public string Description => _description;
 
         #endregion Properties
 

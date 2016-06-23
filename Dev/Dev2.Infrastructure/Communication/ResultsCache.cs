@@ -19,13 +19,7 @@ namespace Dev2.Communication
         private readonly ConcurrentDictionary<string, string> _resultCache = new ConcurrentDictionary<string, string>();
 
         private static ResultsCache _instance;
-        public static ResultsCache Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new ResultsCache());
-            }
-        }
+        public static ResultsCache Instance => _instance ?? (_instance = new ResultsCache());
 
         private ResultsCache() { }
 

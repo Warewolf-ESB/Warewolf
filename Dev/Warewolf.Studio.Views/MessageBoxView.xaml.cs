@@ -13,7 +13,7 @@ namespace Warewolf.Studio.Views
     {
         Grid _blackoutGrid;
         private bool _openDependencyGraph;
-        public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
+        public bool OpenDependencyGraph => _openDependencyGraph;
 
         public MessageBoxView()
         {

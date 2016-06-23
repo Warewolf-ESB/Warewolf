@@ -17,13 +17,7 @@ namespace Dev2.DataList.Contract.EqualityComparers
     {
         private static readonly Dev2ColumnComparer _instance = new Dev2ColumnComparer();
 
-        public static Dev2ColumnComparer Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static Dev2ColumnComparer Instance => _instance;
 
         public bool Equals(Dev2Column x, Dev2Column y)
         {           

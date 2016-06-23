@@ -19,13 +19,7 @@ namespace Dev2.PerformanceCounters.Counters
             _perfCounterType = WarewolfPerfCounterType.ServicesNotFound;
         }
 
-        public WarewolfPerfCounterType PerfCounterType
-        {
-            get
-            {
-                return _perfCounterType;
-            }
-        }
+        public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
         public IList<CounterCreationData> CreationData()
         {
@@ -84,20 +78,10 @@ namespace Dev2.PerformanceCounters.Counters
   
         }
 
-        public string Category
-        {
-            get
-            {
-                return "Warewolf";
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return "Count of requests for workflows which don’t exist";
-            }
-        }
+        public string Category => "Warewolf";
+
+        public string Name => "Count of requests for workflows which don’t exist";
+
         public void Reset()
         {
             if (_counter != null)

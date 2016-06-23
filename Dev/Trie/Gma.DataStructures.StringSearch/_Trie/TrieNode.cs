@@ -17,10 +17,7 @@ namespace Gma.DataStructures.StringSearch
             m_Values = new Queue<TValue>();
         }
 
-        protected override int KeyLength
-        {
-            get { return 1; }
-        }
+        protected override int KeyLength => 1;
 
         protected override IEnumerable<TrieNodeBase<TValue>> Children()
         {

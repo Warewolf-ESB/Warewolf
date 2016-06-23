@@ -33,16 +33,10 @@ namespace Dev2.ConnectionHelpers
         public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         public event EventHandler<ConnectedServerChangedEvent> AfterReload; 
-        public static IConnectControlSingleton Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new ConnectControlSingleton(StudioResourceRepository.Instance,
-                                                 new AsyncWorker(),
-                                                 ServerProvider.Instance,
-                                                 EnvironmentRepository.Instance));
-            }
-        }
+        public static IConnectControlSingleton Instance => _instance ?? (_instance = new ConnectControlSingleton(StudioResourceRepository.Instance,
+            new AsyncWorker(),
+            ServerProvider.Instance,
+            EnvironmentRepository.Instance));
 
         public ConnectControlSingleton(IStudioResourceRepository studioResourceRepository,
                                          IAsyncWorker asyncWorker,

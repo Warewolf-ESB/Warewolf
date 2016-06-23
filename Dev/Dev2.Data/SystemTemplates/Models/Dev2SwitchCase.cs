@@ -27,10 +27,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// The version.
         /// </value>
         [JsonIgnore]
-        public string Version
-        {
-            get { return "1.0.0"; }
-        }
+        public string Version => "1.0.0";
 
         /// <summary>
         /// Gets the name of the model.
@@ -39,10 +36,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// The name of the model.
         /// </value>
         [JsonConverter(typeof(StringEnumConverter))]
-        public Dev2ModelType ModelName
-        {
-            get { return Dev2ModelType.Dev2SwitchCase; }
-        }
+        public Dev2ModelType ModelName => Dev2ModelType.Dev2SwitchCase;
 
         /// <summary>
         /// Gets or sets the case value.

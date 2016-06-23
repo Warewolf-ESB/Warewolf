@@ -37,13 +37,7 @@ namespace Dev2.Integration.Tests.Mocks
             }
         }
         internal List<DataObjectChild> Datachildren { get; set; }
-        internal dynamic data
-        {
-            get
-            {
-                return "this as string";
-            }
-        }
+        internal dynamic data => "this as string";
 
         internal DataObject()
         {

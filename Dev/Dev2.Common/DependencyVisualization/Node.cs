@@ -66,15 +66,12 @@ namespace Dev2.Common.DependencyVisualization
 
         public List<CircularDependency> CircularDependencies { get; private set; }
 
-        public bool HasCircularDependency
-        {
-            get { return CircularDependencies.Any(); }
-        }
+        public bool HasCircularDependency => CircularDependencies.Any();
 
         public string ID { get; private set; }
 
         public bool IsTargetNode { get; set; }
-        public string ErrorImagePath { get { return _isBroken ? _errorImagePath : ""; } }
+        public string ErrorImagePath => _isBroken ? _errorImagePath : "";
 
         public double LocationX
         {
@@ -106,17 +103,11 @@ namespace Dev2.Common.DependencyVisualization
 
         public List<Node> NodeDependencies { get; private set; }
 
-        public double NodeWidth
-        {
-            get { return 100; }
-        }
+        public double NodeWidth => 100;
 
-        public double NodeHeight
-        {
-            get { return 50; }
-        }
+        public double NodeHeight => 50;
 
-        public bool IsBroken { get { return _isBroken; } }
+        public bool IsBroken => _isBroken;
 
         #endregion Properties
 
