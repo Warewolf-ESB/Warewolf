@@ -188,6 +188,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void RefreshSelectedEnvironment()
+        {
+            if (SelectedEnvironment != null)
+            {
+                RefreshEnvironment(SelectedEnvironment);
+            }
+        }
         protected virtual void Refresh()
         {
             IsRefreshing = true;
