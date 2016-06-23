@@ -94,7 +94,6 @@ namespace Dev2.Services.Security
             try
             {
                 newPermissions = ReadPermissions();
-                Dev2Logger.Error(newPermissions);
                 _permissions.Clear();
                 if(newPermissions != null)
                 {
