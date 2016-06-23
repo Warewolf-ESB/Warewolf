@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
         public bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
         public bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
         public bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        public string ServerInputPath { get { return GetProperty<string>(); } }
+        public string ServerInputPath => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
@@ -72,6 +72,6 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
 
         #endregion
 
-        public override string CollectionName { get { return "FilterCriteria"; } }
+        public override string CollectionName => "FilterCriteria";
     }
 }

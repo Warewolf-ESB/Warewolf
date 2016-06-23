@@ -410,44 +410,14 @@ namespace Warewolf.Studio.ViewModels
         public ICommand PublishCommand { get; set; }
         public ICommand OkCommand { get; set; }
 
-        public string HostNameLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.HostNameLabel;
-            }
-        }
+        public string HostNameLabel => Resources.Languages.Core.HostNameLabel;
 
-        public string PortLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.PortLabel;
-            }
-        }
+        public string PortLabel => Resources.Languages.Core.PortLabel;
 
-        public string UserNameLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.UserNameLabel;
-            }
-        }
+        public string UserNameLabel => Resources.Languages.Core.UserNameLabel;
 
-        public string PasswordLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.PasswordLabel;
-            }
-        }
+        public string PasswordLabel => Resources.Languages.Core.PasswordLabel;
 
-        public string VirtualHostLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.VirtualHostLabel;
-            }
-        }
+        public string VirtualHostLabel => Resources.Languages.Core.VirtualHostLabel;
     }
 }

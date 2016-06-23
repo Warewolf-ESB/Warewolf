@@ -148,9 +148,6 @@ namespace Dev2.Intellisense.Provider
 
         public IFileSystemQuery FileSystemQuery { get; set; }
 
-        public List<IntellisenseProviderResult> IntellisenseResults
-        {
-            get { return _intellisenseResults; }
-        }
+        public List<IntellisenseProviderResult> IntellisenseResults => _intellisenseResults;
     }
 }

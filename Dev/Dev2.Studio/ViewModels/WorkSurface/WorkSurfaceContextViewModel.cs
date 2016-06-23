@@ -594,13 +594,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public Func<IStudioResourceRepository> GetStudioResourceRepository = () => Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
         private bool _waitingforDialog;
 
-        private IStudioResourceRepository StudioResourceRepository
-        {
-            get
-            {
-                return GetStudioResourceRepository();
-            }
-        }
+        private IStudioResourceRepository StudioResourceRepository => GetStudioResourceRepository();
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
@@ -726,13 +720,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public IPopupController PopupController
-        {
-            get
-            {
-                return _popupController;
-            }
-        }
+        public IPopupController PopupController => _popupController;
 
         public virtual void Debug()
         {

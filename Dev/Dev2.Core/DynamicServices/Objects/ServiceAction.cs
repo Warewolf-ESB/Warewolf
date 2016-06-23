@@ -59,10 +59,7 @@ namespace Dev2.DynamicServices.Objects
             set { _commandTimeout = value; }
         }
 
-        public Stream XamlStream
-        {
-            get { return _xamlStream; }
-        }
+        public Stream XamlStream => _xamlStream;
 
         /// <summary>
         ///     The type of action that this action will invoke
@@ -115,10 +112,7 @@ namespace Dev2.DynamicServices.Objects
         /// <summary>
         ///     The activity implementation created from the workflow xaml
         /// </summary>
-        public Activity WorkflowActivity
-        {
-            get { return _workflowActivity; }
-        }
+        public Activity WorkflowActivity => _workflowActivity;
 
         /// <summary>
         ///     The inputs for this service action
@@ -335,14 +329,8 @@ namespace Dev2.DynamicServices.Objects
             _value = value;
         }
 
-        public int Generation
-        {
-            get { return _generation; }
-        }
+        public int Generation => _generation;
 
-        public Activity Value
-        {
-            get { return _value; }
-        }
+        public Activity Value => _value;
     }
 }

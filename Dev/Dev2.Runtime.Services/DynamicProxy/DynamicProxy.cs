@@ -23,20 +23,8 @@ namespace Dev2.Runtime.DynamicProxy
             CallConstructor(paramTypes, paramValues);
         }
 
-        public Type ProxyType
-        {
-            get
-            {
-                return ObjectType;
-            }
-        }
+        public Type ProxyType => ObjectType;
 
-        public object Proxy
-        {
-            get
-            {
-                return ObjectInstance;
-            }
-        }
+        public object Proxy => ObjectInstance;
     }
 }

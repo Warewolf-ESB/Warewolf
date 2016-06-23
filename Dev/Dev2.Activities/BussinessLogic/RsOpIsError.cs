@@ -20,12 +20,6 @@ namespace Dev2.DataList
             return "There is An Error";
         }
 
-        public override int ArgumentCount
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public override int ArgumentCount => 0;
     }
 }

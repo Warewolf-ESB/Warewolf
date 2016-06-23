@@ -688,10 +688,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         #region ShowDragAdornerResolved
 
-        private bool ShowDragAdornerResolved
-        {
-            get { return ShowDragAdorner && DragAdornerOpacity > 0.0; }
-        }
+        private bool ShowDragAdornerResolved => ShowDragAdorner && DragAdornerOpacity > 0.0;
 
         #endregion // ShowDragAdornerResolved
 
@@ -831,42 +828,27 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         /// <summary>
         ///     The items source of the ListView where the drop occurred.
         /// </summary>
-        public ObservableCollection<ItemType> ItemsSource
-        {
-            get { return itemsSource; }
-        }
+        public ObservableCollection<ItemType> ItemsSource => itemsSource;
 
         /// <summary>
         ///     The data object which was dropped.
         /// </summary>
-        public ItemType DataItem
-        {
-            get { return dataItem; }
-        }
+        public ItemType DataItem => dataItem;
 
         /// <summary>
         ///     The current index of the data item being dropped, in the ItemsSource collection.
         /// </summary>
-        public int OldIndex
-        {
-            get { return oldIndex; }
-        }
+        public int OldIndex => oldIndex;
 
         /// <summary>
         ///     The target index of the data item being dropped, in the ItemsSource collection.
         /// </summary>
-        public int NewIndex
-        {
-            get { return newIndex; }
-        }
+        public int NewIndex => newIndex;
 
         /// <summary>
         ///     The drag drop effects allowed to be performed.
         /// </summary>
-        public DragDropEffects AllowedEffects
-        {
-            get { return allowedEffects; }
-        }
+        public DragDropEffects AllowedEffects => allowedEffects;
 
         /// <summary>
         ///     The drag drop effect(s) performed on the dropped item.

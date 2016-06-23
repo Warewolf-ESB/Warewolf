@@ -243,13 +243,7 @@ namespace Warewolf.Studio.ViewModels
             _canDrag = true;
         }
 
-        public string ActivityName
-        {
-            get
-            {
-                return typeof(DsfActivity).AssemblyQualifiedName;
-            }
-        }
+        public string ActivityName => typeof(DsfActivity).AssemblyQualifiedName;
 
         void DeleteVersion()
         {
@@ -273,13 +267,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public int ChildrenCount
-        {
-            get
-            {
-                return GetChildrenCount();
-            }
-        }
+        public int ChildrenCount => GetChildrenCount();
+
         private int GetChildrenCount()
         {
             int total = 0;
@@ -648,13 +637,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsNotRenaming
-        {
-            get
-            {
-                return !_isRenaming;
-            }
-        }
+        public bool IsNotRenaming => !_isRenaming;
+
         public string ResourceName
         {
             get
@@ -1029,21 +1013,9 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanShowVersions);
             }
         }
-        public bool CanRollback
-        {
-            get
-            {
-                return IsResourceVersion;
-            }
-        }
+        public bool CanRollback => IsResourceVersion;
 
-        public IShellViewModel ShellViewModel
-        {
-            get
-            {
-                return _shellViewModel;
-            }
-        }
+        public IShellViewModel ShellViewModel => _shellViewModel;
 
         public bool AreVersionsVisible
         {
@@ -1286,20 +1258,8 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper restore UnusedAutoPropertyAccessor.Global
         public string Inputs { get; set; }
         public string Outputs { get; set; }
-        public string ExecuteToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.ExplorerItemExecuteToolTip;
-            }
-        }
-        public string EditToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.ExplorerItemEditToolTip;
-            }
-        }
+        public string ExecuteToolTip => Resources.Languages.Core.ExplorerItemExecuteToolTip;
+        public string EditToolTip => Resources.Languages.Core.ExplorerItemEditToolTip;
         public string ResourcePath { get; set; }
         public IEnvironmentModel EnvironmentModel
         {

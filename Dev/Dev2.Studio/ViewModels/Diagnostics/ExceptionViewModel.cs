@@ -130,15 +130,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public BitmapSource ErrorIcon
-        {
-            get
-            {
-                //Just wraps the default errorIcon in a BitMapSource
-                return Imaging.CreateBitmapSourceFromHIcon(SystemIcons.Error.Handle, Int32Rect.Empty,
-                                                                BitmapSizeOptions.FromEmptyOptions());
-            }
-        }
+        public BitmapSource ErrorIcon => Imaging.CreateBitmapSourceFromHIcon(SystemIcons.Error.Handle, Int32Rect.Empty,
+            BitmapSizeOptions.FromEmptyOptions());
 
         #endregion public properties
 

@@ -26,23 +26,16 @@ namespace Dev2.Studio.Core.Services.System
         /// <summary>
         /// Determines if the current application is 32 or 64-bit.
         /// </summary>
-        static public string OsBits
-        {
-            get { return Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit"; }
-        }
+        static public string OsBits => Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit";
+
         #endregion
 
         #region BITS
         /// <summary>
         /// Determines if the current application is 32 or 64-bit.
         /// </summary>
-        static public int Bits
-        {
-            get
-            {
-                return IntPtr.Size * 8;
-            }
-        }
+        static public int Bits => IntPtr.Size * 8;
+
         #endregion BITS
 
         #region EDITION
@@ -527,13 +520,8 @@ namespace Dev2.Studio.Core.Services.System
         /// <summary>
         /// Gets the build version number of the operating system running on this computer.
         /// </summary>
-        static public int BuildVersion
-        {
-            get
-            {
-                return Environment.OSVersion.Version.Build;
-            }
-        }
+        static public int BuildVersion => Environment.OSVersion.Version.Build;
+
         #endregion BUILD
 
         #region FULL
@@ -541,26 +529,16 @@ namespace Dev2.Studio.Core.Services.System
         /// <summary>
         /// Gets the full version string of the operating system running on this computer.
         /// </summary>
-        static public string VersionString
-        {
-            get
-            {
-                return Environment.OSVersion.Version.ToString();
-            }
-        }
+        static public string VersionString => Environment.OSVersion.Version.ToString();
+
         #endregion STRING
 
         #region VERSION
         /// <summary>
         /// Gets the full version of the operating system running on this computer.
         /// </summary>
-        static public Version Version
-        {
-            get
-            {
-                return Environment.OSVersion.Version;
-            }
-        }
+        static public Version Version => Environment.OSVersion.Version;
+
         #endregion VERSION
         #endregion FULL
 
@@ -568,39 +546,24 @@ namespace Dev2.Studio.Core.Services.System
         /// <summary>
         /// Gets the major version number of the operating system running on this computer.
         /// </summary>
-        static public int MajorVersion
-        {
-            get
-            {
-                return Environment.OSVersion.Version.Major;
-            }
-        }
+        static public int MajorVersion => Environment.OSVersion.Version.Major;
+
         #endregion MAJOR
 
         #region MINOR
         /// <summary>
         /// Gets the minor version number of the operating system running on this computer.
         /// </summary>
-        static public int MinorVersion
-        {
-            get
-            {
-                return Environment.OSVersion.Version.Minor;
-            }
-        }
+        static public int MinorVersion => Environment.OSVersion.Version.Minor;
+
         #endregion MINOR
 
         #region REVISION
         /// <summary>
         /// Gets the revision version number of the operating system running on this computer.
         /// </summary>
-        static public int RevisionVersion
-        {
-            get
-            {
-                return Environment.OSVersion.Version.Revision;
-            }
-        }
+        static public int RevisionVersion => Environment.OSVersion.Version.Revision;
+
         #endregion REVISION
         #endregion VERSION
 

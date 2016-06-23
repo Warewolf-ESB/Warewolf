@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers2.DataMerge
             }
         }
 
-        public override string CollectionName { get { return "MergeCollection"; } }
+        public override string CollectionName => "MergeCollection";
 
         public ICommand MergeTypeUpdatedCommand { get; private set; }
 

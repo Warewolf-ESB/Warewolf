@@ -61,10 +61,7 @@ namespace Dev2.Workspaces
 
         private IList<IWorkspaceItem> _workspaceItems;
 
-        public IList<IWorkspaceItem> WorkspaceItems
-        {
-            get { return _workspaceItems ?? (_workspaceItems = Read()); }
-        }
+        public IList<IWorkspaceItem> WorkspaceItems => _workspaceItems ?? (_workspaceItems = Read());
 
         #region CTOR
 

@@ -46,13 +46,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        public IEventAggregator EventPublisher
-        {
-            get
-            {
-                return _eventPublisher;
-            }
-        }
+        public IEventAggregator EventPublisher => _eventPublisher;
 
         #endregion // Constructor
 

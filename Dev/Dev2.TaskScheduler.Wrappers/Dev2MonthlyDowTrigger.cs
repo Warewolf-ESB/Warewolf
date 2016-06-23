@@ -28,34 +28,16 @@ namespace Dev2.TaskScheduler.Wrappers
             set { ((ITriggerDelay) Instance).Delay = value; }
         }
 
-        public new MonthlyDOWTrigger Instance
-        {
-            get { return (MonthlyDOWTrigger) base.Instance; }
-        }
+        public new MonthlyDOWTrigger Instance => (MonthlyDOWTrigger) base.Instance;
 
-        public DaysOfTheWeek DaysOfWeek
-        {
-            get { return Instance.DaysOfWeek; }
-        }
+        public DaysOfTheWeek DaysOfWeek => Instance.DaysOfWeek;
 
-        public MonthsOfTheYear MonthsOfYear
-        {
-            get { return Instance.MonthsOfYear; }
-        }
+        public MonthsOfTheYear MonthsOfYear => Instance.MonthsOfYear;
 
-        public TimeSpan RandomDelay
-        {
-            get { return Instance.RandomDelay; }
-        }
+        public TimeSpan RandomDelay => Instance.RandomDelay;
 
-        public bool RunOnLastWeekOfMonth
-        {
-            get { return Instance.RunOnLastWeekOfMonth; }
-        }
+        public bool RunOnLastWeekOfMonth => Instance.RunOnLastWeekOfMonth;
 
-        public WhichWeek WeeksOfMonth
-        {
-            get { return Instance.WeeksOfMonth; }
-        }
+        public WhichWeek WeeksOfMonth => Instance.WeeksOfMonth;
     }
 }

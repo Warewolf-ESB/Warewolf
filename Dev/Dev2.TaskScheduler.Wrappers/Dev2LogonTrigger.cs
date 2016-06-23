@@ -34,9 +34,6 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.UserId = value; }
         }
 
-        public new LogonTrigger Instance
-        {
-            get { return (LogonTrigger) base.Instance; }
-        }
+        public new LogonTrigger Instance => (LogonTrigger) base.Instance;
     }
 }

@@ -63,14 +63,7 @@ namespace Dev2.SignalR.Wrappers.New
             {
             }
         }
-        public ConnectionStateWrapped State
-        {
-            get
-            {
-                return (ConnectionStateWrapped)_wrapped.State;
-            }
-    
-        }
+        public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
 
         public Task Start()
         {

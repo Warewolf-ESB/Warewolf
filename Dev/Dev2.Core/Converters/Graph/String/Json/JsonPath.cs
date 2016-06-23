@@ -92,15 +92,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
         #region Static Properties
 
-        public static string EnumerableSymbol
-        {
-            get { return _enumerableSymbol; }
-        }
+        public static string EnumerableSymbol => _enumerableSymbol;
 
-        public static string SeperatorSymbol
-        {
-            get { return _seperatorSymbol; }
-        }
+        public static string SeperatorSymbol => _seperatorSymbol;
 
         #endregion Static Properties
     }

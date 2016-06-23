@@ -65,25 +65,13 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public string WebServerUri { get; set; }
 
-        public bool HasChanges
-        {
-            get
-            {
-                return Logging != null && Logging.HasChanges ||
-                     Security != null && Security.HasChanges ||
-                      Backup != null && Backup.HasChanges;
-            }
-        }
+        public bool HasChanges => Logging != null && Logging.HasChanges ||
+                                  Security != null && Security.HasChanges ||
+                                  Backup != null && Backup.HasChanges;
 
-        public bool HasError
-        {
-            get
-            {
-                return Logging != null && Logging.HasError ||
-                       Security != null && Security.HasError ||
-                       Backup != null && Backup.HasError;
-            }
-        }
+        public bool HasError => Logging != null && Logging.HasError ||
+                                Security != null && Security.HasError ||
+                                Backup != null && Backup.HasError;
 
         [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
         public LoggingSettings Logging

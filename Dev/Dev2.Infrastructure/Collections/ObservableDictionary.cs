@@ -93,15 +93,15 @@ namespace Dev2.Collections
 
         #region public
 
-        public IEqualityComparer<TKey> Comparer { get { return KeyedEntryCollection.Comparer; } }
+        public IEqualityComparer<TKey> Comparer => KeyedEntryCollection.Comparer;
 
-        public int Count { get { return KeyedEntryCollection.Count; } }
+        public int Count => KeyedEntryCollection.Count;
 
-        public Dictionary<TKey, TValue>.KeyCollection Keys { get { return TrueDictionary.Keys; } }
+        public Dictionary<TKey, TValue>.KeyCollection Keys => TrueDictionary.Keys;
 
         public TValue this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
 
-        public Dictionary<TKey, TValue>.ValueCollection Values { get { return TrueDictionary.Values; } }
+        public Dictionary<TKey, TValue>.ValueCollection Values => TrueDictionary.Values;
 
         #endregion public
 
@@ -385,9 +385,9 @@ namespace Dev2.Collections
             return TryGetValue(key, out value);
         }
 
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys { get { return Keys; } }
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
 
-        ICollection<TValue> IDictionary<TKey, TValue>.Values { get { return Values; } }
+        ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 
         TValue IDictionary<TKey, TValue>.this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
 
@@ -415,20 +415,20 @@ namespace Dev2.Collections
             return new Enumerator<TKey, TValue>(this, true);
         }
 
-        bool IDictionary.IsFixedSize { get { return false; } }
+        bool IDictionary.IsFixedSize => false;
 
-        bool IDictionary.IsReadOnly { get { return false; } }
+        bool IDictionary.IsReadOnly => false;
 
         object IDictionary.this[object key] { get { return KeyedEntryCollection[(TKey)key].Value; } set { DoSetEntry((TKey)key, (TValue)value); } }
 
-        ICollection IDictionary.Keys { get { return Keys; } }
+        ICollection IDictionary.Keys => Keys;
 
         void IDictionary.Remove(object key)
         {
             DoRemoveEntry((TKey)key);
         }
 
-        ICollection IDictionary.Values { get { return Values; } }
+        ICollection IDictionary.Values => Values;
 
         #endregion IDictionary
 
@@ -470,9 +470,9 @@ namespace Dev2.Collections
             }
         }
 
-        int ICollection<KeyValuePair<TKey, TValue>>.Count { get { return KeyedEntryCollection.Count; } }
+        int ICollection<KeyValuePair<TKey, TValue>>.Count => KeyedEntryCollection.Count;
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly { get { return false; } }
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> kvp)
         {
@@ -488,11 +488,11 @@ namespace Dev2.Collections
             ((ICollection)KeyedEntryCollection).CopyTo(array, index);
         }
 
-        int ICollection.Count { get { return KeyedEntryCollection.Count; } }
+        int ICollection.Count => KeyedEntryCollection.Count;
 
-        bool ICollection.IsSynchronized { get { return ((ICollection)KeyedEntryCollection).IsSynchronized; } }
+        bool ICollection.IsSynchronized => ((ICollection)KeyedEntryCollection).IsSynchronized;
 
-        object ICollection.SyncRoot { get { return ((ICollection)KeyedEntryCollection).SyncRoot; } }
+        object ICollection.SyncRoot => ((ICollection)KeyedEntryCollection).SyncRoot;
 
         #endregion ICollection
 

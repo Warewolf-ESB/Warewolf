@@ -24,21 +24,9 @@ namespace Dev2.ViewModels.Help
 
         public HelpView HelpView { get; private set; }
 
-        public WebBrowser WebBrowser
-        {
-            get
-            {
-                return HelpView.WebBrowserHost;
-            }
-        }
+        public WebBrowser WebBrowser => HelpView.WebBrowserHost;
 
-        public CircularProgressBar CircularProgressBar
-        {
-            get
-            {
-                return HelpView.CircularProgressBar;
-            }
-        }
+        public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
         public Visibility WebBrowserVisibility  
         {

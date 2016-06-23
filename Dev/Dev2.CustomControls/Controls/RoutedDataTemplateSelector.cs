@@ -111,10 +111,7 @@ namespace WPF.JoshSmith.Controls
         /// <summary>
         ///     Returns the data item being templated.
         /// </summary>
-        public object DataObject
-        {
-            get { return dataObject; }
-        }
+        public object DataObject => dataObject;
 
         /// <summary>
         ///     Gets/sets the DataTemplate to apply to the templated element.
@@ -124,10 +121,7 @@ namespace WPF.JoshSmith.Controls
         /// <summary>
         ///     The UIElement which contains the data object for which a template must be specified.
         /// </summary>
-        public UIElement TemplatedElement
-        {
-            get { return OriginalSource as UIElement; }
-        }
+        public UIElement TemplatedElement => OriginalSource as UIElement;
     }
 
     #endregion // TemplateRequestedEventArgs

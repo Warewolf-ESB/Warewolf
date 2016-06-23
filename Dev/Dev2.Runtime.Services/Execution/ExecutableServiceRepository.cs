@@ -32,19 +32,11 @@ namespace Dev2.Runtime.Execution
             _activeExecutions = new List<IExecutableService>();
         }
 
-        public static ExecutableServiceRepository Instance
-        {
-            get
-            {
-                return _instance.Value;
-            }
-        }
+        public static ExecutableServiceRepository Instance => _instance.Value;
+
         #endregion
 
-        public int Count
-        {
-            get { return _activeExecutions.Count; }
-        }
+        public int Count => _activeExecutions.Count;
 
         public bool DoesQueueHaveSpace()
         {

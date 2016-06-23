@@ -223,10 +223,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool UserAuthenticationSelected
-        {
-            get { return AuthenticationType == AuthenticationType.User; }
-        }
+        public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
 
         void SaveConnection()
         {
@@ -567,7 +564,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsEmpty { get { return String.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
+        public bool IsEmpty => String.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
 
         protected override void OnDispose()
         {
