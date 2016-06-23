@@ -436,14 +436,21 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if (string.IsNullOrEmpty(expectedValue))
                 {
-                    if (recordSetValues.Count > 0)
+                    if (recordSetValues != null && recordSetValues.Count > 0)
                     {
                         Assert.Fail("Expecting no value but recordset result variable has one or more values. First value: " + recordSetValues[0]);
                     }
                 }
                 else
                 {
-                    Assert.AreEqual(recordSetValues[0], expectedValue, "First recordset result variable value is not equal to expected value.");
+                    if (recordSetValues != null && recordSetValues.Count > 0)
+                    {
+                        Assert.AreEqual(recordSetValues[0], expectedValue, "First recordset result variable value is not equal to expected value.");
+                    }
+                    else
+                    {
+                        Assert.Fail("Expecting some value but recordset result variable has no values.");
+                    }
                 }
             }
             else
