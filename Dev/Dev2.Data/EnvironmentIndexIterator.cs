@@ -18,8 +18,8 @@ namespace Dev2.Data
             _enumerator = _indexes.GetEnumerator();
         }
 
-        public int Count { get { return _indexes.Count; } }
-        public bool IsEmpty { get {return _indexes.Count==0;} }
+        public int Count => _indexes.Count;
+        public bool IsEmpty => _indexes.Count==0;
 
         public bool HasMore()
         {

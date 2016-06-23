@@ -167,9 +167,9 @@ namespace WarewolfParserInterop
             }
         }
 
-        public int Count { get { return _count; } }
+        public int Count => _count;
 
-        public int Length { get { return _values.Length; } }
+      public int Length => _values.Length;
 
       public WarewolfAtomList<T> DeletePosition(int position)
       {

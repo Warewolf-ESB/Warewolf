@@ -166,10 +166,7 @@ namespace Dev2
         ///     The error message for the property. The default is an empty string ("").
         /// </returns>
         /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName]
-        {
-            get { return ""; }
-        }
+        public string this[string columnName] => "";
 
         /// <summary>
         ///     Gets an error message indicating what is wrong with this object.

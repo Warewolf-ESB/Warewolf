@@ -102,7 +102,7 @@ namespace Dev2.Studio.Core.Models
 
         public string Category { get; set; }
 
-        public bool IsLocalHost { get { return IsLocalHostCheck(); } }
+        public bool IsLocalHost => IsLocalHostCheck();
         public bool HasLoadedResources { get; private set; }
 
         public IEnvironmentConnection Connection
@@ -131,33 +131,16 @@ namespace Dev2.Studio.Core.Models
                 Connection.DisplayName = value;
             } }
 
-        public bool IsConnected { get { return Connection.IsConnected; } }
+        public bool IsConnected => Connection.IsConnected;
 
-        public bool IsAuthorized { get { return Connection.IsAuthorized; } }
-        public bool IsAuthorizedDeployFrom
-        {
-            get
-            {
-                return AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
-            }
-        }
-        public bool IsAuthorizedDeployTo
-        {
-            get
-            {
-                return AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
-            }
-        }
+        public bool IsAuthorized => Connection.IsAuthorized;
+
+        public bool IsAuthorizedDeployFrom => AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
+
+        public bool IsAuthorizedDeployTo => AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
 
         public IResourceRepository ResourceRepository { get; private set; }
-        public string DisplayName
-        {
-            get
-            {
-                return Name + " (" + Connection.WebServerUri + ")";
-            }
- 
-        }
+        public string DisplayName => Name + " (" + Connection.WebServerUri + ")";
 
         #endregion
 

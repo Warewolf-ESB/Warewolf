@@ -59,7 +59,7 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// The display name of the format.
         /// </summary>
-        public string FormatName { get { return _formatName; } }
+        public string FormatName => _formatName;
 
         public EmitionTypes PublicFormatName { get; set; }
 

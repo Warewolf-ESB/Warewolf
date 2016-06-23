@@ -37,16 +37,8 @@ namespace Dev2.DataList.Contract
 
         }
         
-        public string OutPutDescription {
-            get {
-                return _outPutDescription;
-            }
-        }
+        public string OutPutDescription => _outPutDescription;
 
-        public IList<string> OutputStrings{
-            get {                
-                return _outputStrings;
-            }
-        }
+        public IList<string> OutputStrings => _outputStrings;
     }
 }

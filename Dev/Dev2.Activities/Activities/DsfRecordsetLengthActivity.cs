@@ -126,6 +126,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 count = dataObject.Environment.GetLength(rs);
                             }
+                            else
+                            {
+                                allErrors.AddError("Recordset: "+RecordsetName+" does not exist.");
+                            }
                             var value = count.ToString();
                             dataObject.Environment.Assign(RecordsLength, value, update);
                             AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
@@ -133,7 +137,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        //AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
                         dataObject.Environment.Assign(RecordsLength, "0", update);
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", RecordsLength, "", "="));

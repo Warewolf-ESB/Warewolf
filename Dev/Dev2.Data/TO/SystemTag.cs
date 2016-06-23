@@ -27,17 +27,10 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Properties
-        public string StartTag {
-            get {
-                return _startTag;
-            }
-        }
+        public string StartTag => _startTag;
 
-        public string EndTag{
-            get{
-                return _endTag;
-            }
-        }
+        public string EndTag => _endTag;
+
         #endregion
     }
 }

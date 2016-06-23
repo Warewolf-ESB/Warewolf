@@ -36,13 +36,7 @@ namespace Dev2.Diagnostics.Debug
         #region Singleton Instance
 
         static DebugDispatcher _instance;
-        public static DebugDispatcher Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new DebugDispatcher());
-            }
-        }
+        public static DebugDispatcher Instance => _instance ?? (_instance = new DebugDispatcher());
 
         #endregion
 
@@ -68,13 +62,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         /// Gets the number of writers.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _writers.Count;
-            }
-        }
+        public int Count => _writers.Count;
 
         #endregion
 
@@ -193,13 +181,7 @@ namespace Dev2.Diagnostics.Debug
             QueueWrite(debugState);
         }
 
-        public bool IsQueueEmpty
-        {
-            get
-            {
-                return WriterQueue.IsEmpty;
-            }
-        }
+        public bool IsQueueEmpty => WriterQueue.IsEmpty;
 
         #endregion
 

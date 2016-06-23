@@ -100,13 +100,7 @@ namespace Dev2.Runtime.ESB.Execution
             return _container.GetDataObject();
         }
 
-        public IEsbExecutionContainer Container
-        {
-            get
-            {
-                return _container;
-            }
-        }
+        public IEsbExecutionContainer Container => _container;
 
         #endregion
     }

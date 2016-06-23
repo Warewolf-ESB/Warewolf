@@ -12,50 +12,15 @@ namespace Warewolf.Studio.Core
 {
     public static class RegionNames
     {
-        public static string Explorer
-        {
-            get
-            {
-                return "Explorer";
-            }
-        }
-        public static string VariableList
-        {
-            get
-            {
-                return "Variables";
-            }
-        }
-        public static string Toolbox
-        {
-            get
-            {
-                return "Toolbox";
-            }
-        }
+        public static string Explorer => "Explorer";
+        public static string VariableList => "Variables";
 
-        public static string Menu
-        {
-            get
-            {
-                return "Menu";
-            }
-        }
+        public static string Toolbox => "Toolbox";
 
-        public static string Workspace
-        {
-            get
-            {
-                return "Workspace";
-            }
-        }
-        public static string Help
-        {
-            get
-            {
-                return "Help";
-            }
+        public static string Menu => "Menu";
 
-        }
+        public static string Workspace => "Workspace";
+
+        public static string Help => "Help";
     }
 }

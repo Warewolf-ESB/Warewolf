@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.CommandLine
         public static readonly DependencyProperty IsCommandFileNameFocusedProperty =
             DependencyProperty.Register("IsCommandFileNameFocused", typeof(bool), typeof(CommandLineDesignerViewModel), new PropertyMetadata(false));
 
-        string CommandFileName { get { return GetProperty<string>(); } }
+        string CommandFileName => GetProperty<string>();
 
         public override void Validate()
         {

@@ -139,10 +139,7 @@ namespace Dev2.Services.Security
             }
         }
 
-        public bool CanRemove
-        {
-            get { return !string.IsNullOrEmpty(WindowsGroup) && !IsBuiltInGuests && !IsBuiltInAdministrators; }
-        }
+        public bool CanRemove => !string.IsNullOrEmpty(WindowsGroup) && !IsBuiltInGuests && !IsBuiltInAdministrators;
 
 
         public bool View { get { return _view; } set { OnPropertyChanged(ref _view, value); } }
@@ -186,42 +183,18 @@ namespace Dev2.Services.Security
         }
 
         [JsonIgnore]
-        public bool IsBuiltInAdministrators
-        {
-            get
-            {
-                return WindowsGroup != null && IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
+        public bool IsBuiltInAdministrators => WindowsGroup != null && IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
 
         [JsonIgnore]
-        public bool IsBuiltInGuests
-        {
-            get
-            {
-                return IsServer && IsBuiltInGuestsForExecution;
-            }
-        }
+        public bool IsBuiltInGuests => IsServer && IsBuiltInGuestsForExecution;
 
         [JsonIgnore]
-        public bool IsBuiltInGuestsForExecution
-        {
-            get
-            {
-                return WindowsGroup != null && WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
+        public bool IsBuiltInGuestsForExecution => WindowsGroup != null && WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
 
         [JsonIgnore]
-        public bool IsValid
-        {
-            get
-            {
-                return IsServer
-                    ? !string.IsNullOrEmpty(WindowsGroup)
-                    : !string.IsNullOrEmpty(WindowsGroup) && !string.IsNullOrEmpty(ResourceName);
-            }
-        }
+        public bool IsValid => IsServer
+            ? !string.IsNullOrEmpty(WindowsGroup)
+            : !string.IsNullOrEmpty(WindowsGroup) && !string.IsNullOrEmpty(ResourceName);
 
         public static WindowsGroupPermission CreateAdministrators()
         {

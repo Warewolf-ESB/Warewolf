@@ -71,27 +71,11 @@ namespace Dev2.PerformanceCounters.Counters
             }
         }
 
-        public string Category
-        {
-            get
-            {
-                return GlobalConstants.WarewolfServices;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return "Request Per Second";
-            }
-        }
-        public WarewolfPerfCounterType PerfCounterType
-        {
-            get
-            {
-                return _perfCounterType;
-            }
-        }
+        public string Category => GlobalConstants.WarewolfServices;
+
+        public string Name => "Request Per Second";
+
+        public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
         public IList<CounterCreationData> CreationData()
         {

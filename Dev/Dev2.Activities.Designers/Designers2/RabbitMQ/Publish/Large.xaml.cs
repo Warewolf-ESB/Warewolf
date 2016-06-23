@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             Loaded += OnLoaded;
         }
 
-        RabbitMQPublishDesignerViewModel ViewModel { get { return DataContext as RabbitMQPublishDesignerViewModel; } }
+        RabbitMQPublishDesignerViewModel ViewModel => DataContext as RabbitMQPublishDesignerViewModel;
 
         protected override IInputElement GetInitialFocusElement()
         {

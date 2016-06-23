@@ -41,13 +41,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         {
         }
 
-        public override bool HasEventLogs
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool HasEventLogs => false;
 
         #endregion
     }

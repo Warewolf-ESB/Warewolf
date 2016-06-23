@@ -112,20 +112,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         #region Static Properties
 
-        public static string EnumerableSymbol
-        {
-            get { return _enumerableSymbol; }
-        }
+        public static string EnumerableSymbol => _enumerableSymbol;
 
-        public static string NodeSeperatorSymbol
-        {
-            get { return _nodeSeperatorSymbol; }
-        }
+        public static string NodeSeperatorSymbol => _nodeSeperatorSymbol;
 
-        public static string AttributeSeperatorSymbol
-        {
-            get { return _attributeSeperatorSymbol; }
-        }
+        public static string AttributeSeperatorSymbol => _attributeSeperatorSymbol;
 
         #endregion Static Properties
     }

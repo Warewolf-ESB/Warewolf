@@ -48,7 +48,7 @@ namespace Dev2.Services
             }
         }
 
-        public int Count { get { return _subscriptions.Count; } }
+        public int Count => _subscriptions.Count;
 
         public void Subscribe(Action<TEvent> onNext)
         {

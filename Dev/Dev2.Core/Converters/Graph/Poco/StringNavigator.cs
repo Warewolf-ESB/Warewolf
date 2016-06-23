@@ -26,13 +26,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Implementation of INavigator
 
-        public object Data
-        {
-            get
-            {
-                return _data;
-            }
-        }
+        public object Data => _data;
 
         public object SelectScalar(IPath path)
         {

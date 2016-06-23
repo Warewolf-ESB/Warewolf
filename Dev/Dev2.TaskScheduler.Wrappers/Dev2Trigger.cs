@@ -31,10 +31,7 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public Trigger Instance
-        {
-            get { return _instance; }
-        }
+        public Trigger Instance => _instance;
 
         public bool Enabled
         {
@@ -60,10 +57,7 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.Id = value; }
         }
 
-        public IRepetitionPattern Repetition
-        {
-            get { return _taskServiceConvertorFactory.CreateRepetitionPattern(Instance.Repetition); }
-        }
+        public IRepetitionPattern Repetition => _taskServiceConvertorFactory.CreateRepetitionPattern(Instance.Repetition);
 
         public DateTime StartBoundary
         {
@@ -71,10 +65,7 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.StartBoundary = value; }
         }
 
-        public TaskTriggerType TriggerType
-        {
-            get { return Instance.TriggerType; }
-        }
+        public TaskTriggerType TriggerType => Instance.TriggerType;
 
         public override string ToString()
         {

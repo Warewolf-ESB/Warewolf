@@ -27,10 +27,7 @@ namespace Gma.DataStructures.StringSearch
             m_Children = children;
         }
 
-        protected override int KeyLength
-        {
-            get { return m_Key.Length; }
-        }
+        protected override int KeyLength => m_Key.Length;
 
         protected override IEnumerable<TValue> Values()
         {
