@@ -88,10 +88,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                    //if (!Directory.Exists(dst.Path))
-                    //{                        
-                    //    throw new Exception(string.Format(ErrorResource.DirectoryDoesNotExist, dst.Path));
-                    //}
+                    if (!Directory.Exists(dst.Path))
+                    {                        
+                        throw new Exception(string.Format(ErrorResource.DirectoryDoesNotExist, dst.Path));
+                    }
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                     
                     string result = broker.Delete(dstEndPoint);

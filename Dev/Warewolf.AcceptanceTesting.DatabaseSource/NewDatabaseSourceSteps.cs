@@ -35,7 +35,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockExecutor = new Mock<IExternalProcessExecutor>();
+            var mockExecutor = new Mock<IExternalProcessExecutor>();            
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
@@ -391,7 +391,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
         {
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-
             Assert.AreEqual(userName, manageDatabaseSourceControl.GetUsername());
         }
 
@@ -544,5 +543,16 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             manageDatabaseSourceControl.CancelTest();
         }
 
+        [When(@"I change type option from ""(.*)"" to ""(.*)""")]
+        public void WhenIChangeTypeOptionFromTo(string p0, string p1)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Assert.AreEqual(p0, manageDatabaseSourceControl.GetSelectedDbOption());
+            manageDatabaseSourceControl.SelectType(p1);
+            manageDatabaseSourceControl.SelectDatabase(string.Empty);
+            var viewModel = (ManageDatabaseSourceViewModel)manageDatabaseSourceControl.DataContext;
+            Assert.AreEqual(p1, manageDatabaseSourceControl.GetSelectedDbOption());
+            Assert.AreEqual(string.Empty, viewModel.DatabaseName);
+        }
     }
 }
