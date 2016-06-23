@@ -49,7 +49,7 @@ namespace Warewolf.Storage.Tests
             //------------Execute Test---------------------------
             scopedEnvironment.Eval("[[a]]", 0);
             //------------Assert Results-------------------------
-            _mockEnv.Verify(a => a.Eval("[[Person(*)]]", 0, true));
+            _mockEnv.Verify(a => a.Eval("[[Person(*)]]", 0, false));
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace Warewolf.Storage.Tests
             //------------Execute Test---------------------------
             scopedEnvironment.Eval("[[b]]", 0);
             //------------Assert Results-------------------------
-            _mockEnv.Verify(a => a.Eval("[[b]]", 0, true));
+            _mockEnv.Verify(a => a.Eval("[[b]]", 0, false));
         }
 
         [TestMethod]
