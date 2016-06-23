@@ -63,6 +63,18 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         }
 
         [TestMethod]
+        public void ExecutionWithNoStartNode_ExpectedInvalidValidResult()
+        {
+
+            string path = ServerSettings.WebserverURI + "Acceptance%20Testing%20Resources/WorkflowWithNoStartNodeConnected";
+
+            string result = TestHelper.PostDataToWebserver(path);
+
+            Assert.IsTrue(result.Contains("An internal error occurred while executing the service request"));
+            Assert.IsTrue(result.Contains("The workflow must have at least one service or activity connected to the Start Node."));
+        }
+
+        [TestMethod]
         public void ExecutionWithSource_ExpectedValidXML()
         {
 
