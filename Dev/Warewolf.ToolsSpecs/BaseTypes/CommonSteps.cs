@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     foreach (var errorInfo in validateFromModelView)
                         allErrors.Add(errorInfo.Message);
                 var errorThrown = allErrors.Contains(fetchErrors);
-                Assert.IsTrue(allErrors.Count > 0, "Expected error " + anError + " but the environment did not contain any.");
+                Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
         }
 
