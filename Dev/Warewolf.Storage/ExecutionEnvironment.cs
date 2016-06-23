@@ -247,13 +247,11 @@ namespace Warewolf.Storage
         {
             if (result.IsWarewolfAtomResult)
             {
-                // ReSharper disable PossibleNullReferenceException
                 var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
                     if (x.IsNothing) return null;
-                    // ReSharper restore PossibleNullReferenceException
                     return WarewolfAtomToStringErrorIfNull(x);
                 }
                 throw new Exception("null when f# said it should not be");
@@ -262,7 +260,6 @@ namespace Warewolf.Storage
             else
             // ReSharper restore RedundantIfElseBlock
             {
-                // ReSharper disable PossibleNullReferenceException
                 var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (warewolfAtomListresult != null)
                 {
