@@ -362,6 +362,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [Then(@"deploy is not successfull")]
         public void ThenDeployIsNotSuccessfull()
         {
+            var deployed = _deployed;
             Assert.IsFalse(GetVm().DeploySuccessfull);
         }
 
