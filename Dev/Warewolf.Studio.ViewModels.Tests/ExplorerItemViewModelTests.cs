@@ -958,12 +958,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestActivityName()
         {
             //assert
-            _target.ResourceType = "DbService";
-            Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfDatabaseActivity, Dev2.Activities"));
-            _target.ResourceType = "PluginService";
-            Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfPluginActivity, Dev2.Activities"));
-            _target.ResourceType = "WebService";
-            Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfWebserviceActivity, Dev2.Activities"));
             _target.ResourceType = "Folder";
             Assert.IsTrue(_target.ActivityName.StartsWith("Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity"));
         }

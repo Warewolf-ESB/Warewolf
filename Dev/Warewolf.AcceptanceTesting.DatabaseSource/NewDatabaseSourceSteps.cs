@@ -63,19 +63,20 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
+
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
            Assert.AreEqual( manageDatabaseSourceControl.GetHeader(),p0);
         }
+
         [Then(@"""(.*)"" is the tab Header")]
         public void ThenIsTheTabHeader(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetTabHeader(), p0);
         }
-
 
         [Given(@"I open New Database Source")]
         public void GivenIOpenNewDatabaseSource()
@@ -129,6 +130,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer("server");
         }
+
         [When(@"I Edit Server as ""(.*)""")]
         public void WhenIEditServerAs(string server)
         {
@@ -151,31 +153,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             (manageDatabaseSourceControl.DataContext as ManageDatabaseSourceViewModel).AuthenticationType = (AuthenticationType)authp;
             // ReSharper restore PossibleNullReferenceException
         }
-        [Then(@"underlying Authentication Type is selected as ""(.*)""")]
-        public void ThenUnderlyingAuthenticationTypeIsSelectedAs(string authstr)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-            var authp = Enum.Parse(typeof(AuthenticationType), authstr);
-            Assert.AreEqual(     db.AuthenticationType, (AuthenticationType)authp);
-        }
-
-        [Then(@"underlying Username is ""(.*)""")]
-        public void ThenUnderlyingUsernameIs(string user)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-
-            Assert.AreEqual(db.UserName, user);
-        }
-
-        [Then(@"underlying Password  is ""(.*)""")]
-        public void ThenUnderlyingPasswordIs(string pass)
-        {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
-
-            Assert.AreEqual(db.Password, pass);
-        }
-
-
 
         [Then(@"Authentication Type is selected as ""(.*)""")]
         public void ThenAuthenticationTypeIsSelectedAs(string authstr)
@@ -229,13 +206,11 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             manageDatabaseSourceControl.SelectDatabase(dbName);
         }
 
-
         [When(@"I type Server as ""(.*)""")]
         public void WhenITypeServerAs(string p0)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(p0);
- 
         }
 
         [Then(@"I type Select The Server as ""(.*)""")]
@@ -265,7 +240,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var rows = table.Rows[0].Values;
             
             Assert.IsTrue( manageDatabaseSourceControl.GetServerOptions().All(a=>rows.Contains(a)));
-            
         }
 
         [Then(@"type options has ""(.*)"" as the default")]
@@ -276,23 +250,13 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             Assert.IsTrue(manageDatabaseSourceControl.GetSelectedDbOption() == defaultDbType);
         }
 
-
-
-
         [Given(@"I type Server as ""(.*)""")]
         public void GivenITypeServerAs(string serverName)
         {
-            if (serverName == "Incorrect")
-            {
-
-            }
-            else
-            {
-                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-                manageDatabaseSourceControl.EnterServerName(serverName);
-                var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
-                Assert.AreEqual(serverName, viewModel.ServerName.Name);
-            }
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            manageDatabaseSourceControl.EnterServerName(serverName);
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(serverName, viewModel.ServerName.Name);
         }
 
         [Given(@"Database dropdown is ""(.*)""")]
@@ -315,20 +279,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
         }
 
-        [When(@"I Cancel the source")]
-        public void WhenICancelTheSource()
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.Cancel();
-        }
-
-        [Then(@"""(.*)""  is closed")]
-        public void ThenIsClosed(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-
         [Given(@"I Select Authentication Type as ""(.*)""")]
         [When(@"I Select Authentication Type as ""(.*)""")]
         [Then(@"I Select Authentication Type as ""(.*)""")]
@@ -342,7 +292,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType(authenticationType);
         }
-
 
         [Given(@"I select ""(.*)"" as Database")]
         [When(@"I select ""(.*)"" as Database")]
@@ -362,7 +311,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
-
         }
 
         [When(@"I save the source as ""(.*)""")]
@@ -374,7 +322,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
-
 
         [Then(@"Username field is ""(.*)""")]
         public void ThenUsernameFieldIs(string visibility)
@@ -389,7 +336,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
         [Then(@"Username is ""(.*)""")]
         public void ThenUsernameIs(string userName)
         {
-
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             Assert.AreEqual(userName, manageDatabaseSourceControl.GetUsername());
@@ -398,7 +344,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
         [Then(@"Password  is ""(.*)""")]
         public void ThenPasswordIs(string password)
         {
-
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             Assert.AreEqual(password, manageDatabaseSourceControl.GetPassword());
@@ -485,26 +430,6 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             Assert.IsTrue(isErrorMessage);
         }
 
-        [Then(@"I save the source as ""(.*)""")]
-        public void ThenISaveTheSourceAs(string successString)
-        {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-         
-            mockUpdateManager.Setup(manager => manager.Save(It.IsAny<IDbSource>()));
-
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.PerformSave();
-        }
-
-
-        [When(@"the validation message as ""(.*)""")]
-        public void WhenTheValidationMessageAs(string validationMessage)
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var errorMessage = manageDatabaseSourceControl.GetErrorMessage();
-            Assert.AreEqual(validationMessage,errorMessage);
-        }
-
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
@@ -530,19 +455,11 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             }
         }
 
-
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string ConectTo)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
         }
-        [When(@"I click Cancel Test")]
-        public void WhenIClickCancelTest()
-        {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.CancelTest();
-        }
-
     }
 }
