@@ -445,7 +445,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     if (recordSetValues != null && recordSetValues.Count > 0)
                     {
-                        Assert.AreEqual(recordSetValues[0], expectedValue, "First recordset result variable value (" + recordSetValues[0] + ") is not equal to expected value (" + expectedValue + ").");
+                        Assert.AreEqual(recordSetValues[0], expectedValue, "First recordset result variable value is not equal to expected value.");
                     }
                     else
                     {
