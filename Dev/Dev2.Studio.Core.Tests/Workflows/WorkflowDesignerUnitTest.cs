@@ -217,41 +217,7 @@ namespace Dev2.Core.Tests.Workflows
 
         #endregion
 
-        #region AddMode Missing DataList Items
-
-        /// <summary>
-        /// Test the AddMissingDataListItems method that it adds all missing data list items to the datalist
-        /// </summary>
-        [TestMethod]
-        public void AddMissingDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsed()
-        {
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
-
-            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
-            var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
-
-            dataListItems.Add(dataListItem);
-            dataListItems.Add(secondDataListItem);
-
-            DataListSingleton.SetDataList(dataListViewModel);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            dataListViewModel.ScalarCollection.Clear();
-            dataListViewModel.RecsetCollection.Clear();
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
-            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
-            workflowDesigner.PopUp = mockPopUp.Object;
-
-            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            Assert.AreEqual(3, dataListViewModel.ScalarCollection.Count);
-            Assert.AreEqual(1, dataListViewModel.RecsetCollection.Count);
-            workflowDesigner.Dispose();
-        }
+        #region AddMode Missing DataList Items        
 
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
         [TestMethod]

@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     foreach (var errorInfo in validateFromModelView)
                         allErrors.Add(errorInfo.Message);
                 var errorThrown = allErrors.Contains(fetchErrors);
-                Assert.IsTrue(allErrors.Count > 0);
+                Assert.IsTrue(allErrors.Count > 0, "Expected error " + anError + " but the environment did not contain any.");
             }
         }
 
@@ -356,9 +356,9 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
             if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
-                if (validationErrors != null)
+                if (validationErrors != null && validationErrors.Count > 0)
                 {
-                    Assert.AreEqual(0, validationErrors.Count);
+                    Assert.AreEqual(0, validationErrors.Count, "Expected no errors but got one or more. First error: " + validationErrors[0].Message);
                 }
             }
             else
@@ -473,6 +473,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     if (string.IsNullOrEmpty(type))
                     {
+                        if (error == string.Empty)
+                        {
+                            error = "No error was returned from the environment when resolving the value of " + variable;
+                        }
                         Assert.AreEqual(expectedValue, actualValue, error);
                     }
                     else
