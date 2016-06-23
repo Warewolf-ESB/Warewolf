@@ -384,7 +384,7 @@ namespace ActivityUnitTests
                 {
                     variableName = DataListUtil.CreateRecordsetDisplayValue(recordSet, fieldNameToRetrieve, "*");
                 }
-                var warewolfEvalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variableName), 0);
+                var warewolfEvalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(variableName), 0, true);
 
                 if (warewolfEvalResult == null)
                 {
@@ -402,10 +402,6 @@ namespace ActivityUnitTests
             catch(Exception e)
             {
                 error = e.Message;
-            }
-            
-            if(!string.IsNullOrEmpty(error))
-            {
             }
         }
 
