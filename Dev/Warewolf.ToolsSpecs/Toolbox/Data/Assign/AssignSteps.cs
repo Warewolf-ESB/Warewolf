@@ -1,20 +1,19 @@
-
 /*
-*  Warewolf - The Easy Service Bus
+*  Warewolf - Once bitten, there's no going back
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -43,11 +42,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             var multiAssign = new DsfMultiAssignActivity();
 
             TestStartNode = new FlowStep
-                {
-                    Action = multiAssign
-                };
+            {
+                Action = multiAssign
+            };
 
-            foreach(var field in fieldCollection)
+            foreach (var field in fieldCollection)
             {
                 multiAssign.FieldsCollection.Add(field);
             }
@@ -60,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             value = value.Replace('"', ' ').Trim();
 
-            if(value.StartsWith("="))
+            if (value.StartsWith("="))
             {
                 value = value.Replace("=", "");
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
@@ -72,13 +71,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             List<ActivityDTO> fieldCollection;
             scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
 
-            if(fieldCollection == null)
+            if (fieldCollection == null)
             {
                 fieldCollection = new List<ActivityDTO>();
                 scenarioContext.Add("fieldCollection", fieldCollection);
@@ -86,7 +85,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 
             fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
         }
-
 
         [Given(@"I have a variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveAVariableWithAValueOf(string variable, string value)
@@ -102,7 +100,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 
             variableList.Add(new Tuple<string, string>(variable, value));
         }
-
 
         [Then(@"the value of ""(.*)"" is null")]
         public void ThenTheValueOfIsNull(string variable)
@@ -129,7 +126,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
         }
 
-
         [When(@"the assign tool is executed")]
         public void WhenTheAssignToolIsExecuted()
         {
@@ -143,13 +139,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
-            if(DataListUtil.IsValueRecordset(variable))
+            if (DataListUtil.IsValueRecordset(variable))
             {
                 var recordSetValues = result.Environment.EvalAsListOfStrings(variable, 0);
                 recordSetValues = Enumerable.Where<string>(recordSetValues, i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     Assert.IsTrue(recordSetValues.Count == 0);
                 }
@@ -163,7 +159,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 string actualValue;
                 value = value.Replace('"', ' ').Trim();
                 string error;
-                GetScalarValueFromEnvironment(result.Environment,variable,
+                GetScalarValueFromEnvironment(result.Environment, variable,
                                            out actualValue, out error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);
