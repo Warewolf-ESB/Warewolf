@@ -105,10 +105,10 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty IsDestinationSftpFocusedProperty =
             DependencyProperty.Register("IsDestinationSftpFocusedProperty", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
-        string InputPath { get { return GetProperty<string>(); } }
-        string OutputPath { get { return GetProperty<string>(); } }
-        string PrivateKeyFile { get { return GetProperty<string>(); } }
-        string DestinationPrivateKeyFile { get { return GetProperty<string>(); } }
+        string InputPath => GetProperty<string>();
+        string OutputPath => GetProperty<string>();
+        string PrivateKeyFile => GetProperty<string>();
+        string DestinationPrivateKeyFile => GetProperty<string>();
 
         protected virtual void ValidateInputPath()
         {

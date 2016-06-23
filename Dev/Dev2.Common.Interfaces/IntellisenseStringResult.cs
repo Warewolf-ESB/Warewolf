@@ -13,20 +13,8 @@ namespace Dev2.Common.Interfaces
 
         #region Implementation of IIntellisenseStringResult
 
-        public string Result
-        {
-            get
-            {
-                return _result;
-            }
-        }
-        public int CaretPosition
-        {
-            get
-            {
-                return _caretPosition;
-            }
-        }
+        public string Result => _result;
+        public int CaretPosition => _caretPosition;
 
         #endregion
     }

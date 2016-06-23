@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -21,7 +20,6 @@ using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
-using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -77,21 +75,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(PrivateKeyFile, "Private Key File", dataObject.Environment, update);
                 }
             }
-            IActivityIOPath dst = null;
             while (colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
                 try
                 {
-                     dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
-                                                                                colItr.FetchNextValue(unameItr),
-                                                                                colItr.FetchNextValue(passItr),
-                                                                                true, colItr.FetchNextValue(privateKeyItr));
-                    if (!Directory.Exists(dst.Path))
-                    {                        
-                        throw new Exception(string.Format(ErrorResource.DirectoryDoesNotExist, dst.Path));
-                    }
+                     var dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                         colItr.FetchNextValue(unameItr),
+                         colItr.FetchNextValue(passItr),
+                         true, colItr.FetchNextValue(privateKeyItr));
+
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                     
                     string result = broker.Delete(dstEndPoint);
@@ -100,7 +94,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 catch(Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(Result, "Failure"));
-                    //outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
                     break;
                 }

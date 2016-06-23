@@ -31,10 +31,7 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public TaskCollection Instance
-        {
-            get { return _instance; }
-        }
+        public TaskCollection Instance => _instance;
 
         public IEnumerator<IDev2Task> GetEnumerator()
         {

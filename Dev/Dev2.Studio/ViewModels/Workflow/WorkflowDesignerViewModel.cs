@@ -238,9 +238,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Properties
 
-        public override bool CanSave { get { return ResourceModel.IsAuthorized(AuthorizationContext.Contribute); } }
+        public override bool CanSave => ResourceModel.IsAuthorized(AuthorizationContext.Contribute);
 
-        protected virtual bool IsDesignerViewVisible { get { return DesignerView != null && DesignerView.IsVisible; } }
+        protected virtual bool IsDesignerViewVisible => DesignerView != null && DesignerView.IsVisible;
 
         public string DisplayName
         {
@@ -296,18 +296,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public Visibility WorkflowLinkVisible
-        {
-            get
-            {
-                return _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
-            }
-        }
+        public Visibility WorkflowLinkVisible => _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
 
-        public override string IconPath
-        {
-            get { return ResourceHelper.GetIconPath(ResourceModel); }
-        }
+        public override string IconPath => ResourceHelper.GetIconPath(ResourceModel);
 
         //2012.10.01: massimo.guerrera - AddMode Remove buttons made into one:)
         public IPopupController PopUp { get; set; }
@@ -345,11 +336,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public IContextualResourceModel ResourceModel { get { return _resourceModel; } set { _resourceModel = value; } }
 
-        public string WorkflowName { get { return _resourceModel.ResourceName; } }
+        public string WorkflowName => _resourceModel.ResourceName;
 
-        public bool RequiredSignOff { get { return _resourceModel.RequiresSignOff; } }
+        public bool RequiredSignOff => _resourceModel.RequiresSignOff;
 
-        public WorkflowDesigner Designer { get { return _wd; } }
+        public WorkflowDesigner Designer => _wd;
 
         public UIElement DesignerView
         {
@@ -369,7 +360,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             NotifyOfPropertyChange("DisplayWorkflowLink");
         }
 
-        public StringBuilder DesignerText { get { return ServiceDefinition; } }
+        public StringBuilder DesignerText => ServiceDefinition;
 
         // BUG 9304 - 2013.05.08 - TWR - Refactored and removed setter
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
@@ -1616,7 +1607,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+            if(DataListSingleton.ActiveDataList != null)
+            {
+                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+            }
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
@@ -1908,7 +1902,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
-            DoWorkspaceSave();
+            //DoWorkspaceSave();
         }
 
         void ModelItemAdded(ModelChangedEventArgs e)
@@ -2158,13 +2152,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <value>
         /// The work surface context.
         /// </value>
-        public override WorkSurfaceContext WorkSurfaceContext
-        {
-            get
-            {
-                return ResourceModel == null ? WorkSurfaceContext.Unknown : ResourceModel.ResourceType.ToWorkSurfaceContext();
-            }
-        }
+        public override WorkSurfaceContext WorkSurfaceContext => ResourceModel == null ? WorkSurfaceContext.Unknown : ResourceModel.ResourceType.ToWorkSurfaceContext();
 
         #region Overrides of ViewAware
 
@@ -2177,14 +2165,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// The environment model.
         /// </value>
         /// <exception cref="System.NotImplementedException"></exception>
-        public IEnvironmentModel EnvironmentModel { get { return ResourceModel.Environment; } }
-        protected List<ModelItem> SelectedDebugItems
-        {
-            get
-            {
-                return _selectedDebugItems;
-            }
-        }
+        public IEnvironmentModel EnvironmentModel => ResourceModel.Environment;
+
+        protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
 
         #region Implementation of IHandle<EditActivityMessage>
 

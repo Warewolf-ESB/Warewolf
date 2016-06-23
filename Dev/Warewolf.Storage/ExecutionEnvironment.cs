@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
@@ -247,13 +257,11 @@ namespace Warewolf.Storage
         {
             if (result.IsWarewolfAtomResult)
             {
-                // ReSharper disable PossibleNullReferenceException
                 var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
                     if (x.IsNothing) return null;
-                    // ReSharper restore PossibleNullReferenceException
                     return WarewolfAtomToStringErrorIfNull(x);
                 }
                 throw new Exception("null when f# said it should not be");
@@ -262,7 +270,6 @@ namespace Warewolf.Storage
             else
             // ReSharper restore RedundantIfElseBlock
             {
-                // ReSharper disable PossibleNullReferenceException
                 var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (warewolfAtomListresult != null)
                 {

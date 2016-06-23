@@ -101,19 +101,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
 
-        protected IDebugState DebugState { get { return _debugState; } } // protected for testing!
+        protected IDebugState DebugState => _debugState;
+// protected for testing!
 
         #region ShouldExecuteSimulation
 
-        bool ShouldExecuteSimulation
-        {
-            get
-            {
-                return _isOnDemandSimulation
-                    ? SimulationMode != SimulationMode.Never
-                    : SimulationMode == SimulationMode.Always;
-            }
-        }
+        bool ShouldExecuteSimulation => _isOnDemandSimulation
+            ? SimulationMode != SimulationMode.Never
+            : SimulationMode == SimulationMode.Always;
 
         #endregion
 

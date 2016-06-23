@@ -36,13 +36,7 @@ namespace Dev2.Security
             Permissions = windowsGroupPermissions;
         }
 
-        public IEnvironmentConnection EnvironmentConnection
-        {
-            get
-            {
-                return _environmentConnection;
-            }
-        }        
+        public IEnvironmentConnection EnvironmentConnection => _environmentConnection;
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs args)
         {

@@ -317,10 +317,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool UserAuthenticationSelected
-        {
-            get { return AuthenticationType == AuthenticationType.User; }
-        }
+        public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
 
         public IList<ComputerName> ComputerNames
         {
@@ -775,7 +772,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsEmpty { get { return ServerName != null && String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
+        public bool IsEmpty => ServerName != null && String.IsNullOrEmpty(ServerName.Name) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
 
         public IDbSource DBSource
         {

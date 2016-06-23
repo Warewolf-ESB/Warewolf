@@ -39,26 +39,14 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Properties
 
-        public String Title
-        {
-            get { return _title; }
-        }
+        public String Title => _title;
 
-        public ImageSource ImageSource
-        {
-            get { return _imageSource; }
-        }
+        public ImageSource ImageSource => _imageSource;
 
 
-        public string DescriptionTitleText
-        {
-            get { return _descriptionTitleText; }
-        }
+        public string DescriptionTitleText => _descriptionTitleText;
 
-        public String DescriptionText
-        {
-            get { return _description; }
-        }
+        public String DescriptionText => _description;
 
         public string Hyperlink { get; private set; }
         public string HyperlinkText { get; private set; }

@@ -64,9 +64,9 @@ namespace Dev2.PerformanceCounters.Counters
             }
         }
 
-        public string Category { get { return _counter.Category; } }
-        public string Name { get { return _counter.Name; } }
-        public WarewolfPerfCounterType PerfCounterType { get { return _counter.PerfCounterType; } }
+        public string Category => _counter.Category;
+        public string Name => _counter.Name;
+        public WarewolfPerfCounterType PerfCounterType => _counter.PerfCounterType;
 
         public IList<CounterCreationData> CreationData()
         {
@@ -74,7 +74,7 @@ namespace Dev2.PerformanceCounters.Counters
         }
 
         public bool IsActive { get { return _counter.IsActive; } set { _counter.IsActive = value; } }
-        public IPerformanceCounter InnerCounter { get { return _counter; } }
+        public IPerformanceCounter InnerCounter => _counter;
 
         public void Setup()
         {

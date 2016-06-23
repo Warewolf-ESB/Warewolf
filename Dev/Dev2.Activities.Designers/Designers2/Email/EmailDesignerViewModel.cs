@@ -110,13 +110,7 @@ namespace Dev2.Activities.Designers2.Email
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
-        public bool IsEmailSourceSelected
-        {
-            get
-            {
-                return SelectedEmailSource != SelectEmailSource;
-            }
-        }
+        public bool IsEmailSourceSelected => SelectedEmailSource != SelectEmailSource;
 
         public bool CanEditSource { get; set; }
 
@@ -166,13 +160,14 @@ namespace Dev2.Activities.Designers2.Email
 
         // DO NOT bind to these properties - these are here for convenience only!!!
         public string Password { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        string FromAccount { get { return GetProperty<string>(); } }
-        string To { get { return GetProperty<string>(); } }
-        string Cc { get { return GetProperty<string>(); } }
-        string Bcc { get { return GetProperty<string>(); } }
+        string FromAccount => GetProperty<string>();
+        string To => GetProperty<string>();
+        string Cc => GetProperty<string>();
+        string Bcc => GetProperty<string>();
         string Attachments { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        string Subject { get { return GetProperty<string>(); } }
-        string Body { get { return GetProperty<string>(); } }
+        string Subject => GetProperty<string>();
+        string Body => GetProperty<string>();
+
         EmailSource EmailSource
         {
             // ReSharper disable ExplicitCallerInfoArgument

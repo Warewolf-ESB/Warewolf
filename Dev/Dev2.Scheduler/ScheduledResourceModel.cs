@@ -86,25 +86,13 @@ namespace Dev2.Scheduler
             set { _folderHelper = value; }
         }
 
-        public IDev2TaskService TaskService
-        {
-            get { return _taskService; }
-        }
+        public IDev2TaskService TaskService => _taskService;
 
-        public string WarewolfFolderPath
-        {
-            get { return _warewolfFolderPath; }
-        }
+        public string WarewolfFolderPath => _warewolfFolderPath;
 
-        public string WarewolfAgentPath
-        {
-            get { return _warewolfAgentPath; }
-        }
+        public string WarewolfAgentPath => _warewolfAgentPath;
 
-        public ITaskServiceConvertorFactory ConvertorFactory
-        {
-            get { return _factory; }
-        }
+        public ITaskServiceConvertorFactory ConvertorFactory => _factory;
 
         public void DeleteSchedule(IScheduledResource resource)
         {
@@ -160,10 +148,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             set { throw new NotImplementedException(); }
         }
 
-        public string DebugHistoryPath
-        {
-            get { return _debugHistoryPath; }
-        }
+        public string DebugHistoryPath => _debugHistoryPath;
 
         /// <summary>
         ///     Get the list of resource from windows task scheduler where
@@ -286,20 +271,10 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
 
         }
 
-        public int ArgCount
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public int ArgCountOld
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public int ArgCount => 3;
+
+        public int ArgCountOld => 2;
+
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
             // group event log entries by correlation id

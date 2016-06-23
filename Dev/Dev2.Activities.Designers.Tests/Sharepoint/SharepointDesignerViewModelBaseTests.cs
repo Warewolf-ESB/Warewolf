@@ -594,38 +594,14 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
         #endregion
 
-        public SharepointSource GetSelectSharepointSource
-        {
-            get
-            {
-                return SelectSharepointSource;
-            }
-        }
-        public SharepointSource GetNewSharepointSource
-        {
-            get
-            {
-                return NewSharepointSource;
-            }
-        }
+        public SharepointSource GetSelectSharepointSource => SelectSharepointSource;
+        public SharepointSource GetNewSharepointSource => NewSharepointSource;
 
-        public SharepointListTo GetSelectAList
-        {
-            get
-            {
-                return SelectSharepointList;
-            }
-        }
+        public SharepointListTo GetSelectAList => SelectSharepointList;
 
         #region Overrides of ActivityCollectionDesignerViewModel
 
-        public override string CollectionName
-        {
-            get
-            {
-                return "FilterCriteria";
-            }
-        }
+        public override string CollectionName => "FilterCriteria";
 
         #endregion
     }

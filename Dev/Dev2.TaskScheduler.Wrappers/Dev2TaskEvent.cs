@@ -23,25 +23,13 @@ namespace Dev2.TaskScheduler.Wrappers
             _nativeObject = nativeObject;
         }
 
-        Guid? ITaskEvent.ActivityId
-        {
-            get { return _nativeObject.ActivityId; }
-        }
+        Guid? ITaskEvent.ActivityId => _nativeObject.ActivityId;
 
-        int ITaskEvent.EventId
-        {
-            get { return _nativeObject.EventId; }
-        }
+        int ITaskEvent.EventId => _nativeObject.EventId;
 
-        string ITaskEvent.TaskCategory
-        {
-            get { return _nativeObject.TaskCategory; }
-        }
+        string ITaskEvent.TaskCategory => _nativeObject.TaskCategory;
 
-        DateTime? ITaskEvent.TimeCreated
-        {
-            get { return _nativeObject.TimeCreated; }
-        }
+        DateTime? ITaskEvent.TimeCreated => _nativeObject.TimeCreated;
 
         string ITaskEvent.Correlation
         {
@@ -53,9 +41,6 @@ namespace Dev2.TaskScheduler.Wrappers
             }
         }
 
-        public string UserId
-        {
-            get { return _nativeObject.UserId.Value; }
-        }
+        public string UserId => _nativeObject.UserId.Value;
     }
 }

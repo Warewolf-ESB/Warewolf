@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
             InitializeItems(mi.FieldsCollection);
         }
 
-        public override string CollectionName { get { return "FieldsCollection"; } }
+        public override string CollectionName => "FieldsCollection";
 
         public int ValidateThisHitCount { get; private set; }
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()

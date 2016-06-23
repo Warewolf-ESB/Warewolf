@@ -135,7 +135,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IEnvironmentViewModel SelectedEnvironment { get; set; }
-        public IServer SelectedServer { get { return SelectedEnvironment.Server; } }
+        public IServer SelectedServer => SelectedEnvironment.Server;
 
         public virtual string SearchText
         {
@@ -155,29 +155,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string SearchToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.ExplorerSearchToolTip;
-            }
-        }
+        public string SearchToolTip => Resources.Languages.Core.ExplorerSearchToolTip;
 
-        public string ExplorerClearSearchTooltip
-        {
-            get
-            {
-                return Resources.Languages.Core.ExplorerClearSearchTooltip;
-            }
-        }
+        public string ExplorerClearSearchTooltip => Resources.Languages.Core.ExplorerClearSearchTooltip;
 
-        public string RefreshToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.ExplorerRefreshToolTip;
-            }
-        }
+        public string RefreshToolTip => Resources.Languages.Core.ExplorerRefreshToolTip;
 
         public void RefreshEnvironment(Guid environmentId)
         {
@@ -188,6 +170,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void RefreshSelectedEnvironment()
+        {
+            if (SelectedEnvironment != null)
+            {
+                RefreshEnvironment(SelectedEnvironment);
+            }
+        }
         protected virtual void Refresh()
         {
             IsRefreshing = true;

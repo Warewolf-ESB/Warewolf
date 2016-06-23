@@ -517,13 +517,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public Func<IStudioResourceRepository> GetStudioResourceRepository = () => Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
 
-        IStudioResourceRepository StudioResourceRepository
-        {
-            get
-            {
-                return GetStudioResourceRepository();
-            }
-        }
+        IStudioResourceRepository StudioResourceRepository => GetStudioResourceRepository();
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
@@ -1237,7 +1231,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("ResourceID", resourceModelId.ToString());
             comsController.AddPayloadArgument("PrepairForDeployment", prepaireForDeployment.ToString());
 
-            var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, workspaceId);
+            var result = comsController.ExecuteCompressedCommand<ExecuteMessage>(targetEnv.Connection, workspaceId);
 
             // log the trace for fetch ;)
             Dev2Logger.Debug(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelId, workspaceId));

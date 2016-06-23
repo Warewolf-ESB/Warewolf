@@ -24,9 +24,6 @@ namespace Dev2.Common.DB
             _val = val;
         }
 
-        public string Value
-        {
-            get { return _val; }
-        }
+        public string Value => _val;
     }
 }

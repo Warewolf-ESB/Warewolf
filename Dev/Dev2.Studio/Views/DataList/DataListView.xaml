@@ -88,7 +88,6 @@
 
         <Grid Grid.Row="1">
             <dataPresenter:XamTreeGrid AssigningFieldLayoutToItem="Xtg_OnAssigningFieldLayoutToItem" 
-                                       AssigningFieldLayoutToItemDirect="Xtg_OnAssigningFieldLayoutToItem"
                                        x:Name="Xtg" 
                                        DataSource="{Binding Path=BaseCollection}" 
                                        Background="Transparent" 

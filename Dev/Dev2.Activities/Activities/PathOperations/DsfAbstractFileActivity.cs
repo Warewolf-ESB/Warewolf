@@ -151,13 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
-        protected string DecryptedPassword
-        {
-            get
-            {
-                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
-            }
-        }
+        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         /// <summary>
         /// Status : New

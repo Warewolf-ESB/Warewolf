@@ -117,14 +117,14 @@ namespace Dev2.Activities.Designers2.Core
         }
         protected override void OnDispose()
         {
-            base.OnDispose();
-           CEventHelper.RemoveAllEventHandlers(TheGrid);
-           CEventHelper.RemoveAllEventHandlers(this);
-           CEventHelper.RemoveAllEventHandlers(ModelItem);
-            if(_dataContext.ModelItemCollection != null)
-            {
-                _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
-            }
+//            base.OnDispose();
+//           CEventHelper.RemoveAllEventHandlers(TheGrid);
+//           CEventHelper.RemoveAllEventHandlers(this);
+//           CEventHelper.RemoveAllEventHandlers(ModelItem);
+//            if(_dataContext.ModelItemCollection != null)
+//            {
+//                _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
+//            }
         }
       
     }

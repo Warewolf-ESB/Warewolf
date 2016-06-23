@@ -83,9 +83,9 @@ namespace Dev2.Activities.Designers2.Core
 
         #endregion
 
-        public TViewModel ViewModel { get { return DataContext as TViewModel; } }
+        public TViewModel ViewModel => DataContext as TViewModel;
 
-        public ActivityDesignerTemplate ContentDesignerTemplate { get { return (ActivityDesignerTemplate)Content; } }
+        public ActivityDesignerTemplate ContentDesignerTemplate => (ActivityDesignerTemplate)Content;
 
         //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
@@ -371,11 +371,11 @@ namespace Dev2.Activities.Designers2.Core
                 if(disposing)
                 {
                     // Dispose managed resources.
-                    OnDispose();
-                    if(_dataContext != null)
-                    {
-                        _dataContext.Dispose();
-                    }
+                    //OnDispose();
+//                    if(_dataContext != null)
+//                    {
+//                        _dataContext.Dispose();
+//                    }
                 }
 
                 // Call the appropriate methods to clean up

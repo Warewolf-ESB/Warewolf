@@ -180,7 +180,7 @@ namespace Warewolf.Studio.ViewModels
                     _new = items.Except(explorerItemViewModels);
                     var ren = from b in explorerItemViewModels
                               join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
-                              where b.ResourceType != null && (b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder")
+                              where (b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder")
                               select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
                     var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
                     if (errors.Any())
@@ -196,13 +196,14 @@ namespace Warewolf.Studio.ViewModels
                     else
                     {
                         RenameErrors = "";
-                    }
+                    }                    
                 }
                 else
                 {
                     _conflicts = new List<Conflict>();
                     _new = new List<IExplorerTreeItem>();
                 }
+
 
                 Overrides = Conflicts.Count;
                 NewResources = New.Count;
@@ -225,13 +226,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IList<Conflict> Conflicts
-        {
-            get
-            {
-                return _conflicts.ToList();
-            }
-        }
+        public IList<Conflict> Conflicts => _conflicts.ToList();
+
         public IList<IExplorerTreeItem> New
         {
             get

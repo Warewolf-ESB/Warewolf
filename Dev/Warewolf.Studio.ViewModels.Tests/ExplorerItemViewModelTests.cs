@@ -460,6 +460,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
+            _target.IsFolderChecked = true;
             _target.CanCreateFolder = true;
             _target.CanCreateDbSource = true;
             _target.CanShowVersions = true;
@@ -488,10 +489,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
+            Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateDbSource, createdFolder.CanCreateDbSource);
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
             Assert.AreEqual(_target.CanRename, createdFolder.CanRename);
+            Assert.AreEqual(_target.CanRollback, createdFolder.CanRollback);
             Assert.AreEqual(_target.CanCreatePluginSource, createdFolder.CanCreatePluginSource);
             Assert.AreEqual(_target.CanCreateEmailSource, createdFolder.CanCreateEmailSource);
             Assert.AreEqual(_target.CanCreateDropboxSource, createdFolder.CanCreateDropboxSource);
@@ -958,12 +961,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestActivityName()
         {
             //assert
-            _target.ResourceType = "DbService";
-            Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfDatabaseActivity, Dev2.Activities"));
-            _target.ResourceType = "PluginService";
-            Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfPluginActivity, Dev2.Activities"));
-            _target.ResourceType = "WebService";
-            Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfWebserviceActivity, Dev2.Activities"));
             _target.ResourceType = "Folder";
             Assert.IsTrue(_target.ActivityName.StartsWith("Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity"));
         }
@@ -1179,6 +1176,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
+            _target.IsFolderChecked = true;
             _target.CanCreateFolder = true;
             _target.CanCreateDbSource = true;
             _target.CanShowVersions = true;
@@ -1206,10 +1204,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
+            Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateDbSource, createdFolder.CanCreateDbSource);
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
             Assert.AreEqual(_target.CanRename, createdFolder.CanRename);
+            Assert.AreEqual(_target.CanRollback, createdFolder.CanRollback);
             Assert.AreEqual(_target.CanCreatePluginSource, createdFolder.CanCreatePluginSource);
             Assert.AreEqual(_target.CanCreateEmailSource, createdFolder.CanCreateEmailSource);
             Assert.AreEqual(_target.CanCreateDropboxSource, createdFolder.CanCreateDropboxSource);

@@ -12,7 +12,6 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Services.Events;
@@ -20,6 +19,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics.Windows.DataPresenter;
 using Infragistics.Windows.DataPresenter.Events;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -32,6 +32,9 @@ namespace Dev2.Studio.Views.DataList
     public partial class DataListView : IView,ICheckControlEnabledView
     {
         readonly IEventAggregator _eventPublisher;
+        private readonly FieldLayout _recordSetItemFieldLayout;
+        private FieldLayout _recordSetFieldFieldLayout;
+        private FieldLayout _complexObjectFieldLayout;
 
         public DataListView()
             : this(EventPublishers.Aggregator)
@@ -48,26 +51,23 @@ namespace Dev2.Studio.Views.DataList
             Xtg.DataContextChanged+=OnDataContextChanged;
             Xtg.DataSourceChanged+=XtgOnDataSourceChanged;
             KeyboardNavigation.SetTabNavigation(Xtg, KeyboardNavigationMode.Cycle);
+            var fieldLayouts = Xtg.FieldLayouts;
+            _recordSetFieldFieldLayout = fieldLayouts[1];
+            _recordSetItemFieldLayout = fieldLayouts[2];
+            _complexObjectFieldLayout = fieldLayouts[4];
         }
 
         private void XtgOnDataSourceChanged(object sender, RoutedPropertyChangedEventArgs<IEnumerable> routedPropertyChangedEventArgs)
         {
-            if (Application.Current != null)
+            ExpandAll();
+        }
+
+        private void ExpandAll()
+        {
+            var recordCollectionBase = Xtg.Records;
+            if(recordCollectionBase != null)
             {
-                if (Application.Current.Dispatcher != null)
-                {
-                    Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
-                    {
-                        if (Xtg != null)
-                        {
-                            var recordCollectionBase = Xtg.Records;
-                            if (recordCollectionBase != null)
-                            {
-                                recordCollectionBase.ExpandAll(true);
-                            }
-                        }
-                    }), DispatcherPriority.Background);
-                }
+                recordCollectionBase.ExpandAll(true);
             }
         }
 
@@ -75,19 +75,7 @@ namespace Dev2.Studio.Views.DataList
 
         void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-//            IDataListViewModel vm = DataContext as IDataListViewModel;
-//            if(vm != null)
-//            {
-//                //vm.AddRecordsetNamesIfMissing();
-//            }
-//
-//            if(Xtg != null)
-//            {
-//                if(Xtg.Records != null)
-//                {
-//                    Xtg.Records.ExpandAll(true);
-//                }
-//            }
+            ExpandAll();
         }
 
         private void NametxtTextChanged(object sender, RoutedEventArgs e)
@@ -186,46 +174,35 @@ namespace Dev2.Studio.Views.DataList
 
         private void Xtg_OnAssigningFieldLayoutToItem(object sender, AssigningFieldLayoutToItemEventArgs e)
         {
-            if (Application.Current != null)
+            if (e.Item != null)
             {
-                if (Application.Current.Dispatcher != null)
-                {
-                    Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
-                    {
+                var type = e.Item.GetType();
 
-                        if (e.Item != null)
-                        {
-                            var type = e.Item.GetType();
-                            var fieldLayouts = Xtg.FieldLayouts;
-                            if (type == typeof(RecordSetItemModel))
-                            {
-                                var fieldLayout = fieldLayouts[2];
-                                if (fieldLayout != null)
-                                {
-                                    e.FieldLayout = fieldLayout;
-                                }
-                            }
-                            else if (type == typeof(RecordSetFieldItemModel))
-                            {
-                                var fieldLayout = fieldLayouts[1];
-                                if (fieldLayout != null)
-                                {
-                                    e.FieldLayout = fieldLayout;
-                                }
-                            }
-                            else if (type == typeof(ComplexObjectItemModel))
-                            {
-                                var fieldLayout = fieldLayouts[4];
-                                if (fieldLayout != null)
-                                {
-                                    e.FieldLayout = fieldLayout;
-                                }
-                            }
-                        }
-                    }), DispatcherPriority.Background);
+                if (type == typeof(RecordSetItemModel))
+                {
+                    var fieldLayout = _recordSetItemFieldLayout;
+                    if (fieldLayout != null)
+                    {
+                        e.FieldLayout = fieldLayout;
+                    }
+                }
+                else if (type == typeof(RecordSetFieldItemModel))
+                {
+                    var fieldLayout = _recordSetFieldFieldLayout;
+                    if (fieldLayout != null)
+                    {
+                        e.FieldLayout = fieldLayout;
+                    }
+                }
+                else if (type == typeof(ComplexObjectItemModel))
+                {
+                    var fieldLayout = _complexObjectFieldLayout;
+                    if (fieldLayout != null)
+                    {
+                        e.FieldLayout = fieldLayout;
+                    }
                 }
             }
-        
         }
 
         private void Xtg_OnLoaded(object sender, RoutedEventArgs e)

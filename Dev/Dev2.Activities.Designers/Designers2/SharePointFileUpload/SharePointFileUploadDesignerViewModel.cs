@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
             }
         }
-        public string LocalInputPath { get { return GetProperty<string>(); } }
+        public string LocalInputPath => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
@@ -66,6 +66,6 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
         }
         #endregion
 
-        public override string CollectionName { get { return "FilterCriteria"; } }
+        public override string CollectionName => "FilterCriteria";
     }
 }

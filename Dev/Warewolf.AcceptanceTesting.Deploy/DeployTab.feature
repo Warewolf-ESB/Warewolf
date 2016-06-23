@@ -76,11 +76,7 @@ Scenario: Conflicting resources on Source and Destination server deploy is not s
      When selected Destination Server is "Remote"
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
-	 When I click Cancel on Resource exists in the destination server popup
-	 And I deploy 
-	 Then Resource exists in the destination server popup is shown
-	 | # | Source Resource | Destination Resource |
-	 | 1 | bob             | DifferentNameSameID  |
+	 When I click Cancel on Resource exists in the destination server popup	 
 	 Then deploy is not successfull
 	 
 Scenario: Deploying a connector with a source

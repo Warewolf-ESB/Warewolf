@@ -48,10 +48,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         #region Properties
 
-        public static EnvironmentModelEqualityComparer Current
-        {
-            get { return Instance.Value; }
-        }
+        public static EnvironmentModelEqualityComparer Current => Instance.Value;
 
         #endregion Properties
     }

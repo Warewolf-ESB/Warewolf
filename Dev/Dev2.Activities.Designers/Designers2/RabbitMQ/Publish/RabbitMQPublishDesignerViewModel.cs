@@ -99,13 +99,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             }
         }
 
-        public bool IsRabbitMQSourceSelected
-        {
-            get
-            {
-                return SelectedRabbitMQSource != null;
-            }
-        }
+        public bool IsRabbitMQSourceSelected => SelectedRabbitMQSource != null;
 
         private Guid RabbitMQSourceResourceId
         {

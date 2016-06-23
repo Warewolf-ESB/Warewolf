@@ -41,15 +41,9 @@ namespace Gma.DataStructures.StringSearch
             m_PartitionLength = Math.Min(partitionLength, availableLength);
         }
 
-        public char this[int index]
-        {
-            get { return m_Origin[m_StartIndex + index]; }
-        }
+        public char this[int index] => m_Origin[m_StartIndex + index];
 
-        public int Length
-        {
-            get { return m_PartitionLength; }
-        }
+        public int Length => m_PartitionLength;
 
         #region IEnumerable<char> Members
 

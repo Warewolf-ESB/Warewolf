@@ -506,12 +506,6 @@ namespace Dev2.Core.Tests.Settings
         {
         }
 
-        public IResourcePickerDialog ResourcePickerDialog
-        {
-            get
-            {
-                return _resourcePicker;
-            }
-        }
+        public IResourcePickerDialog ResourcePickerDialog => _resourcePicker;
     }
 }

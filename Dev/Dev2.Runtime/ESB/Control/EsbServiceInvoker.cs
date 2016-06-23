@@ -59,10 +59,7 @@ namespace Dev2.Runtime.ESB
 
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
-        public bool IsLoggingEnabled
-        {
-            get { return true; }
-        }
+        public bool IsLoggingEnabled => true;
 
         #region Constructors
 

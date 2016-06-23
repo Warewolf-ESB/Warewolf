@@ -54,7 +54,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public virtual bool CanSave { get { return true; } }
-
+        public virtual bool CanSave => true;
     }
 }

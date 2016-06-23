@@ -111,7 +111,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         #region Properties
 
-        public override string CollectionName { get { return "InputMappings"; } }
+        public override string CollectionName => "InputMappings";
 
         public ObservableCollection<DbSource> Databases { get; private set; }
 
@@ -121,9 +121,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public RelayCommand RefreshTablesCommand { get; private set; }
 
-        public bool IsDatabaseSelected { get { return SelectedDatabase != SelectDbSource; } }
+        public bool IsDatabaseSelected => SelectedDatabase != SelectDbSource;
 
-        public bool IsTableSelected { get { return SelectedTable != SelectDbTable; } }
+        public bool IsTableSelected => SelectedTable != SelectDbTable;
 
         public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
 
@@ -283,14 +283,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
-        string BatchSize { get { return GetProperty<string>(); } }
+        string BatchSize => GetProperty<string>();
 
-        string Timeout { get { return GetProperty<string>(); } }
+        string Timeout => GetProperty<string>();
 
-        string Result { get { return GetProperty<string>(); } }
+        string Result => GetProperty<string>();
 
-        bool KeepIdentity { get { return GetProperty<bool>(); } }
-
+        bool KeepIdentity => GetProperty<bool>();
 
         #endregion
 

@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
         {
         }
 
-        public bool IsSmallViewActive { get { return ShowSmall; } }
+        public bool IsSmallViewActive => ShowSmall;
 
         public override void Validate()
         {

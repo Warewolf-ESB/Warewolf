@@ -44,13 +44,7 @@ namespace Dev2.Activities.Designers2.Core
             set;
         }
 
-        public IList<string> Errors
-        {
-            get
-            {
-                return new List<string>();
-            }
-        }
+        public IList<string> Errors => new List<string>();
 
         #endregion
 
