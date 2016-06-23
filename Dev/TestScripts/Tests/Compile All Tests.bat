@@ -1,6 +1,3 @@
-"%~dp0..\..\.nuget\nuget.exe" restore "%~dp0..\..\UITesting.sln"
-"%~dp0..\..\.nuget\nuget.exe" restore "%~dp0..\..\AcceptanceTesting.sln"
-
 IF EXIST "%vs120comntools%..\IDE\devenv.com" ( 
 "%vs120comntools%..\IDE\devenv.com" "%~dp0..\..\AcceptanceTesting.sln" /Build Debug
 if not %errorlevel%==0 pause & exit 1

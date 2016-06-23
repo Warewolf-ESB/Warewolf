@@ -56,11 +56,15 @@ namespace Dev2.Settings.Scheduler
         {
             var controller = new CommunicationController { ServiceName = "GetScheduledResources" };
             var resources =controller.ExecuteCommand<ObservableCollection<IScheduledResource>>(_model.Connection, _model.Connection.WorkspaceID);
-            foreach(var scheduledResource in resources)
+            if(resources != null)
             {
-                scheduledResource.IsDirty = false;
+                foreach(var scheduledResource in resources)
+                {
+                    scheduledResource.IsDirty = false;
+                }
+                return resources;
             }
-            return resources;
+            return new ObservableCollection<IScheduledResource>();
         }
 
         public void DeleteSchedule(IScheduledResource resource)

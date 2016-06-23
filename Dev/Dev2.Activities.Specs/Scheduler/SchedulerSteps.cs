@@ -14,6 +14,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces;
@@ -22,7 +23,6 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
@@ -32,6 +32,8 @@ using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces.Studio.Controller;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Specs.Scheduler
@@ -39,26 +41,26 @@ namespace Dev2.Activities.Specs.Scheduler
     [Binding]
     public class SchedulerSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        private static ScenarioContext _scenarioContext;
         private readonly CommonSteps _commonSteps;
 
         public SchedulerSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
-            this.scenarioContext = scenarioContext;
-            _commonSteps = new CommonSteps(this.scenarioContext);
+            _scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(_scenarioContext);            
         }
 
         [Given(@"I have a schedule ""(.*)""")]
         public void GivenIHaveASchedule(string scheduleName)
         {
-            ScenarioContext.Current.Add("ScheduleName", scheduleName);
+            _scenarioContext.Add("ScheduleName", scheduleName);
         }
 
         [Given(@"""(.*)"" executes an Workflow ""(.*)""")]
         public void GivenExecutesAnWorkflow(string scheduleName, string workFlow)
         {
-            ScenarioContext.Current.Add("WorkFlow", workFlow);
+            _scenarioContext.Add("WorkFlow", workFlow);
         }
 
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
@@ -66,10 +68,10 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             if(!AccountExists("LocalSchedulerAdmin"))
             {
-                CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrtators");
+                CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrators");
             }
-            ScenarioContext.Current.Add("UserName", userName);
-            ScenarioContext.Current.Add("Password", password);
+            _scenarioContext.Add("UserName", userName);
+            _scenarioContext.Add("Password", password);
         }
 
         [Given(@"""(.*)"" has a Schedule of")]
@@ -83,20 +85,22 @@ namespace Dev2.Activities.Specs.Scheduler
             mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
-            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<Dev2.Common.Interfaces.IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
 
             environmentModel.Connect();
             scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(environmentModel,()=>{});
             scheduler.CurrentEnvironment = environmentModel;
             scheduler.CreateNewTask();
-            scheduler.SelectedTask.Name = ScenarioContext.Current["ScheduleName"].ToString();
+            scheduler.SelectedTask.Name = _scenarioContext["ScheduleName"].ToString();
             scheduler.SelectedTask.OldName = "bob";
-            scheduler.SelectedTask.UserName = ScenarioContext.Current["UserName"].ToString();
-            scheduler.SelectedTask.Password = ScenarioContext.Current["Password"].ToString();
-            scheduler.SelectedTask.WorkflowName = ScenarioContext.Current["WorkFlow"].ToString();
-            scheduler.SelectedTask.NumberOfHistoryToKeep = (int)ScenarioContext.Current["HistoryCount"];
-            scheduler.SelectedTask.Status = (SchedulerStatus)ScenarioContext.Current["TaskStatus"];
+            scheduler.SelectedTask.UserName = _scenarioContext["UserName"].ToString();
+            scheduler.SelectedTask.Password = _scenarioContext["Password"].ToString();
+            scheduler.SelectedTask.WorkflowName = _scenarioContext["WorkFlow"].ToString();
+            scheduler.SelectedTask.NumberOfHistoryToKeep = (int)_scenarioContext["HistoryCount"];
+            scheduler.SelectedTask.Status = (SchedulerStatus)_scenarioContext["TaskStatus"];
             scheduler.Errors.ClearErrors();
             var task = scheduler.SelectedTask;
             UpdateTrigger(task, table);
@@ -105,15 +109,19 @@ namespace Dev2.Activities.Specs.Scheduler
             var mockAuth = new Mock<IAuthorizationService>();
             mockAuth.Setup(a => a.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
             po.SetFieldOrProperty("AuthorizationService", mockAuth.Object);
-            ScenarioContext.Current["Scheduler"] = scheduler;
+            _scenarioContext["Scheduler"] = scheduler;
             try
             {
                 scheduler.SaveCommand.Execute("");
+                if (scheduler.HasErrors)
+                {
+                    _scenarioContext["Error"] = scheduler.Error;
+                }
             }
             catch(Exception e)
             {
 
-                ScenarioContext.Current["Error"] = e.Message;
+                _scenarioContext["Error"] = e.Message;
             }
 
 
@@ -122,7 +130,7 @@ namespace Dev2.Activities.Specs.Scheduler
         void UpdateTrigger(IScheduledResource task, Table table)
         {
             var sched = table.Rows[0]["ScheduleType"];
-            Trigger x;
+            Microsoft.Win32.TaskScheduler.Trigger x;
             switch(sched)
             {
                 case "At log on":
@@ -144,7 +152,7 @@ namespace Dev2.Activities.Specs.Scheduler
             task.Trigger.Trigger = new Dev2Trigger(new TaskServiceConvertorFactory(), x);
         }
 
-        Trigger CreateScheduleTrigger(Table table)
+        Microsoft.Win32.TaskScheduler.Trigger CreateScheduleTrigger(Table table)
         {
             var sched = table.Rows[0]["Interval"];
             switch(sched)
@@ -182,7 +190,7 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"the schedule status is ""(.*)""")]
         public void ThenTheScheduleStatusIs(string status)
         {
-            var scheduler = ScenarioContext.Current["Scheduler"] as SchedulerViewModel;
+            var scheduler = _scenarioContext["Scheduler"] as SchedulerViewModel;
             if(scheduler != null)
             {
                 scheduler.ActiveItem = new TabItem { Header = "History" };
@@ -197,7 +205,7 @@ namespace Dev2.Activities.Specs.Scheduler
                 {
                     Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error || x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error);
                 }
-                ScenarioContext.Current["History"] = x;
+                _scenarioContext["History"] = x;
 
             }
             else
@@ -209,13 +217,13 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"""(.*)"" has ""(.*)"" row of history")]
         public void ThenHasRowOfHistory(string scheduleName, int history)
         {
-            ScenarioContext.Current["HistoryCount"] = history;
+            _scenarioContext["HistoryCount"] = history;
         }
 
         [Then(@"the history debug output for ""(.*)"" for row ""(.*)"" is")]
         public void ThenTheHistoryDebugOutputForForRowIs(string p0, int p1, Table table)
         {
-            IList<IResourceHistory> resources = ScenarioContext.Current["History"] as IList<IResourceHistory>;
+            IList<IResourceHistory> resources = _scenarioContext["History"] as IList<IResourceHistory>;
             // ReSharper disable AssignNullToNotNullAttribute
             var debug = resources.First().DebugOutput;
             // ReSharper restore AssignNullToNotNullAttribute
@@ -226,13 +234,13 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"task history ""(.*)"" is ""(.*)""")]
         public void GivenTaskHistoryIs(string scheduleName, int history)
         {
-            ScenarioContext.Current["HistoryCount"] = history;
+            _scenarioContext["HistoryCount"] = history;
         }
 
         [Given(@"the task status ""(.*)"" is ""(.*)""")]
         public void GivenTheTaskStatusIs(string schedule, string status)
         {
-            ScenarioContext.Current["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
+            _scenarioContext["TaskStatus"] = status == "Enabled" ? SchedulerStatus.Enabled : SchedulerStatus.Disabled;
         }
 
 
@@ -240,7 +248,7 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
         {
-            if(error == "AN" && ScenarioContext.Current["Error"] == null)
+            if(error == "AN" && _scenarioContext["Error"] == null)
                 Assert.Fail("Error Expected");
         }
 
@@ -254,7 +262,7 @@ namespace Dev2.Activities.Specs.Scheduler
                 int i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
-                var task = x.FindTask(scheduleName);
+                var task = x.FindTask(scheduleName);                
                 do
                 {
                     task.Run();
@@ -275,7 +283,7 @@ namespace Dev2.Activities.Specs.Scheduler
             catch(Exception e)
             {
 
-                ScenarioContext.Current["Error"] = e;
+                _scenarioContext["Error"] = e;
             }
 
         }
@@ -334,6 +342,16 @@ namespace Dev2.Activities.Specs.Scheduler
             {
                 usersGroup.Members.Add(user);
                 usersGroup.Save();
+            }
+        }
+
+        [AfterScenario("@Scheduler")]
+        public static void CleanupAfterTestScheduler()
+        {
+            var vm = _scenarioContext["Scheduler"] as SchedulerViewModel;
+            if (vm != null)
+            {
+                vm.DeleteCommand.Execute(vm.SelectedTask);
             }
         }
     }
