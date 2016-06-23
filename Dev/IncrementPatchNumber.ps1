@@ -26,14 +26,20 @@ if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
 $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 if (-not [string]::IsNullOrEmpty($FullVersionString))  {
 	$FullVersionString = $FullVersionString.Trim()
-    Write-Host Old version was `"$FullVersionString`".
-    if ($FullVersionString -Match " ") {
-        # This commit has more than on tag, using last tag
-        Write-Host This commit has more than one tags as `"$FullVersionString`".
-        $FullVersionString = $FullVersionString.Split(" ")[-1]
-        Write-Host Using last tag as `"$FullVersionString`".
-    }
-	# This version is tagged. Increment patch number.
+} else{
+	# This version is not already tagged.
+    Write-Host This version is not tagged, generating new tag...
+	# Get last known version
+    $FullVersionString = git -C "$WarewolfGitRepoDirectory" describe --abbrev=0 --tags
+}
+if ([string]::IsNullOrEmpty($FullVersionString)) {
+	Write-Host No local tags found in git history. Setting version to `"0.0.*`".
+	# No known versions found. Use generic version.
+	$FullVersionString = "0.0.*"
+} else {
+	# Make new version from last known version.
+	Write-Host Last version was `"$FullVersionString`". Generating next version (with incremented patch number)...
+	# Increment patch number.
 	[int]$NewPatchNumber = $FullVersionString.Split(".")[2]
 	$NewPatchNumber++
 	$FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $NewPatchNumber + ".0"
@@ -49,63 +55,60 @@ if (-not [string]::IsNullOrEmpty($FullVersionString))  {
 			Write-Host Origin has tag `"$originTag`".
 		}        
 	} while ($originTag.length -ne 0)
-
-	# New (unique) version has been generated.
-    Write-Host Origin has confirmed new version `"$FullVersionString`" is OK.
-
-    # Write version files
-    $CSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.cs"
-    Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
-    $Line1 = "using System.Reflection;"
-    $Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
-    $Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
-    $Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
-    $Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
-    $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)]"
-    Write-Host $Line1
-    $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
-    Write-Host $Line2
-    $Line2 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line3
-    $Line3 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line4
-    $Line4 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line5
-    $Line5 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line6
-    $Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-    Write-Host C Sharp version file written to `"$CSharpVersionFile`".
-
-    $FSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.fs"
-    Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
-    $Line1 = "namespace Warewolf.FSharp"
-    $Line2 = "open System.Reflection;"
-    $Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
-    $Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
-    $Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
-    $Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-    $Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
-    $Line8 = "do()"
-    Write-Host $Line1
-    $Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
-    Write-Host $Line2
-    $Line2 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line3
-    $Line3 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line4
-    $Line4 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line5
-    $Line5 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line6
-    $Line6 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line7
-    $Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host $Line8
-    $Line8 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-    Write-Host F Sharp version file written to `"$FSharpVersionFile`".
-
-    Write-Host Version written successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
-} else{
-	# This version is not already tagged.
-    Write-Host This version is not tagged, use normal versioning script
 }
+
+# New (unique) version has been generated.
+Write-Host Origin has confirmed new version `"$FullVersionString`" is OK.
+
+# Write version files
+$CSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.cs"
+Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
+$Line1 = "using System.Reflection;"
+$Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
+$Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
+$Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
+$Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
+$Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)]"
+Write-Host $Line1
+$Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
+Write-Host $Line2
+$Line2 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line3
+$Line3 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line4
+$Line4 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line5
+$Line5 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line6
+$Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
+Write-Host C Sharp version file written to `"$CSharpVersionFile`".
+
+$FSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.fs"
+Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
+$Line1 = "namespace Warewolf.FSharp"
+$Line2 = "open System.Reflection;"
+$Line3 = "[<assembly: AssemblyCompany(""Warewolf"")>]"
+$Line4 = "[<assembly: AssemblyProduct(""Warewolf"")>]"
+$Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
+$Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
+$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
+$Line8 = "do()"
+Write-Host $Line1
+$Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
+Write-Host $Line2
+$Line2 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line3
+$Line3 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line4
+$Line4 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line5
+$Line5 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line6
+$Line6 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line7
+$Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host $Line8
+$Line8 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
+Write-Host F Sharp version file written to `"$FSharpVersionFile`".
+
+Write-Host Version written successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
