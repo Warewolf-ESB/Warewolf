@@ -29,37 +29,13 @@ namespace Dev2.DataList.Contract
             _errCode = code;
         }
 
-        public int StartIndex
-        {
-            get
-            {
-                return _startIdx;
-            }
-        }
+        public int StartIndex => _startIdx;
 
-        public int EndIndex
-        {
-            get
-            {
-                return _endIdx;
-            }
-        }
+        public int EndIndex => _endIdx;
 
-        public string Error
-        {
-            get
-            {
-                return Message;
-            }
-        }
+        public string Error => Message;
 
-        public enIntellisenseErrorCode ErrorCode
-        {
-            get
-            {
-                return _errCode;
-            }
-        }
+        public enIntellisenseErrorCode ErrorCode => _errCode;
     }
 }
 

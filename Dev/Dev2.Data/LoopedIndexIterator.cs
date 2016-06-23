@@ -16,12 +16,9 @@ namespace Dev2.Data.Binary_Objects
         private int _curPos;
         private readonly int _itrCnt;
 
-        public int Count
-        {
-            get { return _itrCnt; }
-        }
+        public int Count => _itrCnt;
 
-        public bool IsEmpty { get { return _itrCnt > 0; } }
+        public bool IsEmpty => _itrCnt > 0;
 
         internal LoopedIndexIterator(int val, int itrCnt)
         {

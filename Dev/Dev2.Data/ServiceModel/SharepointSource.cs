@@ -94,53 +94,17 @@ namespace Dev2.Data.ServiceModel
             return result;
         }
 
-        public override bool IsSource
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsSource => true;
 
-        public override bool IsService
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsService => false;
 
-        public override bool IsFolder
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsFolder => false;
 
-        public override bool IsReservedService
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsReservedService => false;
 
-        public override bool IsServer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsServer => false;
 
-        public override bool IsResourceVersion
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsResourceVersion => false;
 
         public List<SharepointListTo> LoadLists()
         {

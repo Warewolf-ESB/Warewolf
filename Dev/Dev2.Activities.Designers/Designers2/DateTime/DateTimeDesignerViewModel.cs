@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.DateTime
 
         public List<string> TimeModifierTypes { get; private set; }
 
-        public string Dev2DefaultDateTime { get { return GlobalConstants.Dev2CustomDefaultDateTimeFormat; } }
+        public string Dev2DefaultDateTime => GlobalConstants.Dev2CustomDefaultDateTimeFormat;
 
         public string SelectedTimeModifierType
         {

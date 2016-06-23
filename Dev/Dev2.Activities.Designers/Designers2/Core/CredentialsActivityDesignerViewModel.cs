@@ -60,10 +60,10 @@ namespace Dev2.Activities.Designers2.Core
             set { SetValue(IsDestinationPasswordFocusedProperty, value); }
         }
 
-        string Username { get { return GetProperty<string>(); } }
-        string Password { get { return GetProperty<string>(); } }
-        string DestinationUsername { get { return GetProperty<string>(); } }
-        string DestinationPassword { get { return GetProperty<string>(); } }
+        string Username => GetProperty<string>();
+        string Password => GetProperty<string>();
+        string DestinationUsername => GetProperty<string>();
+        string DestinationPassword => GetProperty<string>();
 
         protected virtual void ValidateUserNameAndPassword()
         {

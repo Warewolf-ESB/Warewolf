@@ -72,10 +72,7 @@ namespace Dev2.Services.Sql
             }
             return commandType;
         }
-        public string ConnectionString
-        {
-            get { return _connection == null ? null : _connection.ConnectionString; }
-        }
+        public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 
         public bool IsConnected
         {

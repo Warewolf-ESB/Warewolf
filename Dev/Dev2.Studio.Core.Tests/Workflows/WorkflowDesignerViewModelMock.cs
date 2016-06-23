@@ -65,13 +65,7 @@ namespace Dev2.Core.Tests.Workflows
 
         bool _isDesignerViewVisible = true;
 
-        protected override bool IsDesignerViewVisible
-        {
-            get
-            {
-                return _isDesignerViewVisible;
-            }
-        }
+        protected override bool IsDesignerViewVisible => _isDesignerViewVisible;
 
         public void SetActiveEnvironment(IEnvironmentModel environmentModel)
         {
@@ -83,13 +77,7 @@ namespace Dev2.Core.Tests.Workflows
             _isDesignerViewVisible = isVisible;
         }
 
-        public List<ModelItem> SelectedDebugModelItems
-        {
-            get
-            {
-                return SelectedDebugItems;
-            }
-        }
+        public List<ModelItem> SelectedDebugModelItems => SelectedDebugItems;
 
         public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel environmentModel)
         {

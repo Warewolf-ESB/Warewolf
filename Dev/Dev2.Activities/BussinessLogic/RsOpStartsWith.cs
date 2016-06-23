@@ -30,12 +30,6 @@ namespace Dev2.DataList
         {
             return "Starts With";
         }
-        public override int ArgumentCount
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int ArgumentCount => 2;
     }
 }

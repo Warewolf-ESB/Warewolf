@@ -42,8 +42,8 @@ namespace Warewolf.Studio.CustomControls
             OnErrorVisible = Visibility.Visible;
         }
 
-        public bool IsActionSelected { get { return !string.IsNullOrWhiteSpace(SelectedSource); } }
-        public bool IsSourceSelected { get { return !string.IsNullOrWhiteSpace(SelectedSource); } }
+        public bool IsActionSelected => !string.IsNullOrWhiteSpace(SelectedSource);
+        public bool IsSourceSelected => !string.IsNullOrWhiteSpace(SelectedSource);
 
         public event PropertyChangedEventHandler PropertyChanged;
 

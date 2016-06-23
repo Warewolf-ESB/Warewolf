@@ -18,15 +18,9 @@ namespace Dev2.Common.Interfaces
 
         private static long _totalTime;
 
-        public static int TotalRequests
-        {
-            get { return _totalRequests; }
-        }
+        public static int TotalRequests => _totalRequests;
 
-        public static long TotalTime
-        {
-            get { return _totalTime; }
-        }
+        public static long TotalTime => _totalTime;
 
         public static void IncrementTotalRequests()
         {

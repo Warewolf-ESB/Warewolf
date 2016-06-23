@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.SharepointListUpdate
 
 
 
-        public override string CollectionName { get { return "FilterCriteria"; } }
+        public override string CollectionName => "FilterCriteria";
 
         public ObservableCollection<string> WhereOptions { get; private set; }
 

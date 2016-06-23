@@ -31,12 +31,6 @@ namespace Dev2.DataList
             return "Is Text";
         }
 
-        public override int ArgumentCount
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int ArgumentCount => 1;
     }
 }

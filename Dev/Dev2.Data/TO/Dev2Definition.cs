@@ -49,13 +49,7 @@ namespace Dev2.DataList.Contract
 
         public string Value { get; set; }
 
-        public bool IsRecordSet
-        {
-            get
-            {
-                return !(RecordSetName == null || RecordSetName.Equals(string.Empty));
-            }
-        }
+        public bool IsRecordSet => !(RecordSetName == null || RecordSetName.Equals(string.Empty));
 
         public string RecordSetName { get; set; }
 

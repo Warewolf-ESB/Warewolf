@@ -31,7 +31,7 @@ namespace Dev2.Studio.AppResources.Comparers
         
         public Guid? EnvironmentID { get; set; }
 
-        public string StrValue { get { return ToString(); } }
+        public string StrValue => ToString();
 
         public override string ToString()
         {

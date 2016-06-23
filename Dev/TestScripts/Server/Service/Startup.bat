@@ -42,4 +42,25 @@ sc config "Warewolf Server" binPath= "%ServerEXE%"
 GOTO StartService
 
 :StartService
+
+REM ** Delete the Warewolf ProgramData folder
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
+IF EXIST "%PROGRAMDATA%\Warewolf\Resources" exit 1
+IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" exit 1
+IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" exit 1
+
 sc start "Warewolf Server"
+
+REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
+:WaitForServerStart
+set /a LoopCounter=0
+:MainLoopBody
+IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 30 exit 1
+rem wait for 5 seconds before trying again
+@echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
+ping -n 5 -w 1000 192.0.2.2 > nul
+goto MainLoopBody

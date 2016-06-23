@@ -108,7 +108,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
             }
         }
-        public bool CanOkay { get { return CanSelect(); } }
+        public bool CanOkay => CanSelect();
 
 
         private bool CanSelect()

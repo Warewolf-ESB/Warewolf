@@ -102,10 +102,7 @@ namespace Dev2.Core.Tests.ProperMoqs
         public IEnvironmentModel Environment { get; private set; }
 
         private readonly Guid _serverID;
-        public Guid ServerID
-        {
-            get { return _serverID; }
-        }
+        public Guid ServerID => _serverID;
 
         #endregion Properties
 

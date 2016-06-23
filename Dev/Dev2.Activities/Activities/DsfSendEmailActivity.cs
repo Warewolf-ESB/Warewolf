@@ -98,13 +98,7 @@ namespace Dev2.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         // ReSharper disable once MemberCanBePrivate.Global
-        protected string DecryptedPassword
-        {
-            get
-            {
-                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
-            }
-        }
+        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         [FindMissing]
         public string To { get; set; }

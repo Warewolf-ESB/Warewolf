@@ -21,9 +21,6 @@ namespace Dev2.TaskScheduler.Wrappers
         {
         }
 
-        public new IdleTrigger Instance
-        {
-            get { return (IdleTrigger) base.Instance; }
-        }
+        public new IdleTrigger Instance => (IdleTrigger) base.Instance;
     }
 }

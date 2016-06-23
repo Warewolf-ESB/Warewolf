@@ -29,10 +29,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             _dockManager = dockManager;
         }
 
-        public XamDockManager DockManager
-        {
-            get { return GetDockingManager(); }
-        }
+        public XamDockManager DockManager => GetDockingManager();
 
         /// <summary>
         /// Gets the parent window.

@@ -33,17 +33,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
         private IResourceCatalog _resourceCatalog;
 
-        public static List<WindowsGroupPermission> DefaultPermissions
+        public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>
         {
-            get
-            {
-                return new List<WindowsGroupPermission>
-                {
-                   WindowsGroupPermission.CreateAdministrators(),
-                   WindowsGroupPermission.CreateGuests()
-                };
-            }
-        }
+            WindowsGroupPermission.CreateAdministrators(),
+            WindowsGroupPermission.CreateGuests()
+        };
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

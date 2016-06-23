@@ -40,7 +40,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
         string _location;
-        public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
+        public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 

@@ -225,13 +225,7 @@ namespace Dev2.CustomControls.Connections
             }
         }
 
-        public ObservableCollection<IConnectControlEnvironment> Servers
-        {
-            get
-            {
-                return _servers ?? (_servers = _connectControlSingleton.Servers ?? new ObservableCollection<IConnectControlEnvironment>());
-            }
-        }
+        public ObservableCollection<IConnectControlEnvironment> Servers => _servers ?? (_servers = _connectControlSingleton.Servers ?? new ObservableCollection<IConnectControlEnvironment>());
 
         #region IsDropDownEnabled
 
@@ -392,14 +386,8 @@ namespace Dev2.CustomControls.Connections
             }
         }
 
-        public ICommand EditCommand
-        {
-            get
-            {
-                return _editCommand ??
-                       (_editCommand = new RelayCommand(GetServerToEdit));
-            }
-        }
+        public ICommand EditCommand => _editCommand ??
+                                       (_editCommand = new RelayCommand(GetServerToEdit));
 
         void GetServerToEdit(object param)
         {

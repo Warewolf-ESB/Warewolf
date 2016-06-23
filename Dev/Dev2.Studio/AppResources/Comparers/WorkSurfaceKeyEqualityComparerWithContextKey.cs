@@ -19,13 +19,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         }
 
-        public static WorkSurfaceKeyEqualityComparerWithContextKey Current
-        {
-            get
-            {
-                return _current.Value;
-            }
-        }
+        public static WorkSurfaceKeyEqualityComparerWithContextKey Current => _current.Value;
 
         public bool Equals(WorkSurfaceKey x, WorkSurfaceKey y)
         {
