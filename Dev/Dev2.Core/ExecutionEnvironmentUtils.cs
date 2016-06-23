@@ -235,47 +235,60 @@ namespace Dev2
                         var tokenType = value.Type;
                         if(tokenType == JTokenType.Object)
                         {
-                            var jContainer = value as JContainer;
-                            dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input), jContainer);
-                        }
-                        else if(tokenType == JTokenType.Array)
-                        {
-                            var arrayValue = value as JArray;
-                            if(!isValueRecordset)
+                            if (isValueRecordset)
                             {
-                                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input + "()"), arrayValue);
+                                var arr = new JArray(value);
+                                PerformRecordsetUpdate(dataObject, arr, true, input, recSets, inputName, processedRecsets);
                             }
                             else
                             {
-                                if(arrayValue != null)
-                                {
-                                    for(int i = 0; i < arrayValue.Count; i++)
-                                    {
-                                        var val = arrayValue[i];
-                                        var valObj = val as JObject;
-                                        if(valObj != null)
-                                        {
-                                            var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
-                                            foreach(var rec in recs)
-                                            {
-                                                var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
-                                                var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
-                                                if(fieldProp != null)
-                                                {
-                                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    processedRecsets.Add(inputName);
-                                }
+                                var jContainer = value as JContainer;
+                                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input), jContainer);
                             }
+                        }
+                        else if(tokenType == JTokenType.Array)
+                        {
+                            PerformRecordsetUpdate(dataObject, value, isValueRecordset, input, recSets, inputName, processedRecsets);
                         }
                         else
                         {
                             dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(input), value.ToString(), 0);
                         }
                     }
+                }
+            }
+        }
+
+        private static void PerformRecordsetUpdate(IDSFDataObject dataObject, JToken value, bool isValueRecordset, string input, List<string> recSets, string inputName, List<string> processedRecsets)
+        {
+            var arrayValue = value as JArray;
+            if(!isValueRecordset)
+            {
+                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input + "()"), arrayValue);
+            }
+            else
+            {
+                if(arrayValue != null)
+                {
+                    for(int i = 0; i < arrayValue.Count; i++)
+                    {
+                        var val = arrayValue[i];
+                        var valObj = val as JObject;
+                        if(valObj != null)
+                        {
+                            var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
+                            foreach(var rec in recs)
+                            {
+                                var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
+                                var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
+                                if(fieldProp != null)
+                                {
+                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
+                                }
+                            }
+                        }
+                    }
+                    processedRecsets.Add(inputName);
                 }
             }
         }
