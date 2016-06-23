@@ -103,6 +103,8 @@ namespace Dev2.Runtime.ESB.Execution
         Guid ExecuteWf(ErrorResultTO to)
         {
             Guid result = new Guid();
+            var wfappUtils = new WfApplicationUtils();
+            ErrorResultTO invokeErrors;
             try
             {
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
@@ -111,10 +113,10 @@ namespace Dev2.Runtime.ESB.Execution
                 //IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
                 //                                                   new List<object> { EsbChannel, }, instanceId,
                 //                                                   TheWorkspace, bookmark, out errors);
-                var wfappUtils = new WfApplicationUtils();
+                
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
-                ErrorResultTO invokeErrors;
+                
                 if(DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
@@ -138,6 +140,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 Dev2Logger.Error(ex);
                 to.AddError(ex.Message);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
             }
             return result;
         }
