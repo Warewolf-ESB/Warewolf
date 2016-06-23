@@ -573,6 +573,7 @@ namespace Warewolf.Studio.ViewModels
                     CanSelectUser = true;
                     CanSelectServer = true;
                     ServerName.Name = "";
+                    EmptyServerName = "";
                 }
             }
         }
