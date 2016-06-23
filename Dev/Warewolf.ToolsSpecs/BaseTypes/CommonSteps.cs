@@ -456,34 +456,40 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     actualValue = "";
                 }
-                actualValue = actualValue.Replace('"', ' ').Trim();
-                var type = "";
-                if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
+                if(actualValue != null)
                 {
-                    type = expectedValue;
-                }
-                if (string.IsNullOrEmpty(type))
-                {
-                    Assert.AreEqual(expectedValue, actualValue, error);
-                }
-                else
-                {
-                    Type component = Type.GetType("System." + type);
-                    if (component != null)
+                    actualValue = actualValue.Replace('"', ' ').Trim();
+                    var type = "";
+                    if (expectedValue == "String" || expectedValue == "Int32" || expectedValue == "Guid" || expectedValue == "DateTime")
                     {
-                        TypeConverter converter = TypeDescriptor.GetConverter(component);
+                        type = expectedValue;
+                    }
+                    if (string.IsNullOrEmpty(type))
+                    {
+                        Assert.AreEqual(expectedValue, actualValue, error);
+                    }
+                    else
+                    {
+                        Type component = Type.GetType("System." + type);
+                        if (component != null)
+                        {
+                            TypeConverter converter = TypeDescriptor.GetConverter(component);
 
-                        try
-                        {
-                            converter.ConvertFrom(actualValue);
-                        }
-                        catch (Exception e)
-                        {
-                            Assert.Fail("Cannot convert value " + actualValue + " to type " + type + ". There was an exception: " + e.Message);
+                            try
+                            {
+                                converter.ConvertFrom(actualValue);
+                            }
+                            catch (Exception e)
+                            {
+                                Assert.Fail("Cannot convert value " + actualValue + " to type " + type + ". There was an exception: " + e.Message);
+                            }
                         }
                     }
                 }
-
+                else
+                {
+                    Assert.Fail(error);
+                }
             }
         }
 
