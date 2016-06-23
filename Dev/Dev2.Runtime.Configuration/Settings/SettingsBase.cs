@@ -83,11 +83,8 @@ namespace Dev2.Runtime.Configuration.Settings
             }
         }
 
-        public bool HasError
-        {
-            get { return !string.IsNullOrWhiteSpace(Error); }
-        }
-        
+        public bool HasError => !string.IsNullOrWhiteSpace(Error);
+
         public string SettingName { get; private set; }
 
         public string DisplayName { get; private set; }

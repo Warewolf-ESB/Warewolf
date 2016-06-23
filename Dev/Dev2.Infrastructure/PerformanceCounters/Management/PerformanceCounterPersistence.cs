@@ -98,27 +98,16 @@ namespace Dev2.PerformanceCounters.Management
             return toSerialise;
         }
 
-        public IList<IPerformanceCounter> DefaultCounters
-        {
-            get
-            {
-                return new List<IPerformanceCounter>{
-                                                       new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                       new WarewolfNumberOfErrors(),
-                                                       new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                       new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                       new WarewolfNumberOfAuthErrors(),
-                                                       new WarewolfServicesNotFoundCounter()
-                                                    };
-            }
-        }
-        public IList<IResourcePerformanceCounter> DefaultResourceCounters
-        {
-            get
-            {
-                return new List<IResourcePerformanceCounter>();
-            }
-        }
+        public IList<IPerformanceCounter> DefaultCounters => new List<IPerformanceCounter>{
+            new WarewolfCurrentExecutionsPerformanceCounter(),
+            new WarewolfNumberOfErrors(),
+            new WarewolfRequestsPerSecondPerformanceCounter(),
+            new WarewolfAverageExecutionTimePerformanceCounter(),
+            new WarewolfNumberOfAuthErrors(),
+            new WarewolfServicesNotFoundCounter()
+        };
+
+        public IList<IResourcePerformanceCounter> DefaultResourceCounters => new List<IResourcePerformanceCounter>();
 
         #endregion
     }

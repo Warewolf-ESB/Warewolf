@@ -44,18 +44,8 @@ namespace Dev2.Data.TO
             }
         }
 
-        public bool IsRoot {
+        public bool IsRoot => Parent == null;
 
-            get {
-                return Parent == null;
-            }
-        }
-
-        public bool IsLeaf {
-
-            get {
-                return Child == null;
-            }
-        }
+        public bool IsLeaf => Child == null;
     }
 }

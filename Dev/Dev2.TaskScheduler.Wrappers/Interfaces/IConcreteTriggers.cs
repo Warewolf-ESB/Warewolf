@@ -40,10 +40,7 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
             set { Instance.Delay = value; }
         }
 
-        public new BootTrigger Instance
-        {
-            get { return (BootTrigger) base.Instance; }
-        }
+        public new BootTrigger Instance => (BootTrigger) base.Instance;
     }
 
 

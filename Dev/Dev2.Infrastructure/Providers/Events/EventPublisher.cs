@@ -28,7 +28,7 @@ namespace Dev2.Providers.Events
 
         }
 
-        public int Count { get { return _subjects.Count; } }
+        public int Count => _subjects.Count;
 
         public bool RemoveEvent<TEvent>()
             where TEvent : class, new()

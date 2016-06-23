@@ -10,13 +10,7 @@ namespace Dev2.DataList
     public class RsOpIsNotNull : AbstractRecsetSearchValidation
     {
    
-        public override int ArgumentCount
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int ArgumentCount => 1;
 
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {

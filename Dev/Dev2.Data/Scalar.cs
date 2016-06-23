@@ -123,13 +123,7 @@ namespace Dev2.Data
         }
 
         private static readonly IEqualityComparer<IScalar> ComparerInstance = new ComparerEqualityComparer();
-        public static IEqualityComparer<IScalar> Comparer
-        {
-            get
-            {
-                return ComparerInstance;
-            }
-        }
+        public static IEqualityComparer<IScalar> Comparer => ComparerInstance;
 
         #endregion
     }

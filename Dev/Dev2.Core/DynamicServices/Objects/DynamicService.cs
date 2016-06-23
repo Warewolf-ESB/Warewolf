@@ -67,10 +67,7 @@ namespace Dev2.DynamicServices
 
         public string UnitTestTargetWorkflowService { get; set; }
 
-        public List<string> Debuggers
-        {
-            get { return _currentDebuggers; }
-        }
+        public List<string> Debuggers => _currentDebuggers;
 
         #endregion
 

@@ -50,21 +50,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        public int Count
-        {
-            get
-            {
-                return _cells.Count;
-            }
-        }
+        public int Count => _cells.Count;
 
-        public RecordsetCell[] Cells
-        {
-            get
-            {
-                return _cells.ToArray();
-            }
-        }
+        public RecordsetCell[] Cells => _cells.ToArray();
 
         #endregion
 

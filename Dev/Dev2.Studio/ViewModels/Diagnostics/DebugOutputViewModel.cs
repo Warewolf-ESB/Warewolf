@@ -119,8 +119,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Properties
 
         // BUG 9735 - 2013.06.22 - TWR : added pending/content count properties
-        public int PendingItemCount { get { return _pendingItems.Count; } }
-        public int ContentItemCount { get { return _contentItems.Count; } }
+        public int PendingItemCount => _pendingItems.Count;
+        public int ContentItemCount => _contentItems.Count;
 
         public ProcessController ProcessController { get; set; }
 
@@ -155,42 +155,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </value>
         /// <author>Massimo.Guerrera</author>
         /// <date>3/4/2013</date>
-        public string ProcessingText
-        {
-            get { return DebugStatus.GetDescription(); }
-        }
+        public string ProcessingText => DebugStatus.GetDescription();
 
-        public bool IsProcessing
-        {
-            get
-            {
-                return _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished && _debugStatus != DebugStatus.Stopping;
-            }
-        }
+        public bool IsProcessing => _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished && _debugStatus != DebugStatus.Stopping;
 
-        public bool IsStopping
-        {
-            get
-            {
-                return _debugStatus == DebugStatus.Stopping;
-            }
-        }
+        public bool IsStopping => _debugStatus == DebugStatus.Stopping;
 
-        public string DebugImage
-        {
-            get
-            {
-                return IsProcessing ? StringResources.Pack_Uri_Stop_Image : StringResources.Pack_Uri_Debug_Image;
-            }
-        }
+        public string DebugImage => IsProcessing ? StringResources.Pack_Uri_Stop_Image : StringResources.Pack_Uri_Debug_Image;
 
-        public string DebugText
-        {
-            get
-            {
-                return IsProcessing ? StringResources.Ribbon_StopExecution : StringResources.Ribbon_Debug;
-            }
-        }
+        public string DebugText => IsProcessing ? StringResources.Ribbon_StopExecution : StringResources.Ribbon_Debug;
 
         /// <summary>
         ///     Gets or sets the environment repository, this property is imported via MEF.
@@ -198,10 +171,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///     The environment repository.
         /// </value>
-        public IEnvironmentRepository EnvironmentRepository
-        {
-            get { return _environmentRepository; }
-        }
+        public IEnvironmentRepository EnvironmentRepository => _environmentRepository;
 
         public int DepthMin
         {
@@ -411,10 +381,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ///     Returns a observable collection containing the root level items
         ///     in the debug tree, to which the TreeView can bind.
         /// </summary>
-        public ObservableCollection<IDebugTreeViewItemViewModel> RootItems
-        {
-            get { return _rootItems ?? (_rootItems = new ObservableCollection<IDebugTreeViewItemViewModel>()); }
-        }
+        public ObservableCollection<IDebugTreeViewItemViewModel> RootItems => _rootItems ?? (_rootItems = new ObservableCollection<IDebugTreeViewItemViewModel>());
 
         public ICommand ClearSearchTextCommand { get; private set; }
 
@@ -553,15 +520,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region Commands
 
-        public ICommand OpenItemCommand
-        {
-            get { return _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem)); }
-        }
+        public ICommand OpenItemCommand => _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem));
 
-        public ICommand ExpandAllCommand
-        {
-            get { return _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(ExpandAll)); }
-        }
+        public ICommand ExpandAllCommand => _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(ExpandAll));
 
         public ICommand ShowOptionsCommand
         {
@@ -581,17 +542,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public bool IsConfiguring
-        {
-            get { return DebugStatus == DebugStatus.Configure; }
-        }
+        public bool IsConfiguring => DebugStatus == DebugStatus.Configure;
 
         public Guid SessionID { get; private set; }
 
-        public ICommand SelectAllCommand
-        {
-            get { return _selectAllCommand ?? (_selectAllCommand = new DelegateCommand(SelectAll)); }
-        }
+        public ICommand SelectAllCommand => _selectAllCommand ?? (_selectAllCommand = new DelegateCommand(SelectAll));
 
         void SelectAll(object obj)
         {

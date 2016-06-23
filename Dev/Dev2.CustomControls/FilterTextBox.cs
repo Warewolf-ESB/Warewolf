@@ -33,15 +33,9 @@ namespace Dev2.CustomControls
             DefaultStyleKey = typeof (FilterTextBox);
         }
 
-        public ButtonBase FilterButton
-        {
-            get { return _button; }
-        }
+        public ButtonBase FilterButton => _button;
 
-        public TextBox TheTextBox
-        {
-            get { return _textBox; }
-        }
+        public TextBox TheTextBox => _textBox;
 
         public string SearchText
         {

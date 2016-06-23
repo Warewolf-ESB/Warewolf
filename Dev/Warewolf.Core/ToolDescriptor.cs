@@ -140,13 +140,7 @@ namespace Warewolf.Core
         }
 
         static readonly IEqualityComparer<WarewolfType> WarewolfTypeComparerInstance = new WarewolfTypeEqualityComparer();
-        public static IEqualityComparer<WarewolfType> WarewolfTypeComparer
-        {
-            get
-            {
-                return WarewolfTypeComparerInstance;
-            }
-        }
+        public static IEqualityComparer<WarewolfType> WarewolfTypeComparer => WarewolfTypeComparerInstance;
 
         #endregion
 

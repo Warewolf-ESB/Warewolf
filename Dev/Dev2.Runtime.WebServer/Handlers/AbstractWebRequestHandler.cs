@@ -40,7 +40,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
         string _location;
-        public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
+        public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
@@ -345,12 +345,13 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
             baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
-            if(baseStr != null)
+            string payload=null;
+            if (baseStr != null)
             {
                 var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
                 if(startIdx > 0)
                 {
-                    var payload = baseStr.Substring(startIdx + 1);
+                    payload = baseStr.Substring(startIdx + 1);
                     if(payload.IsXml() || payload.IsJSON())
                     {
                         return payload;
@@ -360,6 +361,21 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             if(ctx.Request.Method == "GET")
             {
+                if(payload != null)
+                {
+                    var keyValuePairs = payload.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    foreach(var keyValuePair in keyValuePairs)
+                    {
+                        if (keyValuePair.StartsWith("wid="))
+                        {
+                            continue;
+                        }
+                        if (keyValuePair.IsXml() || keyValuePair.IsJSON() || (keyValuePair.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && keyValuePair.ToLowerInvariant().Contains("</DataList>".ToLowerInvariant())))
+                        {
+                            return keyValuePair;
+                        }
+                    }
+                }
                 var pairs = ctx.Request.QueryString;
                 return ExtractKeyValuePairs(pairs,ctx.Request.BoundVariables);
             }
@@ -453,7 +469,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                     continue;
                 }
-                if(key.IsXml() || key.IsJSON())
+                if(key.IsXml() || key.IsJSON() || (key.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && key.ToLowerInvariant().Contains("<\\DataList>".ToLowerInvariant())))
                 {
                     return key; //We have a workspace id and XML DataList
                 }

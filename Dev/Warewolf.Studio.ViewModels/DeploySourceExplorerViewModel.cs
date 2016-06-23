@@ -211,13 +211,7 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public virtual Version ServerVersion
-        {
-            get
-            {
-                return Version.Parse( SelectedServer.GetServerVersion());
-            }
-        }
+        public virtual Version ServerVersion => Version.Parse( SelectedServer.GetServerVersion());
 
         /// <summary>
         /// used to select a list of items from the explorer

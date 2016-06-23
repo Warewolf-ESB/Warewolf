@@ -2167,10 +2167,7 @@ namespace Dev2.Common.DateAndTime
 
         #region Properties
 
-        public List<IDateTimeFormatPartTO> DateTimeFormatParts
-        {
-            get { return DateTimeFormatsParts.Values.ToList(); }
-        }
+        public List<IDateTimeFormatPartTO> DateTimeFormatParts => DateTimeFormatsParts.Values.ToList();
 
         #endregion Properties
     }

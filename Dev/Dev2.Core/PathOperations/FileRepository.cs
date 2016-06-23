@@ -63,10 +63,7 @@ namespace Dev2.PathOperations
         /// <summary>
         ///     Gets the number of items in the repository.
         /// </summary>
-        public int Count
-        {
-            get { return _items.Count; }
-        }
+        public int Count => _items.Count;
 
         #endregion
 

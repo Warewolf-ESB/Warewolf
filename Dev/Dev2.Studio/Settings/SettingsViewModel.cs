@@ -140,9 +140,9 @@ namespace Dev2.Settings
             }
         }
 
-        public bool IsSavedSuccessVisible { get { return !HasErrors && !IsDirty && IsSaved; } }
+        public bool IsSavedSuccessVisible => !HasErrors && !IsDirty && IsSaved;
 
-        public bool IsErrorsVisible { get { return HasErrors || IsDirty && !IsSaved; } }
+        public bool IsErrorsVisible => HasErrors || IsDirty && !IsSaved;
 
         public bool HasErrors
         {
@@ -301,20 +301,10 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => HasLogSettings);
             }
         }
-        public string SecurityHeader
-        {
-            get
-            {
-                return SecurityViewModel != null && SecurityViewModel.IsDirty ? "SECURITY *" : "SECURITY";
-            }
-        }
-        public string LogHeader
-        {
-            get
-            {
-                return LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "LOGGING *" : "LOGGING";
-            }
-        }
+        public string SecurityHeader => SecurityViewModel != null && SecurityViewModel.IsDirty ? "SECURITY *" : "SECURITY";
+
+        public string LogHeader => LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "LOGGING *" : "LOGGING";
+
         public bool HasLogSettings
         {
             get
@@ -649,20 +639,8 @@ namespace Dev2.Settings
             Errors = description;
         }
 
-        public string ResourceType
-        {
-            get
-            {
-                return "Settings";
-            }
-        }
-        public string PerfmonHeader
-        {
-            get
-            {
-                return PerfmonViewModel != null && PerfmonViewModel.IsDirty ? "PERFORMANCE COUNTERS *" : "PERFORMANCE COUNTERS";
-            }
-        }
+        public string ResourceType => "Settings";
+        public string PerfmonHeader => PerfmonViewModel != null && PerfmonViewModel.IsDirty ? "PERFORMANCE COUNTERS *" : "PERFORMANCE COUNTERS";
     }
 }
 

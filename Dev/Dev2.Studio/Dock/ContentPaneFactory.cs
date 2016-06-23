@@ -669,10 +669,8 @@ namespace Dev2.Studio.Dock
         /// <summary>
         /// Returns the pane being initialized
         /// </summary>
-        public ContentPane Pane
-        {
-            get { return _pane; }
-        }
+        public ContentPane Pane => _pane;
+
         #endregion //Properties
     }
 }

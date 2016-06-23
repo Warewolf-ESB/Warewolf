@@ -62,37 +62,13 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
         #region Properties
 
-        public bool FocusOk
-        {
-            get
-            {
-                return _defaultResult == MessageBoxResult.OK;
-            }
-        }
+        public bool FocusOk => _defaultResult == MessageBoxResult.OK;
 
-        public bool FocusYes
-        {
-            get
-            {
-                return _defaultResult == MessageBoxResult.Yes;
-            }
-        }
+        public bool FocusYes => _defaultResult == MessageBoxResult.Yes;
 
-        public bool FocusNo
-        {
-            get
-            {
-                return _defaultResult == MessageBoxResult.No;
-            }
-        }
+        public bool FocusNo => _defaultResult == MessageBoxResult.No;
 
-        public bool FocusCancel
-        {
-            get
-            {
-                return _defaultResult == MessageBoxResult.Cancel;
-            }
-        }
+        public bool FocusCancel => _defaultResult == MessageBoxResult.Cancel;
 
         public string MessageBoxText
         {
@@ -172,13 +148,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             }
         }
 
-        public string DontShowAgainKey
-        {
-            get
-            {
-                return _dontShowAgainKey;
-            }
-        }
+        public string DontShowAgainKey => _dontShowAgainKey;
 
         #endregion Properties
 

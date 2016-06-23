@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
 
             ItemsList = Dev2EnumConverter.ConvertEnumsTypeToStringList<enTypeOfSystemInformationToGather>();
         }
-        public override string CollectionName { get { return "SystemInformationCollection"; } }
+        public override string CollectionName => "SystemInformationCollection";
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {

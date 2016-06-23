@@ -37,12 +37,6 @@ namespace Warewolf.Studio.ViewModels
             _updateRepository.Save(model);
         }
 
-        public IStudioUpdateManager UpdateRepository
-        {
-            get
-            {
-                return _updateRepository;
-            }
-        }
+        public IStudioUpdateManager UpdateRepository => _updateRepository;
     }
 }

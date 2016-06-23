@@ -83,27 +83,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsNoButtonVisible
-        {
-            get { return _buttons == MessageBoxButton.YesNo || _buttons == MessageBoxButton.YesNoCancel; }
-        }
+        public bool IsNoButtonVisible => _buttons == MessageBoxButton.YesNo || _buttons == MessageBoxButton.YesNoCancel;
 
-        public bool IsYesButtonVisible
-        {
-            get { return _buttons == MessageBoxButton.YesNo || _buttons == MessageBoxButton.YesNoCancel; }
-        }
+        public bool IsYesButtonVisible => _buttons == MessageBoxButton.YesNo || _buttons == MessageBoxButton.YesNoCancel;
 
-        public bool IsCancelButtonVisible
-        {
-            get { return _buttons == MessageBoxButton.OKCancel || _buttons == MessageBoxButton.YesNoCancel; }
-        }
+        public bool IsCancelButtonVisible => _buttons == MessageBoxButton.OKCancel || _buttons == MessageBoxButton.YesNoCancel;
 
         public bool IsDependenciesButtonVisible { get; set; }
 
-        public bool IsOkButtonVisible
-        {
-            get { return _buttons == MessageBoxButton.OK || _buttons == MessageBoxButton.OKCancel; }
-        }
+        public bool IsOkButtonVisible => _buttons == MessageBoxButton.OK || _buttons == MessageBoxButton.OKCancel;
 
         public string Message
         {
@@ -133,7 +121,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public MessageBoxResult Result { get { return _result; } }
+        public MessageBoxResult Result => _result;
 
         public void No()
         {

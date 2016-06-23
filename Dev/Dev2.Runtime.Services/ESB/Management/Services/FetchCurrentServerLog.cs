@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             _serverLogPath = serverLogPath;
         }
 
-        public string ServerLogPath { get { return _serverLogPath; } }
+        public string ServerLogPath => _serverLogPath;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

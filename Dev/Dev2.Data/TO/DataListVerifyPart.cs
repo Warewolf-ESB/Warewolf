@@ -26,24 +26,9 @@ namespace Dev2.DataList.Contract
 
         public string RecordsetIndex { get; private set; }
 
-        public bool HasRecordsetIndex
-        {
+        public bool HasRecordsetIndex => !string.IsNullOrEmpty(RecordsetIndex);
 
-            get
-            {
-                return !string.IsNullOrEmpty(RecordsetIndex);
-            }
-
-        }
-
-        public bool IsScalar
-        {
-
-            get
-            {
-                return Recordset != null && Recordset.Length == 0;
-            }
-        }
+        public bool IsScalar => Recordset != null && Recordset.Length == 0;
 
         public bool IsJson
         {

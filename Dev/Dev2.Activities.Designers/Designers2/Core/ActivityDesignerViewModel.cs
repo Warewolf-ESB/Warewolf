@@ -89,7 +89,7 @@ namespace Dev2.Activities.Designers2.Core
             _setInitialFocus = setInitialFocus;
         }
 
-        public ModelItem ModelItem { get { return _modelItem; } }
+        public ModelItem ModelItem => _modelItem;
 
         public ICommand ShowItemHelpCommand { get; private set; }
 
@@ -101,7 +101,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public Visibility ShowExampleWorkflowLink { get; set; }
 
-        public ObservableCollection<ActivityDesignerToggle> TitleBarToggles { get { return _titleBarToggles; } }
+        public ObservableCollection<ActivityDesignerToggle> TitleBarToggles => _titleBarToggles;
 
         public bool IsClosed
         {
@@ -310,9 +310,9 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool HasLargeView { get; set; }
 
-        bool IsSelectedOrMouseOver { get { return IsSelected || IsMouseOver; } }
+        bool IsSelectedOrMouseOver => IsSelected || IsMouseOver;
 
-        public virtual bool ShowSmall { get { return !ShowLarge; } }
+        public virtual bool ShowSmall => !ShowLarge;
 
         protected static void OnTitleBarToggleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

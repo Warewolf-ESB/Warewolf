@@ -23,10 +23,7 @@ namespace Warewolf.Studio.CustomControls
             _checkBox.Style = Application.Current.TryFindResource("CheckBoxXamGridStyle") as Style;
         }
 
-        public override bool RemovePaddingDuringEditing
-        {
-            get { return true; }
-        }
+        public override bool RemovePaddingDuringEditing => true;
 
         public override FrameworkElement ResolveDisplayElement(Cell cell, Binding cellBinding)
         {

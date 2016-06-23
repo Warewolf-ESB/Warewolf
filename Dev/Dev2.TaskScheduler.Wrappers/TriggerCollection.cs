@@ -55,9 +55,6 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public TriggerCollection Instance
-        {
-            get { return _nativeInstance; }
-        }
+        public TriggerCollection Instance => _nativeInstance;
     }
 }

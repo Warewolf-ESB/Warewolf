@@ -31,20 +31,11 @@ namespace Dev2.TaskScheduler.Wrappers
             Instance.Dispose();
         }
 
-        public string Name
-        {
-            get { return Instance.Name; }
-        }
+        public string Name => Instance.Name;
 
-        public string Path
-        {
-            get { return Instance.Path; }
-        }
+        public string Path => Instance.Path;
 
-        public ITaskCollection Tasks
-        {
-            get { return _taskServiceConvertorFactory.CreateTaskCollection(Instance.Tasks); }
-        }
+        public ITaskCollection Tasks => _taskServiceConvertorFactory.CreateTaskCollection(Instance.Tasks);
 
 
         public ITaskFolder CreateFolder(string subFolderName, string sddlForm = null)
@@ -99,9 +90,6 @@ namespace Dev2.TaskScheduler.Wrappers
                     LogonType, sddl));
         }
 
-        public TaskFolder Instance
-        {
-            get { return _instance; }
-        }
+        public TaskFolder Instance => _instance;
     }
 }

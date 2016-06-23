@@ -25,10 +25,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
         {
         }
 
-        public static ContexttualResourceModelEqualityComparer Current
-        {
-            get { return _current.Value; }
-        }
+        public static ContexttualResourceModelEqualityComparer Current => _current.Value;
 
         public bool Equals(IContextualResourceModel x, IContextualResourceModel y)
         {

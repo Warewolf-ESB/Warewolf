@@ -25,10 +25,7 @@ namespace Warewolf.Studio.CustomControls
             };
         }
 
-        public override bool RemovePaddingDuringEditing
-        {
-            get { return true; }
-        }
+        public override bool RemovePaddingDuringEditing => true;
 
         public override FrameworkElement ResolveDisplayElement(Cell cell, Binding cellBinding)
         {

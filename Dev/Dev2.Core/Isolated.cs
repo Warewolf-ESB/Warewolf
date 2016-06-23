@@ -17,13 +17,7 @@ namespace Dev2
             _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
         }
 
-        public T Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public T Value => _value;
 
         public void Dispose()
         {

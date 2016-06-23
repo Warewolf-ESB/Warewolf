@@ -54,10 +54,7 @@ namespace Dev2.DynamicServices
         /// <summary>
         ///     Text description of the available services within this web service.
         /// </summary>
-        public List<string> AvailableServices
-        {
-            get { return services; }
-        }
+        public List<string> AvailableServices => services;
 
         /// <summary>
         ///     Builds the web service description importer, which allows us to generate a proxy class based on the
