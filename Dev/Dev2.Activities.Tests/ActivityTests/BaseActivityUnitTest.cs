@@ -403,10 +403,6 @@ namespace ActivityUnitTests
             {
                 error = e.Message;
             }
-            
-            if(!string.IsNullOrEmpty(error))
-            {
-            }
         }
 
         protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
