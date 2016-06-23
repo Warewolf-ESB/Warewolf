@@ -172,20 +172,9 @@ namespace Dev2.Runtime.Hosting
 
         #region Properties
 
-        public int WorkspaceCount
-        {
-            get
-            {
-                return _workspaceResources.Count;
-            }
-        }
-        public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices
-        {
-            get
-            {
-                return _managementServices;
-            }
-        }
+        public int WorkspaceCount => _workspaceResources.Count;
+
+        public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _managementServices;
 
         #endregion
 

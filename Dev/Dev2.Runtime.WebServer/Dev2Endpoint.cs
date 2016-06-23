@@ -35,10 +35,7 @@ namespace Dev2.Runtime.WebServer
         public string CertificatePath { get; private set; }
         public string Url { get; private set; }
 
-        public bool IsSecured
-        {
-            get { return !string.IsNullOrEmpty(CertificatePath); }
-        }
+        public bool IsSecured => !string.IsNullOrEmpty(CertificatePath);
 
         public IPAddress Address
         {

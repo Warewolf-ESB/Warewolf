@@ -496,26 +496,14 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             return Sources;
         }
 
-        public ObservableCollection<IDbSource> Sources
-        {
-            get
-            {
-                return _sources;
-            }
-        }
+        public ObservableCollection<IDbSource> Sources => _sources;
 
         public ICollection<IDbAction> GetActions(IDbSource source)
         {
             return Actions;
         }
 
-        public ICollection<IDbAction> Actions
-        {
-            get
-            {
-                return _actions;
-            }
-        }
+        public ICollection<IDbAction> Actions => _actions;
 
         public void CreateNewSource()
         {
@@ -529,13 +517,7 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             return _updateRepository.TestDbService(inputValues);
         }
 
-        public IStudioUpdateManager UpdateRepository
-        {
-            get
-            {
-                return _updateRepository;
-            }
-        }
+        public IStudioUpdateManager UpdateRepository => _updateRepository;
 
         #endregion
     }

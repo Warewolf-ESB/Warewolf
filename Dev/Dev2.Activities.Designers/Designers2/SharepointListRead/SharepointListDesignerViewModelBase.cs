@@ -196,8 +196,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 }
             }
         }
-        public bool IsSharepointServerSelected { get { return SelectedSharepointServer != SelectSharepointSource; } }
-        public bool IsListSelected { get { return SelectedList != SelectSharepointList; } }
+        public bool IsSharepointServerSelected => SelectedSharepointServer != SelectSharepointSource;
+        public bool IsListSelected => SelectedList != SelectSharepointList;
         public RelayCommand RefreshListsCommand { get; set; }
         public RelayCommand EditSharepointServerCommand { get; set; }
         public ObservableCollection<SharepointListTo> Lists { get; set; }

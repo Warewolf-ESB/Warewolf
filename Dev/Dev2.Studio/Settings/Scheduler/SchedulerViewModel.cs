@@ -639,10 +639,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public bool HasErrors
-        {
-            get { return Errors.HasErrors(); }
-        }
+        public bool HasErrors => Errors.HasErrors();
 
         public IErrorResultTO Errors
         {
@@ -791,14 +788,8 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public ICommand AddWorkflowCommand
-        {
-            get
-            {
-                return _addWorkflowCommand ??
-                       (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddWorkflow, CanSelectWorkflow));
-            }
-        }
+        public ICommand AddWorkflowCommand => _addWorkflowCommand ??
+                                              (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddWorkflow, CanSelectWorkflow));
 
         bool CanSelectWorkflow()
         {
@@ -1258,13 +1249,8 @@ namespace Dev2.Settings.Scheduler
 
         #endregion
 
-        public string ResourceType
-        {
-            get
-            {
-                return "Scheduler";
-            }
-        }
+        public string ResourceType => "Scheduler";
+
         public IServer Server
         {
             get;

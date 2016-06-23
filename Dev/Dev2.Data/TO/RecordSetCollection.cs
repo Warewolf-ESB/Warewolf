@@ -28,18 +28,9 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Properties
-        public IList<IRecordSetDefinition> RecordSets {
+        public IList<IRecordSetDefinition> RecordSets => _recordSets;
 
-            get {
-                return _recordSets;
-            }
-        }
-
-        public IList<string> RecordSetNames {
-            get {
-                return _recordSetNames;
-            }
-        }
+        public IList<string> RecordSetNames => _recordSetNames;
 
         #endregion
     }

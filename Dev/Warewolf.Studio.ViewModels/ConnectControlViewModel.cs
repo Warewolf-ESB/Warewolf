@@ -427,18 +427,9 @@ namespace Warewolf.Studio.ViewModels
 
         public event SelectedServerChanged SelectedEnvironmentChanged;
 
-        public string ToggleConnectionToolTip
-        {
-            get { return Resources.Languages.Core.ConnectControlToggleConnectionToolTip; }
-        }
-        public string EditConnectionToolTip
-        {
-            get { return Resources.Languages.Core.ConnectControlEditConnectionToolTip; }
-        }
-        public string ConnectionsToolTip
-        {
-            get { return Resources.Languages.Core.ConnectControlConnectionsToolTip; }
-        }
+        public string ToggleConnectionToolTip => Resources.Languages.Core.ConnectControlToggleConnectionToolTip;
+        public string EditConnectionToolTip => Resources.Languages.Core.ConnectControlEditConnectionToolTip;
+        public string ConnectionsToolTip => Resources.Languages.Core.ConnectControlConnectionsToolTip;
         public EventHandler<IServer> ServerConnected { get; set; }
         public EventHandler<IServer> ServerHasDisconnected { get; set; }
         public EventHandler<IServer> ServerReConnected { get; set; }

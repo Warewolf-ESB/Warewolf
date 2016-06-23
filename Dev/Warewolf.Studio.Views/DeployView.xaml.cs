@@ -19,13 +19,8 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-        public IServer SelectedServer
-        {
-            get
-            {
-                return SourceNavigationView.SelectedServer;
-            }            
-        }
+        public IServer SelectedServer => SourceNavigationView.SelectedServer;
+
         public IServer SelectedDestinationServer
         {
             get
@@ -88,35 +83,13 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        public string Services
-        {
-            get
-            {
-                return ((IDeployViewModel)DataContext).ServicesCount;
-            }
-        }
-        public string Sources
-        {
-            get
-            {
-                return ((IDeployViewModel)DataContext).SourcesCount;
-            }
+        public string Services => ((IDeployViewModel)DataContext).ServicesCount;
 
-        }
-        public string New
-        {
-            get
-            {
-                return ((IDeployViewModel)DataContext).NewResourcesCount;
-            }
-        }
-        public string Overrides
-        {
-            get
-            {
-                return ((IDeployViewModel)DataContext).OverridesCount;
-            }
-        }
+        public string Sources => ((IDeployViewModel)DataContext).SourcesCount;
+
+        public string New => ((IDeployViewModel)DataContext).NewResourcesCount;
+
+        public string Overrides => ((IDeployViewModel)DataContext).OverridesCount;
 
         #region Implementation of IComponentConnector
 

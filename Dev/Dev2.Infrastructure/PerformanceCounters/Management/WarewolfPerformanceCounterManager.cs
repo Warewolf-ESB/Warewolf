@@ -102,7 +102,7 @@ namespace Dev2.PerformanceCounters.Management
 
         #region Implementation of IPerformanceCounterRepository
 
-        public IPerformanceCounterTo Counters { get{ return new PerformanceCounterTo(_counters,_resourceCounters);}}
+        public IPerformanceCounterTo Counters => new PerformanceCounterTo(_counters,_resourceCounters);
 
         public void Save(IPerformanceCounterTo toSave)
         {

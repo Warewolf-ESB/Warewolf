@@ -66,9 +66,6 @@ namespace WPF.JoshSmith.Panels
         /// <summary>
         ///     Returns the number of Viewport2DVisual3D objects in the Children collection.
         /// </summary>
-        internal int ModelCount
-        {
-            get { return Children.Count - 1; }
-        }
+        internal int ModelCount => Children.Count - 1;
     }
 }

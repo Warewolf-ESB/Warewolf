@@ -634,13 +634,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
     internal class TestDebugWriter : IDebugWriter
     {
         readonly List<IDebugState> _debugStates;
-        public List<IDebugState> DebugStates
-        {
-            get
-            {
-                return _debugStates;
-            }
-        }
+        public List<IDebugState> DebugStates => _debugStates;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.

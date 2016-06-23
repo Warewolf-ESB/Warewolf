@@ -26,7 +26,8 @@ namespace Dev2.DynamicServices
         #endregion
 
         #region Public Properties
-        public string RootDirectory { get { return _rootDirectory; } }
+        public string RootDirectory => _rootDirectory;
+
         #endregion
 
         #region Constructor

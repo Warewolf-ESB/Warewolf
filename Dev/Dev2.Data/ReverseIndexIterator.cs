@@ -32,12 +32,9 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        public int Count
-        {
-            get { return IndexList.Count(); }
-        }
+        public int Count => IndexList.Count();
 
-        public bool IsEmpty { get { return _curValue - Count == 0; } }
+        public bool IsEmpty => _curValue - Count == 0;
 
         public ReverseIndexIterator(HashSet<int> gaps, int maxValue)
         {

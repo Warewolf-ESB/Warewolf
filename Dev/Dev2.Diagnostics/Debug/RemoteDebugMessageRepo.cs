@@ -30,10 +30,7 @@ namespace Dev2.Diagnostics.Debug
         /// <value>
         /// The instance.
         /// </value>
-        public static RemoteDebugMessageRepo Instance
-        {
-            get { return _instance ?? (_instance = new RemoteDebugMessageRepo()); }
-        }
+        public static RemoteDebugMessageRepo Instance => _instance ?? (_instance = new RemoteDebugMessageRepo());
 
         /// <summary>
         /// Adds the debug item.

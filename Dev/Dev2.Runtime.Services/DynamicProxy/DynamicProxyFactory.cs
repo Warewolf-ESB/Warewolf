@@ -470,77 +470,23 @@ namespace Dev2.Runtime.DynamicProxy
             contractGenerator.Options |= ServiceContractGenerationOptions.ClientClass;
         }
 
-        public IEnumerable<MetadataSection> Metadata
-        {
-            get
-            {
-                return metadataCollection;
-            }
-        }
+        public IEnumerable<MetadataSection> Metadata => metadataCollection;
 
-        public IEnumerable<Binding> Bindings
-        {
-            get
-            {
-                return bindings;
-            }
-        }
+        public IEnumerable<Binding> Bindings => bindings;
 
-        public IEnumerable<ContractDescription> Contracts
-        {
-            get
-            {
-                return contracts;
-            }
-        }
+        public IEnumerable<ContractDescription> Contracts => contracts;
 
-        public IEnumerable<ServiceEndpoint> Endpoints
-        {
-            get
-            {
-                return endpoints;
-            }
-        }
+        public IEnumerable<ServiceEndpoint> Endpoints => endpoints;
 
-        public Assembly ProxyAssembly
-        {
-            get
-            {
-                return proxyAssembly;
-            }
-        }
+        public Assembly ProxyAssembly => proxyAssembly;
 
-        public string ProxyCode
-        {
-            get
-            {
-                return proxyCode;
-            }
-        }
+        public string ProxyCode => proxyCode;
 
-        public IEnumerable<MetadataConversionError> MetadataImportWarnings
-        {
-            get
-            {
-                return importWarnings;
-            }
-        }
+        public IEnumerable<MetadataConversionError> MetadataImportWarnings => importWarnings;
 
-        public IEnumerable<MetadataConversionError> CodeGenerationWarnings
-        {
-            get
-            {
-                return codegenWarnings;
-            }
-        }
+        public IEnumerable<MetadataConversionError> CodeGenerationWarnings => codegenWarnings;
 
-        public IEnumerable<CompilerError> CompilationWarnings
-        {
-            get
-            {
-                return compilerWarnings;
-            }
-        }
+        public IEnumerable<CompilerError> CompilationWarnings => compilerWarnings;
 
         public static string ToString(IEnumerable<MetadataConversionError>
             importErrors)

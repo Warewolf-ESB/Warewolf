@@ -24,24 +24,12 @@ namespace Dev2.Common.Wrappers
             _nativeFactory = directoryEntryFactory;
         }
 
-        public IDirectoryEntries Children
-        {
-            get { return _nativeFactory.Create(_wrapped.Children); }
-        }
+        public IDirectoryEntries Children => _nativeFactory.Create(_wrapped.Children);
 
-        public string SchemaClassName
-        {
-            get { return _wrapped.SchemaClassName; }
-        }
+        public string SchemaClassName => _wrapped.SchemaClassName;
 
-        public string Name
-        {
-            get { return _wrapped.SchemaClassName; }
-        }
+        public string Name => _wrapped.SchemaClassName;
 
-        public DirectoryEntry Instance
-        {
-            get { return _wrapped; }
-        }
+        public DirectoryEntry Instance => _wrapped;
     }
 }

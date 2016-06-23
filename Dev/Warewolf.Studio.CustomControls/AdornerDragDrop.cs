@@ -41,10 +41,7 @@ namespace Warewolf.Studio.CustomControls
         }
 
         //return the count of the visuals
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         //moves the visual around
         public override GeneralTransform GetDesiredTransform(GeneralTransform transform)
