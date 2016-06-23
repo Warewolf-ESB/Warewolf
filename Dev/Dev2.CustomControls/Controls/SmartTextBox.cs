@@ -86,10 +86,7 @@ namespace Dev2.CustomControls.Controls
         /// <summary>
         ///     Returns true if the list of suggestions is currently displayed.
         /// </summary>
-        public bool AreSuggestionsVisible
-        {
-            get { return areSuggestionsVisible; }
-        }
+        public bool AreSuggestionsVisible => areSuggestionsVisible;
 
         #endregion // AreSuggestionsVisible
 
@@ -136,10 +133,7 @@ namespace Dev2.CustomControls.Controls
         /// <summary>
         ///     Returns true if the word at the caret index is misspelled.
         /// </summary>
-        public bool IsCurrentWordMisspelled
-        {
-            get { return GetSpellingError() != null; }
-        }
+        public bool IsCurrentWordMisspelled => GetSpellingError() != null;
 
         #endregion // IsCurrentWordMisspelled
 

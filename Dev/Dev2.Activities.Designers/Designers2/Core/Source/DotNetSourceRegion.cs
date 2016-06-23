@@ -287,13 +287,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public IList<string> Errors
-        {
-            get
-            {
-                return SelectedSource == null ? new List<string> { "Invalid Source Selected" } : new List<string>();
-            }
-        }
+        public IList<string> Errors => SelectedSource == null ? new List<string> { "Invalid Source Selected" } : new List<string>();
 
         public IPluginSource SavedSource
         {

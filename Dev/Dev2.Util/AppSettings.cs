@@ -18,13 +18,8 @@ namespace Dev2.Util
         public static string LocalHost { get; set; }
 
         static string _serviceName;
-        public static string ServiceName
-        {
-            get
-            {
-                return _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
-            }
-        }
+        public static string ServiceName => _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
+
         public static bool CollectUsageStats
         {
             get
@@ -34,9 +29,6 @@ namespace Dev2.Util
                 return collectUsageStats;
             }
         }
-        public static string ServicesAddress
-        {
-            get { return LocalHost + "/wwwroot/services/Service/Resources/{0}"; }
-        }
+        public static string ServicesAddress => LocalHost + "/wwwroot/services/Service/Resources/{0}";
     }
 }

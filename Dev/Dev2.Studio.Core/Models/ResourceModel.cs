@@ -117,8 +117,8 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IObservableReadOnlyList<IErrorInfo> Errors { get { return _errors; } }
-        public IObservableReadOnlyList<IErrorInfo> FixedErrors { get { return _fixedErrors; } }
+        public IObservableReadOnlyList<IErrorInfo> Errors => _errors;
+        public IObservableReadOnlyList<IErrorInfo> FixedErrors => _fixedErrors;
 
         public bool IsWorkflowSaved
         {
@@ -290,10 +290,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public List<string> TagList
-        {
-            get { return _tagList; }
-        }
+        public List<string> TagList => _tagList;
 
         public string DataList
         {
@@ -380,10 +377,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public bool HasErrors
-        {
-            get { return ValidationErrors.Count > 0; }
-        }
+        public bool HasErrors => ValidationErrors.Count > 0;
 
         public string DataTags
         {
@@ -716,10 +710,7 @@ namespace Dev2.Studio.Core.Models
 
         #region IDataErrorInfo Members
 
-        public string Error
-        {
-            get { return null; }
-        }
+        public string Error => null;
 
         public string this[string columnName]
         {

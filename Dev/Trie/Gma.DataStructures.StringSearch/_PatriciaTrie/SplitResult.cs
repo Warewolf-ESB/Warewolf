@@ -14,15 +14,9 @@ namespace Gma.DataStructures.StringSearch
             m_Rest = rest;
         }
 
-        public StringPartition Rest
-        {
-            get { return m_Rest; }
-        }
+        public StringPartition Rest => m_Rest;
 
-        public StringPartition Head
-        {
-            get { return m_Head; }
-        }
+        public StringPartition Head => m_Head;
 
         public bool Equals(SplitResult other)
         {

@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.SharepointListCreate
         {
         }
 
-        public override string CollectionName { get { return "FilterCriteria"; } }
+        public override string CollectionName => "FilterCriteria";
 
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()

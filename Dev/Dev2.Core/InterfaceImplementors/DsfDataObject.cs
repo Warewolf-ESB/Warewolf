@@ -204,10 +204,7 @@ namespace Dev2.DynamicServices
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
 
-        public bool IsRemoteInvoke
-        {
-            get { return EnvironmentID != Guid.Empty; }
-        }
+        public bool IsRemoteInvoke => EnvironmentID != Guid.Empty;
 
         public bool IsRemoteInvokeOverridden { get; set; }
 

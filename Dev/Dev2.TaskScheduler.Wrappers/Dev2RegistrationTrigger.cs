@@ -28,9 +28,6 @@ namespace Dev2.TaskScheduler.Wrappers
             set { Instance.Delay = value; }
         }
 
-        public new RegistrationTrigger Instance
-        {
-            get { return (RegistrationTrigger) base.Instance; }
-        }
+        public new RegistrationTrigger Instance => (RegistrationTrigger) base.Instance;
     }
 }

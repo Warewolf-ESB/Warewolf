@@ -109,13 +109,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets the number of items in the repository.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _items.Count;
-            }
-        }
+        public int Count => _items.Count;
 
         #endregion
 
@@ -124,13 +118,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets the server workspace.
         /// </summary>
-        public IWorkspace ServerWorkspace
-        {
-            get
-            {
-                return Get(ServerWorkspaceID);
-            }
-        }
+        public IWorkspace ServerWorkspace => Get(ServerWorkspaceID);
 
         #endregion
 

@@ -29,13 +29,7 @@ namespace Warewolf.Studio.ViewModels
             shell.SetActiveServer(server);
         }
 
-        public IStudioUpdateManager UpdateRepository
-        {
-            get
-            {
-                return _updateRepository;
-            }
-        }
+        public IStudioUpdateManager UpdateRepository => _updateRepository;
 
         public ObservableCollection<IWcfServerSource> RetrieveSources()
         {

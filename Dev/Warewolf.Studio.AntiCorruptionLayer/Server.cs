@@ -46,34 +46,16 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             _environmentModel = environmentModel;            
         }
 
-        public bool CanDeployTo
-        {
-            get
-            {
-                return _environmentModel.IsAuthorizedDeployTo;
-            }
-        }
+        public bool CanDeployTo => _environmentModel.IsAuthorizedDeployTo;
 
-        public bool CanDeployFrom
-        {
-            get
-            {
-                return _environmentModel.IsAuthorizedDeployFrom;
-            }
-        }
+        public bool CanDeployFrom => _environmentModel.IsAuthorizedDeployFrom;
 
         public Server()
         {
         }
 
         public Guid EnvironmentID { get; set; }
-        public Guid? ServerID
-        {
-            get
-            {
-                return EnvironmentConnection.ServerID;
-        }
-        }
+        public Guid? ServerID => EnvironmentConnection.ServerID;
 
         public bool HasLoaded
         {
@@ -212,34 +194,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return _tools ?? (_tools = ProxyLayer.QueryManagerProxy.FetchTools());
         }
 
-        public IExplorerRepository ExplorerRepository
-        {
-            get
-            {
-                return ProxyLayer;
-            }
-        }
+        public IExplorerRepository ExplorerRepository => ProxyLayer;
 
-        public IQueryManager QueryProxy
-        {
-            get
-            {
-                return _proxyLayer.QueryManagerProxy;
-            }
-        }
-        
-        public bool IsConnected
-        {
-            get
-            {
-                return EnvironmentConnection != null && EnvironmentConnection.IsConnected;
-            }
-        }
+        public IQueryManager QueryProxy => _proxyLayer.QueryManagerProxy;
 
-        public bool AllowEdit
-        {
-            get { return EnvironmentConnection!=null&& !EnvironmentConnection.IsLocalHost; }
-        }
+        public bool IsConnected => EnvironmentConnection != null && EnvironmentConnection.IsConnected;
+
+        public bool AllowEdit => EnvironmentConnection!=null&& !EnvironmentConnection.IsLocalHost;
 
         public void Disconnect()
         {
@@ -286,13 +247,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IStudioUpdateManager UpdateRepository { get; private set; }
         
-        public StudioServerProxy ProxyLayer
-        {
-            get
-            {
-                return _proxyLayer;
-            }
-        }
+        public StudioServerProxy ProxyLayer => _proxyLayer;
         public IEnvironmentConnection EnvironmentConnection { get; set; }
 
         #endregion

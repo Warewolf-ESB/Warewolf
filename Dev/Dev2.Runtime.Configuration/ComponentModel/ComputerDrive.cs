@@ -63,10 +63,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             }
         }
 
-        public int ChildrenCount
-        {
-            get { return Children.Count; }
-        }
+        public int ChildrenCount => Children.Count;
 
         public ObservableCollection<ComputerDrive> Children
         {

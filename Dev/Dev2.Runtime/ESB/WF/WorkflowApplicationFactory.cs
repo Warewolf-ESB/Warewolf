@@ -270,7 +270,7 @@ namespace Dev2.Runtime.ESB.WF
             #endregion
 
             #region Public Properties
-            public IDSFDataObject DataTransferObject { get { return _result; } }
+            public IDSFDataObject DataTransferObject => _result;
             ErrorResultTO AllErrors { get; set; }
             private IList<IExecutableService> _associatedServices;
             private int _previousNumberOfSteps;
@@ -308,10 +308,7 @@ namespace Dev2.Runtime.ESB.WF
 
             public Guid ID { get; set; }
             public Guid WorkspaceID { get; set; }
-            public IList<IExecutableService> AssociatedServices
-            {
-                get { return _associatedServices ?? (_associatedServices = new List<IExecutableService>()); }
-            }
+            public IList<IExecutableService> AssociatedServices => _associatedServices ?? (_associatedServices = new List<IExecutableService>());
             public Guid ParentID { get; set; }
 
             /// <summary>

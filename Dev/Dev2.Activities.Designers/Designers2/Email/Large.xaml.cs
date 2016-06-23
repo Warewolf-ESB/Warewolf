@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Email
             Loaded += OnLoaded;
         }
 
-        EmailDesignerViewModel ViewModel { get { return DataContext as EmailDesignerViewModel; } }
+        EmailDesignerViewModel ViewModel => DataContext as EmailDesignerViewModel;
 
         protected override IInputElement GetInitialFocusElement()
         {

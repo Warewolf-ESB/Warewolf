@@ -72,7 +72,8 @@ namespace Dev2.Activities.Designers2.Oracle
             this.RunViewSetup();
         }
 
-        Guid UniqueId { get { return GetProperty<Guid>(); } }
+        Guid UniqueId => GetProperty<Guid>();
+
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -306,7 +307,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type { get { return GetProperty<string>(); } }
+        private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
 
         private void FixErrors()

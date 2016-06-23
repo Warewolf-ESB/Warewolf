@@ -29,20 +29,8 @@ namespace Dev2.Common.Interfaces.SaveDialog
             _name = name;
         }
 
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+        public string Name => _name;
 
-        public string Path
-        {
-            get
-            {
-                return _path;
-            }
-        }
+        public string Path => _path;
     }
 }

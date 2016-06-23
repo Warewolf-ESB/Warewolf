@@ -71,13 +71,8 @@ namespace Dev2.Network
 
         #region Implementation of IEnvironmentConnection
 
-        public IEventPublisher ServerEvents
-        {
-            get
-            {
-                return _wrappedConnection.ServerEvents;
-            }
-        }
+        public IEventPublisher ServerEvents => _wrappedConnection.ServerEvents;
+
         public Guid ServerID
         {
             get
@@ -89,48 +84,17 @@ namespace Dev2.Network
                 _wrappedConnection.ServerID = value;
             }
         }
-        public Guid WorkspaceID
-        {
-            get
-            {
-                return _wrappedConnection.WorkspaceID; 
-            }
-        }
-        public Uri AppServerUri
-        {
-            get
-            {
-                return _wrappedConnection.AppServerUri ;
-            }
-        }
-        public Uri WebServerUri
-        {
-            get
-            {
-                return _wrappedConnection.WebServerUri;
-            }
-        }
-        public AuthenticationType AuthenticationType
-        {
-            get
-            {
-                return _wrappedConnection.AuthenticationType;
-            }
-        }
-        public string UserName
-        {
-            get
-            {
-                return _wrappedConnection.UserName;
-            }
-        }
-        public string Password
-        {
-            get
-            {
-                return _wrappedConnection.Password;
-            }
-        }
+        public Guid WorkspaceID => _wrappedConnection.WorkspaceID;
+
+        public Uri AppServerUri => _wrappedConnection.AppServerUri;
+
+        public Uri WebServerUri => _wrappedConnection.WebServerUri;
+
+        public AuthenticationType AuthenticationType => _wrappedConnection.AuthenticationType;
+
+        public string UserName => _wrappedConnection.UserName;
+
+        public string Password => _wrappedConnection.Password;
 
 
         public bool IsAuthorized
@@ -155,27 +119,12 @@ namespace Dev2.Network
         {
             return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId);
         }
-        public IHubProxyWrapper EsbProxy
-        {
-            get
-            {
-                return _wrappedConnection.EsbProxy;
-            }
-        }
-        public bool IsConnected
-        {
-            get
-            {
-                return _wrappedConnection.IsConnected;
-            }
-        }
-        public bool IsConnecting
-        {
-            get
-            {
-                return _wrappedConnection.IsConnecting;
-            }
-        }
+        public IHubProxyWrapper EsbProxy => _wrappedConnection.EsbProxy;
+
+        public bool IsConnected => _wrappedConnection.IsConnected;
+
+        public bool IsConnecting => _wrappedConnection.IsConnecting;
+
         public string Alias
         {
             get
@@ -235,7 +184,8 @@ namespace Dev2.Network
             }
             return false;
         }
-        public Guid ID { get { return _wrappedConnection.ID; } }
+        public Guid ID => _wrappedConnection.ID;
+
         public void Disconnect()
         {
             _wrappedConnection.Disconnect();
@@ -251,13 +201,8 @@ namespace Dev2.Network
             _wrappedConnection.StartAutoConnect();
         }
 
-        public bool IsLocalHost
-        {
-            get
-            {
-                return _wrappedConnection.IsLocalHost;
-            }
-        }
+        public bool IsLocalHost => _wrappedConnection.IsLocalHost;
+
         public Action<IExplorerItem> ItemAddedMessageAction
         {
             get
@@ -269,20 +214,9 @@ namespace Dev2.Network
                 _wrappedConnection.ItemAddedMessageAction = value;
             }
         }
-        public IAsyncWorker AsyncWorker
-        {
-            get
-            {
-                return _wrappedConnection.AsyncWorker;
-            }
-        }
-        public IPrincipal Principal
-        {
-            get
-            {
-                return _wrappedConnection.Principal;
-            }
-        }
+        public IAsyncWorker AsyncWorker => _wrappedConnection.AsyncWorker;
+
+        public IPrincipal Principal => _wrappedConnection.Principal;
 
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage
         {
@@ -295,14 +229,7 @@ namespace Dev2.Network
                 _wrappedConnection.ReceivedResourceAffectedMessage = value;
             }
         }
-        public IHubConnectionWrapper HubConnection
-        {
-            get
-            {
-                return _wrappedConnection.HubConnection;
-            }
-        }
-
+        public IHubConnectionWrapper HubConnection => _wrappedConnection.HubConnection;
 
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;

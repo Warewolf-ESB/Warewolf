@@ -21,10 +21,7 @@ namespace Dev2.Webs.Callbacks
 
         public string ModelData { get; set; }
 
-        public ILayoutObjectViewModel SelectedLayoutObject
-        {
-            get { return null; }
-        }
+        public ILayoutObjectViewModel SelectedLayoutObject => null;
 
         public void Save(string value, bool closeBrowserWindow = true)
         {

@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.SharePointDeleteFile
             }
         }
 
-        string ServerInputPath { get { return GetProperty<string>(); } }
+        string ServerInputPath => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
@@ -68,6 +68,6 @@ namespace Dev2.Activities.Designers2.SharePointDeleteFile
 
         #endregion
 
-        public override string CollectionName { get { return "FilterCriteria"; } }
+        public override string CollectionName => "FilterCriteria";
     }
 }

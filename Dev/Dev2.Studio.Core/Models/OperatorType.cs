@@ -57,21 +57,11 @@ namespace Dev2.Studio.Core.Models
                 return string.Empty;
             }
         }
-        public bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-
-        }
+        public bool IsValid => true;
 
         #region IDataErrorInfo Members
 
-        public string Error
-        {
-            get { return null; }
-        }
+        public string Error => null;
 
         public string this[string columnName]
         {

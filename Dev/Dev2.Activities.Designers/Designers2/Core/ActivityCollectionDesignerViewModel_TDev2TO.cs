@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.Core
         {
         }
 
-        public int ItemCount { get { return ModelItemCollection.Count; } }
+        public int ItemCount => ModelItemCollection.Count;
 
         protected void InitializeItems(ModelItemCollection modelItemCollection)
         {

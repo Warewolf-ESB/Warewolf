@@ -21,10 +21,7 @@ namespace Dev2.DynamicServices
         private readonly object _auxiliaryLock;
         private HashSet<AuxiliaryConnectionRequest> _auxiliaryRequests;
 
-        public StudioAccount Account
-        {
-            get { return _account; }
-        }
+        public StudioAccount Account => _account;
 
         public StudioNetworkSession()
         {
@@ -84,8 +81,8 @@ namespace Dev2.DynamicServices
             private readonly DateTime _expiration;
             private readonly Guid _identifier;
 
-            public DateTime Expiration { get { return _expiration; } }
-            public Guid Identifier { get { return _identifier; } }
+            public DateTime Expiration => _expiration;
+            public Guid Identifier => _identifier;
 
             public AuxiliaryConnectionRequest(Guid identifier)
             {

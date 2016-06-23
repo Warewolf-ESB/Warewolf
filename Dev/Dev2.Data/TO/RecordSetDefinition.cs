@@ -30,25 +30,12 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Properties
-        public string SetName {
-            get {
-                return _setName;
-            }
-        }
+        public string SetName => _setName;
 
-        public string XmlSetName {
+        public string XmlSetName => _setName.Replace("()", "");
 
-            get {
-                return _setName.Replace("()", "");
-            }
+        public IList<IDev2Definition> Columns => _columns;
 
-        }
-
-        public IList<IDev2Definition> Columns {
-            get {
-                return _columns;
-            }
-        }
         #endregion
 
     }

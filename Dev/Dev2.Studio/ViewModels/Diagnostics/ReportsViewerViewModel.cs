@@ -88,13 +88,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        public DebugOutputViewModel DebugOutput
-        {
-            get
-            {
-                return _debugOutput ?? (_debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance, new DebugOutputFilterStrategy()) { ShowDebugStatus = false });
-            }
-        }
+        public DebugOutputViewModel DebugOutput => _debugOutput ?? (_debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance, new DebugOutputFilterStrategy()) { ShowDebugStatus = false });
 
         /// <summary>
         /// Gets or sets the selected server. Also fires the logic to get the logdirectory for that server
@@ -218,13 +212,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        public BindableCollection<FilePath> LogFiles
-        {
-            get
-            {
-                return _logFiles ?? (_logFiles = new BindableCollection<FilePath>());
-            }
-        }
+        public BindableCollection<FilePath> LogFiles => _logFiles ?? (_logFiles = new BindableCollection<FilePath>());
 
         /// <summary>
         /// Gets or sets the selected log file.

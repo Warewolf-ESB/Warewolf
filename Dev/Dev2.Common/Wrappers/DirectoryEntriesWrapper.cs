@@ -28,9 +28,6 @@ namespace Dev2.Common.Wrappers
             return _directoryEntries.GetEnumerator();
         }
 
-        public DirectoryEntries Instance
-        {
-            get { return _directoryEntries; }
-        }
+        public DirectoryEntries Instance => _directoryEntries;
     }
 }

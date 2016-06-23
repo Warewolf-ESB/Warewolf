@@ -90,10 +90,7 @@ namespace WPF.JoshSmith.Panels
         /// <summary>
         ///     Gets the number of elements in the collection.
         /// </summary>
-        public override int Count
-        {
-            get { return _elements.Count; }
-        }
+        public override int Count => _elements.Count;
 
         public override UIElement this[int index]
         {
@@ -288,10 +285,7 @@ namespace WPF.JoshSmith.Panels
                 _element = element;
             }
 
-            public UIElement Element
-            {
-                get { return _element; }
-            }
+            public UIElement Element => _element;
 
             // ReSharper disable FieldCanBeMadeReadOnly.Local
             // ReSharper restore FieldCanBeMadeReadOnly.Local

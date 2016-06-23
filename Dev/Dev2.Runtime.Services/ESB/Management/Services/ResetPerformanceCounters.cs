@@ -47,11 +47,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private IPerformanceCounterRepository Manager
-        {
-            get { return CustomContainer.Get<IPerformanceCounterRepository>(); }
+        private IPerformanceCounterRepository Manager => CustomContainer.Get<IPerformanceCounterRepository>();
 
-        }
         /// <summary>
         /// Creates the service entry.
         /// </summary>
