@@ -432,7 +432,7 @@ namespace Dev2.Services.Sql
                     string.Format("SELECT text FROM all_source WHERE name='{0}' ORDER BY line", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate(IDataReader reader)
+                    delegate (IDataReader reader)
                     {
                         return GetStringBuilder(reader);
                     });
@@ -467,7 +467,30 @@ namespace Dev2.Services.Sql
 
             return new List<OracleParameter>();
         }
+        public List<IDbDataParameter> GetProcedureInputParameters(IDbCommand command, string dbName, string procedureName)
+        {
+            var parameteres = new List<IDbDataParameter>();
+            command.CommandType = CommandType.Text;
+            command.CommandText = string.Format("SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
+                    dbName, procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1));
 
+            DataTable dataTable = FetchDataTable(command);
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var parameterName = row["ARGUMENT_NAME"] as string;
+                var InOut = row["IN_OUT"] as string;
+
+                bool isout = GetIsout(InOut);
+                if (isout)
+                    continue;
+                OracleDbType OracleType;
+
+                Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleType);
+                OracleParameter OracleParameter = GetOracleParameter(OracleType, row, parameterName, ParameterDirection.Input);
+                parameteres.Add(OracleParameter);
+            }
+            return parameteres;
+        }
         public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName, out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
@@ -514,7 +537,7 @@ namespace Dev2.Services.Sql
             OracleParameter OracleParameter;
             if (OracleType == 0)
             {
-                string dataType = row["DATA_TYPE"].ToString();
+                var dataType = row["DATA_TYPE"].ToString();
                 OracleType = GetOracleDbType(dataType);
 
                 OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
@@ -542,7 +565,6 @@ namespace Dev2.Services.Sql
                 outParams.Add(OracleParameter);
             }
         }
-
         public OracleDbType GetOracleDbType(string dataType)
         {
             OracleDbType OracleType;
@@ -553,9 +575,39 @@ namespace Dev2.Services.Sql
                         OracleType = OracleDbType.Decimal;
                         break;
                     }
+                case "DATE":
+                    {
+                        OracleType = OracleDbType.Date;
+                        break;
+                    }
                 case "FLOAT":
                     {
-                        OracleType = OracleDbType.Double;
+                        OracleType = OracleDbType.Single;
+                        break;
+                    }
+                case "BYTE":
+                    {
+                        OracleType = OracleDbType.Int16;
+                        break;
+                    }
+                case "LONG":
+                    {
+                        OracleType = OracleDbType.Int64;
+                        break;
+                    }
+                case "INT":
+                    {
+                        OracleType = OracleDbType.Int32;
+                        break;
+                    }
+                case "SHORT":
+                    {
+                        OracleType = OracleDbType.Int16;
+                        break;
+                    }
+                case "CHAR":
+                    {
+                        OracleType = OracleDbType.Char;
                         break;
                     }
                 default:
@@ -566,6 +618,22 @@ namespace Dev2.Services.Sql
             }
             return OracleType;
         }
+    /*    private static OracleDbType GetOracleDbType(object o)
+        {
+            if (o is string) return OracleDbType.Varchar2;
+            if (o is DateTime) return OracleDbType.Date;
+            if (o is long) return OracleDbType.Int64;
+            if (o is int) return OracleDbType.Int32;
+            if (o is short) return OracleDbType.Int16;
+            if (o is sbyte) return OracleDbType.Byte;
+            if (o is byte) return OracleDbType.Int16;
+            if (o is decimal) return OracleDbType.Decimal;
+            if (o is float) return OracleDbType.Single;
+            if (o is double) return OracleDbType.Double;
+            if (o is byte[]) return OracleDbType.Blob;
+
+            return OracleDbType.Varchar2;
+        }*/
 
         public bool GetIsout(string InOut)
         {
