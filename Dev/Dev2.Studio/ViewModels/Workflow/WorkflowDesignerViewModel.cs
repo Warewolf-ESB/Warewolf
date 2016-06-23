@@ -1616,7 +1616,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+            if(DataListSingleton.ActiveDataList != null)
+            {
+                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+            }
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
@@ -1908,7 +1911,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
-            DoWorkspaceSave();
+            //DoWorkspaceSave();
         }
 
         void ModelItemAdded(ModelChangedEventArgs e)
