@@ -1,12 +1,4 @@
-IF EXIST "%vs120comntools%..\IDE\devenv.com" ( 
-"%vs120comntools%..\IDE\devenv.com" "%~dp0..\..\AcceptanceTesting.sln" /Build Debug
-if not %errorlevel%==0 pause & exit 1
-"%vs120comntools%..\IDE\devenv.com" "%~dp0..\..\UITesting.sln" /Build Debug
-) else IF EXIST "%vs140comntools%..\IDE\devenv.com" (
-"%vs140comntools%..\IDE\devenv.com" "%~dp0..\..\AcceptanceTesting.sln" /Build Debug
-if not %errorlevel%==0 pause & exit 1
-"%vs140comntools%..\IDE\devenv.com" "%~dp0..\..\UITesting.sln" /Build Debug
-) else IF EXIST MSBuild (
+IF EXIST MSBuild (
 MSBuild "%~dp0..\..\AcceptanceTesting.sln" /p:Platform="Any CPU";Configuration="Debug"
 if not %errorlevel%==0 pause & exit 1
 MSBuild "%~dp0..\..\UITesting.sln" /p:Platform="Any CPU";Configuration="Debug"
