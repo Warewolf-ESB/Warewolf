@@ -9,6 +9,7 @@
 */
 
 using System.Xml;
+using Dev2.Common;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -71,7 +72,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string result = TestHelper.PostDataToWebserver(path);
 
             Assert.IsTrue(result.Contains("An internal error occurred while executing the service request"));
-            Assert.IsTrue(result.Contains("The workflow must have at least one service or activity connected to the Start Node."));
+            Assert.IsTrue(result.Contains(GlobalConstants.NoStartNodeError));
         }
 
         [TestMethod]
