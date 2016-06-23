@@ -554,7 +554,6 @@ namespace Warewolf.Studio.ViewModels
                     CanSelectWindows = true;
                     CanSelectUser = false;
                     CanSelectServer = false;
-                    ServerName.Name = "Localhost";
                     EmptyServerName = "Localhost";
                     AuthenticationType = AuthenticationType.Windows;
                 }
@@ -564,7 +563,7 @@ namespace Warewolf.Studio.ViewModels
                     CanSelectWindows = false;
                     CanSelectUser = true;
                     CanSelectServer = true;
-                    ServerName.Name = "";
+                    EmptyServerName = "";
                     AuthenticationType = AuthenticationType.User;
                 }
                 else
@@ -572,8 +571,8 @@ namespace Warewolf.Studio.ViewModels
                     CanSelectWindows = true;
                     CanSelectUser = true;
                     CanSelectServer = true;
-                    ServerName.Name = "";
                     EmptyServerName = "";
+                    AuthenticationType = AuthenticationType.Windows;
                 }
             }
         }
