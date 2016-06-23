@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     foreach (var errorInfo in validateFromModelView)
                         allErrors.Add(errorInfo.Message);
                 var errorThrown = allErrors.Contains(fetchErrors);
-                Assert.IsTrue(allErrors.Count > 0);
+                Assert.IsTrue(allErrors.Count > 0, "Expected error " + anError + " but the environment did not contain any.");
             }
         }
 
@@ -146,10 +146,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-
             }
-
-
         }
 
         public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
@@ -208,7 +205,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
         }
 
-
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
         {
@@ -266,7 +262,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Dev2Logger.Debug("Create Source File for file op test error", e);
             }
-
         }
 
         [Given(@"source credentials as ""(.*)"" and ""(.*)""")]
@@ -326,8 +321,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             scenarioContext.Add(DestinationPrivateKeyFile, destinationKey);
         }
 
-
-
         [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)
         {
@@ -372,11 +365,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
         }
+
         private void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
         }
+
         [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {
