@@ -23,7 +23,7 @@ namespace Dev2.Runtime.Security
     public class SslCertificateBuilder
     {
         static string _location;
-        static string Location { get { return _location ?? (_location = Assembly.GetExecutingAssembly().Location); } }
+        static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
         private const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
 

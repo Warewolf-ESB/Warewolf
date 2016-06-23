@@ -93,13 +93,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         }
 
         public RelayCommand EditDropboxSourceCommand { get; private set; }
-        public bool IsDropboxSourceSelected
-        {
-            get
-            {
-                return SelectedSource != null;
-            }
-        }
+        public bool IsDropboxSourceSelected => SelectedSource != null;
 
         public string ToPath
         {

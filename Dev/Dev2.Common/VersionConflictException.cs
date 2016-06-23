@@ -32,13 +32,7 @@ namespace Dev2.Common
         /// <returns>
         /// The error message that explains the reason for the exception, or an empty string ("").
         /// </returns>
-        public override string Message
-        {
-            get
-            {
-                return string.Format(ErrorResource.ServerVersionsIncompatiable, SourceVersionNumber, DestVersionNumber);
-            }
-        }
+        public override string Message => string.Format(ErrorResource.ServerVersionsIncompatiable, SourceVersionNumber, DestVersionNumber);
 
         #endregion Overrides of Exception
     }

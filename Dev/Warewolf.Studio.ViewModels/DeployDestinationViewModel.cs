@@ -82,22 +82,9 @@ namespace Warewolf.Studio.ViewModels
         #region Implementation of IDeployDestinationExplorerViewModel
 
         public event ServerSate ServerStateChanged;
-        public virtual Version MinSupportedVersion
-        {
-            get
-            {
-                return Version.Parse( SelectedServer.GetMinSupportedVersion());
-            }
-        }
+        public virtual Version MinSupportedVersion => Version.Parse( SelectedServer.GetMinSupportedVersion());
 
-        public virtual Version ServerVersion
-        {
-            get
-            {
-                return Version.Parse(SelectedServer.GetServerVersion());
-            }
-        }
-
+        public virtual Version ServerVersion => Version.Parse(SelectedServer.GetServerVersion());
 
         #endregion
     }

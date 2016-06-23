@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
         {
         }
 
-        public override string CollectionName { get { return "FieldsCollection"; } }
+        public override string CollectionName => "FieldsCollection";
 
         public void TestAddTitleBarQuickVariableInputToggle()
         {

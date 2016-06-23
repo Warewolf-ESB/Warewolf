@@ -69,13 +69,7 @@ namespace Dev2.Activities
             }
         }
 
-        protected override bool CanInduceIdle
-        {
-            get
-            {
-                return true;
-            }
-        }
+        protected override bool CanInduceIdle => true;
 
         #endregion
 

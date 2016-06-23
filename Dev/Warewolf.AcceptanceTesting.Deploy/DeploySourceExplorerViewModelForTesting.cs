@@ -20,14 +20,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
 
         }
         
-        public override Version ServerVersion
-        {
-            get
-            {
-                return new Version(SelectedServer.GetServerVersion());
-            }
-        }
-
+        public override Version ServerVersion => new Version(SelectedServer.GetServerVersion());
 
         #region Overrides of DeploySourceExplorerViewModel
 

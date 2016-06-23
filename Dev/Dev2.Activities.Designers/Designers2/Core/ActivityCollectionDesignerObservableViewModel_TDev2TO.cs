@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.Core
         {
         }
 
-        public int ItemCount { get { return Collection.Count; } }
+        public int ItemCount => Collection.Count;
 
 
         protected void InitializeItems(ObservableCollection<IDev2TOFn> collection)

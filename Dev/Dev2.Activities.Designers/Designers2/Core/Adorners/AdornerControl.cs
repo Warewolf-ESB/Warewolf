@@ -41,12 +41,12 @@ namespace Dev2.Activities.Designers2.Core.Adorners
             adornedElement.SizeChanged += (sender, args) => InvalidateMeasure();
         }
 
-        public AdornerLayer AdornerLayer { get { return _adornerLayer ?? (_adornerLayer = AdornerLayer.GetAdornerLayer(AdornedElement)); } }
+        public AdornerLayer AdornerLayer => _adornerLayer ?? (_adornerLayer = AdornerLayer.GetAdornerLayer(AdornedElement));
 
         /// <summary>
         ///     Override AdornedElement from base class for less type-checking.
         /// </summary>
-        public new FrameworkElement AdornedElement { get { return (FrameworkElement)base.AdornedElement; } }
+        public new FrameworkElement AdornedElement => (FrameworkElement)base.AdornedElement;
 
         public FrameworkElement Content { get { return (FrameworkElement)GetValue(ContentProperty); } set { SetValue(ContentProperty, value); } }
 
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
             adorner.Toggle();
         }
 
-        protected override Int32 VisualChildrenCount { get { return 1; } }
+        protected override Int32 VisualChildrenCount => 1;
 
         protected override IEnumerator LogicalChildren
         {

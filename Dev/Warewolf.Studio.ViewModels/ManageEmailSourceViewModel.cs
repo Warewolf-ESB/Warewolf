@@ -638,80 +638,23 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string HostNameLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.HostNameLabel;
-            }
-        }
+        public string HostNameLabel => Resources.Languages.Core.HostNameLabel;
 
-        public string UserNameLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.UserNameLabel;
-            }
-        }
+        public string UserNameLabel => Resources.Languages.Core.UserNameLabel;
 
-        public string PasswordLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.PasswordLabel;
+        public string PasswordLabel => Resources.Languages.Core.PasswordLabel;
 
-            }
-        }
+        public string EnableSslLabel => Resources.Languages.Core.EmailSourceEnableSslLabel;
 
-        public string EnableSslLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.EmailSourceEnableSslLabel;
+        public string PortLabel => Resources.Languages.Core.PortLabel;
 
-            }
-        }
+        public string TimeoutLabel => Resources.Languages.Core.EmailSourceTimeoutLabel;
 
-        public string PortLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.PortLabel;
-            }
-        }
+        public string TestLabel => Resources.Languages.Core.TestConnectionLabel;
 
-        public string TimeoutLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.EmailSourceTimeoutLabel;
+        public string EmailFromLabel => Resources.Languages.Core.EmailSourceEmailFromLabel;
 
-            }
-        }
-
-        public string TestLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.TestConnectionLabel;
-            }
-        }
-
-        public string EmailFromLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.EmailSourceEmailFromLabel;
-            }
-        }
-
-        public string EmailToLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.EmailSourceEmailToLabel;
-            }
-        }
+        public string EmailToLabel => Resources.Languages.Core.EmailSourceEmailToLabel;
 
         protected override void OnDispose()
         {

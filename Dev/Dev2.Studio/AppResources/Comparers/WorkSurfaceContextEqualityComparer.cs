@@ -25,10 +25,7 @@ namespace Dev2.Studio.AppResources.Comparers
         {
         }
 
-        public static WorkSurfaceContextEqualityComparer Current
-        {
-            get { return _current.Value; }
-        }
+        public static WorkSurfaceContextEqualityComparer Current => _current.Value;
 
         public bool Equals(WorkSurfaceContextViewModel x, WorkSurfaceContextViewModel y)
         {

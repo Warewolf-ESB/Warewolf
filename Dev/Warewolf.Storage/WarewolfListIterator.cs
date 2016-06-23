@@ -382,7 +382,8 @@ namespace Warewolf.Storage
         /// <returns>
         /// When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.
         /// </returns>
-        public int FieldCount { get { return _variablesToIterateOn.Count; } }
+        public int FieldCount => _variablesToIterateOn.Count;
+
         /// <summary>
         /// Gets the column located at the specified index.
         /// </summary>
@@ -390,13 +391,8 @@ namespace Warewolf.Storage
         /// The column located at the specified index as an <see cref="T:System.Object"/>.
         /// </returns>
         /// <param name="i">The zero-based index of the column to get. </param><exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount"/>. </exception>
-        object IDataRecord.this[int i]
-        {
-            get
-            {
-                return null;
-            }
-        }
+        object IDataRecord.this[int i] => null;
+
         /// <summary>
         /// Gets the column with the specified name.
         /// </summary>
@@ -404,13 +400,7 @@ namespace Warewolf.Storage
         /// The column with the specified name as an <see cref="T:System.Object"/>.
         /// </returns>
         /// <param name="name">The name of the column to find. </param><exception cref="T:System.IndexOutOfRangeException">No column with the specified name was found. </exception>
-        object IDataRecord.this[string name]
-        {
-            get
-            {
-                return null;
-            }
-        }
+        object IDataRecord.this[string name] => null;
 
         #endregion
 
@@ -465,21 +455,23 @@ namespace Warewolf.Storage
         /// <returns>
         /// The level of nesting.
         /// </returns>
-        public int Depth { get { return _count; } }
+        public int Depth => _count;
+
         /// <summary>
         /// Gets a value indicating whether the data reader is closed.
         /// </summary>
         /// <returns>
         /// true if the data reader is closed; otherwise, false.
         /// </returns>
-        public bool IsClosed { get { return false; } }
+        public bool IsClosed => false;
+
         /// <summary>
         /// Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
         /// </summary>
         /// <returns>
         /// The number of rows changed, inserted, or deleted; 0 if no rows were affected or the statement failed; and -1 for SELECT statements.
         /// </returns>
-        public int RecordsAffected { get { return 0; } }
+        public int RecordsAffected => 0;
 
         #endregion
 

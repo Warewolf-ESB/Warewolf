@@ -74,7 +74,8 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             this.RunViewSetup();
         }
 
-        Guid UniqueID { get { return GetProperty<Guid>(); } }
+        Guid UniqueID => GetProperty<Guid>();
+
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -309,7 +310,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type { get { return GetProperty<string>(); } }
+        private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
 
         private void FixErrors()

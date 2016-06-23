@@ -75,19 +75,13 @@ namespace Dev2.Studio.Views
             }
         }
 
-        private string FilePath
+        private string FilePath => Path.Combine(new[]
         {
-            get
-            {
-                return Path.Combine(new[]
-                    {
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        StringResources.App_Data_Directory,
-                        StringResources.User_Interface_Layouts_Directory,
-                        "WorkspaceLayout.xml"
-                    });
-            }
-        }
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            StringResources.App_Data_Directory,
+            StringResources.User_Interface_Layouts_Directory,
+            "WorkspaceLayout.xml"
+        });
 
         private void GetFilePath()
         {

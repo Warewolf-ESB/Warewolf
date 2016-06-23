@@ -59,7 +59,7 @@ namespace Dev2.Activities.Designers2.DataSplit
             }
         }
 
-        public override string CollectionName { get { return "ResultsCollection"; } }
+        public override string CollectionName => "ResultsCollection";
 
         public ICommand SplitTypeUpdatedCommand { get; private set; }
 
@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers2.DataSplit
         public string ProcessDirectionGroup { get { return (string)GetValue(ProcessDirectionGroupProperty); } set { SetValue(ProcessDirectionGroupProperty, value); } }
         public static readonly DependencyProperty ProcessDirectionGroupProperty = DependencyProperty.Register("ProcessDirectionGroup", typeof(string), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(string)));
 
-        string SourceString { get { return GetProperty<string>(); } }
+        string SourceString => GetProperty<string>();
 
         void OnSplitTypeChanged(object indexObj)
         {

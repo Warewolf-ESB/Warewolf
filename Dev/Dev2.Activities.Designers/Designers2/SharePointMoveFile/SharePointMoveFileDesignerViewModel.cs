@@ -40,8 +40,8 @@ namespace Dev2.Activities.Designers2.SharePointMoveFile
             }
         }
 
-        public string ServerInputPathFrom { get { return GetProperty<string>(); } }
-        public string ServerInputPathTo { get { return GetProperty<string>(); } }
+        public string ServerInputPathFrom => GetProperty<string>();
+        public string ServerInputPathTo => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
@@ -76,6 +76,6 @@ namespace Dev2.Activities.Designers2.SharePointMoveFile
 
         #endregion
 
-        public override string CollectionName { get { return "FilterCriteria"; } }
+        public override string CollectionName => "FilterCriteria";
     }
 }

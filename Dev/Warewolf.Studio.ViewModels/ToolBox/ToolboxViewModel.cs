@@ -69,14 +69,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         /// <summary>
         /// the toolbox is only enabled when the active server is connected and the designer is in focus
         /// </summary>
-        public bool IsEnabled
-        {
-            get
-            {
-                return IsDesignerFocused && _localModel.IsEnabled() && _remoteModel.IsEnabled(); 
-            }
+        public bool IsEnabled => IsDesignerFocused && _localModel.IsEnabled() && _remoteModel.IsEnabled();
 
-        }
         public bool IsDesignerFocused
         {
             get

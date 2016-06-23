@@ -162,13 +162,7 @@ namespace Dev2.Diagnostics.Debug
         /// </summary>
         public ActivityType ActivityType { get; set; }
 
-        public TimeSpan Duration
-        {
-            get
-            {
-                return EndTime - StartTime;
-            }
-        }
+        public TimeSpan Duration => EndTime - StartTime;
 
         // XmlSerializer does not support TimeSpan, so use this property for serialization 
         // instead.

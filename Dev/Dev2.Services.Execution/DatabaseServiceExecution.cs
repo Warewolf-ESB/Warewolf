@@ -41,10 +41,7 @@ namespace Dev2.Services.Execution
         {
         }
 
-        SqlServer SqlServer
-        {
-            get { return _sqlServer; }
-        }
+        SqlServer SqlServer => _sqlServer;
         public string ProcedureName { private get; set; }
 
         private void SetupSqlServer(ErrorResultTO errors)

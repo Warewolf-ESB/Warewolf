@@ -66,10 +66,7 @@ namespace WPF.JoshSmith.Panels
         /// <summary>
         ///     Returns the number of visual children.
         /// </summary>
-        protected override int VisualChildrenCount
-        {
-            get { return _visualChildren.Count; }
-        }
+        protected override int VisualChildrenCount => _visualChildren.Count;
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

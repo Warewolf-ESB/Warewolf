@@ -144,10 +144,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public bool Optional { get; set; }
         public bool HandlesResultInsertion { get; set; }
 
-        public List<IIntellisenseResult> IntellisenseResults
-        {
-            get { return _intellisenseResults; }
-        }
+        public List<IIntellisenseResult> IntellisenseResults => _intellisenseResults;
 
         #endregion Properties
     }

@@ -30,13 +30,7 @@ namespace Dev2.BussinessLogic
             return "Is Base64";
         }
 
-        public override int ArgumentCount
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int ArgumentCount => 1;
     }
 }
 

@@ -209,13 +209,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ObjectName { get; set; }
 
         public string ObjectResult { get; set; }
-        protected override bool CanInduceIdle
-        {
-            get
-            {
-                return true;
-            }
-        }
+        protected override bool CanInduceIdle => true;
+
         #endregion
 
         #region Overridden NativeActivity Methods

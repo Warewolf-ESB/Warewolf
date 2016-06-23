@@ -50,9 +50,9 @@ namespace Dev2.ViewModels.Diagnostics
 
         public ActivitySelectionType SelectionType { get; set; }
 
-        public ObservableCollection<object> Inputs { get { return _inputs; } }
+        public ObservableCollection<object> Inputs => _inputs;
 
-        public ObservableCollection<object> Outputs { get { return _outputs; } }
+        public ObservableCollection<object> Outputs => _outputs;
 
         public void AppendError(string errorMessage)
         {
@@ -277,21 +277,9 @@ namespace Dev2.ViewModels.Diagnostics
 
         abstract protected void Initialize(TContent value);
 
-        public int Depth
-        {
-            get
-            {
-                return _parent == null ? 0 : _parent.Depth + 1;
-            }
-        }
+        public int Depth => _parent == null ? 0 : _parent.Depth + 1;
 
-        public ObservableCollection<IDebugTreeViewItemViewModel> Children
-        {
-            get
-            {
-                return _children;
-            }
-        }
+        public ObservableCollection<IDebugTreeViewItemViewModel> Children => _children;
 
         public IDebugTreeViewItemViewModel Parent
         {

@@ -125,13 +125,7 @@ namespace Dev2.Common
             }
         }
 
-        public static string ServerLogFile
-        {
-            get
-            {
-                return Path.Combine(AppDataPath, "Server Log", "warewolf-Server.log");
-            }
-        }
+        public static string ServerLogFile => Path.Combine(AppDataPath, "Server Log", "warewolf-Server.log");
 
         /// <summary>
         /// Gets the workspace path.
@@ -173,13 +167,7 @@ namespace Dev2.Common
         /// <value>
         /// The root persistence path.
         /// </value>
-        public static string RootPersistencePath
-        {
-            get
-            {
-                return _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
-            }
-        }
+        public static string RootPersistencePath => _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
 
 
         /// <summary>
@@ -201,19 +189,10 @@ namespace Dev2.Common
         /// <value>
         /// The remote invoke ID.
         /// </value>
-        public static Guid RemoteInvokeID
-        {
-            get { return RemoteID; }
-        }
+        public static Guid RemoteInvokeID => RemoteID;
 
         public static string WebServerUri { get; set; }
-        public static string PublicWebServerUri
-        {
-            get
-            {
-                return DnsName + ":" + Port+"/";
-            }
-        }
+        public static string PublicWebServerUri => DnsName + ":" + Port+"/";
         public static string DnsName { private get; set; }
         public static int Port { private get; set; }
     }

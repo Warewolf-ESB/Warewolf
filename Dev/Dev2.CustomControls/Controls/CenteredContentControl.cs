@@ -72,20 +72,14 @@ namespace WPF.JoshSmith.Controls
         ///     Note, this property only returns a meaningful value if the Canvas.Left attached
         ///     property is set on this element.
         /// </summary>
-        public double CenterX
-        {
-            get { return (double) GetValue(CenterXProperty); }
-        }
+        public double CenterX => (double) GetValue(CenterXProperty);
 
         /// <summary>
         ///     Returns the vertical offset of this element within its containing Canvas.
         ///     Note, this property only returns a meaningful value if the Canvas.Top attached
         ///     property is set on this element.
         /// </summary>
-        public double CenterY
-        {
-            get { return (double) GetValue(CenterYProperty); }
-        }
+        public double CenterY => (double) GetValue(CenterYProperty);
 
         #endregion // CenterX / CenterY
 

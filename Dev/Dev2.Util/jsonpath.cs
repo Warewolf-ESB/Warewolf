@@ -100,15 +100,9 @@ namespace Dev2.Util
             _path = path;
         }
 
-        public object Value
-        {
-            get { return _value; }
-        }
+        public object Value => _value;
 
-        public string Path
-        {
-            get { return _path; }
-        }
+        public string Path => _path;
 
         public override string ToString()
         {

@@ -30,13 +30,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         }
 
-        public static WorkSurfaceKeyEqualityComparer Current
-        {
-            get
-            {
-                return _current.Value;
-            }
-        }
+        public static WorkSurfaceKeyEqualityComparer Current => _current.Value;
 
         public bool Equals(WorkSurfaceKey x, WorkSurfaceKey y)
         {

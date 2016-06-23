@@ -58,7 +58,7 @@ namespace Dev2.Runtime.Hosting
         {
             _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
         }
-        public IList<IResource> ResourceList { get { return _resources; } }
+        public IList<IResource> ResourceList => _resources;
 
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)

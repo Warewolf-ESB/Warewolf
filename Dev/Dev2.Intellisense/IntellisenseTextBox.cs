@@ -361,6 +361,20 @@ namespace Dev2.UI
 
         #endregion FilterType
 
+        public static readonly DependencyProperty AllowMultipleVariablesProperty = DependencyProperty.Register("AllowMultipleVariables", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
+
+        public bool AllowMultipleVariables
+        {
+            get
+            {
+                return (bool)GetValue(AllowMultipleVariablesProperty);
+            }
+            set
+            {
+                SetValue(AllowMultipleVariablesProperty, value);
+            }
+        }
+
         #region WrapInBrackets
 
         public static readonly DependencyProperty WrapInBracketsProperty = DependencyProperty.Register("WrapInBrackets", typeof(bool), typeof(IntellisenseTextBox), new UIPropertyMetadata(false));
@@ -658,7 +672,7 @@ namespace Dev2.UI
         public IntellisenseTextBox()
         {
             Observable.FromEventPattern(this, "TextChanged")
-                .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
+                .Throttle(TimeSpan.FromMilliseconds(300), Scheduler.ThreadPool)
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(pattern => TheTextHasChanged());
 
@@ -1163,10 +1177,26 @@ namespace Dev2.UI
 
         void EnsureErrorStatus()
         {
-            if (string.IsNullOrEmpty(Text)) return;
-#pragma warning disable 618
-            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(Text);
-#pragma warning restore 618
+            var currentText = Text;
+            if (string.IsNullOrEmpty(currentText)) return;
+
+            if (AllowMultipleVariables)
+            {
+                var parts = currentText.Split(new[]{","},StringSplitOptions.RemoveEmptyEntries);
+                foreach (var part in parts)
+                {
+                    ValidateText(part.Trim());
+                }
+            }
+            else
+            {
+                ValidateText(currentText);
+            }
+        }
+
+        private void ValidateText(string text)
+        {
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
                 ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset";

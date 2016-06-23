@@ -23,14 +23,7 @@ namespace Dev2.Providers.Logs
     /// </summary>
     public class CustomTextWriter : TraceListener
     {
-        public static string LoggingFileName
-        {
-            get
-            {
-
-                return Path.Combine(StudioLogPath, "Warewolf Studio.log");
-            }
-        }
+        public static string LoggingFileName => Path.Combine(StudioLogPath, "Warewolf Studio.log");
 
         public static string WarewolfAppPath
         {
@@ -438,13 +431,7 @@ namespace Dev2.Providers.Logs
         /// <returns>
         /// The character encoding in which the output is written.
         /// </returns>
-        public override Encoding Encoding
-        {
-            get
-            {
-                return Encoding.UTF8;
-            }
-        }
+        public override Encoding Encoding => Encoding.UTF8;
 
         #endregion
     }
