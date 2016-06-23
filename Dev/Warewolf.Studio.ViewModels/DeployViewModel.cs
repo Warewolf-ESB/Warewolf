@@ -245,6 +245,7 @@ namespace Warewolf.Studio.ViewModels
                     var notfolders = selected.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
                     DeploySuccessfull = true;
+                    Destination.RefreshSelectedEnvironment();
                     DeploySuccessMessage = string.Format("{0} Resource{1} Deployed Successfully.", notfolders.Count, notfolders.Count == 1 ? "" : "s");
 
                     _stats.Calculate(new List<IExplorerTreeItem>());
