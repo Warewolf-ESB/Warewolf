@@ -22,10 +22,7 @@ namespace Dev2.TaskScheduler.Wrappers
         {
         }
 
-        public new DailyTrigger Instance
-        {
-            get { return (DailyTrigger) base.Instance; }
-        }
+        public new DailyTrigger Instance => (DailyTrigger) base.Instance;
 
         public short DaysInterval
         {

@@ -61,12 +61,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return findServices;
         }
 
-        public ResourceCatalog Resources
-        {
-            get
-            {
-                return ResourceCatalog.Instance;
-            }
-        }
+        public ResourceCatalog Resources => ResourceCatalog.Instance;
     }
 }

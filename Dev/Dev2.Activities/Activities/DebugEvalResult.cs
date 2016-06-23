@@ -109,13 +109,7 @@ namespace Dev2.Activities
 
         #region Overrides of DebugOutputBase
 
-        public override string LabelText
-        {
-            get
-            {
-                return _label;
-            }
-        }
+        public override string LabelText => _label;
 
         public override List<IDebugItemResult> GetDebugItemResult()
         {

@@ -23,29 +23,11 @@ namespace Warewolf.Studio.ViewModels.Help
             model.OnHelpTextReceived += OnHelpTextReceived;
         }
 
-        public string HelpText
-        {
-            get
-            {
-                return CurrentHelpText.Description;
-            }
-        }
+        public string HelpText => CurrentHelpText.Description;
 
-        public string HelpName
-        {
-            get
-            {
-                return CurrentHelpText.Name;
-            }
-        }
+        public string HelpName => CurrentHelpText.Name;
 
-        public DrawingImage HelpImage
-        {
-            get
-            {
-                return CurrentHelpText.Icon;
-            }
-        }
+        public DrawingImage HelpImage => CurrentHelpText.Icon;
 
         void OnHelpTextReceived(object sender, IHelpDescriptor desc)
         {

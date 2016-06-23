@@ -25,13 +25,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        SelectAndApplyDesignerViewModel ViewModel
-        {
-            get
-            {
-                return DataContext as SelectAndApplyDesignerViewModel;
-            }
-        }
+        SelectAndApplyDesignerViewModel ViewModel => DataContext as SelectAndApplyDesignerViewModel;
 
         void DoDrop(object sender, DragEventArgs e)
         {

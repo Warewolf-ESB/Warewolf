@@ -110,9 +110,6 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
 
-        public TaskSettings Instance
-        {
-            get { return _nativeInstance; }
-        }
+        public TaskSettings Instance => _nativeInstance;
     }
 }

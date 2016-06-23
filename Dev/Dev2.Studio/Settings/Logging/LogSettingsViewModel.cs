@@ -136,15 +136,9 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public bool CanEditLogSettings
-        {
-            get { return CurrentEnvironment.IsConnected; }
-        }
+        public bool CanEditLogSettings => CurrentEnvironment.IsConnected;
 
-        public bool CanEditStudioLogSettings
-        {
-            get { return CurrentEnvironment.IsLocalHost; }
-        }
+        public bool CanEditStudioLogSettings => CurrentEnvironment.IsLocalHost;
 
         public virtual void Save(LoggingSettingsTo logSettings)
         {

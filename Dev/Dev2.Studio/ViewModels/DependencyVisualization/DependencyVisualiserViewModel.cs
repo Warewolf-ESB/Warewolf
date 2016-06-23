@@ -164,13 +164,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
         }
 
-        public override string DisplayName
-        {
-            get
-            {
-                return string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
-            }
-        }
+        public override string DisplayName => string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
         async void BuildGraphs()
@@ -197,15 +191,9 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
         }
 
-        public string FavoritesLabel
-        {
-            get { return "Show what depends on " + ResourceModel.ResourceName; }
-        }
+        public string FavoritesLabel => "Show what depends on " + ResourceModel.ResourceName;
 
-        public string DependantsLabel
-        {
-            get { return "Show what " + ResourceModel.ResourceName + " depends on"; }
-        }
+        public string DependantsLabel => "Show what " + ResourceModel.ResourceName + " depends on";
 
 
         public ObservableCollection<IExplorerItemNodeViewModel> AllNodes

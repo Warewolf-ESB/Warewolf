@@ -613,10 +613,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool UserAuthenticationSelected
-        {
-            get { return AuthenticationType == AuthenticationType.User; }
-        }
+        public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
 
         /// <summary>
         /// Test if connection is successful

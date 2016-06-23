@@ -29,16 +29,13 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public IList<Dev2Decision> TheStack { get; set; }
 
-        public int TotalDecisions
-        {
-            get { return TheStack.Count; }
-        }
+        public int TotalDecisions => TheStack.Count;
 
         [JsonIgnore]
         public string Version { get { return _ver; } set { _ver = value; } }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public Dev2ModelType ModelName { get { return Dev2ModelType.Dev2DecisionStack; } }
+        public Dev2ModelType ModelName => Dev2ModelType.Dev2DecisionStack;
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Dev2DecisionMode Mode { get; set; }

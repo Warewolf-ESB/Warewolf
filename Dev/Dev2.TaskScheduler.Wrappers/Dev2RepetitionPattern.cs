@@ -31,10 +31,7 @@ namespace Dev2.TaskScheduler.Wrappers
         {
             return Instance.IsSet();
         }
-        public RepetitionPattern Instance
-        {
-            get { return _nativeInstance; }
-        }
+        public RepetitionPattern Instance => _nativeInstance;
 
         public TimeSpan Duration
         {

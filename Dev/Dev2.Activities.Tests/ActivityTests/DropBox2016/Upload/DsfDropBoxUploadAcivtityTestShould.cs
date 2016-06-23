@@ -343,13 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         #endregion
 
-        public FileMetadata FileResult
-        {
-            get
-            {
-                return FileMetadata;
-            }
-        }
+        public FileMetadata FileResult => FileMetadata;
 
         #region Overrides of DsfDropBoxUploadActivity
 

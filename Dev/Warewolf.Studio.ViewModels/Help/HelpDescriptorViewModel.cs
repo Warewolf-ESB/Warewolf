@@ -24,33 +24,18 @@ namespace Warewolf.Studio.ViewModels.Help
         /// <summary>
         /// Display name
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _descriptor.Name;
-            }
-        }
+        public string Name => _descriptor.Name;
+
         /// <summary>
         /// The help text
         /// </summary>
-        public string Description
-        {
-            get
-            {
-                return _descriptor.Description;
-            }
-        }
+        public string Description => _descriptor.Description;
+
         /// <summary>
         /// The icon to display
         /// </summary>
-        public DrawingImage Icon
-        {
-            get
-            {
-                return _descriptor.Icon;
-            }
-        }
+        public DrawingImage Icon => _descriptor.Icon;
+
         /// <summary>
         /// Is this help enabled.
         /// </summary>

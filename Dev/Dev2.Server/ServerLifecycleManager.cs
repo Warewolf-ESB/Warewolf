@@ -289,15 +289,17 @@ namespace Dev2
         /// <summary>
         /// Get a value indicating if the lifecycle manager has been disposed.
         /// </summary>
-        public bool IsDisposed { get { return _isDisposed; } }
+        public bool IsDisposed => _isDisposed;
+
         /// <summary>
         /// Gets a value indicating if the webserver is enabled.
         /// </summary>
-        public bool IsWebServerEnabled { get { return _isWebServerEnabled; } }
+        public bool IsWebServerEnabled => _isWebServerEnabled;
+
         /// <summary>
         /// Gets a Guid that represents the ID of the current server.
         /// </summary>
-        public Guid ServerID { get { return HostSecurityProvider.Instance.ServerID; } }
+        public Guid ServerID => HostSecurityProvider.Instance.ServerID;
 
         #endregion
 
@@ -1608,12 +1610,12 @@ namespace Dev2
             readonly string _publicKeyToken;
             readonly string _path;
 
-            public string Name { get { return _name; } }
-            public string Version { get { return _version; } }
-            public string Culture { get { return _culture; } }
-            public string PublicKeyToken { get { return _publicKeyToken; } }
-            public string Path { get { return _path; } }
-            public bool IsGlobalAssemblyCache { get { return _path == null; } }
+            public string Name => _name;
+            public string Version => _version;
+            public string Culture => _culture;
+            public string PublicKeyToken => _publicKeyToken;
+            public string Path => _path;
+            public bool IsGlobalAssemblyCache => _path == null;
 
             public AssemblyReference(string name, string version, string culture, string publicKeyToken)
             {
@@ -1638,7 +1640,7 @@ namespace Dev2
         {
             readonly string _name;
             // ReSharper disable UnusedMember.Local
-            public string Name { get { return _name; } }
+            public string Name => _name;
             // ReSharper restore UnusedMember.Local
 
             public WorkflowEntry(string name)

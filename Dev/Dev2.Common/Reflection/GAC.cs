@@ -271,26 +271,17 @@ namespace Dev2.Common.Reflection
         ///     The szIdentifier field is set to MSI, and szNonCannonicalData is set to Windows Installer.
         ///     This scheme must only be used by Windows Installer itself.
         /// </summary>
-        public static Guid FUSION_REFCOUNT_UNINSTALL_SUBKEY_GUID
-        {
-            get { return new Guid("8cedc215-ac4b-488b-93c0-a50a49cb2fb8"); }
-        }
+        public static Guid FUSION_REFCOUNT_UNINSTALL_SUBKEY_GUID => new Guid("8cedc215-ac4b-488b-93c0-a50a49cb2fb8");
 
         /// <summary>
         ///     GUID value for element guidScheme in the struct FUSION_INSTALL_REFERENCE
         /// </summary>
-        public static Guid FUSION_REFCOUNT_FILEPATH_GUID
-        {
-            get { return new Guid("b02f9d65-fb77-4f7a-afa5-b391309f11c9"); }
-        }
+        public static Guid FUSION_REFCOUNT_FILEPATH_GUID => new Guid("b02f9d65-fb77-4f7a-afa5-b391309f11c9");
 
         /// <summary>
         ///     GUID value for element guidScheme in the struct FUSION_INSTALL_REFERENCE
         /// </summary>
-        public static Guid FUSION_REFCOUNT_OPAQUE_STRING_GUID
-        {
-            get { return new Guid("2ec93463-b0c3-45e1-8364-327e96aea856"); }
-        }
+        public static Guid FUSION_REFCOUNT_OPAQUE_STRING_GUID => new Guid("2ec93463-b0c3-45e1-8364-327e96aea856");
 
         /// <summary>
         ///     GUID value for element guidScheme in the struct FUSION_INSTALL_REFERENCE
@@ -298,10 +289,7 @@ namespace Dev2.Common.Reflection
         /// <value>
         ///     The FUSIO n_ REFCOUN t_ MS i_ GUID.
         /// </value>
-        public static Guid FUSION_REFCOUNT_MSI_GUID
-        {
-            get { return new Guid("25df0fc1-7f97-4070-add7-4b13bbfd7cb8"); }
-        }
+        public static Guid FUSION_REFCOUNT_MSI_GUID => new Guid("25df0fc1-7f97-4070-add7-4b13bbfd7cb8");
 
         #endregion GUID Definition
 
@@ -503,25 +491,13 @@ namespace Dev2.Common.Reflection
             }
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
 
-        public string Version
-        {
-            get { return _version; }
-        }
+        public string Version => _version;
 
-        public string Culture
-        {
-            get { return _culture; }
-        }
+        public string Culture => _culture;
 
-        public string PublicKeyToken
-        {
-            get { return _publicKeyToken; }
-        }
+        public string PublicKeyToken => _publicKeyToken;
 
         public override string ToString()
         {

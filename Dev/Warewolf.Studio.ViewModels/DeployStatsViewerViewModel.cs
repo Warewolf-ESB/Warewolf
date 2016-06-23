@@ -226,13 +226,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IList<Conflict> Conflicts
-        {
-            get
-            {
-                return _conflicts.ToList();
-            }
-        }
+        public IList<Conflict> Conflicts => _conflicts.ToList();
+
         public IList<IExplorerTreeItem> New
         {
             get

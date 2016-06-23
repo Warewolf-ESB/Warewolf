@@ -26,13 +26,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         }
 
-        public static ResourceModelEqualityComparer Current
-        {
-            get
-            {
-                return _current.Value;
-            }
-        }
+        public static ResourceModelEqualityComparer Current => _current.Value;
 
         public bool Equals(IResourceModel x, IResourceModel y)
         {

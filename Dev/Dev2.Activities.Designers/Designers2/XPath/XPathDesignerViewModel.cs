@@ -36,13 +36,13 @@ namespace Dev2.Activities.Designers2.XPath
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);
         }
-        public override string CollectionName { get { return "ResultsCollection"; } }
+        public override string CollectionName => "ResultsCollection";
 
 
         public bool IsSourceStringFocused { get { return (bool)GetValue(IsSourceStringFocusedProperty); } set { SetValue(IsSourceStringFocusedProperty, value); } }
         public static readonly DependencyProperty IsSourceStringFocusedProperty = DependencyProperty.Register("IsSourceStringFocused", typeof(bool), typeof(XPathDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        string SourceString { get { return GetProperty<string>(); } }
+        string SourceString => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {

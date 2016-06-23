@@ -20,13 +20,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         #region Implementation of INetworkStateChangedEventArgs
 
-        public ConnectionNetworkState State
-        {
-            get
-            {
-                return _state;
-            }
-        }
+        public ConnectionNetworkState State => _state;
 
         #endregion
     }

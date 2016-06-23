@@ -25,15 +25,9 @@ namespace Dev2.TaskScheduler.Wrappers
             _taskServiceConvertorFactory = taskServiceConvertorFactory;
         }
 
-        public Task Instance
-        {
-            get { return _nativeObject; }
-        }
+        public Task Instance => _nativeObject;
 
-        public IDev2TaskDefinition Definition
-        {
-            get { return _taskServiceConvertorFactory.CreateTaskDefinition(_nativeObject.Definition); }
-        }
+        public IDev2TaskDefinition Definition => _taskServiceConvertorFactory.CreateTaskDefinition(_nativeObject.Definition);
 
         public bool Enabled
         {
@@ -41,45 +35,21 @@ namespace Dev2.TaskScheduler.Wrappers
             set { _nativeObject.Enabled = value; }
         }
 
-        public bool IsActive
-        {
-            get { return _nativeObject.IsActive; }
-        }
+        public bool IsActive => _nativeObject.IsActive;
 
-        public DateTime LastRunTime
-        {
-            get { return _nativeObject.LastRunTime; }
-        }
+        public DateTime LastRunTime => _nativeObject.LastRunTime;
 
-        public int LastTaskResult
-        {
-            get { return _nativeObject.LastTaskResult; }
-        }
+        public int LastTaskResult => _nativeObject.LastTaskResult;
 
-        public string Name
-        {
-            get { return _nativeObject.Name; }
-        }
+        public string Name => _nativeObject.Name;
 
-        public DateTime NextRunTime
-        {
-            get { return _nativeObject.NextRunTime; }
-        }
+        public DateTime NextRunTime => _nativeObject.NextRunTime;
 
-        public int NumberOfMissedRuns
-        {
-            get { return _nativeObject.NumberOfMissedRuns; }
-        }
+        public int NumberOfMissedRuns => _nativeObject.NumberOfMissedRuns;
 
-        public string Path
-        {
-            get { return _nativeObject.Path; }
-        }
+        public string Path => _nativeObject.Path;
 
-        public TaskState State
-        {
-            get { return _nativeObject.State; }
-        }
+        public TaskState State => _nativeObject.State;
 
 
         public bool IsValidDev2Task()
@@ -87,15 +57,9 @@ namespace Dev2.TaskScheduler.Wrappers
             return Definition.IsValidDev2Task();
         }
 
-        public IAction Action
-        {
-            get { return Definition.Action; }
-        }
+        public IAction Action => Definition.Action;
 
-        public ITrigger Trigger
-        {
-            get { return Definition.Trigger; }
-        }
+        public ITrigger Trigger => Definition.Trigger;
 
         public void Dispose()
         {

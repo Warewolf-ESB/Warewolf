@@ -93,10 +93,7 @@ namespace Dev2.Development.Languages.Scripting
                        PlatformAdaptationLayer.Default;
             }
 
-            public override PlatformAdaptationLayer PlatformAdaptationLayer
-            {
-                get { return _pal; }
-            }
+            public override PlatformAdaptationLayer PlatformAdaptationLayer => _pal;
 
             public class Win8PAL : PlatformAdaptationLayer
             {

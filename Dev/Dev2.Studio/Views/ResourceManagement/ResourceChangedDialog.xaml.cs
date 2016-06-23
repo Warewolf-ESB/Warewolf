@@ -34,7 +34,7 @@ namespace Dev2.Studio.Views.ResourceManagement
         Grid _blackoutGrid;
         private bool _openDependencyGraph;
 
-        public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
+        public bool OpenDependencyGraph => _openDependencyGraph;
 
         public ResourceChangedDialog(IContextualResourceModel model, int numOfDependances)
         {

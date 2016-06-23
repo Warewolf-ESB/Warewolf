@@ -92,10 +92,7 @@ namespace Dev2.Intellisense.Helper
             }
         }
 
-        public ShareType ShareType
-        {
-            get { return _shareType; }
-        }
+        public ShareType ShareType => _shareType;
 
         #endregion
 

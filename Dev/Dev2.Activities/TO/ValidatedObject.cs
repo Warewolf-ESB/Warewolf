@@ -18,9 +18,9 @@ namespace Dev2.TO
     {
         Dictionary<string, List<IActionableErrorInfo>> _errors;
 
-        public string Error { get { return string.Empty; } }
+        public string Error => string.Empty;
 
-        public string this[string columnName] { get { return null; } }
+        public string this[string columnName] => null;
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get { return _errors ?? (_errors = new Dictionary<string, List<IActionableErrorInfo>>()); } set { OnPropertyChanged(ref _errors, value); } }
 

@@ -20,13 +20,7 @@ namespace Dev2
         static readonly Dictionary<Type, object> RegisterdTypes = new Dictionary<Type, object>();
         static readonly Dictionary<Type, Func<object>> RegisterdPerRequestTypes = new Dictionary<Type, Func<object>>();
 
-        public static int EntiresCount
-        {
-            get
-            {
-                return RegisterdTypes.Count;
-            }
-        }
+        public static int EntiresCount => RegisterdTypes.Count;
 
         public static void Clear()
         {

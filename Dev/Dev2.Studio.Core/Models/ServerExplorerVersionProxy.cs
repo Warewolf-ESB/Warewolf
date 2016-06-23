@@ -34,10 +34,7 @@ namespace Dev2.Models
             CommunicationControllerFactory = new CommunicationControllerFactory();
             _connection = connection;
         }
-        public IEnvironmentConnection Connection
-        {
-            get { return _connection; }
-        }
+        public IEnvironmentConnection Connection => _connection;
 
         #region Implementation of IVersionRepository
 
