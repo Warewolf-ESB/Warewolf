@@ -371,15 +371,18 @@ namespace Dev2.Services.Sql
                             }
                         }
                     }
+
                     using (IDataReader reader = command.ExecuteReader(commandBehavior))
                     {
                         return handler(reader);
                     }
                 }
+
                 using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
                     return handler(reader);
                 }
+
             }
             catch (DbException e)
             {
@@ -470,7 +473,7 @@ namespace Dev2.Services.Sql
             command.CommandType = CommandType.Text;
             command.CommandText = string.Format("SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
                     dbName, procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1));
-
+            //OracleCommandBuilder.DeriveParameters(command as OracleCommand);
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
@@ -615,22 +618,22 @@ namespace Dev2.Services.Sql
             }
             return OracleType;
         }
-    /*    private static OracleDbType GetOracleDbType(object o)
-        {
-            if (o is string) return OracleDbType.Varchar2;
-            if (o is DateTime) return OracleDbType.Date;
-            if (o is long) return OracleDbType.Int64;
-            if (o is int) return OracleDbType.Int32;
-            if (o is short) return OracleDbType.Int16;
-            if (o is sbyte) return OracleDbType.Byte;
-            if (o is byte) return OracleDbType.Int16;
-            if (o is decimal) return OracleDbType.Decimal;
-            if (o is float) return OracleDbType.Single;
-            if (o is double) return OracleDbType.Double;
-            if (o is byte[]) return OracleDbType.Blob;
+        /*    private static OracleDbType GetOracleDbType(object o)
+            {
+                if (o is string) return OracleDbType.Varchar2;
+                if (o is DateTime) return OracleDbType.Date;
+                if (o is long) return OracleDbType.Int64;
+                if (o is int) return OracleDbType.Int32;
+                if (o is short) return OracleDbType.Int16;
+                if (o is sbyte) return OracleDbType.Byte;
+                if (o is byte) return OracleDbType.Int16;
+                if (o is decimal) return OracleDbType.Decimal;
+                if (o is float) return OracleDbType.Single;
+                if (o is double) return OracleDbType.Double;
+                if (o is byte[]) return OracleDbType.Blob;
 
-            return OracleDbType.Varchar2;
-        }*/
+                return OracleDbType.Varchar2;
+            }*/
 
         public bool GetIsout(string InOut)
         {
