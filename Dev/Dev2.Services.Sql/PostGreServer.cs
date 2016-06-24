@@ -339,7 +339,7 @@ namespace Dev2.Services.Sql
             // ReSharper disable once UseStringInterpolation
             var proc = string.Format(@"select parameter_name as paramname, parameters.udt_name as datatype, parameters.parameter_mode as direction FROM information_schema.routines
                 JOIN information_schema.parameters ON routines.specific_name=parameters.specific_name
-                WHERE routines.specific_schema='public' and routine_name ='{0}' and parameters.parameter_mode = 'IN'
+                WHERE routines.specific_schema='public' and routine_name ='{0}' 
                 ORDER BY routines.routine_name, parameters.ordinal_position;", procedureName);
 
             command.CommandType = CommandType.Text;
@@ -360,8 +360,8 @@ namespace Dev2.Services.Sql
 
                     var sqlParameter = new NpgsqlParameter(value, sqlType);
 
-                    var isout = direction.Contains("OUT ");
-                    if (direction.Contains("IN"))
+                    var isout = direction.ToUpper().Trim().Contains("OUT".Trim());
+                    if (direction.ToUpper().Trim().Contains("IN".Trim()))
                         isout = false;
 
                     if (!isout)
@@ -374,7 +374,6 @@ namespace Dev2.Services.Sql
                         sqlParameter.Direction = ParameterDirection.Output;
                         outParams.Add(sqlParameter);
                         sqlParameter.Value = "@a";
-                        command.Parameters.Add(sqlParameter);
                     }
                 }
             }
