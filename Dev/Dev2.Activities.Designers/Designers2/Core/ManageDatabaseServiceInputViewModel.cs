@@ -156,6 +156,7 @@ namespace Dev2.Activities.Designers2.Core
             TestResults = null;
             IsTesting = true;
             Errors = new List<string>();
+            _viewmodel.ErrorMessage(new Exception(""), false);
             try
             {
                 TestResults = _serverModel.TestService(Model);
@@ -182,6 +183,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Errors.Add(e.Message);
                 IsTesting = false;
+                TestResultsAvailable = false;
                 _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
