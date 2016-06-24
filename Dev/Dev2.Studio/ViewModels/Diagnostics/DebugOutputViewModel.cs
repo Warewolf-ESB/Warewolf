@@ -691,10 +691,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             else
             {
-                if(content.DisplayName != null && content.DisplayName.Contains("Assign"))
-                {
-                    Dev2Logger.Error("sd");
-                }
                 var environmentId = content.EnvironmentID;
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
