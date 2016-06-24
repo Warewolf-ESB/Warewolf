@@ -434,16 +434,15 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
+                    var dbDataParameter = new OracleParameter(string.Format("@{0}", parameter.Name), parameter.Value);
                     if (parameter.EmptyIsNull &&
                         (parameter.Value == null ||
                          string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
-                        sqlParameters.Add(new OracleParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new OracleParameter(string.Format("@{0}", parameter.Name), parameter.Value));
-                    }
+                        dbDataParameter.Value = DBNull.Value;
+                    }                    
+                    sqlParameters.Add(dbDataParameter);
+
                 }
             }
             return sqlParameters;
