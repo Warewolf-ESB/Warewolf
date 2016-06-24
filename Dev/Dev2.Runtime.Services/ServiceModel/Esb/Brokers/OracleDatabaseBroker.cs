@@ -7,6 +7,8 @@ using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
+using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
 using Unlimited.Framework.Converters.Graph;
 
 
@@ -65,16 +67,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
 
-            // Check the cache for a value ;)
-            ServiceMethodList cacheResult;
-            if (!dbSource.ReloadActions)
-            {
-                if (GetCachedResult(dbSource, out cacheResult))
-                {
-                    return cacheResult;
-                }
-            }
-            // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
 
@@ -101,16 +93,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Get stored procedures and functions for this database source
             //
-            using (var server = CreateDbServer(dbSource))
+            using(var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 server.FetchStoredProcedures(procedureFunc, functionFunc, false, dbSource.DatabaseName);
             }
 
             // Add to cache ;)
-            TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods, (s, list) => serviceMethods);
 
-            return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
+            return serviceMethods;
         }
 
         #region Overrides of AbstractDatabaseBroker<MySqlServer>
@@ -145,16 +136,62 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     // Execute command and normalize XML
                     //
-                    var command = CommandFromServiceMethod(server, dbService.Method);
+                    IDbCommand command = CommandFromServiceMethod(server, dbService.Method);
+
                     // ReSharper disable PossibleNullReferenceException
-                  
-                   var outParams = server.GetProcedureOutParams(dbService.Method.ExecuteAction.Substring(dbService.Method.ExecuteAction.IndexOf(".", StringComparison.Ordinal)+1), (dbService.Source as DbSource).DatabaseName);
+
+                    var databaseName = (dbService.Source as DbSource).DatabaseName;
+                    var fullProcedureName = dbService.Method.ExecuteAction.Substring(dbService.Method.ExecuteAction.IndexOf(".", StringComparison.Ordinal) + 1);
+
+                    // ReSharper disable once RedundantAssignment
+                    var dbDataParameters = server.GetProcedureInputParameters(command, databaseName, fullProcedureName);
+                    IDbCommand cmd = command.Connection.CreateCommand();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = databaseName +"."+ fullProcedureName;
+                    var parameters = dbService.Method.Parameters;
+                    foreach (var dbDataParameter in dbDataParameters)
+                    {
+                        var foundParameter = parameters.FirstOrDefault(parameter => parameter.Name == dbDataParameter.ParameterName);
+                        if (foundParameter != null)
+                        {
+                            dbDataParameter.Value = foundParameter.Value;
+                            if (dbDataParameter.Size == 0)
+                            {
+                                dbDataParameter.Size = int.MaxValue;
+                            }
+                        }
+                        var oCommand = cmd as OracleCommand;
+                        if (oCommand != null)
+                        {
+                            var oracleParameter = oCommand.Parameters.Add(dbDataParameter.ParameterName, OracleDbType.Varchar2);
+                            oracleParameter.Size = dbDataParameter.Size;
+                            oracleParameter.Value = dbDataParameter.Value;
+                            oracleParameter.Direction = dbDataParameter.Direction;
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(dbDataParameter);
+                        }
+                    }
+
+                    var outParams = server.GetProcedureOutParams(fullProcedureName, databaseName);
+
                     // ReSharper restore PossibleNullReferenceException
                     foreach (var dbDataParameter in outParams)
                     {
-                        command.Parameters.Add(dbDataParameter);
+                        var oCommand = cmd as OracleCommand;
+                        if (oCommand != null)
+                        {
+                            var oracleParameter = oCommand.Parameters.Add(dbDataParameter.ParameterName, OracleDbType.Varchar2);
+                            oracleParameter.Size = int.MaxValue;
+                            oracleParameter.Direction = dbDataParameter.Direction;
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(dbDataParameter);
+                        }
                     }
-                    var dataTable = server.FetchDataTable(command);
+                    var dataTable = server.FetchDataTable(cmd);
 
                     //
                     // Map shape of XML
@@ -165,14 +202,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                     dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                    cmd.Dispose();
                 }
                 finally
                 {
                     server.RollbackTransaction();
                 }
             }
-
+            
             return result;
         }
     }
+
+  
 }

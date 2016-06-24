@@ -461,5 +461,17 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
         }
+
+        [When(@"I change type option from ""(.*)"" to ""(.*)""")]
+        public void WhenIChangeTypeOptionFromTo(string p0, string p1)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Assert.AreEqual(p0, manageDatabaseSourceControl.GetSelectedDbOption());
+            manageDatabaseSourceControl.SelectType(p1);
+            manageDatabaseSourceControl.SelectDatabase(string.Empty);
+            var viewModel = (ManageDatabaseSourceViewModel)manageDatabaseSourceControl.DataContext;
+            Assert.AreEqual(p1, manageDatabaseSourceControl.GetSelectedDbOption());
+            Assert.AreEqual(string.Empty, viewModel.DatabaseName);
+        }
     }
 }
