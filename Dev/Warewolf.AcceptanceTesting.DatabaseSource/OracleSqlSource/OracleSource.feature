@@ -1,5 +1,5 @@
-﻿@PostgreSource
-Feature: New PostgresSql Database Source
+﻿@OracleSource
+Feature: New Oracle Database Source
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
@@ -22,13 +22,13 @@ Feature: New PostgresSql Database Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
-@PostgreSource
-Scenario: Creating New DB Source as User Auth
-   Given I open New database Source
+@OracleSource
+Scenario: Creating New DB Source as User Auth   
+Given I open New database Source
    Then "New Database Source" tab is Opened
    And Title is "New Database Source"
    And Type options has "Microsoft SQL Server" as the default
-   And I select type "PostgreSql Database"
+   And I select type "Oracle Database"
    Then Authentication type "Windows" is "Disabled"
    And I Select Authentication Type as "User"
    And Username field is "Visible"
@@ -42,7 +42,7 @@ Scenario: Creating New DB Source as User Auth
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   | PostgreSql Database  |
+   | Oracle Database      |
    When I type Username as "testuser"
    And I type Password as "test123"
    Then database dropdown is "Collapsed"
@@ -51,29 +51,28 @@ Scenario: Creating New DB Source as User Auth
    Then Database dropdown is "Visible"
    Then I select "Dev2TestingDB" as Database
    Then "Save" is "Enabled" 
-   When I save the source as "SavedDBSource"
+   When I save the source as "SavedOracleDBSource"
    Then the save dialog is opened
-   Then "SavedDBSource" tab is opened
-   And title is "SavedDBSource"
+   Then "SavedOracleDBSource" tab is opened
+   And title is "SavedOracleDBSource"
    When I type Server as "RSA"
-   Then "SavedDBSource *" is the tab Header
-   And title is "SavedDBSource"
+   Then "SavedOracleDBSource *" is the tab Header
+   And title is "SavedOracleDBSource"
 
-
-@PostgreSource
+@OracleSource
 Scenario: Creating New DB Source as Windows Auth
  Given I open New database Source
    Then "New Database Source" tab is Opened
    And Title is "New Database Source"
    And Type options has "Microsoft SQL Server" as the default
    And I Select Authentication Type as "Windows"
-   And I select type "PostgreSql Database"
-   Then Authentication type "Windows" is "Disabled"   
+   And I select type "Oracle Database"
+   Then Authentication type "Windows" is "Disabled"
 
-@PostgreSource
+@OracleSource
 Scenario: Editing saved DB Source Remembers credentials
-	Given I open "Database Source - testPostgres" 
-	And type option has "PostgreSql Database" selected
+Given I open "Database Source - testOracle" 
+	And type option has "Oracle Database" selected
     And Server as "localhost"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
@@ -90,14 +89,15 @@ Scenario: Editing saved DB Source Remembers credentials
     And Database dropdown is "Visible"
     And I select "Dev2TestingDB2" as Database
     And "Save" is "Enabled" 
-
-@PostgreSource
+	
+	
+@OracleSource
 Scenario: Creating New DB Source with invalid server
 Given I open New database Source
    Then "New Database Source" tab is Opened
    And Title is "New Database Source"
    And Type options has "Microsoft SQL Server" as the default
-   And I select type "PostgreSql Database"
+   And I select type "Oracle Database"
    Then Authentication type "Windows" is "Disabled"
    And I Select Authentication Type as "User"
    And Username field is "Visible"
