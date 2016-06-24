@@ -421,7 +421,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 foreach (var c in chars)
                 {
                     mockIntellisenseTextBox.Text = c.ToString(CultureInfo.InvariantCulture);
-                    Thread.Sleep(250);
+                    Thread.Sleep(450);
                 }
 
                 //------------Assert Results-------------------------

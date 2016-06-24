@@ -113,6 +113,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       When Test Connecton is "Unsuccessful"
       Then Database dropdown is "Collapsed"
       And "Save" is "Disabled"
+	  
 
 @DbSource
 Scenario: Testing as Windows and swapping it resets the test connection 
@@ -238,14 +239,7 @@ Scenario: Changing database type after testing connection
    And "Save" is "Enabled"   
    When I change type option from "Microsoft SQL Server" to "MySql Database"
    Then "Save" is "Disabled"
-   And "Test Connection" is "Enabled"
-   Then Authentication Type is selected as "User"
-   Then Username is "root"
-   And Password  is "*****"
-   Then "Test Connection" is "Enabled" 
-   And "Save" is "Disabled"
-   Then Database dropdown is "Collapsed"
-   And "Test Connection" is "Enabled"
+   And "Test Connection" is "Enabled"   
    When Test Connecton is "Successful"
    Then Database dropdown is "Visible"
    And I select "test" as Database
