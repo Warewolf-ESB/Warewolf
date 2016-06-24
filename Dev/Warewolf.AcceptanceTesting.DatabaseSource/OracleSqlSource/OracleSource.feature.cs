@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.DatabaseSource.PostgresSqlSource
+namespace Warewolf.AcceptanceTesting.DatabaseSource.OracleSqlSource
 {
     using TechTalk.SpecFlow;
     
@@ -18,21 +18,21 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource.PostgresSqlSource
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class NewPostgresSqlDatabaseSourceFeature
+    public partial class NewOracleDatabaseSourceFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "PostgresSqlSource.feature"
+#line 1 "OracleSource.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "New PostgresSql Database Source", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "New Oracle Database Source", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
                     "f two numbers", ProgrammingLanguage.CSharp, new string[] {
-                        "PostgreSource"});
+                        "OracleSource"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,9 +47,9 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource.PostgresSqlSource
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "New PostgresSql Database Source")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "New Oracle Database Source")))
             {
-                Warewolf.AcceptanceTesting.DatabaseSource.PostgresSqlSource.NewPostgresSqlDatabaseSourceFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.DatabaseSource.OracleSqlSource.NewOracleDatabaseSourceFeature.FeatureSetup(null);
             }
         }
         
@@ -71,17 +71,17 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource.PostgresSqlSource
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source as User Auth")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New PostgresSql Database Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Database Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
         public virtual void CreatingNewDBSourceAsUserAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source as User Auth", new string[] {
-                        "PostgreSource"});
+                        "OracleSource"});
 #line 26
 this.ScenarioSetup(scenarioInfo);
 #line 27
-   testRunner.Given("I open New database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I open New database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
    testRunner.Then("\"New Database Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 29
@@ -89,7 +89,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
    testRunner.And("Type options has \"Microsoft SQL Server\" as the default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
-   testRunner.And("I select type \"PostgreSql Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I select type \"Oracle Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
    testRunner.Then("Authentication type \"Windows\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
@@ -117,7 +117,7 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "MySQL"});
             table2.AddRow(new string[] {
-                        "PostgreSql Database"});
+                        "Oracle Database"});
 #line 41
    testRunner.And("Type options contains", ((string)(null)), table2, "And ");
 #line 46
@@ -137,47 +137,47 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
    testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 54
-   testRunner.When("I save the source as \"SavedDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("I save the source as \"SavedOracleDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 55
    testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 56
-   testRunner.Then("\"SavedDBSource\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("\"SavedOracleDBSource\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 57
-   testRunner.And("title is \"SavedDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"SavedOracleDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
    testRunner.When("I type Server as \"RSA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 59
-   testRunner.Then("\"SavedDBSource *\" is the tab Header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("\"SavedOracleDBSource *\" is the tab Header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 60
-   testRunner.And("title is \"SavedDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"SavedOracleDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source as Windows Auth")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New PostgresSql Database Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Database Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
         public virtual void CreatingNewDBSourceAsWindowsAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source as Windows Auth", new string[] {
-                        "PostgreSource"});
-#line 64
+                        "OracleSource"});
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 65
+#line 64
  testRunner.Given("I open New database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 66
+#line 65
    testRunner.Then("\"New Database Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 67
+#line 66
    testRunner.And("Title is \"New Database Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 67
    testRunner.And("Type options has \"Microsoft SQL Server\" as the default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 68
    testRunner.And("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+   testRunner.And("I select type \"Oracle Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
-   testRunner.And("I select type \"PostgreSql Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
    testRunner.Then("Authentication type \"Windows\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -185,50 +185,50 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved DB Source Remembers credentials")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New PostgresSql Database Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Database Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
         public virtual void EditingSavedDBSourceRemembersCredentials()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing saved DB Source Remembers credentials", new string[] {
-                        "PostgreSource"});
-#line 74
+                        "OracleSource"});
+#line 73
 this.ScenarioSetup(scenarioInfo);
+#line 74
+testRunner.Given("I open \"Database Source - testOracle\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 75
- testRunner.Given("I open \"Database Source - testPostgres\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("type option has \"Oracle Database\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
- testRunner.And("type option has \"PostgreSql Database\" selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
     testRunner.And("Server as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 77
     testRunner.And("Authentication Type is selected as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 78
     testRunner.And("Username field is \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 79
     testRunner.And("Password field is \"******\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 80
  testRunner.And("Database \"Dev2TestingDB\" is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 81
+    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
-    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
  testRunner.When("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
+#line 83
     testRunner.Then("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
+#line 84
     testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 85
     testRunner.And("Database dropdown is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 86
     testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 87
     testRunner.And("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 88
     testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 89
     testRunner.And("Database dropdown is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 90
     testRunner.And("I select \"Dev2TestingDB2\" as Database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 91
     testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -236,13 +236,13 @@ this.ScenarioSetup(scenarioInfo);
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source with invalid server")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New PostgresSql Database Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgreSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New Oracle Database Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OracleSource")]
         public virtual void CreatingNewDBSourceWithInvalidServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source with invalid server", new string[] {
-                        "PostgreSource"});
+                        "OracleSource"});
 #line 95
 this.ScenarioSetup(scenarioInfo);
 #line 96
@@ -254,7 +254,7 @@ testRunner.Given("I open New database Source", ((string)(null)), ((TechTalk.Spec
 #line 99
    testRunner.And("Type options has \"Microsoft SQL Server\" as the default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
-   testRunner.And("I select type \"PostgreSql Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I select type \"Oracle Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
    testRunner.Then("Authentication type \"Windows\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 102
