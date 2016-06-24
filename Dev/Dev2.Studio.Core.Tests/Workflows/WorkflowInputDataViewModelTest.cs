@@ -520,14 +520,11 @@ namespace Dev2.Core.Tests.Workflows
             workflowInputDataViewModel.LoadWorkflowInputs();
             var inputs = workflowInputDataViewModel.WorkflowInputs;
             Assert.AreEqual(2, inputs.Count);
-            
+            inputs[0].Value = "bob";
             //------------Execute Test---------------------------
             workflowInputDataViewModel.SetXmlData();
-            var dataListItem = workflowInputDataViewModel.WorkflowInputs[1];
-
             //------------Assert Results-------------------------
-            Assert.IsNotNull(dataListItem);
-            Assert.AreEqual("<DataList><recjson:Array=\"true\"xmlns:json=\"http://james.newtonking.com/projects/json\"><a></a></rec><Person><Age></Age><Name></Name></Person></DataList>",workflowInputDataViewModel.XmlData.Replace(Environment.NewLine,"").Replace(" ",""));
+            Assert.AreEqual("<DataList><recjson:Array=\"true\"xmlns:json=\"http://james.newtonking.com/projects/json\"><a>bob</a></rec><Person><Age></Age><Name></Name></Person></DataList>",workflowInputDataViewModel.XmlData.Replace(Environment.NewLine,"").Replace(" ",""));
         }
 
         [TestMethod]

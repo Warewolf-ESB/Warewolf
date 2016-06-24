@@ -59,6 +59,11 @@ Scenario: Creating New DB Source as User Auth
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
 
+
+@PostgreSource
+Scenario: Creating New DB Source as Windows Auth
+
+
 @PostgreSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - testPostgres" 

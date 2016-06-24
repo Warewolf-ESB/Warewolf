@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
 using Unlimited.Framework.Converters.Graph;
 
 
@@ -156,10 +157,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                             dbDataParameter.Value = foundParameter.Value;
                             if (dbDataParameter.Size == 0)
                             {
-                                dbDataParameter.Size = foundParameter.Value.Length;
+                                dbDataParameter.Size = int.MaxValue;
                             }
                         }
-                        cmd.Parameters.Add(dbDataParameter);
+                        var oCommand = cmd as OracleCommand;
+                        if (oCommand != null)
+                        {
+                            var oracleParameter = oCommand.Parameters.Add(dbDataParameter.ParameterName, OracleDbType.Varchar2);
+                            oracleParameter.Size = dbDataParameter.Size;
+                            oracleParameter.Value = dbDataParameter.Value;
+                            oracleParameter.Direction = dbDataParameter.Direction;
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(dbDataParameter);
+                        }
                     }
 
                     var outParams = server.GetProcedureOutParams(fullProcedureName, databaseName);
@@ -167,7 +179,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     // ReSharper restore PossibleNullReferenceException
                     foreach (var dbDataParameter in outParams)
                     {
-                        cmd.Parameters.Add(dbDataParameter);
+                        var oCommand = cmd as OracleCommand;
+                        if (oCommand != null)
+                        {
+                            var oracleParameter = oCommand.Parameters.Add(dbDataParameter.ParameterName, OracleDbType.Varchar2);
+                            oracleParameter.Size = int.MaxValue;
+                            oracleParameter.Direction = dbDataParameter.Direction;
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(dbDataParameter);
+                        }
                     }
                     var dataTable = server.FetchDataTable(cmd);
 
@@ -187,8 +209,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     server.RollbackTransaction();
                 }
             }
-
+            
             return result;
         }
     }
+
+  
 }
