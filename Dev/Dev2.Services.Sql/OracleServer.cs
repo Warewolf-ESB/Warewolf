@@ -339,6 +339,7 @@ namespace Dev2.Services.Sql
         {
             try
             {
+                var singleOutParams = new List<IDataParameter>();
                 if (command.CommandType == CommandType.StoredProcedure)
                 {
                     OracleParameter obj = new OracleParameter();
@@ -351,12 +352,20 @@ namespace Dev2.Services.Sql
                         {
                             obj = (OracleParameter)command.Parameters[i];
                         }
+                        else
+                        {
+                            if (temp.Direction != ParameterDirection.Input)
+                            {
+                                singleOutParams.Add(temp);
+                            }
+                        }
                     }
+                    command.ExecuteNonQuery();
                     if (obj.ParameterName.Length > 0)
                     {
                         try
                         {
-                            command.ExecuteNonQuery();
+                           
                             using (OracleDataReader reader = ((OracleRefCursor)obj.Value).GetDataReader())
                             {
                                 return handler(reader);
@@ -371,11 +380,13 @@ namespace Dev2.Services.Sql
                             }
                         }
                     }
-
-                    using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                    if (singleOutParams.Count > 0)
                     {
-                        return handler(reader);
-                    }
+                        var table = new DataTable("SingleValues");
+                        table.Columns.AddRange(singleOutParams.Select(parameter => new DataColumn(parameter.ParameterName)).ToArray());
+                        table.LoadDataRow(singleOutParams.Select(parameter => parameter.Value).ToArray(), true);
+                        return handler(table.CreateDataReader()); 
+                    }                    
                 }
 
                 using (IDataReader reader = command.ExecuteReader(commandBehavior))
@@ -420,7 +431,7 @@ namespace Dev2.Services.Sql
                 proceduresDataTable.Rows.Add("Test", "Test");
                 return proceduresDataTable;
             }
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, string.Format(CommandText, _owner)))
+            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, String.Format(CommandText, _owner)))
             {
                 return FetchDataTable(command);
             }
@@ -429,7 +440,7 @@ namespace Dev2.Services.Sql
         public string GetHelpText(IDbConnection connection, string objectName)
         {
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
-                    string.Format("SELECT text FROM all_source WHERE name='{0}' ORDER BY line", objectName)))
+                    String.Format("SELECT text FROM all_source WHERE name='{0}' ORDER BY line", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                     delegate (IDataReader reader)
@@ -471,7 +482,7 @@ namespace Dev2.Services.Sql
         {
             var parameteres = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
-            command.CommandText = string.Format("SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
+            command.CommandText = String.Format("SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
                     dbName, procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1));
             //OracleCommandBuilder.DeriveParameters(command as OracleCommand);
             DataTable dataTable = FetchDataTable(command);
@@ -498,7 +509,7 @@ namespace Dev2.Services.Sql
             string originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
-            command.CommandText = string.Format("SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
+            command.CommandText = String.Format("SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
                     dbName, procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1));
 
             DataTable dataTable = FetchDataTable(command);
@@ -534,19 +545,43 @@ namespace Dev2.Services.Sql
 
         public OracleParameter GetOracleParameter(OracleDbType OracleType, DataRow row, string parameterName, ParameterDirection direction)
         {
-            OracleParameter OracleParameter;
+            OracleParameter oracleParameter;
             if (OracleType == 0)
             {
                 var dataType = row["DATA_TYPE"].ToString();
                 OracleType = GetOracleDbType(dataType);
-
-                OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+               
+                oracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
             }
             else
             {
-                OracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
+                oracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
             }
-            return OracleParameter;
+            var size = "";
+            try
+            {
+                var sizeVal = row["SIZE"];
+                if (sizeVal != null)
+                {
+                    size = sizeVal.ToString();
+                }
+
+            }
+            catch(Exception)
+            {
+                size = "";
+            }
+            int sizeValue;
+            if (string.IsNullOrEmpty(size))
+            {
+                sizeValue = GetSizeForType(OracleType);
+            }
+            else
+            {
+                sizeValue = int.Parse(size);
+            }
+            oracleParameter.Size = sizeValue;
+            return oracleParameter;
         }
 
         public void GetOutParamProperties(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, bool isout, OracleParameter OracleParameter)
@@ -676,6 +711,63 @@ namespace Dev2.Services.Sql
             return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
+        public static int GetSizeForType(OracleDbType dbType)
+        {
+            switch(dbType)
+            {
+                case OracleDbType.BFile:
+                case OracleDbType.Blob:
+                case OracleDbType.Clob:
+                    return int.MaxValue;
+                case OracleDbType.Byte:
+                    return 8;
+                case OracleDbType.Char:
+                    return 1;
+                case OracleDbType.Date:
+                    return 100;
+                case OracleDbType.Decimal:
+                case OracleDbType.Double:
+                    return int.MaxValue;
+                case OracleDbType.Long:
+                case OracleDbType.LongRaw:
+                    return int.MaxValue;
+                case OracleDbType.Int16:
+                    return Int16.MaxValue;
+                case OracleDbType.Int32:
+                    return int.MaxValue;
+                case OracleDbType.Int64:
+                    return int.MaxValue;
+                case OracleDbType.IntervalDS:
+                    break;
+                case OracleDbType.IntervalYM:
+                    break;
+                case OracleDbType.NClob:
+                case OracleDbType.NChar:
+                    return 3000;
+                case OracleDbType.NVarchar2:
+                    return 3000;
+                case OracleDbType.Raw:
+                    break;                
+                case OracleDbType.Single:
+                    break;
+                case OracleDbType.TimeStamp:
+                case OracleDbType.TimeStampLTZ:
+                case OracleDbType.TimeStampTZ:
+                    return 100;
+                case OracleDbType.XmlType:
+                case OracleDbType.Varchar2:
+                    return 4000;
+                case OracleDbType.BinaryDouble:
+                    break;
+                case OracleDbType.BinaryFloat:
+                    break;
+                default:
+                    return 4000;
+            }
+            
+            return 4000;
+        }
+
         #region IDisposable
 
         private bool _disposed;
@@ -722,26 +814,26 @@ namespace Dev2.Services.Sql
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called. 
-            if (!_disposed)
+            if(!_disposed)
             {
                 // If disposing equals true, dispose all managed 
                 // and unmanaged resources. 
-                if (disposing)
+                if(disposing)
                 {
                     // Dispose managed resources.
-                    if (_transaction != null)
+                    if(_transaction != null)
                     {
                         _transaction.Dispose();
                     }
 
-                    if (_command != null)
+                    if(_command != null)
                     {
                         _command.Dispose();
                     }
 
-                    if (_connection != null)
+                    if(_connection != null)
                     {
-                        if (_connection.State != ConnectionState.Closed)
+                        if(_connection.State != ConnectionState.Closed)
                         {
                             _connection.Close();
                         }

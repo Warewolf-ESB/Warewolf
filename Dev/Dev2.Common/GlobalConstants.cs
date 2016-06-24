@@ -557,7 +557,16 @@ WHERE   n.nspname = 'public'
             get
             {
                 var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                var warewolfFolder = Path.Combine(appDataFolder, "Warewolf");
+                if (!Directory.Exists(warewolfFolder))
+                {
+                    Directory.CreateDirectory(warewolfFolder);
+                }
                 var tempPath = Path.Combine(appDataFolder, "Warewolf", "Temp");
+                if (!Directory.Exists(tempPath))
+                {
+                    Directory.CreateDirectory(tempPath);
+                }
                 return tempPath;
             }
         }
