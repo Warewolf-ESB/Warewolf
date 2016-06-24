@@ -38,7 +38,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$FullVersionString = "0.0.*"
 } else {
 	# Make new version from last known version.
-	Write-Host Last version was `"$FullVersionString`". Generating next version (with incremented patch number)...
+	Write-Host Last version was `"$FullVersionString`". Generating next version `(with incremented patch number`)...
 	# Increment patch number.
 	[int]$NewPatchNumber = $FullVersionString.Split(".")[2]
 	$NewPatchNumber++
