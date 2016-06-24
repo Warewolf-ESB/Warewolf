@@ -254,7 +254,8 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
         public void GivenITypeServerAs(string serverName)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.EnterServerName(serverName);
+            manageDatabaseSourceControl.SelectServer(serverName);
+            //manageDatabaseSourceControl.EnterServerName(serverName);
             var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
             Assert.AreEqual(serverName, viewModel.ServerName.Name);
         }
