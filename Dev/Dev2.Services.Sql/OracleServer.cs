@@ -569,12 +569,12 @@ namespace Dev2.Services.Sql
             }
             catch(Exception)
             {
-                size = "0";
+                size = "";
             }
             int sizeValue;
             if (string.IsNullOrEmpty(size))
             {
-                sizeValue = Decimal.ToInt32(GetSizeForType(OracleType));
+                sizeValue = GetSizeForType(OracleType);
             }
             else
             {
@@ -711,14 +711,14 @@ namespace Dev2.Services.Sql
             return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
-        public static decimal GetSizeForType(OracleDbType dbType)
+        public static int GetSizeForType(OracleDbType dbType)
         {
             switch(dbType)
             {
                 case OracleDbType.BFile:
                 case OracleDbType.Blob:
                 case OracleDbType.Clob:
-                    return decimal.MaxValue;
+                    return int.MaxValue;
                 case OracleDbType.Byte:
                     return 8;
                 case OracleDbType.Char:
@@ -727,10 +727,10 @@ namespace Dev2.Services.Sql
                     return 100;
                 case OracleDbType.Decimal:
                 case OracleDbType.Double:
-                    return decimal.MaxValue;
+                    return int.MaxValue;
                 case OracleDbType.Long:
                 case OracleDbType.LongRaw:
-                    return long.MaxValue;
+                    return int.MaxValue;
                 case OracleDbType.Int16:
                     return Int16.MaxValue;
                 case OracleDbType.Int32:
