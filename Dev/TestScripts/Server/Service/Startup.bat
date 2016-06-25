@@ -22,6 +22,7 @@ REM ****************************************************************************
 REM ** Find The Server **
 set ServerEXE=%DeploymentDirectory%\Server\Warewolf Server.exe
 IF NOT EXIST "%ServerEXE%" set ServerEXE=%~dp0\..\..\Dev\Dev2.Server\bin\Debug\Warewolf Server.exe
+IF NOT EXIST "%ServerEXE%" exit 1
 
 sc interrogate "Warewolf Server"
 if %ERRORLEVEL% EQU 1060 GOTO NotInstalled
@@ -29,7 +30,7 @@ if %ERRORLEVEL% EQU 1062 GOTO NotStarted
 if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
-IF EXIST "%ServerEXE%" sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand ELSE exit 1
+sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand
 GOTO StartService
 
 :Running
@@ -46,7 +47,10 @@ GOTO StartService
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Workspaces")
-IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings\") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
+IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Server Settings")
+IF EXIST "%PROGRAMDATA%\Warewolf\Resources" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Resources' -Recurse -Force }"
+IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Workspaces' -Recurse -Force }"
+IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" powershell.exe -nologo -noprofile -command "& { Remove-Item '%PROGRAMDATA%\Warewolf\Server Settings' -Recurse -Force }"
 IF EXIST "%PROGRAMDATA%\Warewolf\Resources" exit 1
 IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" exit 1
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" exit 1
