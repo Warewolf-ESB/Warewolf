@@ -20,6 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Find The Server **
+IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"
 set ServerEXE=%DeploymentDirectory%\Server\Warewolf Server.exe
 IF NOT EXIST "%ServerEXE%" set ServerEXE=%~dp0\..\..\Dev\Dev2.Server\bin\Debug\Warewolf Server.exe
 IF NOT EXIST "%ServerEXE%" exit 1
