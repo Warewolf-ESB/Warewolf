@@ -27,12 +27,25 @@ IF NOT EXIST "%ServerEXE%" exit 1
 
 sc interrogate "Warewolf Server"
 if %ERRORLEVEL% EQU 1060 GOTO NotInstalled
+if %ERRORLEVEL% EQU 1061 GOTO NotReady
 if %ERRORLEVEL% EQU 1062 GOTO NotStarted
 if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
 sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand
 GOTO StartService
+
+:NotReady
+set /a LoopCounter=0
+:WaitForServiceReadyLoopBody
+IF NOT %ERRORLEVEL% EQU 1061 GOTO Running
+set /a LoopCounter=LoopCounter+1
+IF %LoopCounter% EQU 60 exit 1
+rem wait for 10 seconds before trying again
+@echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for server service to be ready...
+ping -n 10 -w 1000 192.0.2.2 > nul
+sc interrogate "Warewolf Server"
+goto WaitForServiceReadyLoopBody
 
 :Running
 sc stop "Warewolf Server"
@@ -61,11 +74,11 @@ sc start "Warewolf Server"
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
 :WaitForServerStart
 set /a LoopCounter=0
-:MainLoopBody
+:WaitForServerStartLoopBody
 IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
 ping -n 10 -w 1000 192.0.2.2 > nul
-goto MaiLoopBody
+goto WaitForServerStartLoopBody
