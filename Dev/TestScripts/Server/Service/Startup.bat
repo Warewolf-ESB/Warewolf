@@ -64,8 +64,8 @@ set /a LoopCounter=0
 :MainLoopBody
 IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
 set /a LoopCounter=LoopCounter+1
-IF %LoopCounter% EQU 30 exit 1
-rem wait for 5 seconds before trying again
-@echo %AgentName% is attempting number %LoopCounter% out of 30: Waiting 5 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
-ping -n 5 -w 1000 192.0.2.2 > nul
-goto MainLoopBody
+IF %LoopCounter% EQU 60 exit 1
+rem wait for 10 seconds before trying again
+@echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for "%DeploymentDirectory%\ServerStarted" file to appear...
+ping -n 10 -w 1000 192.0.2.2 > nul
+goto MaiLoopBody
