@@ -32,7 +32,7 @@ if %ERRORLEVEL% EQU 1062 GOTO NotStarted
 if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
-sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand) else (sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand)
 GOTO StartService
 
 :NotReady
@@ -49,11 +49,11 @@ goto WaitForServiceReadyLoopBody
 
 :Running
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
-sc config "Warewolf Server" binPath= "%ServerEXE%"
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%ServerEXE%") else (sc config "Warewolf Server" binPath= "%ServerEXE%")
 GOTO StartService
 
 :NotStarted
-sc config "Warewolf Server" binPath= "%ServerEXE%"
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%ServerEXE%") else (sc config "Warewolf Server" binPath= "%ServerEXE%")
 GOTO StartService
 
 :StartService
