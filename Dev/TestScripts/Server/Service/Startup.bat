@@ -75,7 +75,7 @@ REM using the "ping" command as make-shift wait (or sleep) command, so now we wa
 :WaitForServerStart
 set /a LoopCounter=0
 :WaitForServerStartLoopBody
-IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
+IF EXIST "%DeploymentDirectory%\Server\ServerStarted" exit 0
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
