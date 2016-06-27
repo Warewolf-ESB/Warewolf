@@ -93,6 +93,18 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="OracleSqlSource\NewOracleDatabaseSourceSteps.cs" />
+    <Compile Include="OracleSqlSource\OracleSource1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleSource.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PostgresSqlSource\NewPostgresDatabaseSourceSteps.cs" />
+    <Compile Include="PostgresSqlSource\PostgresSqlSource.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresSqlSource.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -100,7 +112,15 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New Database Source1.feature.cs</LastGenOutput>
     </None>
+    <None Include="OracleSqlSource\OracleSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OracleSource1.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
+    <None Include="PostgresSqlSource\PostgresSqlSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PostgresSqlSource.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
