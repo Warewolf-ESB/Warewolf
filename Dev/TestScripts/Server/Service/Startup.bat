@@ -19,11 +19,22 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-REM ** Find The Server **
+REM ** Check for admin **
+echo Administrative permissions required. Detecting permissions...
+REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
+IF EXIST %windir%\nircmd.exe (nircmd elevate net session >nul 2>&1) else (net session >nul 2>&1)
+if %errorLevel% == 0 (
+	echo Success: Administrative permissions confirmed.
+) else (
+	echo Failure: Current permissions inadequate.
+	exit 1
+)
+
+REM Init paths to Warewolf server under test
 IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"
-set ServerEXE=%DeploymentDirectory%\Server\Warewolf Server.exe
-IF NOT EXIST "%ServerEXE%" set ServerEXE=%~dp0\..\..\Dev\Dev2.Server\bin\Debug\Warewolf Server.exe
-IF NOT EXIST "%ServerEXE%" exit 1
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
+IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
+IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 sc interrogate "Warewolf Server"
 if %ERRORLEVEL% EQU 1060 GOTO NotInstalled
@@ -32,7 +43,7 @@ if %ERRORLEVEL% EQU 1062 GOTO NotStarted
 if %ERRORLEVEL% EQU 0 GOTO Running
 
 :NotInstalled
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand) else (sc create "Warewolf Server" binPath= "%ServerEXE%" obj= dev2\Integrationtester start= demand)
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" obj= dev2\Integrationtester start= demand) else (sc create "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe" obj= dev2\Integrationtester start= demand)
 GOTO StartService
 
 :NotReady
@@ -49,11 +60,11 @@ goto WaitForServiceReadyLoopBody
 
 :Running
 IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%ServerEXE%") else (sc config "Warewolf Server" binPath= "%ServerEXE%")
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe") else (sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe")
 GOTO StartService
 
 :NotStarted
-IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%ServerEXE%") else (sc config "Warewolf Server" binPath= "%ServerEXE%")
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe") else (sc config "Warewolf Server" binPath= "%DeploymentDirectory%\Warewolf Server.exe")
 GOTO StartService
 
 :StartService
@@ -75,7 +86,7 @@ REM using the "ping" command as make-shift wait (or sleep) command, so now we wa
 :WaitForServerStart
 set /a LoopCounter=0
 :WaitForServerStartLoopBody
-IF EXIST "%DeploymentDirectory%\Server\ServerStarted" exit 0
+IF EXIST "%DeploymentDirectory%\ServerStarted" exit 0
 set /a LoopCounter=LoopCounter+1
 IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
