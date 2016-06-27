@@ -33,7 +33,7 @@ IF EXIST "%ServerEXE%" sc create "Warewolf Server" binPath= "%ServerEXE%" obj= d
 GOTO StartService
 
 :Running
-sc stop "Warewolf Server"
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
 sc config "Warewolf Server" binPath= "%ServerEXE%"
 GOTO StartService
 
@@ -51,7 +51,7 @@ IF EXIST "%PROGRAMDATA%\Warewolf\Resources" exit 1
 IF EXIST "%PROGRAMDATA%\Warewolf\Workspaces" exit 1
 IF EXIST "%PROGRAMDATA%\Warewolf\Server Settings" exit 1
 
-sc start "Warewolf Server"
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc start "Warewolf Server") else (sc start "Warewolf Server")
 
 REM using the "ping" command as make-shift wait (or sleep) command, so now we wait for the server started file to appear - Ashley
 :WaitForServerStart
