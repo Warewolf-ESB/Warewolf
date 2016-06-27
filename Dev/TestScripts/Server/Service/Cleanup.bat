@@ -20,7 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM Stop Server Service:
-SC STOP "Warewolf Server"
+IF EXIST %windir%\nircmd.exe (nircmd elevate sc stop "Warewolf Server") else (sc stop "Warewolf Server")
 
 REM ** Delete the Warewolf ProgramData folder
 IF EXIST %windir%\nircmd.exe (nircmd elevate cmd /c rd /S /Q "%PROGRAMDATA%\Warewolf\Resources") else (rd /S /Q "%PROGRAMDATA%\Warewolf\Resources")
