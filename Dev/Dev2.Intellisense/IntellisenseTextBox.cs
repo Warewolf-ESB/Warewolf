@@ -675,15 +675,9 @@ namespace Dev2.UI
                 .Throttle(TimeSpan.FromMilliseconds(300), Scheduler.ThreadPool);
             if(SynchronizationContext.Current != null)
             {
-                onservableThrottledEvent
-                    .ObserveOn(SynchronizationContext.Current)
-                    .Subscribe(pattern => TheTextHasChanged());
+                onservableThrottledEvent = onservableThrottledEvent.ObserveOn(SynchronizationContext.Current);
             }
-            else
-            {
-                onservableThrottledEvent
-                    .Subscribe(pattern => TheTextHasChanged());
-            }
+            onservableThrottledEvent.Subscribe(pattern => TheTextHasChanged());
 
             Items = new ObservableCollection<IntellisenseProviderResult>();
             DefaultStyleKey = typeof(IntellisenseTextBox);
