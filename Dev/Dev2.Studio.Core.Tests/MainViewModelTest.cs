@@ -583,8 +583,6 @@ namespace Dev2.Core.Tests
             PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var mckEnv = new Mock<IEnvironmentRepository>();
             var mockEnv = new Mock<IEnvironmentModel>();
-            PrivateObject p = new PrivateObject(MainViewModel);
-            p.SetProperty("EnvironmentRepository",mckEnv.Object);
             mckEnv.Setup(a => a.Get(It.IsAny<Guid>()))
                 .Returns(mockEnv.Object);
             var res = new Mock<IResourceRepository>();
@@ -596,11 +594,7 @@ namespace Dev2.Core.Tests
                     s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(),
                         It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(),
                         It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
-
-
         }
-
-
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
