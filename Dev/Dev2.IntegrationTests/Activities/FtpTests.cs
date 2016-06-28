@@ -38,7 +38,6 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Assert.IsTrue(true);
             }
-
         }
 
         [TestMethod]
@@ -47,7 +46,6 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete/", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
-
 
             Assert.AreEqual(6, tmp.Count);
         }
