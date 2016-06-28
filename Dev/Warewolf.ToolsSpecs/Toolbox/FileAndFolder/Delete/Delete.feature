@@ -134,24 +134,25 @@ Scenario Outline: Delete file at location with incorrect directories
 	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] | ""     | AN           | 
 	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] | ""     | AN           | 
 
-##Complex Types WOLF-1042
-#Scenario Outline: Delete file at location using complex types
-#	Given I have a source path "<source>" with value "<sourceLocation>"
-#	And source credentials as "<username>" and "<password>"
-#	And result as "<resultVar>"
-#	When the delete file tool is executed
-#	Then the result variable "<resultVar>" will be "<result>"
-#	And the execution has "<errorOccured>" error
-#	And the debug inputs as
-#         | Input Path                  | Username   | Password |
-#         | <source> = <sourceLocation> | <username> | String   |
-#	And the debug output as
-#		|                        |
-#		| <resultVar> = <result> |
-#	Examples: 
-#	| Name  | source                              | sourceLocation      | username | password | resultVar  | result    | errorOccured |
-#	| Local | [[file().resources().path]]         | c:\filetodelete.txt | ""       | ""       | [[result]] | "Success" | NO           |
-#	| Local | [[file(*).resources(3).path]]       | c:\filetodelete.txt | ""       | ""       | [[result]] | "Success" | NO           |
-#	| Local | [[file(1).resources([[int]]).path]] | c:\delete.txt       | ""       | ""       | [[result]] | "Success" | NO           |
-#
+#Complex Types WOLF-1042
+@ignore
+Scenario Outline: Delete file at location using complex types
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
+	When the delete file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Input Path                  | Username   | Password |
+         | <source> = <sourceLocation> | <username> | String   |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| Name  | source                              | sourceLocation      | username | password | resultVar  | result    | errorOccured |
+	| Local | [[file().resources().path]]         | c:\filetodelete.txt | ""       | ""       | [[result]] | "Success" | NO           |
+	| Local | [[file(*).resources(3).path]]       | c:\filetodelete.txt | ""       | ""       | [[result]] | "Success" | NO           |
+	| Local | [[file(1).resources([[int]]).path]] | c:\delete.txt       | ""       | ""       | [[result]] | "Success" | NO           |
+
 
