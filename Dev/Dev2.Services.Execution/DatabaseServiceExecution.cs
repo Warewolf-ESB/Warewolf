@@ -594,15 +594,19 @@ namespace Dev2.Services.Execution
             {
                 foreach (var parameter in methodParameters)
                 {
-                    if (parameter.EmptyIsNull &&
-                        (parameter.Value == null ||
-                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    if (!string.IsNullOrEmpty(parameter.Name))
                     {
-                        sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
-                    }
-                    else
-                    {
-                        sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                        if (parameter.EmptyIsNull &&
+                            (parameter.Value == null ||
+                             string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) ==
+                             0))
+                        {
+                            sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
+                        }
+                        else
+                        {
+                            sqlParameters.Add(new NpgsqlParameter(string.Format("@{0}", parameter.Name), parameter.Value));
+                        }
                     }
                 }
             }

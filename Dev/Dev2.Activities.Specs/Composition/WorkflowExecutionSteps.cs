@@ -57,10 +57,12 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Moq;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Warewolf.Core;
 using Warewolf.Tools.Specs.BaseTypes;
 
 // ReSharper disable UnusedMember.Global
@@ -514,6 +516,9 @@ namespace Dev2.Activities.Specs.Composition
                         case "sqlserver database":
                             updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
+                        case "postgresql database":
+                            updatedActivity = ActivityUtils.GetDsfPostgreSqlActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
                     }
                     _commonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
@@ -694,6 +699,9 @@ namespace Dev2.Activities.Specs.Composition
                     activity = new DsfDatabaseActivity();
                     break;
                 case "odbc database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "postgresql database":
                     activity = new DsfDatabaseActivity();
                     break;
                 case "plugin":
@@ -1940,6 +1948,48 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
-        }        
+        }
+
+        [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings as")]
+        public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
+        {
+            //Load Source based on the name
+            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.LoadResources();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\PostgreSourceTest").FirstOrDefault();
+
+            if (resource == null)
+            {
+                // ReSharper disable NotResolvedInText
+                throw new ArgumentNullException("resource");
+                // ReSharper restore NotResolvedInText
+            }
+
+            var postGreActivity = new DsfPostgreSqlActivity();
+            postGreActivity.ProcedureName = serviceName;
+            postGreActivity.SourceId = resource.ID;
+            postGreActivity.Outputs = new List<IServiceOutputMapping>();
+            postGreActivity.Inputs = new List<IServiceInput>();
+            foreach (var tableRow in table.Rows)
+            {
+                var output = tableRow["Output from Service"];
+                var toVariable = tableRow["To Variable"];
+                var recSetName = DataListUtil.ExtractRecordsetNameFromValue(toVariable);
+                postGreActivity.Outputs.Add(new ServiceOutputMapping(output,toVariable,recSetName));
+                _commonSteps.AddVariableToVariableList(toVariable);
+
+                var input = tableRow["Input to Service"];
+                var fromVariable = tableRow["From Variable"];
+                if (!string.IsNullOrEmpty(input))
+                {
+                    postGreActivity.Inputs.Add(new ServiceInput(input, fromVariable));
+                    _commonSteps.AddVariableToVariableList(fromVariable);
+                }
+            }
+            _commonSteps.AddActivityToActivityList(parentName, serviceName, postGreActivity);
+        }
+
+
     }
 }
