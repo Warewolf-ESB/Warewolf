@@ -120,7 +120,7 @@ namespace Dev2.Studio.ViewModels
 
         public Common.Interfaces.Studio.Controller.IPopupController PopupProvider { private get; set; }
 
-        public IEnvironmentRepository EnvironmentRepository { get; }
+        public IEnvironmentRepository EnvironmentRepository { get; set; }
 
 
         public bool CloseCurrent { get; private set; }
