@@ -4200,3 +4200,22 @@ Scenario Outline: Database SqlDB  service using scalar outputs
 Examples: 
     | WorkflowName              | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsSqlScalar | SqlEmail    | [[name]]     | [[email]]     | NO           |
+
+#PostgreSQL
+Scenario Outline: Database PostgreSql Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a postgre tool using "<ServiceName>" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  | Prefix           | s             | Id                  | <nameVariable>  |
+	  |                  |               | Name                | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
+	  |                                      |
+	  | [[countries(1).Id]] = 1              |
+	  | [[countries(1).Name]] = United States|
+	  | [[countries(2).Id]] = 2              |
+	  | [[countries(2).Name]] = South Africa |
+Examples: 
+    | WorkflowName             | ServiceName   | nameVariable        | emailVariable         | errorOccured |
+    | PostgreSqlDBGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
