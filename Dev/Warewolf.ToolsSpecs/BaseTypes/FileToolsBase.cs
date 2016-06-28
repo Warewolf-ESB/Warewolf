@@ -17,7 +17,6 @@ using Dev2.PathOperations;
 using Nuane.Net;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.Tools.Specs.BaseTypes
 {
@@ -153,6 +152,14 @@ namespace Warewolf.Tools.Specs.BaseTypes
             string sourceLocation;
             if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
             {
+                if (string.IsNullOrEmpty(sourceLocation))
+                {
+                    scenarioContext.TryGetValue(CommonSteps.SourceHolder, out sourceLocation);
+                }
+                if (string.IsNullOrEmpty(sourceLocation))
+                {
+                    return;
+                }
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
                     scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
                     scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
@@ -160,10 +167,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 try
                 {
-                    if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
-                    {
-                        broker.Delete(sourceEndPoint);
-                    }
+                    broker.Delete(sourceEndPoint);
                 }
                 catch (Exception)
                 {
