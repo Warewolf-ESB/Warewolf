@@ -297,22 +297,6 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region Show Help Tab
-
-        [TestMethod]
-        public void ShowHelpTabMessageExpectHelpTabWithUriActive()
-        {
-            CreateFullExportsAndVm();
-            var msg = new ShowHelpTabMessage("testuri");
-            MainViewModel.Handle(msg);
-            var helpctx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpctx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(helpctx.Uri == "testuri");
-            // ReSharper restore PossibleNullReferenceException
-        }
-
-        #endregion
 
         #region AddMode Work Surface
 
@@ -683,35 +667,6 @@ namespace Dev2.Core.Tests
 
         #endregion workspaces
         #region Commands
-
-        [TestMethod]
-        public void DisplayAboutDialogueCommandExpectsWindowManagerShowingIDialogueViewModel()
-        {
-            CreateFullExportsAndVm();
-            WindowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
-            CustomContainer.Register(new DialogViewModelFactory() as IDialogViewModelFactory);
-            MainViewModel.DisplayAboutDialogueCommand.Execute(null);
-            WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
-        }
-
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("MainViewModel_AddLanguageHelpPageCommand")]
-        public void MainViewModel_AddLanguageHelpPageCommand_LanguageHelpActive()
-        {
-            CreateFullExportsAndVm();
-            //------------Execute Test---------------------------
-            MainViewModel.AddLanguageHelpPageCommand.Execute(null);
-
-            // Assert LanguageHelp is active
-            var languageHelpUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
-            var langHelpCtx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(langHelpCtx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
-            // ReSharper restore PossibleNullReferenceException
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -2147,7 +2102,7 @@ namespace Dev2.Core.Tests
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
 
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { _isBusyDownloadingInstaller = null };
 
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
@@ -2171,7 +2126,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { _isBusyDownloadingInstaller = null };
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.Show("Some message", "Some heading", MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false)).Verifiable();
             viewModel.PopupProvider = mockPopupController.Object;
@@ -2197,7 +2152,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { _isBusyDownloadingInstaller = () => false };
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
