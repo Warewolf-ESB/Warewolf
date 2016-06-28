@@ -1017,6 +1017,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var gd = Guid.NewGuid();
             _targetAsyncWorker.Item = null;
+            var expectedType = enSourceType.Dev2Server;
+            _targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";
@@ -1025,8 +1027,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.Password = expectedPassword;
             var expectedUserName = "userName";
             _targetAsyncWorker.UserName = expectedUserName;
-            var expectedType = enSourceType.Dev2Server;
-            _targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedPath = "somePath";
             _targetAsyncWorker.Path = expectedPath;
             var expectedName = "someName";
@@ -1058,6 +1058,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedId = Guid.NewGuid();
             dbSourceMock.Setup(it => it.Id).Returns(expectedId);
             _targetAsyncWorker.Item = dbSourceMock.Object;
+            var expectedType = enSourceType.Dev2Server;
+            _targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
             var expectedServerName = "serverName";
@@ -1066,8 +1068,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.Password = expectedPassword;
             var expectedUserName = "userName";
             _targetAsyncWorker.UserName = expectedUserName;
-            var expectedType = enSourceType.Dev2Server;
-            _targetAsyncWorker.ServerType = new NameValue("someName", expectedType.ToString());
             var expectedName = "someName";
             _targetAsyncWorker.ResourceName = expectedName;
             var expectedDbName = "someDbName";

@@ -84,23 +84,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="New Database Source.feature.cs">
-      <DependentUpon>New Database Source.feature</DependentUpon>
+    <Compile Include="New Database Source1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="NewDatabaseSourceSteps.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="OracleSqlSource\NewOracleDatabaseSourceSteps.cs" />
-    <Compile Include="OracleSqlSource\OracleSqlSource.feature.cs">
-      <DependentUpon>OracleSqlSource.feature</DependentUpon>
+    <Compile Include="OracleSqlSource\OracleSource1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>OracleSource.feature</DependentUpon>
     </Compile>
     <Compile Include="PostgresSqlSource\NewPostgresDatabaseSourceSteps.cs" />
-    <Compile Include="PostgresSqlSource\PostgresSqlSource1.feature.cs">
+    <Compile Include="PostgresSqlSource\PostgresSqlSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PostgresSqlSource.feature</DependentUpon>
@@ -110,16 +110,16 @@
     <None Include="App.config" />
     <None Include="New Database Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
+      <LastGenOutput>New Database Source1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="OracleSqlSource\OracleSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OracleSource1.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="OracleSqlSource\OracleSqlSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OracleSqlSource.feature.cs</LastGenOutput>
-    </None>
     <None Include="PostgresSqlSource\PostgresSqlSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostgresSqlSource1.feature.cs</LastGenOutput>
+      <LastGenOutput>PostgresSqlSource.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
