@@ -1,3 +1,5 @@
+"%~dp0nuget.exe" restore "%~dp0..\..\AcceptanceTesting.sln"
+
 IF EXIST MSBuild (
 MSBuild "%~dp0..\..\AcceptanceTesting.sln" /p:Platform="Any CPU";Configuration="Debug"
 if not %errorlevel%==0 pause & exit 1

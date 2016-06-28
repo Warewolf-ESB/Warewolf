@@ -20,7 +20,7 @@ using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
-namespace Warewolf.AcceptanceTesting.DatabaseSource
+namespace Warewolf.AcceptanceTesting.DatabaseSource.PostgresSqlSource
 {
     [Binding]
     public class NewPostgresDatabaseSourceSteps

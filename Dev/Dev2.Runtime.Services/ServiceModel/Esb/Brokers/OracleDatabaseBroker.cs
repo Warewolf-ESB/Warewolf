@@ -8,9 +8,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
-using Oracle.ManagedDataAccess.Types;
 using Unlimited.Framework.Converters.Graph;
-
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -144,6 +142,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     var fullProcedureName = dbService.Method.ExecuteAction.Substring(dbService.Method.ExecuteAction.IndexOf(".", StringComparison.Ordinal) + 1);
 
                     // ReSharper disable once RedundantAssignment
+                    var outParams = server.GetProcedureOutParams(fullProcedureName, databaseName);
+                    var countRefCursors = outParams.Count(parameter => parameter.OracleDbType == OracleDbType.RefCursor);
+                    var countSingleParams = outParams.Count(parameter => parameter.OracleDbType != OracleDbType.RefCursor);
+                    if (countRefCursors > 1)
+                    {
+                        throw new Exception("Multiple Ref Cursor are not currently supported.");
+                    }
+                    if (countRefCursors >= 1 && countSingleParams >= 1)
+                    {
+                        throw new Exception("Mixing single return values and Ref Cursors are not currently supported.");
+                    }
                     var dbDataParameters = server.GetProcedureInputParameters(command, databaseName, fullProcedureName);
                     IDbCommand cmd = command.Connection.CreateCommand();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -154,42 +163,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                         var foundParameter = parameters.FirstOrDefault(parameter => parameter.Name == dbDataParameter.ParameterName);
                         if (foundParameter != null)
                         {
-                            dbDataParameter.Value = foundParameter.Value;
-                            if (dbDataParameter.Size == 0)
-                            {
-                                dbDataParameter.Size = int.MaxValue;
-                            }
+                            dbDataParameter.Value = foundParameter.Value;                            
                         }
-                        var oCommand = cmd as OracleCommand;
-                        if (oCommand != null)
-                        {
-                            var oracleParameter = oCommand.Parameters.Add(dbDataParameter.ParameterName, OracleDbType.Varchar2);
-                            oracleParameter.Size = dbDataParameter.Size;
-                            oracleParameter.Value = dbDataParameter.Value;
-                            oracleParameter.Direction = dbDataParameter.Direction;
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(dbDataParameter);
-                        }
+                       cmd.Parameters.Add(dbDataParameter);
                     }
 
-                    var outParams = server.GetProcedureOutParams(fullProcedureName, databaseName);
+                    
 
                     // ReSharper restore PossibleNullReferenceException
                     foreach (var dbDataParameter in outParams)
                     {
-                        var oCommand = cmd as OracleCommand;
-                        if (oCommand != null)
-                        {
-                            var oracleParameter = oCommand.Parameters.Add(dbDataParameter.ParameterName, OracleDbType.Varchar2);
-                            oracleParameter.Size = int.MaxValue;
-                            oracleParameter.Direction = dbDataParameter.Direction;
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(dbDataParameter);
-                        }
+                        cmd.Parameters.Add(dbDataParameter);
                     }
                     var dataTable = server.FetchDataTable(cmd);
 
@@ -213,6 +197,4 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
     }
-
-  
 }

@@ -109,20 +109,20 @@ Scenario: Date and Time with characters for time to add
 	|               |
 	| [[result]] = |
 
-Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ
+Scenario: Date and Time with output format - 12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ:Era
 	Given I have a date "2013/12/05 04:18:51 PM"
 	And the input format as ""
 	And I selected Add time as "None" with a value of 0
-	And the output format as "12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"
+	And the output format as "12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ:Era"
 	When the datetime tool is executed
-	Then the datetime result should be "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
+	Then the datetime result should be "04:05:Thursday:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria:A.D."
 	And the execution has "NO" error
 	 And the debug inputs as  
 	| Input                  | Input Format            | =                      | Add Time |   | Output Format                                                               |
-	| 2013/12/05 04:18:51 PM | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | None     | 0 | 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ |
+	| 2013/12/05 04:18:51 PM | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | None     | 0 | 12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ:Era |
 	And the debug output as 
-	|                                                                                                                    |
-	| [[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:D |
+	|                                                                                                                   |
+	| [[result]] = 04:05:Thursday:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec: |
 
 Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D.
 	Given I have a date "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
