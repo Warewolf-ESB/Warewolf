@@ -25,7 +25,6 @@ using Dev2.Network;
 using Dev2.Services;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core.AppResources.WindowManagers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
