@@ -15482,6 +15482,71 @@ this.FeatureBackground();
             this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBServiceMailsSqlScalar", "SqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
+        
+        public virtual void DatabasePostgreSqlDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database PostgreSql Database service inputs and outputs", exampleTags);
+#line 4205
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4206
+     testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table830 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table830.AddRow(new string[] {
+                        "Prefix",
+                        "s",
+                        "Id",
+                        string.Format("{0}", nameVariable)});
+            table830.AddRow(new string[] {
+                        "",
+                        "",
+                        "Name",
+                        string.Format("{0}", emailVariable)});
+#line 4207
+  testRunner.And(string.Format("\"{0}\" contains a postgre tool using \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table830, "And ");
+#line 4211
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4212
+     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table831 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table831.AddRow(new string[] {
+                        "[[countries(1).Id]] = 1"});
+            table831.AddRow(new string[] {
+                        "[[countries(1).Name]] = United States"});
+            table831.AddRow(new string[] {
+                        "[[countries(2).Id]] = 2"});
+            table831.AddRow(new string[] {
+                        "[[countries(2).Name]] = South Africa"});
+#line 4213
+  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table831, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreSql Database service inputs and outputs: PostgreSqlDBGetCountries" +
+            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "PostgreSqlDBGetCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "PostgreSqlDBGetCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "get_countries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).Id]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).Name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        public virtual void DatabasePostgreSqlDatabaseServiceInputsAndOutputs_PostgreSqlDBGetCountries()
+        {
+            this.DatabasePostgreSqlDatabaseServiceInputsAndOutputs("PostgreSqlDBGetCountries", "get_countries", "[[countries(*).Id]]", "[[countries(*).Name]]", "NO", ((string[])(null)));
+#line hidden
+        }
     }
 }
 #pragma warning restore
