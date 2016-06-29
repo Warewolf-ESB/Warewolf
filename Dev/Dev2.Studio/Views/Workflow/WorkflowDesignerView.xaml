@@ -5,11 +5,10 @@
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"  
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:micro="http://www.caliburnproject.org"
              AllowDrop="True"
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID">
 
-    <Grid micro:Bind.Model="{Binding .}">
+    <Grid cal:Bind.Model="{Binding .}">
         <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
@@ -44,7 +43,7 @@
             <ContentControl Grid.Row="1"
                                     Content="{Binding Path=DesignerView}"
                                     AutomationProperties.AutomationId="{Binding Path=DesignerText}"
-                                    micro:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
+                                    cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
                 <i:Interaction.Behaviors>
                     <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}"
                                                                   ExpandAllCommand="{Binding ExpandAllCommand}" />
