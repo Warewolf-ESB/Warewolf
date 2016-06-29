@@ -27,12 +27,14 @@ namespace Dev2.Integration.Tests.Activities
         [ClassInitialize]
         public static void InitPaths(TestContext ctx)
         {
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder1");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder2");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder3");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder4");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder5");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder6");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder1");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder2");
             CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder3");
