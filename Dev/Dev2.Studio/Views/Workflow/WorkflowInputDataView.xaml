@@ -8,7 +8,6 @@
         xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
         xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
         xmlns:ig="http://schemas.infragistics.com/xaml"
-        xmlns:micro="http://www.caliburnproject.org"
         Title="Debug"         
         Width="470" 
         Height="400"
@@ -18,7 +17,7 @@
         PreviewKeyDown="WorkflowInputDataView_OnPreviewKeyDown"
         LostKeyboardFocus="WorkflowInputDataView_OnLostKeyboardFocus"
         WindowStartupLocation="CenterOwner"
-        micro:Message.Attach="[Event Closed] = [Action ViewClosed]"
+        cal:Message.Attach="[Event Closed] = [Action ViewClosed]"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}"
         AutomationProperties.AutomationId="UI_DebugInputWindow_AutoID">
 
