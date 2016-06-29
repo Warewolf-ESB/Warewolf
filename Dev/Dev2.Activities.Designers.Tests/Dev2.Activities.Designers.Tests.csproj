@@ -208,7 +208,6 @@
     <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
     <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
-    <Compile Include="SelectAndApply\SelectAndApplyViewModelDesignerTests.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
     <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
@@ -316,6 +315,7 @@
   <ItemGroup>
     <Folder Include="Behaviour Stubs\" />
     <Folder Include="OracleServer\" />
+    <Folder Include="SelectAndApply\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

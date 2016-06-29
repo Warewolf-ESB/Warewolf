@@ -26,17 +26,6 @@ namespace Dev2.Core.Tests.ConnectionHelpers
     // ReSharper disable ObjectCreationAsStatement
     public class ConnectControlSingletonTests
     {
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ConnectControlSingleton_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConnectControlSingleton_Constructor_AsyncworkerIsNull_ThrowsException()
-        {
-            var serverProvider = new Mock<IEnvironmentModelProvider>();
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            //------------Execute Test---------------------------
-            new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
-        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
