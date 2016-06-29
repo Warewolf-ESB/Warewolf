@@ -134,7 +134,7 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 vm.WriteToResourceModel();
-                _eventPublisher.Publish(new UpdateIntellisenseMessage());
+                _eventPublisher.PublishOnUIThread(new UpdateIntellisenseMessage());
             }
         }
 

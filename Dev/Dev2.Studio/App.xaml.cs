@@ -155,7 +155,7 @@ namespace Dev2.Studio
             _splashThread.Name = "Splash Screen";
             _splashThread.Start();
             _resetSplashCreated.WaitOne();
-            new Bootstrapper().Start();
+            new Bootstrapper().Initialize();
             
             base.OnStartup(e);
             _mainViewModel = MainWindow.DataContext as MainViewModel;
@@ -278,6 +278,19 @@ namespace Dev2.Studio
             set
             {
                 _hasShutdownStarted = value;
+            }
+        }
+
+        public Window MainWindow
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 

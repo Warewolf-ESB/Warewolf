@@ -2066,7 +2066,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     Thread.Sleep(2000);
                     BuildWorkflowFields();
-                    EventPublisher.Publish(new UpdateAllIntellisenseMessage());
+                    EventPublisher.PublishOnUIThread(new UpdateAllIntellisenseMessage());
                 }).Start();
             }
         }
@@ -2199,7 +2199,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (message.KeepTabOpen)
             {
                 Dev2Logger.Debug("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
+                EventPublisher.PublishOnUIThread(new AddWorkSurfaceMessage(resourceModel));
             }
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
@@ -2207,7 +2207,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         void PublishMessages(IContextualResourceModel resourceModel)
         {
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
-            EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
+            EventPublisher.PublishOnUIThread(new UpdateResourceMessage(resourceModel));
         }
 
         static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
