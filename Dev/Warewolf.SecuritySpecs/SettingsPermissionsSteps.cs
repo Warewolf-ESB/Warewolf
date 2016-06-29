@@ -207,7 +207,7 @@ namespace Dev2.Activities.Specs.Permissions
         }
 
         [Then(@"resources should not have ""(.*)""")]
-        public async void ThenResourcesShouldNotHave(string resourcePerms)
+        public void ThenResourcesShouldNotHave(string resourcePerms)
         {
             var environmentModel = LoadResources();
             SecPermissions resourcePermissions = SecPermissions.None;
