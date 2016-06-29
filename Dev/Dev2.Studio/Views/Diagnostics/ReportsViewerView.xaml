@@ -8,6 +8,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
+             xmlns:micro="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>  
@@ -61,10 +62,10 @@
             <TextBox x:Name="LogDirectory_RealPath"
                      Margin="0,0,5,0"
                      Height="22"
-                     cal:Message.Attach="[Event LostFocus] = [Action RefreshDirectory]">
+                     micro:Message.Attach="[Event LostFocus] = [Action RefreshDirectory]">
                 <i:Interaction.Triggers>
                     <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="2000">
-                        <cal:ActionMessage MethodName="RefreshDirectory" />
+                        <micro:ActionMessage MethodName="RefreshDirectory" />
                     </trigger:DelayTextChangedEventTrigger>
                 </i:Interaction.Triggers>
                 <i:Interaction.Behaviors>
@@ -98,7 +99,7 @@
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" Tag="{Binding DataContext, ElementName=LogFiles}">
                         <TextBlock.ContextMenu>
-                            <ContextMenu  cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <ContextMenu  micro:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                                 <ContextMenu.Resources>
                                     <Style TargetType="{x:Type MenuItem}">
                                         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -107,10 +108,10 @@
                                     </Style>
                                 </ContextMenu.Resources>
                                 <MenuItem Header="Delete" 
-                                          cal:Message.Attach="[Event Click] = [Action Delete($datacontext)]"/>
+                                          micro:Message.Attach="[Event Click] = [Action Delete($datacontext)]"/>
                                 <!--<Separator/>-->
                                 <MenuItem Header="Delete All" 
-                                          cal:Message.Attach="[Event Click] = [Action DeleteAll]"/>
+                                          micro:Message.Attach="[Event Click] = [Action DeleteAll]"/>
                             </ContextMenu>
                         </TextBlock.ContextMenu>
                     </TextBlock>

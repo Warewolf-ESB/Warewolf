@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         MaxWidth="400" xmlns:attachedBehaviors="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-        Title="{Binding Caption}" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Icon="{Binding Icon, Converter={StaticResource MessageBoxImageToSystemIconConverter}}" 
-        cal:Message.Attach="[Event Closed] = [Action Closed]"
+    xmlns:micro="http://www.caliburnproject.org"
+    Title="{Binding Caption}" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Icon="{Binding Icon, Converter={StaticResource MessageBoxImageToSystemIconConverter}}" 
+        micro:Message.Attach="[Event Closed] = [Action Closed]"
         AutomationProperties.AutomationId="UI_MessageBox_AutoID">
     <Grid>
         <Grid.RowDefinitions>
@@ -28,22 +29,22 @@
                   Visibility="{Binding DontShowAgainKey, Converter={StaticResource StringToVisibilityConverter}}"/>
         
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="10,0,5,10" HorizontalAlignment="Right">
-            <Button Content="Yes" Width="50" cal:Message.Attach="[Event Click] = [Action Yes]"
+            <Button Content="Yes" Width="50" micro:Message.Attach="[Event Click] = [Action Yes]"
                     Visibility="{Binding Button, Converter={StaticResource MessageBoxButtonToVisibilityConverter}, ConverterParameter={x:Static MessageBoxResult.Yes}}"
                     attachedBehaviors:FocusAttachedProperty.IsFocused="{Binding FocusYes}"
                     AutomationProperties.AutomationId="UI_YesButton_AutoID" />
             
-            <Button Content="No" Width="50" Margin="5,0,0,0" cal:Message.Attach="[Event Click] = [Action No]"
+            <Button Content="No" Width="50" Margin="5,0,0,0" micro:Message.Attach="[Event Click] = [Action No]"
                     Visibility="{Binding Button, Converter={StaticResource MessageBoxButtonToVisibilityConverter}, ConverterParameter={x:Static MessageBoxResult.No}}"
                     attachedBehaviors:FocusAttachedProperty.IsFocused="{Binding FocusNo}"
                     AutomationProperties.AutomationId="UI_NoButton_AutoID" />
             
-            <Button Content="Cancel" Width="50" Margin="5,0,0,0" cal:Message.Attach="[Event Click] = [Action Cancel]"
+            <Button Content="Cancel" Width="50" Margin="5,0,0,0" micro:Message.Attach="[Event Click] = [Action Cancel]"
                     Visibility="{Binding Button, Converter={StaticResource MessageBoxButtonToVisibilityConverter}, ConverterParameter={x:Static MessageBoxResult.Cancel}}"
                     attachedBehaviors:FocusAttachedProperty.IsFocused="{Binding FocusCancel}"
                     AutomationProperties.AutomationId="UI_CancelButton_AutoID"/>
             
-            <Button Content="Ok" Width="50" Margin="5,0,0,0" cal:Message.Attach="[Event Click] = [Action Ok]"
+            <Button Content="Ok" Width="50" Margin="5,0,0,0" micro:Message.Attach="[Event Click] = [Action Ok]"
                     Visibility="{Binding Button, Converter={StaticResource MessageBoxButtonToVisibilityConverter}, ConverterParameter={x:Static MessageBoxResult.OK}}"
                     attachedBehaviors:FocusAttachedProperty.IsFocused="{Binding FocusOk}"
                     AutomationProperties.AutomationId="UI_OkButton_AutoID"/>
