@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
@@ -18,7 +17,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.PathOperations
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class Dev2FileSystemProviderTests
     {
         [TestMethod]

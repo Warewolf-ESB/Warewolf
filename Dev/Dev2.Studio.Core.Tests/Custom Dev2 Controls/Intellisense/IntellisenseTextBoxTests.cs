@@ -398,7 +398,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Thread.Sleep(250);
 
             //------------Assert Results-------------------------
-            Thread.Sleep(100);
+            Thread.Sleep(150);
             Assert.AreEqual(1, mockIntellisenseTextBox.TextChangedCounter);
         }
         

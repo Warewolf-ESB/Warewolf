@@ -1684,9 +1684,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IsItemDragged.Instance.IsDragged = false;
             }
             _resourcePickerDialog = null;
-
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            mainViewModel?.ClearToolboxSelection();
         }
 
         // BUG 9143 - 2013.07.03 - TWR - added

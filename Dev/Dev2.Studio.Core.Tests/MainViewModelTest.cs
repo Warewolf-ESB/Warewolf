@@ -295,22 +295,6 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region Show Help Tab
-
-        [TestMethod]
-        public void ShowHelpTabMessageExpectHelpTabWithUriActive()
-        {
-            CreateFullExportsAndVm();
-            var msg = new ShowHelpTabMessage("testuri");
-            MainViewModel.Handle(msg);
-            var helpctx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpctx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(helpctx.Uri == "testuri");
-            // ReSharper restore PossibleNullReferenceException
-        }
-
-        #endregion
 
         #region AddMode Work Surface
 
@@ -597,8 +581,6 @@ namespace Dev2.Core.Tests
             PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var mckEnv = new Mock<IEnvironmentRepository>();
             var mockEnv = new Mock<IEnvironmentModel>();
-            PrivateObject p = new PrivateObject(MainViewModel);
-            p.SetProperty("EnvironmentRepository",mckEnv.Object);
             mckEnv.Setup(a => a.Get(It.IsAny<Guid>()))
                 .Returns(mockEnv.Object);
             var res = new Mock<IResourceRepository>();
@@ -610,11 +592,7 @@ namespace Dev2.Core.Tests
                     s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(),
                         It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(),
                         It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
-
-
         }
-
-
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -681,35 +659,6 @@ namespace Dev2.Core.Tests
 
         #endregion workspaces
         #region Commands
-
-        [TestMethod]
-        public void DisplayAboutDialogueCommandExpectsWindowManagerShowingIDialogueViewModel()
-        {
-            CreateFullExportsAndVm();
-            WindowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
-            CustomContainer.Register(new DialogViewModelFactory() as IDialogViewModelFactory);
-            MainViewModel.DisplayAboutDialogueCommand.Execute(null);
-            WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
-        }
-
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("MainViewModel_AddLanguageHelpPageCommand")]
-        public void MainViewModel_AddLanguageHelpPageCommand_LanguageHelpActive()
-        {
-            CreateFullExportsAndVm();
-            //------------Execute Test---------------------------
-            MainViewModel.AddLanguageHelpPageCommand.Execute(null);
-
-            // Assert LanguageHelp is active
-            var languageHelpUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
-            var langHelpCtx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(langHelpCtx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
-            // ReSharper restore PossibleNullReferenceException
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

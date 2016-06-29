@@ -168,9 +168,9 @@ namespace Dev2.Activities.Specs.Permissions
         }
 
         [Then(@"resources should have ""(.*)""")]
-        public async void ThenResourcesShouldHave(string resourcePerms)
+        public void ThenResourcesShouldHave(string resourcePerms)
         {
-            var environmentModel = await LoadResources();
+            var environmentModel = LoadResources();
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
@@ -187,7 +187,7 @@ namespace Dev2.Activities.Specs.Permissions
             Assert.IsTrue(totalNumberOfResources - allMatch <= 1); //This is to cater for the scenerios where we specify a resource permission
         }
 
-        async Task<IEnvironmentModel> LoadResources()
+        IEnvironmentModel LoadResources()
         {
             var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
@@ -195,7 +195,7 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 if (!environmentModel.HasLoadedResources)
                 {
-                    await environmentModel.ForceLoadResourcesAsync();
+                    environmentModel.ForceLoadResources();
                 }
             }
             var resourceModels = environmentModel.ResourceRepository.All();
@@ -209,7 +209,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"resources should not have ""(.*)""")]
         public async void ThenResourcesShouldNotHave(string resourcePerms)
         {
-            var environmentModel = await LoadResources();
+            var environmentModel = LoadResources();
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
