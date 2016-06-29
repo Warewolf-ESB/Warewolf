@@ -236,7 +236,6 @@
     <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
     <Compile Include="Environments\TestEnvironmentModel.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
-    <Compile Include="EnvironmentTreeViewModelTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="MainViewModelBase.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
-    <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
     <Compile Include="ModelTests\ScalarItemModelTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
@@ -253,7 +251,6 @@
     <Compile Include="Network\ServerProxyWithFallbackTests.Specs.cs" />
     <Compile Include="Network\ServerProxyWithFallbackTests.UnitTests.cs" />
     <Compile Include="PopupControllerTests.cs" />
-    <Compile Include="Repositories\StudioResourceRepositoryTests.cs" />
     <Compile Include="Security\ClientSecurityServiceTests.cs" />
     <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Services\ServerServiceConfigurationTest.cs" />
@@ -490,12 +487,17 @@
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActivityDropView\" />
     <Folder Include="AppResources\Behaviors\" />
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Dock\" />
+    <Folder Include="Repositories\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />
     <Folder Include="Views\Global\" />

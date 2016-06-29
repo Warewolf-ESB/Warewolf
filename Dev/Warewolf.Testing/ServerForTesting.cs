@@ -79,6 +79,7 @@ namespace Warewolf.Testing
         public bool CanDeployTo => _canDeployTo;
 
         public bool CanDeployFrom => _canDeployFrom;
+        public IExplorerRepository ProxyLayer { get; }
 
         public IServer Clone()
         {

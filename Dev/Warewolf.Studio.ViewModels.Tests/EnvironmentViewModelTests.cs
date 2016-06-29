@@ -481,9 +481,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var explorerRepositoryMock = new Mock<IExplorerRepository>();
             _serverMock.Setup(a => a.ExplorerRepository).Returns(explorerRepositoryMock.Object);
-            _target.CanCreateDbSource = true;
-            _target.CanCreateDropboxSource = true;
-            _target.CanCreatePluginSource = true;
+            _target.CanCreateSource = true;
             _target.ShowContextMenu = true;
 
             //act
@@ -491,12 +489,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(_target.Children.Count,1);
-            Assert.IsTrue(_target.Children[0].CanCreateDbSource);
-            Assert.IsTrue(_target.Children[0].CanCreateDropboxSource);
-            Assert.IsTrue(_target.Children[0].CanCreatePluginSource);
+            Assert.IsTrue(_target.Children[0].CanCreateSource);
             Assert.IsTrue(_target.Children[0].ShowContextMenu);
-            Assert.IsFalse(_target.Children[0].CanCreateEmailSource);
-            Assert.IsFalse(_target.Children[0].CanCreateSharePointSource);
             Assert.IsFalse(_target.Children[0].CanDelete);
             Assert.IsFalse(_target.Children[0].CanCreateFolder);
             Assert.IsFalse(_target.Children[0].CanShowVersions);
@@ -528,15 +522,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.AllowResourceCheck, folder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, folder.IsResourceChecked);
             Assert.AreEqual(_target.CanCreateFolder, folder.CanCreateFolder);
-            Assert.AreEqual(_target.CanCreateDbSource, folder.CanCreateDbSource);
+            Assert.AreEqual(_target.CanCreateSource, folder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, folder.CanShowVersions);
             Assert.IsTrue(folder.CanRename);
-            Assert.AreEqual(_target.CanCreatePluginSource, folder.CanCreatePluginSource);
-            Assert.AreEqual(_target.CanCreateEmailSource, folder.CanCreateEmailSource);
-            Assert.AreEqual(_target.CanCreateDropboxSource, folder.CanCreateDropboxSource);
-            Assert.AreEqual(_target.CanCreateSharePointSource, folder.CanCreateSharePointSource);
-            Assert.AreEqual(_target.CanCreateServerSource, folder.CanCreateServerSource);
-            Assert.AreEqual(_target.CanCreateWebSource, folder.CanCreateWebSource);
             Assert.AreEqual(_target.CanDeploy, folder.CanDeploy);
             Assert.AreEqual(_target.CanCreateWorkflowService, folder.CanCreateWorkflowService);
             Assert.AreEqual(_target.ShowContextMenu, folder.ShowContextMenu);
@@ -569,13 +557,7 @@ namespace Warewolf.Studio.ViewModels.Tests
            
             Assert.IsFalse(folder.AllowResourceCheck);
             Assert.IsFalse(folder.IsResourceChecked.HasValue && folder.IsResourceChecked.Value);
-            Assert.IsFalse(folder.CanCreateDbSource);
-            Assert.IsFalse(folder.CanCreateDropboxSource);
-            Assert.IsFalse(folder.CanCreateEmailSource);
-            Assert.IsFalse(folder.CanCreateServerSource);
-            Assert.IsFalse(folder.CanCreateSharePointSource);
-            Assert.IsFalse(folder.CanCreatePluginSource);
-            Assert.IsFalse(folder.CanCreateWebSource);
+            Assert.IsFalse(folder.CanCreateSource);
             Assert.IsFalse(folder.CanCreateWorkflowService);
             Assert.IsFalse(folder.ShowContextMenu);
             Assert.IsFalse(folder.CanDeploy);
@@ -602,14 +584,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(_target.AllowResourceCheck);
             Assert.IsFalse(_target.IsResourceChecked ?? true);
-            Assert.IsTrue(_target.CanCreateDbSource);
+            Assert.IsTrue(_target.CanCreateSource);
             Assert.IsTrue(_target.CanCreateFolder);
-            Assert.IsTrue(_target.CanCreatePluginSource);
-            Assert.IsTrue(_target.CanCreateEmailSource);
-            Assert.IsTrue(_target.CanCreateDropboxSource); 
-            Assert.IsTrue(_target.CanCreateSharePointSource);
-            Assert.IsTrue(_target.CanCreateServerSource);
-            Assert.IsTrue(_target.CanCreateWebSource);
             Assert.IsFalse(_target.CanDelete);
             Assert.IsFalse(_target.CanDeploy);
             Assert.IsFalse(_target.CanRename);
@@ -631,13 +607,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(_target.AllowResourceCheck);
             Assert.IsFalse(_target.IsResourceChecked ?? true);
-            Assert.IsFalse(_target.CanCreateDbSource);
-            Assert.IsFalse(_target.CanCreateDropboxSource);
-            Assert.IsFalse(_target.CanCreateEmailSource);
-            Assert.IsFalse(_target.CanCreateServerSource);
-            Assert.IsFalse(_target.CanCreateSharePointSource);
-            Assert.IsFalse(_target.CanCreatePluginSource);
-            Assert.IsFalse(_target.CanCreateWebSource);
+            Assert.IsFalse(_target.CanCreateSource);
             Assert.IsFalse(_target.CanCreateWorkflowService);
             Assert.IsFalse(_target.ShowContextMenu);
             Assert.IsFalse(_target.CanDeploy);

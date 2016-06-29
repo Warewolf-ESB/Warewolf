@@ -10,7 +10,7 @@ namespace Warewolf.Studio.ViewModels
     {
         readonly Guid _selectedId;
 
-        public SingleEnvironmentExplorerViewModel(IEnvironmentViewModel environmentViewModel,Guid selectedId, bool filterByType)
+        public SingleEnvironmentExplorerViewModel(IEnvironmentViewModel environmentViewModel, Guid selectedId, bool filterByType)
         {
             _selectedId = selectedId;
             environmentViewModel.SetPropertiesForDialog();
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels
                 if (model.IsConnected)
                 {
                     await model.LoadDialog(_selectedId);
-                    if(!string.IsNullOrEmpty(SearchText))
+                    if (!string.IsNullOrEmpty(SearchText))
                     {
                         if (FilterByType)
                         {

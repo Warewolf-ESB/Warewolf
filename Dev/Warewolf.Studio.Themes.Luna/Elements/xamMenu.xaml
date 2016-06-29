@@ -14,6 +14,7 @@
         <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
         <luna:SharedResourceDictionary Source="../Elements/CheckBox.xaml" />
         <luna:SharedResourceDictionary Source="../Elements/ScrollBar.xaml" />
+        <luna:SharedResourceDictionary Source="../Images.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!--  ********************************** BRUSHES **********************************  -->
@@ -397,4 +398,56 @@
 
     </Style>
     <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="igMenu:XamMenuItem" />
+
+
+    <Style TargetType="Image" x:Key="NewDataBaseSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource MicrosoftSQLSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewServiceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource Explorer-WorkflowService}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewServerSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource System-Logo-Create}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewWebSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource WebMethodsSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewPluginSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource DotNetDllSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewEmailSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource EmailSourceImageLogo}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewRabbitMqSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource RabbitMqSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewDropboxSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource DropboxSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="NewSharepointSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource SharepointSource}"/>
+    </Style>
+    <Style TargetType="Image" x:Key="ShowHideVersionsIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource Explorer-Permission-Menu}"/>
+    </Style>
 </ResourceDictionary>
