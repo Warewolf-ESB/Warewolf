@@ -4750,6 +4750,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Folder.
+        /// </summary>
+        public static string NewFolderLabel {
+            get {
+                return ResourceManager.GetString("NewFolderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New RabbitMQ Source.
         /// </summary>
         public static string NewRabbitMQSourceHelp {

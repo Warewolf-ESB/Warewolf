@@ -99,10 +99,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedItem = value;
 
                     OnPropertyChanged(() => SelectedItem);
-                    if (SelectedItemChanged != null)
-                    {
-                        SelectedItemChanged(this, _selectedItem);
-                    }
+                    SelectedItemChanged?.Invoke(this, _selectedItem);
                 }
             }
         }
@@ -236,14 +233,11 @@ namespace Warewolf.Studio.ViewModels
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        public ICommand ClearSearchTextCommand { get; private set; }
-        public ICommand CreateFolderCommand { get; private set; }
+        public ICommand ClearSearchTextCommand { get; }
+        public ICommand CreateFolderCommand { get; }
         public bool AllowDrag
         {
             get
@@ -298,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (shellViewModel == null)
             {
-                throw new ArgumentNullException("shellViewModel");
+                throw new ArgumentNullException(nameof(shellViewModel));
             }
             var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer, shellViewModel);
             _shellViewModel = shellViewModel;
@@ -356,10 +350,7 @@ namespace Warewolf.Studio.ViewModels
                 ConnectControlViewModel.IsLoading = false;
             }
             var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
-            if (env != null)
-            {
-                env.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
-            }
+            env?.SetPropertiesForDialogFromPermissions(env.Server.Permissions[0]);
         }
 
         public bool IsDeploy { get; set; }
@@ -417,7 +408,7 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
-            if (server != null && server.UpdateRepository != null)
+            if (server?.UpdateRepository != null)
             {
                 server.UpdateRepository.ItemSaved += Refresh;
             }

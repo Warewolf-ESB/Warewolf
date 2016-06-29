@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Network;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
@@ -64,7 +63,7 @@ namespace Dev2.Core.Tests.Environments
         {
             var connection = CreateConnection();
             // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentModel(Guid.NewGuid(), connection.Object, null, new Mock<IStudioResourceRepository>().Object);
+            new EnvironmentModel(Guid.NewGuid(), connection.Object, null);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -73,7 +72,7 @@ namespace Dev2.Core.Tests.Environments
         {
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object);
 
             Assert.IsNotNull(env.Connection);
             Assert.IsNotNull(env.ResourceRepository);
@@ -89,7 +88,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Setup for test--------------------------
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object);
             const string expectedDisplayName = "localhost (http://localhost:3142/)";
             //------------Execute Test---------------------------
             string displayName = env.DisplayName;
@@ -266,7 +265,7 @@ namespace Dev2.Core.Tests.Environments
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
             var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(Guid.NewGuid(), environmentConnection.Object, repo.Object, new Mock<IStudioResourceRepository>().Object);
+            var envModel = new EnvironmentModel(Guid.NewGuid(), environmentConnection.Object, repo.Object);
 
             envModel.IsConnectedChanged += (sender, args) => Assert.AreEqual(toState == NetworkState.Online, args.IsConnected);
 
@@ -283,7 +282,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
             Assert.IsTrue(env.CanStudioExecute);
 
@@ -302,7 +301,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
             Assert.IsTrue(env.CanStudioExecute);
 
@@ -321,7 +320,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object, new Mock<IStudioResourceRepository>().Object) { CanStudioExecute = false };
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = false };
 
             env.LoadResources();
 
@@ -340,7 +339,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object, new Mock<IStudioResourceRepository>().Object) { CanStudioExecute = true };
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = true };
 
             env.LoadResources();
             Assert.IsTrue(env.HasLoadedResources);
@@ -360,7 +359,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object, new Mock<IStudioResourceRepository>().Object) { CanStudioExecute = false };
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = false };
 
             env.LoadResources();
             Assert.IsFalse(env.HasLoadedResources);
@@ -379,7 +378,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
             env.ResourcesLoaded += (sender, args) => Assert.AreEqual(args.Model, env);
             env.CanStudioExecute = false;
 
@@ -421,7 +420,7 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
 
             //------------Execute Test---------------------------
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object);
             connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             //------------Assert Results-------------------------
             Assert.IsNotNull(env.AuthorizationService);
@@ -639,8 +638,6 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentTreeViewModel_PermissionsChanged_MemoIDEqualsEnvironmentServerId_UserPermissionChanges()
         {
             //------------Setup for test--------------------------
-
-
             var resourceID = Guid.NewGuid();
             //var connectionServerId = Guid.NewGuid();
             var memoServerID = Guid.NewGuid();
@@ -655,15 +652,9 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
             connection.SetupGet(c => c.ServerID).Returns(memoServerID);
 
-            var srepo = new Mock<IStudioResourceRepository>();
-            var repo = new Mock<IResourceRepository>();
-#pragma warning disable 168
-            var environment = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, srepo.Object) { Name = "localhost" };
-#pragma warning restore 168
             connection.Setup(a => a.DisplayName).Returns("localhost");
             //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);
-            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(), true), Times.Never());
         }
         [TestMethod]
         [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
@@ -671,10 +662,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentTreeViewModel_PermissionsChanged_MemoIDEqualsEnvironmentServerId_UserPermissionChangesNonLocalHost()
         {
             //------------Setup for test--------------------------
-
-
             var resourceID = Guid.NewGuid();
-            //var connectionServerId = Guid.NewGuid();
             var memoServerID = Guid.NewGuid();
 
             var pubMemo = new PermissionsModifiedMemo { ServerID = memoServerID };
@@ -687,29 +675,10 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
             connection.SetupGet(c => c.ServerID).Returns(memoServerID);
 
-            var srepo = new Mock<IStudioResourceRepository>();
-            var repo = new Mock<IResourceRepository>();
-#pragma warning disable 168
-            var environment = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, srepo.Object) { Name = "localhost" };
             connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
-#pragma warning restore 168
             connection.Setup(a => a.DisplayName).Returns("bob");
             //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);
-            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(), true), Times.Never());
-        }
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        [TestCategory("EnvironmentTreeViewModel_CTOR")]
-        [Owner("Leon Rajindrasomething")]
-        public void EnvironmentTreeViewModel_CTOR_NullStudioRep()
-        {
-
-            var repo = new Mock<IResourceRepository>();
-            var connection = new Mock<IEnvironmentConnection>();
-            // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, null);
-            // ReSharper restore ObjectCreationAsStatement
-
         }
 
         static Mock<IEnvironmentConnection> CreateConnection()
@@ -725,7 +694,7 @@ namespace Dev2.Core.Tests.Environments
         {
             var repo = new Mock<IResourceRepository>();
 
-            return new EnvironmentModel(id, connection, repo.Object, new Mock<IStudioResourceRepository>().Object);
+            return new EnvironmentModel(id, connection, repo.Object);
         }
 
         public static IEnvironmentModel CreateEqualityEnvironmentModel(Guid resourceID, string resourceName, Guid serverID, string serverUri)

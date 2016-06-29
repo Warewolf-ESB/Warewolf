@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Versioning;
 
@@ -29,5 +30,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <param name="versionNumber">the version to delete</param>
         /// <returns></returns>
         IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber);
+
+        StringBuilder GetVersion(IVersionInfo versionInfo);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
@@ -33,6 +34,24 @@ namespace Warewolf.Studio.ServerProxyLayer
             var items = controller.ExecuteCommand<IList<IExplorerItem>>(_connection, workSpaceId);
             return items;
         }
+
+
+        public StringBuilder GetVersion(IVersionInfo versionInfo)
+        {
+            var workSpaceId = Guid.NewGuid();
+            var controller = CommunicationControllerFactory.CreateController("GetVersion");
+            var serializer = new Dev2JsonSerializer();
+            controller.AddPayloadArgument("versionInfo", serializer.SerializeToBuilder(versionInfo).ToString());
+            var executeMessage = controller.ExecuteCommand<ExecuteMessage>(_connection, workSpaceId);
+
+            if (executeMessage == null || executeMessage.HasError)
+            {
+                return null;
+            }
+
+            return executeMessage.Message;
+        }
+
 
         /// <summary>
         /// rollback to a specific version 

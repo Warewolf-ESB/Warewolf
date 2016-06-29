@@ -27,7 +27,6 @@ using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
-using Dev2.AppResources.Repositories;
 using Dev2.Collections;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -41,7 +40,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Diagnostics.Debug;
 using Dev2.Factory;
 using Dev2.Messages;
-using Dev2.Models;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -62,6 +60,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Studio.ViewModels;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Workflows
@@ -1561,11 +1560,7 @@ namespace Dev2.Core.Tests.Workflows
             crm.Setup(r => r.ResourceName).Returns("Test");
             crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
             //, new Mock<IWizardEngine>().Object
-            var explorerItem = new ExplorerItemModel();
             IContextualResourceModel contextualResourceModel = crm.Object;
-            explorerItem.DisplayName = contextualResourceModel.ResourceName;
-            explorerItem.EnvironmentId = contextualResourceModel.Environment.ID;
-
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -1603,7 +1598,6 @@ namespace Dev2.Core.Tests.Workflows
 
             //Execute
             var wfd = new WorkflowDesignerViewModelMock(contextualResourceModel, wh.Object, new Mock<IExternalProcessExecutor>().Object);
-            wfd.SetDataObject(explorerItem);
             wfd.TestModelServiceModelChanged(args.Object);
 
             wfd.Dispose();
@@ -1680,7 +1674,7 @@ namespace Dev2.Core.Tests.Workflows
             var eventAggregator = new Mock<IEventAggregator>();
             var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
             wd.SetActiveEnvironment(env.Object);
-            wd.SetDataObject(new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object));
+            wd.SetDataObject(new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object));
 
             // Execute unit
             wd.TestModelServiceModelChanged(eventArgs.Object);

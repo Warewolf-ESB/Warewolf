@@ -462,15 +462,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.IsResourceChecked = true;
             _target.IsFolderChecked = true;
             _target.CanCreateFolder = true;
-            _target.CanCreateDbSource = true;
+            _target.CanCreateSource = true;
             _target.CanShowVersions = true;
             _target.CanRename = true;
-            _target.CanCreatePluginSource = true;
-            _target.CanCreateEmailSource = true;
-            _target.CanCreateDropboxSource = true;
-            _target.CanCreateSharePointSource = true;
-            _target.CanCreateServerSource = true;
-            _target.CanCreateWebSource = true;
             _target.CanDeploy = true;
             _target.CanShowDependencies = true;
             _target.ResourcePath = Guid.NewGuid().ToString();
@@ -491,16 +485,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
-            Assert.AreEqual(_target.CanCreateDbSource, createdFolder.CanCreateDbSource);
+            Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
             Assert.AreEqual(_target.CanRename, createdFolder.CanRename);
             Assert.AreEqual(_target.CanRollback, createdFolder.CanRollback);
-            Assert.AreEqual(_target.CanCreatePluginSource, createdFolder.CanCreatePluginSource);
-            Assert.AreEqual(_target.CanCreateEmailSource, createdFolder.CanCreateEmailSource);
-            Assert.AreEqual(_target.CanCreateDropboxSource, createdFolder.CanCreateDropboxSource);
-            Assert.AreEqual(_target.CanCreateSharePointSource, createdFolder.CanCreateSharePointSource);
-            Assert.AreEqual(_target.CanCreateServerSource, createdFolder.CanCreateServerSource);
-            Assert.AreEqual(_target.CanCreateWebSource, createdFolder.CanCreateWebSource);
             Assert.AreEqual(_target.CanDeploy, createdFolder.CanDeploy);
             Assert.AreEqual(_target.CanShowDependencies, createdFolder.CanShowDependencies);
             Assert.AreEqual(_target.ResourcePath + "\\" + createdFolder.ResourceName, createdFolder.ResourcePath);
@@ -780,12 +768,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(version.CanEdit);
             Assert.IsFalse(version.CanCreateWorkflowService);
             Assert.IsTrue(version.ShowContextMenu);
-            Assert.IsFalse(version.CanCreatePluginSource);
-            Assert.IsFalse(version.CanCreateEmailSource);
-            Assert.IsFalse(version.CanCreateDropboxSource);
-            Assert.IsFalse(version.CanCreateSharePointSource);
-            Assert.IsFalse(version.CanCreateDbSource);
-            Assert.IsFalse(version.CanCreateWebSource);
+            Assert.IsFalse(version.CanCreateSource);
             Assert.IsFalse(version.AllowResourceCheck);
             Assert.IsTrue(version.IsResourceChecked.HasValue && !version.IsResourceChecked.Value);
             Assert.AreEqual(_target.CanDelete, version.CanDelete);
@@ -793,19 +776,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsExpanded);
             Assert.IsTrue(isAreVersionsVisibleChanged);
             Assert.IsTrue(isChildrenChanged);
-        }
-
-        [TestMethod]
-        public void TestAllowEditing()
-        {
-            //arrange
-            var isAllowEditing = false;
-            _target.PropertyChanged +=
-                (sender, e) => isAllowEditing = isAllowEditing || e.PropertyName == "AllowEditing";
-            //act
-            _target.AllowEditing = true;
-            //assert
-            Assert.IsTrue(_target.AllowEditing);
         }
 
         [TestMethod]
@@ -858,18 +828,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var isRenamingFired = false;
-            var isNotRenamingFired = false;
             _target.PropertyChanged += (sender, e) =>
             {
                 isRenamingFired = isRenamingFired || e.PropertyName == "IsRenaming";
-                isNotRenamingFired = isNotRenamingFired || e.PropertyName == "IsNotRenaming";
             };
             //act
             _target.IsRenaming = true;
             //assert
             Assert.IsTrue(isRenamingFired);
-            Assert.IsTrue(isNotRenamingFired);
-            Assert.IsFalse(_target.IsNotRenaming);
             Assert.IsTrue(_target.IsRenaming);
         }
 
@@ -1178,15 +1144,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.IsResourceChecked = true;
             _target.IsFolderChecked = true;
             _target.CanCreateFolder = true;
-            _target.CanCreateDbSource = true;
+            _target.CanCreateSource = true;
             _target.CanShowVersions = true;
             _target.CanRename = true;
-            _target.CanCreatePluginSource = true;
-            _target.CanCreateEmailSource = true;
-            _target.CanCreateDropboxSource = true;
-            _target.CanCreateSharePointSource = true;
-            _target.CanCreateServerSource = true;
-            _target.CanCreateWebSource = true;
             _target.CanDeploy = true;
             _target.CanShowDependencies = true;
             _target.ResourcePath = Guid.NewGuid().ToString();
@@ -1206,16 +1166,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
-            Assert.AreEqual(_target.CanCreateDbSource, createdFolder.CanCreateDbSource);
+            Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, createdFolder.CanShowVersions);
             Assert.AreEqual(_target.CanRename, createdFolder.CanRename);
             Assert.AreEqual(_target.CanRollback, createdFolder.CanRollback);
-            Assert.AreEqual(_target.CanCreatePluginSource, createdFolder.CanCreatePluginSource);
-            Assert.AreEqual(_target.CanCreateEmailSource, createdFolder.CanCreateEmailSource);
-            Assert.AreEqual(_target.CanCreateDropboxSource, createdFolder.CanCreateDropboxSource);
-            Assert.AreEqual(_target.CanCreateSharePointSource, createdFolder.CanCreateSharePointSource);
-            Assert.AreEqual(_target.CanCreateServerSource, createdFolder.CanCreateServerSource);
-            Assert.AreEqual(_target.CanCreateWebSource, createdFolder.CanCreateWebSource);
             Assert.AreEqual(_target.CanDeploy, createdFolder.CanDeploy);
             Assert.AreEqual(_target.CanShowDependencies, createdFolder.CanShowDependencies);
             Assert.AreEqual(_target.ResourcePath + "\\" + createdFolder.ResourceName, createdFolder.ResourcePath);
@@ -1259,43 +1213,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(actionRun);
             child.Verify(it => it.Apply(action));
-        }
-
-        [TestMethod]
-        public void TestFindNull()
-        {
-            //arrange
-            //act
-            var found = _target.Find(Guid.NewGuid().ToString());
-            //assert
-            Assert.IsNull(found);
-        }
-
-        [TestMethod]
-        public void TestFindThis()
-        {
-            //arrange
-            _target.ResourceName = Guid.NewGuid().ToString();
-            //act
-            var found = _target.Find(_target.ResourceName);
-            //assert
-            Assert.AreSame(_target, found);
-        }
-
-        [TestMethod]
-        public void TestFindChild()
-        {
-            //arrange
-            _target.ResourceName = Guid.NewGuid().ToString();
-            var childName = Guid.NewGuid().ToString();
-            var resPath = "\\" + childName;
-            var child = new Mock<IExplorerItemViewModel>();
-            child.Setup(it => it.Find(childName)).Returns(child.Object);
-            _target.Children.Add(child.Object);
-            //act
-            var found = _target.Find(resPath);
-            //assert
-            Assert.AreSame(child.Object, found);
         }
 
         [TestMethod]
@@ -1397,13 +1314,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanDeploy);
             Assert.IsTrue(_target.CanShowVersions);
             Assert.IsTrue(_target.CanCreateWorkflowService);
-            Assert.IsTrue(_target.CanCreateDbSource);
-            Assert.IsTrue(_target.CanCreatePluginSource);
-            Assert.IsTrue(_target.CanCreateEmailSource);
-            Assert.IsTrue(_target.CanCreateDropboxSource);
-            Assert.IsTrue(_target.CanCreateSharePointSource);
-            Assert.IsTrue(_target.CanCreateServerSource);
-            Assert.IsTrue(_target.CanCreateWebSource);
+            Assert.IsTrue(_target.CanCreateSource);
         }
 
         [TestMethod]
@@ -1433,13 +1344,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanDeploy);
             Assert.IsTrue(_target.CanShowVersions);
             Assert.IsTrue(_target.CanCreateWorkflowService);
-            Assert.IsTrue(_target.CanCreateDbSource);
-            Assert.IsTrue(_target.CanCreatePluginSource);
-            Assert.IsTrue(_target.CanCreateEmailSource);
-            Assert.IsTrue(_target.CanCreateDropboxSource);
-            Assert.IsTrue(_target.CanCreateSharePointSource);
-            Assert.IsTrue(_target.CanCreateServerSource);
-            Assert.IsTrue(_target.CanCreateWebSource);
+            Assert.IsTrue(_target.CanCreateSource);
         }
 
         [TestMethod]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
@@ -29,11 +30,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             if (controllerFactory == null)
             {
-                throw new ArgumentNullException("controllerFactory");
+                throw new ArgumentNullException(nameof(controllerFactory));
             }
             if (environmentConnection == null)
             {
-                throw new ArgumentNullException("environmentConnection");
+                throw new ArgumentNullException(nameof(environmentConnection));
             }
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
             UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory, environmentConnection);
@@ -47,7 +48,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ExplorerItems = explorerItems;
             return explorerItems;
         }
-        public AdminManagerProxy AdminManagerProxy { get; set; }
+        public IAdminManager AdminManagerProxy { get; set; }
         public IExplorerItem ExplorerItems { get; set; }
         public Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
         public IQueryManager QueryManagerProxy { get; set; }
@@ -148,6 +149,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 return false;
             }
             return true;
+        }
+
+
+        public StringBuilder GetVersion(IVersionInfo versionInfo)
+        {
+            return VersionManager.GetVersion(versionInfo);
         }
 
         public ICollection<IVersionInfo> GetVersions(Guid id)
