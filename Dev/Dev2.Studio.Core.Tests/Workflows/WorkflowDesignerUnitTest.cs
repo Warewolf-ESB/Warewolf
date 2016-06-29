@@ -16,7 +16,6 @@ using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -68,7 +67,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Core.Tests.Workflows
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {
 

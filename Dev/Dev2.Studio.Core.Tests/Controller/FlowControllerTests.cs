@@ -7,304 +7,302 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-//todo: make sure that this 
-//using System.Activities.Presentation.Model;
-//using System.Activities.Statements;
-//using System.Collections.Generic;
-//using System.Diagnostics.CodeAnalysis;
-//using System.Text;
-//using Dev2.Common.Interfaces.Studio.Controller;
-//using Dev2.Core.Tests.Environments;
-//using Dev2.Studio.Controller;
-//using Dev2.Studio.Core.Interfaces;
-//using Dev2.Studio.Core.Messages;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Moq;
-//using Moq.Protected;
-//using Unlimited.Applications.BusinessDesignStudio.Activities;
-
-//namespace Dev2.Core.Tests
-//{
-//    [TestClass]
-//    [ExcludeFromCodeCoverage]
-//    public class FlowControllerTests
-//    {
-    //    [TestMethod]
-    //    [TestCategory("FlowController_UnitTest")]
-    //    [Description("Handling a configure decision expression message with isnew false will display the decision wizard")]
-    //    [Owner("Ashley Lewis")]
-    //    // ReSharper disable InconsistentNaming
-    //    public void FlowController_HandleConfigureDecisionExpressionMessageAndIsNewFalse_WizardShown()
-    //    // ReSharper restore InconsistentNaming
-    //    {
-    //        #region setup first Mock ModelItem
 
-    //        var env = EnviromentRepositoryTest.CreateMockEnvironment();
+using System.Activities.Presentation.Model;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Text;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Core.Tests.Environments;
+using Dev2.Studio.Controller;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Moq.Protected;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-    //        var properties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var propertyCollection = new Mock<ModelPropertyCollection>();
-    //        var testAct = new DsfFlowDecisionActivity { ExpressionText = "Not Null Test Value" };
+namespace Dev2.Core.Tests
+{
+    [TestClass]
+    public class FlowControllerTests
+    {
+        [TestMethod]
+        [TestCategory("FlowController_UnitTest")]
+        [Description("Handling a configure decision expression message with isnew false will display the decision wizard")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void FlowController_HandleConfigureDecisionExpressionMessageAndIsNewFalse_WizardShown()
+        // ReSharper restore InconsistentNaming
+        {
+            #region setup first Mock ModelItem
 
-    //        var prop = new Mock<ModelProperty>();
-    //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.AddMode("Condition", prop);
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
 
-    //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = new DsfFlowDecisionActivity { ExpressionText = "Not Null Test Value" };
 
-    //        var source = new Mock<ModelItem>();
-    //        source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Condition", prop);
 
-    //        #endregion
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
 
-    //        #region setup decision Mock ModelItem
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-    //        var crmDecision = new Mock<IContextualResourceModel>();
-    //        crmDecision.Setup(r => r.Environment).Returns(env.Object);
-    //        crmDecision.Setup(r => r.ResourceName).Returns("Test");
-    //        crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+            #endregion
 
-    //        var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
+            #region setup decision Mock ModelItem
 
-    //        var decisionProp = new Mock<ModelProperty>();
-    //        decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-    //        decisionProperties.AddMode("Condition", decisionProp);
+            var crmDecision = new Mock<IContextualResourceModel>();
+            crmDecision.Setup(r => r.Environment).Returns(env.Object);
+            crmDecision.Setup(r => r.ResourceName).Returns("Test");
+            crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
-    //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
+            var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
+            var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
 
-    //        var decisionModelItem = new Mock<ModelItem>();
-    //        decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
-    //        decisionModelItem.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
+            var decisionProp = new Mock<ModelProperty>();
+            decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
+            decisionProperties.Add("Condition", decisionProp);
 
-    //        prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
+            decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
 
-    //        #endregion
+            var decisionModelItem = new Mock<ModelItem>();
+            decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
+            decisionModelItem.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
 
-    //        #region setup Environment Model
+            prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
 
-    //        env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+            #endregion
 
-    //        #endregion
+            #region setup Environment Model
 
-    //        #region setup Start Decision Wizard
+            env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
-    //        var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
-    //        flowController.Protected().Setup("StartDecisionWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
+            #endregion
 
-    //        #endregion
+            #region setup Start Decision Wizard
 
-    //        flowController.Object.Handle(new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
+            var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
+            flowController.Protected().Setup("StartDecisionWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
 
-    //        flowController.Protected().Verify("StartDecisionWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
-    //    }
+            #endregion
 
-    //    [TestMethod]
-    //    [TestCategory("FlowController_UnitTest")]
-    //    [Description("Handling a configure switch expression message with isnew false will display the switch wizard")]
-    //    [Owner("Ashley Lewis")]
-    //    // ReSharper disable InconsistentNaming
-    //    public void FlowController_HandleConfigureSwitchExpressionMessageAndIsNewFalse_WizardShown()
-    //    // ReSharper restore InconsistentNaming
-    //    {
-    //        #region setup first Mock ModelItem
+            flowController.Object.Handle(new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
 
-    //        var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            flowController.Protected().Verify("StartDecisionWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
+        }
 
-    //        var crm = new Mock<IContextualResourceModel>();
-    //        crm.Setup(r => r.Environment).Returns(env.Object);
-    //        crm.Setup(r => r.ResourceName).Returns("Test");
-    //        crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+        [TestMethod]
+        [TestCategory("FlowController_UnitTest")]
+        [Description("Handling a configure switch expression message with isnew false will display the switch wizard")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void FlowController_HandleConfigureSwitchExpressionMessageAndIsNewFalse_WizardShown()
+        // ReSharper restore InconsistentNaming
+        {
+            #region setup first Mock ModelItem
 
-    //        var properties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var propertyCollection = new Mock<ModelPropertyCollection>();
-    //        var testAct = new DsfFlowSwitchActivity { ExpressionText = "Not Null Test Value" };
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
 
-    //        var prop = new Mock<ModelProperty>();
-    //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.AddMode("Expression", prop);
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
-    //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = new DsfFlowSwitchActivity { ExpressionText = "Not Null Test Value" };
 
-    //        var source = new Mock<ModelItem>();
-    //        source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Expression", prop);
 
-    //        #endregion
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
 
-    //        #region setup switch Mock ModelItem
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-    //        var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
+            #endregion
 
-    //        var decisionProp = new Mock<ModelProperty>();
-    //        decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-    //        decisionProperties.AddMode("ExpressionText", decisionProp);
+            #region setup switch Mock ModelItem
 
-    //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
+            var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
+            var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
 
-    //        var decisionModelItem = new Mock<ModelItem>();
-    //        decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
+            var decisionProp = new Mock<ModelProperty>();
+            decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
+            decisionProperties.Add("ExpressionText", decisionProp);
 
-    //        prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
+            decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
 
-    //        #endregion
+            var decisionModelItem = new Mock<ModelItem>();
+            decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
 
-    //        #region setup Environment Model
+            prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
 
-    //        env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+            #endregion
 
-    //        #endregion
+            #region setup Environment Model
 
-    //        #region setup Start Decision Wizard
+            env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
-    //        var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
-    //        flowController.Protected().Setup("StartSwitchDropWizard", ItExpr.IsAny<ModelItem>()).Verifiable();
+            #endregion
 
-    //        #endregion
+            #region setup Start Decision Wizard
 
-    //        flowController.Object.Handle(new ConfigureSwitchExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
+            var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
+            flowController.Protected().Setup("StartSwitchDropWizard", ItExpr.IsAny<ModelItem>()).Verifiable();
 
-    //        flowController.Protected().Verify("StartSwitchDropWizard", Times.Once(), ItExpr.IsAny<ModelItem>());
-    //    }
+            #endregion
 
+            flowController.Object.Handle(new ConfigureSwitchExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
 
-      
+            flowController.Protected().Verify("StartSwitchDropWizard", Times.Once(), ItExpr.IsAny<ModelItem>());
+        }
 
 
-    //    [TestMethod]
-    //    [TestCategory("FlowController_UnitTest")]
-    //    [Description("Handling a configure switch new expression message with isnew true")]
-    //    [Owner("Robin van den Heever")]
-    //    // ReSharper disable InconsistentNaming
-    //    public void FlowController_HandleConfigureSwitchExpressionMessageAndIsNewTrue()
-    //    // ReSharper restore InconsistentNaming
-    //    {
-    //        #region setup first Mock ModelItem
 
-    //        var env = EnviromentRepositoryTest.CreateMockEnvironment();
 
-    //        var crm = new Mock<IContextualResourceModel>();
-    //        crm.Setup(r => r.Environment).Returns(env.Object);
-    //        crm.Setup(r => r.ResourceName).Returns("Test");
-    //        crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
-    //        var properties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var propertyCollection = new Mock<ModelPropertyCollection>();
-    //        var testAct = new DsfFlowSwitchActivity { ExpressionText = "Not Null Test Value" };
+        [TestMethod]
+        [TestCategory("FlowController_UnitTest")]
+        [Description("Handling a configure switch new expression message with isnew true")]
+        [Owner("Robin van den Heever")]
+        // ReSharper disable InconsistentNaming
+        public void FlowController_HandleConfigureSwitchExpressionMessageAndIsNewTrue()
+        // ReSharper restore InconsistentNaming
+        {
+            #region setup first Mock ModelItem
 
-    //        var prop = new Mock<ModelProperty>();
-    //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.AddMode("Expression", prop);
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
 
-    //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
-    //        var source = new Mock<ModelItem>();
-    //        source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = new DsfFlowSwitchActivity { ExpressionText = "Not Null Test Value" };
 
-    //        var returnModelItem = new Mock<ModelItem>();
-    //        returnModelItem.Setup(item => item.GetCurrentValue()).Returns("[[Var1]]");
-    //        returnModelItem.Setup(item => item.ToString()).Returns("[[Var1]]");
-    //        #endregion
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Expression", prop);
 
-    //        #region setup switch Mock ModelItem
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
 
-    //        var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-    //        var decisionProp = new Mock<ModelProperty>();
-    //        decisionProp.Setup(p => p.ComputedValue).Returns("[[Var]]");
-    //        decisionProp.Setup(p => p.Value).Returns(returnModelItem.Object);
-    //        decisionProperties.AddMode("ExpressionText", decisionProp);
+            var returnModelItem = new Mock<ModelItem>();
+            returnModelItem.Setup(item => item.GetCurrentValue()).Returns("[[Var1]]");
+            returnModelItem.Setup(item => item.ToString()).Returns("[[Var1]]");
+            #endregion
 
-    //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
+            #region setup switch Mock ModelItem
 
-    //        var decisionModelItem = new Mock<ModelItem>();
-    //        decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
+            var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
+            var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
 
-    //        prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
+            var decisionProp = new Mock<ModelProperty>();
+            decisionProp.Setup(p => p.ComputedValue).Returns("[[Var]]");
+            decisionProp.Setup(p => p.Value).Returns(returnModelItem.Object);
+            decisionProperties.Add("ExpressionText", decisionProp);
 
-    //        #endregion
+            decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
 
-    //        #region setup Environment Model
+            var decisionModelItem = new Mock<ModelItem>();
+            decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
 
-    //        env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+            prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
 
-    //        #endregion
+            #endregion
 
-    //        #region setup Start Decision Wizard
+            #region setup Environment Model
 
-    //        var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
-    //        flowController.Protected().Setup("StartSwitchDropWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
+            env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
-    //        #endregion
-            
-    //        flowController.Object.Handle(new ConfigureSwitchExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
+            #endregion
 
-    //        flowController.Protected().Verify("StartSwitchDropWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
-    //    }
+            #region setup Start Decision Wizard
 
+            var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
+            flowController.Protected().Setup("StartSwitchDropWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
 
+            #endregion
 
-    //    [TestMethod]
-    //    [TestCategory("FlowController_UnitTest")]
-    //    [Description("Handling a configure decision expression message with isnew true will not display the decision wizard")]
-    //    [Owner("Ashley Lewis")]
-    //    // ReSharper disable InconsistentNaming
-    //    public void FlowController_HandleConfigureDecisionExpressionMessageAndIsNewTrue_WizardNotShown()
-    //    // ReSharper restore InconsistentNaming
-    //    {
-    //        #region setup first Mock ModelItem
+            flowController.Object.Handle(new ConfigureSwitchExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
 
-    //        var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            flowController.Protected().Verify("StartSwitchDropWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
+        }
 
-    //        var properties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var propertyCollection = new Mock<ModelPropertyCollection>();
-    //        var testAct = new DsfFlowDecisionActivity { ExpressionText = "Not Null Test Value" };
 
-    //        var prop = new Mock<ModelProperty>();
-    //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.AddMode("Condition", prop);
 
-    //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
+        [TestMethod]
+        [TestCategory("FlowController_UnitTest")]
+        [Description("Handling a configure decision expression message with isnew true will not display the decision wizard")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void FlowController_HandleConfigureDecisionExpressionMessageAndIsNewTrue_WizardNotShown()
+        // ReSharper restore InconsistentNaming
+        {
+            #region setup first Mock ModelItem
 
-    //        var source = new Mock<ModelItem>();
-    //        source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
 
-    //        #endregion
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = new DsfFlowDecisionActivity { ExpressionText = "Not Null Test Value" };
 
-    //        #region setup decision Mock ModelItem
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Condition", prop);
 
-    //        var crmDecision = new Mock<IContextualResourceModel>();
-    //        crmDecision.Setup(r => r.Environment).Returns(env.Object);
-    //        crmDecision.Setup(r => r.ResourceName).Returns("Test");
-    //        crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
 
-    //        var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
-    //        var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
-    //        var decisionProp = new Mock<ModelProperty>();
-    //        decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-    //        decisionProperties.AddMode("Condition", decisionProp);
+            #endregion
 
-    //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
+            #region setup decision Mock ModelItem
 
-    //        var decisionModelItem = new Mock<ModelItem>();
-    //        decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
-    //        decisionModelItem.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
+            var crmDecision = new Mock<IContextualResourceModel>();
+            crmDecision.Setup(r => r.Environment).Returns(env.Object);
+            crmDecision.Setup(r => r.ResourceName).Returns("Test");
+            crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
-    //        prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
+            var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
+            var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
 
-    //        #endregion
+            var decisionProp = new Mock<ModelProperty>();
+            decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
+            decisionProperties.Add("Condition", decisionProp);
 
-    //        #region setup Environment Model
+            decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
 
-    //        env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+            var decisionModelItem = new Mock<ModelItem>();
+            decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
+            decisionModelItem.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
 
-    //        #endregion
+            prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
 
-    //        var flowController = new FlowController();
-    //        var message = new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = true };
+            #endregion
 
-    //        flowController.Handle(message);
-    //    }
-    //}
-//}
+            #region setup Environment Model
+
+            env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+            #endregion
+
+            var flowController = new FlowController();
+            var message = new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = true };
+
+            flowController.Handle(message);
+        }
+    }
+}
