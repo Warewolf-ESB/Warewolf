@@ -582,7 +582,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             ShowNewResourceWizard message = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.PublishOnUIThread(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
 
             var resourceModel = new Mock<IResourceModel>();
 
@@ -596,7 +596,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.PublishOnUIThread(It.IsAny<ShowNewResourceWizard>()));
+            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowNewResourceWizard>()));
             Assert.AreSame("DbSource", message.ResourceType);
         }
 

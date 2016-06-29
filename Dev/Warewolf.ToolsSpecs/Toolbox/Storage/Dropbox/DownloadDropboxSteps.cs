@@ -152,7 +152,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheReadNewDropboxSourceWindowIsOpened()
         {
             Mock<IEventAggregator> eventAggregator = GetEventAggregator();
-            eventAggregator.Verify(a => a.PublishOnUIThread(It.IsAny<IMessage>()));        
+            eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));        
         }
 
         [Then(@"DropboxDownload Edit is Enabled")]

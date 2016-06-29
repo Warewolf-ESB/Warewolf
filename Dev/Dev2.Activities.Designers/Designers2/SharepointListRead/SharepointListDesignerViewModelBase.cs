@@ -351,7 +351,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         void CreateSharepointServerSource()
         {
             IsRefreshing = true;
-            _eventPublisher.PublishOnUIThread(new ShowNewResourceWizard("SharepointServerSource"));
+            _eventPublisher.Publish(new ShowNewResourceWizard("SharepointServerSource"));
             RefreshSharepointSources();
             IsRefreshing = false;
         }

@@ -502,7 +502,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void CreateDbSource()
         {
-            _eventPublisher.PublishOnUIThread(new ShowNewResourceWizard("DbSource"));
+            _eventPublisher.Publish(new ShowNewResourceWizard("DbSource"));
             RefreshDatabases();
         }
 

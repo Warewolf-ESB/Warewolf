@@ -186,7 +186,7 @@ namespace Dev2.Activities.Designers2.Email
 
         public void CreateEmailSource()
         {
-            _eventPublisher.PublishOnUIThread(new ShowNewResourceWizard("EmailSource"));
+            _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
             RefreshSources();
         }
 
@@ -386,7 +386,7 @@ namespace Dev2.Activities.Designers2.Email
                     }
                 }
             };
-            _eventPublisher.PublishOnUIThread(message);
+            _eventPublisher.Publish(message);
         }
 
         public override void Validate()

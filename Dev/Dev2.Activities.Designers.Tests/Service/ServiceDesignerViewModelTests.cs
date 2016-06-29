@@ -551,7 +551,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ------ Execute Test -----
             vm.ShowParent = true;
 
-            eventAggregator.Verify(e => e.PublishOnUIThread(It.IsAny<EditActivityMessage>()), Times.Never(), "EditActivityMessage was published for deleted activity.");
+            eventAggregator.Verify(e => e.Publish(It.IsAny<EditActivityMessage>()), Times.Never(), "EditActivityMessage was published for deleted activity.");
         }
 
         #endregion

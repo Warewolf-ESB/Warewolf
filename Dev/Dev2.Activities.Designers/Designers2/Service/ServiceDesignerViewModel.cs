@@ -872,7 +872,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (!IsDeleted)
             {
-                _eventPublisher.PublishOnUIThread(new EditActivityMessage(ModelItem, EnvironmentID, null));
+                _eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID, null));
             }
         }
 
