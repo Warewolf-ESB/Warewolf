@@ -88,7 +88,7 @@ namespace Dev2.Core.Tests
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, null, PopupController.Object, MockStudioResourceRepository.Object);
+                new Mock<IVersionChecker>().Object, false, null, PopupController.Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object, MockStudioResourceRepository.Object,new Mock<IExplorerViewModel>().Object);
+                new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object);
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);

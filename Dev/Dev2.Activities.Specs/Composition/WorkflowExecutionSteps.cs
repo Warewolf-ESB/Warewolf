@@ -1419,7 +1419,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue(workflowName, out resourceModel);
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
-            IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
+            var rep = new VersionManagerProxy(environmentModel.Connection, new CommunicationControllerFactory());
             var versions = rep.GetVersions(id);
             scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);
@@ -1489,7 +1489,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue(workflowName, out resourceModel);
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
-            IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
+            var rep = new VersionManagerProxy(environmentModel.Connection, new CommunicationControllerFactory());
             rep.RollbackTo(id, version);
         }
 
