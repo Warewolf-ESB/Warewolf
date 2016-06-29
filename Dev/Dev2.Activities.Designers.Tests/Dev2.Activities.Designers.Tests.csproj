@@ -315,7 +315,6 @@
   <ItemGroup>
     <Folder Include="Behaviour Stubs\" />
     <Folder Include="OracleServer\" />
-    <Folder Include="SelectAndApply\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
