@@ -42,7 +42,6 @@ using Dev2.Webs;
 using Dev2.Workspaces;
 using System;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -355,7 +354,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                            new AuthorizeCommand(AuthorizationContext.Contribute, param =>
                            {
                                Dev2Logger.Debug("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
-                               EventPublisher.PublishOnUIThread(new ShowEditResourceWizardMessage(ContextualResourceModel));
+                               EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
                            }
                             , param => CanExecute()));
             }
@@ -525,7 +524,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             FindMissing();
             Dev2Logger.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
-            EventPublisher.PublishOnUIThread(new SaveAllOpenTabsMessage());
+            EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if (ContextualResourceModel == null || ContextualResourceModel.Environment == null ||
                ContextualResourceModel.Environment.Connection == null)
@@ -733,23 +732,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 Debug(ContextualResourceModel, true);
             }
-        }
-
-        public void TryClose()
-        {
-        }
-
-        public void RaisePropertyChangedEventImmediately(string propertyName)
-        {
-        }
-
-        public void OnDeserialized(StreamingContext c)
-        {
-        }
-
-        public bool ShouldSerializeIsNotifying()
-        {
-            return false;
         }
 
         #endregion private methods
