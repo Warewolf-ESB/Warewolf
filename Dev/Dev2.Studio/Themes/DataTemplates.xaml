@@ -5,7 +5,8 @@
                     xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                     xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
                     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-    xmlns:explorer="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core">
+    xmlns:explorer="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
+    xmlns:cal="http://www.caliburnproject.org">
 
     <DataTemplate x:Key="ErrorListTemplate">
         <Grid>
@@ -29,7 +30,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBox Text="{Binding DisplayName, Mode=TwoWay}" 
                      Padding="3,0,0,0" 
-                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
+                     cal:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
                      Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                      AutomationProperties.AutomationId="UI_RenameTexbox_AutoID">
                 <i:Interaction.Behaviors>
