@@ -44,7 +44,7 @@ namespace Dev2.Webs.Callbacks
                 string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
                 if(_resourceModel != null)
                 {
-                    EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager));
+                    EventPublisher.PublishOnUIThread(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager));
                 }
 
                 Close();

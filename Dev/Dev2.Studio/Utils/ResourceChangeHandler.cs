@@ -78,7 +78,7 @@ namespace Dev2.Utils
                 else
                 {
                     Dev2Logger.Info("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
-                    _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
+                    _eventPublisher.PublishOnUIThread(new ShowReverseDependencyVisualizer(resource));
                 }
             }
         }
