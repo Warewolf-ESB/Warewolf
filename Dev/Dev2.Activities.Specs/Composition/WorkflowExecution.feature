@@ -3884,17 +3884,6 @@ Scenario: Workflow with Performance counters
 	| Request Per Second                                | x     |
 	| Count of requests for workflows which don’t exist | 9     |
 
-Scenario: Time Zone Changes
-	  Given I have a workflow "TimeZoneChangeTest"
-	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "TimeZoneChangeTest" is executed
-	Then the workflow execution has "NO" error
-	And the "TimeZoneChange" in Workflow "TimeZoneChangeTest" debug outputs as
-	  |                      |
-	  | [[Result]] = Pass |
-
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
