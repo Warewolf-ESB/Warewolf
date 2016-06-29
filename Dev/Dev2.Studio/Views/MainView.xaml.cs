@@ -260,11 +260,6 @@ namespace Dev2.Studio.Views
             }
             Toolbox.Activate();
         }
-
-        public void ClearToolboxSearch()
-        {
-        }
-
         #region Implementation of IWin32Window
 
         public IntPtr Handle

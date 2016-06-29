@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,6 +24,38 @@ namespace Dev2.Integration.Tests.Activities
     [TestClass]
     public class FtpTests
     {
+        [ClassInitialize]
+        public static void InitPaths(TestContext ctx)
+        {
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder1");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder2");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder3");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder4");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder5");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete\\SubFolder6");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder1");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder2");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder3");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder4");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder5");
+            CreateDirOnFtp(ParserStrings.PathOperations_FTP_Auth + "DontDelete\\SubFolder6");
+        }
+
+        private static void CreateDirOnFtp(string dirPath)
+        {
+            WebRequest request = WebRequest.Create(dirPath);
+            request.Method = WebRequestMethods.Ftp.MakeDirectory;
+            request.Credentials = new NetworkCredential(ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password);
+            try
+            {
+                request.GetResponse();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         #region ListDirectory Tests
         [TestMethod]
         public void ListDirectoryWithNoUsername_InValidPath_Expected_Error()
@@ -38,7 +72,6 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Assert.IsTrue(true);
             }
-
         }
 
         [TestMethod]
@@ -47,7 +80,6 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_NoAuth + "DontDelete/", "", "");
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
-
 
             Assert.AreEqual(6, tmp.Count);
         }

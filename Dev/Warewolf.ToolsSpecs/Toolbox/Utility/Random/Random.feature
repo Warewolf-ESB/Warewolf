@@ -305,20 +305,6 @@ Scenario: Generate random using star notation
 	| [[res(1).val]] = String |
 	| [[res(2).val]] = String |
 
-@ignore
-#Complex Types WOLF-1042
-Scenario Outline: Generate numbers using complex types
-	Given I have a type as "<Type>"
-	And I have a range from "<From>" to "<To>" 
-	When the random tool is executed 
-	Then the result from the random tool should be of type "System.Int32" with a length of "<length>"
-	And the execution has "<Error>" error
-	And the execution has "<Message>" error
-Examples: 
-	| Type    | From                        | To                             | length | res                      | Error | Message                        |
-	| Numbers | [[rec(1).count(3).val]] = 9 | [[rec(1).count(1).val]] = 1000 |        | [[rec().result().value]] | An    | [[rec().result().value]] = 557 |
-	| Numbers | [[rec(1).count(*).val]] = 0 | [[rec(1).count(3).val]] = 9    |        | [[rec().result().value]] | No    | [[rec().result().value]] = 5   |
-
 Scenario: Generate a Number using a null variable
 	Given  I have a formatnumber variable "[[int]]" equal to NULL
 	And I have a type as "Numbers"
