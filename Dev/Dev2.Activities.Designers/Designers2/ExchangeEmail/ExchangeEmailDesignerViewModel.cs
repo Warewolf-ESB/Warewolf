@@ -327,7 +327,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                     }
                 }
             };
-            _eventPublisher.Publish(message);
+            _eventPublisher.PublishOnUIThread(message);
         }
 
         public override void Validate()

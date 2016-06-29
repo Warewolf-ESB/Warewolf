@@ -232,7 +232,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 
         public void CreateOAuthSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
+            _eventPublisher.PublishOnUIThread(new ShowNewResourceWizard("DropboxSource"));
             Sources = LoadOAuthSources();
             OnPropertyChanged("Sources");
         }

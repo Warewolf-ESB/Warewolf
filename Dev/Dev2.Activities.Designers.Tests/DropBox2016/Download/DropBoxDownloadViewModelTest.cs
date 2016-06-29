@@ -289,7 +289,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
-            agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            agg.Setup(aggregator => aggregator.PublishOnUIThread(It.IsAny<IMessage>()));
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             //---------------Assert Precondition----------------
             mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            agg.Verify(aggregator => aggregator.PublishOnUIThread(It.IsAny<IMessage>()));
             //---------------Test Result -----------------------
         }
     }

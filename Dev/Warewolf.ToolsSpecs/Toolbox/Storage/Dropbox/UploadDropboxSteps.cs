@@ -172,7 +172,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheNewDropboxSourceWindowIsOpened()
         {
             var mock = scenarioContext.Get<Mock<IEventAggregator>>("mockEventAggregator");
-            mock.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            mock.Verify(aggregator => aggregator.PublishOnUIThread(It.IsAny<IMessage>()));
         }
 
         [Then(@"the ""(.*)"" Dropbox Source window is opened")]

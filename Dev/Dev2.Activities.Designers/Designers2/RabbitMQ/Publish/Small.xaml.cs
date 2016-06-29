@@ -10,7 +10,7 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.RabbitMQ.Publish
+namespace Dev2.Activities.Designers2.RabbitMQ.PublishOnUIThread
 {
     public partial class Small
     {

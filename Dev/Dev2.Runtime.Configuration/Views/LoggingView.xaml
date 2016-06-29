@@ -7,7 +7,8 @@
              xmlns:converters2="clr-namespace:Dev2.Runtime.Configuration.Converters"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls">
+             xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
+             xmlns:micro="http://www.caliburnproject.org">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
@@ -19,7 +20,7 @@
 
     <!--<ScrollViewer Margin="5,0,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">-->
 
-		<Grid cal:Bind.Model="{Binding .}">
+		<Grid micro:Bind.Model="{Binding .}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -104,9 +105,9 @@
                                                       Grid.Column="0">
                             <i:Interaction.Triggers>
                                 <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="100">
-                                    <cal:ActionMessage MethodName="UpdateSearchFilter">
-                                        <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
-                                    </cal:ActionMessage>
+                                    <micro:ActionMessage MethodName="UpdateSearchFilter">
+                                        <micro:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
+                                    </micro:ActionMessage>
                                 </trigger:DelayTextChangedEventTrigger>
                             </i:Interaction.Triggers>
                         </customControls2:FilterTextBox>
@@ -126,7 +127,7 @@
                             
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
-                                    <cal:ActionMessage MethodName="RefreshData"/>
+                                    <micro:ActionMessage MethodName="RefreshData"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             
@@ -274,3 +275,4 @@
 		</Grid>
 	<!--</ScrollViewer>-->
 </UserControl>
+
