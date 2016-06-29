@@ -275,14 +275,14 @@ namespace Dev2.Utils
                 switch(resource.ResourceType)
                 {
                     case ResourceType.WorkflowService:
-                        eventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                        eventAggregator.PublishOnUIThread(new AddWorkSurfaceMessage(resource));
                         break;
 
                     case ResourceType.Service:
-                        eventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                        eventAggregator.PublishOnUIThread(new ShowEditResourceWizardMessage(resource));
                         break;
                     case ResourceType.Source:
-                        eventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                        eventAggregator.PublishOnUIThread(new ShowEditResourceWizardMessage(resource));
                         break;
                 }
             }

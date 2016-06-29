@@ -170,7 +170,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            agg.Verify(aggregator => aggregator.PublishOnUIThread(It.IsAny<IMessage>()));
             CustomContainer.DeRegister<IShellViewModel>();
         }
 

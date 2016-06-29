@@ -489,7 +489,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         public void CreateOAuthSource_GivenCanPublish_ShouldPusbilsh()
         {
             var agg = new Mock<IEventAggregator>();
-            agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            agg.Setup(aggregator => aggregator.PublishOnUIThread(It.IsAny<IMessage>()));
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
@@ -499,7 +499,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //---------------Assert Precondition----------------
             mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            agg.Verify(aggregator => aggregator.PublishOnUIThread(It.IsAny<IMessage>()));
             //---------------Test Result -----------------------
         }
 

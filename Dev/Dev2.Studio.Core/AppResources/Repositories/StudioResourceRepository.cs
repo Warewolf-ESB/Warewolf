@@ -362,7 +362,7 @@ namespace Dev2.AppResources.Repositories
             LoadItemsToTree(environmentId, explorerItemModel);
             if(result.Status != ExecStatus.Success)
             {
-                EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
+                EventPublishers.Aggregator.PublishOnUIThread(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
             }
         }
         public void MoveFolder(IExplorerItemModel item, string newName)
@@ -379,7 +379,7 @@ namespace Dev2.AppResources.Repositories
             LoadItemsToTree(environmentId, explorerItemModel);
             if (result.Status != ExecStatus.Success)
             {
-                EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
+                EventPublishers.Aggregator.PublishOnUIThread(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
             }
         }
 

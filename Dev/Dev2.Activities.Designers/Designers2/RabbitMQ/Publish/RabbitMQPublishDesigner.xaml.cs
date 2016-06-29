@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Activities.Designers2.RabbitMQ.Publish
+namespace Dev2.Activities.Designers2.RabbitMQ.PublishOnUIThread
 {
     public partial class RabbitMQPublishDesigner
     {

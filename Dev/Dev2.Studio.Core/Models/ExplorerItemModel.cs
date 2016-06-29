@@ -1066,7 +1066,7 @@ namespace Dev2.Models
             var resourceType = obj as string;
             if(!String.IsNullOrEmpty(resourceType))
             {
-                EventPublishers.Aggregator.Publish(new ShowNewResourceWizard(resourceType, ResourcePath));
+                EventPublishers.Aggregator.PublishOnUIThread(new ShowNewResourceWizard(resourceType, ResourcePath));
             }
         }
 
@@ -1083,7 +1083,7 @@ namespace Dev2.Models
                 if(resourceModel != null)
                 {
                     Edit();
-                    EventPublishers.Aggregator.Publish(new DebugResourceMessage(resourceModel as IContextualResourceModel));
+                    EventPublishers.Aggregator.PublishOnUIThread(new DebugResourceMessage(resourceModel as IContextualResourceModel));
                 }
             }
         }
@@ -1100,7 +1100,7 @@ namespace Dev2.Models
                 var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == ResourceId);
                 if(resourceModel != null)
                 {
-                    EventPublishers.Aggregator.Publish(new ShowDependenciesMessage(resourceModel as IContextualResourceModel, true));
+                    EventPublishers.Aggregator.PublishOnUIThread(new ShowDependenciesMessage(resourceModel as IContextualResourceModel, true));
                 }
             }
         }
@@ -1150,7 +1150,7 @@ namespace Dev2.Models
                 if(contextualResourceModels.Any())
                 {
                     var displayName = DisplayName;
-                    EventPublishers.Aggregator.Publish(new DeleteResourcesMessage(contextualResourceModels, displayName, true, () =>
+                    EventPublishers.Aggregator.PublishOnUIThread(new DeleteResourcesMessage(contextualResourceModels, displayName, true, () =>
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
@@ -1164,7 +1164,7 @@ namespace Dev2.Models
                 }
                 else
                 {
-                    EventPublishers.Aggregator.Publish(new DeleteFolderMessage(DisplayName, () =>
+                    EventPublishers.Aggregator.PublishOnUIThread(new DeleteFolderMessage(DisplayName, () =>
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
@@ -1214,13 +1214,13 @@ namespace Dev2.Models
                     var isOpen = mainViewModel.IsWorkFlowOpened(resourceModel);
                     if(isOpen)
                     {
-                        EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
+                        EventPublishers.Aggregator.PublishOnUIThread(new RemoveResourceAndCloseTabMessage(resourceModel, true));
                     }
                     _studioResourceRepository.RollbackTo(VersionInfo, EnvironmentId);
 
                     if(isOpen)
                     {
-                        EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                        EventPublishers.Aggregator.PublishOnUIThread(new AddWorkSurfaceMessage(resourceModel));
                     }
                 }
             }
@@ -1318,7 +1318,7 @@ namespace Dev2.Models
                 var itemExists = null != _studioResourceRepository.FindItem(a => a.IsFolder && a.ResourcePath == GetRenamePath(ResourcePath, newName));
                 if ((Children.Count == 0) && itemExists)
                 {
-                    EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "You are not allowed to Rename an empty folder to an existing folder name", MessageBoxImage.Warning));
+                    EventPublishers.Aggregator.PublishOnUIThread(new DisplayMessageBoxMessage("Error Renaming Folder", "You are not allowed to Rename an empty folder to an existing folder name", MessageBoxImage.Warning));
                     return false;
                 }
                 _studioResourceRepository.RenameFolder(this, newName);
@@ -1333,7 +1333,7 @@ namespace Dev2.Models
                         var isOpen = mainViewModel.IsWorkFlowOpened(resourceModel);
                         if(isOpen)
                         {
-                            EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
+                            EventPublishers.Aggregator.PublishOnUIThread(new RemoveResourceAndCloseTabMessage(resourceModel, true));
                         }
                         if(IsFolder)
                         {
@@ -1348,7 +1348,7 @@ namespace Dev2.Models
 
                         if(isOpen)
                         {
-                            EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                            EventPublishers.Aggregator.PublishOnUIThread(new AddWorkSurfaceMessage(resourceModel));
                         }
                     }
                 }
@@ -1477,7 +1477,7 @@ namespace Dev2.Models
         /// <author>Massimo Guerrera</author>
         private void Deploy()
         {
-            EventPublishers.Aggregator.Publish(new DeployResourcesMessage(this));
+            EventPublishers.Aggregator.PublishOnUIThread(new DeployResourcesMessage(this));
         }
 
         /// <summary>
