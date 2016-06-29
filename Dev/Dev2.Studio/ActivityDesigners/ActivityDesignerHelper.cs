@@ -46,7 +46,6 @@ using Dev2.Activities.Designers2.ODBC;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.PostgreSql;
 using Dev2.Activities.Designers2.RabbitMQ.Consume;
-using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
@@ -95,6 +94,7 @@ using System;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
+using Dev2.Activities.Designers2.RabbitMQ.PublishOnUIThread;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
