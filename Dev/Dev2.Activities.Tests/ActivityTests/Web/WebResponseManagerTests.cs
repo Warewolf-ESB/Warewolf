@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -17,7 +16,6 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class WebResponseManagerTests
     {
         [TestMethod]
