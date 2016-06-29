@@ -29,7 +29,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = EvaluationFunctions.eval(added, 0, "[[bob]]");
+            var evalled = EvaluationFunctions.eval(added, 0, "[[@bob]]");
             Assert.IsTrue(evalled.IsWarewolfAtomResult);
             var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
             var str = (res as DataStorage.WarewolfAtom.DataString).ToString();

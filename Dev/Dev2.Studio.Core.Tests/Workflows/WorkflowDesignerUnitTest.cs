@@ -33,7 +33,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -2201,10 +2200,8 @@ namespace Dev2.Core.Tests.Workflows
             OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
 
             //Verify
-            Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
+            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
             Assert.IsTrue(resourceModel.Object.ResourceName.IndexOf("*", StringComparison.Ordinal) < 0);
-            StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
-            Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
         }
 
         [TestMethod]
@@ -2271,7 +2268,7 @@ namespace Dev2.Core.Tests.Workflows
             OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
 
             //Verify
-            Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
+            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
         }
 
         [TestMethod]
