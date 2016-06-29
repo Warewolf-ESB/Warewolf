@@ -36,8 +36,6 @@ namespace Dev2
 {
     public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
-
-        
         protected override void PrepareApplication()
         {
             base.PrepareApplication();
@@ -45,7 +43,6 @@ namespace Dev2
             PreloadReferences();
             CheckPath();
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-            
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
