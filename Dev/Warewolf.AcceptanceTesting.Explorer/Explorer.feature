@@ -45,26 +45,6 @@ Scenario: Creating Folder in localhost
    When I add "MyNewFolder" in "localhost"
    Then I should see the path "localhost\MyNewFolder" 
 
-@Explorer  
-Scenario: Creating And Deleting Folder and Popup says cancel in localhost
-  Given the explorer is visible
-  When I open "localhost" server
-  Then I should see "5" folders
-  When I add "MyOtherNewFolder" in "localhost"
-  Then I should see the path "localhost\MyOtherNewFolder" 
-  And I should see "6" folders
-  And I choose to "Cancel" Any Popup Messages
-  Then I should see "6" folders
-  When I open Resource "Folder 2"
-  Then I should see "18" children for "Folder 2"
-  When I create "localhost\Folder 2\myTestNewFolder"
-  Then I should see "19" children for "Folder 2"
-  Then I should see the path "localhost\Folder 2\myTestNewFolder"
-  And I choose to "OK" Any Popup Messages
-  When I delete "localhost\Folder 2\myTestNewFolder"
-  Then I should see "18" children for "Folder 2" 
-  Then I should not see the path "localhost\Folder 2\myTestNewFolder"
-
 @Explorer
 Scenario: Deleting Resource in folders
    Given the explorer is visible
