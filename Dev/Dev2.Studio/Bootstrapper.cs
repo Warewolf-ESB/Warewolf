@@ -34,7 +34,7 @@ using Dev2.Threading;
 
 namespace Dev2
 {
-    public class Bootstrapper : BootstrapperBase
+    public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
         protected override void PrepareApplication()
         {

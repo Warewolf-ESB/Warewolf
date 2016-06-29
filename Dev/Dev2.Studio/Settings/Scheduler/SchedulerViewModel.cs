@@ -469,7 +469,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if (null == value)
                 {
-                    EventPublisher.PublishOnUIThread(new DebugOutputMessage(new List<IDebugState>()));
+                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     return;
                 }
                 if (Equals(value, _selectedHistory))
@@ -477,7 +477,7 @@ namespace Dev2.Settings.Scheduler
                     return;
                 }
                 _selectedHistory = value;
-                EventPublisher.PublishOnUIThread(new DebugOutputMessage(value.DebugOutput));
+                EventPublisher.Publish(new DebugOutputMessage(value.DebugOutput));
                 NotifyOfPropertyChange(() => SelectedHistory);
             }
         }

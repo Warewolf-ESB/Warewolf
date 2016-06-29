@@ -552,7 +552,7 @@ namespace Dev2.Studio.ViewModels
             if (ActiveItem != null && ActiveItem.Environment != null)
             {
                 Dev2Logger.Debug("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                EventPublisher.PublishOnUIThread(new SetActiveEnvironmentMessage(ActiveItem.Environment));
+                EventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
             }
         }
 
