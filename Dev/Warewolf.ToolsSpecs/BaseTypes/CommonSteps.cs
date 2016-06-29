@@ -468,7 +468,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     if (string.IsNullOrEmpty(type))
                     {
-                        Assert.AreEqual(expectedValue, actualValue, error);
+                        Assert.AreEqual(expectedValue, actualValue, error + result.Environment.AllErrors.FirstOrDefault());
                     }
                     else
                     {
