@@ -160,6 +160,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EmbeddedResource Include="TestingResources\SampleTFS.trx" />
+    <EmbeddedResource Include="TestingResources\SampleTFSNoNamespace.trx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
