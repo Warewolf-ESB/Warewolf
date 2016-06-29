@@ -1,5 +1,13 @@
-﻿// ReSharper disable RedundantUsingDirective
-//Disabled so that logging can easily be put back
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,8 +25,6 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
-//            _wrapped.TraceLevel = TraceLevels.All;
-//            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public HubConnectionWrapper(string uriString)
@@ -42,6 +48,7 @@ namespace Dev2.SignalR.Wrappers.New
                 _wrapped.Error -= value;
             }
         }
+
         public event Action Closed
         {
             add
@@ -53,6 +60,7 @@ namespace Dev2.SignalR.Wrappers.New
                 _wrapped.Closed -= value;
             }
         }
+
         public event Action<IStateChangeWrapped> StateChanged
         {
             add
@@ -63,6 +71,7 @@ namespace Dev2.SignalR.Wrappers.New
             {
             }
         }
+
         public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
 
         public Task Start()
@@ -75,7 +84,6 @@ namespace Dev2.SignalR.Wrappers.New
         {
             _wrapped.Stop(timeSpan);
         }
-
 
         public ICredentials Credentials
         {

@@ -238,8 +238,9 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             var rows = table.Rows[0].Values;
-            
-            Assert.IsTrue( manageDatabaseSourceControl.GetServerOptions().All(a=>rows.Contains(a)));
+
+            var serverOptions = manageDatabaseSourceControl.GetServerOptions();
+            Assert.IsTrue( serverOptions.All(a=>rows.Contains(a)));
         }
 
         [Then(@"type options has ""(.*)"" as the default")]
