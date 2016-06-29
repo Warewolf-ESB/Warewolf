@@ -15,7 +15,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;

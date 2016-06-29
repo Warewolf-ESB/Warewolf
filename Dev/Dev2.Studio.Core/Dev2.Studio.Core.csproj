@@ -392,7 +392,6 @@
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowEditResourceWizardMessage.cs" />
-    <Compile Include="Messages\ShowHelpTabMessage.cs" />
     <Compile Include="Messages\ShowNewResourceWizard.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
