@@ -228,7 +228,6 @@
     <Compile Include="MockNetworkHost.cs" />
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
-    <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />
     <Compile Include="ServiceModel\Data\ResultListTests.cs" />
