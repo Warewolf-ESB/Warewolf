@@ -539,6 +539,9 @@
 	<data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
 		<value>New Database Source</value>
 	</data>
+	<data name="NewFolderLabel" xml:space="preserve">
+		<value>New Folder</value>
+	</data>
 	<data name="OAuthSourceNewHeaderLabel" xml:space="preserve">
 		<value>New OAuth Source</value>
 	</data>

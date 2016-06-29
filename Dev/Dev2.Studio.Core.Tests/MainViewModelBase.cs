@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -62,7 +61,6 @@ namespace Dev2.Core.Tests
         protected Mock<IWindowManager> WindowManager;
         protected Mock<IAuthorizationService> AuthorizationService;
         protected Mock<IEnvironmentModel> ActiveEnvironment;
-        protected Mock<IStudioResourceRepository> MockStudioResourceRepository;
 
         #endregion Variables
 
@@ -84,14 +82,13 @@ namespace Dev2.Core.Tests
             EventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
             WindowManager = new Mock<IWindowManager>();
-            MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, null, PopupController.Object, MockStudioResourceRepository.Object);
+                new Mock<IVersionChecker>().Object, false, null, PopupController.Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -105,14 +102,13 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(WindowManager.Object);
             CustomContainer.Register(PopupController.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
-            MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object, MockStudioResourceRepository.Object,new Mock<IExplorerViewModel>().Object);
+                new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object);
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);
@@ -173,9 +169,9 @@ namespace Dev2.Core.Tests
             connection.SetupGet(c => c.WorkspaceID).Returns(WorkspaceId);
             connection.SetupGet(c => c.ServerID).Returns(ServerId);
             connection.Setup(c => c.AppServerUri)
-                .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+                .Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}/dsf"));
             connection.Setup(c => c.WebServerUri)
-                .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+                .Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}"));
             connection.Setup(c => c.IsConnected).Returns(true);
             int cnt = 0;
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
@@ -185,7 +181,7 @@ namespace Dev2.Core.Tests
                         if (cnt == 0)
                         {
                             cnt++;
-                            return new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
+                            return new StringBuilder($"<XmlData>{string.Join("\n", sources)}</XmlData>");
                         }
 
                         return new StringBuilder(JsonConvert.SerializeObject(new ExecuteMessage()));
@@ -203,7 +199,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.Connection).Returns(connection.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(ServerId);
-            env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
+            env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
             
             return env;
         }

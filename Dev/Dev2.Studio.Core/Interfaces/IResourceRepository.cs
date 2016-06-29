@@ -85,15 +85,12 @@ namespace Dev2.Studio.Core.Interfaces
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
 
-        void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID);
+        void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceId);
 
-        IContextualResourceModel LoadContextualResourceModel(Guid resourceID);
+        IContextualResourceModel LoadContextualResourceModel(Guid resourceId);
 
         Task<ExecuteMessage> GetDependenciesXmlAsync(IContextualResourceModel resourceModel, bool getDependsOnMe);
 
-        Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceID);
-
-
-
+        Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
     }
 }

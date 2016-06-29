@@ -11,7 +11,6 @@
 using System;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Threading;
@@ -42,7 +41,7 @@ namespace Dev2.Dialogs
         /// </summary>
         /// //todo:fix ctor for testing
         public ResourcePickerDialog(enDsfActivityType activityType)
-            : this(activityType, null, EventPublishers.Aggregator, new AsyncWorker(), true, StudioResourceRepository.Instance, ConnectControlSingleton.Instance)
+            : this(activityType, null, EventPublishers.Aggregator, new AsyncWorker(), ConnectControlSingleton.Instance)
         {
         }
 
@@ -50,11 +49,11 @@ namespace Dev2.Dialogs
         /// Creates a picker suitable for picking from the given environment.
         /// </summary>
         public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentViewModel source)
-            : this(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), false, StudioResourceRepository.Instance, ConnectControlSingleton.Instance)
+            : this(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), ConnectControlSingleton.Instance)
         {
         }
 
-        public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentViewModel environmentViewModel, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton)
+        public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentViewModel environmentViewModel, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IConnectControlSingleton connectControlSingleton)
         {
             VerifyArgument.IsNotNull("environmentRepository", environmentViewModel);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -68,7 +67,7 @@ namespace Dev2.Dialogs
 
         public static Task<IResourcePickerDialog> CreateAsync(enDsfActivityType activityType, IEnvironmentViewModel source)
         {
-            var ret = new ResourcePickerDialog(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), false, StudioResourceRepository.Instance, ConnectControlSingleton.Instance);
+            var ret = new ResourcePickerDialog(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), ConnectControlSingleton.Instance);
             return ret.InitializeAsync(source);
         }
 

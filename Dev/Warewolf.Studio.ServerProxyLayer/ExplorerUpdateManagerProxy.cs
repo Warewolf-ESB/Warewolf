@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Hosting;
@@ -29,7 +28,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         public void AddFolder(string path, string name, Guid id)
         {
             var controller = CommunicationControllerFactory.CreateController("AddFolderService");
-            string resourcePath = String.IsNullOrEmpty(path) ? name : string.Format("{0}\\{1}", path, name);
+            string resourcePath = String.IsNullOrEmpty(path) ? name : $"{path}\\{name}";
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             ServerExplorerItem explorerItemModel = new ServerExplorerItem
             {
@@ -87,14 +86,9 @@ namespace Warewolf.Studio.ServerProxyLayer
             controller.AddPayloadArgument("itemToRename", id.ToString());
             controller.AddPayloadArgument("newName", newName);
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
-            if (result.Status == ExecStatus.Success)
+            if (result.Status != ExecStatus.Success)
             {
-                var renameValue = newName;
-                if (newName.LastIndexOf("\\", StringComparison.Ordinal) > 0)
-                {
-                    renameValue = newName.Substring(newName.LastIndexOf("\\", StringComparison.Ordinal)+1);
-                }
-                StudioResourceRepository.Instance.UpdateItem(id, model => model.RefreshName(renameValue), Connection.ID);
+                throw new WarewolfSaveException(result.Message, null);
             }
         }
 
@@ -110,14 +104,9 @@ namespace Warewolf.Studio.ServerProxyLayer
             controller.AddPayloadArgument("folderToRename", path);
             controller.AddPayloadArgument("newName", newName);
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
-            if (result.Status == ExecStatus.Success)
+            if (result.Status != ExecStatus.Success)
             {
-                var renameValue = newName;
-                if (newName.LastIndexOf("\\", StringComparison.Ordinal) > 0)
-                {
-                    renameValue = newName.Substring(newName.LastIndexOf("\\", StringComparison.Ordinal) + 1);
-                }
-                StudioResourceRepository.Instance.UpdateItem(id, model => model.RefreshName(renameValue), Connection.ID);
+                throw new WarewolfSaveException(result.Message, null);
             }
         }
 
@@ -133,8 +122,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             controller.AddPayloadArgument("itemToMove", sourceId.ToString());
             controller.AddPayloadArgument("newPath", destinationPath);
             controller.AddPayloadArgument("itemToBeRenamedPath", resourcePath);
-            await
-                controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
+            await controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
         }
 
         #endregion
