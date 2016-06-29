@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
