@@ -27,7 +27,7 @@ using System.Windows;
 
 // ReSharper disable InconsistentNaming
 
-namespace Dev2.Activities.Designers2.RabbitMQ.PublishOnUIThread
+namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {
     public class RabbitMQPublishDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {

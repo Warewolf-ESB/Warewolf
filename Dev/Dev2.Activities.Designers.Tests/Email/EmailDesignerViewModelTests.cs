@@ -255,7 +255,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             ShowNewResourceWizard message = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.PublishOnUIThread(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
 
             var resourceModel = new Mock<IResourceModel>();
 
@@ -268,7 +268,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.SelectedEmailSource = createEmailSource;
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.PublishOnUIThread(It.IsAny<ShowNewResourceWizard>()));
+            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowNewResourceWizard>()));
             Assert.AreSame("EmailSource", message.ResourceType);
         }
 
@@ -315,7 +315,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var modelItem = CreateModelItem();
 
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.PublishOnUIThread(It.IsAny<FileChooserMessage>())).Verifiable();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Verifiable();
 
             var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, new Mock<IResourceModel>().Object);
 
@@ -323,7 +323,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.ChooseAttachmentsCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.PublishOnUIThread(It.IsAny<FileChooserMessage>()));
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
         }
 
         [TestMethod]
@@ -359,7 +359,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             modelItem.SetProperty("Attachments", string.Join(";", existingFiles));
 
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.PublishOnUIThread(It.IsAny<FileChooserMessage>())).Callback((object m) =>
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
             {
                 ((FileChooserMessage)m).SelectedFiles = selectedFiles;
             });
@@ -370,7 +370,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             viewModel.ChooseAttachmentsCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.PublishOnUIThread(It.IsAny<FileChooserMessage>()));
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
             var attachments = modelItem.GetProperty<string>("Attachments");
             Assert.AreEqual(string.Join(";", expectedFiles), attachments);
         }

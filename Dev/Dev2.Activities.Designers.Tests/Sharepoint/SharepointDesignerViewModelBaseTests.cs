@@ -255,13 +255,13 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);            
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            mockEventAggregator.Setup(aggregator => aggregator.PublishOnUIThread(It.IsAny<ShowNewResourceWizard>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ShowNewResourceWizard>())).Verifiable();
             var sharepointListDesignerViewModelBase = CreateSharepointListDesignerViewModel(mockEnvironmentModel,mockEventAggregator);
             //------------Execute Test---------------------------
             sharepointListDesignerViewModelBase.SelectedSharepointServer = sharepointListDesignerViewModelBase.GetNewSharepointSource;
             //------------Assert Results-------------------------
             Assert.IsNotNull(sharepointListDesignerViewModelBase.SelectedSharepointServer);
-            mockEventAggregator.Verify(aggregator => aggregator.PublishOnUIThread(It.IsAny<ShowNewResourceWizard>()));
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ShowNewResourceWizard>()));
         }
 
 

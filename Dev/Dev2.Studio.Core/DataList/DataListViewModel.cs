@@ -353,7 +353,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-            EventPublisher.PublishOnUIThread(new UpdateIntellisenseMessage());
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
@@ -449,7 +449,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventPublisher.PublishOnUIThread(new UpdateIntellisenseMessage());
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             ViewComplexObjectsCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
@@ -550,7 +550,7 @@ namespace Dev2.Studio.ViewModels.DataList
             Provider.VariableList = new ObservableCollection<string>(items);
 
             WriteToResourceModel();
-            EventPublisher.PublishOnUIThread(new UpdateIntellisenseMessage());
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         private void RemoveBlankComplexObjects()

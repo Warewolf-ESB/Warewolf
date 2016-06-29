@@ -26,7 +26,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Warewolf.Resource.Errors;
-using Caliburn.Micro;
 
 namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
@@ -332,7 +331,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
             var inputs = PreviewViewModel.Inputs.Select(input => input.Key);
             var enumerable  = inputs as IList<string> ?? inputs.ToList();
-            EventPublishers.Aggregator.PublishOnUIThread(new AddStringListToDataListMessage(enumerable.ToList()));
+            EventPublishers.Aggregator.Publish(new AddStringListToDataListMessage(enumerable.ToList()));
             _addToCollection(enumerable, Overwrite);
             DoClear(o);
         }
@@ -448,7 +447,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         {
             if(string.IsNullOrWhiteSpace(VariableListString))
             {
-                var doFocused = new System.Action(() => { IsVariableListFocused = true; });
+                var doFocused = new Action(() => { IsVariableListFocused = true; });
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = ErrorResource.VariableListStringRequired };
             }
 
@@ -471,13 +470,13 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
             if(!string.IsNullOrEmpty(Prefix) && !IsValidRecordsetPrefix(Prefix))
             {
-                var doFocused = new System.Action(() => { IsPrefixFocused = true; });
+                var doFocused = new Action(() => { IsPrefixFocused = true; });
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Prefix contains invalid characters" };
             }
 
             if(!string.IsNullOrEmpty(Suffix) && !IsValidName(Suffix))
             {
-                var doFocused = new System.Action(() => { IsSuffixFocused = true; });
+                var doFocused = new Action(() => { IsSuffixFocused = true; });
 
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Suffix contains invalid characters" };
             }
@@ -485,7 +484,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         IEnumerable<IActionableErrorInfo> ValidationErrorsForIndexSplit()
         {
-            var doFocused = new System.Action(() => { IsSplitOnFocused = true; });
+            var doFocused = new Action(() => { IsSplitOnFocused = true; });
 
             if(!SplitToken.IsWholeNumber())
             {
@@ -516,7 +515,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         IEnumerable<IActionableErrorInfo> ValidationErrorsForCharsSplit()
         {
-            var doFocused = new System.Action(() => { IsSplitOnFocused = true; });
+            var doFocused = new Action(() => { IsSplitOnFocused = true; });
 
             if(string.IsNullOrEmpty(SplitToken))
             {
