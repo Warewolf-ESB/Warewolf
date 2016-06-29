@@ -44,12 +44,12 @@ namespace Dev2.Studio.Views.Workflow
             }
 
             //if it is a ReourceTreeViewModel, get the data for this string
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf(@"ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
 
             if(string.IsNullOrEmpty(modelItemString))
             {
                 //else if it is a workflowItemType, get data for this
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf(@"WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
 
                 //else just bounce out, we didnt set it.
                 if(!string.IsNullOrEmpty(modelItemString))
@@ -84,7 +84,6 @@ namespace Dev2.Studio.Views.Workflow
                     if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID &&
                         !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.IsService)
                     {
-                        //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                         return true;
                     }
                     var env = EnvironmentRepository.Instance.FindSingle(model => model.ID == explorerItemViewModel.Server.EnvironmentID);

@@ -146,7 +146,7 @@ namespace Dev2.Studio.Controller
             return null;
         }
 
-        static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
+        protected static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
         {
             var large = new ConfigureSwitch();
             var dataContext = new SwitchDesignerViewModel(modelItem,display);
