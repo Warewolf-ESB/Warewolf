@@ -63,6 +63,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Warewolf.Core;
+using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Tools.Specs.BaseTypes;
 
 // ReSharper disable UnusedMember.Global

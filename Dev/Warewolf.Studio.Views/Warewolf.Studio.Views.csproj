@@ -87,6 +87,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
@@ -197,9 +201,6 @@
     <Compile Include="ManageWebserviceSourceControl.xaml.cs">
       <DependentUpon>ManageWebserviceSourceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MappingsView.xaml.cs">
-      <DependentUpon>MappingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
@@ -305,10 +306,6 @@
     <Page Include="RequestServiceNameView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MappingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SharepointServerSource.xaml">
       <Generator>MSBuild:Compile</Generator>

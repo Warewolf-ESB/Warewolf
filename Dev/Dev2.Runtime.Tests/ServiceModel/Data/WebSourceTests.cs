@@ -23,39 +23,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class WebSourceTests
     {
-        #region Save
-
-        [TestMethod]
-        public void SaveWebSourceWithExistingSourceExpectedServerWorkspaceUpdated()
-        {
-            //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString() + "\\test web source";
-            var testResource = new Resource { ResourceName = "test web source", ResourcePath = "initialpath\\test web source", ResourceType = "WebSource", ResourceID = Guid.NewGuid() };
-            new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-            testResource.ResourcePath = uniquePathText;
-
-            //Execute save again on test resource
-            new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-
-            //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, testResource.ResourceID.ToString());
-            const string PathStartText = "<Category>";
-            int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
-            if(start > 0)
-            {
-                start += PathStartText.Length;
-                int end = getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal);
-                var savedPath = getSavedResource.Substring(start, end - start);
-                Assert.AreEqual(uniquePathText, savedPath);
-            }
-            else
-            {
-                Assert.Fail("Resource xml malformed after save");
-            }
-        }
-
-        #endregion
-
         #region CTOR
 
         [TestMethod]

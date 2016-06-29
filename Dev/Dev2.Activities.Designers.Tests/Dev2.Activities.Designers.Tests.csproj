@@ -307,6 +307,10 @@
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
