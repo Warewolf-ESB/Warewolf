@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -61,6 +62,32 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void DebugOutputViewModel_DefaultPropertyStates()
+        {
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object);            
+            Assert.IsNotNull(vm);            
+            Assert.IsFalse(vm.IsProcessing);
+            Assert.IsFalse(vm.IsConfiguring);
+            Assert.IsFalse(vm.IsStopping);
+            Assert.IsFalse(vm.ShowOptions);
+            Assert.IsFalse(vm.ShowVersion);
+            Assert.IsTrue(vm.ShowInputs);
+            Assert.IsTrue(vm.ShowDebugStatus);
+            Assert.IsTrue(vm.ShowDuration);
+            Assert.IsTrue(vm.ExpandAllMode);
+            Assert.IsTrue(vm.HighlightError);
+            Assert.IsTrue(vm.ShowOutputs);
+            Assert.IsTrue(vm.ShowServer);
+            Assert.IsTrue(vm.ShowTime);
+            Assert.IsTrue(vm.ShowType);
+
+            Assert.IsNotNull(vm.DebugImage);
+            Assert.IsNotNull(vm.ClearSearchTextCommand);
+            Assert.IsNotNull(vm.ExpandAllCommand);
+        }
+
+        [TestMethod]
         public void DebugOutputViewModel_OpenEmptyMoreLinkDoesntStartProcess()
         {
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object);
@@ -70,6 +97,18 @@ namespace Dev2.Core.Tests
 
             vm.OpenMoreLink(lineItem.Object);
             Assert.IsNull(vm.ProcessController);
+        }
+
+        
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void DebugOutputViewModel_OpenMoreLinkExpands()
+        {
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object);
+            var lineItem = new Mock<IDebugLineItem>();
+            lineItem.SetupGet(l => l.MoreLink).Returns("Something");
+
+            vm.OpenMoreLink(lineItem.Object);
         }
 
         [TestMethod]
@@ -106,7 +145,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendErrorExpectErrorMessageAppended()
         {
-
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
             mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
@@ -134,7 +172,76 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(1, vm.RootItems.Count);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(root);
-            Assert.IsTrue(root.HasError.GetValueOrDefault(false));
+            Assert.IsTrue(root.HasError.GetValueOrDefault(false));            
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void GivenSuccessAsSearchText_ShouldReturnSuccessFromMessage()
+        {
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock1.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
+
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
+            mock2.SetupGet(m => m.StateType).Returns(StateType.Append);
+
+            mock2.SetupGet(m => m.HasError).Returns(false);            
+            mock2.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
+
+            mock2.SetupGet(state => state.Message).Returns("Success");
+
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object);
+
+            mock1.Setup(m => m.SessionID).Returns(vm.SessionID);
+            mock2.Setup(m => m.SessionID).Returns(vm.SessionID);
+
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+
+            Assert.AreEqual(1, vm.RootItems.Count);
+            vm.SearchText = "Success";
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Clear_ShouldResetTheRoot()
+        {
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock1.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
+
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
+            mock2.SetupGet(m => m.StateType).Returns(StateType.Append);
+            mock2.SetupGet(m => m.HasError).Returns(true);
+            mock2.SetupGet(m => m.ErrorMessage).Returns("Error Test");
+            mock2.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
+
+            mock1.SetupSet(s => s.ErrorMessage = It.IsAny<string>()).Callback<string>(s => Assert.IsTrue(s.Equals("Error Test")));
+            mock1.SetupSet(s => s.HasError = It.IsAny<bool>()).Callback<bool>(s => Assert.IsTrue(s.Equals(true)));
+
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object);
+
+            mock1.Setup(m => m.SessionID).Returns(vm.SessionID);
+            mock2.Setup(m => m.SessionID).Returns(vm.SessionID);
+
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+
+            Assert.AreEqual(1, vm.RootItems.Count);
+            vm.Clear();
+            Assert.AreEqual(0, vm.RootItems.Count);
         }
 
         [TestMethod]
@@ -173,7 +280,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendWhenDebugStateStoppedShouldNotWriteItems()
         {
-
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
             mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
@@ -184,7 +290,8 @@ namespace Dev2.Core.Tests
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
 
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(), new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Stopping };
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
+                new Mock<IDebugOutputFilterStrategy>().Object) {DebugStatus = DebugStatus.Stopping};
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
             Assert.AreEqual(0, vm.RootItems.Count);
@@ -193,7 +300,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendWhenDebugStateFinishedShouldNotWriteItems()
         {
-
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
             mock1.SetupGet(m => m.ID).Returns(_firstResourceID);

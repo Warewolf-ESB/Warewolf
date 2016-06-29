@@ -479,13 +479,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if(item == null)
+            if (item == null)
             {
                 Dev2Logger.Debug("Debug line item is null, did not proceed");
                 return;
             }
 
-            if(string.IsNullOrEmpty(item.MoreLink))
+            if (string.IsNullOrEmpty(item.MoreLink))
             {
                 Dev2Logger.Debug("Link is empty");
             }
@@ -497,11 +497,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     Dev2Logger.Debug(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
                     ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Error(ex);
                     if (ex.Message.Contains("The remote name could not be resolved"))
-                        _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                        _popup.Show(
+                            "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
+                            "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
+                            false,
+                            true, false, false);
                     else
                         throw;
                 }
