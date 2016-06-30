@@ -1,4 +1,5 @@
 "%~dp0nuget.exe" restore "%~dp0..\..\AcceptanceTesting.sln"
+"%~dp0nuget.exe" restore "%~dp0..\..\UITesting.sln"
 
 IF EXIST MSBuild (
 MSBuild "%~dp0..\..\AcceptanceTesting.sln" /p:Platform="Any CPU";Configuration="Debug"
