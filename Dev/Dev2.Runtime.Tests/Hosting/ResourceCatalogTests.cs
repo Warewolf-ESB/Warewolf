@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -1169,117 +1168,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-
-        #region GetPayload
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetPayloadWithNullResourceNameAndTypeExpectedThrowsInvalidDataContractException()
-        {
-            var workspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.GetPayload(workspaceID, null, null, null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetPayloadWithNullTypeExpectedThrowsArgumentNullException()
-        {
-            var workspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            catalog.GetPayload(workspaceID, null, null);
-        }
-
-        [TestMethod]
-        public void GetPayloadWithGuidsExpectedReturnsPayloadForGuids()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var expectedResources = resources.Where(r => r.ResourceType == "WorkflowService").ToList();
-            var guids = expectedResources.Select(r => r.ResourceID).ToList();
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var payloadXml = catalog.GetPayload(workspaceID, string.Join(",", guids), "WorkflowService");
-
-            VerifyPayload(expectedResources, "<x>" + payloadXml + "</x>");
-        }
-
-        [TestMethod]
-        public void GetPayloadWithInvalidGuidsExpectedReturnsEmptyPayload()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var guids = new[] { Guid.NewGuid(), Guid.NewGuid() };
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var payloadXml = catalog.GetPayload(workspaceID, string.Join(",", guids), "WorkflowService");
-
-            VerifyPayload(new List<IResource>(), "<x>" + payloadXml + "</x>");
-        }
-
-        [TestMethod]
-        public void GetPayloadWithExistingResourceNameExpectedReturnsPayloadForResources()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            foreach (var expected in resources)
-            {
-                var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, expected.ResourceType, null);
-                VerifyPayload(new List<IResource> { expected }, "<x>" + payloadXml + "</x>");
-            }
-        }
-
-        [TestMethod]
-        public void GetPayloadWithExistingResourceNameAndContainsFalseExpectedReturnsPayloadForResources()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            foreach (var expected in resources)
-            {
-                var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, expected.ResourceType, null, false);
-                VerifyPayload(new List<IResource> { expected }, "<x>" + payloadXml + "</x>");
-            }
-        }
-
-        [TestMethod]
-        public void GetPayloadWithValidSourceTypeExpectedReturnsResources()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var expected = resources.First(r => r.ResourceType == "PluginSource");
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var payloadXml = catalog.GetPayload(workspaceID, enSourceType.PluginSource);
-
-            VerifyPayload(new List<IResource> { expected }, "<x>" + payloadXml + "</x>");
-        }
-
-        [TestMethod]
-        public void GetPayloadWithInvalidSourceTypeExpectedReturnsNothing()
-        {
-            List<IResource> resources;
-            var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var payloadXml = catalog.GetPayload(workspaceID, enSourceType.Unknown);
-
-            VerifyPayload(new List<IResource>(), "<x>" + payloadXml + "</x>");
-        }
-        #endregion
-
+        
         #region CopyResource
 
         [TestMethod]
@@ -1395,6 +1284,37 @@ namespace Dev2.Tests.Runtime.Hosting
 
         //    Assert.IsTrue(rolledBack);
         //}
+
+        #endregion
+
+
+        #region ResourceCatalogResultBuilder
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalogResultBuilder_GivenMessage_ShouldReturnCorrectResults()
+        {
+            var accessViolationResult = ResourceCatalogResultBuilder.CreateAccessViolationResult("a");
+            Assert.AreEqual(ExecStatus.AccessViolation, accessViolationResult.Status);
+            Assert.AreEqual("a", accessViolationResult.Message);
+            var duplicate = ResourceCatalogResultBuilder.CreateDuplicateMatchResult("b");
+            Assert.AreEqual(ExecStatus.DuplicateMatch, duplicate.Status);
+            Assert.AreEqual("b", duplicate.Message);
+            var fail = ResourceCatalogResultBuilder.CreateFailResult("c");
+            Assert.AreEqual(ExecStatus.Fail, fail.Status);
+            Assert.AreEqual("c", fail.Message);
+            var noMatch = ResourceCatalogResultBuilder.CreateNoMatchResult("d");
+            Assert.AreEqual(ExecStatus.NoMatch, noMatch.Status);
+            Assert.AreEqual("d", noMatch.Message);
+            var wild = ResourceCatalogResultBuilder.CreateNoWildcardsAllowedhResult("e");
+            Assert.AreEqual(ExecStatus.NoWildcardsAllowed, wild.Status);
+            Assert.AreEqual("e", wild.Message);
+            var succes = ResourceCatalogResultBuilder.CreateSuccessResult("f");
+            Assert.AreEqual(ExecStatus.Success, succes.Status);
+            Assert.AreEqual("f", succes.Message);
+
+
+        }
 
         #endregion
 
@@ -1594,20 +1514,6 @@ namespace Dev2.Tests.Runtime.Hosting
             var graph = catalog.GetDynamicObjects(expecteds);
 
             VerifyObjectGraph(expecteds, graph);
-        }
-
-        [TestMethod]
-        public void GetDynamicObjectsWithWorkspaceIDExpectedReturnsObjectGraphsForWorkspace()
-        {
-            var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
-
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-            var graph = catalog.GetDynamicObjects(workspaceID);
-
-            VerifyObjectGraph(resources, graph);
         }
 
         #endregion
