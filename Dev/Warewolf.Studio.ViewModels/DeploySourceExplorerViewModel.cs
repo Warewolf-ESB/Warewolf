@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels
 
         void SelectAction(IExplorerItemViewModel ax)
         {
-            if (ax.ResourceType == "Folder")
+            if (ax.ResourceType == @"Folder")
             {
                 ax.Children.Apply(ay =>
                 {
@@ -160,7 +160,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (ax.Parent.ResourceType == "Folder" || ax.Parent.ResourceType == "ServerSource")
+                if (ax.Parent?.ResourceType == @"Folder" || ax.Parent?.ResourceType == @"ServerSource")
                 {
                     ax.Parent.IsFolderChecked = ax.IsResourceChecked;
                 }
