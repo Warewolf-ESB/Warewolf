@@ -13,8 +13,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
-using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
 using Warewolf.Resource.Errors;
@@ -113,7 +113,7 @@ namespace Dev2.Services.Security
 
         public virtual Permissions GetResourcePermissions(Guid resourceId)
         {
-            var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceId.ToString()).ToList();
+            var groupPermissions = GetGroupPermissions(Utilities.OrginalExecutingUser ?? Thread.CurrentPrincipal, resourceId.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }

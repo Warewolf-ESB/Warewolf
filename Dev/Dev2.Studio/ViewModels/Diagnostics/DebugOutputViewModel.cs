@@ -120,7 +120,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public int PendingItemCount => _pendingItems.Count;
         public int ContentItemCount => _contentItems.Count;
 
-        public ProcessController ProcessController { get; set; }
+        private ProcessController ProcessController { get; set; }
 
         public DebugStatus DebugStatus
         {
@@ -674,7 +674,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
                 if (item != null)
                     item.EndTime = content.EndTime;
-                //RebuildTree();
             }
             else
             {
