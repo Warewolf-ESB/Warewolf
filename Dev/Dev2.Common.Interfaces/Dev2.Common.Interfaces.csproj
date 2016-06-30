@@ -240,6 +240,7 @@
     <Compile Include="IHelpView.cs" />
     <Compile Include="IIntellisenseStringResult.cs" />
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
+    <Compile Include="IJsonObjectsView.cs" />
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
