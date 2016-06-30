@@ -58,8 +58,6 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// <param name="resourceModel">The resource model.</param>
         void InitializeDataListViewModel(IResourceModel resourceModel);
 
-        void InitializeDataListViewModel();
-
         /// <summary>
         /// Adds the blank row.
         /// </summary>

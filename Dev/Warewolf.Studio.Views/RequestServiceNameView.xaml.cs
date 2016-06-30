@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
@@ -15,7 +14,7 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class RequestServiceNameView:IRequestServiceNameView
     {
-        private Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
 
         public RequestServiceNameView()
         {
@@ -24,16 +23,7 @@ namespace Warewolf.Studio.Views
 
         public void ShowView()
         {
-            Grid content;
-            var effect = BlurEffect(out content);
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            if(Application.Current != null)
-            {
-                Application.Current.MainWindow.Effect = effect;
-            }
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
 
             ContentRendered += (sender, args) =>
             {
@@ -48,36 +38,13 @@ namespace Warewolf.Studio.Views
             ShowDialog();
         }
 
-        private BlurEffect BlurEffect(out Grid content)
-        {
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray),
-                Opacity = 0.5
-            };
-            return effect;
-        }
-
         void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            RemoveBlackOutEffect();
-        }
-
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
         public void RequestClose()
         {
-            RemoveBlackOutEffect();
             Close();
         }
 
@@ -118,10 +85,7 @@ namespace Warewolf.Studio.Views
         public string GetValidationMessage()
         {
             BindingExpression be = ErrorMessageTextBlock.GetBindingExpression(TextBlock.TextProperty);
-            if (be != null)
-            {
-                be.UpdateTarget();
-            }
+            be?.UpdateTarget();
             return ErrorMessageTextBlock.Text;
         }
 
@@ -167,15 +131,9 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (ExplorerView != null)
+            if (ExplorerView?.ExplorerTree?.EditingSettings != null)
             {
-                if (ExplorerView.ExplorerTree != null)
-                {
-                    if (ExplorerView.ExplorerTree.EditingSettings != null)
-                    {
-                        ExplorerView.ExplorerTree.EditingSettings.IsF2EditingEnabled = false;
-                    }
-                }
+                ExplorerView.ExplorerTree.EditingSettings.IsF2EditingEnabled = false;
             }
         }
     }
