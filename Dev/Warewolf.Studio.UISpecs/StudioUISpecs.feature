@@ -29,22 +29,6 @@ Scenario: Drag toolbox sequence onto a new workflow creates sequence on the desi
 	Then I "Assert_Sequence_Exists_OnDesignSurface"
 	
 @NeedsBlankWorkflow
-Scenario: Drag toolbox multiassign onto a new workflow creates an assign tool with small view on the design surface
-	When I "Drag_Toolbox_MultiAssign_Onto_DesignSurface"
-	Then I "Assert_MultiAssign_Exists_OnDesignSurface"
-
-#@NeedsMultiAssignSmallViewToolOnTheDesignSurface
-#Scenario: Double Clicking Multi Assign Tool Small View on the Design Surface Opens Large View
-	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
-	When I "Open_Assign_Tool_Large_View"
-	Then I "Assert_Assign_Large_View_Exists_OnDesignSurface"
-
-#@NeedsMultiAssignLargeViewOnTheDesignSurface
-#Scenario: Click Assign Tool QVI Button Opens Qvi
-	When I "Open_Assign_Tool_Qvi_Large_View"
-	Then I "Assert_Assign_QVI_Large_View_Exists_OnDesignSurface"
-	
-@NeedsBlankWorkflow
 Scenario: Drag toolbox base conversion onto a new workflow creates base conversion tool with small view on the design surface
 	When I "Drag_Toolbox_Base_Conversion_Onto_DesignSurface"
 	Then I "Assert_Base_Conversion_Exists_OnDesignSurface"
