@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -51,37 +50,6 @@ namespace Dev2.Runtime.Hosting
         StringBuilder GetResourceContents(IResource resource);
 
         /// <summary>
-        /// Gets the contents of the resource with the given guids.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="guidCsv">The guids to be queried.</param>
-        /// <param name="type">The type string: WorkflowService, Service, Source, ReservedService or *, to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        /// <exception cref="System.ArgumentNullException">type</exception>
-        StringBuilder GetPayload(Guid workspaceID, string guidCsv, string type);
-
-        /// <summary>
-        /// Gets the contents of the resources with the given source type.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="sourceType">The type of the source to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        StringBuilder GetPayload(Guid workspaceID, enSourceType sourceType);
-
-        /*/// <summary>
-        /// Gets the contents of the resource with the given name and type (WorkflowService, Service, Source, ReservedService or *).
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="resourceName">The name of the resource to be queried.</param>
-        /// <param name="type">The type string: WorkflowService, Service, Source, ReservedService or *, to be queried.</param>
-        /// <param name="userRoles">The user roles to be queried.</param>
-        /// <param name="useContains"><code>true</code> if matching resource name's should contain the given <paramref name="resourceName"/>;
-        /// <code>false</code> if resource name's must exactly match the given <paramref name="resourceName"/>.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName or Type is missing from the request</exception>
-        StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true);*/
-
-        /// <summary>
         /// Loads the workspace.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
@@ -113,9 +81,7 @@ namespace Dev2.Runtime.Hosting
             where TServiceType : DynamicServiceObjectBase;
 
         List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource);
-
-        List<DynamicServiceObjectBase> GetDynamicObjects(Guid workspaceID);
-
+        
         List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources);
 
         List<Guid> GetDependants(Guid workspaceID, Guid? resourceId);
