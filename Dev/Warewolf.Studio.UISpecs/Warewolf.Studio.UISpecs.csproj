@@ -203,7 +203,6 @@
     <Compile Include="UIMap.Designer.cs">
       <DependentUpon>UIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Variable List Action Steps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
