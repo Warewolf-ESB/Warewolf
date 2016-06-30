@@ -1132,17 +1132,18 @@ namespace Dev2.Runtime.Hosting
             if (resource != null)
             {
                 //This is for migration from pre-v1 to V1. Remove once V1 is released.
-                var dbservice = "DbService";
-                if (CheckType<T>(resource, dbservice))
+                if (typeof(T) == typeof(DbService) && resource.ResourceType == "DbService")
+                {
                     return true;
-
-                dbservice = "PluginService";
-                if (CheckType<T>(resource, dbservice))
+                }
+                if (typeof(T) == typeof(PluginService) && resource.ResourceType == "PluginService")
+                {
                     return true;
-
-                dbservice = "WebService";
-                if (CheckType<T>(resource, dbservice))
+                }
+                if (typeof(T) == typeof(WebService) && resource.ResourceType == "WebService")
+                {
                     return true;
+                }
 
                 if (typeof(T) == typeof(Workflow) && resource.IsService)
                 {
@@ -1156,14 +1157,7 @@ namespace Dev2.Runtime.Hosting
             return false;
         }
 
-        private static bool CheckType<T>(IResource resource, string dbservice) where T : Resource, new()
-        {
-            if (typeof(T) == typeof(DbService) && resource.ResourceType == dbservice)
-            {
-                return true;
-            }
-            return false;
-        }
+     
 
         #endregion
 
@@ -1231,110 +1225,122 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true)
         {
             ResourceCatalogResult saveResult = null;
-            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
-            {
-                var fileManager = new TxFileManager();
-                using (TransactionScope tx = new TransactionScope())
-                {
-                    try
-                    {
-                        var resources = GetResources(workspaceID);
-                        var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
-                        if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
-                        {
-                            saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
-                            return;
-                        }
-                        if (resource.ResourcePath.EndsWith("\\"))
-                        {
-                            resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
-                        }
-                        var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                        var originalRes = resource.ResourcePath ?? "";
-                        int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-                        var resPath = resource.ResourcePath;
-                        if (indexOfName >= 0)
-                            resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
-                        var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
-
-                        resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
-
-                        #region Save to disk
-
-                        if (!Directory.Exists(directoryName))
-                        {
-                            Directory.CreateDirectory(directoryName);
-                        }
-
-
-
-                        if (_dev2FileWrapper.Exists(resource.FilePath))
-                        {
-                            // Remove readonly attribute if it is set
-                            var attributes = _dev2FileWrapper.GetAttributes(resource.FilePath);
-                            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                            {
-                                _dev2FileWrapper.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
-                            }
-                        }
-
-                        XElement xml = contents.ToXElement();
-                        xml = resource.UpgradeXml(xml, resource);
-                        if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
-                        {
-                            var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
-                            resource.ResourcePath = resourcePath;
-                            xml.SetElementValue("Category", resourcePath);
-
-                        }
-                        StringBuilder result = xml.ToStringBuilder();
-
-                        var signedXml = HostSecurityProvider.Instance.SignXml(result);
-
-                        lock (GetFileLock(resource.FilePath))
-                        {
-
-                            signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
-                        }
-
-                        #endregion
-
-                        #region Add to catalog
-
-                        var index = resources.IndexOf(resource);
-                        var updated = false;
-                        if (index != -1)
-                        {
-                            var existing = resources[index];
-                            if (!string.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                fileManager.Delete(existing.FilePath);
-                            }
-                            resources.RemoveAt(index);
-                            updated = true;
-                        }
-                        resource.GetInputsOutputs(xml);
-                        resource.ReadDataList(xml);
-                        resource.SetIsNew(xml);
-                        resource.UpdateErrorsBasedOnXML(xml);
-
-                        resources.Add(resource);
-
-                        #endregion
-
-                        RemoveFromResourceActivityCache(workspaceID, resource);
-                        AddOrUpdateToResourceActivityCache(workspaceID, resource);
-                        tx.Complete();
-                        saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
-                    }
-                    catch (Exception)
-                    {
-                        Transaction.Current.Rollback();
-                        throw;
-                    }
-                }
-            });
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>{PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting);});
             return saveResult;
+        }
+
+        private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
+        {
+            var fileManager = new TxFileManager();
+            using(TransactionScope tx = new TransactionScope())
+            {
+                try
+                {
+                    var resources = GetResources(workspaceID);
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    if(conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
+                    {
+                        saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
+                        return;
+                    }
+                    if(resource.ResourcePath.EndsWith("\\"))
+                    {
+                        resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
+                    }
+                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                    var originalRes = resource.ResourcePath ?? "";
+                    int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
+                    var resPath = resource.ResourcePath;
+                    if(indexOfName >= 0)
+                    {
+                        resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
+                    }
+                    var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
+
+                    resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
+
+                    #region Save to disk
+
+                    var xml = SaveToDisk(resource, contents, directoryName, resPath, fileManager);
+
+                    #endregion
+
+                    #region Add to catalog
+
+                    var updated = AddToCatalog(resource, resources, fileManager, xml);
+
+                    #endregion
+
+                    RemoveFromResourceActivityCache(workspaceID, resource);
+                    AddOrUpdateToResourceActivityCache(workspaceID, resource);
+                    tx.Complete();
+                    saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
+                }
+                catch(Exception)
+                {
+                    Transaction.Current.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        private static bool AddToCatalog(IResource resource, List<IResource> resources, TxFileManager fileManager, XElement xml)
+        {
+            var index = resources.IndexOf(resource);
+            var updated = false;
+            if(index != -1)
+            {
+                var existing = resources[index];
+                if(!string.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    fileManager.Delete(existing.FilePath);
+                }
+                resources.RemoveAt(index);
+                updated = true;
+            }
+            resource.GetInputsOutputs(xml);
+            resource.ReadDataList(xml);
+            resource.SetIsNew(xml);
+            resource.UpdateErrorsBasedOnXML(xml);
+
+            resources.Add(resource);
+            return updated;
+        }
+
+        private XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, string resPath, TxFileManager fileManager)
+        {
+            if(!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+
+            if(_dev2FileWrapper.Exists(resource.FilePath))
+            {
+                // Remove readonly attribute if it is set
+                var attributes = _dev2FileWrapper.GetAttributes(resource.FilePath);
+                if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    _dev2FileWrapper.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
+                }
+            }
+
+            XElement xml = contents.ToXElement();
+            xml = resource.UpgradeXml(xml, resource);
+            if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+            {
+                var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
+                resource.ResourcePath = resourcePath;
+                xml.SetElementValue("Category", resourcePath);
+            }
+            StringBuilder result = xml.ToStringBuilder();
+
+            var signedXml = HostSecurityProvider.Instance.SignXml(result);
+
+            lock(GetFileLock(resource.FilePath))
+            {
+                signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
+            }
+            return xml;
         }
 
         void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
