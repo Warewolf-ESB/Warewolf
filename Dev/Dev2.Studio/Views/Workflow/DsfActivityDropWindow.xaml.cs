@@ -11,9 +11,8 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
 using Dev2.Dialogs;
+using Warewolf.Studio.Core;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -23,42 +22,17 @@ namespace Dev2.Studio.Views.Workflow
     /// </summary>
     public partial class DsfActivityDropWindow : IDialog
     {
-        Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
         public DsfActivityDropWindow()
         {
             InitializeComponent();
             Owner = Application.Current.MainWindow;
-            ShowView();
-        }
-        public void ShowView()
-        {
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray),
-                Opacity = 0.5
-            };
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            Application.Current.MainWindow.Effect = effect;
-        }
-
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
         }
 
         void DsfActivityDropWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            RemoveBlackOutEffect();
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
     }
 }
