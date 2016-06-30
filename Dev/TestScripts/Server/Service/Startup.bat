@@ -20,6 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Check for admin **
+@echo off
 echo Administrative permissions required. Detecting permissions...
 REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
 IF EXIST %windir%\nircmd.exe (nircmd elevate net session >nul 2>&1) else (net session >nul 2>&1)
@@ -29,6 +30,7 @@ if %errorLevel% == 0 (
 	echo Failure: Current permissions inadequate.
 	exit 1
 )
+@echo on
 
 REM Init paths to Warewolf server under test
 IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"
@@ -55,6 +57,7 @@ IF %LoopCounter% EQU 60 exit 1
 rem wait for 10 seconds before trying again
 @echo %AgentName% is attempting number %LoopCounter% out of 60: Waiting 10 more seconds for server service to be ready...
 ping -n 10 -w 1000 192.0.2.2 > nul
+IF EXIST %windir%\nircmd.exe (nircmd elevate taskkill /im "Warewolf Server.exe" /T /F) else (taskkill /im "Warewolf Server.exe" /T /F)
 sc interrogate "Warewolf Server"
 goto WaitForServiceReadyLoopBody
 

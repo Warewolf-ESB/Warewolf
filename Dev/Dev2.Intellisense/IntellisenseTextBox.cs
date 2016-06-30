@@ -671,10 +671,13 @@ namespace Dev2.UI
 
         public IntellisenseTextBox()
         {
-            Observable.FromEventPattern(this, "TextChanged")
-                .Throttle(TimeSpan.FromMilliseconds(300), Scheduler.ThreadPool)
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(pattern => TheTextHasChanged());
+            var onservableThrottledEvent = Observable.FromEventPattern(this, "TextChanged")
+                .Throttle(TimeSpan.FromMilliseconds(300), Scheduler.ThreadPool);
+            if(SynchronizationContext.Current != null)
+            {
+                onservableThrottledEvent = onservableThrottledEvent.ObserveOn(SynchronizationContext.Current);
+            }
+            onservableThrottledEvent.Subscribe(pattern => TheTextHasChanged());
 
             Items = new ObservableCollection<IntellisenseProviderResult>();
             DefaultStyleKey = typeof(IntellisenseTextBox);

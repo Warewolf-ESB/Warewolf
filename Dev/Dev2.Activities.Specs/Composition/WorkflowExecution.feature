@@ -2714,12 +2714,16 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the "Create12" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug inputs as
 	  | File or Folder | Overwrite | Username | Password |
+	  | [[NoValue]] =  | True      |   ""       |    ""      |
 	   And the "Create12" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug outputs as    
 	   |                    |
+	   | [[res1]] = Failure |
 	  And the "DeleteFolder1" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug inputs as
-	  | Input Path    | Username | Password |
+	  | Input Path  | Username | Password |
+	  | [[NoValue]] = |   ""       |   ""       |
 	  And the "DeleteFolder1" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug outputs as    
 	  |                    |
+	  | [[res2]] = Failure |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn"t been assigned2
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2"
@@ -2741,13 +2745,17 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | # |                              |
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the "Create12" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug inputs as
-	  | File or Folder                           | Overwrite | Username | Password |
+	  | File or Folder           | Overwrite | Username | Password |
+	  | [[NoValue]]\copied00.txt =  | True      |    ""      |   ""       |
 	   And the "Create12" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug outputs as    
 	   |                    |
+	   | [[res1]] = Failure |
 	  And the "DeleteFolder1" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug inputs as
-	  | Input Path                               | Username | Password |
+	  | Input Path               | Username | Password |
+	  | [[NoValue]]\copied00.txt =  |    ""      |   ""       |
 	  And the "DeleteFolder1" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug outputs as    
 	  |                    |
+	  | [[res2]] = Failure |
 
 
 Scenario: Calculate testing variable values that hasn"t been assigned
@@ -3015,7 +3023,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | mm/dd/yy 12h:min am/pm |
 	  And the "Date and Time(2)" in Workflow "Utility - Date and Time" debug outputs as    
 	  |                       |
-	  | [[nowish]] = DateTime |  
+	  | [[nowishNewFormat]] = DateTime |  
 	  And the "Date and Time(3)" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input              | Input Format | Add Time |       | Output Format            |
 	  | Sunday, 23 July 78 | DW, dd MM yy | Minutes  | 46664 | mm/dd/yyyy 12h:min am/pm |	
@@ -3044,7 +3052,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	 | 2  | [[OpSystem]]  =     | Operating System    |
 	 | 3  | [[SP]] =            | Service Pack        |
 	 | 4  | [[Bit]] =           | 32/64 Bit           |
-	 | 5  | [[DatTimeFormat]] = | Date & Time Format  |
+	 | 5  | [[DateTimeFormat]] = | Date & Time Format  |
 	 | 6  | [[DiskAvailable]] = | Disk Available (GB) |
 	 | 7  | [[DiskTotal]]  =    | Disk Total (GB)     |
 	 | 8  | [[RAMAvailable]] =  | RAM Available (MB)  |
@@ -3063,7 +3071,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	   | 2  | [[OpSystem]]      =    String |
 	   | 3  | [[SP]]            =    String |
 	   | 4  | [[Bit]]           =    String |
-	   | 5  | [[DatTimeFormat]] =    String |
+	   | 5  | [[DateTimeFormat]] =    String |
 	   | 6  | [[DiskAvailable]] =    String |
 	   | 7  | [[DiskTotal]]     =    String |
 	   | 8  | [[RAMAvailable]]  =    String |
@@ -3264,22 +3272,6 @@ Scenario:Example Excuting File and Folder - Read File
 	  |                                         |
 	  | [[Logs]] = the contents of the log file |
 
-Scenario: Example Excuting File and Folder - Read Folder
-	  Given I have a workflow "File and Folder - Read Folder Test"
-	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Read Folder Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the "Read Folder1" in Workflow "File and Folder - Read Folder" debug outputs as 
-	  |                                                     |
-	  | [[users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
-	  And the "Read Folder 2" in Workflow "File and Folder - Read Folder" debug outputs as 
-	  |                                                               |
-	  | [[server(1).users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
-	  And the "Read Folder 3" in Workflow "File and Folder - Read Folder" debug outputs as 
-	  |                                                                           |
-	  | [[server(1).userfolders]] = c:\temp\WarewolfExamples\ReadFolder\sub\inner |
-
 Scenario: Example Excuting File and Folder - Rename
 	  Given I have a workflow "File and Folder - Rename Test"
 	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
@@ -3423,43 +3415,43 @@ Scenario:Example Executing Recordset - Sort Records example workflow
 	  | [[rec(7).set]] = a |            |
 	  | [[rec(8).set]] = b |            |
 	  | [[rec(9).set]] = 1 |            |
-	  | [[rec(10).set]] =z | Backwards  |
+	  | [[rec(10).set]] =z | Forward  |
 	  And the "Sort Records1" in Workflow "Recordset - Sort Records" debug outputs as  
-	  |                    |
-	  | [[rec(1).set]] = z |
-	  | [[rec(2).set]] = y |
-	  | [[rec(3).set]] = x |
-	  | [[rec(4).set]] = c |
-	  | [[rec(5).set]] = b |
-	  | [[rec(6).set]] = a |
-	  | [[rec(7).set]] = 3 |
-	  | [[rec(8).set]] = 2 |
-	  | [[rec(9).set]] = 1 |
-	  | [[rec(10).set]] =0 |
+	   |                    |
+	   | [[rec(1).set]] = 0 |
+	   | [[rec(2).set]] = 1 |
+	   | [[rec(3).set]] = 2 |
+	   | [[rec(4).set]] = 3 |
+	   | [[rec(5).set]] = a |
+	   | [[rec(6).set]] = b |
+	   | [[rec(7).set]] = c |
+	   | [[rec(8).set]] = x |
+	   | [[rec(9).set]] = y |
+	   | [[rec(10).set]] =z |	  
 	  And the "Sort Records2" in WorkFlow "Recordset - Sort Records" debug inputs as
 	   | Sort Field         | Sort Order |
-	   | [[rec(1).set]] = z |            |
-	   | [[rec(2).set]] = y |            |
-	   | [[rec(3).set]] = x |            |
-	   | [[rec(4).set]] = c |            |
-	   | [[rec(5).set]] = b |            |
-	   | [[rec(6).set]] = a |            |
-	   | [[rec(7).set]] = 3 |            |
-	   | [[rec(8).set]] = 2 |            |
-	   | [[rec(9).set]] = 1 |            |
-	   | [[rec(10).set]] =0 | Forward    |
+	   | [[rec(1).set]] = 0 |            |
+	   | [[rec(2).set]] = 1 |            |
+	   | [[rec(3).set]] = 2 |            |
+	   | [[rec(4).set]] = 3 |            |
+	   | [[rec(5).set]] = a |            |
+	   | [[rec(6).set]] = b |            |
+	   | [[rec(7).set]] = c |            |
+	   | [[rec(8).set]] = x |            |
+	   | [[rec(9).set]] = y |            |
+	   | [[rec(10).set]] =z | Backwards    |
 	  And the "Sort Records2" in Workflow "Recordset - Sort Records" debug outputs as  
-	  |                    |
-	  | [[rec(1).set]] = 0 |
-	  | [[rec(2).set]] = 1 |
-	  | [[rec(3).set]] = 2 |
-	  | [[rec(4).set]] = 3 |
-	  | [[rec(5).set]] = a |
-	  | [[rec(6).set]] = b |
-	  | [[rec(7).set]] = c |
-	  | [[rec(8).set]] = x |
-	  | [[rec(9).set]] = y |
-	  | [[rec(10).set]] =z |
+	 |                    |
+	 | [[rec(1).set]] = z |
+	 | [[rec(2).set]] = y |
+	 | [[rec(3).set]] = x |
+	 | [[rec(4).set]] = c |
+	 | [[rec(5).set]] = b |
+	 | [[rec(6).set]] = a |
+	 | [[rec(7).set]] = 3 |
+	 | [[rec(8).set]] = 2 |
+	 | [[rec(9).set]] = 1 |
+	 | [[rec(10).set]] = 0 |
 
 Scenario: Example Executing Recordset - Unique Records example workflow
 	  Given I have a workflow "Recordset - Unique Records Test"
@@ -3483,7 +3475,10 @@ Scenario: Example Executing Recordset - Unique Records example workflow
 	   | 1 | [[Result(1).example2]] = 1 |
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
-     
+
+
+@ignore     
+#The example has to be updated to name the tools uniquely so we can correctly identify there inputs and outputs
 Scenario: Example Executing Loop Constructs - For Each example workflow
 	  Given I have a workflow "Loop Constructs - For Each Test"
 	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
@@ -3596,13 +3591,13 @@ Scenario: Example Executing Scripting - Script example workflow
   | JavaScript | String = String |
   And the "Script2" in Workflow "Scripting - Script" debug outputs as    
   |                |
-  | [[Result]] = 1 | 
+  | [[Result]] = 7 | 
   And the "Script3" in WorkFlow "Scripting - Script" debug inputs as	
   | Language | Script          |
   | Python   | String = String |
   And the "Script3" in Workflow "Scripting - Script" debug outputs as    
   |                  |
-  | [[Result]] = one | 
+  | [[Result]] = not one or two | 
 
 
 Scenario: Gather System tool throws error when debug with 2 variables in one row 
@@ -3888,17 +3883,6 @@ Scenario: Workflow with Performance counters
 	| Total Errors                                      | 4     |
 	| Request Per Second                                | x     |
 	| Count of requests for workflows which don’t exist | 9     |
-
-Scenario: Time Zone Changes
-	  Given I have a workflow "TimeZoneChangeTest"
-	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "TimeZoneChangeTest" is executed
-	Then the workflow execution has "NO" error
-	And the "TimeZoneChange" in Workflow "TimeZoneChangeTest" debug outputs as
-	  |                      |
-	  | [[Result]] = Pass |
 
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
@@ -4200,3 +4184,22 @@ Scenario Outline: Database SqlDB  service using scalar outputs
 Examples: 
     | WorkflowName              | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBServiceMailsSqlScalar | SqlEmail    | [[name]]     | [[email]]     | NO           |
+
+#PostgreSQL
+Scenario Outline: Database PostgreSql Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a postgre tool using "<ServiceName>" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  | Prefix           | s             | Id                  | <nameVariable>  |
+	  |                  |               | Name                | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
+	  |                                      |
+	  | [[countries(1).Id]] = 1              |
+	  | [[countries(1).Name]] = United States|
+	  | [[countries(2).Id]] = 2              |
+	  | [[countries(2).Name]] = South Africa |
+Examples: 
+    | WorkflowName             | ServiceName   | nameVariable        | emailVariable         | errorOccured |
+    | PostgreSqlDBGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |

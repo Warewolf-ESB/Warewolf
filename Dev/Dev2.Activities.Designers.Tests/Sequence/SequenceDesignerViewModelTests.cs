@@ -12,16 +12,12 @@ using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
-using Dev2.Core.Tests.Environments;
-using Dev2.Models;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -451,47 +447,6 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Assert Results-------------------------
             bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_SetModelItemForServiceTypes")]
-        public void SequenceDesignerViewModel_SetModelItemForServiceTypes_DataHaveDataContextResourceModel_NothingAddedToDataObject()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            SetupEnvironmentRepo(Guid.Empty);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = "DbService", EnvironmentId = Guid.Empty });
-            //------------Execute Test---------------------------
-            bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(added);
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
-
-        }
-
-        static void SetupEnvironmentRepo(Guid environmentId)
-        {
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
-            Mock<IResourceRepository> mockResRepo = new Mock<IResourceRepository>();
-            mockResRepo.Setup(d => d.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new TestDataWithContexResourceModel().DataContext);
-            mockEnvironment.Setup(c => c.ResourceRepository).Returns(mockResRepo.Object);
-            GetEnvironmentRepository(mockEnvironment);
-        }
-
-        private static void GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
-        {
-
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
-            // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentRepository(repo);
-            // ReSharper restore ObjectCreationAsStatement
-            repo.ActiveEnvironment = mockEnvironment.Object;
         }
 
         static ModelItem CreateModelItem()

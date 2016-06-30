@@ -126,7 +126,7 @@ namespace Warewolf.Studio.Views
             explorerItemViewModels.Apply(a =>
             {
                 if (a.ResourcePath == path) 
-                    a.IsResourceUnchecked = true; 
+                    a.IsResourceChecked = true; 
                 
             });
             var explorerTreeItems = ((IDeployViewModel)DataContext).Source.SelectedItems.ToList();

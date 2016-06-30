@@ -127,7 +127,8 @@
                             MouseUp="ExplorerTree_OnMouseUp"
                             NodeExitedEditMode="ExplorerTree_OnNodeExitedEditMode"
                             NodeLineVisibility="Hidden"
-                            SelectedDataItems="{Binding SelectedDataItems}">
+                            SelectedDataItems="{Binding SelectedDataItems}"
+                            customControls:DataPresenterHelpers.FilterText="{Binding ElementName=SearchTextBox, Path=Text}">
                 <ig:DragDropManager.DropTarget>
                     <ig:DropTarget IsDropTarget="False"/>
                 </ig:DragDropManager.DropTarget>
@@ -143,7 +144,6 @@
                 <ig:XamDataTree.GlobalNodeLayouts>
                     <ig:NodeLayout Key="Environments"
                                    DisplayMemberPath="DisplayName"
-                                   
                                    IsExpandedMemberPath="IsExpanded"
                                    TargetTypeName="IEnvironmentViewModel">
                         <ig:NodeLayout.ItemTemplate>
@@ -174,129 +174,112 @@
                                                                     Visibility="{Binding Path=Data.CanCreateWorkflowService,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource Explorer-WorkflowService}" />
+                                                            <Image Style="{StaticResource NewServiceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewServerSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="ServerSource"
                                                                     Header="New Server Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateServerSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource System-Logo-Create}" />
+                                                            <Image Style="{StaticResource NewServerSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDataBaseSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="DbSource"
                                                                     Header="New Database Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateDbSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource MicrosoftSQLSource}" />
+                                                            <Image Style="{StaticResource NewDataBaseSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewWebSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="WebSource"
                                                                     Header="New Web Service Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateWebSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource WebMethodsSource}" />
+                                                            <Image Style="{StaticResource NewWebSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="PluginSource"
                                                                     Header="New Plugin Source"
-                                                                    Visibility="{Binding Path=Data.CanCreatePluginSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource DotNetDllSource}" />
+                                                            <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewEmailSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="EmailSource"
                                                                     Header="New Email Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateEmailSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource EmailSourceImageLogo}" />
+                                                            <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-
                                                     <ig:XamMenuItem Name="NewExchangeSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="ExchangeSource"
                                                                     Header="New Exchange Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateExchangeSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource EmailSourceImageLogo}" />
+                                                            <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-                                                    <ig:XamMenuItem Name="NewRabbitMQSource"
+                                                    <ig:XamMenuItem Name="NewRabbitMqSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="RabbitMQSource"
                                                                     Header="New RabbitMQ Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    Visibility="{Binding Path=Data.CanCreateSource, 
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12" Height="12" Source="{StaticResource RabbitMqSource}" />
+                                                            <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDropboxSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="DropboxSource"
                                                                     Header="New Dropbox Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateDropboxSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource DropboxSource}" />
+                                                            <Image Style="{StaticResource NewDropboxSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-
                                                     <ig:XamMenuItem Name="NewSharepointSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="SharepointServerSource"
                                                                     Header="New Sharepoint Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSharePointSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource SharepointSource}" />
+                                                            <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSharePointSource, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
+
                                                     <ig:XamMenuItem Name="NewFolder"
                                                                     Command="{Binding Path=Data.CreateFolderCommand}"
                                                                     CommandParameter="Folder"
-                                                                    Header="New Folder"
+                                                                    Header="{x:Static languages:Core.NewFolderLabel}"
                                                                     InputGestureText="[Ctrl+Shift+F]"
                                                                     Visibility="{Binding Path=Data.CanCreateFolder,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
+
                                                     <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
@@ -322,14 +305,8 @@
                                     </ig:ContextMenuService.Manager>
                                     <Button Grid.Row="0"
                                             Grid.Column="0"
-                                            Width="20"
-                                            Height="20"
-                                            Background="Transparent"
-                                            BorderBrush="Transparent"
-                                            BorderThickness="0"
                                             Command="{Binding Path=Data.RefreshCommand}"
-                                            Padding="-4"
-                                            Style="{StaticResource ExplorerTreeButtonStyle}">
+                                            Style="{StaticResource ExplorerTreeEnvironmentButtonStyle}">
                                         <Grid>
                                             <Image Width="18"
                                                    Height="18"
@@ -392,7 +369,7 @@
                                    TargetTypeName="IExplorerItemViewModel"
                                    Visibility="{Binding Path=Data.IsVisible,
                                                         Converter={StaticResource BoolToVisibilityConverter}}">
-                        
+
                         <ig:NodeLayout.EditorTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -501,9 +478,7 @@
                                                                     Visibility="{Binding Path=Data.CanCreateWorkflowService,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource Explorer-WorkflowService}" />
+                                                            <Image Style="{StaticResource NewServiceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                         <ig:XamMenuItem.InputBindings>
                                                             <KeyBinding Key="W"
@@ -515,108 +490,95 @@
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="ServerSource"
                                                                     Header="New Server Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateServerSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource System-Logo-Create}" />
+                                                            <Image Style="{StaticResource NewServerSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDataBaseSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="DbSource"
                                                                     Header="New Database Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateDbSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource MicrosoftSQLSource}" />
+                                                            <Image Style="{StaticResource NewDataBaseSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewWebSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="WebSource"
                                                                     Header="New Web Service Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateWebSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource WebMethodsSource}" />
+                                                            <Image Style="{StaticResource NewWebSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewPluginSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="PluginSource"
                                                                     Header="New Plugin Source"
-                                                                    Visibility="{Binding Path=Data.CanCreatePluginSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource DotNetDllSource}" />
+                                                            <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewEmailSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="EmailSource"
                                                                     Header="New Email Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateEmailSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource EmailSourceImageLogo}" />
+                                                            <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewExchangeSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="ExchangeSource"
                                                                     Header="New Exchange Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateExchangeSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource EmailSourceImageLogo}" />
+                                                            <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewRabbitMqSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="RabbitMQSource"
                                                                     Header="New RabbitMQ Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    Visibility="{Binding Path=Data.CanCreateSource, 
+                                                                                         Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12" Height="12" Source="{StaticResource RabbitMqSource}" />
+                                                            <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDropboxSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="DropboxSource"
                                                                     Header="New Dropbox Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateDropboxSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource DropboxSource}" />
+                                                            <Image Style="{StaticResource NewDropboxSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewSharepointSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="SharepointServerSource"
                                                                     Header="New Sharepoint Source"
-                                                                    Visibility="{Binding Path=Data.CanCreateSharePointSource,
+                                                                    Visibility="{Binding Path=Data.CanCreateSource,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource SharepointSource}" />
+                                                            <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSharePointSource, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                                    <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSource, Converter={StaticResource BoolToVisibilityConverter}}" />
+
                                                     <ig:XamMenuItem Name="NewFolderFromItem"
                                                                     Command="{Binding Path=Data.CreateFolderCommand}"
                                                                     CommandParameter="Folder"
@@ -650,7 +612,9 @@
                                                                             Icon="TrashOutlined" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
+
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}" />
+
                                                     <ig:XamMenuItem Name="Deploy"
                                                                     Command="{Binding Path=Data.DeployCommand}"
                                                                     CommandParameter="{Binding Path=Data}"
@@ -687,9 +651,7 @@
                                                                     Visibility="{Binding Path=Data.CanShowVersions,
                                                                                          Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12"
-                                                                   Height="12"
-                                                                   Source="{StaticResource Explorer-Permission-Menu}" />
+                                                            <Image Style="{StaticResource ShowHideVersionsIcon}"/>
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="Rollback"
@@ -809,7 +771,6 @@
                                                         </Style>
                                                     </Image.Style>
                                                 </Image>
-
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>

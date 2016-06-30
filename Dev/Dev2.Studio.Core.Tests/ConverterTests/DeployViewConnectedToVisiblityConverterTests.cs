@@ -10,7 +10,6 @@
 
 using System;
 using System.Windows;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.Interfaces;
@@ -34,8 +33,7 @@ namespace Dev2.Core.Tests.ConverterTests
             Mock<IEnvironmentConnection> mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(m => m.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockEnvironmentConnection.Setup(m => m.IsConnected).Returns(false);
-            var studioRepo = new Mock<IStudioResourceRepository>().Object;
-            IEnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object,studioRepo);
+            IEnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object);
 
             //Act
             var actual = (Visibility)converter.Convert(environmentModel, typeof(bool), null, null);
@@ -53,7 +51,7 @@ namespace Dev2.Core.Tests.ConverterTests
             Mock<IEnvironmentConnection> mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(m => m.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockEnvironmentConnection.Setup(m => m.IsConnected).Returns(true);
-            IEnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object, new Mock<IStudioResourceRepository>().Object);
+            IEnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object);
 
             //Act
             var actual = (Visibility)converter.Convert(environmentModel, typeof(bool), null, null);

@@ -25,9 +25,9 @@ namespace Warewolf.Studio.ViewModels
 
         public DeployStatsViewerViewModel(IExplorerViewModel destination)
         {
-            VerifyArgument.IsNotNull("destination", destination);
+            VerifyArgument.IsNotNull(@"destination", destination);
             _destination = destination;
-            Status = "";
+            Status = @"";
         }
 
         #region Implementation of IDeployStatsViewerViewModel
@@ -155,47 +155,47 @@ namespace Warewolf.Studio.ViewModels
               
                     Connectors = items.Count(a =>
                                             !string.IsNullOrEmpty(a.ResourceType)
-                                            && a.ResourceType.Contains("Service")
-                                            && a.ResourceType != "WorkflowService"
-                                            && a.ResourceType != "ReservedService");
+                                            && a.ResourceType.Contains(@"Service")
+                                            && a.ResourceType != @"WorkflowService"
+                                            && a.ResourceType != @"ReservedService");
 
 
 
                     Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                            && a.ResourceType == "WorkflowService");
+                                            && a.ResourceType == @"WorkflowService");
 
                     Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                             && IsSource(a.ResourceType));
-                    Unknown = items.Count(a => a.ResourceType == "Unknown" || string.IsNullOrEmpty(a.ResourceType));
+                    Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
                 
                 if (_destination.SelectedEnvironment != null)
                 {
                     var explorerItemViewModels = _destination.SelectedEnvironment.AsList();
                     var conf = from b in explorerItemViewModels
                                join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
-                               where b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder"
+                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder"
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
                     _new = items.Except(explorerItemViewModels);
                     var ren = from b in explorerItemViewModels
-                              join explorerTreeItem in items on new { b.ResourceId, b.ResourcePath } equals new { explorerTreeItem.ResourceId, explorerTreeItem.ResourcePath }
-                              where (b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder")
+                              join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
+                              where (b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder")
                               select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
                     var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
                     if (errors.Any())
                     {
 
-                        RenameErrors = "The following resources have the same path and name on the source and destination server but different Ids";
+                        RenameErrors = @"The following resources have the same path and name on the source and destination server but different Ids";
                         foreach (var error in errors)
                         {
-                            RenameErrors += string.Format("\n{0}-->{1}", error.SourceName, error.DestinationName);
+                            RenameErrors += $"\n{error.SourceName}-->{error.DestinationName}";
                         }
-                        RenameErrors += "\nPlease rename either the source or destination before continueing";
+                        RenameErrors += $"\nPlease rename either the source or destination before continueing";
                     }
                     else
                     {
-                        RenameErrors = "";
+                        RenameErrors = @"";
                     }                    
                 }
                 else
@@ -220,10 +220,7 @@ namespace Warewolf.Studio.ViewModels
 
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
-            if (CalculateAction != null)
-            {
-                CalculateAction();
-            }
+            CalculateAction?.Invoke();
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
@@ -232,8 +229,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var explorerTreeItems = _new.Where(a => a.ResourceType != "Folder").ToList();
-                var sum = Sources + Unknown + Connectors + Services;
+                var explorerTreeItems = _new.Where(a => a.ResourceType != @"Folder").ToList();
                 return explorerTreeItems;
             }
         }
@@ -243,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
         {
             //return (res >= "DbSource" && res <= "ServerSource") || (res == "DropboxSource");
             // FIX?
-            return res.Contains("Source");
+            return res.Contains(@"Source");
         }
         #endregion
     }
