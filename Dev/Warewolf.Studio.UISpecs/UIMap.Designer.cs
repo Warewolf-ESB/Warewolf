@@ -207,6 +207,32 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Assign_Small_View_Row1_Variable_Textbox_Exists - Use 'Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Assign_Small_View_Row1_Variable_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit variableTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.VariableTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues.VariableTextboxExists, variableTextbox.Exists, "Assign small view row 1 variable textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable - Use 'Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable()
+        {
+            #region Variable Declarations
+            WpfEdit variableTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.VariableTextbox;
+            #endregion
+
+            // Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues.VariableTextboxText, variableTextbox.Text, "Assign small view row1 variable textbox does not contain text somevariable");
+        }
+        
+        /// <summary>
         /// Assert_Base_Conversion_Exists_OnDesignSurface - Use 'Assert_Base_Conversion_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Base_Conversion_Exists_OnDesignSurface()
@@ -3385,6 +3411,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Assign_Small_View_Row1_Variable_Textbox
+        /// </summary>
+        public void Click_Assign_Small_View_Row1_Variable_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit variableTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.VariableTextbox;
+            #endregion
+
+            // Click 'UI_TextBox_AutoID' text box
+            Mouse.Click(variableTextbox, new Point(38, 9));
+        }
+        
+        /// <summary>
         /// Click_Cancel_Service_Picker_Dialog
         /// </summary>
         public void Click_Cancel_Service_Picker_Dialog()
@@ -5216,6 +5255,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable - Use 'Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable()
+        {
+            #region Variable Declarations
+            WpfEdit variableTextbox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.VariableTextbox;
+            #endregion
+
+            // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
+            variableTextbox.Text = this.Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams.VariableTextboxText;
+        }
+        
+        /// <summary>
         /// Open_Assign_Tool_Large_View
         /// </summary>
         public void Open_Assign_Tool_Large_View()
@@ -6998,6 +7050,30 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues = new Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues == null))
+                {
+                    this.mAssert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues = new Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues();
+                }
+                return this.mAssert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues;
             }
         }
         
@@ -10157,6 +10233,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams
+        {
+            get
+            {
+                if ((this.mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams == null))
+                {
+                    this.mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams = new Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams();
+                }
+                return this.mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams;
+            }
+        }
+        
         public virtual Open_Assign_Tool_Qvi_Large_ViewParams Open_Assign_Tool_Qvi_Large_ViewParams
         {
             get
@@ -10400,6 +10488,10 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Assign_Object_Small_View_Row1_Variable_Textbox_ExistsExpectedValues mAssert_Assign_Object_Small_View_Row1_Variable_Textbox_ExistsExpectedValues;
         
         private Assert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues;
+        
+        private Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues mAssert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues;
         
         private Assert_Base_Conversion_Exists_OnDesignSurfaceExpectedValues mAssert_Base_Conversion_Exists_OnDesignSurfaceExpectedValues;
         
@@ -10927,6 +11019,8 @@ namespace Warewolf.Studio.UISpecs
         
         private DebugOutput_SettingsButton_ExistsExpectedValues mDebugOutput_SettingsButton_ExistsExpectedValues;
         
+        private Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams;
+        
         private Open_Assign_Tool_Qvi_Large_ViewParams mOpen_Assign_Tool_Qvi_Large_ViewParams;
         
         private Open_Base_Conversion_Tool_Qvi_Large_ViewParams mOpen_Base_Conversion_Tool_Qvi_Large_ViewParams;
@@ -11157,6 +11251,36 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'QuickVariableInputContent' custom control equals 'True'
         /// </summary>
         public bool QuickVariableInputLargeViewExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Assign_Small_View_Row1_Variable_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
+        /// </summary>
+        public bool VariableTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'UI_TextBox_AutoID' text box equals '[[SomeVariable]]'
+        /// </summary>
+        public string VariableTextboxText = "[[SomeVariable]]";
         #endregion
     }
     
@@ -15112,6 +15236,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of '' button equals 'True'
         /// </summary>
         public bool SettingsButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
+        /// </summary>
+        public string VariableTextboxText = "[[SomeVariable]]";
         #endregion
     }
     
@@ -19501,6 +19640,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public SmallView2 SmallView
+        {
+            get
+            {
+                if ((this.mSmallView == null))
+                {
+                    this.mSmallView = new SmallView2(this);
+                }
+                return this.mSmallView;
+            }
+        }
+        
         public WpfToggleButton OpenQuickVariableInpToggleButton
         {
             get
@@ -19536,9 +19687,179 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private SmallView2 mSmallView;
+        
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
         
         private WpfCustom mQuickVariableInputLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SmallView2 : WpfCustom
+    {
+        
+        public SmallView2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public DataGrid2 DataGrid
+        {
+            get
+            {
+                if ((this.mDataGrid == null))
+                {
+                    this.mDataGrid = new DataGrid2(this);
+                }
+                return this.mDataGrid;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DataGrid2 mDataGrid;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataGrid2 : WpfTable
+    {
+        
+        public DataGrid2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Row12 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row12(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row12 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row12 : WpfRow
+    {
+        
+        public Row12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public VariableCell4 VariableCell
+        {
+            get
+            {
+                if ((this.mVariableCell == null))
+                {
+                    this.mVariableCell = new VariableCell4(this);
+                }
+                return this.mVariableCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariableCell4 mVariableCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableCell4 : WpfCell
+    {
+        
+        public VariableCell4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public VariableTextbox1 VariableTextbox
+        {
+            get
+            {
+                if ((this.mVariableTextbox == null))
+                {
+                    this.mVariableTextbox = new VariableTextbox1(this);
+                }
+                return this.mVariableTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private VariableTextbox1 mVariableTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class VariableTextbox1 : WpfEdit
+    {
+        
+        public VariableTextbox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_TextBox_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText VariableTextboxFloatingText
+        {
+            get
+            {
+                if ((this.mVariableTextboxFloatingText == null))
+                {
+                    this.mVariableTextboxFloatingText = new WpfText(this);
+                    #region Search Criteria
+                    this.mVariableTextboxFloatingText.SearchProperties[WpfText.PropertyNames.Name] = "[[Variable1]]";
+                    this.mVariableTextboxFloatingText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mVariableTextboxFloatingText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mVariableTextboxFloatingText;
         #endregion
     }
     
