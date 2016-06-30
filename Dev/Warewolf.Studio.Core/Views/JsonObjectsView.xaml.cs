@@ -2,22 +2,22 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
+using Dev2.Common.Interfaces;
+using Warewolf.Studio.Core;
 
 namespace Dev2.Studio.Core.Views
 {
     /// <summary>
     /// Interaction logic for JsonObjectsView.xaml
     /// </summary>
-    public partial class JsonObjectsView
+    public partial class JsonObjectsView: IJsonObjectsView
     {
-        Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
 
         public JsonObjectsView()
         {
             InitializeComponent();
-            AddBlackOutEffect();
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
         }
 
         void JsonObjectsView_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -28,37 +28,20 @@ namespace Dev2.Studio.Core.Views
 
         void JsonObjectsView_OnClosed(object sender, EventArgs e)
         {
-            RemoveBlackOutEffect();
-        }
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
-        }
-        void AddBlackOutEffect()
-        {
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray),
-                Opacity = 0.5
-            };
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            Application.Current.MainWindow.Effect = effect;
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
         void DoneButton_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
             Close();
+        }
+
+        public void ShowJsonString(string jsonString)
+        {
+            ResponseTextbox.Text = jsonString;
+            Height = 280;
+            ShowDialog();
         }
     }
 }
