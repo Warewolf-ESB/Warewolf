@@ -4,9 +4,15 @@
 	I want a tool that assigns data to variables
 	
 @NeedsBlankWorkflow
-Scenario: Drag toolbox multiassign onto a new workflow creates an assign tool with small view on the design surface
+Scenario: Multiassign on the Design Surface
 	When I "Drag_Toolbox_MultiAssign_Onto_DesignSurface"
 	Then I "Assert_MultiAssign_Exists_OnDesignSurface"
+
+#@NeedsMultiAssignSmallViewToolOnTheDesignSurface
+#Scenario: Enter Text into Multi Assign Tool Small View Grid Column 1 Row 1 Textbox has text in text property
+	Given I "Assert_Assign_Small_View_Row1_Variable_Textbox_Exists"
+	When I "Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable"
+	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
 
 #@NeedsMultiAssignSmallViewToolOnTheDesignSurface
 #Scenario: Double Clicking Multi Assign Tool Small View on the Design Surface Opens Large View

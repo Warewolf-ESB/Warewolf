@@ -3,10 +3,9 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
@@ -15,23 +14,14 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class SplashPage : ISplashView
     {
-        Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
         bool _isDialog;
 
         public SplashPage()
         {
             if (_isDialog)
             {
-                var content = Application.Current.MainWindow.Content as Grid;
-                _blackoutGrid = new Grid
-                {
-                    Background = new SolidColorBrush(Colors.DarkGray),
-                    Opacity = 0.5
-                };
-                if (content != null)
-                {
-                    content.Children.Add(_blackoutGrid);
-                }
+                PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
             }
             try
             {
@@ -47,7 +37,7 @@ namespace Warewolf.Studio.Views
         {
             if (_isDialog)
             {
-                RemoveBlackOutEffect();
+                PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
                 Close();
             }
             else
@@ -56,38 +46,19 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
-        }
+        
 
         public void Show(bool isDialog)
         {
             _isDialog = isDialog;
             if (_isDialog)
             {
-                var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-                var content = Application.Current.MainWindow.Content as Grid;
-                _blackoutGrid = new Grid
-                {
-                    Background = new SolidColorBrush(Colors.DarkGray),
-                    Opacity = 0.5
-                };
-                if (content != null)
-                {
-                    content.Children.Add(_blackoutGrid);
-                }
-                Application.Current.MainWindow.Effect = effect;
+                PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
                 ShowDialog();
             }
             else
             {
-                base.Show();
+                Show();
             }
         }
 
@@ -101,7 +72,7 @@ namespace Warewolf.Studio.Views
         {
             if (e.Key == Key.Escape)
             {
-                RemoveBlackOutEffect();
+                PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
                 Close();
             }
         }
