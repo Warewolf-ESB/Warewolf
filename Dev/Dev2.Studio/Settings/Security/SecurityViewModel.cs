@@ -19,6 +19,7 @@ using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Dialogs;
@@ -28,6 +29,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
@@ -72,12 +74,12 @@ namespace Dev2.Settings.Security
         public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
         {
 
-            VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
-            VerifyArgument.IsNotNull("parentWindow", parentWindow);
-            VerifyArgument.IsNotNull("environment", environment);
+            VerifyArgument.IsNotNull(@"directoryObjectPicker", directoryObjectPicker);
+            VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
+            VerifyArgument.IsNotNull(@"environment", environment);
 
             _resourcePicker =(createfunc?? CreateResourcePickerDialog)();
-            _directoryObjectPicker = directoryObjectPicker;
+            _directoryObjectPicker = directoryObjectPicker;            
             _parentWindow = parentWindow;
             _environment = environment;
             _directoryObjectPicker.AllowedObjectTypes = ObjectTypes.BuiltInGroups | ObjectTypes.Groups;
@@ -114,7 +116,7 @@ namespace Dev2.Settings.Security
             set { SetValue(IsServerHelpVisibleProperty, value); }
         }
 
-        public static readonly DependencyProperty IsServerHelpVisibleProperty = DependencyProperty.Register("IsServerHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsServerHelpVisiblePropertyChanged));
+        public static readonly DependencyProperty IsServerHelpVisibleProperty = DependencyProperty.Register(@"IsServerHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsServerHelpVisiblePropertyChanged));
 
         static void IsServerHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -127,7 +129,7 @@ namespace Dev2.Settings.Security
             set { SetValue(IsResourceHelpVisibleProperty, value); }
         }
 
-        public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register("IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
+        public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register(@"IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -136,7 +138,7 @@ namespace Dev2.Settings.Security
 
         public virtual void Save(SecuritySettingsTO securitySettings)
         {
-            VerifyArgument.IsNotNull("securitySettings", securitySettings);
+            VerifyArgument.IsNotNull(@"securitySettings", securitySettings);
 
             securitySettings.WindowsGroupPermissions.Clear();
             Copy(ServerPermissions, securitySettings.WindowsGroupPermissions);
@@ -210,7 +212,7 @@ namespace Dev2.Settings.Security
             }
 
             permission.ResourceID = resourceModel.ResourceId;
-            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType, resourceModel.ResourcePath, resourceModel.ResourceName);
+            permission.ResourceName = $"{resourceModel.ResourceType}\\{resourceModel.ResourcePath}\\{resourceModel.ResourceName}";
         }
 
         IExplorerTreeItem PickResource(WindowsGroupPermission permission)
@@ -232,7 +234,7 @@ namespace Dev2.Settings.Security
             {
                 return hasResult ? _resourcePicker.SelectedResource : null;
             }
-            throw  new Exception("Server does not exist");
+            throw  new Exception(@"Server does not exist");
         }
 
         void PickWindowsGroup(object obj)
@@ -269,7 +271,29 @@ namespace Dev2.Settings.Security
 
         public virtual DialogResult ShowDirectoryObjectPickerDialog(IWin32Window parentWindow)
         {
-            return _directoryObjectPicker.ShowDialog(parentWindow);
+            try
+            {
+                return _directoryObjectPicker.ShowDialog(parentWindow);
+            }
+            catch(Exception e)
+            {
+                var popupController = CustomContainer.Get<Common.Interfaces.Studio.Controller.IPopupController>();
+                if (popupController != null)
+                {
+                    var popupMessage = new PopupMessage
+                    {
+                        Description = Core.Error_Opening_Windows_Group_Picker,
+                        Image = MessageBoxImage.Error,
+                        Buttons = MessageBoxButton.OK,
+                        IsError = true,
+                        Header = @"Error"
+
+                    };
+                    popupController.Show(popupMessage);
+                }
+                Dev2Logger.Error(@"Error opening group picker: ",e);
+            }
+            return DialogResult.Cancel;
         }
 
         public virtual DirectoryObject[] GetSelectedObjectsFromDirectoryObjectPickerDialog()
@@ -286,7 +310,7 @@ namespace Dev2.Settings.Security
         {
             IsDirty = true;
             UpdateOverridingPermission(sender as WindowsGroupPermission, args.PropertyName);
-            if(args.PropertyName == "WindowsGroup" || args.PropertyName == "ResourceName")
+            if(args.PropertyName == @"WindowsGroup" || args.PropertyName == @"ResourceName")
             {
                 var permission = (WindowsGroupPermission)sender;
 
@@ -334,11 +358,11 @@ namespace Dev2.Settings.Security
 
             SwitchAdminPermissionsOff(windowsGroupPermission, propertyName);
             SwitchContributePermissionsOff(windowsGroupPermission, propertyName);
-            if(windowsGroupPermission.Administrator && propertyName == "Administrator")
+            if(windowsGroupPermission.Administrator && propertyName == @"Administrator")
             {
                 UpdateForAdministratorPermissions(windowsGroupPermission);
             }
-            if(windowsGroupPermission.Contribute && propertyName == "Contribute")
+            if(windowsGroupPermission.Contribute && propertyName == @"Contribute")
             {
                 UpdateForContributePermissions(windowsGroupPermission);
             }
@@ -346,8 +370,8 @@ namespace Dev2.Settings.Security
 
         static void SwitchContributePermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if(!windowsGroupPermission.View && propertyName == "View"
-               || !windowsGroupPermission.Execute && propertyName == "Execute")
+            if(!windowsGroupPermission.View && propertyName == @"View"
+               || !windowsGroupPermission.Execute && propertyName == @"Execute")
             {
                 windowsGroupPermission.Contribute = false;
             }
@@ -355,9 +379,9 @@ namespace Dev2.Settings.Security
 
         static void SwitchAdminPermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
-            if(!windowsGroupPermission.DeployTo && propertyName == "DeployTo"
-               || !windowsGroupPermission.DeployFrom && propertyName == "DeployFrom"
-               || !windowsGroupPermission.Contribute && propertyName == "Contribute")
+            if(!windowsGroupPermission.DeployTo && propertyName == @"DeployTo"
+               || !windowsGroupPermission.DeployFrom && propertyName == @"DeployFrom"
+               || !windowsGroupPermission.Contribute && propertyName == @"Contribute")
             {
                 windowsGroupPermission.Administrator = false;
             }
@@ -385,7 +409,7 @@ namespace Dev2.Settings.Security
 
         ActivityDesignerToggle CreateHelpToggle(DependencyProperty targetProperty)
         {
-            var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", "HelpToggle", this, targetProperty
+            var toggle = ActivityDesignerToggle.Create(@"ServiceHelp", @"Close Help", @"ServiceHelp", @"Open Help", @"HelpToggle", this, targetProperty
                 );
 
             return toggle;

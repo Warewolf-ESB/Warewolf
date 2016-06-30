@@ -2356,6 +2356,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature..
+        /// </summary>
+        public static string Error_Opening_Windows_Group_Picker {
+            get {
+                return ResourceManager.GetString("Error_Opening_Windows_Group_Picker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email to respond to.
         /// </summary>
         public static string ExceptionViewEmailAddressWatermark {
