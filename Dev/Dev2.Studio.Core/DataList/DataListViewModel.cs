@@ -15,7 +15,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 using Caliburn.Micro;
@@ -31,7 +30,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -643,12 +641,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
             return accList;
-        }
-
-        public void InitializeDataListViewModel()
-        {
-            if (Resource == null) return;
-            InitializeDataListViewModel(Resource);
         }
 
         private IList<string> RefreshTries(List<IScalarItemModel> toList, IList<string> accList)
