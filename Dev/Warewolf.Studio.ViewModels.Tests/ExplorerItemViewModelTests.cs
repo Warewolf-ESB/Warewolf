@@ -124,63 +124,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestOpenCommandDbService()
-        {
-            //arrange
-            _target.ResourceType = "DbService";
-            //(ResourceType == ResourceType.DbService PluginService WebService)
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.OpenCommand.Execute(null);
-            Assert.IsTrue(_target.OpenCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(It.IsAny<Guid>()), Times.Never);
-            _shellViewModelMock.Verify(it => it.SetActiveServer(It.IsAny<IServer>()), Times.Never);
-            _shellViewModelMock.Verify(it => it.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void TestOpenCommandPluginService()
-        {
-            //arrange
-            _target.ResourceType = "PluginService";
-            //(ResourceType == ResourceType.DbService PluginService WebService)
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.OpenCommand.Execute(null);
-            Assert.IsTrue(_target.OpenCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(It.IsAny<Guid>()), Times.Never);
-            _shellViewModelMock.Verify(it => it.SetActiveServer(It.IsAny<IServer>()), Times.Never);
-            _shellViewModelMock.Verify(it => it.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void TestOpenCommandWebService()
-        {
-            //arrange
-            _target.ResourceType = "WebService";
-            //(ResourceType == ResourceType.DbService PluginService WebService)
-            _target.ResourceId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.OpenCommand.Execute(null);
-            Assert.IsTrue(_target.OpenCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(It.IsAny<Guid>()), Times.Never);
-            _shellViewModelMock.Verify(it => it.SetActiveServer(It.IsAny<IServer>()), Times.Never);
-            _shellViewModelMock.Verify(it => it.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()), Times.Never);
-        }
-
-        [TestMethod]
         public void TestDebugCommand()
         {
             //arrange
@@ -214,17 +157,17 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.ResourcePath = Guid.NewGuid().ToString();
-            const string ResourceType = "DbService";
+            const string resourceType = "DbService";
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
             //act
-            _target.NewCommand.Execute(ResourceType);
-            Assert.IsTrue(_target.NewCommand.CanExecute(ResourceType));
+            _target.NewCommand.Execute(resourceType);
+            Assert.IsTrue(_target.NewCommand.CanExecute(resourceType));
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
-            _shellViewModelMock.Verify(it => it.NewResource(ResourceType.ToString(), _target.ResourcePath));
+            _shellViewModelMock.Verify(it => it.NewResource(resourceType.ToString(), _target.ResourcePath));
         }
 
         [TestMethod]
@@ -376,19 +319,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.OpenVersion(_target.Parent.ResourceId, _target.VersionInfo));
         }
 
-        [TestMethod]
-        public void TestOpenVersionCommandDbService()
-        {
-            //arrange
-            _target.ResourceType = "DbService";
-
-            //act
-            _target.OpenVersionCommand.Execute(null);
-            Assert.IsTrue(_target.OpenVersionCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.OpenVersion(It.IsAny<Guid>(), It.IsAny<IVersionInfo>()), Times.Never);
-        }
 
         [TestMethod]
         public void TestExpandCommandResourceTypeFolderSingleClick()
@@ -566,14 +496,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.IsFalse(_target == null);
             // ReSharper disable once EqualExpressionComparison
-            Assert.IsTrue(_target == _target);
+            Assert.IsTrue(Equals(_target, _target));
             Assert.IsTrue(_target == otherSameId);
             Assert.IsFalse(_target == otherDifferentId);
-            Assert.IsFalse(_target == otherDifferentType);
+            Assert.IsFalse(ReferenceEquals(_target, otherDifferentType));
 
             Assert.IsTrue(_target != null);
             // ReSharper disable once EqualExpressionComparison
-            Assert.IsFalse(_target != _target);
+            Assert.IsFalse(!Equals(_target, _target));
             Assert.IsFalse(_target != otherSameId);
             Assert.IsTrue(_target != otherDifferentId);
 #pragma warning disable 252,253
@@ -941,6 +871,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childMockMessage.SetupGet(it => it.ResourceType).Returns("Message");
             var childMockFolder = new Mock<IExplorerItemViewModel>();
             childMockFolder.SetupGet(it => it.ResourceType).Returns("Folder");
+            childMockFolder.SetupGet(it => it.IsFolder).Returns(true);
             childMockFolder.SetupGet(it => it.ChildrenCount).Returns(2);
             var childMockServer = new Mock<IExplorerItemViewModel>();
             childMockServer.SetupGet(it => it.ResourceType).Returns("Server");
@@ -954,7 +885,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var childrenCount = _target.ChildrenCount;
 
             //assert
-            Assert.AreEqual(3, childrenCount);
+            Assert.AreEqual(4, childrenCount);
         }
 
         #endregion Test properties
@@ -1207,7 +1138,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var child = new Mock<IExplorerItemViewModel>();
             bool actionRun = false;
             _target.Children.Add(child.Object);
-            Action<IExplorerItemViewModel> action = (a) => actionRun = ReferenceEquals(_target, a);
+            Action<IExplorerItemViewModel> action = a => actionRun = ReferenceEquals(_target, a);
             //act
             _target.Apply(action);
             //assert
@@ -1224,7 +1155,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.SetupGet(it => it.IsVisible).Returns(true);
             child.SetupGet(it => it.ResourceType).Returns("Folder");
             _target.Children.Add(child.Object);
-            Func<IExplorerItemViewModel, bool> filter = (item) => false;
+            Func<IExplorerItemViewModel, bool> filter = item => false;
             _target.PropertyChanged += (sender, e) => propertyChangedRaised = e.PropertyName == "Children";
             //act
             _target.Filter(filter);
@@ -1242,7 +1173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceName = Guid.NewGuid().ToString();
             _target.ResourceType = "Folder";
 #pragma warning disable 252,253
-            Func<IExplorerItemViewModel, bool> filter = (item) => item == _target;
+            Func<IExplorerItemViewModel, bool> filter = item => item == _target;
 #pragma warning restore 252,253
             _target.PropertyChanged += (sender, e) => propertyChangedRaised = e.PropertyName == "Children";
             //act
@@ -1258,7 +1189,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
             var child2 = new Mock<IExplorerItemViewModel>();
-            child.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel>() { child2.Object });
+            child.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel> { child2.Object });
             _target.Children.Add(child.Object);
             //act
             var result = _target.AsList();
@@ -1308,7 +1239,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_target.CanEdit);
             Assert.IsTrue(_target.CanView);
-            Assert.IsTrue(_target.CanRename); ;
+            Assert.IsTrue(_target.CanRename);
             Assert.IsTrue(_target.CanDelete);
             Assert.IsFalse(_target.CanCreateFolder);
             Assert.IsTrue(_target.CanDeploy);
@@ -1338,7 +1269,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_target.CanEdit);
             Assert.IsTrue(_target.CanView);
-            Assert.IsTrue(_target.CanRename); ;
+            Assert.IsTrue(_target.CanRename);
             Assert.IsTrue(_target.CanDelete);
             Assert.IsFalse(_target.CanCreateFolder);
             Assert.IsTrue(_target.CanDeploy);
