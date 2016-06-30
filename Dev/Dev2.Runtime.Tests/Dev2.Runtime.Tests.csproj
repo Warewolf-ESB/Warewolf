@@ -588,6 +588,12 @@
     <Folder Include="Security\Data\" />
     <Folder Include="WF\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\DbSource.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\OauthSource.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
