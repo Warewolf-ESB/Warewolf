@@ -24,7 +24,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.Views;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,15 +53,11 @@ namespace Dev2.Core.Tests
 
         void Setup()
         {
-
-            //_mockMediatorRepo = new Mock<IMediatorRepo>();
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
-            //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
-            //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
             _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
-            //Mock<IMainViewModel> _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
@@ -297,7 +292,6 @@ namespace Dev2.Core.Tests
             // Mock Setup            
 
             //Juries 8810 TODO
-            //mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
             _dataListViewModel.AddMissingDataListItems(parts);
             int beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
@@ -1178,7 +1172,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar3000", _dataListViewModel.ScalarCollection[3000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar5000", _dataListViewModel.ScalarCollection[5000].DisplayName, "Sort datalist with large list failed");
-            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), string.Format("Sort datalist took longer than 500 milliseconds to sort 5000 variables. Took {0}", endTime));
+            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 5000 variables. Took {endTime}");
 
             SortCleanup();
         }
