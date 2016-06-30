@@ -78,7 +78,7 @@ namespace Dev2.Runtime.Hosting
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
         static volatile ResourceCatalog _instance;
-        static readonly object SyncRoot = new Object();
+        static readonly object SyncRoot = new object();
         public Action<IResource> ResourceSaved;
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages;
         /// <summary>
@@ -413,51 +413,6 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        /// <summary>
-        /// Gets the contents of the resources with the given source type.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="sourceType">The type of the source to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        public StringBuilder GetPayload(Guid workspaceID, enSourceType sourceType)
-        {
-            var workspaceResources = GetResources(workspaceID);
-            var resources = workspaceResources.FindAll(r => r.ResourceType == sourceType.ToString());
-            var result = ToPayload(resources);
-            return result;
-        }
-
-        /* /// <summary>
-         /// Gets the contents of the resource with the given name and type (WorkflowService, Service, Source, ReservedService or *).
-         /// </summary>
-         /// <param name="workspaceID">The workspace ID to be queried.</param>
-         /// <param name="resourceName">The name of the resource to be queried.</param>
-         /// <param name="type">The type string: WorkflowService, Service, Source, ReservedService or *, to be queried.</param>
-         /// <param name="userRoles">The user roles to be queried.</param>
-         /// <param name="useContains"><code>true</code> if matching resource name's should contain the given <paramref name="resourceName"/>;
-         /// <code>false</code> if resource name's must exactly match the given <paramref name="resourceName"/>.</param>
-         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName and Type are missing from the request</exception>
-         public StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true)
-         {
-             if (string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
-             {
-                 throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
-             }
-
-             if (string.IsNullOrEmpty(resourceName) || resourceName == "*")
-             {
-                 resourceName = string.Empty;
-             }
-
-
-             var workspaceResources = GetResources(workspaceID);
-             var resources = useContains ? GetResourcesBasedOnType(type, workspaceResources, r => r.ResourceName.Contains(resourceName))
-                                         : GetResourcesBasedOnType(type, workspaceResources, r => r.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-             var result = ToPayload(resources);
-             return result;
-         }*/
-
         public IList<Resource> GetResourceList(Guid workspaceId, string guidCsv, string type)
         {
             if (guidCsv == null)
@@ -786,11 +741,8 @@ namespace Dev2.Runtime.Hosting
             {
                 if (resourceName == "*")
                 {
-                    return new ResourceCatalogResult
-                    {
-                        Status = ExecStatus.NoWildcardsAllowed,
-                        Message = "<Result>Delete resources does not accept wildcards.</Result>."
-                    };
+                    var noWildcardsAllowedhResult = ResourceCatalogResultBuilder.CreateNoWildcardsAllowedhResult("<Result>Delete resources does not accept wildcards.</Result>.");
+                    return noWildcardsAllowedhResult;
                 }
 
                 if (string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
@@ -803,11 +755,8 @@ namespace Dev2.Runtime.Hosting
                 Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
                 {
                     {
-                        0, new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.NoMatch,
-                           Message = $"<Result>{type} '{resourceName}' was not found.</Result>"
-                        }
+                     0,ResourceCatalogResultBuilder.CreateNoMatchResult($"<Result>{type} '{resourceName}' was not found.</Result>")
+
                     },
                     {
                         1, DeleteImpl(workspaceID, resources, workspaceResources, deleteVersions)
@@ -818,12 +767,8 @@ namespace Dev2.Runtime.Hosting
                     var resourceCatalogResult = commands[resources.Count];
                     return resourceCatalogResult;
                 }
-                return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.DuplicateMatch,
-                    Message = $"<Result>Multiple matches found for {type} '{resourceName}'.</Result>"
-                };
 
+                return ResourceCatalogResultBuilder.CreateDuplicateMatchResult($"<Result>Multiple matches found for {type} '{resourceName}'.</Result>");
             }
         }
 
@@ -848,12 +793,7 @@ namespace Dev2.Runtime.Hosting
                         var resourceCatalogResult = commands[resources.Count];
                         return resourceCatalogResult;
                     }
-                    return new ResourceCatalogResult
-                    {
-                        Status = ExecStatus.DuplicateMatch,
-                        Message = $"<Result>Multiple matches found for {type} '{resourceID}'.</Result>"
-                    };
-
+                    return ResourceCatalogResultBuilder.CreateDuplicateMatchResult($"<Result>Multiple matches found for {type} '{resourceID}'.</Result>");
                 }
             }
             catch (Exception err)
@@ -868,11 +808,8 @@ namespace Dev2.Runtime.Hosting
             Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
             {
                 {
-                    0, new ResourceCatalogResult
-                    {
-                        Status = ExecStatus.NoMatch,
-                        Message = $"<Result>{type} '{resourceID}' was not found.</Result>"
-                    }
+                    0,
+                    ResourceCatalogResultBuilder.CreateNoMatchResult($"<Result>{type} '{resourceID}' was not found.</Result>")
                 },
                 { 1, DeleteImpl(workspaceID, resources, workspaceResources, deleteVersions) },
             };
@@ -919,11 +856,7 @@ namespace Dev2.Runtime.Hosting
                 }
             }
             RemoveFromResourceActivityCache(workspaceID, resource);
-            return new ResourceCatalogResult
-            {
-                Status = ExecStatus.Success,
-                Message = "Success"
-            };
+            return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
         }
 
         void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
@@ -981,7 +914,7 @@ namespace Dev2.Runtime.Hosting
             {
                 filesToCopyFromSource.AddRange(sourceFiles
                     // ReSharper disable SimplifyLinqExpression
-                    .Where(sf => !destinationFiles.Any(df => String.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
+                    .Where(sf => !destinationFiles.Any(df => string.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
                 // ReSharper restore SimplifyLinqExpression
             }
 
@@ -994,7 +927,7 @@ namespace Dev2.Runtime.Hosting
             {
                 filesToDeleteFromDestination.AddRange(destinationFiles
                     // ReSharper disable SimplifyLinqExpression
-                    .Where(sf => !sourceFiles.Any(df => String.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
+                    .Where(sf => !sourceFiles.Any(df => string.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
                 // ReSharper restore SimplifyLinqExpression
             }
 
@@ -1058,12 +991,6 @@ namespace Dev2.Runtime.Hosting
             var result = new List<DynamicServiceObjectBase>();
             AddResourceAsDynamicServiceObject(result, resource);
             return result;
-        }
-
-        public List<DynamicServiceObjectBase> GetDynamicObjects(Guid workspaceID)
-        {
-            var resources = GetResources(workspaceID);
-            return GetDynamicObjects(resources);
         }
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources)
@@ -1315,11 +1242,7 @@ namespace Dev2.Runtime.Hosting
                         var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
                         if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                         {
-                            saveResult = new ResourceCatalogResult
-                            {
-                                Status = ExecStatus.DuplicateMatch,
-                                Message = string.Format(ErrorResource.TypeConflict, conflicting.ResourceType)
-                            };
+                            saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
                             return;
                         }
                         if (resource.ResourcePath.EndsWith("\\"))
@@ -1383,7 +1306,7 @@ namespace Dev2.Runtime.Hosting
                         if (index != -1)
                         {
                             var existing = resources[index];
-                            if (!String.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
+                            if (!string.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 fileManager.Delete(existing.FilePath);
                             }
@@ -1402,11 +1325,7 @@ namespace Dev2.Runtime.Hosting
                         RemoveFromResourceActivityCache(workspaceID, resource);
                         AddOrUpdateToResourceActivityCache(workspaceID, resource);
                         tx.Complete();
-                        saveResult = new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.Success,
-                            Message = $"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'"
-                        };
+                        saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
                     }
                     catch (Exception)
                     {
@@ -1578,10 +1497,7 @@ namespace Dev2.Runtime.Hosting
                         }
                         return false;
                     });
-                    if (firstOrDefault != null)
-                    {
-                        firstOrDefault.Remove();
-                    }
+                    firstOrDefault?.Remove();
                 });
 
             }
@@ -1769,11 +1685,7 @@ namespace Dev2.Runtime.Hosting
             {
                 if (!resourcesToUpdate.Any())
                 {
-                    return new ResourceCatalogResult
-                    {
-                        Status = ExecStatus.Fail,
-                        Message = $"{ErrorResource.FailedToFindResource} '{resourceID}' to '{newName}'"
-                    };
+                    return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToFindResource} '{resourceID}' to '{newName}'");
                 }
 
                 {
@@ -1783,29 +1695,17 @@ namespace Dev2.Runtime.Hosting
                     var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
                     if (renameResult.Status != ExecStatus.Success)
                     {
-                        return new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.Fail,
-                            Message =
-                                $"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'"
-                        };
+                        return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
                     }
                 }
             }
             catch (Exception err)
             {
                 Dev2Logger.Error(err);
-                return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Fail,
-                    Message = $"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'"
-                };
+                return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
+                
             }
-            return new ResourceCatalogResult
-            {
-                Status = ExecStatus.Success,
-                Message = $"{"Renamed Resource"} '{resourceID}' to '{newName}'"
-            };
+            return ResourceCatalogResultBuilder.CreateSuccessResult($"{"Renamed Resource"} '{resourceID}' to '{newName}'");
         }
 
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
@@ -1943,11 +1843,7 @@ namespace Dev2.Runtime.Hosting
             catch (Exception err)
             {
                 Dev2Logger.Error("Rename Category error", err);
-                return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Fail,
-                    Message = $"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>"
-                };
+                return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
             }
         }
 
@@ -1955,11 +1851,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (resourcesToUpdate.Count == 0)
             {
-                return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.NoMatch,
-                    Message = $"<CompilerMessage>No Resources found in '{oldCategory}'</CompilerMessage>"
-                };
+                return ResourceCatalogResultBuilder.CreateNoMatchResult($"<CompilerMessage>No Resources found in '{oldCategory}'</CompilerMessage>");
             }
             return PerformUpdate(workspaceID, oldCategory, newCategory, resourcesToUpdate);
         }
@@ -1977,26 +1869,16 @@ namespace Dev2.Runtime.Hosting
                         hasError = true;
                     }
                 }
-                var failureResult = new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Fail,
-                    Message = $"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>"
-                };
-                var successResult = new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Success,
-                    Message = $"<CompilerMessage>{"Updated Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>"
-                };
+
+                var failureResult = ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
+                var successResult = ResourceCatalogResultBuilder.CreateSuccessResult($"<CompilerMessage>{"Updated Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
+
                 return hasError ? failureResult : successResult;
             }
             catch (Exception err)
             {
                 Dev2Logger.Error("Rename Category error", err);
-                return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Fail,
-                    Message = $"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>"
-                };
+                return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>{"Failed to Category"} from '{oldCategory}' to '{newCategory}'</CompilerMessage>");
             }
         }
 
