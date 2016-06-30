@@ -68,7 +68,7 @@ namespace Dev2.Runtime.Hosting
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         StringBuilder GetPayload(Guid workspaceID, enSourceType sourceType);
 
-        /// <summary>
+        /*/// <summary>
         /// Gets the contents of the resource with the given name and type (WorkflowService, Service, Source, ReservedService or *).
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
@@ -79,7 +79,7 @@ namespace Dev2.Runtime.Hosting
         /// <code>false</code> if resource name's must exactly match the given <paramref name="resourceName"/>.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName or Type is missing from the request</exception>
-        StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true);
+        StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true);*/
 
         /// <summary>
         /// Loads the workspace.

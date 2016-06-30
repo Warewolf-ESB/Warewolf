@@ -285,6 +285,7 @@
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
     <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
+    <Compile Include="Hosting\ResourceCatalogResultBuilder.cs" />
     <Compile Include="Hosting\ResourceUpgrade.cs" />
     <Compile Include="Hosting\ResourceUpgrader.cs" />
     <Compile Include="Hosting\ResourceUpgraderFactory.cs" />
