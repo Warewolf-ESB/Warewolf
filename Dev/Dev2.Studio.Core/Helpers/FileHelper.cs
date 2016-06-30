@@ -145,12 +145,6 @@ namespace Dev2.Studio.Core.Helpers
         {
             Dev2Logger.Info("");
 
-            if(String.IsNullOrEmpty(uri))
-            {
-                Dev2Logger.Info("Uri is empty, an exception is thrown");
-                throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
-            }
-
             using(var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
             {
                 string serverLogData = client.UploadString(uri, "");

@@ -37,6 +37,8 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
 using Dev2.Studio.Core;
+using Microsoft.Practices.Prism.Commands;
+using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -60,33 +62,34 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly IEnvironmentRepository _environmentRepository;
         readonly IPopupController _popup;
         readonly object _syncContext = new object();
+        ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
+
+        IDebugState _lastStep;
+        DebugStatus _debugStatus;        
+        ICommand _expandAllCommand;
+        ICommand _openItemCommand;
+        ICommand _selectAllCommand;
+        ICommand _showOptionsCommand;
 
         int _depthMin;
         int _depthMax;
-        bool _continueDebugDispatch;
-        bool _dispatchLastDebugState;
-        IDebugState _lastStep;
-        ICommand _expandAllCommand;
-        bool _expandAllMode = true;
-        bool _highlightError = true;
-        bool _isRebuildingTree;
-        ICommand _openItemCommand;
-        ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
         string _searchText = string.Empty;
+        bool _expandAllMode = true;
+        bool _highlightError = true;        
+        bool _showDebugStatus = true;
         bool _showDuration = true;
         bool _showInputs = true;
-        bool _showOptions;
-        ICommand _showOptionsCommand;
         bool _showOutputs = true;
         bool _showServer = true;
         bool _showTime = true;
         bool _showType = true;
+        bool _showOptions;
         bool _showVersion;
-        bool _skipOptionsCommandExecute;
-        DebugStatus _debugStatus;
-        bool _showDebugStatus = true;
-        ICommand _selectAllCommand;
         bool _allDebugReceived;
+        bool _isRebuildingTree;
+        bool _skipOptionsCommandExecute;
+        bool _continueDebugDispatch;
+        bool _dispatchLastDebugState;
 
         #endregion
 
@@ -117,8 +120,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion
 
         #region Properties
-
-        // BUG 9735 - 2013.06.22 - TWR : added pending/content count properties
+        
         public int PendingItemCount => _pendingItems.Count;
         public int ContentItemCount => _contentItems.Count;
 
@@ -479,13 +481,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if(item == null)
+            if (item == null)
             {
                 Dev2Logger.Debug("Debug line item is null, did not proceed");
                 return;
             }
 
-            if(string.IsNullOrEmpty(item.MoreLink))
+            if (string.IsNullOrEmpty(item.MoreLink))
             {
                 Dev2Logger.Debug("Link is empty");
             }
@@ -497,11 +499,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     Dev2Logger.Debug(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
                     ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Error(ex);
                     if (ex.Message.Contains("The remote name could not be resolved"))
-                        _popup.Show("Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.", "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false);
+                        _popup.Show(
+                            "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
+                            "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
+                            false,
+                            true, false, false);
                     else
                         throw;
                 }
@@ -517,7 +523,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion public methods
-
+        
         #region Commands
 
         public ICommand OpenItemCommand => _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem));
@@ -589,7 +595,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ///     Expands all nodes.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        void ExpandAll(object payload)
+        public void ExpandAll(object payload)
         {
             var node = payload as IDebugTreeViewItemViewModel;
 
@@ -673,21 +679,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region AddItemToTree
 
         // BUG 9735 - 2013.06.22 - TWR : refactored
-        void AddItemToTree(IDebugState content)
+        public void AddItemToTree(IDebugState content)
         {
-            if(_contentItems.Any(a=>a.DisconnectedID==content.DisconnectedID))
-            {
+            if (_contentItems.Any(a => a.DisconnectedID == content.DisconnectedID))
                 return;
-            }
             if (content.StateType == StateType.Duration)
             {
                 var item = _contentItems.FirstOrDefault(a => a.WorkSurfaceMappingId == content.WorkSurfaceMappingId);
-           
                 if (item != null)
-                {
                     item.EndTime = content.EndTime;
-                    //RebuildTree();
-                }
+                //RebuildTree();
             }
             else
             {
@@ -755,7 +756,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        void AddItemToTreeImpl(IDebugState content)
+        private void AddItemToTreeImpl(IDebugState content)
         {
 
             if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished || _allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
@@ -903,7 +904,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         static void ClearSelection()
         {
-            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { SelectionType = ActivitySelectionType.None });
+            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs
+            {
+                SelectionType = ActivitySelectionType.None
+            });
         }
     }
 }
