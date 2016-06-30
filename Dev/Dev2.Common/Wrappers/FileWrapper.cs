@@ -54,5 +54,15 @@ namespace Dev2.Common.Wrappers
         {
             File.WriteAllBytes(path, contents);
         }
+
+        public FileAttributes GetAttributes(string path)
+        {
+            return File.GetAttributes(path);
+        }
+
+        public void SetAttributes(string path, FileAttributes fileAttributes)
+        {
+            File.SetAttributes(path, fileAttributes);
+        }
     }
 }

@@ -4,15 +4,30 @@
 	I want a tool that assigns data to variables
 	
 @NeedsBlankWorkflow
-Scenario: Drag toolbox multiassign onto a new workflow creates an assign tool with small view on the design surface
+Scenario: Multiassign UI Test
 	When I "Drag_Toolbox_MultiAssign_Onto_DesignSurface"
 	Then I "Assert_MultiAssign_Exists_OnDesignSurface"
 
 #@NeedsMultiAssignSmallViewToolOnTheDesignSurface
-#Scenario: Double Clicking Multi Assign Tool Small View on the Design Surface Opens Large View
+#Scenario: Enter Text into Multi Assign Tool Small View Grid Column 1 Row 1 Textbox has text in text property
 	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
+	And I "Assert_Assign_Small_View_Row1_Variable_Textbox_Exists"
+	When I "Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable"
+	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
+
+#@NeedsMultiAssignSmallViewToolOnTheDesignSurface
+#Scenario: Double Clicking Multi Assign Tool Small View on the Design Surface Opens Large View
+#	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
 	When I "Open_Assign_Tool_Large_View"
 	Then I "Assert_Assign_Large_View_Exists_OnDesignSurface"
+
+#@NeedsMultiAssignLargeViewToolOnTheDesignSurface
+#Scenario: Validating Multi Assign Tool with a variable entered into the Large View on the Design Surface Passes Validation and Variable is in the Variable list
+#	Given I "Assert_Assign_Large_View_Exists_OnDesignSurface"
+	Given I "Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable"
+	When I "Close_Assign_Tool_Large_View"
+	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
+	And I "Assert_VariableList_Scalar_Row1_Textbox_Equals_SomeVariable"
 
 #@NeedsMultiAssignLargeViewOnTheDesignSurface
 #Scenario: Click Assign Tool QVI Button Opens Qvi
