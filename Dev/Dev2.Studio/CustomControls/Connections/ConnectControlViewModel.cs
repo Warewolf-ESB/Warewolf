@@ -39,7 +39,6 @@ namespace Dev2.CustomControls.Connections
         string _labelText;
         readonly bool _bindToActiveEnvironment;
         int _selectedServerIndex;
-        readonly Dispatcher _dispatcher;
         IConnectControlEnvironment _selectedServer;
         readonly IMainViewModel _mainViewModel;
         readonly IEnvironmentRepository _environmentRepository;
@@ -89,7 +88,6 @@ namespace Dev2.CustomControls.Connections
             _activeAction = ActiveAction;
             if(Application.Current != null)
             {
-                _dispatcher = Application.Current.Dispatcher;
             }
 
             IsEnabled = true;
@@ -415,10 +413,7 @@ namespace Dev2.CustomControls.Connections
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion INotifyPropertyChanged

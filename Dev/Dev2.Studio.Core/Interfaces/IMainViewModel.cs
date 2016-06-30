@@ -28,8 +28,6 @@ namespace Dev2.Interfaces
         void SetActiveEnvironment(IEnvironmentModel activeEnvironment);
         bool IsWorkFlowOpened(IContextualResourceModel resource);
         void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath);
-        void ClearToolboxSelection();
-        void UpdatePane(IContextualResourceModel model);
 
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
 

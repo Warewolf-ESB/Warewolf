@@ -11,21 +11,17 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Network;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Threading;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.ConnectionHelpers
 {
     public class ConnectControlSingleton : IConnectControlSingleton
     {
-        readonly IStudioResourceRepository _studioResourceRepository;
-        readonly IAsyncWorker _asyncWorker;
         readonly IEnvironmentModelProvider _serverProvider;
         static IConnectControlSingleton _instance;
         readonly IEnvironmentRepository _environmentRepository;
@@ -33,22 +29,14 @@ namespace Dev2.ConnectionHelpers
         public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         public event EventHandler<ConnectedServerChangedEvent> AfterReload; 
-        public static IConnectControlSingleton Instance => _instance ?? (_instance = new ConnectControlSingleton(StudioResourceRepository.Instance,
-            new AsyncWorker(),
-            ServerProvider.Instance,
+        public static IConnectControlSingleton Instance => _instance ?? (_instance = new ConnectControlSingleton(ServerProvider.Instance,
             EnvironmentRepository.Instance));
 
-        public ConnectControlSingleton(IStudioResourceRepository studioResourceRepository,
-                                         IAsyncWorker asyncWorker,
-                                         IEnvironmentModelProvider serverProvider,
+        public ConnectControlSingleton(IEnvironmentModelProvider serverProvider,
                                          IEnvironmentRepository environmentRepository)
         {
-            VerifyArgument.IsNotNull("studioResourceRepository", studioResourceRepository);
-            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("serverProvider", serverProvider);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            _studioResourceRepository = studioResourceRepository;
-            _asyncWorker = asyncWorker;
             _serverProvider = serverProvider;
             _environmentRepository = environmentRepository;
             Servers = new ObservableCollection<IConnectControlEnvironment>();
@@ -69,12 +57,11 @@ namespace Dev2.ConnectionHelpers
                     Disconnect(selectedServer.EnvironmentModel);
                 }
 
-                _studioResourceRepository.RemoveEnvironment(environmentId);
 
                 if(ConnectedServerChanged != null)
                 {
                     var localhost = Servers.FirstOrDefault(s => s.EnvironmentModel.IsLocalHost);
-                    Guid localhostId = localhost == null ? Guid.Empty : localhost.EnvironmentModel.ID;
+                    Guid localhostId = localhost?.EnvironmentModel.ID ?? Guid.Empty;
                     ConnectedServerChanged(this, new ConnectedServerChangedEvent(localhostId));
                 }
             }
@@ -87,7 +74,7 @@ namespace Dev2.ConnectionHelpers
             {
                 var selectedServer = Servers[selectedIndex];
                 var environmentModel = selectedServer.EnvironmentModel;
-                if (environmentModel != null && environmentModel.Connection != null)
+                if (environmentModel?.Connection != null)
                 {
                     var serverUri = environmentModel.Connection.AppServerUri;
                     var auth = environmentModel.Connection.AuthenticationType;
@@ -95,17 +82,9 @@ namespace Dev2.ConnectionHelpers
                     var updatedServer = _environmentRepository.All().FirstOrDefault(e => e.ID == environmentModel.ID);
                     if (updatedServer != null && (!serverUri.Equals(updatedServer.Connection.AppServerUri) || auth != updatedServer.Connection.AuthenticationType))
                     {
-                        if (ConnectedStatusChanged != null)
-                        {
-                            ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.ID, false));
-                        }
+                        ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.ID, false));
 
-                        if (selectedServer.IsConnected)
-                        {
-                            _studioResourceRepository.Disconnect(environmentModel.ID);
-                        }
                         selectedServer.EnvironmentModel = updatedServer;
-                        _studioResourceRepository.Load(environmentModel.ID, _asyncWorker, ResourcesLoadedHandler);
                     }
                 }
             }
@@ -157,10 +136,7 @@ namespace Dev2.ConnectionHelpers
 
         public void SetConnectionState(Guid environmentId, ConnectionEnumerations.ConnectedState connectedState)
         {
-            if(ConnectedStatusChanged != null)
-            {
-                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(connectedState, environmentId, false));
-            }
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(connectedState, environmentId, false));
         }
 
         public void ResourcesLoadedHandler(Guid environmentId)
@@ -184,25 +160,14 @@ namespace Dev2.ConnectionHelpers
 
         private void Disconnect(IEnvironmentModel environment)
         {
-            if(ConnectedStatusChanged != null)
-            {
-                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.ID, false));
-            }
-            _studioResourceRepository.Disconnect(environment.ID);
-            if(ConnectedStatusChanged != null)
-            {
-                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.ID, true));
-            }
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.ID, false));
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.ID, true));
         }
 
         private void Connect(IConnectControlEnvironment selectedServer)
         {
             var environmentId = selectedServer.EnvironmentModel.ID;
-            if(ConnectedStatusChanged != null)
-            {
-                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentId, false));
-            }
-            _studioResourceRepository.Load(environmentId, _asyncWorker, ResourcesLoadedHandler);
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentId, false));
         }
 
         ConnectControlEnvironment CreateNewRemoteServerEnvironment()
@@ -228,10 +193,7 @@ namespace Dev2.ConnectionHelpers
                     AllowEdit = !server.IsLocalHost
                 });
             }
-            if(AfterReload != null)
-            {
-                AfterReload(this, new ConnectedServerChangedEvent(Guid.Empty));
-            }
+            AfterReload?.Invoke(this, new ConnectedServerChangedEvent(Guid.Empty));
         }
         void LoadServers()
         {

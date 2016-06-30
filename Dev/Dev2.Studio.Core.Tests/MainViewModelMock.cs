@@ -9,10 +9,7 @@
 */
 
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.ConnectionHelpers;
-using Dev2.CustomControls.Connections;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -22,8 +19,8 @@ namespace Dev2.Core.Tests
 {
     public class MainViewModelMock : MainViewModel
     {
-        public MainViewModelMock(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IVersionChecker versionChecker, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton, IConnectControlViewModel connectControlViewModel, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
-            : base(eventPublisher, asyncWorker, environmentRepository, versionChecker, createDesigners, browserPopupController, studioResourceRepository:studioResourceRepository)
+        public MainViewModelMock(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
+            : base(eventPublisher, asyncWorker, environmentRepository, versionChecker, createDesigners, browserPopupController)
         {
         }
 

@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 if(values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }
                 var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID);
                 CompressedExecuteMessage message = new CompressedExecuteMessage();

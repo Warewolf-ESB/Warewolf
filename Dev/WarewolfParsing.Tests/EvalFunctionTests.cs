@@ -180,7 +180,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(NullValueInVariableException))]
         public void Eval_RecSet_Index_NonExistent()
         {
             //------------Setup for test--------------------------
@@ -513,7 +513,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(NullValueInVariableException))]
         public void Eval_PositionsRecSet_ComplexScalar()
         {
             //------------Setup for test--------------------------
@@ -831,7 +831,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[array(1)]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@array(1)]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("bob", CommonFunctions.evalResultToString(res));
         }
@@ -843,7 +843,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[arrayObj(1).Name]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@arrayObj(1).Name]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("bob", CommonFunctions.evalResultToString(res));
         }
@@ -856,7 +856,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[arrayObj(*).Name]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@arrayObj(*).Name]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("bob,bobe", CommonFunctions.evalResultToString(res));
         }
@@ -869,7 +869,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.eval(env, 0, "[[arrayObj().Name]]");
+            var res = EvaluationFunctions.eval(env, 0, "[[@arrayObj().Name]]");
             //------------Assert Results-------------------------
             Assert.AreEqual("bobe", CommonFunctions.evalResultToString(res));
         }
@@ -882,7 +882,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalJson(env, 0, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[arrayObj().Name]] [[arrayObj().Name]]"));
+            var res = EvaluationFunctions.evalJson(env, 0, EvaluationFunctions.parseLanguageExpressionWithoutUpdate( "[[@arrayObj().Name]] [[@arrayObj().Name]]"));
             //------------Assert Results-------------------------
             Assert.AreEqual("bobe bobe", CommonFunctions.evalResultToString(res));
         }
@@ -922,9 +922,9 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[@Person.Children(2).Name]]", "Jane"), 0);
             env.AssignJson(new AssignValue("[[@Person.Score(1)]]", "2"), 0);
             env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
-            env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
-            env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
-            env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
+            env.AssignJson(new AssignValue("[[@array(1)]]", "bob"), 0);
+            env.AssignJson(new AssignValue("[[@arrayObj(1).Name]]", "bob"), 0);
+            env.AssignJson(new AssignValue("[[@arrayObj(2).Name]]", "bobe"), 0);
             PrivateObject p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }

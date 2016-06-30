@@ -10,19 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Runtime.Diagnostics;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -31,11 +24,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
     public class WebSourcesTests
     {
         // ReSharper disable InconsistentNaming
-        const string TestMethod = "GetCitiesByCountry";
-        const string CountryName = "South%20Africa";
-        const string TestAddress = "http://www.webservicex.net/globalweather.asmx";
-        const string TestDefaultQuery = "/" + TestMethod + "?CountryName=" + CountryName;
-
         #region CTOR
 
         [TestMethod]
@@ -138,112 +126,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod]
-        public void WebSourcesGetWithValidArgsExpectedReturnsSource()
-        {
-            var expected = CreateWebSource();
-            var saveArgs = expected.ToString();
-
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            try
-            {
-                var handler = new WebSources();
-                handler.Save(saveArgs, workspaceID, Guid.Empty);
-
-                var actual = handler.Get(expected.ResourceID.ToString(), workspaceID, Guid.Empty);
-
-                VerifySource(actual, expected);
-            }
-            finally
-            {
-                try
-                {
-                    if(Directory.Exists(workspacePath))
-                    {
-                        DirectoryHelper.CleanUp(workspacePath);
-                    }
-                }
-                // ReSharper disable EmptyGeneralCatchClause
-                catch(Exception)
-                // ReSharper restore EmptyGeneralCatchClause
-                {
-                }
-            }
-        }
-
         #endregion
-
-        #region Save
-
-        [TestMethod]
-        public void WebSourcesSaveWithInValidArgsExpectedInvalidValidationResult()
-        {
-            var handler = new WebSources();
-            var jsonResult = handler.Save("root:'hello'", Guid.Empty, Guid.Empty);
-            var result = JsonConvert.DeserializeObject<ValidationResult>(jsonResult);
-            Assert.IsFalse(result.IsValid);
-        }
-
-        [TestMethod]
-        public void WebSourcesSaveWithValidArgsExpectedInvokesResourceCatalogSave()
-        {
-            var expected = CreateWebSource();
-
-            var catalog = new Mock<IResourceCatalog>();
-            catalog.Setup(c => c.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-
-            var handler = new WebSources(catalog.Object);
-            var jsonResult = handler.Save(expected.ToString(), Guid.Empty, Guid.Empty);
-            var actual = JsonConvert.DeserializeObject<WebSource>(jsonResult);
-
-            catalog.Verify(c => c.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-
-            VerifySource(expected, actual);
-        }
-
-        #endregion
-
-        #region VerifySource
-
-        static void VerifySource(WebSource actual, WebSource expected)
-        {
-            Assert.IsNotNull(actual);
-            Assert.AreEqual(expected.ResourceID, actual.ResourceID);
-            Assert.AreEqual(expected.ResourceName, actual.ResourceName);
-            Assert.AreEqual(expected.ResourcePath, actual.ResourcePath);
-            Assert.AreEqual(expected.ResourceType, actual.ResourceType);
-            Assert.AreEqual(expected.ResourceType, actual.ResourceType);
-
-            Assert.AreEqual(expected.Address, actual.Address);
-            Assert.AreEqual(expected.DefaultQuery, actual.DefaultQuery);
-            Assert.AreEqual(expected.AuthenticationType, actual.AuthenticationType);
-            Assert.AreEqual(expected.UserName, actual.UserName);
-            Assert.AreEqual(expected.Password, actual.Password);
-            Assert.IsNull(actual.Response);
-        }
-
-        #endregion
-
-        #region CreateWebSource
-
-        static WebSource CreateWebSource()
-        {
-            return new WebSource
-            {
-                Address = TestAddress,
-                DefaultQuery = TestDefaultQuery,
-                AuthenticationType = AuthenticationType.Anonymous,
-                UserName = "",
-                Password = "",
-
-                ResourceID = Guid.NewGuid(),
-                ResourceName = "TestWeather",
-                ResourcePath = "Testing\\TestWeather",
-            };
-        }
-
-        #endregion
-        // ReSharper restore InconsistentNaming
     }
 }

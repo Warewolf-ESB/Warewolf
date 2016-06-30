@@ -23,9 +23,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-           
         }
-
 
         public override void Validate()
         {
