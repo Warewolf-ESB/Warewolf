@@ -17,23 +17,22 @@ namespace Warewolf.Studio.UISpecs.Tools
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-    public partial class FileAndFolder_MoveFeature
+    public partial class FileAndFolder_CopyFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FileAndFolder-Move.feature"
+#line 1 "FileAndFolder - Copy.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Move", "\tIn order to be able to Move a File or Folder \r\n\tas a Warewolf user\r\n\tI want a to" +
-                    "ol that will Move File(s) or Folder(s) from a given location to another location" +
-                    "", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Copy", "\tIn order to be able to Copy File or Folder \r\n\tas a Warewolf user\r\n\tI want a tool" +
+                    " that Copy File or Folder from a given location to another location", ProgrammingLanguage.CSharp, new string[] {
                         "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -49,9 +48,9 @@ namespace Warewolf.Studio.UISpecs.Tools
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "FileAndFolder-Move")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "FileAndFolder-Copy")))
             {
-                Warewolf.Studio.UISpecs.Tools.FileAndFolder_MoveFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.FileAndFolder_CopyFeature.FeatureSetup(null);
             }
         }
         
@@ -72,19 +71,19 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Small View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy tool Small View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Move")]
-        public virtual void MoveToolSmallView()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Copy")]
+        public virtual void CopyToolSmallView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Small View", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Small View", new string[] {
                         "ignore",
-                        "Move"});
+                        "Copy"});
 #line 10
 this.ScenarioSetup(scenarioInfo);
 #line 11
-       testRunner.Given("I have Move Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("I have Copy Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -95,23 +94,23 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         ""});
 #line 12
-       testRunner.Then("Move small view has", ((string)(null)), table1, "Then ");
+       testRunner.Then("Copy small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Large View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy tool Large View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolLargeView()
+        public virtual void CopyToolLargeView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Large View", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Large View", new string[] {
                         "ignore"});
-#line 16
-this.ScenarioSetup(scenarioInfo);
 #line 17
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
+#line 18
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -129,9 +128,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 18
-       testRunner.Then("Move Large View has", ((string)(null)), table2, "Then ");
-#line 21
+#line 19
+       testRunner.Then("Copy Large View has", ((string)(null)), table2, "Then ");
+#line 22
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -140,55 +139,55 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 22
+#line 23
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 25
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Small View water marks")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy tool Small View water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolSmallViewWaterMarks()
+        public virtual void CopyToolSmallViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Small View water marks", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Small View water marks", new string[] {
                         "ignore"});
-#line 28
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 29
-       testRunner.Given("I have Move Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 31
+       testRunner.Given("I have Copy Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
                         "Destination",
                         "Result"});
             table4.AddRow(new string[] {
-                        "[[PathToMove]]",
-                        "[[MoveToPath]]",
+                        "[[PathToCopy]]",
+                        "[[CopyToPath]]",
                         "[[Success]]"});
-#line 30
-       testRunner.Then("Move small view watermarks are", ((string)(null)), table4, "Then ");
+#line 32
+       testRunner.Then("Copy small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Large View Water marks")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy tool Large View Water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolLargeViewWaterMarks()
+        public virtual void CopyToolLargeViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Large View Water marks", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Large View Water marks", new string[] {
                         "ignore"});
-#line 34
+#line 37
 this.ScenarioSetup(scenarioInfo);
-#line 35
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 38
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -199,16 +198,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Dest Password",
                         "Result"});
             table5.AddRow(new string[] {
-                        "[[PathToMove]]",
+                        "[[PathToCopy]]",
                         "[[Username]]",
                         "",
-                        "[[MoveToPath]]",
+                        "[[CopyToPath]]",
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 36
-       testRunner.Then("Move Large View watermarks are", ((string)(null)), table5, "Then ");
 #line 39
+       testRunner.Then("Copy Large View watermarks are", ((string)(null)), table5, "Then ");
+#line 42
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -217,29 +216,29 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "",
                         ""});
-#line 40
-       testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
 #line 43
+       testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
+#line 46
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 47
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating when clicking on done with blank fields")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating when clicking on done with blank fields")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
+        public virtual void CopyLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating when clicking on done with blank fields", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating when clicking on done with blank fields", new string[] {
                         "ignore"});
-#line 46
+#line 49
 this.ScenarioSetup(scenarioInfo);
-#line 47
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
+#line 50
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 51
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -258,32 +257,32 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 49
-       testRunner.And("Move Large View has", ((string)(null)), table7, "And ");
 #line 52
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 54
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("Copy Large View has", ((string)(null)), table7, "And ");
 #line 55
-       testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 57
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 58
+       testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Large View to small view persisting data correctly")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy tool Large View to small view persisting data correctly")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolLargeViewToSmallViewPersistingDataCorrectly()
+        public virtual void CopyToolLargeViewToSmallViewPersistingDataCorrectly()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Large View to small view persisting data correctly", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 57
+#line 60
 this.ScenarioSetup(scenarioInfo);
-#line 58
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 61
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -300,10 +299,10 @@ this.ScenarioSetup(scenarioInfo);
                         "D:\\",
                         "",
                         "",
-                        "[[Move]]"});
-#line 59
-       testRunner.And("Move Large View has", ((string)(null)), table8, "And ");
+                        "[[copy]]"});
 #line 62
+       testRunner.And("Copy Large View has", ((string)(null)), table8, "And ");
+#line 65
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -312,18 +311,18 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "",
                         ""});
-#line 63
-       testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
 #line 66
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
 #line 69
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
-       testRunner.And("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 72
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 73
+       testRunner.And("Copy Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -332,25 +331,25 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "C:\\",
                         "D:\\",
-                        "[[Move]]"});
-#line 71
-       testRunner.And("Move small view has", ((string)(null)), table10, "And ");
+                        "[[copy]]"});
+#line 74
+       testRunner.And("Copy small view has", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("After correcting incorrect variable done button is closing large view")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void AfterCorrectingIncorrectVariableDoneButtonIsClosingLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 76
+#line 79
 this.ScenarioSetup(scenarioInfo);
-#line 77
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 80
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -367,10 +366,10 @@ this.ScenarioSetup(scenarioInfo);
                         "D:\\",
                         "",
                         "",
-                        "[[Move]]"});
-#line 78
-       testRunner.When("Move Large View has", ((string)(null)), table11, "When ");
+                        "[[copy]]"});
 #line 81
+       testRunner.When("Copy Large View has", ((string)(null)), table11, "When ");
+#line 84
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -379,16 +378,16 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "",
                         ""});
-#line 82
-       testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
 #line 85
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
 #line 88
-       testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 91
+       testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -405,15 +404,15 @@ this.ScenarioSetup(scenarioInfo);
                         "D:\\",
                         "",
                         "",
-                        "[[Move]]"});
-#line 89
-       testRunner.When("I edit Move Large View", ((string)(null)), table13, "When ");
+                        "[[copy]]"});
 #line 92
+       testRunner.When("I edit Copy Large View", ((string)(null)), table13, "When ");
+#line 95
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 93
+#line 96
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 94
-       testRunner.And("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+       testRunner.And("Copy Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -422,25 +421,25 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "C:\\[[a]]",
                         "D:\\",
-                        "[[Move]]"});
-#line 95
-       testRunner.And("Move small view as", ((string)(null)), table14, "And ");
+                        "[[copy]]"});
+#line 98
+       testRunner.And("Copy small view as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Close large view is closing large view without validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void CloseLargeViewIsClosingLargeViewWithoutValidating()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 101
+#line 103
 this.ScenarioSetup(scenarioInfo);
-#line 102
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 104
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -457,10 +456,10 @@ this.ScenarioSetup(scenarioInfo);
                         "D:\\",
                         "",
                         "",
-                        "[[Move]]"});
-#line 103
-       testRunner.And("Move Large View has", ((string)(null)), table15, "And ");
-#line 106
+                        "[[copy]]"});
+#line 105
+       testRunner.And("Copy Large View has", ((string)(null)), table15, "And ");
+#line 108
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -469,20 +468,20 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 107
+#line 109
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 110
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 112
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
-       testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
-       testRunner.When("collapse \"Move\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 115
-       testRunner.Then("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("Copy Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 116
+       testRunner.When("collapse \"Copy\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 117
+       testRunner.Then("Copy Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -491,14 +490,14 @@ this.ScenarioSetup(scenarioInfo);
             table17.AddRow(new string[] {
                         "C:\\[[a]",
                         "D:\\",
-                        "[[Move]]"});
-#line 116
-       testRunner.And("Move small view as", ((string)(null)), table17, "And ");
+                        "[[copy]]"});
+#line 118
+       testRunner.And("Copy small view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath(string no, string sPath, string validation, string[] exampleTags)
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath(string no, string sPath, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -506,12 +505,12 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect source path", @__tags);
-#line 121
-this.ScenarioSetup(scenarioInfo);
-#line 122
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect source path", @__tags);
 #line 123
+this.ScenarioSetup(scenarioInfo);
+#line 124
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 125
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -529,174 +528,174 @@ this.ScenarioSetup(scenarioInfo);
                         "D:\\",
                         "",
                         "",
-                        "[[Move]]"});
-#line 124
-       testRunner.And("Move Large View has", ((string)(null)), table18, "And ");
-#line 127
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "[[Copy]]"});
+#line 126
+       testRunner.And("Copy Large View has", ((string)(null)), table18, "And ");
 #line 129
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 131
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_1()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("1", "D:\\Test.txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("1", "D:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_2()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:[[rec().a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_3()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(1).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_4()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_5()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("5", "abc", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("5", "abc", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_6()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("6", "123", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("6", "123", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "\\abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_7()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("7", "\\abc", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("7", "\\abc", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_8()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("8", "[[a]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("8", "[[a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a#]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_9()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("9", "[[a#]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("9", "[[a#]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_10()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect source path: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_11()
+        public virtual void CopyLargeViewIsValidatingIncorrectSourcePath_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectSourcePath("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath(string no, string dPath, string validation, string[] exampleTags)
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath(string no, string dPath, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -704,12 +703,12 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect Destination path", @__tags);
-#line 145
-this.ScenarioSetup(scenarioInfo);
-#line 146
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect Destination path", @__tags);
 #line 147
+this.ScenarioSetup(scenarioInfo);
+#line 148
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 149
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -727,174 +726,174 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("\"{0}\"", dPath),
                         "",
                         "",
-                        "[[Move]]"});
-#line 148
-       testRunner.And("Move Large View has", ((string)(null)), table19, "And ");
-#line 151
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "[[Copy]]"});
+#line 150
+       testRunner.And("Copy Large View has", ((string)(null)), table19, "And ");
 #line 153
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 155
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "D:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_1()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("1", "D:\\Test.txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("1", "D:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[a]]:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_2()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "D:[[rec().a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_3()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[rec(1).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_4()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_5()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("5", "abc", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("5", "abc", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_6()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("6", "123", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("6", "123", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "\\abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_7()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("7", "\\abc", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("7", "\\abc", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_8()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("8", "[[a]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("8", "[[a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[a#]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_9()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("9", "[[a#]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("9", "[[a#]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_10()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect Destination path: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_11()
+        public virtual void CopyLargeViewIsValidatingIncorrectDestinationPath_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectDestinationPath("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField(string no, string variable, string validation, string[] exampleTags)
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField(string no, string variable, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -902,12 +901,12 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect variable in source username field", @__tags);
-#line 170
-this.ScenarioSetup(scenarioInfo);
-#line 171
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect variable in source username field", @__tags);
 #line 172
+this.ScenarioSetup(scenarioInfo);
+#line 173
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 174
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -925,174 +924,174 @@ this.ScenarioSetup(scenarioInfo);
                         "D:/",
                         "",
                         "",
-                        "[[Move]]"});
-#line 173
-       testRunner.And("Move Large View has", ((string)(null)), table20, "And ");
-#line 176
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "[[Copy]]"});
+#line 175
+       testRunner.And("Copy Large View has", ((string)(null)), table20, "And ");
 #line 178
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 180
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_1()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("1", "testing", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("1", "testing", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_2()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("2", "test@dev2", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("2", "test@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test1234")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_3()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("3", "test1234", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("3", "test1234", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_4()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_5()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2,co,za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_6()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_7()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[Username]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_8()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("8", "[[Username]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("8", "[[Username]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[User]][[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_9()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_10()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in source username field: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_11()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInSourceUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField(string no, string variable, string validation, string[] exampleTags)
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField(string no, string variable, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -1100,12 +1099,12 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect variable in Destination username field", @__tags);
-#line 195
-this.ScenarioSetup(scenarioInfo);
-#line 196
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect variable in Destination username field", @__tags);
 #line 197
+this.ScenarioSetup(scenarioInfo);
+#line 198
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 199
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1123,185 +1122,185 @@ this.ScenarioSetup(scenarioInfo);
                         "D:/",
                         "\"<Username>\"",
                         "abc",
-                        "[[Move]]"});
-#line 198
-       testRunner.And("Move Large View has", ((string)(null)), table21, "And ");
-#line 201
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "[[Copy]]"});
+#line 200
+       testRunner.And("Copy Large View has", ((string)(null)), table21, "And ");
 #line 203
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 204
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 205
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 1" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 1" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_1()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("1", "testing", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("1", "testing", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 2" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 2" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_2()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("2", "test@dev2", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("2", "test@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 3" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 3" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test1234")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_3()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("3", "test1234", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("3", "test1234", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 4" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 4" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_4()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 5" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 5" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_5()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 6" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 6" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2,co,za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_6()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 7" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 7" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_7()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 8" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 8" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[Username]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_8()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("8", "[[Username]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("8", "[[Username]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 9" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 9" +
             "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[User]][[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_9()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 1" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 1" +
             "0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_10()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 1" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Destination username field: 1" +
             "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_11()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField(string no, string result, string validation, string[] exampleTags)
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField(string no, string result, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -1309,12 +1308,12 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect variable in Result field", @__tags);
-#line 220
-this.ScenarioSetup(scenarioInfo);
-#line 221
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy Large View is validating incorrect variable in Result field", @__tags);
 #line 222
+this.ScenarioSetup(scenarioInfo);
+#line 223
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 224
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1333,117 +1332,117 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("\"{0}\"", result)});
-#line 223
-       testRunner.And("Move Large View has", ((string)(null)), table22, "And ");
-#line 226
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 225
+       testRunner.And("Copy Large View has", ((string)(null)), table22, "And ");
 #line 228
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 229
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 230
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_1()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("1", "result", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("1", "result", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_2()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("2", "[[result]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("2", "[[result]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_3()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("3", "[[a]][[b]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("3", "[[a]][[b]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec([[a]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_4()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("4", "[[rec([[a]]).a]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("4", "[[rec([[a]]).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_5()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("5", "[[[[a]]]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("5", "[[[[a]]]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_6()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("6", "[[rec(*).a]]", "False", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("6", "[[rec(*).a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy Large View is validating incorrect variable in Result field: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec().a@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_7()
+        public virtual void CopyLargeViewIsValidatingIncorrectVariableInResultField_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("7", "[[rec().a@]]", "True", ((string[])(null)));
+            this.CopyLargeViewIsValidatingIncorrectVariableInResultField("7", "[[rec().a@]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating(string no, string variable, string validation, string[] exampleTags)
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating(string no, string variable, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -1451,11 +1450,11 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move On error fields incorrect variables are validating", @__tags);
-#line 240
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy On error fields incorrect variables are validating", @__tags);
+#line 242
 this.ScenarioSetup(scenarioInfo);
-#line 241
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 243
+       testRunner.Given("I have Copy Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
@@ -1466,16 +1465,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Dest Password",
                         "Result"});
             table23.AddRow(new string[] {
-                        "[[PathToMove]]",
+                        "[[PathToCopy]]",
                         "[[Username]]",
                         "",
-                        "[[MoveToPath]]",
+                        "[[CopyToPath]]",
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 242
-       testRunner.And("Move Large View with water marks has", ((string)(null)), table23, "And ");
-#line 245
+#line 244
+       testRunner.And("Copy Large View with water marks has", ((string)(null)), table23, "And ");
+#line 247
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1484,115 +1483,115 @@ this.ScenarioSetup(scenarioInfo);
             table24.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 246
+#line 248
        testRunner.And("On Error box consists", ((string)(null)), table24, "And ");
-#line 249
-       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 251
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 253
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 254
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_1()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_1()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("1", "[[a]]", "False", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("1", "[[a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_2()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_2()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("2", "[[a]][[b]]", "False", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("2", "[[a]][[b]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_3()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_3()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("3", "\"\"", "False", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("3", "\"\"", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_4()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_4()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("4", "[[rec().a]]", "False", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("4", "[[rec().a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_5()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_5()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("5", "[[a]]]]", "True", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("5", "[[a]]]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(**).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_6()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_6()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("6", "[[rec(**).a]]", "True", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("6", "[[rec(**).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copy On error fields incorrect variables are validating: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_7()
+        public virtual void CopyOnErrorFieldsIncorrectVariablesAreValidating_7()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("7", "[[rec()]]", "True", ((string[])(null)));
+            this.CopyOnErrorFieldsIncorrectVariablesAreValidating("7", "[[rec()]]", "True", ((string[])(null)));
 #line hidden
         }
     }
