@@ -134,6 +134,7 @@ namespace Dev2.Core.Tests
         [Owner("Sanele Mthembu")]
         public void DebugOutputViewModel_UpdateHelpDescriptor()
         {
+            var someTestingString = "Some testing string";
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
                 new Mock<IDebugOutputFilterStrategy>().Object);
             var lineItem = new Mock<IDebugLineItem>();
@@ -141,12 +142,13 @@ namespace Dev2.Core.Tests
 
             var mainViewModel = new Mock<IMainViewModel>();
             var mockHelpWindowViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpWindowViewModel.Setup(model => model.UpdateHelpText(someTestingString));
             mainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpWindowViewModel.Object);
             vm.ShowOutputs = false;
             vm.ShowOptions = true;
             CustomContainer.Register(mainViewModel.Object);
-
-            vm.UpdateHelpDescriptor("Some testing string");
+            vm.UpdateHelpDescriptor(someTestingString);
+            mockHelpWindowViewModel.Verify(model => model.UpdateHelpText(someTestingString));
         }
 
         [TestMethod]
@@ -166,7 +168,6 @@ namespace Dev2.Core.Tests
             var dbgS = new Mock<IDebugState>();
             dbgS.SetupProperty(state => state.SessionID, Guid.NewGuid());
             vm.AppendX(dbgS.Object);
-
         }
 
         [TestMethod]
@@ -195,7 +196,7 @@ namespace Dev2.Core.Tests
             var vm = DebugOutputViewModelMock();
             var lineItem = new Mock<IDebugLineItem>();
             lineItem.SetupGet(l => l.MoreLink).Returns("Something");
-
+            
             var mainViewModel = new Mock<IMainViewModel>();
             var mockHelpWindowViewModel = new Mock<IHelpWindowViewModel>();
             mainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpWindowViewModel.Object);
@@ -232,6 +233,7 @@ namespace Dev2.Core.Tests
         {
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
                 new Mock<IDebugOutputFilterStrategy>().Object);
+            vm.SkipOptionsCommandExecute = true;
             var lineItem = new Mock<IDebugLineItem>();
             lineItem.SetupGet(l => l.MoreLink).Returns("Something");
 
@@ -241,9 +243,10 @@ namespace Dev2.Core.Tests
 
             var dbgS = new Mock<IDebugState>();
             dbgS.SetupProperty(state => state.SessionID, vm.SessionID);
-            dbgS.SetupProperty(state => state.StateType, StateType.Start);
-            vm.SkipOptionsCommandExecute = true;
+            dbgS.SetupProperty(state => state.StateType, StateType.Start);            
+            Assert.IsTrue(vm.SkipOptionsCommandExecute);
             vm.ShowOptionsCommand.Execute(null);
+            Assert.IsFalse(vm.SkipOptionsCommandExecute);
         }
 
         [TestMethod]

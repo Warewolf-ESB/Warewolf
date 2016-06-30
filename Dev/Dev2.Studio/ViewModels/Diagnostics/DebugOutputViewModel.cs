@@ -27,7 +27,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Messages;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
@@ -37,7 +36,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
 using Dev2.Studio.Core;
-using Microsoft.Practices.Prism.Commands;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
 
 // ReSharper disable CheckNamespace
@@ -91,6 +89,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _continueDebugDispatch;
         bool _dispatchLastDebugState;
 
+        private string _isprocessing = "IsProcessing";
+
         #endregion
 
         #region Ctor
@@ -106,17 +106,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
-            _debugWriterSubscriptionService.Subscribe(msg =>
-            {
-                IDebugState debugState = msg.DebugState;
-                Append(debugState);
-            });
+            _debugWriterSubscriptionService.Subscribe(msg => { IDebugState debugState = msg.DebugState; Append(debugState);});
 
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
         }
-
+        
         #endregion
 
         #region Properties
@@ -159,7 +155,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>3/4/2013</date>
         public string ProcessingText => DebugStatus.GetDescription();
 
-        public bool IsProcessing => _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished && _debugStatus != DebugStatus.Stopping;
+        public bool IsProcessing => _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished &&
+                                    _debugStatus != DebugStatus.Stopping;
 
         public bool IsStopping => _debugStatus == DebugStatus.Stopping;
 
@@ -496,7 +493,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 try
                 {
                     string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                    Dev2Logger.Debug(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
+                    Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
                     ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
                 }
                 catch (Exception ex)
@@ -516,10 +513,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public bool CanOpenMoreLink(IDebugLineItem item)
         {
-            if(item == null)
-                return false;
-
-            return !string.IsNullOrEmpty(item.MoreLink);
+            return !string.IsNullOrEmpty(item?.MoreLink);
         }
 
         #endregion public methods
@@ -550,7 +544,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public bool IsConfiguring => DebugStatus == DebugStatus.Configure;
 
-        public Guid SessionID { get; private set; }
+        public Guid SessionID { get; }
 
         public ICommand SelectAllCommand => _selectAllCommand ?? (_selectAllCommand = new DelegateCommand(SelectAll));
 
@@ -635,18 +629,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var debugState = payload as IDebugState;
 
-            if(debugState == null)
-            {
-                return;
-            }
-
-            if(debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
+            if(debugState?.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                if(shellViewModel != null)
-                {
-                    shellViewModel.OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID);
-                }
+                shellViewModel?.OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID);
             }
         }
 
@@ -695,9 +681,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var environmentId = content.EnvironmentID;
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
-                {
                     Thread.Sleep(500);
-                }
                 if (isRemote)
                 {
                     var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
@@ -874,7 +858,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             base.NotifyOfPropertyChange(propertyName);
 
             // BUG 9735 - 2013.06.22 - TWR : added
-            if(propertyName == "IsProcessing")
+            if(propertyName == _isprocessing)
             {
                 FlushPending();
             }
@@ -885,10 +869,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
