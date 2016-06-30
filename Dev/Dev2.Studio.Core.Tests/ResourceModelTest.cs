@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -34,11 +33,8 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ResourceModelTest
     {
-        private IResourceModel _resourceModel;
-
         #region Test Initialization
 
         [TestInitialize]
@@ -52,7 +48,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
 
 
-            _resourceModel = new ResourceModel(environmentModel.Object)
+            new ResourceModel(environmentModel.Object)
             {
                 ResourceName = "test",
                 ResourceType = ResourceType.Service,

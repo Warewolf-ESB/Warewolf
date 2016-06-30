@@ -20,7 +20,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -31,14 +30,12 @@ using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace Warewolf.Studio.ViewModels
 {
-
     public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
     {
-        private IDeletedFileMetadata _fileMetadata;
-
         #region Equality members
 
         /// <summary>
@@ -108,10 +105,10 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
+        private IDeletedFileMetadata _fileMetadata;
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
         string _resourceName;
         private bool _isVisible;
-        bool _allowEditing;
         bool _isRenaming;
         private readonly IExplorerRepository _explorerRepository;
         bool _canRename;
@@ -126,7 +123,6 @@ namespace Warewolf.Studio.ViewModels
         string _versionNumber;
         ObservableCollection<IExplorerItemViewModel> _children;
         bool _isExpanded;
-        bool _canCreateServerSource;
         bool _canCreateFolder;
         string _filter;
         private bool _isSelected;
@@ -141,7 +137,7 @@ namespace Warewolf.Studio.ViewModels
         IVersionInfo _versionInfo;
         private IEnvironmentModel _environmentModel;
 
-        public ExplorerItemViewModel(IDeletedFileMetadata fileMetadata)
+        private ExplorerItemViewModel(IDeletedFileMetadata fileMetadata)
         {
             _fileMetadata = fileMetadata;
         }
@@ -167,17 +163,19 @@ namespace Warewolf.Studio.ViewModels
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() =>
             {
-                if (ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService")
-                {
-                    return;
-                }
                 if (IsFolder)
                 {
                     IsExpanded = !IsExpanded;
                 }
-                shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                shellViewModel.SetActiveServer(Server);
-                shellViewModel.OpenResource(ResourceId, Server);
+                else if (IsResourceVersion)
+                {
+                    ShellViewModel.OpenVersion(parent.ResourceId, VersionInfo);
+                }
+                else
+                {
+                    SetActiveStates(shellViewModel);
+                    shellViewModel.OpenResource(ResourceId, Server);
+                }
             });
             DebugCommand = new DelegateCommand(() =>
             {
@@ -188,8 +186,7 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             NewCommand = new DelegateCommand<string>(type =>
             {
-                shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                shellViewModel.SetActiveServer(Server);
+                SetActiveStates(shellViewModel);
                 shellViewModel.NewResource(type.ToString(), ResourcePath);
             });
             CanShowDependencies = true;
@@ -222,7 +219,6 @@ namespace Warewolf.Studio.ViewModels
                 }
             });
             VersionHeader = "Show Version History";
-            //Builder = builder;
             IsVisible = true;
             IsVersion = false;
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -243,6 +239,12 @@ namespace Warewolf.Studio.ViewModels
             _canDrag = true;
         }
 
+        private void SetActiveStates(IShellViewModel shellViewModel)
+        {
+            shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
+            shellViewModel.SetActiveServer(Server);
+        }
+
         public string ActivityName => typeof(DsfActivity).AssemblyQualifiedName;
 
         void DeleteVersion()
@@ -250,10 +252,7 @@ namespace Warewolf.Studio.ViewModels
             if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             {
                 _explorerRepository.Delete(this);
-                if (Parent != null)
-                {
-                    Parent.RemoveChild(Parent.Children.First(a => a.ResourceName == ResourceName));
-                }
+                Parent?.RemoveChild(Parent.Children.First(a => a.ResourceName == ResourceName));
             }
         }
 
@@ -261,10 +260,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void AddSibling(IExplorerItemViewModel sibling)
         {
-            if (Parent != null)
-            {
-                Parent.AddChild(sibling);
-            }
+            Parent?.AddChild(sibling);
         }
 
         public int ChildrenCount => GetChildrenCount();
@@ -355,9 +351,8 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateChildrenCount()
         {
-            OnPropertyChanged(()=>ChildrenCount);
+            OnPropertyChanged(() => ChildrenCount);
         }
-
 
         public void CreateNewFolder()
         {
@@ -375,17 +370,9 @@ namespace Warewolf.Studio.ViewModels
                     AllowResourceCheck = AllowResourceCheck,
                     IsResourceChecked = IsResourceChecked,
                     CanCreateFolder = CanCreateFolder,
-                    CanCreateDbSource = CanCreateDbSource,
+                    CanCreateSource = CanCreateSource,
                     CanShowVersions = CanShowVersions,
                     CanRename = CanRename,
-                    CanCreatePluginSource = CanCreatePluginSource,
-                    CanCreateEmailSource = CanCreateEmailSource,
-                    CanCreateRabbitMQSource = CanCreateRabbitMQSource,
-                    CanCreateExchangeSource = CanCreateExchangeSource,
-                    CanCreateDropboxSource = CanCreateDropboxSource,
-                    CanCreateSharePointSource = CanCreateSharePointSource,
-                    CanCreateServerSource = CanCreateServerSource,
-                    CanCreateWebSource = CanCreateWebSource,
                     CanDeploy = CanDeploy,
                     CanShowDependencies = CanShowDependencies,
                     ResourcePath = ResourcePath + "\\" + name,
@@ -395,7 +382,6 @@ namespace Warewolf.Studio.ViewModels
                     IsRenaming = true,
                     IsFolder = true
                 };
-                //child.SetFromServer(Server.Permissions.FirstOrDefault(a => a.IsServer));
                 AddChild(child);
             }
         }
@@ -410,18 +396,6 @@ namespace Warewolf.Studio.ViewModels
                     explorerItemViewModel.Apply(action);
                 }
             }
-        }
-
-        public IExplorerItemViewModel Find(string resourcePath)
-        {
-            if (!resourcePath.Contains("\\") && resourcePath == ResourceName)
-                return this;
-            if (Children != null && resourcePath.Contains("\\"))
-            {
-                string name = resourcePath.Substring(1 + resourcePath.IndexOf("\\", StringComparison.Ordinal));
-                return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
-            }
-            return null;
         }
 
         public void Filter(Func<IExplorerItemViewModel, bool> filter)
@@ -455,13 +429,12 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = NewFolder;
+            string folderName = Resources.Languages.Core.NewFolderLabel;
             while (Children.Any(a => a.ResourceName == folderName))
             {
                 count++;
-                folderName = NewFolder + " " + count;
+                folderName = Resources.Languages.Core.NewFolderLabel + " " + count;
             }
             return folderName;
         }
@@ -470,8 +443,6 @@ namespace Warewolf.Studio.ViewModels
         {
             IsRenaming = false;
         }
-
-        //IExplorerHelpDescriptorBuilder Builder { get; set; }
 
         public void Delete()
         {
@@ -484,10 +455,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ShellViewModel.CloseResource(ResourceId, environmentModel.ID);
                     // Remove the item from the parent for studio change to show, then do the delete from the server.
-                    if (Parent != null)
-                    {
-                        Parent.RemoveChild(this);
-                    }
+                    Parent?.RemoveChild(this);
                     //This Delete process is quite long and should happen after the studio change so that the user caqn continue without the studio hanging
                     _fileMetadata = _explorerRepository.Delete(this);
                     if (_fileMetadata.IsDeleted)
@@ -507,10 +475,7 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
-                if (Parent != null)
-                {
-                    Parent.AddChild(this);
-                }
+                Parent?.AddChild(this);
                 ShowErrorMessage(ex.Message, "Delete not allowed");
             }
         }
@@ -527,7 +492,7 @@ namespace Warewolf.Studio.ViewModels
                 var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
                 if (resourcePermission != null)
                 {
-                    SetFromPermission(resourcePermission, isDeploy);
+                    SetPermission(resourcePermission, isDeploy);
                 }
                 else
                 {
@@ -535,7 +500,7 @@ namespace Warewolf.Studio.ViewModels
                         permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
                     if (serverPermission != null)
                     {
-                        SetFromServer(serverPermission, isDeploy);
+                        SetPermission(serverPermission, isDeploy);
                     }
                 }
             }
@@ -556,53 +521,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SetFromServer(IWindowsGroupPermission serverPermission, bool isDeploy = false)
+        void SetPermission(IWindowsGroupPermission permission, bool isDeploy = false)
         {
-            bool containsOldService = ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService";
-
-            CanEdit = serverPermission.Contribute && !isDeploy && !containsOldService;
-            CanExecute = serverPermission.Execute && IsService && !isDeploy && !containsOldService;
-            CanView = serverPermission.View && !isDeploy && !containsOldService;
-            CanRename = serverPermission.Contribute || serverPermission.Administrator;
-            CanDelete = serverPermission.Contribute || serverPermission.Administrator;
-            CanCreateFolder = serverPermission.Contribute || serverPermission.Administrator;
-            CanDeploy = serverPermission.DeployFrom || serverPermission.Administrator;
-            CanShowVersions = serverPermission.Administrator;
-            CanCreateWorkflowService = serverPermission.Contribute;
-            CanCreateFolder = serverPermission.Contribute;
-            CanCreateDbSource = serverPermission.Contribute;
-            CanCreatePluginSource = serverPermission.Contribute;
-            CanCreateEmailSource = serverPermission.Contribute;
-            CanCreateRabbitMQSource = serverPermission.Contribute;
-            CanCreateExchangeSource = serverPermission.Contribute;
-            CanCreateDropboxSource = serverPermission.Contribute;
-            CanCreateSharePointSource = serverPermission.Contribute;
-            CanCreateServerSource = serverPermission.Contribute;
-            CanCreateWebSource = serverPermission.Contribute;
-        }
-
-        void SetFromPermission(IWindowsGroupPermission resourcePermission, bool isDeploy = false)
-        {
-            bool containsOldService = ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService";
-
-            CanEdit = resourcePermission.Contribute && !isDeploy && !containsOldService;
-            CanExecute = resourcePermission.Execute && IsService && !isDeploy && !containsOldService;
-            CanView = resourcePermission.View && !isDeploy && !containsOldService;
-            CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
-            CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
-            CanDeploy = resourcePermission.DeployFrom || resourcePermission.Administrator;
-            CanShowVersions = resourcePermission.Administrator;
-            CanCreateWorkflowService = resourcePermission.Contribute;
-            CanCreateFolder = resourcePermission.Contribute;
-            CanCreateDbSource = resourcePermission.Contribute;
-            CanCreatePluginSource = resourcePermission.Contribute;
-            CanCreateEmailSource = resourcePermission.Contribute;
-            CanCreateRabbitMQSource = resourcePermission.Contribute;
-            CanCreateExchangeSource = resourcePermission.Contribute;
-            CanCreateDropboxSource = resourcePermission.Contribute;
-            CanCreateSharePointSource = resourcePermission.Contribute;
-            CanCreateServerSource = resourcePermission.Contribute;
-            CanCreateWebSource = resourcePermission.Contribute;
+            CanEdit = permission.Contribute && !isDeploy;
+            CanExecute = permission.Execute && IsService && !isDeploy;
+            CanView = permission.View && !isDeploy;
+            CanRename = permission.Contribute || permission.Administrator;
+            CanDelete = permission.Contribute || permission.Administrator;
+            CanCreateFolder = permission.Contribute || permission.Administrator;
+            CanDeploy = permission.DeployFrom || permission.Administrator;
+            CanShowVersions = permission.Administrator;
+            CanCreateWorkflowService = permission.Contribute;
+            CanCreateFolder = permission.Contribute;
+            CanCreateSource = permission.Contribute;
         }
 
         bool UserShouldEditValueNow
@@ -633,11 +564,8 @@ namespace Warewolf.Studio.ViewModels
                 _isRenaming = value;
                 UserShouldEditValueNow = _isRenaming;
                 OnPropertyChanged(() => IsRenaming);
-                OnPropertyChanged(() => IsNotRenaming);
             }
         }
-
-        public bool IsNotRenaming => !_isRenaming;
 
         public string ResourceName
         {
@@ -744,11 +672,9 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
-        public ICommand DebugCommand
-        {
-            get;
-            set;
-        }
+
+        public ICommand DebugCommand { get; }
+
         public bool IsExpanderVisible
         {
             get
@@ -830,10 +756,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _isResource = value.HasValue && !IsFolder && value.Value;
                 }
-                if (SelectAction != null)
-                {
-                    SelectAction(this);
-                }
+                SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
             }
         }
@@ -870,28 +793,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
         public ICommand RenameCommand { get; set; }
-        public bool CanCreateDbSource { get; set; }
-        public bool CanCreateServerSource
-        {
-            get
-            {
-                return _canCreateServerSource;
-            }
-            set
-            {
-                _canCreateServerSource = value;
-                OnPropertyChanged(() => CanCreateServerSource);
-            }
-        }
-        public bool CanCreateWebSource { get; set; }
-        public bool CanCreatePluginSource { get; set; }
-        public bool CanCreateEmailSource { get; set; }
-        public bool CanCreateRabbitMQSource { get; set; }
-        public bool CanCreateExchangeSource { get; set; }
-        public bool CanCreateDropboxSource { get; set; }
-        public bool CanCreateSharePointSource { get; set; }
+        public bool CanCreateSource { get; set; }
         // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService { get; set; }
         public bool ShowContextMenu { get; set; }
@@ -1039,14 +942,8 @@ namespace Warewolf.Studio.ViewModels
                         CanEdit = false,
                         CanCreateWorkflowService = false,
                         ShowContextMenu = true,
-                        CanCreatePluginSource = false,
-                        CanCreateEmailSource = false,
-                        CanCreateRabbitMQSource = false,
-                        CanCreateExchangeSource = false,
-                        CanCreateDropboxSource = false,
-                        CanCreateSharePointSource = false,
-                        CanCreateDbSource = false,
-                        CanCreateWebSource = false,
+                        CanCreateSource = false,
+                        IsResourceVersion = true,
                         AllowResourceCheck = false,
                         IsResourceChecked = false,
                         CanDelete = CanDelete,
@@ -1110,18 +1007,6 @@ namespace Warewolf.Studio.ViewModels
                     _isVisible = value;
                     OnPropertyChanged(() => IsVisible);
                 }
-            }
-        }
-        public bool AllowEditing
-        {
-            get
-            {
-                return _allowEditing;
-            }
-            set
-            {
-                OnPropertyChanged(() => AllowEditing);
-                _allowEditing = value;
             }
         }
 
@@ -1251,11 +1136,6 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
-        // ReSharper disable MemberCanBePrivate.Global
-        public IResource Resource { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
-        // ReSharper restore UnusedAutoPropertyAccessor.Global
         public string Inputs { get; set; }
         public string Outputs { get; set; }
         public string ExecuteToolTip => Resources.Languages.Core.ExplorerItemExecuteToolTip;
@@ -1263,7 +1143,7 @@ namespace Warewolf.Studio.ViewModels
         public string ResourcePath { get; set; }
         public IEnvironmentModel EnvironmentModel
         {
-            get
+            private get
             {
                 return _environmentModel ?? EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
             }
@@ -1279,7 +1159,7 @@ namespace Warewolf.Studio.ViewModels
             if (Children != null)
                 foreach (var explorerItemViewModel in Children)
                 {
-                    if (explorerItemViewModel != null) explorerItemViewModel.Dispose();
+                    explorerItemViewModel?.Dispose();
                 }
         }
     }
@@ -1299,7 +1179,7 @@ namespace Warewolf.Studio.ViewModels
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(VersionViewModel other)
+        private bool Equals(VersionViewModel other)
         {
             if (ReferenceEquals(null, other))
             {

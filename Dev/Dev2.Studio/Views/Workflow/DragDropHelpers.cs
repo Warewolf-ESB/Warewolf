@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Models;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels;
 using Warewolf.Studio.ViewModels;
@@ -45,20 +44,15 @@ namespace Dev2.Studio.Views.Workflow
             }
 
             //if it is a ReourceTreeViewModel, get the data for this string
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ExplorerItemModel", StringComparison.Ordinal) >= 0);
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf(@"ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
 
-            if (String.IsNullOrEmpty(modelItemString))
-            {
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
-            }
-
-            if(String.IsNullOrEmpty(modelItemString))
+            if(string.IsNullOrEmpty(modelItemString))
             {
                 //else if it is a workflowItemType, get data for this
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf(@"WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
 
                 //else just bounce out, we didnt set it.
-                if(!String.IsNullOrEmpty(modelItemString))
+                if(!string.IsNullOrEmpty(modelItemString))
                 {
                     return false;
                 }
@@ -78,45 +72,25 @@ namespace Dev2.Studio.Views.Workflow
             }
 
             IWorkflowDesignerViewModel workflowDesignerViewModel = _workflowDesignerView.DataContext as IWorkflowDesignerViewModel;
-            if(workflowDesignerViewModel != null)
+            if (workflowDesignerViewModel != null)
             {
-                ExplorerItemModel explorerItemModel = objectData as ExplorerItemModel;
-                if(explorerItemModel != null)
+                var explorerItemViewModel = objectData as ExplorerItemViewModel;
+                if (explorerItemViewModel != null)
                 {
-                    if(workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !explorerItemModel.IsService)
+                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                     {
                         return true;
                     }
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.IsService)
+                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID &&
+                        !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.IsService)
                     {
-                        //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                         return true;
                     }
-                    if (explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.IsService && !explorerItemModel.IsSource)
+                    var env = EnvironmentRepository.Instance.FindSingle(model => model.ID == explorerItemViewModel.Server.EnvironmentID);
+                    var perms = env.AuthorizationService.GetResourcePermissions(explorerItemViewModel.ResourceId);
+                    if (perms >= Permissions.Execute && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                     {
                         return false;
-                    }
-                }
-                else
-                {
-                    var explorerItemViewModel = objectData as ExplorerItemViewModel;
-                    if (explorerItemViewModel != null)
-                    {
-                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
-                        {
-                            return true;
-                        }
-                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.IsService)
-                        {
-                            //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
-                            return true;
-                        }
-                        var env = EnvironmentRepository.Instance.FindSingle(model => model.ID == explorerItemViewModel.Server.EnvironmentID);
-                        var perms = env.AuthorizationService.GetResourcePermissions(explorerItemViewModel.ResourceId);
-                        if (perms >= Permissions.Execute && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
-                        {
-                            return false;
-                        }
                     }
                 }
             }

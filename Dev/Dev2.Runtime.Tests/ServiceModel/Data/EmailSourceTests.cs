@@ -10,8 +10,6 @@
 
 using System;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,39 +20,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class EmailSourceTests
     {
-        #region Save
-
-        [TestMethod]
-        public void SaveEmailSourceWithExistingSourceExpectedServerWorkspaceUpdated()
-        {
-            //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString() + "\\test email source";
-            var testResource = new Resource { ResourceName = "test email source", ResourcePath = "initialpath\\test email source", ResourceType = "EmailSource", ResourceID = Guid.NewGuid() };
-            new EmailSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-            testResource.ResourcePath = uniquePathText;
-
-            //Execute save again on test resource
-            new EmailSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
-
-            //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, testResource.ResourceID.ToString());
-            const string PathStartText = "<Category>";
-            int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
-            if(start > 0)
-            {
-                start += PathStartText.Length;
-                int end = getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal);
-                var savedPath = getSavedResource.Substring(start, end - start);
-                Assert.AreEqual(uniquePathText, savedPath);
-            }
-            else
-            {
-                Assert.Fail("Resource xml malformed after save");
-            }
-        }
-
-        #endregion
-
         #region CTOR
 
         [TestMethod]
@@ -154,6 +119,5 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }

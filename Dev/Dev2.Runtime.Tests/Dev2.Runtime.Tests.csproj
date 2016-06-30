@@ -228,7 +228,6 @@
     <Compile Include="MockNetworkHost.cs" />
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
-    <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />
     <Compile Include="ServiceModel\Data\ResultListTests.cs" />
@@ -268,7 +267,6 @@
     <Compile Include="Services\GetDatabaseTablesTests.cs" />
     <Compile Include="Services\GetVersionsTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
-    <Compile Include="ServiceModel\ResourcesTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <None Include="DynamicServicesHostTests.cs" />

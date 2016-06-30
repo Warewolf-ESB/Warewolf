@@ -16,7 +16,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Events;
@@ -544,9 +543,9 @@ namespace Dev2.Core.Tests.Environments
             c2.Setup(c => c.Disconnect()).Verifiable();
             c3.Setup(c => c.Disconnect()).Verifiable();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
 
@@ -602,9 +601,9 @@ namespace Dev2.Core.Tests.Environments
             c2.Setup(c => c.Disconnect()).Verifiable();
             c3.Setup(c => c.Disconnect()).Verifiable();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
 
@@ -630,9 +629,9 @@ namespace Dev2.Core.Tests.Environments
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
 
@@ -648,9 +647,9 @@ namespace Dev2.Core.Tests.Environments
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2);
             var startCount = repo.All().Count;
@@ -749,7 +748,7 @@ namespace Dev2.Core.Tests.Environments
             var bakPath = RetryUtility.RetryMethod(() => BackupFile(path), 15, 1000, null);
 
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
             var repo = new TestEnvironmentRespository(e1) { IsReadWriteEnabled = true };
 
             // Create file
@@ -1042,9 +1041,8 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-            var studiorepo = new Mock<IStudioResourceRepository>();
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object, studiorepo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.Instance.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
