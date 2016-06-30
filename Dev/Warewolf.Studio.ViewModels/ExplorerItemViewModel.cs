@@ -726,12 +726,13 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _isResource;
+                return !_isResource;
             }
             set
             {
-                _isResource = value;
+                _isResource = !value;
                 OnPropertyChanged(() => IsResourceChecked);
+                OnPropertyChanged(() => IsResourceUnchecked);
             }
         }
         public bool? IsResourceChecked

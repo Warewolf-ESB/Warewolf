@@ -8,14 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Studio.Core;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.ResourceManagement
@@ -31,7 +29,7 @@ namespace Dev2.Studio.Views.ResourceManagement
     /// </summary>
     public partial class ResourceChangedDialog : IResourceChangedDialog
     {
-        Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
         private bool _openDependencyGraph;
 
         public bool OpenDependencyGraph => _openDependencyGraph;
@@ -39,17 +37,17 @@ namespace Dev2.Studio.Views.ResourceManagement
         public ResourceChangedDialog(IContextualResourceModel model, int numOfDependances)
         {
             InitializeComponent();
-            ShowView();
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
             Owner = Application.Current.MainWindow;
             if(numOfDependances <= 1)
             {
-                tbDisplay.Text = String.Format("{0} is used by another workflow. That instance needs to be updated.", model.ResourceName);
+                tbDisplay.Text = $"{model.ResourceName} is used by another workflow. That instance needs to be updated.";
                 button3.Content = "Open Affected Workflow";
                 button3.SetValue(AutomationProperties.AutomationIdProperty, "UI_ShowAffectedWorkflowsButton_AutoID");
             }
             else
             {
-                tbDisplay.Text = String.Format("{0} is used in {1} instances. Those instances need to be updated.", model.ResourceName, numOfDependances);
+                tbDisplay.Text = $"{model.ResourceName} is used in {numOfDependances} instances. Those instances need to be updated.";
                 button3.Content = "Show Affected Workflows";
                 button3.SetValue(AutomationProperties.AutomationIdProperty, "UI_ShowAffectedWorkflowsButton_AutoID");
             }
@@ -61,35 +59,9 @@ namespace Dev2.Studio.Views.ResourceManagement
             DialogResult = false;
         }
 
-        public void ShowView()
-        {
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray),
-                Opacity = 0.5
-            };
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            Application.Current.MainWindow.Effect = effect;
-        }
-
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
-        }
-
         void ResourceChangedDialog_OnClosing(object sender, CancelEventArgs e)
         {
-            RemoveBlackOutEffect();
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
     }
 }

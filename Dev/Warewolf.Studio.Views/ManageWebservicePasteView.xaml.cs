@@ -11,8 +11,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
+using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ManageWebservicePasteView : IPasteView
     {
-        Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
         Window _window;
 
         public ManageWebservicePasteView()
@@ -33,18 +33,7 @@ namespace Warewolf.Studio.Views
         public string ShowView(string text)
         {
             IsModal = true;
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray), 
-                Opacity = 0.5 
-            };
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            Application.Current.MainWindow.Effect = effect;
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
 
             _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640, MinHeight = 480, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             var vm = new ManagePasteViewModel(text, RequestClose);
@@ -53,19 +42,9 @@ namespace Warewolf.Studio.Views
             return vm.Text;
         }
 
-        void RemoveBlackOutEffect()
+        private void RequestClose()
         {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
-        }
-
-        public void RequestClose()
-        {
-            RemoveBlackOutEffect();
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
             _window.Close();
         }
     }

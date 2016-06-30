@@ -230,6 +230,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
+        private IJsonObjectsView _jsonObjectView;
 
         #endregion Properties
 
@@ -248,21 +249,22 @@ namespace Dev2.Studio.ViewModels.DataList
             Provider = new Dev2TrieSugggestionProvider();
         }
 
+        public IJsonObjectsView JsonObjectsView
+        {
+            private get { return _jsonObjectView ?? (_jsonObjectView = new JsonObjectsView()); }
+            set { _jsonObjectView = value; }
+        }
+
         private void ViewJsonObjects(IComplexObjectItemModel item)
         {
             if (item != null)
             {
-                var window = new JsonObjectsView();
-                window.Height = 280;
-                var contentPresenter = window.FindChild<TextBox>();
-                if (contentPresenter != null)
+                if (JsonObjectsView != null)
                 {
                     var json = item.GetJson();
-                    contentPresenter.Text = JSONUtils.Format(json);
+                    JsonObjectsView.ShowJsonString(JSONUtils.Format(json));                    
                 }
-
-                window.ShowDialog();
-            }
+           }
         }
 
         bool CanViewComplexObjects(Object itemx)
@@ -329,11 +331,6 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Commands
 
         #region Add/Remove Missing Methods
-
-        public void AddMissingDataListItems(IList<IDataListVerifyPart> parts)
-        {
-            AddMissingDataListItems(parts, false);
-        }
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
@@ -455,7 +452,7 @@ namespace Dev2.Studio.ViewModels.DataList
             DeleteCommand.RaiseCanExecuteChanged();
         }
 
-        public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
+        public void AddMissingDataListItems(IList<IDataListVerifyPart> parts)
         {
             IList<IRecordSetItemModel> tmpRecsetList = new List<IRecordSetItemModel>();
             foreach (var part in parts)
@@ -470,7 +467,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
                         {
-                            var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
+                            var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description);
                             if (ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
                             {
                                 ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
@@ -749,9 +746,9 @@ namespace Dev2.Studio.ViewModels.DataList
             if (itemToRemove == null)
                 return;
 
-            if (itemToRemove is IComplexObjectItemModel)
+            var complexObj = itemToRemove as IComplexObjectItemModel;
+            if (complexObj != null)
             {
-                var complexObj = (IComplexObjectItemModel) itemToRemove;
                 var complexObjectItemModels = complexObj.Children;
                 var allChildren = complexObjectItemModels.Flatten(model => model.Children).ToList();
                 var notUsedItems = allChildren.Where(x => !x.IsUsed).ToList();
@@ -831,7 +828,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void AddRecordsetNamesIfMissing()
         {
-            var recsetNum = RecsetCollection != null ? RecsetCollection.Count : 0;
+            var recsetNum = RecsetCollection?.Count ?? 0;
             int recsetCount = 0;
 
             while (recsetCount < recsetNum)
@@ -850,7 +847,7 @@ namespace Dev2.Studio.ViewModels.DataList
                         {
                             IRecordSetFieldItemModel child = recset.Children[childrenCount];
 
-                            if (child != null && !string.IsNullOrWhiteSpace(child.DisplayName))
+                            if (!string.IsNullOrWhiteSpace(child?.DisplayName))
                             {
                                 int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
                                 if (indexOfDot > -1)
@@ -893,7 +890,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public void RemoveBlankRecordsets()
+        private void RemoveBlankRecordsets()
         {
             List<IRecordSetItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
 
@@ -902,7 +899,7 @@ namespace Dev2.Studio.ViewModels.DataList
             RecsetCollection.Remove(blankList.First());
         }
 
-        public void RemoveBlankScalars()
+        private void RemoveBlankScalars()
         {
             List<IScalarItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
 
@@ -911,7 +908,7 @@ namespace Dev2.Studio.ViewModels.DataList
             ScalarCollection.Remove(blankList.First());
         }
 
-        public void RemoveBlankRecordsetFields()
+        private void RemoveBlankRecordsetFields()
         {
             foreach (var recset in RecsetCollection)
             {
@@ -1441,14 +1438,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void AddRecordSets(XmlNode c)
         {
-            var cols = new List<IDataListItemModel>();
+            var recset = CreateRecordSet(c);
+            foreach (XmlNode subc in c.ChildNodes)
             {
-                var recset = CreateRecordSet(c);
-                foreach (XmlNode subc in c.ChildNodes)
-                {
-                    // It is possible for the .Attributes property to be null, a check should be added
-                    CreateColumns(subc, cols, recset);
-                }
+                // It is possible for the .Attributes property to be null, a check should be added
+                CreateColumns(subc, recset);
             }
         }
 
@@ -1477,7 +1471,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return recset;
         }
 
-        void CreateColumns(XmlNode subc, List<IDataListItemModel> cols, IRecordSetItemModel recset)
+        void CreateColumns(XmlNode subc, IRecordSetItemModel recset)
         {
             if (subc.Attributes != null)
             {
@@ -1537,7 +1531,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private const string Description = "Description";
         private const string IsEditable = "IsEditable";
 
-        public string GetDataListString()
+        private string GetDataListString()
         {
             StringBuilder result = new StringBuilder("<" + RootTag + ">");
             foreach (var recSet in RecsetCollection ?? new OptomizedObservableCollection<IRecordSetItemModel>())
@@ -1571,7 +1565,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 result.Append(">");
             }
 
-            IList<IScalarItemModel> filledScalars = ScalarCollection != null ? ScalarCollection.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() : new List<IScalarItemModel>();
+            IList<IScalarItemModel> filledScalars = ScalarCollection?.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() ?? new List<IScalarItemModel>();
             foreach (var scalar in filledScalars)
             {
                 AddItemToBuilder(result, scalar);
@@ -1862,28 +1856,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private List<IDataListVerifyPart> MissingScalars(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
         {
-            List<IDataListVerifyPart> missingWorkflowParts = new List<IDataListVerifyPart>();
-            foreach (var dataListItem in ScalarCollection)
-            {
-                if (string.IsNullOrEmpty(dataListItem.DisplayName))
-                {
-                    continue;
-                }
-
-                if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0)
-                {
-                    if (dataListItem.IsEditable)
-                    {
-                        // skip it if unused and exclude is on ;)
-                        if (excludeUnusedItems && !dataListItem.IsUsed)
-                        {
-                            continue;
-                        }
-                        missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
-                    }
-                }
-            }
-            return missingWorkflowParts;
+            return (from dataListItem in ScalarCollection
+                    where !string.IsNullOrEmpty(dataListItem.DisplayName)
+                    where partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0
+                    where dataListItem.IsEditable
+                    where !excludeUnusedItems || dataListItem.IsUsed
+                    select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
         }
 
         public List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
