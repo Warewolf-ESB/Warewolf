@@ -864,7 +864,10 @@ namespace Dev2.Runtime.Hosting
             IResourceActivityCache parser;
             if (_parsers != null && _parsers.TryGetValue(workspaceID, out parser))
             {
-                parser.RemoveFromCache(resource.ResourceID);
+                if(resource != null)
+                {
+                    parser.RemoveFromCache(resource.ResourceID);
+                }
             }
 
         }
