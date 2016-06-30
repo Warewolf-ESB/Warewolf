@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.Compiler;
@@ -22,7 +21,6 @@ namespace Dev2.Tests.Runtime.CompileMessages
     /// Summary description for ServiceModelCompilerTest
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ServiceModelCompilerTest
     {
 

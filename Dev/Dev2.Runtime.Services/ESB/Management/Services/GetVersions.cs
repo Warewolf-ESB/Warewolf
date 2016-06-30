@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersions : IEsbManagementEndpoint
     {
-        private IServerVersionRepository  _serverExplorerRepository;
+        private IServerVersionRepository _serverExplorerRepository;
 
         public string HandlesType()
         {
@@ -37,21 +37,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-
             var serializer = new Dev2JsonSerializer();
             try
             {
                 if (values == null)
                 {
-                    throw new ArgumentNullException("values");
+                    throw new ArgumentNullException(nameof(values));
                 }
-                if( !values.ContainsKey("resourceId"))
+                if (!values.ContainsKey("resourceId"))
                 {
-// ReSharper disable NotResolvedInText
+                    // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException(ErrorResource.NoResourceIdInTheIncomingData);
-// ReSharper restore NotResolvedInText
+                    // ReSharper restore NotResolvedInText
                 }
-                var id = Guid.Parse( values["resourceId"].ToString());
+                var id = Guid.Parse(values["resourceId"].ToString());
                 Dev2Logger.Info("Get Versions. " + id);
                 var item = ServerVersionRepo.GetVersions(id);
                 return serializer.SerializeToBuilder(item);
@@ -77,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID),new FileWrapper()); }
+            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
             set { _serverExplorerRepository = value; }
         }
     }

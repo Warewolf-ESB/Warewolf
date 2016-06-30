@@ -20,6 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Check for admin **
+@echo off
 echo Administrative permissions required. Detecting permissions...
 REM using the "net session" command to detect admin, it requires elevation in the most operating systems - Ashley
 IF EXIST %windir%\nircmd.exe (nircmd elevate net session >nul 2>&1) else (net session >nul 2>&1)
@@ -29,6 +30,7 @@ if %errorLevel% == 0 (
 	echo Failure: Current permissions inadequate.
 	exit 1
 )
+@echo on
 
 REM Init paths to Warewolf server under test
 IF EXIST "%DeploymentDirectory%\DebugServer.zip" powershell.exe -nologo -noprofile -command "& { Expand-Archive '%DeploymentDirectory%\DebugServer.zip' '%DeploymentDirectory%\Server' -Force }"

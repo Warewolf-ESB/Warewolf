@@ -278,10 +278,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(PluginSource pluginSource)
         {
-            if (string.IsNullOrEmpty(pluginSource.AssemblyLocation))
-            {
-                pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);
-            }
             var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
             var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);

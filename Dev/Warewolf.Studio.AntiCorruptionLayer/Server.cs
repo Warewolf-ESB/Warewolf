@@ -18,7 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
-    public class Server : Resource,IServer,INotifyPropertyChanged
+    public class Server : Resource, IServer, INotifyPropertyChanged
     {
         readonly Guid _serverId;
         readonly StudioServerProxy _proxyLayer;
@@ -26,7 +26,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly IEnvironmentModel _environmentModel;
         bool _hasloaded;
         string _version;
-        string _informationalVersion;
         private string _minversion;
         private List<IWindowsGroupPermission> _permissions;
 
@@ -40,10 +39,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateRepository = new StudioResourceUpdateManager(communicationControllerFactory, EnvironmentConnection);
             EnvironmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
             ResourceName = EnvironmentConnection.DisplayName;
-            EnvironmentConnection.NetworkStateChanged+=RaiseNetworkStateChangeEvent;
-            EnvironmentConnection.ItemAddedMessageAction+=ItemAdded;
+            EnvironmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
+            EnvironmentConnection.ItemAddedMessageAction += ItemAdded;
             environmentModel.WorkflowSaved += (sender, args) => UpdateRepository.FireItemSaved();
-            _environmentModel = environmentModel;            
+            _environmentModel = environmentModel;
         }
 
         public bool CanDeployTo => _environmentModel.IsAuthorizedDeployTo;
@@ -74,10 +73,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         void ItemAdded(IExplorerItem obj)
         {
-            if (ItemAddedEvent != null)
-            {
-                ItemAddedEvent(obj);
-            }
+            ItemAddedEvent?.Invoke(obj);
         }
 
         public string GetServerVersion()
@@ -106,23 +102,16 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
 
             return _minversion;
-
         }
 
         void RaiseNetworkStateChangeEvent(object sender, System.Network.NetworkStateEventArgs e)
         {
-            if(NetworkStateChanged!= null)
-            {
-                NetworkStateChanged(new NetworkStateChangedEventArgs(e),this);
-            }
+            NetworkStateChanged?.Invoke(new NetworkStateChangedEventArgs(e), this);
         }
 
         void RaisePermissionsModifiedEvent(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
         {
-            if (PermissionsChanged != null)
-            {
-                PermissionsChanged(new PermissionsChangedArgs(windowsGroupPermissions.Cast<IWindowsGroupPermission>().ToList()));
-            }
+            PermissionsChanged?.Invoke(new PermissionsChangedArgs(windowsGroupPermissions.Cast<IWindowsGroupPermission>().ToList()));
             Permissions = windowsGroupPermissions.Select(permission => permission as IWindowsGroupPermission).ToList();
         }
 
@@ -130,7 +119,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public void Connect()
         {
-            if(!EnvironmentConnection.IsConnected)
+            if (!EnvironmentConnection.IsConnected)
             {
                 EnvironmentConnection.Connect(_serverId);
                 OnPropertyChanged("IsConnected");
@@ -138,10 +127,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
-
         public async Task<bool> ConnectAsync()
         {
-            
             var connected = await EnvironmentConnection.ConnectAsync(_serverId);
             OnPropertyChanged("IsConnected");
             OnPropertyChanged("DisplayName");
@@ -164,7 +151,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                         }
                     }
                 }
-                
+
                 return displayName;
             }
             // ReSharper disable once ValueParameterNotUsed
@@ -174,7 +161,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 OnPropertyChanged();
             }
         }
-
 
         public async Task<IExplorerItem> LoadExplorer()
         {
@@ -200,7 +186,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool IsConnected => EnvironmentConnection != null && EnvironmentConnection.IsConnected;
 
-        public bool AllowEdit => EnvironmentConnection!=null&& !EnvironmentConnection.IsLocalHost;
+        public bool AllowEdit => EnvironmentConnection != null && !EnvironmentConnection.IsLocalHost;
 
         public void Disconnect()
         {
@@ -213,25 +199,21 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             get
             {
-                if(_permissions == null)
+                if (_permissions == null)
                 {
                     try
                     {
                         if (IsConnected)
                         {
-                    _permissions = ProxyLayer.QueryManagerProxy.FetchPermissions();
-                    if (PermissionsChanged != null)
-                    {
-                        PermissionsChanged(new PermissionsChangedArgs(_permissions.ToList()));
-                    }
+                            _permissions = ProxyLayer.QueryManagerProxy.FetchPermissions();
+                            PermissionsChanged?.Invoke(new PermissionsChangedArgs(_permissions.ToList()));
                         }
-                }
-                    catch(Exception)
-                    {
-                        
-//ignore
                     }
+                    catch (Exception)
+                    {
 
+                        //ignore
+                    }
                 }
                 return _permissions;
             }
@@ -245,9 +227,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public event NetworkStateChanged NetworkStateChanged;
         public event ItemAddedEvent ItemAddedEvent;
 
-        public IStudioUpdateManager UpdateRepository { get; private set; }
-        
-        public StudioServerProxy ProxyLayer => _proxyLayer;
+        public IStudioUpdateManager UpdateRepository { get; }
+
+        public IExplorerRepository ProxyLayer => _proxyLayer;
         public IEnvironmentConnection EnvironmentConnection { get; set; }
 
         #endregion
@@ -262,7 +244,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         /// </returns>
         public override string ToString()
         {
-           return DisplayName;
+            return DisplayName;
         }
 
         #endregion
@@ -272,10 +254,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

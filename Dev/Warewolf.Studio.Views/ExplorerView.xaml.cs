@@ -141,11 +141,7 @@ namespace Warewolf.Studio.Views
         void ExplorerTree_OnInitializeNode(object sender, InitializeNodeEventArgs e)
         {
             var xamDataTreeNode = e.Node;
-            if (xamDataTreeNode == null)
-            {
-                return;
-            }
-            var dataItem = xamDataTreeNode.Data as IExplorerItemViewModel;
+            var dataItem = xamDataTreeNode?.Data as IExplorerItemViewModel;
             if (dataItem == null)
             {
                 return;
@@ -154,7 +150,7 @@ namespace Warewolf.Studio.Views
             {
                 return;
             }
-            if (dataItem.ResourceName.StartsWith("New Folder"))
+            if (dataItem.ResourceName.StartsWith(Studio.Resources.Languages.Core.NewFolderLabel))
             {
                 ExplorerTree.EnterEditMode(xamDataTreeNode);
             }
@@ -163,10 +159,7 @@ namespace Warewolf.Studio.Views
         void UIElement_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             var textBox = sender as TextBox;
-            if (textBox != null)
-            {
-                textBox.SelectAll();
-            }
+            textBox?.SelectAll();
         }
 
         void ExplorerTree_OnNodeExitedEditMode(object sender, NodeEventArgs e)
@@ -176,7 +169,7 @@ namespace Warewolf.Studio.Views
             {
                 return;
             }
-            if (dataItem.IsRenaming && dataItem.ResourceName.StartsWith("New Folder"))
+            if (dataItem.IsRenaming && dataItem.ResourceName.StartsWith(Studio.Resources.Languages.Core.NewFolderLabel))
             {
                 ExplorerTree.EnterEditMode(e.Node);
             }

@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             get
             {
                 var stringBuilder = base.DataList;
-                return stringBuilder != null ? stringBuilder.ToString() : null;
+                return stringBuilder?.ToString();
             }
             set
             {
@@ -129,12 +129,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("Host={0}", Host),
-                string.Format("UserName={0}", UserName),
-                string.Format("Password={0}", Password),
-                string.Format("Port={0}", Port),
-                string.Format("EnableSsl={0}", EnableSsl),
-                string.Format("Timeout={0}", Timeout)
+                $"Host={Host}",
+                $"UserName={UserName}",
+                $"Password={Password}",
+                $"Port={Port}",
+                $"EnableSsl={EnableSsl}",
+                $"Timeout={Timeout}"
                 );
 
             result.Add(

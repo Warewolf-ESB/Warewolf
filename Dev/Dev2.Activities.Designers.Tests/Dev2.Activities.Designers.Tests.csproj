@@ -84,10 +84,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -211,7 +208,6 @@
     <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
     <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
-    <Compile Include="SelectAndApply\SelectAndApplyViewModelDesignerTests.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
     <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
@@ -306,6 +302,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>

@@ -257,8 +257,6 @@
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
-    <Compile Include="AppResources\Repositories\IStudioResourceRepository.cs" />
-    <Compile Include="AppResources\Repositories\StudioResourceRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -289,7 +287,6 @@
     <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetItemModel.cs" />
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
-    <Compile Include="Models\ServerExplorerVersionProxy.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
@@ -370,7 +367,6 @@
     <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
-    <Compile Include="Messages\DeployResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />
     <Compile Include="Messages\EnvironmentDeletedMessage.cs" />
@@ -400,7 +396,6 @@
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
-    <Compile Include="Models\IExplorerItemModel.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
       <SubType>Code</SubType>
@@ -409,7 +404,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\EnvironmentModel.cs" />
-    <Compile Include="Models\ExplorerItemModel.cs" />
     <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
@@ -462,7 +456,6 @@
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
-    <Compile Include="TreeEx.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\ServerUtil.cs" />
