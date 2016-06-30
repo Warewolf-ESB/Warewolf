@@ -152,10 +152,10 @@ Scenario: Deploy Summary is showing new and overiding resources
 	 And destination is connected
 	 And I select "Examples\bob" from Source Server
 	 Then New Resource is "0"
-	 And Override is "1"
+	 And Override is "0"
 	 When I select "DB Service\FetchPlayers" from Source Server
 	 Then New Resource is "1"
-	 And Override is "1"
+	 And Override is "0"
 	 When I Unselect "Examples\bob" from Source Server
 	 Then Override is "0"
 
@@ -182,7 +182,7 @@ Scenario: Deploying items from one server to the next with the same name
 	 And source is connected
      When selected Destination Server is "Remote"
 	 And destination is connected
-	 And I select "Examples\NameIdConflict" from Source Server
+	 And I select "Examples\bob" from Source Server
 	 When I deploy
 	 Then the User is prompted to "Rename or Delete" one of the resources
 
@@ -197,21 +197,7 @@ Scenario: Warning message no longer appears
 	 When I click OK on Resource exists in the destination server popup
 	 And I deploy 
 	 Then deploy is successfull
-	 And the Deploy validation message is "1 Resource Deployed Successfully."
-	 When I select "Examples\bob" from Source Server
-	 When I click OK on Resource exists in the destination server popup
-	 And I deploy 
-	 Then deploy is successfull
-	 And the Deploy validation message is "1 Resource Deployed Successfully."
-
-Scenario: Renaming resource after deploying and re-deploy
-     Given I have deploy tab opened
-	 And selected Source Server is "localhost"
-	 And source is connected
-     When selected Destination Server is "Remote"
-	 And destination is connected
-	 And I select "Examples\DifferentNameSameID" from Source Server
-	 Then Override is "1"
+	 And the Deploy validation message is "1 Resource Deployed Successfully."	 
 
 #wolf-117
 Scenario: Deploying to an Older server version

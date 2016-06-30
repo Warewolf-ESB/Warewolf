@@ -476,9 +476,9 @@ namespace Warewolf.AcceptanceTesting.Deploy
         [Given(@"Override is ""(.*)""")]
         [When(@"Override is ""(.*)""")]
         [Then(@"Override is ""(.*)""")]
-        public void ThenOverrideIs(string p0)
+        public void ThenOverrideIs(string expectedNumberOfOverrides)
         {
-            Assert.AreEqual(GetView().Overrides, p0);
+            Assert.AreEqual(expectedNumberOfOverrides, GetView().Overrides);
         }
 
         [Then(@"the ""(.*)"" is ""(.*)""")]
