@@ -3060,19 +3060,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_VariableList_DataInputTree_Exists - Use 'Assert_VariableList_DataInputTree_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_DataInputTree_Exists()
-        {
-            #region Variable Declarations
-            WpfTree variableTreeView = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_VariableTreeView_AutoID' tree equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_DataInputTree_ExistsExpectedValues.VariableTreeViewExists, variableTreeView.Exists, "Variable list data input tree does not exist");
-        }
-        
-        /// <summary>
         /// Assert_VariableList_DeleteButton_Exists - Use 'Assert_VariableList_DeleteButton_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_VariableList_DeleteButton_Exists()
@@ -3099,94 +3086,107 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_VariableList_Recordset_ChildTextBox_Exists - Use 'Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues' to pass parameters into this method.
+        /// Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_Exists - Use 'Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_VariableList_Recordset_ChildTextBox_Exists()
-        {
-            #region Variable Declarations
-            WpfEdit recordsetNameChildTextBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetChildModelTreeItem.RecordsetNameChildScrolBarPane.RecordsetNameChildTextBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues.RecordsetNameChildTextBoxExists, recordsetNameChildTextBox.Exists, "Variable list recordset child textbox does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_RecordsetInput_CheckBox_Exists - Use 'Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_RecordsetInput_CheckBox_Exists()
+        public void Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_Exists()
         {
             #region Variable Declarations
             WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.InputCell.IsInputCheckbox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues.IsInputCheckboxExists, isInputCheckbox.Exists, "Variable list recordset input checkbox does not exist");
+            Assert.AreEqual(this.Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues.IsInputCheckboxExists, isInputCheckbox.Exists, "Variable list recordset child input checkbox does not exist");
         }
         
         /// <summary>
-        /// Assert_VariableList_RecordsetInput_ChildCheckBox_Exists - Use 'Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues' to pass parameters into this method.
+        /// Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_Exists - Use 'Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_VariableList_RecordsetInput_ChildCheckBox_Exists()
+        public void Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_Exists()
         {
             #region Variable Declarations
-            WpfCheckBox recordsetChildInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetChildModelTreeItem.RecordsetChildInputCheckbox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues.RecordsetChildInputCheckboxExists, recordsetChildInputCheckbox.Exists, "Variable list recordset child input checkbox does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_RecordsetItem_Exists - Use 'Assert_VariableList_RecordsetItem_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_RecordsetItem_Exists()
-        {
-            #region Variable Declarations
-            WpfTreeItem recordsetTreeItem = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem;
-            #endregion
-
-            // Verify that the 'Exists' property of tree item numbered 2 in 'UI_VariableTreeView_AutoID' tree item equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_RecordsetItem_ExistsExpectedValues.RecordsetTreeItemExists, recordsetTreeItem.Exists, "Variable list recordset item does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_RecordsetOutput_CheckBox_Exists - Use 'Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_RecordsetOutput_CheckBox_Exists()
-        {
-            #region Variable Declarations
-            WpfCheckBox recordsetOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetOutputCheckbox;
+            WpfCheckBox isOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.OutputCell.IsOutputCheckbox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues.RecordsetOutputCheckboxExists, recordsetOutputCheckbox.Exists, "Variable list recordset output checkbox does not exist");
+            Assert.AreEqual(this.Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues.IsOutputCheckboxExists, isOutputCheckbox.Exists, "Variable list recordset child output checkbox does not exist");
         }
         
         /// <summary>
-        /// Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists - Use 'Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues' to pass parameters into this method.
+        /// Assert_VariableList_Recordset_Row1_Field_TextBox_Exists - Use 'Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists()
+        public void Assert_VariableList_Recordset_Row1_Field_TextBox_Exists()
         {
             #region Variable Declarations
-            WpfCheckBox recordsetChildOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetChildModelTreeItem.RecordsetChildOutputCheckbox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues.RecordsetChildOutputCheckboxExists, recordsetChildOutputCheckbox.Exists, "Variable list recordset child output checkbox does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_RecordsetTextBox_Exists - Use 'Assert_VariableList_RecordsetTextBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_RecordsetTextBox_Exists()
-        {
-            #region Variable Declarations
-            WpfEdit recordsetNameTextBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetNameScrolBarPane.RecordsetNameTextBox;
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.FieldNameCell.ValueEditor.TextBox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_RecordsetTextBox_ExistsExpectedValues.RecordsetNameTextBoxExists, recordsetNameTextBox.Exists, "Variable list recordset textbox does not exist");
+            Assert.AreEqual(this.Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues.TextBoxExists, textBox.Exists, "Variable list recordset row 1 field textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_VariableList_Recordset_Row1_IsInputCheckBox_Exists - Use 'Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_VariableList_Recordset_Row1_IsInputCheckBox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.InputCell.IsInputCheckbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues.IsInputCheckboxExists, isInputCheckbox.Exists, "Variable list recordset input checkbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_VariableList_Recordset_Row1_IsOutputCheckBox_Exists - Use 'Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_VariableList_Recordset_Row1_IsOutputCheckBox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox isOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.OutputCell.IsOutputCheckbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues.IsOutputCheckboxExists, isOutputCheckbox.Exists, "Variable list recordset output checkbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_VariableList_Recordset_Row1_TextBox_Exists - Use 'Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_VariableList_Recordset_Row1_TextBox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.RecordsetNameCell.ValueEditor.TextBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues.TextBoxExists, textBox.Exists, "Variable list recordset textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_VariableList_Scalar_Row1_IsInputCheckBox_Exists - Use 'Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_VariableList_Scalar_Row1_IsInputCheckBox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues.IsInputCheckboxExists, isInputCheckbox.Exists, "Variable list variable input checkbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_VariableList_Scalar_Row1_IsOutputCheckBox_Exists - Use 'Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_VariableList_Scalar_Row1_IsOutputCheckBox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox isOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.OutputCell.IsOutputCheckbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues.IsOutputCheckboxExists, isOutputCheckbox.Exists, "Variable list variable output checkbox does not exist");
         }
         
         /// <summary>
@@ -3203,6 +3203,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_VariableList_Scalar_Row1_TextBox_Exists - Use 'Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_VariableList_Scalar_Row1_TextBox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues.TextBoxExists, textBox.Exists, "Variable list variable textbox does not exist");
+        }
+        
+        /// <summary>
         /// Assert_VariableList_SortButton_Exists - Use 'Assert_VariableList_SortButton_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_VariableList_SortButton_Exists()
@@ -3213,58 +3226,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of '' button equals 'True'
             Assert.AreEqual(this.Assert_VariableList_SortButton_ExistsExpectedValues.SortButtonExists, sortButton.Exists, "Variable list sort button does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_VariableInput_CheckBox_Exists - Use 'Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_VariableInput_CheckBox_Exists()
-        {
-            #region Variable Declarations
-            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues.IsInputCheckboxExists, isInputCheckbox.Exists, "Variable list variable input checkbox does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_VariableItem_Exists - Use 'Assert_VariableList_VariableItem_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_VariableItem_Exists()
-        {
-            #region Variable Declarations
-            WpfTreeItem variableTreeItem = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.VariableTreeItem;
-            #endregion
-
-            // Verify that the 'Exists' property of tree item numbered 1 in 'UI_VariableTreeView_AutoID' tree item equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_VariableItem_ExistsExpectedValues.VariableTreeItemExists, variableTreeItem.Exists, "Variable list variable item does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_VariableOutput_CheckBox_Exists - Use 'Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_VariableOutput_CheckBox_Exists()
-        {
-            #region Variable Declarations
-            WpfCheckBox variableOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableOutputCheckbox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues.VariableOutputCheckboxExists, variableOutputCheckbox.Exists, "Variable list variable output checkbox does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_VariableTextBox_Exists - Use 'Assert_VariableList_VariableTextBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_VariableTextBox_Exists()
-        {
-            #region Variable Declarations
-            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.VariableNameCell.ValueEditor.TextBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
-            Assert.AreEqual(this.Assert_VariableList_VariableTextBox_ExistsExpectedValues.TextBoxExists, textBox.Exists, "Variable list variable textbox does not exist");
         }
         
         /// <summary>
@@ -3554,32 +3515,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_Input_On_Row1_Recordset_InVariableList - Use 'Click_Input_On_Row1_Recordset_InVariableListParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Input_On_Row1_Recordset_InVariableList()
-        {
-            #region Variable Declarations
-            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.InputCell.IsInputCheckbox;
-            #endregion
-
-            // Select 'UI_IsInputCheckbox_AutoID' check box
-            isInputCheckbox.Checked = this.Click_Input_On_Row1_Recordset_InVariableListParams.IsInputCheckboxChecked;
-        }
-        
-        /// <summary>
-        /// Click_Input_On_Row1_Variable_InVariableList - Use 'Click_Input_On_Row1_Variable_InVariableListParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Input_On_Row1_Variable_InVariableList()
-        {
-            #region Variable Declarations
-            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox;
-            #endregion
-
-            // Select 'UI_IsInputCheckbox_AutoID' check box
-            isInputCheckbox.Checked = this.Click_Input_On_Row1_Variable_InVariableListParams.IsInputCheckboxChecked;
-        }
-        
-        /// <summary>
         /// Click_Knowledge_Ribbon_Button
         /// </summary>
         public void Click_Knowledge_Ribbon_Button()
@@ -3754,11 +3689,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Output_OnRecordset_InVariableList()
         {
             #region Variable Declarations
-            WpfCheckBox recordsetOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetOutputCheckbox;
+            WpfCheckBox isOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.OutputCell.IsOutputCheckbox;
             #endregion
 
             // Select 'UI_IsOutputCheckbox_AutoID' check box
-            recordsetOutputCheckbox.Checked = this.Click_Output_OnRecordset_InVariableListParams.RecordsetOutputCheckboxChecked;
+            isOutputCheckbox.Checked = this.Click_Output_OnRecordset_InVariableListParams.IsOutputCheckboxChecked;
         }
         
         /// <summary>
@@ -3767,11 +3702,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Output_OnVariable_InVariableList()
         {
             #region Variable Declarations
-            WpfCheckBox variableOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableOutputCheckbox;
+            WpfCheckBox isOutputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.OutputCell.IsOutputCheckbox;
             #endregion
 
             // Select 'UI_IsOutputCheckbox_AutoID' check box
-            variableOutputCheckbox.Checked = this.Click_Output_OnVariable_InVariableListParams.VariableOutputCheckboxChecked;
+            isOutputCheckbox.Checked = this.Click_Output_OnVariable_InVariableListParams.IsOutputCheckboxChecked;
         }
         
         /// <summary>
@@ -4162,6 +4097,32 @@ namespace Warewolf.Studio.UISpecs
 
             // Click '' button
             Mouse.Click(lockStudioButton, new Point(10, 12));
+        }
+        
+        /// <summary>
+        /// Click_VariableList_Recordset_Row1_IsInputCheckbox - Use 'Click_VariableList_Recordset_Row1_IsInputCheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_VariableList_Recordset_Row1_IsInputCheckbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.InputCell.IsInputCheckbox;
+            #endregion
+
+            // Select 'UI_IsInputCheckbox_AutoID' check box
+            isInputCheckbox.Checked = this.Click_VariableList_Recordset_Row1_IsInputCheckboxParams.IsInputCheckboxChecked;
+        }
+        
+        /// <summary>
+        /// Click_VariableList_Scalar_Row1_IsInputCheckbox - Use 'Click_VariableList_Scalar_Row1_IsInputCheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_VariableList_Scalar_Row1_IsInputCheckbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox isInputCheckbox = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox;
+            #endregion
+
+            // Select 'UI_IsInputCheckbox_AutoID' check box
+            isInputCheckbox.Checked = this.Click_VariableList_Scalar_Row1_IsInputCheckboxParams.IsInputCheckboxChecked;
         }
         
         /// <summary>
@@ -9694,18 +9655,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_VariableList_DataInputTree_ExistsExpectedValues Assert_VariableList_DataInputTree_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_DataInputTree_ExistsExpectedValues == null))
-                {
-                    this.mAssert_VariableList_DataInputTree_ExistsExpectedValues = new Assert_VariableList_DataInputTree_ExistsExpectedValues();
-                }
-                return this.mAssert_VariableList_DataInputTree_ExistsExpectedValues;
-            }
-        }
-        
         public virtual Assert_VariableList_DeleteButton_ExistsExpectedValues Assert_VariableList_DeleteButton_ExistsExpectedValues
         {
             get
@@ -9730,87 +9679,99 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues
+        public virtual Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues = new Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues();
+                    this.mAssert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues = new Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues;
+                return this.mAssert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues;
             }
         }
         
-        public virtual Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues
+        public virtual Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues = new Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues();
+                    this.mAssert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues = new Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues;
+                return this.mAssert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues;
             }
         }
         
-        public virtual Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues
+        public virtual Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues = new Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues();
+                    this.mAssert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues = new Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues;
+                return this.mAssert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues;
             }
         }
         
-        public virtual Assert_VariableList_RecordsetItem_ExistsExpectedValues Assert_VariableList_RecordsetItem_ExistsExpectedValues
+        public virtual Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_RecordsetItem_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_RecordsetItem_ExistsExpectedValues = new Assert_VariableList_RecordsetItem_ExistsExpectedValues();
+                    this.mAssert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues = new Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_RecordsetItem_ExistsExpectedValues;
+                return this.mAssert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues;
             }
         }
         
-        public virtual Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues
+        public virtual Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues = new Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues();
+                    this.mAssert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues = new Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues;
+                return this.mAssert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues;
             }
         }
         
-        public virtual Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues
+        public virtual Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues = new Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues();
+                    this.mAssert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues = new Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues;
+                return this.mAssert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues;
             }
         }
         
-        public virtual Assert_VariableList_RecordsetTextBox_ExistsExpectedValues Assert_VariableList_RecordsetTextBox_ExistsExpectedValues
+        public virtual Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_VariableList_RecordsetTextBox_ExistsExpectedValues == null))
+                if ((this.mAssert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues == null))
                 {
-                    this.mAssert_VariableList_RecordsetTextBox_ExistsExpectedValues = new Assert_VariableList_RecordsetTextBox_ExistsExpectedValues();
+                    this.mAssert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues = new Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues();
                 }
-                return this.mAssert_VariableList_RecordsetTextBox_ExistsExpectedValues;
+                return this.mAssert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues = new Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues();
+                }
+                return this.mAssert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues;
             }
         }
         
@@ -9826,6 +9787,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues = new Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues();
+                }
+                return this.mAssert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_VariableList_SortButton_ExistsExpectedValues Assert_VariableList_SortButton_ExistsExpectedValues
         {
             get
@@ -9835,54 +9808,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_VariableList_SortButton_ExistsExpectedValues = new Assert_VariableList_SortButton_ExistsExpectedValues();
                 }
                 return this.mAssert_VariableList_SortButton_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_VariableInput_CheckBox_ExistsExpectedValues == null))
-                {
-                    this.mAssert_VariableList_VariableInput_CheckBox_ExistsExpectedValues = new Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues();
-                }
-                return this.mAssert_VariableList_VariableInput_CheckBox_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_VariableList_VariableItem_ExistsExpectedValues Assert_VariableList_VariableItem_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_VariableItem_ExistsExpectedValues == null))
-                {
-                    this.mAssert_VariableList_VariableItem_ExistsExpectedValues = new Assert_VariableList_VariableItem_ExistsExpectedValues();
-                }
-                return this.mAssert_VariableList_VariableItem_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues == null))
-                {
-                    this.mAssert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues = new Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues();
-                }
-                return this.mAssert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_VariableList_VariableTextBox_ExistsExpectedValues Assert_VariableList_VariableTextBox_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_VariableTextBox_ExistsExpectedValues == null))
-                {
-                    this.mAssert_VariableList_VariableTextBox_ExistsExpectedValues = new Assert_VariableList_VariableTextBox_ExistsExpectedValues();
-                }
-                return this.mAssert_VariableList_VariableTextBox_ExistsExpectedValues;
             }
         }
         
@@ -10030,30 +9955,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Click_Input_On_Row1_Recordset_InVariableListParams Click_Input_On_Row1_Recordset_InVariableListParams
-        {
-            get
-            {
-                if ((this.mClick_Input_On_Row1_Recordset_InVariableListParams == null))
-                {
-                    this.mClick_Input_On_Row1_Recordset_InVariableListParams = new Click_Input_On_Row1_Recordset_InVariableListParams();
-                }
-                return this.mClick_Input_On_Row1_Recordset_InVariableListParams;
-            }
-        }
-        
-        public virtual Click_Input_On_Row1_Variable_InVariableListParams Click_Input_On_Row1_Variable_InVariableListParams
-        {
-            get
-            {
-                if ((this.mClick_Input_On_Row1_Variable_InVariableListParams == null))
-                {
-                    this.mClick_Input_On_Row1_Variable_InVariableListParams = new Click_Input_On_Row1_Variable_InVariableListParams();
-                }
-                return this.mClick_Input_On_Row1_Variable_InVariableListParams;
-            }
-        }
-        
         public virtual Click_Output_OnRecordset_InVariableListParams Click_Output_OnRecordset_InVariableListParams
         {
             get
@@ -10171,6 +10072,30 @@ namespace Warewolf.Studio.UISpecs
                     this.mClick_Settings_View_ResourcePermissionsParams = new Click_Settings_View_ResourcePermissionsParams();
                 }
                 return this.mClick_Settings_View_ResourcePermissionsParams;
+            }
+        }
+        
+        public virtual Click_VariableList_Recordset_Row1_IsInputCheckboxParams Click_VariableList_Recordset_Row1_IsInputCheckboxParams
+        {
+            get
+            {
+                if ((this.mClick_VariableList_Recordset_Row1_IsInputCheckboxParams == null))
+                {
+                    this.mClick_VariableList_Recordset_Row1_IsInputCheckboxParams = new Click_VariableList_Recordset_Row1_IsInputCheckboxParams();
+                }
+                return this.mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
+            }
+        }
+        
+        public virtual Click_VariableList_Scalar_Row1_IsInputCheckboxParams Click_VariableList_Scalar_Row1_IsInputCheckboxParams
+        {
+            get
+            {
+                if ((this.mClick_VariableList_Scalar_Row1_IsInputCheckboxParams == null))
+                {
+                    this.mClick_VariableList_Scalar_Row1_IsInputCheckboxParams = new Click_VariableList_Scalar_Row1_IsInputCheckboxParams();
+                }
+                return this.mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
             }
         }
         
@@ -10940,37 +10865,31 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Unzip_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Unzip_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_VariableList_DataInputTree_ExistsExpectedValues mAssert_VariableList_DataInputTree_ExistsExpectedValues;
-        
         private Assert_VariableList_DeleteButton_ExistsExpectedValues mAssert_VariableList_DeleteButton_ExistsExpectedValues;
         
         private Assert_VariableList_ExistsExpectedValues mAssert_VariableList_ExistsExpectedValues;
         
-        private Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues mAssert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues;
+        private Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues mAssert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues;
         
-        private Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues mAssert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues;
+        private Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues mAssert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues;
         
-        private Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues mAssert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues;
+        private Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues mAssert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues;
         
-        private Assert_VariableList_RecordsetItem_ExistsExpectedValues mAssert_VariableList_RecordsetItem_ExistsExpectedValues;
+        private Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues mAssert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues;
         
-        private Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues mAssert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues;
+        private Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues mAssert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues;
         
-        private Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues mAssert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues;
+        private Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues mAssert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues;
         
-        private Assert_VariableList_RecordsetTextBox_ExistsExpectedValues mAssert_VariableList_RecordsetTextBox_ExistsExpectedValues;
+        private Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues mAssert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues;
+        
+        private Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues mAssert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues;
         
         private Assert_VariableList_Scalar_Row1_Textbox_Equals_SomeVariableExpectedValues mAssert_VariableList_Scalar_Row1_Textbox_Equals_SomeVariableExpectedValues;
         
+        private Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues mAssert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues;
+        
         private Assert_VariableList_SortButton_ExistsExpectedValues mAssert_VariableList_SortButton_ExistsExpectedValues;
-        
-        private Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues mAssert_VariableList_VariableInput_CheckBox_ExistsExpectedValues;
-        
-        private Assert_VariableList_VariableItem_ExistsExpectedValues mAssert_VariableList_VariableItem_ExistsExpectedValues;
-        
-        private Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues mAssert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues;
-        
-        private Assert_VariableList_VariableTextBox_ExistsExpectedValues mAssert_VariableList_VariableTextBox_ExistsExpectedValues;
         
         private Assert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues;
         
@@ -10996,10 +10915,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Click_ExpandAndStepIn_NestedWorkflowParams mClick_ExpandAndStepIn_NestedWorkflowParams;
         
-        private Click_Input_On_Row1_Recordset_InVariableListParams mClick_Input_On_Row1_Recordset_InVariableListParams;
-        
-        private Click_Input_On_Row1_Variable_InVariableListParams mClick_Input_On_Row1_Variable_InVariableListParams;
-        
         private Click_Output_OnRecordset_InVariableListParams mClick_Output_OnRecordset_InVariableListParams;
         
         private Click_Output_OnVariable_InVariableListParams mClick_Output_OnVariable_InVariableListParams;
@@ -11019,6 +10934,10 @@ namespace Warewolf.Studio.UISpecs
         private Click_Settings_Execute_ResourcePermissionsParams mClick_Settings_Execute_ResourcePermissionsParams;
         
         private Click_Settings_View_ResourcePermissionsParams mClick_Settings_View_ResourcePermissionsParams;
+        
+        private Click_VariableList_Recordset_Row1_IsInputCheckboxParams mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
+        
+        private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
         
         private DebugInput_Add_New_Line_InputDataParams mDebugInput_Add_New_Line_InputDataParams;
         
@@ -14558,21 +14477,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_DataInputTree_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_DataInputTree_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_VariableTreeView_AutoID' tree equals 'True'
-        /// </summary>
-        public bool VariableTreeViewExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Assert_VariableList_DeleteButton_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14603,25 +14507,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_Recordset_ChildTextBox_Exists'
+    /// Parameters to be passed into 'Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_Recordset_ChildTextBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
-        /// </summary>
-        public bool RecordsetNameChildTextBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_RecordsetInput_CheckBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_RecordsetInput_CheckBox_ExistsExpectedValues
+    public class Assert_VariableList_Recordset_Row1_Field_IsInputCheckBox_ExistsExpectedValues
     {
         
         #region Fields
@@ -14633,77 +14522,107 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_RecordsetInput_ChildCheckBox_Exists'
+    /// Parameters to be passed into 'Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_RecordsetInput_ChildCheckBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool RecordsetChildInputCheckboxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_RecordsetItem_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_RecordsetItem_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of tree item numbered 2 in 'UI_VariableTreeView_AutoID' tree item equals 'True'
-        /// </summary>
-        public bool RecordsetTreeItemExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_RecordsetOutput_CheckBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_RecordsetOutput_CheckBox_ExistsExpectedValues
+    public class Assert_VariableList_Recordset_Row1_Field_IsOutputCheckBox_ExistsExpectedValues
     {
         
         #region Fields
         /// <summary>
         /// Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
         /// </summary>
-        public bool RecordsetOutputCheckboxExists = true;
+        public bool IsOutputCheckboxExists = true;
         #endregion
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists'
+    /// Parameters to be passed into 'Assert_VariableList_Recordset_Row1_Field_TextBox_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_RecordsetOutput_ChildCheckBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool RecordsetChildOutputCheckboxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_RecordsetTextBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_RecordsetTextBox_ExistsExpectedValues
+    public class Assert_VariableList_Recordset_Row1_Field_TextBox_ExistsExpectedValues
     {
         
         #region Fields
         /// <summary>
         /// Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
         /// </summary>
-        public bool RecordsetNameTextBoxExists = true;
+        public bool TextBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_VariableList_Recordset_Row1_IsInputCheckBox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_VariableList_Recordset_Row1_IsInputCheckBox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool IsInputCheckboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_VariableList_Recordset_Row1_IsOutputCheckBox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_VariableList_Recordset_Row1_IsOutputCheckBox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool IsOutputCheckboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_VariableList_Recordset_Row1_TextBox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_VariableList_Recordset_Row1_TextBox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
+        /// </summary>
+        public bool TextBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_VariableList_Scalar_Row1_IsInputCheckBox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_VariableList_Scalar_Row1_IsInputCheckBox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool IsInputCheckboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_VariableList_Scalar_Row1_IsOutputCheckBox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_VariableList_Scalar_Row1_IsOutputCheckBox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool IsOutputCheckboxExists = true;
         #endregion
     }
     
@@ -14723,6 +14642,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_VariableList_Scalar_Row1_TextBox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_VariableList_Scalar_Row1_TextBox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
+        /// </summary>
+        public bool TextBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_VariableList_SortButton_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14734,66 +14668,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of '' button equals 'True'
         /// </summary>
         public bool SortButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_VariableInput_CheckBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_VariableInput_CheckBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_IsInputCheckbox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool IsInputCheckboxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_VariableItem_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_VariableItem_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of tree item numbered 1 in 'UI_VariableTreeView_AutoID' tree item equals 'True'
-        /// </summary>
-        public bool VariableTreeItemExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_VariableOutput_CheckBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_VariableOutput_CheckBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'True'
-        /// </summary>
-        public bool VariableOutputCheckboxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_VariableTextBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_VariableList_VariableTextBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_NameTextBox_AutoID' text box equals 'True'
-        /// </summary>
-        public bool TextBoxExists = true;
         #endregion
     }
     
@@ -14978,36 +14852,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Input_On_Row1_Recordset_InVariableList'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Input_On_Row1_Recordset_InVariableListParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI_IsInputCheckbox_AutoID' check box
-        /// </summary>
-        public bool IsInputCheckboxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Input_On_Row1_Variable_InVariableList'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Input_On_Row1_Variable_InVariableListParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'UI_IsInputCheckbox_AutoID' check box
-        /// </summary>
-        public bool IsInputCheckboxChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Click_Output_OnRecordset_InVariableList'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15018,7 +14862,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Select 'UI_IsOutputCheckbox_AutoID' check box
         /// </summary>
-        public bool RecordsetOutputCheckboxChecked = true;
+        public bool IsOutputCheckboxChecked = true;
         #endregion
     }
     
@@ -15033,7 +14877,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Select 'UI_IsOutputCheckbox_AutoID' check box
         /// </summary>
-        public bool VariableOutputCheckboxChecked = true;
+        public bool IsOutputCheckboxChecked = true;
         #endregion
     }
     
@@ -15154,6 +14998,36 @@ namespace Warewolf.Studio.UISpecs
         /// Select 'False' cell
         /// </summary>
         public bool UIFalseCellChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_VariableList_Recordset_Row1_IsInputCheckbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_VariableList_Recordset_Row1_IsInputCheckboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_IsInputCheckbox_AutoID' check box
+        /// </summary>
+        public bool IsInputCheckboxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Click_VariableList_Scalar_Row1_IsInputCheckbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_VariableList_Scalar_Row1_IsInputCheckboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'UI_IsInputCheckbox_AutoID' check box
+        /// </summary>
+        public bool IsInputCheckboxChecked = true;
         #endregion
     }
     
@@ -31973,24 +31847,10 @@ namespace Warewolf.Studio.UISpecs
                 return this.mTable;
             }
         }
-        
-        public VariableTreeView VariableTreeView
-        {
-            get
-            {
-                if ((this.mVariableTreeView == null))
-                {
-                    this.mVariableTreeView = new VariableTreeView(this);
-                }
-                return this.mVariableTreeView;
-            }
-        }
         #endregion
         
         #region Fields
         private Table mTable;
-        
-        private VariableTreeView mVariableTreeView;
         #endregion
     }
     
@@ -34298,33 +34158,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfEdit TextBox
-        {
-            get
-            {
-                if ((this.mTextBox == null))
-                {
-                    this.mTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mTextBox;
-            }
-        }
-        
-        public WpfCustom ValueEditor
+        public ValueEditor5 ValueEditor
         {
             get
             {
                 if ((this.mValueEditor == null))
                 {
-                    this.mValueEditor = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mValueEditor.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
-                    this.mValueEditor.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mValueEditor = new ValueEditor5(this);
                 }
                 return this.mValueEditor;
             }
@@ -34348,11 +34188,45 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfEdit mTextBox;
-        
-        private WpfCustom mValueEditor;
+        private ValueEditor5 mValueEditor;
         
         private WpfToggleButton mExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueEditor5 : WpfCustom
+    {
+        
+        public ValueEditor5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextBox
+        {
+            get
+            {
+                if ((this.mTextBox == null))
+                {
+                    this.mTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextBox;
         #endregion
     }
     
@@ -34572,17 +34446,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCell FieldNameCell
+        public FieldNameCell FieldNameCell
         {
             get
             {
                 if ((this.mFieldNameCell == null))
                 {
-                    this.mFieldNameCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mFieldNameCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "DisplayName";
-                    this.mFieldNameCell.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mFieldNameCell = new FieldNameCell(this);
                 }
                 return this.mFieldNameCell;
             }
@@ -34616,11 +34486,79 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfButton mExpansionIndicatorButton;
         
-        private WpfCell mFieldNameCell;
+        private FieldNameCell mFieldNameCell;
         
         private InputCell8 mInputCell;
         
         private OutputCell6 mOutputCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FieldNameCell : WpfCell
+    {
+        
+        public FieldNameCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "DisplayName";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ValueEditor6 ValueEditor
+        {
+            get
+            {
+                if ((this.mValueEditor == null))
+                {
+                    this.mValueEditor = new ValueEditor6(this);
+                }
+                return this.mValueEditor;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ValueEditor6 mValueEditor;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueEditor6 : WpfCustom
+    {
+        
+        public ValueEditor6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextBox
+        {
+            get
+            {
+                if ((this.mTextBox == null))
+                {
+                    this.mTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextBox;
         #endregion
     }
     
@@ -34785,35 +34723,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        public ValueEditor7 ValueEditor
         {
             get
             {
-                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                if ((this.mValueEditor == null))
                 {
-                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mValueEditor = new ValueEditor7(this);
                 }
-                return this.mUIUI_NameTextBox_AutoIEdit;
-            }
-        }
-        
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
+                return this.mValueEditor;
             }
         }
         
@@ -34835,11 +34753,45 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
-        
-        private WpfCustom mUIItemCustom;
+        private ValueEditor7 mValueEditor;
         
         private WpfToggleButton mUIPART_ExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueEditor7 : WpfCustom
+    {
+        
+        public ValueEditor7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextBox
+        {
+            get
+            {
+                if ((this.mTextBox == null))
+                {
+                    this.mTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextBox;
         #endregion
     }
     
@@ -35272,35 +35224,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        public ValueEditor8 ValueEditor
         {
             get
             {
-                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                if ((this.mValueEditor == null))
                 {
-                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mValueEditor = new ValueEditor8(this);
                 }
-                return this.mUIUI_NameTextBox_AutoIEdit;
-            }
-        }
-        
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
+                return this.mValueEditor;
             }
         }
         
@@ -35322,11 +35254,45 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
-        
-        private WpfCustom mUIItemCustom;
+        private ValueEditor8 mValueEditor;
         
         private WpfToggleButton mUIPART_ExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueEditor8 : WpfCustom
+    {
+        
+        public ValueEditor8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextBox
+        {
+            get
+            {
+                if ((this.mTextBox == null))
+                {
+                    this.mTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextBox;
         #endregion
     }
     
@@ -35759,35 +35725,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        public ValueEditor9 ValueEditor
         {
             get
             {
-                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                if ((this.mValueEditor == null))
                 {
-                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mValueEditor = new ValueEditor9(this);
                 }
-                return this.mUIUI_NameTextBox_AutoIEdit;
-            }
-        }
-        
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
+                return this.mValueEditor;
             }
         }
         
@@ -35809,11 +35755,45 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
-        
-        private WpfCustom mUIItemCustom;
+        private ValueEditor9 mValueEditor;
         
         private WpfToggleButton mUIPART_ExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueEditor9 : WpfCustom
+    {
+        
+        public ValueEditor9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextBox
+        {
+            get
+            {
+                if ((this.mTextBox == null))
+                {
+                    this.mTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextBox;
         #endregion
     }
     
@@ -36246,35 +36226,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        public ValueEditor10 ValueEditor
         {
             get
             {
-                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                if ((this.mValueEditor == null))
                 {
-                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
+                    this.mValueEditor = new ValueEditor10(this);
                 }
-                return this.mUIUI_NameTextBox_AutoIEdit;
-            }
-        }
-        
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
+                return this.mValueEditor;
             }
         }
         
@@ -36296,11 +36256,45 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
-        
-        private WpfCustom mUIItemCustom;
+        private ValueEditor10 mValueEditor;
         
         private WpfToggleButton mUIPART_ExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ValueEditor10 : WpfCustom
+    {
+        
+        public ValueEditor10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextBox
+        {
+            get
+            {
+                if ((this.mTextBox == null))
+                {
+                    this.mTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextBox;
         #endregion
     }
     
@@ -36782,1963 +36776,6 @@ namespace Warewolf.Studio.UISpecs
         private WpfCustom mValueEditor;
         
         private WpfToggleButton mExpanderToggleButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableTreeView : WpfTree
-    {
-        
-        public VariableTreeView(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableTreeItem VariableTreeItem
-        {
-            get
-            {
-                if ((this.mVariableTreeItem == null))
-                {
-                    this.mVariableTreeItem = new VariableTreeItem(this);
-                }
-                return this.mVariableTreeItem;
-            }
-        }
-        
-        public RecordsetTreeItem RecordsetTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetTreeItem == null))
-                {
-                    this.mRecordsetTreeItem = new RecordsetTreeItem(this);
-                }
-                return this.mRecordsetTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableTreeItem mVariableTreeItem;
-        
-        private RecordsetTreeItem mRecordsetTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableTreeItem : WpfTreeItem
-    {
-        
-        public VariableTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableModelTreeItem1 VariableModelTreeItem1
-        {
-            get
-            {
-                if ((this.mVariableModelTreeItem1 == null))
-                {
-                    this.mVariableModelTreeItem1 = new VariableModelTreeItem1(this);
-                }
-                return this.mVariableModelTreeItem1;
-            }
-        }
-        
-        public VariableModelTreeItem2 VariableModelTreeItem2
-        {
-            get
-            {
-                if ((this.mVariableModelTreeItem2 == null))
-                {
-                    this.mVariableModelTreeItem2 = new VariableModelTreeItem2(this);
-                }
-                return this.mVariableModelTreeItem2;
-            }
-        }
-        
-        public VariableModelTreeItem3 VariableModelTreeItem3
-        {
-            get
-            {
-                if ((this.mVariableModelTreeItem3 == null))
-                {
-                    this.mVariableModelTreeItem3 = new VariableModelTreeItem3(this);
-                }
-                return this.mVariableModelTreeItem3;
-            }
-        }
-        
-        public VariableModelTreeItem4 VariableModelTreeItem4
-        {
-            get
-            {
-                if ((this.mVariableModelTreeItem4 == null))
-                {
-                    this.mVariableModelTreeItem4 = new VariableModelTreeItem4(this);
-                }
-                return this.mVariableModelTreeItem4;
-            }
-        }
-        
-        public VariableModelTreeItem5 VariableModelTreeItem5
-        {
-            get
-            {
-                if ((this.mVariableModelTreeItem5 == null))
-                {
-                    this.mVariableModelTreeItem5 = new VariableModelTreeItem5(this);
-                }
-                return this.mVariableModelTreeItem5;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableModelTreeItem1 mVariableModelTreeItem1;
-        
-        private VariableModelTreeItem2 mVariableModelTreeItem2;
-        
-        private VariableModelTreeItem3 mVariableModelTreeItem3;
-        
-        private VariableModelTreeItem4 mVariableModelTreeItem4;
-        
-        private VariableModelTreeItem5 mVariableModelTreeItem5;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableModelTreeItem1 : WpfTreeItem
-    {
-        
-        public VariableModelTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableNameScrolBarPane VariableNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mVariableNameScrolBarPane == null))
-                {
-                    this.mVariableNameScrolBarPane = new VariableNameScrolBarPane(this);
-                }
-                return this.mVariableNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox VariableInputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableInputCheckbox == null))
-                {
-                    this.mVariableInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mVariableInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox VariableOutputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableOutputCheckbox == null))
-                {
-                    this.mVariableOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mVariableOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableNameScrolBarPane mVariableNameScrolBarPane;
-        
-        private WpfCheckBox mVariableInputCheckbox;
-        
-        private WpfCheckBox mVariableOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableNameScrolBarPane : WpfPane
-    {
-        
-        public VariableNameScrolBarPane(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit VariableNameTextBox
-        {
-            get
-            {
-                if ((this.mVariableNameTextBox == null))
-                {
-                    this.mVariableNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mVariableNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mVariableNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mVariableNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableModelTreeItem2 : WpfTreeItem
-    {
-        
-        public VariableModelTreeItem2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableNameScrolBarPane1 VariableNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mVariableNameScrolBarPane == null))
-                {
-                    this.mVariableNameScrolBarPane = new VariableNameScrolBarPane1(this);
-                }
-                return this.mVariableNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox VariableInputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableInputCheckbox == null))
-                {
-                    this.mVariableInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mVariableInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox VariableOutputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableOutputCheckbox == null))
-                {
-                    this.mVariableOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mVariableOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableNameScrolBarPane1 mVariableNameScrolBarPane;
-        
-        private WpfCheckBox mVariableInputCheckbox;
-        
-        private WpfCheckBox mVariableOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableNameScrolBarPane1 : WpfPane
-    {
-        
-        public VariableNameScrolBarPane1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit VariableNameTextBox
-        {
-            get
-            {
-                if ((this.mVariableNameTextBox == null))
-                {
-                    this.mVariableNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mVariableNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mVariableNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mVariableNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableModelTreeItem3 : WpfTreeItem
-    {
-        
-        public VariableModelTreeItem3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableNameScrolBarPane2 VariableNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mVariableNameScrolBarPane == null))
-                {
-                    this.mVariableNameScrolBarPane = new VariableNameScrolBarPane2(this);
-                }
-                return this.mVariableNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox VariableInputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableInputCheckbox == null))
-                {
-                    this.mVariableInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mVariableInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox VariableOutputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableOutputCheckbox == null))
-                {
-                    this.mVariableOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mVariableOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableNameScrolBarPane2 mVariableNameScrolBarPane;
-        
-        private WpfCheckBox mVariableInputCheckbox;
-        
-        private WpfCheckBox mVariableOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableNameScrolBarPane2 : WpfPane
-    {
-        
-        public VariableNameScrolBarPane2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit VariableNameTextBox
-        {
-            get
-            {
-                if ((this.mVariableNameTextBox == null))
-                {
-                    this.mVariableNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mVariableNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mVariableNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mVariableNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableModelTreeItem4 : WpfTreeItem
-    {
-        
-        public VariableModelTreeItem4(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableNameScrolBarPane3 VariableNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mVariableNameScrolBarPane == null))
-                {
-                    this.mVariableNameScrolBarPane = new VariableNameScrolBarPane3(this);
-                }
-                return this.mVariableNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox VariableInputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableInputCheckbox == null))
-                {
-                    this.mVariableInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mVariableInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox VariableOutputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableOutputCheckbox == null))
-                {
-                    this.mVariableOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mVariableOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableNameScrolBarPane3 mVariableNameScrolBarPane;
-        
-        private WpfCheckBox mVariableInputCheckbox;
-        
-        private WpfCheckBox mVariableOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableNameScrolBarPane3 : WpfPane
-    {
-        
-        public VariableNameScrolBarPane3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit VariableNameTextBox
-        {
-            get
-            {
-                if ((this.mVariableNameTextBox == null))
-                {
-                    this.mVariableNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mVariableNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mVariableNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mVariableNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableModelTreeItem5 : WpfTreeItem
-    {
-        
-        public VariableModelTreeItem5(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public VariableNameScrolBarPane4 VariableNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mVariableNameScrolBarPane == null))
-                {
-                    this.mVariableNameScrolBarPane = new VariableNameScrolBarPane4(this);
-                }
-                return this.mVariableNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox VariableInputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableInputCheckbox == null))
-                {
-                    this.mVariableInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mVariableInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox VariableOutputCheckbox
-        {
-            get
-            {
-                if ((this.mVariableOutputCheckbox == null))
-                {
-                    this.mVariableOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mVariableOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mVariableOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private VariableNameScrolBarPane4 mVariableNameScrolBarPane;
-        
-        private WpfCheckBox mVariableInputCheckbox;
-        
-        private WpfCheckBox mVariableOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class VariableNameScrolBarPane4 : WpfPane
-    {
-        
-        public VariableNameScrolBarPane4(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit VariableNameTextBox
-        {
-            get
-            {
-                if ((this.mVariableNameTextBox == null))
-                {
-                    this.mVariableNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mVariableNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mVariableNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mVariableNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mVariableNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mVariableNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetTreeItem : WpfTreeItem
-    {
-        
-        public RecordsetTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetModelTreeItem1 RecordsetModelTreeItem1
-        {
-            get
-            {
-                if ((this.mRecordsetModelTreeItem1 == null))
-                {
-                    this.mRecordsetModelTreeItem1 = new RecordsetModelTreeItem1(this);
-                }
-                return this.mRecordsetModelTreeItem1;
-            }
-        }
-        
-        public RecordsetModelTreeItem2 RecordsetModelTreeItem2
-        {
-            get
-            {
-                if ((this.mRecordsetModelTreeItem2 == null))
-                {
-                    this.mRecordsetModelTreeItem2 = new RecordsetModelTreeItem2(this);
-                }
-                return this.mRecordsetModelTreeItem2;
-            }
-        }
-        
-        public RecordsetModelTreeItem3 RecordsetModelTreeItem3
-        {
-            get
-            {
-                if ((this.mRecordsetModelTreeItem3 == null))
-                {
-                    this.mRecordsetModelTreeItem3 = new RecordsetModelTreeItem3(this);
-                }
-                return this.mRecordsetModelTreeItem3;
-            }
-        }
-        
-        public RecordsetModelTreeItem4 RecordsetModelTreeItem4
-        {
-            get
-            {
-                if ((this.mRecordsetModelTreeItem4 == null))
-                {
-                    this.mRecordsetModelTreeItem4 = new RecordsetModelTreeItem4(this);
-                }
-                return this.mRecordsetModelTreeItem4;
-            }
-        }
-        
-        public RecordsetModelTreeItem5 RecordsetModelTreeItem5
-        {
-            get
-            {
-                if ((this.mRecordsetModelTreeItem5 == null))
-                {
-                    this.mRecordsetModelTreeItem5 = new RecordsetModelTreeItem5(this);
-                }
-                return this.mRecordsetModelTreeItem5;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetModelTreeItem1 mRecordsetModelTreeItem1;
-        
-        private RecordsetModelTreeItem2 mRecordsetModelTreeItem2;
-        
-        private RecordsetModelTreeItem3 mRecordsetModelTreeItem3;
-        
-        private RecordsetModelTreeItem4 mRecordsetModelTreeItem4;
-        
-        private RecordsetModelTreeItem5 mRecordsetModelTreeItem5;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetModelTreeItem1 : WpfTreeItem
-    {
-        
-        public RecordsetModelTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameScrolBarPane RecordsetNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameScrolBarPane == null))
-                {
-                    this.mRecordsetNameScrolBarPane = new RecordsetNameScrolBarPane(this);
-                }
-                return this.mRecordsetNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetInputCheckbox == null))
-                {
-                    this.mRecordsetInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetOutputCheckbox == null))
-                {
-                    this.mRecordsetOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetOutputCheckbox;
-            }
-        }
-        
-        public RecordsetChildModelTreeItem RecordsetChildModelTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetChildModelTreeItem == null))
-                {
-                    this.mRecordsetChildModelTreeItem = new RecordsetChildModelTreeItem(this);
-                }
-                return this.mRecordsetChildModelTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameScrolBarPane mRecordsetNameScrolBarPane;
-        
-        private WpfCheckBox mRecordsetInputCheckbox;
-        
-        private WpfCheckBox mRecordsetOutputCheckbox;
-        
-        private RecordsetChildModelTreeItem mRecordsetChildModelTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameScrolBarPane : WpfPane
-    {
-        
-        public RecordsetNameScrolBarPane(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameTextBox == null))
-                {
-                    this.mRecordsetNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetChildModelTreeItem : WpfTreeItem
-    {
-        
-        public RecordsetChildModelTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameChildScrolBarPane RecordsetNameChildScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildScrolBarPane == null))
-                {
-                    this.mRecordsetNameChildScrolBarPane = new RecordsetNameChildScrolBarPane(this);
-                }
-                return this.mRecordsetNameChildScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildInputCheckbox == null))
-                {
-                    this.mRecordsetChildInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetChildInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildOutputCheckbox == null))
-                {
-                    this.mRecordsetChildOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetChildOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameChildScrolBarPane mRecordsetNameChildScrolBarPane;
-        
-        private WpfCheckBox mRecordsetChildInputCheckbox;
-        
-        private WpfCheckBox mRecordsetChildOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameChildScrolBarPane : WpfPane
-    {
-        
-        public RecordsetNameChildScrolBarPane(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameChildTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildTextBox == null))
-                {
-                    this.mRecordsetNameChildTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameChildTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameChildTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameChildTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameChildTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameChildTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetModelTreeItem2 : WpfTreeItem
-    {
-        
-        public RecordsetModelTreeItem2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameScrolBarPane1 RecordsetNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameScrolBarPane == null))
-                {
-                    this.mRecordsetNameScrolBarPane = new RecordsetNameScrolBarPane1(this);
-                }
-                return this.mRecordsetNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetInputCheckbox == null))
-                {
-                    this.mRecordsetInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetOutputCheckbox == null))
-                {
-                    this.mRecordsetOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetOutputCheckbox;
-            }
-        }
-        
-        public RecordsetChildModelTreeItem1 RecordsetChildModelTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetChildModelTreeItem == null))
-                {
-                    this.mRecordsetChildModelTreeItem = new RecordsetChildModelTreeItem1(this);
-                }
-                return this.mRecordsetChildModelTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameScrolBarPane1 mRecordsetNameScrolBarPane;
-        
-        private WpfCheckBox mRecordsetInputCheckbox;
-        
-        private WpfCheckBox mRecordsetOutputCheckbox;
-        
-        private RecordsetChildModelTreeItem1 mRecordsetChildModelTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameScrolBarPane1 : WpfPane
-    {
-        
-        public RecordsetNameScrolBarPane1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameTextBox == null))
-                {
-                    this.mRecordsetNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetChildModelTreeItem1 : WpfTreeItem
-    {
-        
-        public RecordsetChildModelTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameChildScrolBarPane1 RecordsetNameChildScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildScrolBarPane == null))
-                {
-                    this.mRecordsetNameChildScrolBarPane = new RecordsetNameChildScrolBarPane1(this);
-                }
-                return this.mRecordsetNameChildScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildInputCheckbox == null))
-                {
-                    this.mRecordsetChildInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetChildInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildOutputCheckbox == null))
-                {
-                    this.mRecordsetChildOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetChildOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameChildScrolBarPane1 mRecordsetNameChildScrolBarPane;
-        
-        private WpfCheckBox mRecordsetChildInputCheckbox;
-        
-        private WpfCheckBox mRecordsetChildOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameChildScrolBarPane1 : WpfPane
-    {
-        
-        public RecordsetNameChildScrolBarPane1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameChildTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildTextBox == null))
-                {
-                    this.mRecordsetNameChildTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameChildTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameChildTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameChildTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameChildTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameChildTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetModelTreeItem3 : WpfTreeItem
-    {
-        
-        public RecordsetModelTreeItem3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameScrolBarPane2 RecordsetNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameScrolBarPane == null))
-                {
-                    this.mRecordsetNameScrolBarPane = new RecordsetNameScrolBarPane2(this);
-                }
-                return this.mRecordsetNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetInputCheckbox == null))
-                {
-                    this.mRecordsetInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetOutputCheckbox == null))
-                {
-                    this.mRecordsetOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetOutputCheckbox;
-            }
-        }
-        
-        public RecordsetChildModelTreeItem2 RecordsetChildModelTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetChildModelTreeItem == null))
-                {
-                    this.mRecordsetChildModelTreeItem = new RecordsetChildModelTreeItem2(this);
-                }
-                return this.mRecordsetChildModelTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameScrolBarPane2 mRecordsetNameScrolBarPane;
-        
-        private WpfCheckBox mRecordsetInputCheckbox;
-        
-        private WpfCheckBox mRecordsetOutputCheckbox;
-        
-        private RecordsetChildModelTreeItem2 mRecordsetChildModelTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameScrolBarPane2 : WpfPane
-    {
-        
-        public RecordsetNameScrolBarPane2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameTextBox == null))
-                {
-                    this.mRecordsetNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetChildModelTreeItem2 : WpfTreeItem
-    {
-        
-        public RecordsetChildModelTreeItem2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameChildScrolBarPane2 RecordsetNameChildScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildScrolBarPane == null))
-                {
-                    this.mRecordsetNameChildScrolBarPane = new RecordsetNameChildScrolBarPane2(this);
-                }
-                return this.mRecordsetNameChildScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildInputCheckbox == null))
-                {
-                    this.mRecordsetChildInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetChildInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildOutputCheckbox == null))
-                {
-                    this.mRecordsetChildOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetChildOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameChildScrolBarPane2 mRecordsetNameChildScrolBarPane;
-        
-        private WpfCheckBox mRecordsetChildInputCheckbox;
-        
-        private WpfCheckBox mRecordsetChildOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameChildScrolBarPane2 : WpfPane
-    {
-        
-        public RecordsetNameChildScrolBarPane2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameChildTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildTextBox == null))
-                {
-                    this.mRecordsetNameChildTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameChildTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameChildTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameChildTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameChildTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameChildTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetModelTreeItem4 : WpfTreeItem
-    {
-        
-        public RecordsetModelTreeItem4(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameScrolBarPane3 RecordsetNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameScrolBarPane == null))
-                {
-                    this.mRecordsetNameScrolBarPane = new RecordsetNameScrolBarPane3(this);
-                }
-                return this.mRecordsetNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetInputCheckbox == null))
-                {
-                    this.mRecordsetInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetOutputCheckbox == null))
-                {
-                    this.mRecordsetOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetOutputCheckbox;
-            }
-        }
-        
-        public RecordsetChildModelTreeItem3 RecordsetChildModelTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetChildModelTreeItem == null))
-                {
-                    this.mRecordsetChildModelTreeItem = new RecordsetChildModelTreeItem3(this);
-                }
-                return this.mRecordsetChildModelTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameScrolBarPane3 mRecordsetNameScrolBarPane;
-        
-        private WpfCheckBox mRecordsetInputCheckbox;
-        
-        private WpfCheckBox mRecordsetOutputCheckbox;
-        
-        private RecordsetChildModelTreeItem3 mRecordsetChildModelTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameScrolBarPane3 : WpfPane
-    {
-        
-        public RecordsetNameScrolBarPane3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameTextBox == null))
-                {
-                    this.mRecordsetNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetChildModelTreeItem3 : WpfTreeItem
-    {
-        
-        public RecordsetChildModelTreeItem3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameChildScrolBarPane3 RecordsetNameChildScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildScrolBarPane == null))
-                {
-                    this.mRecordsetNameChildScrolBarPane = new RecordsetNameChildScrolBarPane3(this);
-                }
-                return this.mRecordsetNameChildScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildInputCheckbox == null))
-                {
-                    this.mRecordsetChildInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetChildInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildOutputCheckbox == null))
-                {
-                    this.mRecordsetChildOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetChildOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameChildScrolBarPane3 mRecordsetNameChildScrolBarPane;
-        
-        private WpfCheckBox mRecordsetChildInputCheckbox;
-        
-        private WpfCheckBox mRecordsetChildOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameChildScrolBarPane3 : WpfPane
-    {
-        
-        public RecordsetNameChildScrolBarPane3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameChildTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildTextBox == null))
-                {
-                    this.mRecordsetNameChildTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameChildTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameChildTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameChildTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameChildTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameChildTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetModelTreeItem5 : WpfTreeItem
-    {
-        
-        public RecordsetModelTreeItem5(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameScrolBarPane4 RecordsetNameScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameScrolBarPane == null))
-                {
-                    this.mRecordsetNameScrolBarPane = new RecordsetNameScrolBarPane4(this);
-                }
-                return this.mRecordsetNameScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetInputCheckbox == null))
-                {
-                    this.mRecordsetInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetOutputCheckbox == null))
-                {
-                    this.mRecordsetOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetOutputCheckbox;
-            }
-        }
-        
-        public RecordsetChildModelTreeItem4 RecordsetChildModelTreeItem
-        {
-            get
-            {
-                if ((this.mRecordsetChildModelTreeItem == null))
-                {
-                    this.mRecordsetChildModelTreeItem = new RecordsetChildModelTreeItem4(this);
-                }
-                return this.mRecordsetChildModelTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameScrolBarPane4 mRecordsetNameScrolBarPane;
-        
-        private WpfCheckBox mRecordsetInputCheckbox;
-        
-        private WpfCheckBox mRecordsetOutputCheckbox;
-        
-        private RecordsetChildModelTreeItem4 mRecordsetChildModelTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameScrolBarPane4 : WpfPane
-    {
-        
-        public RecordsetNameScrolBarPane4(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameTextBox == null))
-                {
-                    this.mRecordsetNameTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetChildModelTreeItem4 : WpfTreeItem
-    {
-        
-        public RecordsetChildModelTreeItem4(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public RecordsetNameChildScrolBarPane4 RecordsetNameChildScrolBarPane
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildScrolBarPane == null))
-                {
-                    this.mRecordsetNameChildScrolBarPane = new RecordsetNameChildScrolBarPane4(this);
-                }
-                return this.mRecordsetNameChildScrolBarPane;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildInputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildInputCheckbox == null))
-                {
-                    this.mRecordsetChildInputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mRecordsetChildInputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildInputCheckbox;
-            }
-        }
-        
-        public WpfCheckBox RecordsetChildOutputCheckbox
-        {
-            get
-            {
-                if ((this.mRecordsetChildOutputCheckbox == null))
-                {
-                    this.mRecordsetChildOutputCheckbox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mRecordsetChildOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mRecordsetChildOutputCheckbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetChildOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetChildOutputCheckbox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private RecordsetNameChildScrolBarPane4 mRecordsetNameChildScrolBarPane;
-        
-        private WpfCheckBox mRecordsetChildInputCheckbox;
-        
-        private WpfCheckBox mRecordsetChildOutputCheckbox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class RecordsetNameChildScrolBarPane4 : WpfPane
-    {
-        
-        public RecordsetNameChildScrolBarPane4(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit RecordsetNameChildTextBox
-        {
-            get
-            {
-                if ((this.mRecordsetNameChildTextBox == null))
-                {
-                    this.mRecordsetNameChildTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mRecordsetNameChildTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
-                    this.mRecordsetNameChildTextBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mRecordsetNameChildTextBox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mRecordsetNameChildTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mRecordsetNameChildTextBox;
         #endregion
     }
     
