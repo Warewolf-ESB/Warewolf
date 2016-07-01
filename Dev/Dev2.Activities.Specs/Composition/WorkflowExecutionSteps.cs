@@ -1408,6 +1408,20 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
+        [Then(@"workflow ""(.*)"" is deleted as cleanup")]
+        public void ThenWorkflowIsDeletedAsCleanup(string workflowName)
+        {
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            repository.DeleteResourceFromWorkspace(resourceModel);
+            repository.DeleteResource(resourceModel);
+        }
+
         [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
         public void ThenWorkflowHasVersionsInExplorer(string workflowName, int numberOfVersions)
         {
@@ -1969,6 +1983,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var postGreActivity = new DsfPostgreSqlActivity();
             postGreActivity.ProcedureName = serviceName;
+            postGreActivity.DisplayName = serviceName;
             postGreActivity.SourceId = resource.ID;
             postGreActivity.Outputs = new List<IServiceOutputMapping>();
             postGreActivity.Inputs = new List<IServiceInput>();
