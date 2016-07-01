@@ -643,7 +643,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return accList;
         }
 
-        private IList<string> RefreshTries(List<IScalarItemModel> toList, IList<string> accList)
+        private IEnumerable<string> RefreshTries(IEnumerable<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
             {
@@ -655,7 +655,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return accList;
         }
 
-        private IList<string> RefreshRecordSets(List<IRecordSetItemModel> toList, IList<string> accList)
+        private IEnumerable<string> RefreshRecordSets(IEnumerable<IRecordSetItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
             {
@@ -1723,7 +1723,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return missingWorkflowParts;
         }
 
-        private void DetectUnusedComplexObjects(IList<IDataListVerifyPart> partsToVerify)
+        private void DetectUnusedComplexObjects(IEnumerable<IDataListVerifyPart> partsToVerify)
         {
             var items = ComplexObjectCollection.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
             var models = items as IList<IComplexObjectItemModel> ?? items.ToList();
@@ -1771,7 +1771,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private List<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        private IEnumerable<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
         {
             List<IDataListVerifyPart> missingWorkflowParts = new List<IDataListVerifyPart>();
             foreach (var dataListItem in RecsetCollection)
@@ -1846,7 +1846,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return missingWorkflowParts;
         }
 
-        private List<IDataListVerifyPart> MissingScalars(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        private IEnumerable<IDataListVerifyPart> MissingScalars(IEnumerable<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
         {
             return (from dataListItem in ScalarCollection
                     where !string.IsNullOrEmpty(dataListItem.DisplayName)

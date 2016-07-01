@@ -148,10 +148,10 @@ namespace Dev2.Core.Tests
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts);
             //Assert.IsFalse(_dataListViewModel.DataList[_dataListViewModel.DataList.Count - 3].CanHaveMutipleRows);
-            Assert.AreEqual("Province",_dataListViewModel.ScalarCollection[0].DisplayName);
-            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[1].DisplayName);
-            Assert.AreEqual(string.Empty,_dataListViewModel.ScalarCollection[2].DisplayName);
-            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Province", _dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[1].DisplayName);
+            Assert.AreEqual(string.Empty, _dataListViewModel.ScalarCollection[2].DisplayName);
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[0].DisplayName);
         }
 
         [TestMethod]
@@ -171,11 +171,11 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts);
             //Second add trying to add the same items to the data list again
             _dataListViewModel.AddMissingDataListItems(parts);
-            Assert.AreEqual(3,_dataListViewModel.RecsetCollection.Count);
-            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
-            Assert.AreEqual(string.Empty,_dataListViewModel.ScalarCollection[1].DisplayName);
-            Assert.AreEqual("Province",_dataListViewModel.RecsetCollection[0].DisplayName);
-            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[1].DisplayName);
+            Assert.AreEqual(3, _dataListViewModel.RecsetCollection.Count);
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual(string.Empty, _dataListViewModel.ScalarCollection[1].DisplayName);
+            Assert.AreEqual("Province", _dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[1].DisplayName);
         }
 
         [TestMethod]
@@ -594,8 +594,8 @@ namespace Dev2.Core.Tests
             Setup();
             _dataListViewModel.AddRecordsetNamesIfMissing();
 
-            Assert.AreEqual(1,_dataListViewModel.RecsetCollection.Count);
-            Assert.AreEqual("Make",_dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
+            Assert.AreEqual(1, _dataListViewModel.RecsetCollection.Count);
+            Assert.AreEqual("Make", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
 
         [TestMethod]
@@ -625,8 +625,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddRecordsetNamesIfMissing();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, _dataListViewModel.RecsetCollection.Count);
-            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[0].DisplayName);
-            Assert.AreEqual("Make",_dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Make", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
 
         [TestMethod]
@@ -656,8 +656,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddRecordsetNamesIfMissing();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, _dataListViewModel.RecsetCollection.Count);
-            Assert.AreEqual("Car",_dataListViewModel.RecsetCollection[0].DisplayName);
-            Assert.AreEqual("Make",_dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[0].DisplayName);
+            Assert.AreEqual("Make", _dataListViewModel.RecsetCollection[0].Children[0].DisplayName);
         }
 
         [TestMethod]
@@ -687,7 +687,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
             Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
-            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
         [TestMethod]
@@ -754,7 +754,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
             Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
-            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
         [TestMethod]
@@ -784,7 +784,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.WriteToResourceModel();
             //------------Assert Results-------------------------
             Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
-            Assert.AreEqual("Country",_dataListViewModel.ScalarCollection[0].DisplayName);
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName);
         }
 
         #endregion AddRecordsetNamesIfMissing Tests
@@ -907,7 +907,7 @@ namespace Dev2.Core.Tests
 
             IRecordSetItemModel item = new RecordSetItemModel("de()");
             item.DisplayName = "de";
-            item.Children.Add(new RecordSetFieldItemModel("gh",item));
+            item.Children.Add(new RecordSetFieldItemModel("gh", item));
             _dataListViewModel.RecsetCollection.Insert(1, item);
 
             _dataListViewModel.RemoveBlankRows(item);
@@ -1085,6 +1085,14 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("zzz"));
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("ttt"));
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("aaa"));
+
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Input = true;
+            complexObjectDataModel.Output = true;
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            _dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
         }
 
         void SortCleanup()
@@ -1110,8 +1118,18 @@ namespace Dev2.Core.Tests
             Setup();
             SortInitialization();
 
+            Assert.IsNotNull(_dataListViewModel.ScalarCollection);
+            Assert.IsNotNull(_dataListViewModel.RecsetCollection);
+            Assert.IsNotNull(_dataListViewModel.ComplexObjectCollection);
+
+            Assert.IsTrue(_dataListViewModel.ScalarCollection.Count > 0);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count > 0);
+            Assert.IsTrue(_dataListViewModel.ComplexObjectCollection.Count >= 1);
+
+            Assert.IsTrue(_dataListViewModel.CanSortItems);
             //Execute
             _dataListViewModel.SortCommand.Execute(null);
+            Assert.IsFalse(_dataListViewModel.IsSorting);
 
             //Scalar List Asserts
             Assert.AreEqual("aaa", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist left scalar list unsorted");
@@ -1293,6 +1311,21 @@ namespace Dev2.Core.Tests
             //----------------------Assert---------------------------------
             Assert.IsTrue(_dataListViewModel.HasErrors);
             StringAssert.Contains(_dataListViewModel.DataListErrorMessage, "[[RecordSet]] : Recordset must contain one or more field(s).");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_HasNoErrors")]
+        public void DataListViewModel_HasNoErrors_RecordSetWithNoItems_HasErrorFalse()
+        {
+            //------------Setup------------------------------------
+            Setup();
+
+            //----------------------Execute--------------------------------
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+            //----------------------Assert---------------------------------
+            Assert.IsFalse(_dataListViewModel.HasErrors);
         }
 
         [TestMethod]
@@ -2180,6 +2213,72 @@ namespace Dev2.Core.Tests
             dataListViewModel.UpdateDataListItems(resourceModel, dataListParts);
             //------------Assert Results-------------------------
             eventAggregator.Verify(c => c.Publish(It.IsAny<UpdateIntellisenseMessage>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InitializeDataListViewModel_GivenNull_ShouldReturn()
+        {
+            //---------------Set up test pack-------------------
+
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            try
+            {
+                Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+                var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+                dataListViewModel.InitializeDataListViewModel(null);
+
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetComplexObjectParentIsUsed_GivenParentAndChild_ShouldSetAllToIsUsed()
+        {
+            //---------------Set up test pack-------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            PrivateObject p = new PrivateObject(dataListViewModel);
+
+            var parent = CreateComplexObjectDataListModel("Child");
+            var child = CreateComplexObjectDataListModel("Child", parent);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            p.Invoke("SetComplexObjectParentIsUsed", child);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(parent.IsUsed);
+            Assert.IsTrue(child.IsUsed);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OnDispose_ShouldClearAndKillTheResource ()
+        {
+            //---------------Set up test pack-------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            PrivateObject p = new PrivateObject(dataListViewModel);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            dataListViewModel.Dispose();
+            //---------------Test Result -----------------------
+            Assert.IsTrue(dataListViewModel.Resource == null);
+            Assert.IsNotNull(dataListViewModel.ScalarCollection.Single());
+            Assert.IsNotNull(dataListViewModel.RecsetCollection.Single());
+            Assert.AreEqual(0,dataListViewModel.ComplexObjectCollection.Count());
         }
 
         IRecordSetFieldItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()
