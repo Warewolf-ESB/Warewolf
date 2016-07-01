@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     // ReSharper disable InconsistentNaming
     public class FindResourcesByID : IEsbManagementEndpoint
-        // ReSharper restore InconsistentNaming
+    // ReSharper restore InconsistentNaming
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -36,30 +36,31 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
 
-            string guidCsv = string.Empty;
-            string type = null;
+                string guidCsv = string.Empty;
+                string type = null;
 
-            StringBuilder tmp;
-            values.TryGetValue("GuidCsv", out tmp);
-            if(tmp != null)
-            {
-                guidCsv = tmp.ToString();
-            }
-            values.TryGetValue("ResourceType", out tmp);
-            if(tmp != null)
-            {
-                type = tmp.ToString();
-            }
-            Dev2Logger.Info("Find Resource By Id. "+guidCsv);
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
+                StringBuilder tmp;
+                values.TryGetValue("GuidCsv", out tmp);
+                if (tmp != null)
+                {
+                    guidCsv = tmp.ToString();
+                }
+                values.TryGetValue("ResourceType", out tmp);
+                if (tmp != null)
+                {
+                    type = tmp.ToString();
+                }
+                Dev2Logger.Info("Find Resource By Id. " + guidCsv);
+                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
 
-            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var message = new CompressedExecuteMessage();
-            message.SetMessage(serializer.Serialize(resourceList));
-         
-            return serializer.SerializeToBuilder(message);
+                var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", guidCsv }, { "type", type } });
+
+                IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var message = new CompressedExecuteMessage();
+                message.SetMessage(serializer.Serialize(resourceList));
+
+                return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {
