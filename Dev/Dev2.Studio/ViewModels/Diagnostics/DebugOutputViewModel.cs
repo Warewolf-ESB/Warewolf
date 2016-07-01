@@ -37,6 +37,7 @@ using Dev2.Studio.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
 using Dev2.Studio.Core;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -89,8 +90,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _continueDebugDispatch;
         bool _dispatchLastDebugState;
 
-        private string _isprocessing = "IsProcessing";
-
         #endregion
 
         #region Ctor
@@ -120,6 +119,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public int PendingItemCount => _pendingItems.Count;
         public int ContentItemCount => _contentItems.Count;
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private ProcessController ProcessController { get; set; }
 
         public DebugStatus DebugStatus
@@ -857,7 +857,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             base.NotifyOfPropertyChange(propertyName);
 
             // BUG 9735 - 2013.06.22 - TWR : added
-            if(propertyName == _isprocessing)
+            if(propertyName == "IsProcessing")
             {
                 FlushPending();
             }
