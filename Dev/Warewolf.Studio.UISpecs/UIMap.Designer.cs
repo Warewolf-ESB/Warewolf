@@ -818,6 +818,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_DebugOutput_Contains_SomeVariable - Use 'Assert_DebugOutput_Contains_SomeVariableExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DebugOutput_Contains_SomeVariable()
+        {
+            #region Variable Declarations
+            WpfText variableTextbox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox;
+            #endregion
+
+            // Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
+            Assert.AreEqual(this.Assert_DebugOutput_Contains_SomeVariableExpectedValues.VariableTextboxDisplayText, variableTextbox.DisplayText, "Wrong variable name in debug output");
+        }
+        
+        /// <summary>
         /// Assert_Decision_Dialog_Done_Button_Exists - Use 'Assert_Decision_Dialog_Done_Button_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Decision_Dialog_Done_Button_Exists()
@@ -3494,11 +3507,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_ExpandAndStepIn_NestedWorkflow()
         {
             #region Variable Declarations
-            WpfTreeItem uIHelloWorldTreeItem = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIHelloWorldTreeItem;
+            WpfTreeItem subWorkflow = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow;
             #endregion
 
             // Expand 'Hello World' tree item
-            uIHelloWorldTreeItem.Expanded = this.Click_ExpandAndStepIn_NestedWorkflowParams.UIHelloWorldTreeItemExpanded;
+            subWorkflow.Expanded = this.Click_ExpandAndStepIn_NestedWorkflowParams.SubWorkflowExpanded;
         }
         
         /// <summary>
@@ -3598,7 +3611,7 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Nested_Workflow_Name()
         {
             #region Variable Declarations
-            WpfButton uIHelloWorldButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIHelloWorldTreeItem.UIHelloWorldTreeItem1.UIHelloWorldButton;
+            WpfButton uIHelloWorldButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.UIHelloWorldTreeItem1.UIHelloWorldButton;
             #endregion
 
             // Click 'Hello World' button
@@ -7591,6 +7604,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_DebugOutput_Contains_SomeVariableExpectedValues Assert_DebugOutput_Contains_SomeVariableExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DebugOutput_Contains_SomeVariableExpectedValues == null))
+                {
+                    this.mAssert_DebugOutput_Contains_SomeVariableExpectedValues = new Assert_DebugOutput_Contains_SomeVariableExpectedValues();
+                }
+                return this.mAssert_DebugOutput_Contains_SomeVariableExpectedValues;
+            }
+        }
+        
         public virtual Assert_Decision_Dialog_Done_Button_ExistsExpectedValues Assert_Decision_Dialog_Done_Button_ExistsExpectedValues
         {
             get
@@ -10339,18 +10364,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public DebugInputWindow DebugInputWindow
-        {
-            get
-            {
-                if ((this.mDebugInputWindow == null))
-                {
-                    this.mDebugInputWindow = new DebugInputWindow();
-                }
-                return this.mDebugInputWindow;
-            }
-        }
-        
         public SaveDialogWindow SaveDialogWindow
         {
             get
@@ -10520,6 +10533,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_DebugInput_Xml_Tab_ExistsExpectedValues mAssert_DebugInput_Xml_Tab_ExistsExpectedValues;
         
         private Assert_DebugInput_Xml_Window_ExistsExpectedValues mAssert_DebugInput_Xml_Window_ExistsExpectedValues;
+        
+        private Assert_DebugOutput_Contains_SomeVariableExpectedValues mAssert_DebugOutput_Contains_SomeVariableExpectedValues;
         
         private Assert_Decision_Dialog_Done_Button_ExistsExpectedValues mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues;
         
@@ -10978,8 +10993,6 @@ namespace Warewolf.Studio.UISpecs
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
-        
-        private DebugInputWindow mDebugInputWindow;
         
         private SaveDialogWindow mSaveDialogWindow;
         
@@ -11888,6 +11901,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'UI_XMLEditor_AutoID' custom control equals 'True'
         /// </summary>
         public bool XMLWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_DebugOutput_Contains_SomeVariable'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_DebugOutput_Contains_SomeVariableExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
+        /// </summary>
+        public string VariableTextboxDisplayText = "[[SomeVariable]]";
         #endregion
     }
     
@@ -14847,7 +14875,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Expand 'Hello World' tree item
         /// </summary>
-        public bool UIHelloWorldTreeItemExpanded = true;
+        public bool SubWorkflowExpanded = true;
         #endregion
     }
     
@@ -19921,7 +19949,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mDatabaseSourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDatabaseSourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database source";
+                    this.mDatabaseSourceButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new database source", PropertyExpressionOperator.Contains));
                     this.mDatabaseSourceButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -19937,7 +19965,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mPluginSourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mPluginSourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin source";
+                    this.mPluginSourceButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new plugin source", PropertyExpressionOperator.Contains));
                     this.mPluginSourceButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -19953,7 +19981,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mDatabaseConnectorButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDatabaseConnectorButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database connector";
+                    this.mDatabaseConnectorButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new database connector", PropertyExpressionOperator.Contains));
                     this.mDatabaseConnectorButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -19969,7 +19997,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mPluginConnectorButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mPluginConnectorButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin connector";
+                    this.mPluginConnectorButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new plugin connector", PropertyExpressionOperator.Contains));
                     this.mPluginConnectorButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -19985,7 +20013,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mWebSourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mWebSourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new web source";
+                    this.mWebSourceButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new web source", PropertyExpressionOperator.Contains));
                     this.mWebSourceButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -20017,7 +20045,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mConfigureSettingsButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mConfigureSettingsButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Configure settings";
+                    this.mConfigureSettingsButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Configure settings", PropertyExpressionOperator.Contains));
                     this.mConfigureSettingsButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -20033,7 +20061,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mRunAndDebugButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mRunAndDebugButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Run and debug your workflow service";
+                    this.mRunAndDebugButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Run and debug your workflow service", PropertyExpressionOperator.Contains));
                     this.mRunAndDebugButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -20049,7 +20077,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mSchedulerButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mSchedulerButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Schedule a service to run";
+                    this.mSchedulerButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Schedule a service to run", PropertyExpressionOperator.Contains));
                     this.mSchedulerButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -20065,7 +20093,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mDeployButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDeployButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Move resources between Warewolf servers";
+                    this.mDeployButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Move resources between Warewolf servers", PropertyExpressionOperator.Contains));
                     this.mDeployButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     this.mDeployButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
@@ -20082,7 +20110,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mSaveButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mSaveButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Save this tab";
+                    this.mSaveButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Save this tab", PropertyExpressionOperator.Contains));
                     this.mSaveButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -36898,29 +36926,81 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public UIHelloWorldTreeItem UIHelloWorldTreeItem
+        public Step1 Step1
         {
             get
             {
-                if ((this.mUIHelloWorldTreeItem == null))
+                if ((this.mStep1 == null))
                 {
-                    this.mUIHelloWorldTreeItem = new UIHelloWorldTreeItem(this);
+                    this.mStep1 = new Step1(this);
                 }
-                return this.mUIHelloWorldTreeItem;
+                return this.mStep1;
+            }
+        }
+        
+        public SubWorkflow SubWorkflow
+        {
+            get
+            {
+                if ((this.mSubWorkflow == null))
+                {
+                    this.mSubWorkflow = new SubWorkflow(this);
+                }
+                return this.mSubWorkflow;
             }
         }
         #endregion
         
         #region Fields
-        private UIHelloWorldTreeItem mUIHelloWorldTreeItem;
+        private Step1 mStep1;
+        
+        private SubWorkflow mSubWorkflow;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIHelloWorldTreeItem : WpfTreeItem
+    public class Step1 : WpfTreeItem
     {
         
-        public UIHelloWorldTreeItem(UITestControl searchLimitContainer) : 
+        public Step1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText VariableTextbox
+        {
+            get
+            {
+                if ((this.mVariableTextbox == null))
+                {
+                    this.mVariableTextbox = new WpfText(this);
+                    #region Search Criteria
+                    this.mVariableTextbox.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mVariableTextbox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mVariableTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mVariableTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mVariableTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SubWorkflow : WpfTreeItem
+    {
+        
+        public SubWorkflow(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -37531,20 +37611,6 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfText mCancelButtonText;
         #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugInputWindow : WpfWindow
-    {
-        
-        public DebugInputWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
