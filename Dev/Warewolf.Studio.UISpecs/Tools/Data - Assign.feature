@@ -59,6 +59,27 @@ Scenario: Multiassign With SomeVariable UI Test
 	When I "Open_Assign_Tool_Qvi_Large_View"
 	Then I "Assert_Assign_QVI_Large_View_Exists_OnDesignSurface"
 
+##@NeedsUnsavedWorkflow
+##Scenario: Clicking the tab close button prompts to save
+##	Given I "Assert_I_Have_The_Most_Gigantic_Dick"
+#	Given I "Assert_Close_Tab_Button_Exists"
+#	When I "Click_Close_Tab_Button"
+#	Then I "Assert_MessageBox_Yes_Button_Exists"
+#
+##@NeedsSaveUnsavedDialog
+##Scenario: Clicking the Yes Button on the Save Unsaved Prompt Opens the save dialog
+##	Given I "Assert_MessageBox_Yes_Button_Exists"
+#	When I "Click_MessageBox_Yes"
+#	Then I "Assert_Save_Workflow_Dialog_Exists"
+#	And I "Assert_Workflow_Name_Textbox_Exists"
+#
+##@NeedsSaveWorkflowDialog
+##	Given I "Assert_Save_Workflow_Dialog_Exists"
+##	And I "Assert_Workflow_Name_Textbox_Exists"
+#	When I "Enter_Workflowname_As_SomeWorkflow"
+#	And I "Click_Save_On_Save_Workflow_Dialog"
+#	Then I "Assert_SomeWorkflow_Exists_In_Explorer"
+
 @ignore
 @Assign
 # Coded UI Tests
