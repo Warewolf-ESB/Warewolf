@@ -3476,9 +3476,6 @@ Scenario: Example Executing Recordset - Unique Records example workflow
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
 
-
-@ignore     
-#The example has to be updated to name the tools uniquely so we can correctly identify there inputs and outputs
 Scenario: Example Executing Loop Constructs - For Each example workflow
 	  Given I have a workflow "Loop Constructs - For Each Test"
 	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
