@@ -24,7 +24,7 @@ namespace Warewolf.Studio.UISpecs.Tools
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FileAndFolder-Copy.feature"
+#line 1 "FileAndFolder - Copy.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
