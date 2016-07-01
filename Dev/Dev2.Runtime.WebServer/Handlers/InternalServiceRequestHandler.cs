@@ -106,6 +106,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 isManagementResource =  ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
             dataObject.ClientID = Guid.Parse(connectionId);
+            Common.Utilities.OrginalExecutingUser = ExecutingUser;
             dataObject.ExecutingUser = ExecutingUser;
             // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)
             if(!dataObject.Environment.HasErrors())

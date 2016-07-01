@@ -78,6 +78,8 @@ namespace Dev2.Common
             }
         }
 
+        public static IPrincipal OrginalExecutingUser { get; set; }
+
         public static IPrincipal ServerUser
         {
             get;
