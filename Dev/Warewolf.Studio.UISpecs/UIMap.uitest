@@ -3687,57 +3687,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Split pane content does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_SplitPane_Content_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Split pane left does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_SplitPane_Left_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Split pane right does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_SplitPane_Right_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -4112,7 +4061,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetInputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.InputCell.IsInputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -4248,7 +4197,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableInputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -4696,11 +4645,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetInputCheckbox">
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.RecordsetDataItem.List.ListItem.Table.DataItem1.List.ListItem.Table.DataItem.InputCell.IsInputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Input_OnRecordset_InVariableList">
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Input_On_Row1_Recordset_InVariableList">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -4709,11 +4658,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableInputCheckbox">
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.XtgDataPresenter.Table.VariableDataItem.List.ListItem.Table.DataItem1.InputCell.IsInputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Input_OnVariable_InVariableList">
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Input_On_Row1_Variable_InVariableList">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -19997,7 +19946,7 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
-                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20009,7 +19958,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="Edit" Id="UIUI_NameTextBox_AutoIEdit" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="Edit" Id="TextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20022,7 +19971,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="ValueEditor" FriendlyName="" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20035,7 +19984,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="ToggleButton" Id="UIPART_ExpanderToggleButton" FriendlyName="PART_Expander" SpecialControlType="None">
+                                                            <UIObject ControlType="ToggleButton" Id="ExpanderToggleButton" FriendlyName="PART_Expander" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20050,7 +19999,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20077,7 +20026,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20266,7 +20215,7 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
-                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20319,7 +20268,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20346,7 +20295,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20535,7 +20484,7 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
-                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20588,7 +20537,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20615,7 +20564,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20804,7 +20753,7 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
-                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20857,7 +20806,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20884,7 +20833,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21073,7 +21022,7 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
-                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21126,7 +21075,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="InputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21153,7 +21102,7 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
-                                                        <UIObject ControlType="Cell" Id="RecordsetNameCell" SpecialControlType="None">
+                                                        <UIObject ControlType="Cell" Id="OutputCell" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21350,7 +21299,7 @@
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Cell" Id="UIObjectCell" FriendlyName="Object" SpecialControlType="None">
+                                        <UIObject ControlType="Cell" Id="DisplayNameHeaderCell" FriendlyName="Object" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21362,7 +21311,7 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="Text" Id="UIObjectText" FriendlyName="Object" SpecialControlType="None">
+                                            <UIObject ControlType="Text" Id="ObjectText" FriendlyName="Object" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21375,7 +21324,7 @@
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
                                             </UIObject>
-                                            <UIObject ControlType="Custom" Id="UIItemCustom" FriendlyName="" SpecialControlType="None">
+                                            <UIObject ControlType="Custom" Id="ValueEditor" FriendlyName="" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21388,7 +21337,7 @@
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
                                             </UIObject>
-                                            <UIObject ControlType="ToggleButton" Id="UIPART_ExpanderToggleButton" FriendlyName="PART_Expander" SpecialControlType="None">
+                                            <UIObject ControlType="ToggleButton" Id="ExpanderToggleButton" FriendlyName="PART_Expander" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21403,7 +21352,7 @@
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
-                                        <UIObject ControlType="Cell" Id="UIItemCell" SpecialControlType="None">
+                                        <UIObject ControlType="Cell" Id="InputHeaderCell" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21416,7 +21365,7 @@
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
                                         </UIObject>
-                                        <UIObject ControlType="Cell" Id="UIItemCell1" SpecialControlType="None">
+                                        <UIObject ControlType="Cell" Id="OutputHeaderCell" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
