@@ -11,6 +11,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Dev2.Common.ExtMethods
@@ -274,6 +275,17 @@ namespace Dev2.Common.ExtMethods
             if (input.Contains(Accellerator)) return input;
 
             return Accellerator + input;
+        }
+
+        public static string ToCleanString(this string value)
+        {
+            var cleanString = new StringBuilder(value).Replace(Environment.NewLine, "\n").Replace("\r", "\n");
+            return cleanString.ToString();
+        }
+        public static string RemoveWhiteSpace(this string value)
+        {
+            var cleanString = new StringBuilder(value.Trim()).Replace(" ", "");
+            return cleanString.ToString();
         }
     }
 }

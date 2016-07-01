@@ -158,19 +158,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Composes the into user visible recordset.
-        /// </summary>
-        /// <param name="rs">The rs.</param>
-        /// <param name="idx">The idx.</param>
-        /// <param name="field">The field.</param>
-        /// <returns></returns>
-        public static string ComposeIntoUserVisibleRecordset(string rs, string idx, string field)
-        {
-            return $"{rs}({idx}).{field}";
-        }
-       
-
-        /// <summary>
         /// Remove XMLData and other nesting junk from the ADL
         /// </summary>
         /// <param name="payload">The payload.</param>
