@@ -62,7 +62,8 @@ namespace Dev2.Core.Tests
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
                 new Mock<IDebugOutputFilterStrategy>().Object);
             vm.OpenMoreLink(null);
-            Assert.IsNull(vm.ProcessController);
+            var privateObject = new PrivateObject(vm);
+            Assert.IsNull(privateObject.GetProperty("ProcessController"));
         }
 
         [TestMethod]
@@ -111,9 +112,9 @@ namespace Dev2.Core.Tests
             vm.OpenMoreLink(lineItem.Object);
             vm.ShowDebugStatus = false;
             vm.ShowServer = false;
-            Assert.IsNull(vm.ProcessController);
+            var privateObject = new PrivateObject(vm);
+            Assert.IsNull(privateObject.GetProperty("ProcessController"));
         }
-
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -127,7 +128,8 @@ namespace Dev2.Core.Tests
             vm.OpenMoreLink(lineItem.Object);
             vm.ShowDebugStatus = true;
             vm.ShowTime = false;
-            Assert.IsNotNull(vm.ProcessController);
+            var privateObject = new PrivateObject(vm);            
+            Assert.IsNotNull(privateObject.GetProperty("ProcessController"));
         }
 
         [TestMethod]
@@ -169,6 +171,34 @@ namespace Dev2.Core.Tests
             dbgS.SetupProperty(state => state.SessionID, Guid.NewGuid());
             vm.AppendX(dbgS.Object);
         }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void GivenEnvironmentIdAndServerLocalhost_AddItemToTreeShould_SetServerAsRemoteEnvironmentModelName()
+        {
+            var endTime = DateTime.Now;
+            var localhost = "localhost";
+            var vm = DebugOutputViewModelMock();
+            var privateObject = new PrivateObject(vm);
+            Assert.IsNotNull(privateObject);
+
+            var contentItems = privateObject.GetField("_contentItems") as List<IDebugState>;
+            Assert.IsNotNull(contentItems);
+            var countBefore = contentItems.Count;
+            Assert.IsTrue(countBefore > 0);
+            foreach (var contentItem in contentItems)
+                Assert.AreEqual(default(DateTime), contentItem.EndTime);
+            var content = new Mock<IDebugState>();
+            content.SetupProperty(state => state.StateType, StateType.None);
+            content.SetupProperty(state => state.EndTime, endTime);
+            content.SetupProperty(state => state.SessionID, Guid.NewGuid());
+            content.SetupProperty(state => state.EnvironmentID, Guid.NewGuid());
+            
+            content.SetupProperty(state => state.Server, localhost);
+            Assert.IsTrue(string.Equals(localhost, content.Object.Server));
+            vm.AddItemToTree(content.Object);
+            Assert.IsFalse(string.Equals(localhost, content.Object.Server));
+        }        
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -232,8 +262,7 @@ namespace Dev2.Core.Tests
         public void Given_ShowOptionCommandShould_ShowOptions()
         {
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
-                new Mock<IDebugOutputFilterStrategy>().Object);
-            vm.SkipOptionsCommandExecute = true;
+                new Mock<IDebugOutputFilterStrategy>().Object) {SkipOptionsCommandExecute = true};
             var lineItem = new Mock<IDebugLineItem>();
             lineItem.SetupGet(l => l.MoreLink).Returns("Something");
 
@@ -418,6 +447,29 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(1, vm.RootItems.Count);
             vm.Clear();
             Assert.AreEqual(0, vm.RootItems.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void GivenStateTypeIsDuration_AddItemToTree_ShouldNotAddItem()
+        {
+            var endTime = DateTime.Now;
+            var vm = DebugOutputViewModelMock();
+            var privateObject = new PrivateObject(vm);
+            Assert.IsNotNull(privateObject);
+                        
+            var contentItems = privateObject.GetField("_contentItems") as List<IDebugState>;
+            Assert.IsNotNull(contentItems);
+            var countBefore = contentItems.Count;
+            Assert.IsTrue(countBefore > 0);
+            foreach (var contentItem in contentItems)
+                Assert.AreEqual(default(DateTime), contentItem.EndTime);
+            var content = new Mock<IDebugState>();
+            content.SetupProperty(state => state.StateType, StateType.Duration);            
+            content.SetupProperty(state => state.EndTime, endTime);
+            vm.AddItemToTree(content.Object);
+            Assert.AreEqual(countBefore, contentItems.Count);
         }
 
         [TestMethod]
@@ -769,7 +821,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(Guid.NewGuid());
 
-            env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
+            env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
 
             return env;
         }
@@ -780,12 +832,12 @@ namespace Dev2.Core.Tests
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(new Guid());
             connection.Setup(c => c.AppServerUri)
-                .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+                .Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}/dsf"));
             connection.Setup(c => c.WebServerUri)
-                .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+                .Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}"));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources))));
+                .Returns(new StringBuilder($"<XmlData>{string.Join("\n", sources)}</XmlData>"));
 
             return connection;
         }
@@ -863,7 +915,6 @@ namespace Dev2.Core.Tests
             var envRepo = GetEnvironmentRepository();
             var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo,
                 new Mock<IDebugOutputFilterStrategy>().Object);
-
 
             var expectedProps = new[]
             {"IsStopping", "IsProcessing", "IsConfiguring", "DebugImage", "DebugText", "ProcessingText"};
