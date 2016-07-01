@@ -3,34 +3,57 @@
 	As a Warewolf user
 	I want a tool that assigns data to variables
 	
-@NeedsBlankWorkflow
 Scenario: Multiassign UI Test
+	Given I "Assert_NewWorkFlow_RibbonButton_Exists"
+	When I "Click_New_Workflow_Ribbon_Button"
+	Then I "Assert_StartNode_Exists"
+	And I "Assert_Toolbox_Multiassign_Exists"
+	
+#@NeedsBlankWorkflow
+#Given that the unit before this one passed its post asserts
+#	Given I "Assert_StartNode_Exists"
+#	And I "Assert_Toolbox_Multiassign_Exists"
 	When I "Drag_Toolbox_MultiAssign_Onto_DesignSurface"
-	Then I "Assert_MultiAssign_Exists_OnDesignSurface"
+	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Exists"
 
 #@NeedsMultiAssignSmallViewToolOnTheDesignSurface
 #Scenario: Enter Text into Multi Assign Tool Small View Grid Column 1 Row 1 Textbox has text in text property
-	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
-	And I "Assert_Assign_Small_View_Row1_Variable_Textbox_Exists"
+#	Given I "Assert_Assign_Small_View_Row1_Variable_Textbox_Exists"
 	When I "Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable"
 	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
 
-#@NeedsMultiAssignSmallViewToolOnTheDesignSurface
+#@NeedsMultiAssignSmallViewToolWithSomeVariableOnTheDesignSurface
 #Scenario: Double Clicking Multi Assign Tool Small View on the Design Surface Opens Large View
 #	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
+#	And I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
 	When I "Open_Assign_Tool_Large_View"
 	Then I "Assert_Assign_Large_View_Exists_OnDesignSurface"
+	And I "Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable"
 
 #@NeedsMultiAssignLargeViewToolOnTheDesignSurface
 #Scenario: Validating Multi Assign Tool with a variable entered into the Large View on the Design Surface Passes Validation and Variable is in the Variable list
 #	Given I "Assert_Assign_Large_View_Exists_OnDesignSurface"
-	Given I "Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable"
+#	And I "Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable"
 	When I "Close_Assign_Tool_Large_View"
 	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
 	And I "Assert_VariableList_Scalar_Row1_Textbox_Equals_SomeVariable"
 
-#@NeedsMultiAssignLargeViewOnTheDesignSurface
+#@NeedsMultiAssignSmallViewToolWithSomeVariableOnTheDesignSurface
+#Scenario: Clicking Debug Button Shows Debug Input Dialog
+#	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
+#	And I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
+	When I "Click_Exeute_Ribbon_Button"
+	Then I "Assert_Debug_Input_Dialog_Exists"
+
+#@NeedsDebugInputDialog
+#Scenario: Clicking Debug Button In Debug Input Dialog Generates Debug Output
+#	Given I "Assert_Debug_Input_Dialog_Exists"
+	When I "Click_Debug_In_Debug_Input_Dialog"
+	Then I "Assert_Debug_Output_Contains_SomeVariable"
+
+#@NeedsMultiAssignSmallViewOnTheDesignSurface
 #Scenario: Click Assign Tool QVI Button Opens Qvi
+#	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
 	When I "Open_Assign_Tool_Qvi_Large_View"
 	Then I "Assert_Assign_QVI_Large_View_Exists_OnDesignSurface"
 

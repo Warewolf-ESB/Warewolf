@@ -116,14 +116,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected dynamic DataObject { get; set; }
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
-        protected ModelService ModelService;
+        private ModelService ModelService;
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
         Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
         // ReSharper disable InconsistentNaming
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
-        protected DsfActivityDropViewModel _vm;
+        private DsfActivityDropViewModel _vm;
 #pragma warning disable 414
         ResourcePickerDialog _resourcePickerDialog;
 #pragma warning restore 414
@@ -131,7 +131,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         VirtualizedContainerService _virtualizedContainerService;
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
-        StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
+        readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
         #endregion
 
@@ -165,7 +165,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="workflowHelper">Serialization helper</param>
         /// <param name="createDesigner">create a new designer flag</param>
         // ReSharper disable TooManyDependencies
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+        private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             // ReSharper restore TooManyDependencies
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), new ExternalProcessExecutor(), createDesigner)
@@ -208,14 +208,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
-            OutlineViewTitle = "Navigation Pane";
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
 
             _firstWorkflowChange = true;
         }
 
-        void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
+        private void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
@@ -225,7 +224,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void UpdateOriginalDataList(IContextualResourceModel obj)
+        private void UpdateOriginalDataList(IContextualResourceModel obj)
         {
             if (obj.IsWorkflowSaved)
             {
@@ -342,8 +341,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         // BUG 9304 - 2013.05.08 - TWR - Refactored and removed setter
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
 
-        public string OutlineViewTitle { get; set; }
-
         #endregion
 
         #region Commands
@@ -451,7 +448,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         // ReSharper disable ExcessiveIndentation
-        void AddSwitch(ModelItem mi)
+        private void AddSwitch(ModelItem mi)
         // ReSharper restore ExcessiveIndentation
         {
             if (mi.Parent?.Parent?.Parent != null && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
@@ -470,7 +467,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        static string SwitchExpressionValue(ModelProperty activityExpression)
+        private static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
 
@@ -495,14 +492,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             return switchExpressionValue;
         }
 
-        protected void InitializeFlowStep(ModelItem mi)
+        private void InitializeFlowStep(ModelItem mi)
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
             InitialiseWithAction(modelProperty1);
         }
 
-        void InitialiseWithAction(ModelProperty modelProperty1)
+        private void InitialiseWithAction(ModelProperty modelProperty1)
         {
             var droppedActivity = modelProperty1?.ComputedValue as DsfActivity;
             if (droppedActivity != null)
@@ -519,7 +516,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void InitialiseWithServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
+        private void InitialiseWithServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
         {
             if (DataObject != null)
             {
@@ -542,7 +539,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void InitialiseWithDataObject(DsfActivity droppedActivity)
+        private void InitialiseWithDataObject(DsfActivity droppedActivity)
         {
             var viewModel = DataObject as ExplorerItemViewModel;
 
@@ -585,7 +582,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
+        private void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
         {
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
@@ -596,7 +593,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             modelProperty1.SetValue(droppedActivity);
         }
 
-        protected void InitializeFlowSwitch(ModelItem mi)
+        private void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
@@ -604,7 +601,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
-        protected void InitializeFlowDecision(ModelItem mi)
+        private void InitializeFlowDecision(ModelItem mi)
         {
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
             ModelProperty modelProperty = mi.Properties["Action"];
@@ -614,7 +611,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
-        public void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
+        private void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
         {
             if (Designer == null)
             {
@@ -628,7 +625,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        ModelItem RecursiveForEachCheck(dynamic activity)
+        private static ModelItem RecursiveForEachCheck(dynamic activity)
         {
             var innerAct = activity.DataFunc.Handler as ModelItem;
             if (innerAct != null)
@@ -647,7 +644,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        private void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
         {
             if (Designer?.Context != null)
             {
@@ -671,7 +668,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="DragEventArgs" /> instance containing the event data.
         /// </param>
-        void SetLastDroppedPoint(DragEventArgs e)
+        private void SetLastDroppedPoint(DragEventArgs e)
         {
             var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
             UIElement freePormPanel = senderAsFrameworkElement?.FindNameAcrossNamescopes("flowchartPanel");
@@ -682,22 +679,23 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #region DataList Workflow Specific Methods
-        IList<IDataListVerifyPart> BuildWorkflowFields()
+
+        private IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             var dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
             _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>(dataPartVerifyDuplicates);
             var modelService = Designer?.Context.Services.GetService<ModelService>();
             if (modelService != null)
             {
-                var flowNodes = modelService.Find(modelService.Root, typeof(FlowNode));
+                var flowNodes = modelService.Find(modelService.Root, typeof (FlowNode));
 
                 foreach (var flowNode in flowNodes)
                 {
                     var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
                     foreach (var field in workflowFields)
                     {
-                        var isJsonObjectSource = field.StartsWith("@");                            
-                        WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts,isJsonObjectSource);
+                        var isJsonObjectSource = field.StartsWith("@");
+                        WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts, isJsonObjectSource);
                     }
                 }
             }
@@ -705,7 +703,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return flattenedList;
         }
 
-        IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
+        private IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
         {
             var workflowFields = new List<string>();
 
@@ -798,10 +796,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             return decisionFields;
         }
 
-        static IEnumerable<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
+        private static IEnumerable<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
         {
-            var result = new List<string>();
-
             // Travis.Frisinger - 25.01.2013 
             // We now need to parse this data for regions ;)
 
@@ -809,18 +805,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             // NEED - DataList for active workflow
             var parts = parser.ParseDataLanguageForIntellisense(getCol, datalistModel.WriteToResourceModel(), true);
 
-            foreach (var intellisenseResult in parts)
-            {
-                var varWithNoBrackets = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
-                if (!string.IsNullOrEmpty(getCol) && !varWithNoBrackets.Equals(getCol))
-                {
-                    result.Add(getCol);
-                }
-            }
-            return result;
+            return (from intellisenseResult in parts
+                    select DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue) 
+                    into varWithNoBrackets
+                    where !string.IsNullOrEmpty(getCol) && !varWithNoBrackets.Equals(getCol)
+                    select getCol
+                   ).ToList();
         }
 
-        List<String> GetActivityElements(object activity)
+        private static List<String> GetActivityElements(object activity)
         {
             var assign = activity as DsfActivityAbstract<string>;
             var other = activity as DsfActivityAbstract<bool>;
@@ -860,7 +853,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Internal Methods
 
-        internal void OnItemSelected(Selection item)
+        private void OnItemSelected(Selection item)
         {
             NotifyItemSelected(item.PrimarySelection);
             item.PrimarySelection.SetProperty("IsSelected", true);
@@ -1014,11 +1007,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!liteInit)
             {
                 _wdMeta.Register();
-
-                _wd.Context.Services.Subscribe<ViewStateService>(ViewStateServiceSubscribe);
-
+                
                 _wd.View.PreviewDrop += ViewPreviewDrop;
-
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
 
@@ -1068,7 +1058,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void ViewOnKeyDown(object sender, KeyEventArgs e)
+        private static void ViewOnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.OriginalSource != null)
             {
@@ -1083,14 +1073,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             }            
         }
 
-        void DesigenrViewSubscribe(DesignerView instance)
+        static void DesigenrViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }
 
-        void OnViewOnLostFocus(object sender, RoutedEventArgs args)
+        private void OnViewOnLostFocus(object sender, RoutedEventArgs args)
         {
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
 
@@ -1106,17 +1096,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void ViewStateServiceSubscribe(ViewStateService instance)
-        {
-        }
-
-        void ModelServiceSubscribe(ModelService instance)
+        private void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
             ModelService.ModelChanged += ModelServiceModelChanged;
         }
 
-        void SubscribeToDebugSelectionChanged()
+        private void SubscribeToDebugSelectionChanged()
         {
             _virtualizedContainerService = _wd.Context.Services.GetService<VirtualizedContainerService>();
             if (_virtualizedContainerService != null)
@@ -1190,7 +1176,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return selectedModelItem;
         }
 
-        protected virtual void SelectSingleModelItem(ModelItem selectedModelItem)
+        private void SelectSingleModelItem(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
@@ -1200,7 +1186,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SelectedDebugItems.Add(selectedModelItem);
         }
 
-        protected virtual void RemoveModelItemFromSelection(ModelItem selectedModelItem)
+        private void RemoveModelItemFromSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
@@ -1209,7 +1195,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
         }
 
-        protected virtual void AddModelItemToSelection(ModelItem selectedModelItem)
+        private void AddModelItemToSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
@@ -1242,7 +1228,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SelectedDebugItems.Add(selectedModelItem);
         }
 
-        protected virtual void ClearSelection()
+        private void ClearSelection()
         {
             _wd.Context.Items.SetValue(new Selection());
             _selectedDebugItems = new List<ModelItem>();
@@ -1261,7 +1247,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _virtualizedContainerServicePopulateAllMethod?.Invoke(_virtualizedContainerService, new object[] { onAfterPopulateAll });
         }
 
-        void BringIntoView(FrameworkElement view)
+        private static void BringIntoView(FrameworkElement view)
         {
             view?.BringIntoView();
         }
@@ -1311,13 +1297,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void SetDesignerText(StringBuilder xaml)
+        private void SetDesignerText(StringBuilder xaml)
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
             _wd.Text = designerText.ToString();
         }
 
-        void SelectedItemChanged(Selection item)
+        private void SelectedItemChanged(Selection item)
         {
             if (_wd?.Context != null)
             {
@@ -1330,7 +1316,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void DeselectFlowchart()
+        private void DeselectFlowchart()
         {
             if (_wd?.Context != null)
             {
@@ -1389,7 +1375,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        bool CheckDataList()
+        private bool CheckDataList()
         {
             if (_originalDataList == null)
                 return true;
@@ -1401,7 +1387,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return true;
         }
 
-        bool CheckServiceDefinition()
+        private bool CheckServiceDefinition()
         {
             return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
@@ -1409,7 +1395,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Processes the data list configuration load.
         /// </summary>
-        public void ProcessDataListOnLoad()
+        private void ProcessDataListOnLoad()
         {
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
         }
@@ -1451,8 +1437,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Adds the missing with no pop up and find unused data list items.
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
-        {    
-               DoWorkspaceSave();
+        {
+            DoWorkspaceSave();
         }
 
         /// <summary>
@@ -1509,7 +1495,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Event Handlers
 
-        void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
             if (!(e.OriginalSource is Path) && !(e.OriginalSource is Rectangle))
@@ -1534,7 +1520,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="dp">Item Clicked</param>
         /// <param name="designerView">Designer view</param>
         /// <returns></returns>
-        protected bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
+        private bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
                 return true;
@@ -1551,7 +1537,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
+        private bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (leftButtonState == MouseButtonState.Pressed && clickCount == 2)
             {
@@ -1606,7 +1592,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        public IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
+        private IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
             var env = GetEnvironment();
             var res = new ResourcePickerDialog(activityType, env);
@@ -1614,7 +1600,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return res;
         }
 
-        static IEnvironmentViewModel GetEnvironment()
+        private static IEnvironmentViewModel GetEnvironment()
         {
             var environment = EnvironmentRepository.Instance.ActiveEnvironment;
             IServer server = new Server(environment);
@@ -1633,7 +1619,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
-        void ViewPreviewDrop(object sender, DragEventArgs e)
+        private void ViewPreviewDrop(object sender, DragEventArgs e)
         {
             bool dropOccured = true;
             SetLastDroppedPoint(e);
@@ -1701,11 +1687,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             "Key"
         };
 
-        string _originalDataList;
-        bool _workspaceSave;
-        WorkflowInputDataViewModel _workflowInputDataViewModel;
-        string _workflowLink;
-        ICommand _openWorkflowLinkCommand;
+        private string _originalDataList;
+        private bool _workspaceSave;
+        private WorkflowInputDataViewModel _workflowInputDataViewModel;
+        private string _workflowLink;
+        private ICommand _openWorkflowLinkCommand;
         private bool _changeIsPossible;
 
         public bool ChangeIsPossible
@@ -1713,8 +1699,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             get { return _changeIsPossible; }
             set { _changeIsPossible = value; }
         }
-        bool _firstWorkflowChange;
-        IAsyncWorker _asyncWorker;
+
+        private bool _firstWorkflowChange;
+        private readonly IAsyncWorker _asyncWorker;
         private readonly IExternalProcessExecutor _executor;
         private string _expressionString;
 
@@ -1766,10 +1753,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
-            //DoWorkspaceSave();
         }
 
-        void ModelItemAdded(ModelChangedEventArgs e)
+        private void ModelItemAdded(ModelChangedEventArgs e)
         {
             ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
 #pragma warning restore 618
@@ -1794,7 +1780,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void ModelItemPropertyChanged(ModelChangedEventArgs e)
+        private void ModelItemPropertyChanged(ModelChangedEventArgs e)
         {
 #pragma warning disable 618
             Guid? envID = null;
@@ -1829,7 +1815,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 #pragma warning restore 618
         }
 
-        void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
+        private void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
         {
             if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
@@ -1857,7 +1843,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        protected void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
+        private void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
                 e.Command == EditingCommands.Delete ||          //triggered from editing displayname, expressions, etc
@@ -1872,9 +1858,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void PreventPasteFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        private void PreventPasteFromBeingExecuted(CanExecuteRoutedEventArgs e)
         {
-
             var second = Clipboard.GetText();
             if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"") || second.Contains("Type=\"WebService\"")))
             {
@@ -1895,7 +1880,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.CanExecute = false;
                     }
                 }
-                
             }
         }
 
@@ -1906,7 +1890,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
+        private void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete)
             {
@@ -1933,7 +1917,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wd.ModelChanged -= WdOnModelChanged;
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
-                _wd.Context.Services.Unsubscribe<ViewStateService>(ViewStateServiceSubscribe);
 
                 _wd.View.PreviewDrop -= ViewPreviewDrop;
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
@@ -2020,7 +2003,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        public void FireWdChanged()
+        private void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());
             GetWorkflowLink();
@@ -2051,13 +2034,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
 
-        void PublishMessages(IContextualResourceModel resourceModel)
+        private void PublishMessages(IContextualResourceModel resourceModel)
         {
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 
-        static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
+        private static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;
             resourceModel.DisplayName = message.ResourceName;
