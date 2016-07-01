@@ -1085,6 +1085,14 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("zzz"));
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("ttt"));
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("aaa"));
+
+            const string complexObject = "testing";
+            const string complexObjectChild = "item";
+            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
+            complexObjectDataModel.Input = true;
+            complexObjectDataModel.Output = true;
+            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild, complexObjectDataModel));
+            _dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
         }
 
         void SortCleanup()
@@ -1110,8 +1118,18 @@ namespace Dev2.Core.Tests
             Setup();
             SortInitialization();
 
+            Assert.IsNotNull(_dataListViewModel.ScalarCollection);
+            Assert.IsNotNull(_dataListViewModel.RecsetCollection);
+            Assert.IsNotNull(_dataListViewModel.ComplexObjectCollection);
+
+            Assert.IsTrue(_dataListViewModel.ScalarCollection.Count > 0);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection.Count > 0);
+            Assert.IsTrue(_dataListViewModel.ComplexObjectCollection.Count >= 1);
+
+            Assert.IsTrue(_dataListViewModel.CanSortItems);
             //Execute
             _dataListViewModel.SortCommand.Execute(null);
+            Assert.IsFalse(_dataListViewModel.IsSorting);
 
             //Scalar List Asserts
             Assert.AreEqual("aaa", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist left scalar list unsorted");
@@ -1293,6 +1311,21 @@ namespace Dev2.Core.Tests
             //----------------------Assert---------------------------------
             Assert.IsTrue(_dataListViewModel.HasErrors);
             StringAssert.Contains(_dataListViewModel.DataListErrorMessage, "[[RecordSet]] : Recordset must contain one or more field(s).");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_HasNoErrors")]
+        public void DataListViewModel_HasNoErrors_RecordSetWithNoItems_HasErrorFalse()
+        {
+            //------------Setup------------------------------------
+            Setup();
+
+            //----------------------Execute--------------------------------
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+            //----------------------Assert---------------------------------
+            Assert.IsFalse(_dataListViewModel.HasErrors);
         }
 
         [TestMethod]
