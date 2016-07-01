@@ -50,7 +50,7 @@ namespace Warewolf.Studio.UISpecs
         public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
-            UITestControl getWorkflowdesigner = Uimap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            UITestControl getWorkflowdesigner = Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             Mouse.StartDragging(getTreeItem);
             Mouse.StopDragging(getWorkflowdesigner, new Point(305, 137));
         }
