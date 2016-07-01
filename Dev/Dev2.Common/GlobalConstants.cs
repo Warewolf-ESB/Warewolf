@@ -16,8 +16,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security.Principal;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common

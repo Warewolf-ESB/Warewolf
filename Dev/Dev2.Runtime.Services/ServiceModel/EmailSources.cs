@@ -13,7 +13,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;

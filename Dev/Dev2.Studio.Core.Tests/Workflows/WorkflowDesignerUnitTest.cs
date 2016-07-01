@@ -1490,6 +1490,9 @@ namespace Dev2.Core.Tests.Workflows
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
             Assert.IsTrue(testAct.ServiceUri == "https://localhost:3143/" || testAct.ServiceUri == "http://localhost:3142/" || testAct.ServiceUri == "http://127.0.0.1:3142/", "Expected https://localhost:3143/ or http://localhost:3142/ or http://127.0.0.1:3142/ but got: " + testAct.ServiceUri);
             Assert.IsTrue(testAct.ServiceServer == envId2);
+            Assert.AreEqual("Test *", testClass.DisplayName);
+            Assert.AreEqual("WorkflowService", testClass.ResourceType.ToString());
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png", testClass.IconPath);
 
             var activity = new DsfActivity();
             var workflow = new ActivityBuilder { Implementation = activity };
