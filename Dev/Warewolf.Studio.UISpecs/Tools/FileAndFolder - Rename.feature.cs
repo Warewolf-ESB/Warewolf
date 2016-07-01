@@ -19,21 +19,20 @@ namespace Warewolf.Studio.UISpecs.Tools
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-    public partial class FileAndFolder_MoveFeature
+    public partial class FileAndFolder_RenameFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "FileAndFolder-Move.feature"
+#line 1 "FileAndFolder - Rename.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Move", "\tIn order to be able to Move a File or Folder \r\n\tas a Warewolf user\r\n\tI want a to" +
-                    "ol that will Move File(s) or Folder(s) from a given location to another location" +
-                    "", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FileAndFolder-Rename", "\tIn order to be able to Rename File or Folder \r\n\tas a Warewolf user\r\n\tI want a to" +
+                    "ol that will rename a File or Floder at a given location", ProgrammingLanguage.CSharp, new string[] {
                         "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -49,9 +48,9 @@ namespace Warewolf.Studio.UISpecs.Tools
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "FileAndFolder-Move")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "FileAndFolder-Rename")))
             {
-                Warewolf.Studio.UISpecs.Tools.FileAndFolder_MoveFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.FileAndFolder_RenameFeature.FeatureSetup(null);
             }
         }
         
@@ -72,52 +71,50 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Small View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename tool Small View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Move")]
-        public virtual void MoveToolSmallView()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Rename")]
+        public virtual void RenameToolSmallView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Small View", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Small View", new string[] {
                         "ignore",
-                        "Move"});
+                        "Rename"});
 #line 10
 this.ScenarioSetup(scenarioInfo);
 #line 11
-       testRunner.Given("I have Move Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("I have Rename Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Destination",
+                        "New Name",
                         "Result"});
             table1.AddRow(new string[] {
                         "",
                         "",
                         ""});
 #line 12
-       testRunner.Then("Move small view has", ((string)(null)), table1, "Then ");
+       testRunner.Then("Rename small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Large View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolLargeView()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename tool Large View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
+        public virtual void RenameToolLargeView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Large View", new string[] {
-                        "ignore"});
-#line 16
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Large View", ((string[])(null)));
+#line 15
 this.ScenarioSetup(scenarioInfo);
-#line 17
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 16
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -129,9 +126,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 18
-       testRunner.Then("Move Large View has", ((string)(null)), table2, "Then ");
-#line 21
+#line 17
+       testRunner.Then("Rename Large View has", ((string)(null)), table2, "Then ");
+#line 20
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -140,113 +137,109 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 22
+#line 21
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 25
+#line 24
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 25
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Small View water marks")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename tool Small View water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolSmallViewWaterMarks()
+        public virtual void RenameToolSmallViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Small View water marks", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Small View water marks", new string[] {
                         "ignore"});
 #line 28
 this.ScenarioSetup(scenarioInfo);
 #line 29
-       testRunner.Given("I have Move Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("I have Rename Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Destination",
+                        "New Name",
                         "Result"});
             table4.AddRow(new string[] {
-                        "[[PathToMove]]",
-                        "[[MoveToPath]]",
+                        "[[PathToRename]]",
+                        "[[FileOrFolderName]]",
                         "[[Success]]"});
 #line 30
-       testRunner.Then("Move small view watermarks are", ((string)(null)), table4, "Then ");
+       testRunner.Then("Rename small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Large View Water marks")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolLargeViewWaterMarks()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename tool Large View Water marks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
+        public virtual void RenameToolLargeViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Large View Water marks", new string[] {
-                        "ignore"});
-#line 34
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Large View Water marks", ((string[])(null)));
+#line 33
 this.ScenarioSetup(scenarioInfo);
-#line 35
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
             table5.AddRow(new string[] {
-                        "[[PathToMove]]",
+                        "[[PathToRename]]",
                         "[[Username]]",
                         "",
-                        "[[MoveToPath]]",
+                        "[[FileOrFolderName]]",
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 36
-       testRunner.Then("Move Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 39
+#line 35
+       testRunner.Then("Rename Large View watermarks are", ((string)(null)), table5, "Then ");
+#line 38
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
             table6.AddRow(new string[] {
-                        "",
-                        ""});
-#line 40
+                        "[[Errors().Message",
+                        "http://lcl:3142/service/err"});
+#line 39
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 43
+#line 42
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 43
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating when clicking on done with blank fields")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating when clicking on done with blank fields")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
+        public virtual void RenameLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating when clicking on done with blank fields", new string[] {
-                        "ignore"});
-#line 46
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating when clicking on done with blank fields", ((string[])(null)));
+#line 44
 this.ScenarioSetup(scenarioInfo);
-#line 47
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
+#line 45
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 46
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -258,52 +251,52 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 49
-       testRunner.And("Move Large View has", ((string)(null)), table7, "And ");
-#line 52
+#line 47
+       testRunner.And("Rename Large View has", ((string)(null)), table7, "And ");
+#line 50
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 51
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 54
+#line 52
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 55
-       testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+       testRunner.And("Rename Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move tool Large View to small view persisting data correctly")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename tool Large View to small view persisting data correctly")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void MoveToolLargeViewToSmallViewPersistingDataCorrectly()
+        public virtual void RenameToolLargeViewToSmallViewPersistingDataCorrectly()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move tool Large View to small view persisting data correctly", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 57
+#line 55
 this.ScenarioSetup(scenarioInfo);
-#line 58
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 56
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
             table8.AddRow(new string[] {
-                        "C:\\",
+                        "C:\\ Test",
                         "",
                         "",
-                        "D:\\",
+                        "C:\\ Rename",
                         "",
                         "",
-                        "[[Move]]"});
-#line 59
-       testRunner.And("Move Large View has", ((string)(null)), table8, "And ");
-#line 62
+                        "[[Rename]]"});
+#line 57
+       testRunner.And("Rename Large View has", ((string)(null)), table8, "And ");
+#line 60
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -312,51 +305,51 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "",
                         ""});
-#line 63
+#line 61
        testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
-#line 66
+#line 64
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
+#line 65
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 66
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
+#line 67
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
-       testRunner.And("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+       testRunner.And("Rename Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Destination",
+                        "New Name",
                         "Result"});
             table10.AddRow(new string[] {
-                        "C:\\",
-                        "D:\\",
-                        "[[Move]]"});
-#line 71
-       testRunner.And("Move small view has", ((string)(null)), table10, "And ");
+                        "C:\\ Test",
+                        "C:\\ Rename",
+                        "[[Rename]]"});
+#line 69
+       testRunner.And("Rename small view has", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("After correcting incorrect variable done button is closing large view")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void AfterCorrectingIncorrectVariableDoneButtonIsClosingLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 76
+#line 74
 this.ScenarioSetup(scenarioInfo);
-#line 77
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 75
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -364,13 +357,13 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]",
                         "",
                         "",
-                        "D:\\",
+                        "C:\\ Rename",
                         "",
                         "",
-                        "[[Move]]"});
-#line 78
-       testRunner.When("Move Large View has", ((string)(null)), table11, "When ");
-#line 81
+                        "[[Rename]]"});
+#line 76
+       testRunner.When("Rename Large View has", ((string)(null)), table11, "When ");
+#line 79
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -379,22 +372,22 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "",
                         ""});
-#line 82
+#line 80
        testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
-#line 85
+#line 83
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 84
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 85
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 88
-       testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+       testRunner.And("Rename Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -402,51 +395,51 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]]",
                         "",
                         "",
-                        "D:\\",
+                        "C:\\ Rename",
                         "",
                         "",
-                        "[[Move]]"});
-#line 89
-       testRunner.When("I edit Move Large View", ((string)(null)), table13, "When ");
-#line 92
+                        "[[Rename]]"});
+#line 87
+       testRunner.When("I edit Rename Large View", ((string)(null)), table13, "When ");
+#line 90
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 93
+#line 91
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 94
-       testRunner.And("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
+       testRunner.And("Rename Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Destination",
+                        "New Name",
                         "Result"});
             table14.AddRow(new string[] {
                         "C:\\[[a]]",
-                        "D:\\",
-                        "[[Move]]"});
-#line 95
-       testRunner.And("Move small view as", ((string)(null)), table14, "And ");
+                        "C:\\ Rename",
+                        "[[Rename]]"});
+#line 93
+       testRunner.And("Rename small view as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Close large view is closing large view without validating")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void CloseLargeViewIsClosingLargeViewWithoutValidating()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 101
+#line 98
 this.ScenarioSetup(scenarioInfo);
-#line 102
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 99
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -454,13 +447,13 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]",
                         "",
                         "",
-                        "D:\\",
+                        "C:\\ Rename",
                         "",
                         "",
-                        "[[Move]]"});
+                        "[[Rename]]"});
+#line 100
+       testRunner.And("Rename Large View has", ((string)(null)), table15, "And ");
 #line 103
-       testRunner.And("Move Large View has", ((string)(null)), table15, "And ");
-#line 106
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -469,36 +462,36 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 107
+#line 104
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 110
+#line 107
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 108
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 109
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 113
-       testRunner.And("Move Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
-       testRunner.When("collapse \"Move\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
-       testRunner.Then("Move Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 110
+       testRunner.And("Rename Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+       testRunner.When("collapse \"Rename\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 112
+       testRunner.Then("Rename Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Destination",
+                        "New Name",
                         "Result"});
             table17.AddRow(new string[] {
                         "C:\\[[a]",
-                        "D:\\",
-                        "[[Move]]"});
-#line 116
-       testRunner.And("Move small view as", ((string)(null)), table17, "And ");
+                        "C:\\ Rename",
+                        "[[Rename]]"});
+#line 113
+       testRunner.And("Rename small view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath(string no, string sPath, string validation, string[] exampleTags)
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath(string no, string sPath, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -506,19 +499,19 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect source path", @__tags);
-#line 121
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect source path", @__tags);
+#line 118
 this.ScenarioSetup(scenarioInfo);
-#line 122
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 123
+#line 119
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 120
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -526,177 +519,177 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("\"{0}\"", sPath),
                         "",
                         "",
-                        "D:\\",
+                        "C:\\ Rename",
                         "",
                         "",
-                        "[[Move]]"});
+                        "[[Rename]]"});
+#line 121
+       testRunner.And("Rename Large View has", ((string)(null)), table18, "And ");
 #line 124
-       testRunner.And("Move Large View has", ((string)(null)), table18, "And ");
-#line 127
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 125
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 129
+#line 126
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_1()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("1", "D:\\Test.txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("1", "D:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_2()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "D:[[rec().a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_3()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(1).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_4()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_5()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("5", "abc", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("5", "abc", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_6()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("6", "123", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("6", "123", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "\\abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_7()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("7", "\\abc", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("7", "\\abc", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_8()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("8", "[[a]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("8", "[[a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[a#]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_9()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("9", "[[a#]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("9", "[[a#]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_10()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect source path: 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect source path: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:SPath", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectSourcePath_11()
+        public virtual void RenameLargeViewIsValidatingIncorrectSourcePath_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectSourcePath("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectSourcePath("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath(string no, string dPath, string validation, string[] exampleTags)
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath(string no, string dPath, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -704,19 +697,19 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect Destination path", @__tags);
-#line 145
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect New Name path", @__tags);
+#line 142
 this.ScenarioSetup(scenarioInfo);
-#line 146
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
+#line 143
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 144
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -727,174 +720,174 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("\"{0}\"", dPath),
                         "",
                         "",
-                        "[[Move]]"});
+                        "[[Rename]]"});
+#line 145
+       testRunner.And("Rename Large View has", ((string)(null)), table19, "And ");
 #line 148
-       testRunner.And("Move Large View has", ((string)(null)), table19, "And ");
-#line 151
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 149
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 153
+#line 150
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "D:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_1()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("1", "D:\\Test.txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("1", "D:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[a]]:\\Test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_2()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("2", "[[a]]:\\Test.txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "D:[[rec().a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_3()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("3", "D:[[rec().a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[rec(1).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_4()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("4", "[[rec(1).a]].txt", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_5()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("5", "abc", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("5", "abc", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_6()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("6", "123", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("6", "123", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "\\abc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_7()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("7", "\\abc", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("7", "\\abc", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_8()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("8", "[[a]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("8", "[[a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[a#]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_9()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("9", "[[a#]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("9", "[[a#]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_10()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect Destination path: 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect New Name path: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DPath", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectDestinationPath_11()
+        public virtual void RenameLargeViewIsValidatingIncorrectNewNamePath_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectDestinationPath("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectNewNamePath("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField(string no, string variable, string validation, string[] exampleTags)
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField(string no, string variable, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -902,19 +895,19 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect variable in source username field", @__tags);
-#line 170
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect variable in File Username field", @__tags);
+#line 167
 this.ScenarioSetup(scenarioInfo);
-#line 171
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
+#line 168
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 169
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -925,174 +918,174 @@ this.ScenarioSetup(scenarioInfo);
                         "D:/",
                         "",
                         "",
-                        "[[Move]]"});
+                        "[[Rename]]"});
+#line 170
+       testRunner.And("Rename Large View has", ((string)(null)), table20, "And ");
 #line 173
-       testRunner.And("Move Large View has", ((string)(null)), table20, "And ");
-#line 176
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 174
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 175
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_1()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("1", "testing", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("1", "testing", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_2()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("2", "test@dev2", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("2", "test@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test1234")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_3()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("3", "test1234", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("3", "test1234", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_4()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_5()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2,co,za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_6()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_7()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[Username]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_8()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("8", "[[Username]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("8", "[[Username]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[User]][[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_9()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_10()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in source username field: 11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in File Username field: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField_11()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInSourceUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInFileUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField(string no, string variable, string validation, string[] exampleTags)
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField(string no, string variable, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -1100,19 +1093,19 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect variable in Destination username field", @__tags);
-#line 195
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect variable in New Name username field", @__tags);
+#line 193
 this.ScenarioSetup(scenarioInfo);
-#line 196
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 197
+#line 194
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 195
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -1123,185 +1116,176 @@ this.ScenarioSetup(scenarioInfo);
                         "D:/",
                         "\"<Username>\"",
                         "abc",
-                        "[[Move]]"});
-#line 198
-       testRunner.And("Move Large View has", ((string)(null)), table21, "And ");
-#line 201
+                        "[[Rename]]"});
+#line 196
+       testRunner.And("Rename Large View has", ((string)(null)), table21, "And ");
+#line 199
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 200
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 203
+#line 201
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 1" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_1()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("1", "testing", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("1", "testing", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 2" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_2()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("2", "test@dev2", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("2", "test@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 3" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test1234")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_3()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("3", "test1234", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("3", "test1234", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 4" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_4()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("4", "test12@dev2.co.za", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 5" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test@@dev2.co.za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_5()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("5", "test@@dev2.co.za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 6" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "test12@dev2,co,za")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_6()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("6", "test12@dev2,co,za", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 7" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]@dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_7()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("7", "[[a]]@dev2", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 8" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[Username]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_8()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_8()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("8", "[[Username]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("8", "[[Username]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 9" +
-            "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[User]][[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_9()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_9()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("9", "[[User]][[name]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 1" +
-            "0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 10" +
+            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_10()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_10()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("10", "[[rec(@).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Destination username field: 1" +
-            "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in New Name username field: 11" +
+            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField_11()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField_11()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInDestinationUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInNewNameUsernameField("11", "[[[rec().a]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField(string no, string result, string validation, string[] exampleTags)
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField(string no, string result, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -1309,19 +1293,19 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Large View is validating incorrect variable in Result field", @__tags);
-#line 220
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect variable in Result field", @__tags);
+#line 218
 this.ScenarioSetup(scenarioInfo);
-#line 221
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 222
+#line 219
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 220
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
@@ -1333,117 +1317,117 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("\"{0}\"", result)});
-#line 223
-       testRunner.And("Move Large View has", ((string)(null)), table22, "And ");
-#line 226
+#line 221
+       testRunner.And("Rename Large View has", ((string)(null)), table22, "And ");
+#line 224
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
+#line 225
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 228
+#line 226
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_1()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_1()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("1", "result", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("1", "result", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_2()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_2()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("2", "[[result]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("2", "[[result]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_3()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_3()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("3", "[[a]][[b]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("3", "[[a]][[b]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec([[a]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_4()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_4()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("4", "[[rec([[a]]).a]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("4", "[[rec([[a]]).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_5()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_5()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("5", "[[[[a]]]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("5", "[[[[a]]]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_6()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_6()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("6", "[[rec(*).a]]", "False", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("6", "[[rec(*).a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move Large View is validating incorrect variable in Result field: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename Large View is validating incorrect variable in Result field: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec().a@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveLargeViewIsValidatingIncorrectVariableInResultField_7()
+        public virtual void RenameLargeViewIsValidatingIncorrectVariableInResultField_7()
         {
-            this.MoveLargeViewIsValidatingIncorrectVariableInResultField("7", "[[rec().a@]]", "True", ((string[])(null)));
+            this.RenameLargeViewIsValidatingIncorrectVariableInResultField("7", "[[rec().a@]]", "True", ((string[])(null)));
 #line hidden
         }
         
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating(string no, string variable, string validation, string[] exampleTags)
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating(string no, string variable, string validation, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -1451,31 +1435,31 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move On error fields incorrect variables are validating", @__tags);
-#line 240
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename On error fields incorrect variables are validating", @__tags);
+#line 238
 this.ScenarioSetup(scenarioInfo);
-#line 241
-       testRunner.Given("I have Move Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 239
+       testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "File or Folder",
-                        "Source Username",
-                        "Source Password",
-                        "Destination",
+                        "File Username",
+                        "File Password",
+                        "New Name",
                         "Dest Username",
                         "Dest Password",
                         "Result"});
             table23.AddRow(new string[] {
-                        "[[PathToMove]]",
+                        "[[PathToRename]]",
                         "[[Username]]",
                         "",
-                        "[[MoveToPath]]",
+                        "[[RenameToPath]]",
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 242
-       testRunner.And("Move Large View with water marks has", ((string)(null)), table23, "And ");
-#line 245
+#line 240
+       testRunner.And("Rename Large View with water marks has", ((string)(null)), table23, "And ");
+#line 243
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1484,115 +1468,115 @@ this.ScenarioSetup(scenarioInfo);
             table24.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 246
+#line 244
        testRunner.And("On Error box consists", ((string)(null)), table24, "And ");
-#line 249
+#line 247
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 250
+#line 248
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
+#line 249
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 252
+#line 250
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_1()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_1()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("1", "[[a]]", "False", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("1", "[[a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_2()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_2()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("2", "[[a]][[b]]", "False", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("2", "[[a]][[b]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_3()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_3()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("3", "\"\"", "False", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("3", "\"\"", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_4()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_4()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("4", "[[rec().a]]", "False", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("4", "[[rec().a]]", "False", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_5()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_5()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("5", "[[a]]]]", "True", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("5", "[[a]]]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(**).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_6()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_6()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("6", "[[rec(**).a]]", "True", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("6", "[[rec(**).a]]", "True", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move On error fields incorrect variables are validating: 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename On error fields incorrect variables are validating: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        public virtual void MoveOnErrorFieldsIncorrectVariablesAreValidating_7()
+        public virtual void RenameOnErrorFieldsIncorrectVariablesAreValidating_7()
         {
-            this.MoveOnErrorFieldsIncorrectVariablesAreValidating("7", "[[rec()]]", "True", ((string[])(null)));
+            this.RenameOnErrorFieldsIncorrectVariablesAreValidating("7", "[[rec()]]", "True", ((string[])(null)));
 #line hidden
         }
     }
