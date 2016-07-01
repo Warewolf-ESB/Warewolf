@@ -40,29 +40,30 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string resourceId = null;
                 StringBuilder tmp;
                 values.TryGetValue("ResourceName", out tmp);
-                if(tmp != null)
+                if (tmp != null)
                 {
                     resourceName = tmp.ToString();
                 }
                 values.TryGetValue("ResourceType", out tmp);
-                if(tmp != null)
+                if (tmp != null)
                 {
                     type = tmp.ToString();
                 }
                 values.TryGetValue("ResourceId", out tmp);
-                if(tmp != null)
+                if (tmp != null)
                 {
                     resourceId = tmp.ToString();
                 }
 
-                IList<Resource> resources;
-                if(resourceId == null || resourceId == "*")
+                List<Resource> resources;
+                if (resourceId == null || resourceId == "*")
                 {
-                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, "");
+                    // ReSharper disable once RedundantAssignment
+                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "resourceName", resourceName }, { "type", type } }).ToList();
                 }
                 else
                 {
-                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);
+                    resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", resourceId }, { "type", type } }).ToList();
                 }
                 Dev2Logger.Info("Find Resource. ResourceName: " + resourceName);
 
@@ -72,13 +73,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(resourceList);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Error(err);
                 throw;
             }
         }
-        
+
         public DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><ResourceId ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
