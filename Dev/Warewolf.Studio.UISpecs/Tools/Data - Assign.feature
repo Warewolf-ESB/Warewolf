@@ -61,7 +61,6 @@ Scenario: Multiassign With SomeVariable UI Test
 
 ##@NeedsUnsavedWorkflow
 ##Scenario: Clicking the tab close button prompts to save
-##	Given I "Assert_I_Have_The_Most_Gigantic_Dick"
 #	Given I "Assert_Close_Tab_Button_Exists"
 #	When I "Click_Close_Tab_Button"
 #	Then I "Assert_MessageBox_Yes_Button_Exists"
