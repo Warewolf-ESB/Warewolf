@@ -15,7 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -24,7 +23,6 @@ using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
-using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -99,7 +97,7 @@ namespace Dev2.Data.Util
                 return expression;
             }
 
-            string extractIndexRegionFromRecordset = string.Format("({0})", index);
+            string extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
                                         expression.Replace(extractIndexRegionFromRecordset, "()");
         }
@@ -119,7 +117,7 @@ namespace Dev2.Data.Util
                 return expression;
             }
 
-            string extractIndexRegionFromRecordset = string.Format("({0})", index);
+            string extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
                                         expression.Replace(extractIndexRegionFromRecordset, "(*)");
         }
@@ -168,44 +166,27 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ComposeIntoUserVisibleRecordset(string rs, string idx, string field)
         {
-            return string.Format("{0}({1}).{2}", rs, idx, field);
+            return $"{rs}({idx}).{field}";
         }
-
-        /// <summary>
-        /// Composes the into user visible recordset.
-        /// </summary>
-        /// <param name="rs">The rs.</param>
-        /// <param name="idx">The idx.</param>
-        /// <param name="field">The field.</param>
-        /// <returns></returns>
-        public static string ComposeIntoUserVisibleRecordset(string rs, int idx, string field)
-        {
-            return string.Format("{0}({1}).{2}", rs, idx, field);
-        }
-
+       
 
         /// <summary>
         /// Remove XMLData and other nesting junk from the ADL
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns></returns>
-        public static string StripCrap(string payload)
+        public static string StripJunk(string payload)
         {
             string result = payload;
             string[] veryNaughtyTags = NaughtyTags;
 
             if (!string.IsNullOrEmpty(payload))
             {
-
-                if (StripTags != null)
-                {
-                    StripTags
-                        .ToList()
-                        .ForEach(tag =>
-                        {
-                            result = result.Replace(tag, "");
-                        });
-                }
+                StripTags?.ToList()
+                    .ForEach(tag =>
+                    {
+                        result = result.Replace(tag, "");
+                    });
 
                 if (veryNaughtyTags != null)
                 {
@@ -236,90 +217,6 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
-        /// <summary>
-        /// Builds the system tag for data list.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="addBrackets">if set to <c>true</c> [add brackets].</param>
-        /// <returns></returns>
-        public static string BuildSystemTagForDataList(enSystemTag tag, bool addBrackets)
-        {
-
-            string result = GlobalConstants.SystemTagNamespace + "." + tag;
-
-            if (addBrackets)
-            {
-                result = OpeningSquareBrackets + result + ClosingSquareBrackets;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Builds the system tag for data list.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="addBrackets">if set to <c>true</c> [add brackets].</param>
-        /// <returns></returns>
-        public static string BuildSystemTagForDataList(string tag, bool addBrackets)
-        {
-
-            string result = GlobalConstants.SystemTagNamespace + "." + tag;
-
-            if (addBrackets)
-            {
-                result = OpeningSquareBrackets + result + ClosingSquareBrackets;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Extracts the attribute.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="tagName">Name of the tag.</param>
-        /// <param name="attribute">The attribute.</param>
-        /// <returns></returns>
-        public static string ExtractAttribute(string payload, string tagName, string attribute)
-        {
-            string result = string.Empty;
-
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(payload);
-            XmlNodeList nl = xDoc.GetElementsByTagName(tagName);
-            if (nl.Count > 0)
-            {
-                var xmlAttributeCollection = nl[0].Attributes;
-                if (xmlAttributeCollection != null)
-                {
-                    result = xmlAttributeCollection[attribute].Value;
-                }
-            }
-
-            return result;
-        }
-
-        /*
-                public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string attribute)
-                {
-                    return ExtractAttributeFromTagAndMakeRecordset(payload, tagName, new[] { attribute }, null);
-                }
-        */
-
-        /// <summary>
-        /// Used to detect the #text and #cdate-section 'nodes' returned by MS XML parser
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsMsXmlBugNode(string value)
-        {
-            bool result = value == "#text" || value == "#cdata-section";
-
-            return result;
-        }
-
         /// <summary>
         /// Removes the brackets.
         /// </summary>
@@ -353,108 +250,9 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Generates the data list from defs.
-        /// </summary>
-        /// <param name="defs">The defs.</param>
-        /// <param name="withData">if set to <c>true</c> [with data].</param>
-        /// <returns></returns>
-        public static StringBuilder GenerateDataListFromDefs(IEnumerable<IDev2Definition> defs, bool withData = false)
-        {
-            StringBuilder result = new StringBuilder("<" + AdlRoot + ">");
+       
 
-            Dictionary<string, string> rsMap = new Dictionary<string, string>();
-
-            defs
-                .ToList()
-                .ForEach(d =>
-                {
-
-                    if (d.IsRecordSet)
-                    {
-                        string tmp = string.Empty;
-
-                        if (rsMap.Keys.Contains(d.RecordSetName))
-                        {
-                            tmp = rsMap[d.RecordSetName];
-                        }
-                        string name = d.Name.Contains(".") ? d.Name.Split('.')[1] : d.Name;
-                        tmp = withData ? string.Concat(tmp, Environment.NewLine, "<", name, ">", d.RawValue, "</", name, ">") : string.Concat(tmp, Environment.NewLine, "<", name, "/>");
-
-
-                        rsMap[d.RecordSetName] = tmp;
-                    }
-                    else
-                    {
-                        result.Append(withData ? string.Concat("<", d.Name, ">", d.RawValue, "</", d.Name, ">") : string.Concat("<", d.Name, "/>"));
-                    }
-
-                });
-
-            rsMap
-                .ToList()
-                .ForEach(rs =>
-                {
-                    result.Append(Environment.NewLine);
-                    result.Append(string.Concat("<", rs.Key, ">"));
-                    result.Append(Environment.NewLine);
-                    result.Append(rs.Value);
-                    result.Append(Environment.NewLine);
-                    result.Append(string.Concat("</", rs.Key, ">"));
-
-                });
-
-            result.Append(Environment.NewLine);
-            result.Append("</" + AdlRoot + ">");
-
-            return result;
-        }
-
-        /// <summary>
-        /// Shapes the definitions to data list.
-        /// </summary>
-        /// <param name="defs">The defs.</param>
-        /// <param name="typeOf">The type of.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public static StringBuilder ShapeDefinitionsToDataList(IList<IDev2Definition> defs, enDev2ArgumentType typeOf, out ErrorResultTO errors)
-        {
-            StringBuilder result = new StringBuilder();
-
-            bool isInput = false;
-            errors = new ErrorResultTO();
-
-            if (typeOf == enDev2ArgumentType.Input)
-            {
-                isInput = true;
-            }
-
-            if (defs == null || defs.Count == 0)
-            {
-                errors.AddError(string.Format(ErrorResource.CouldnotLocateDataType, typeOf));
-            }
-            else
-            {
-
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, isInput);
-                IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, isInput);
-
-                // open datashape
-                result.Append(string.Concat("<", AdlRoot, ">"));
-                result.Append(Environment.NewLine);
-
-                // append scalar shape
-                result.Append(BuildDev2ScalarShape(scalarList, isInput));
-                // append record set shape
-                result.Append(BuildDev2RecordSetShape(recCol, isInput));
-
-                // close datashape
-                result.Append(Environment.NewLine);
-                result.Append(string.Concat("</", AdlRoot, ">"));
-            }
-
-            return result;
-        }
+     
 
         /// <summary>
         /// Shapes the definitions to data list.
@@ -481,7 +279,7 @@ namespace Dev2.Data.Util
             return env;
         }
 
-        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IList<IDev2Definition> inputObjectList, ExecutionEnvironment env,int update)
+        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env,int update)
         {
             foreach (var dev2Definition in inputObjectList)
             {
@@ -572,7 +370,7 @@ namespace Dev2.Data.Util
                 {
                     if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                     {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update, false);
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
                         {
                             ScalarAtomList(warewolfEvalResult, env, dev2Definition);
@@ -689,32 +487,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Evaluates if an expression is a root level evaluated variable ie [[x]]
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        public static bool IsRootVariable(string expression)
-        {
-            bool result = true;
-
-            if (expression == null)
-            {
-                return false;
-            }
-
-            string[] openParts = Regex.Split(expression, @"\[\[");
-            string[] closeParts = Regex.Split(expression, @"\]\]");
-
-            //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
-            if (expression.Contains(OpeningSquareBrackets) && expression.Contains(ClosingSquareBrackets) && openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
-            {
-                result = false;
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Used to extract a recordset name from a string as per the Dev2 data language spec
         /// </summary>
         /// <param name="value">The value</param>
@@ -812,30 +584,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Checks if a region is closed
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool EndsWithClosingTags(string value)
-        {
-            return !string.IsNullOrEmpty(value) && value.EndsWith(ClosingSquareBrackets);
-        }
-
-        /// <summary>
-        /// Get the index of the closing tags in a variable
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static int IndexOfClosingTags(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return -1;
-            }
-
-            return value.LastIndexOf(ClosingSquareBrackets, StringComparison.Ordinal);
-        }
+       
 
         /// <summary>
         /// Adds [[ ]] to a variable if they are not present already
@@ -931,22 +680,7 @@ namespace Dev2.Data.Util
 
             return ExtractIndexRegionFromRecordset(rs) == "*";
         }
-
-        /// <summary>
-        /// An opening brace for a recordset
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsRecordsetOpeningBrace(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            return value.StartsWith(RecordsetIndexOpeningBracket);
-        }
-
+        
         /// <summary>
         /// Is the expression evaluated
         /// </summary>  
@@ -956,7 +690,8 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsFullyEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
+            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 
+                && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
         }
@@ -993,42 +728,6 @@ namespace Dev2.Data.Util
         public static bool IsEvaluated(string payload)
         {
             bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the type of the recordset index.
-        /// </summary>
-        /// <param name="idx">The idx.</param>
-        /// <returns></returns>
-        public static enRecordsetIndexType GetRecordsetIndexTypeRaw(string idx)
-        {
-            enRecordsetIndexType result = enRecordsetIndexType.Error;
-
-            if (idx == "*")
-            {
-                result = enRecordsetIndexType.Star;
-            }
-            else if (string.IsNullOrEmpty(idx))
-            {
-                result = enRecordsetIndexType.Blank;
-            }
-            else
-            {
-                try
-                {
-                    // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-
-                    Convert.ToInt32(idx);
-                    // ReSharper restore ReturnValueOfPureMethodIsNotUsed
-                    result = enRecordsetIndexType.Numeric;
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error("DataListUtil", ex);
-                }
-            }
 
             return result;
         }
@@ -1204,54 +903,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Build a scalar shape
-        /// </summary>
-        /// <param name="scalarList">The scalar list.</param>
-        /// <param name="isInput">if set to <c>true</c> [is input].</param>
-        /// <returns></returns>
-        private static string BuildDev2ScalarShape(IEnumerable<IDev2Definition> scalarList, bool isInput)
-        {
-            StringBuilder result = new StringBuilder();
-
-            foreach (IDev2Definition def in scalarList)
-            {
-                if (!isInput)
-                {
-                    if (IsEvaluated(def.RawValue))
-                    {
-                        result.Append(string.Concat("<", def.Value, "></", def.Value, ">"));
-                        result.Append(Environment.NewLine);
-                    }
-
-                    if (!string.IsNullOrEmpty(def.Name))
-                    {
-                        result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
-                        result.Append(Environment.NewLine);
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(def.Name))
-                    {
-                        result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
-                        result.Append(Environment.NewLine);
-                    }
-
-                    // we need to process the RawValue field incase it is not in the recordsets ;)
-                    var rsName = ExtractRecordsetNameFromValue(def.Value);
-                    if (string.IsNullOrEmpty(rsName) && IsEvaluated(def.Value))
-                    {
-                        var tmpValue = RemoveLanguageBrackets(def.Value);
-                        result.Append(string.Concat("<", tmpValue, "></", tmpValue, ">"));
-                        result.Append(Environment.NewLine);
-                    }
-                }
-            }
-
-            return result.ToString();
-        }
-
-        /// <summary>
         /// Cleanups the naughty tags.
         /// </summary>
         /// <param name="toRemove">To remove.</param>
@@ -1311,70 +962,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Build a recordset shape
-        /// </summary>
-        /// <param name="recCol"></param>
-        /// <param name="isInput"></param>
-        /// <returns></returns>
-        private static string BuildDev2RecordSetShape(IRecordSetCollection recCol, bool isInput)
-        {
-            StringBuilder result = new StringBuilder();
-
-            IList<IRecordSetDefinition> defs = recCol.RecordSets;
-            HashSet<string> processedSetNames = new HashSet<string>();
-
-            foreach (IRecordSetDefinition tmp in defs)
-            {
-                // get DL recordset Name
-                if (tmp.Columns.Count > 0)
-                {
-                    string setName = tmp.SetName;
-                    result.Append(string.Concat("<", setName, ">"));
-                    result.Append(Environment.NewLine);
-
-                    processedSetNames.Add(setName);
-
-                    IList<IDev2Definition> cols = tmp.Columns;
-                    foreach (IDev2Definition tmpDef in cols)
-                    {
-                        if (isInput)
-                        {
-                            var col = ExtractFieldNameFromValue(tmpDef.MapsTo);
-
-                            if (!string.IsNullOrEmpty(col))
-                            {
-                                var toAppend = "\t<" + col + "></" + col + ">";
-                                result.Append(toAppend);
-                            }
-
-                        }
-                        else
-                        {
-                            //Name
-                            string tag = ExtractFieldNameFromValue(tmpDef.Name);
-
-                            if (string.IsNullOrEmpty(tag))
-                            {
-                                //Name
-                                tag = tmpDef.Name;
-                            }
-
-                            result.Append(string.Concat("\t<", tag, "></", tag, ">"));
-
-                        }
-                        result.Append(Environment.NewLine);
-                    }
-                    result.Append(string.Concat("</", setName, ">"));
-                    result.Append(Environment.NewLine);
-
-
-                }
-            }
-
-            return result.ToString();
-        }
-
-        /// <summary>
         /// Removes the recordset brackets from a value.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -1382,49 +969,6 @@ namespace Dev2.Data.Util
         public static string RemoveRecordsetBracketsFromValue(string value)
         {
             return value.Replace("()", "");
-        }
-
-        /// <summary>
-        /// Extracts the input definitions from a service definition.
-        /// </summary>
-        /// <param name="serviceDefintion">The service definition.</param>
-        /// <returns></returns>
-        public static string ExtractInputDefinitionsFromServiceDefinition(string serviceDefintion)
-        {
-            string result = string.Empty;
-            if (!string.IsNullOrEmpty(serviceDefintion))
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(serviceDefintion);
-                var selectSingleNode = xDoc.SelectSingleNode("//Inputs");
-                if (selectSingleNode != null)
-                {
-                    result = selectSingleNode.OuterXml;
-                }
-            }
-            return result;
-        }
-
-
-        /// <summary>
-        /// Extracts the output definitions from a service definition.
-        /// </summary>
-        /// <param name="serviceDefintion">The service definition.</param>
-        /// <returns></returns>
-        public static string ExtractOutputDefinitionsFromServiceDefinition(string serviceDefintion)
-        {
-            string result = string.Empty;
-            if (!string.IsNullOrEmpty(serviceDefintion))
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(serviceDefintion);
-                var selectSingleNode = xDoc.SelectSingleNode("//Outputs");
-                if (selectSingleNode != null)
-                {
-                    result = selectSingleNode.OuterXml;
-                }
-            }
-            return result;
         }
 
         /// <summary>
@@ -1440,16 +984,6 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// Ecodes the region brackets in Html.
-        /// </summary>
-        /// <param name="stringToEncode">The string to encode.</param>
-        /// <returns></returns>
-        public static string HtmlEncodeRegionBrackets(string stringToEncode)
-        {
-            return stringToEncode.Replace("[", "&#91;").Replace("]", "&#93;");
-        }
-
-        /// <summary>
         /// Upserts the tokens.
         /// </summary>
         /// <param name="target">The target.</param>
@@ -1462,7 +996,7 @@ namespace Dev2.Data.Util
         {
             if (target == null)
             {
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             }
 
             target.Clear();
@@ -1485,7 +1019,7 @@ namespace Dev2.Data.Util
                 }
                 else
                 {
-                    token = AddBracketsToValueIfNotExist(string.Format("{0}{1}{2}", tokenPrefix, StripLeadingAndTrailingBracketsFromValue(token), tokenSuffix));
+                    token = AddBracketsToValueIfNotExist($"{tokenPrefix}{StripLeadingAndTrailingBracketsFromValue(token)}{tokenSuffix}");
 
                     target.Add(new ObservablePair<string, string>(token, string.Empty));
                 }
@@ -1513,7 +1047,7 @@ namespace Dev2.Data.Util
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
                             var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
-                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0, false);
+                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0);
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
@@ -1600,7 +1134,7 @@ namespace Dev2.Data.Util
             var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
             if (blankIndex != -1)
             {
-                return fullRecSetName.Replace("().", string.Format("({0}).", length));
+                return fullRecSetName.Replace("().", $"({length}).");
             }
             return fullRecSetName;
         }
@@ -1610,7 +1144,7 @@ namespace Dev2.Data.Util
             var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
             if (blankIndex != -1)
             {
-                return fullRecSetName.Replace("().", string.Format("({0}).", "*"));
+                return fullRecSetName.Replace("().", $"({"*"}).");
             }
             return fullRecSetName;
         }
@@ -1620,7 +1154,7 @@ namespace Dev2.Data.Util
             var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
             if (blankIndex != -1)
             {
-                return fullRecSetName.Replace("()", string.Format("({0})", "*"));
+                return fullRecSetName.Replace("()", $"({"*"})");
             }
             return fullRecSetName;
         }
@@ -1667,11 +1201,7 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
-        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList)
-        {
-            // ReSharper disable once IntroduceOptionalParameters.Global
-            return GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
-        }
+     
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
@@ -1694,13 +1224,10 @@ namespace Dev2.Data.Util
                     if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         var jsonAttribute = false;
-                        if (tmpNode.Attributes != null)
+                        var xmlAttribute = tmpNode.Attributes?["IsJson"];
+                        if (xmlAttribute != null)
                         {
-                            var xmlAttribute = tmpNode.Attributes["IsJson"];
-                            if (xmlAttribute != null)
-                            {
-                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                            }
+                            bool.TryParse(xmlAttribute.Value, out jsonAttribute);
                         }
                         if (tmpNode.HasChildNodes && !jsonAttribute)
                         {
@@ -1758,17 +1285,14 @@ namespace Dev2.Data.Util
 
         static bool IsObject(XmlNode tmpNode)
         {
-            if (tmpNode.Attributes != null)
-            {
-                XmlAttribute isObjectAttribute = tmpNode.Attributes["IsJson"];
+            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsJson"];
 
-                if (isObjectAttribute != null)
+            if (isObjectAttribute != null)
+            {
+                bool isObject;
+                if(bool.TryParse(isObjectAttribute.Value,out isObject))
                 {
-                    bool isObject;
-                    if(bool.TryParse(isObjectAttribute.Value,out isObject))
-                    {
-                        return isObject;
-                    }
+                    return isObject;
                 }
             }
             return false;
@@ -1816,14 +1340,7 @@ namespace Dev2.Data.Util
                     else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         // scalar value, make it as such
-                        if (isObject)
-                        {
-                            result.Add(DataListFactory.CreateDefinition("@"+tmpNode.Name, "", "", false, "", false, ""));
-                        }
-                        else
-                        {
-                            result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
-                        }
+                        result.Add(isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "") : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
                     }
 
                 }
