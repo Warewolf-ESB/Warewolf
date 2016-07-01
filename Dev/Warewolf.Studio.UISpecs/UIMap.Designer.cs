@@ -6935,6 +6935,144 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(testActionButton, new Point(47, 18));
         }
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfControl uIRecordsetDataItem = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem;
+            WpfCell uIRecordsetCell = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsetCell;
+            WpfCell uIItemCell = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIItemCell;
+            WpfCell uIItemCell1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIItemCell1;
+            WpfList uIRecordsList = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList;
+            WpfListItem uIChildrenListItem = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem;
+            WpfTable uIRecordsTable = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable;
+            WpfControl uIItemDataItem = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem;
+            WpfCell uIItemCell2 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell;
+            WpfCell uIItemCell11 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell1;
+            WpfCell uIItemCell21 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell2;
+            WpfList uIRecordsList1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList;
+            WpfListItem uIChildrenListItem1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem;
+            WpfTable uIRecordsTable1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable;
+            WpfControl uIItemDataItem1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem;
+            WpfButton uIExpansionIndicatorButton = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIExpansionIndicatorButton;
+            WpfCell uIItemCell3 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell;
+            WpfCell uIItemCell12 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell1;
+            WpfCell uIItemCell22 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell2;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'Recordset' DataItem equals 'DataItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIRecordsetDataItemControlType, uIRecordsetDataItem.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Recordset' cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIRecordsetCellControlType, uIRecordsetCell.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCellControlType, uIItemCell.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCell1ControlType, uIItemCell1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Records' list box equals 'List'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIRecordsListControlType, uIRecordsList.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Children' list item equals 'ListItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIChildrenListItemControlType, uIChildrenListItem.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Records' table equals 'Table'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIRecordsTableControlType, uIRecordsTable.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of DataItem equals 'DataItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemDataItemControlType, uIItemDataItem.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCellControlType1, uIItemCell2.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCell1ControlType1, uIItemCell11.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCell2ControlType, uIItemCell21.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Records' list box equals 'List'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIRecordsListControlType1, uIRecordsList1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Children' list item equals 'ListItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIChildrenListItemControlType1, uIChildrenListItem1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'Records' table equals 'Table'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIRecordsTableControlType1, uIRecordsTable1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of DataItem equals 'DataItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemDataItemControlType1, uIItemDataItem1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'ExpansionIndicator' button equals 'Button'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIExpansionIndicatorButtonControlType, uIExpansionIndicatorButton.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCellControlType2, uIItemCell3.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCell1ControlType2, uIItemCell12.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.UIItemCell2ControlType1, uIItemCell22.ControlType.ToString());
+        }
+        
+        /// <summary>
+        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod2()
+        {
+            #region Variable Declarations
+            WpfText uILabelTextText = this.UIWarewolfDEV2ASHLEYLEWindow.UIItemCustom.UIUI_NameTextBox_AutoIEdit.UILabelTextText;
+            WpfImage uIDeleteDisabledImage = this.UIWarewolfDEV2ASHLEYLEWindow.UIItemCustom.UIUI_NameTextBox_AutoIEdit.UIDeleteDisabledImage;
+            WpfButton uIDeleteButtonButton = this.UIWarewolfDEV2ASHLEYLEWindow.UIItemCustom.UIUI_NameTextBox_AutoIEdit.UIDeleteButtonButton;
+            WpfEdit uIUI_NameTextBox_AutoIEdit = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell.UIUI_NameTextBox_AutoIEdit;
+            WpfCustom uIItemCustom = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell.UIItemCustom;
+            WpfToggleButton uIPART_ExpanderToggleButton = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell.UIPART_ExpanderToggleButton;
+            WpfCell uIItemCell = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell;
+            WpfCell uIItemCell1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell1;
+            WpfCell uIItemCell2 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell2;
+            WpfCustom uIItemCustom1 = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell2.UIItemCustom;
+            WpfCheckBox uIUI_IsOutputCheckbox_CheckBox = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_VariablesControl_Custom.UIXtgCustom.UIRecordsTable.UIRecordsetDataItem.UIRecordsList.UIChildrenListItem.UIRecordsTable.UIItemDataItem.UIItemCell2.UIUI_IsOutputCheckbox_CheckBox;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'LabelText' label equals 'Text'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UILabelTextTextControlType, uILabelTextText.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'DeleteDisabled' image equals 'Image'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIDeleteDisabledImageControlType, uIDeleteDisabledImage.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'DeleteButton' button equals 'Button'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIDeleteButtonButtonControlType, uIDeleteButtonButton.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'UI_NameTextBox_AutoID' text box equals 'Edit'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIUI_NameTextBox_AutoIEditControlType, uIUI_NameTextBox_AutoIEdit.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of custom control equals 'Custom'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIItemCustomControlType, uIItemCustom.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'PART_Expander' toggle button equals 'ToggleButton'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIPART_ExpanderToggleButtonControlType, uIPART_ExpanderToggleButton.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIItemCellControlType, uIItemCell.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIItemCell1ControlType, uIItemCell1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of cell equals 'Cell'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIItemCell2ControlType, uIItemCell2.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of custom control equals 'Custom'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIItemCustomControlType1, uIItemCustom1.ControlType.ToString());
+
+            // Verify that the 'ControlType' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'CheckBox'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.UIUI_IsOutputCheckbox_CheckBoxControlType, uIUI_IsOutputCheckbox_CheckBox.ControlType.ToString());
+        }
+        
         #region Properties
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
@@ -10440,6 +10578,30 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod2ExpectedValues == null))
+                {
+                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
+                }
+                return this.mAssertMethod2ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -10521,6 +10683,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mDecisionDialog = new DecisionDialog();
                 }
                 return this.mDecisionDialog;
+            }
+        }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -11110,6 +11284,10 @@ namespace Warewolf.Studio.UISpecs
         
         private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
         
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
+        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -11123,6 +11301,8 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private DecisionDialog mDecisionDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -15513,6 +15693,176 @@ namespace Warewolf.Studio.UISpecs
         /// Type 's' in 'Test data' text box
         /// </summary>
         public string TestDataText = "s";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Recordset' DataItem equals 'DataItem'
+        /// </summary>
+        public string UIRecordsetDataItemControlType = "DataItem";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Recordset' cell equals 'Cell'
+        /// </summary>
+        public string UIRecordsetCellControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCellControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell1ControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Records' list box equals 'List'
+        /// </summary>
+        public string UIRecordsListControlType = "List";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Children' list item equals 'ListItem'
+        /// </summary>
+        public string UIChildrenListItemControlType = "ListItem";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Records' table equals 'Table'
+        /// </summary>
+        public string UIRecordsTableControlType = "Table";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of DataItem equals 'DataItem'
+        /// </summary>
+        public string UIItemDataItemControlType = "DataItem";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCellControlType1 = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell1ControlType1 = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell2ControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Records' list box equals 'List'
+        /// </summary>
+        public string UIRecordsListControlType1 = "List";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Children' list item equals 'ListItem'
+        /// </summary>
+        public string UIChildrenListItemControlType1 = "ListItem";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Records' table equals 'Table'
+        /// </summary>
+        public string UIRecordsTableControlType1 = "Table";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of DataItem equals 'DataItem'
+        /// </summary>
+        public string UIItemDataItemControlType1 = "DataItem";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'ExpansionIndicator' button equals 'Button'
+        /// </summary>
+        public string UIExpansionIndicatorButtonControlType = "Button";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCellControlType2 = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell1ControlType2 = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell2ControlType1 = "Cell";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'LabelText' label equals 'Text'
+        /// </summary>
+        public string UILabelTextTextControlType = "Text";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'DeleteDisabled' image equals 'Image'
+        /// </summary>
+        public string UIDeleteDisabledImageControlType = "Image";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'DeleteButton' button equals 'Button'
+        /// </summary>
+        public string UIDeleteButtonButtonControlType = "Button";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'UI_NameTextBox_AutoID' text box equals 'Edit'
+        /// </summary>
+        public string UIUI_NameTextBox_AutoIEditControlType = "Edit";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of custom control equals 'Custom'
+        /// </summary>
+        public string UIItemCustomControlType = "Custom";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'PART_Expander' toggle button equals 'ToggleButton'
+        /// </summary>
+        public string UIPART_ExpanderToggleButtonControlType = "ToggleButton";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCellControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell1ControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of cell equals 'Cell'
+        /// </summary>
+        public string UIItemCell2ControlType = "Cell";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of custom control equals 'Custom'
+        /// </summary>
+        public string UIItemCustomControlType1 = "Custom";
+        
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'UI_IsOutputCheckbox_AutoID' check box equals 'CheckBox'
+        /// </summary>
+        public string UIUI_IsOutputCheckbox_CheckBoxControlType = "CheckBox";
         #endregion
     }
     
@@ -36488,6 +36838,827 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_VariablesControl_Custom UIUI_VariablesControl_Custom
+        {
+            get
+            {
+                if ((this.mUIUI_VariablesControl_Custom == null))
+                {
+                    this.mUIUI_VariablesControl_Custom = new UIUI_VariablesControl_Custom(this);
+                }
+                return this.mUIUI_VariablesControl_Custom;
+            }
+        }
+        
+        public UIItemCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_VariablesControl_Custom mUIUI_VariablesControl_Custom;
+        
+        private UIItemCustom mUIItemCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_VariablesControl_Custom : WpfCustom
+    {
+        
+        public UIUI_VariablesControl_Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_VariablesControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIXtgCustom UIXtgCustom
+        {
+            get
+            {
+                if ((this.mUIXtgCustom == null))
+                {
+                    this.mUIXtgCustom = new UIXtgCustom(this);
+                }
+                return this.mUIXtgCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIXtgCustom mUIXtgCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIXtgCustom : WpfCustom
+    {
+        
+        public UIXtgCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataPresenterBase";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Xtg";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIRecordsTable UIRecordsTable
+        {
+            get
+            {
+                if ((this.mUIRecordsTable == null))
+                {
+                    this.mUIRecordsTable = new UIRecordsTable(this);
+                }
+                return this.mUIRecordsTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIRecordsTable mUIRecordsTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIRecordsTable : WpfTable
+    {
+        
+        public UIRecordsTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.Name] = "Records";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIRecordsetDataItem UIRecordsetDataItem
+        {
+            get
+            {
+                if ((this.mUIRecordsetDataItem == null))
+                {
+                    this.mUIRecordsetDataItem = new UIRecordsetDataItem(this);
+                }
+                return this.mUIRecordsetDataItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIRecordsetDataItem mUIRecordsetDataItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIRecordsetDataItem : WpfControl
+    {
+        
+        public UIRecordsetDataItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "DataItem";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Recordset";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCell UIRecordsetCell
+        {
+            get
+            {
+                if ((this.mUIRecordsetCell == null))
+                {
+                    this.mUIRecordsetCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIRecordsetCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = " Display Name";
+                    this.mUIRecordsetCell.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIRecordsetCell;
+            }
+        }
+        
+        public WpfCell UIItemCell
+        {
+            get
+            {
+                if ((this.mUIItemCell == null))
+                {
+                    this.mUIItemCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIItemCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input";
+                    this.mUIItemCell.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCell;
+            }
+        }
+        
+        public WpfCell UIItemCell1
+        {
+            get
+            {
+                if ((this.mUIItemCell1 == null))
+                {
+                    this.mUIItemCell1 = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIItemCell1.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Output";
+                    this.mUIItemCell1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCell1;
+            }
+        }
+        
+        public UIRecordsList UIRecordsList
+        {
+            get
+            {
+                if ((this.mUIRecordsList == null))
+                {
+                    this.mUIRecordsList = new UIRecordsList(this);
+                }
+                return this.mUIRecordsList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCell mUIRecordsetCell;
+        
+        private WpfCell mUIItemCell;
+        
+        private WpfCell mUIItemCell1;
+        
+        private UIRecordsList mUIRecordsList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIRecordsList : WpfList
+    {
+        
+        public UIRecordsList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.Name] = "Records";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIChildrenListItem UIChildrenListItem
+        {
+            get
+            {
+                if ((this.mUIChildrenListItem == null))
+                {
+                    this.mUIChildrenListItem = new UIChildrenListItem(this);
+                }
+                return this.mUIChildrenListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIChildrenListItem mUIChildrenListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIChildrenListItem : WpfListItem
+    {
+        
+        public UIChildrenListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Children";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIRecordsTable1 UIRecordsTable
+        {
+            get
+            {
+                if ((this.mUIRecordsTable == null))
+                {
+                    this.mUIRecordsTable = new UIRecordsTable1(this);
+                }
+                return this.mUIRecordsTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIRecordsTable1 mUIRecordsTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIRecordsTable1 : WpfTable
+    {
+        
+        public UIRecordsTable1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.Name] = "Records";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemDataItem UIItemDataItem
+        {
+            get
+            {
+                if ((this.mUIItemDataItem == null))
+                {
+                    this.mUIItemDataItem = new UIItemDataItem(this);
+                }
+                return this.mUIItemDataItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemDataItem mUIItemDataItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemDataItem : WpfControl
+    {
+        
+        public UIItemDataItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "DataItem";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemCell UIItemCell
+        {
+            get
+            {
+                if ((this.mUIItemCell == null))
+                {
+                    this.mUIItemCell = new UIItemCell(this);
+                }
+                return this.mUIItemCell;
+            }
+        }
+        
+        public WpfCell UIItemCell1
+        {
+            get
+            {
+                if ((this.mUIItemCell1 == null))
+                {
+                    this.mUIItemCell1 = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIItemCell1.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input";
+                    this.mUIItemCell1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCell1;
+            }
+        }
+        
+        public UIItemCell2 UIItemCell2
+        {
+            get
+            {
+                if ((this.mUIItemCell2 == null))
+                {
+                    this.mUIItemCell2 = new UIItemCell2(this);
+                }
+                return this.mUIItemCell2;
+            }
+        }
+        
+        public UIRecordsList1 UIRecordsList
+        {
+            get
+            {
+                if ((this.mUIRecordsList == null))
+                {
+                    this.mUIRecordsList = new UIRecordsList1(this);
+                }
+                return this.mUIRecordsList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemCell mUIItemCell;
+        
+        private WpfCell mUIItemCell1;
+        
+        private UIItemCell2 mUIItemCell2;
+        
+        private UIRecordsList1 mUIRecordsList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCell : WpfCell
+    {
+        
+        public UIItemCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "DisplayName";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        {
+            get
+            {
+                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                {
+                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIUI_NameTextBox_AutoIEdit;
+            }
+        }
+        
+        public WpfCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        
+        public WpfToggleButton UIPART_ExpanderToggleButton
+        {
+            get
+            {
+                if ((this.mUIPART_ExpanderToggleButton == null))
+                {
+                    this.mUIPART_ExpanderToggleButton = new WpfToggleButton(this);
+                    #region Search Criteria
+                    this.mUIPART_ExpanderToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "PART_Expander";
+                    this.mUIPART_ExpanderToggleButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIPART_ExpanderToggleButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
+        
+        private WpfCustom mUIItemCustom;
+        
+        private WpfToggleButton mUIPART_ExpanderToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCell2 : WpfCell
+    {
+        
+        public UIItemCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Output";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        
+        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
+        {
+            get
+            {
+                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
+                {
+                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIUI_IsOutputCheckbox_CheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIItemCustom;
+        
+        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIRecordsList1 : WpfList
+    {
+        
+        public UIRecordsList1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.Name] = "Records";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIChildrenListItem1 UIChildrenListItem
+        {
+            get
+            {
+                if ((this.mUIChildrenListItem == null))
+                {
+                    this.mUIChildrenListItem = new UIChildrenListItem1(this);
+                }
+                return this.mUIChildrenListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIChildrenListItem1 mUIChildrenListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIChildrenListItem1 : WpfListItem
+    {
+        
+        public UIChildrenListItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Children";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIRecordsTable2 UIRecordsTable
+        {
+            get
+            {
+                if ((this.mUIRecordsTable == null))
+                {
+                    this.mUIRecordsTable = new UIRecordsTable2(this);
+                }
+                return this.mUIRecordsTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIRecordsTable2 mUIRecordsTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIRecordsTable2 : WpfTable
+    {
+        
+        public UIRecordsTable2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.Name] = "Records";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemDataItem1 UIItemDataItem
+        {
+            get
+            {
+                if ((this.mUIItemDataItem == null))
+                {
+                    this.mUIItemDataItem = new UIItemDataItem1(this);
+                }
+                return this.mUIItemDataItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemDataItem1 mUIItemDataItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemDataItem1 : WpfControl
+    {
+        
+        public UIItemDataItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ControlType] = "DataItem";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UIExpansionIndicatorButton
+        {
+            get
+            {
+                if ((this.mUIExpansionIndicatorButton == null))
+                {
+                    this.mUIExpansionIndicatorButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIExpansionIndicatorButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ExpansionIndicator";
+                    this.mUIExpansionIndicatorButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIExpansionIndicatorButton;
+            }
+        }
+        
+        public WpfCell UIItemCell
+        {
+            get
+            {
+                if ((this.mUIItemCell == null))
+                {
+                    this.mUIItemCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIItemCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "DisplayName";
+                    this.mUIItemCell.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCell;
+            }
+        }
+        
+        public WpfCell UIItemCell1
+        {
+            get
+            {
+                if ((this.mUIItemCell1 == null))
+                {
+                    this.mUIItemCell1 = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIItemCell1.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input";
+                    this.mUIItemCell1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCell1;
+            }
+        }
+        
+        public WpfCell UIItemCell2
+        {
+            get
+            {
+                if ((this.mUIItemCell2 == null))
+                {
+                    this.mUIItemCell2 = new WpfCell(this);
+                    #region Search Criteria
+                    this.mUIItemCell2.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Output";
+                    this.mUIItemCell2.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIItemCell2;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUIExpansionIndicatorButton;
+        
+        private WpfCell mUIItemCell;
+        
+        private WpfCell mUIItemCell1;
+        
+        private WpfCell mUIItemCell2;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCustom : WpfCustom
+    {
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ValueEditor";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_NameTextBox_AutoIEdit UIUI_NameTextBox_AutoIEdit
+        {
+            get
+            {
+                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                {
+                    this.mUIUI_NameTextBox_AutoIEdit = new UIUI_NameTextBox_AutoIEdit(this);
+                }
+                return this.mUIUI_NameTextBox_AutoIEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_NameTextBox_AutoIEdit mUIUI_NameTextBox_AutoIEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_NameTextBox_AutoIEdit : WpfEdit
+    {
+        
+        public UIUI_NameTextBox_AutoIEdit(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UILabelTextText
+        {
+            get
+            {
+                if ((this.mUILabelTextText == null))
+                {
+                    this.mUILabelTextText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUILabelTextText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
+                    this.mUILabelTextText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUILabelTextText;
+            }
+        }
+        
+        public WpfImage UIDeleteDisabledImage
+        {
+            get
+            {
+                if ((this.mUIDeleteDisabledImage == null))
+                {
+                    this.mUIDeleteDisabledImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIDeleteDisabledImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "DeleteDisabled";
+                    this.mUIDeleteDisabledImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDeleteDisabledImage;
+            }
+        }
+        
+        public WpfButton UIDeleteButtonButton
+        {
+            get
+            {
+                if ((this.mUIDeleteButtonButton == null))
+                {
+                    this.mUIDeleteButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIDeleteButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DeleteButton";
+                    this.mUIDeleteButtonButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDeleteButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUILabelTextText;
+        
+        private WpfImage mUIDeleteDisabledImage;
+        
+        private WpfButton mUIDeleteButtonButton;
         #endregion
     }
 }
