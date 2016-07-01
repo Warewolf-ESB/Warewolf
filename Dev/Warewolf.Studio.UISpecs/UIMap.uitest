@@ -20011,7 +20011,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsInputCheckbox_ACheckBox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20051,7 +20051,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsOutputCheckbox_CheckBox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20280,7 +20280,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsInputCheckbox_ACheckBox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20320,7 +20320,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsOutputCheckbox_CheckBox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20549,7 +20549,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsInputCheckbox_ACheckBox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20589,7 +20589,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsOutputCheckbox_CheckBox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20818,7 +20818,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsInputCheckbox_ACheckBox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20858,7 +20858,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsOutputCheckbox_CheckBox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21087,7 +21087,7 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsInputCheckbox_ACheckBox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -21127,7 +21127,7 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
-                                                            <UIObject ControlType="CheckBox" Id="UIUI_IsOutputCheckbox_CheckBox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                                            <UIObject ControlType="CheckBox" Id="IsOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>

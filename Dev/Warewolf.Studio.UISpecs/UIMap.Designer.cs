@@ -34370,25 +34370,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfCheckBox UIUI_IsInputCheckbox_ACheckBox
+        public WpfCheckBox IsInputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsInputCheckbox_ACheckBox == null))
+                if ((this.mIsInputCheckbox == null))
                 {
-                    this.mUIUI_IsInputCheckbox_ACheckBox = new WpfCheckBox(this);
+                    this.mIsInputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsInputCheckbox_ACheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mUIUI_IsInputCheckbox_ACheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mIsInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsInputCheckbox_ACheckBox;
+                return this.mIsInputCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCheckBox mUIUI_IsInputCheckbox_ACheckBox;
+        private WpfCheckBox mIsInputCheckbox;
         #endregion
     }
     
@@ -34422,19 +34422,19 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
+        public WpfCheckBox IsOutputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
+                if ((this.mIsOutputCheckbox == null))
                 {
-                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    this.mIsOutputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mIsOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsOutputCheckbox_CheckBox;
+                return this.mIsOutputCheckbox;
             }
         }
         #endregion
@@ -34442,7 +34442,7 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfCustom mValueEditor;
         
-        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        private WpfCheckBox mIsOutputCheckbox;
         #endregion
     }
     
@@ -34857,25 +34857,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfCheckBox UIUI_IsInputCheckbox_ACheckBox
+        public WpfCheckBox IsInputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsInputCheckbox_ACheckBox == null))
+                if ((this.mIsInputCheckbox == null))
                 {
-                    this.mUIUI_IsInputCheckbox_ACheckBox = new WpfCheckBox(this);
+                    this.mIsInputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsInputCheckbox_ACheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mUIUI_IsInputCheckbox_ACheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mIsInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsInputCheckbox_ACheckBox;
+                return this.mIsInputCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCheckBox mUIUI_IsInputCheckbox_ACheckBox;
+        private WpfCheckBox mIsInputCheckbox;
         #endregion
     }
     
@@ -34909,19 +34909,19 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
+        public WpfCheckBox IsOutputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
+                if ((this.mIsOutputCheckbox == null))
                 {
-                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    this.mIsOutputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mIsOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsOutputCheckbox_CheckBox;
+                return this.mIsOutputCheckbox;
             }
         }
         #endregion
@@ -34929,7 +34929,7 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfCustom mValueEditor;
         
-        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        private WpfCheckBox mIsOutputCheckbox;
         #endregion
     }
     
@@ -35344,25 +35344,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfCheckBox UIUI_IsInputCheckbox_ACheckBox
+        public WpfCheckBox IsInputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsInputCheckbox_ACheckBox == null))
+                if ((this.mIsInputCheckbox == null))
                 {
-                    this.mUIUI_IsInputCheckbox_ACheckBox = new WpfCheckBox(this);
+                    this.mIsInputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsInputCheckbox_ACheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mUIUI_IsInputCheckbox_ACheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mIsInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsInputCheckbox_ACheckBox;
+                return this.mIsInputCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCheckBox mUIUI_IsInputCheckbox_ACheckBox;
+        private WpfCheckBox mIsInputCheckbox;
         #endregion
     }
     
@@ -35396,19 +35396,19 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
+        public WpfCheckBox IsOutputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
+                if ((this.mIsOutputCheckbox == null))
                 {
-                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    this.mIsOutputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mIsOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsOutputCheckbox_CheckBox;
+                return this.mIsOutputCheckbox;
             }
         }
         #endregion
@@ -35416,7 +35416,7 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfCustom mValueEditor;
         
-        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        private WpfCheckBox mIsOutputCheckbox;
         #endregion
     }
     
@@ -35831,25 +35831,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfCheckBox UIUI_IsInputCheckbox_ACheckBox
+        public WpfCheckBox IsInputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsInputCheckbox_ACheckBox == null))
+                if ((this.mIsInputCheckbox == null))
                 {
-                    this.mUIUI_IsInputCheckbox_ACheckBox = new WpfCheckBox(this);
+                    this.mIsInputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsInputCheckbox_ACheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mUIUI_IsInputCheckbox_ACheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mIsInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsInputCheckbox_ACheckBox;
+                return this.mIsInputCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCheckBox mUIUI_IsInputCheckbox_ACheckBox;
+        private WpfCheckBox mIsInputCheckbox;
         #endregion
     }
     
@@ -35883,19 +35883,19 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
+        public WpfCheckBox IsOutputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
+                if ((this.mIsOutputCheckbox == null))
                 {
-                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    this.mIsOutputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mIsOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsOutputCheckbox_CheckBox;
+                return this.mIsOutputCheckbox;
             }
         }
         #endregion
@@ -35903,7 +35903,7 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfCustom mValueEditor;
         
-        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        private WpfCheckBox mIsOutputCheckbox;
         #endregion
     }
     
@@ -36318,25 +36318,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfCheckBox UIUI_IsInputCheckbox_ACheckBox
+        public WpfCheckBox IsInputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsInputCheckbox_ACheckBox == null))
+                if ((this.mIsInputCheckbox == null))
                 {
-                    this.mUIUI_IsInputCheckbox_ACheckBox = new WpfCheckBox(this);
+                    this.mIsInputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsInputCheckbox_ACheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
-                    this.mUIUI_IsInputCheckbox_ACheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsInputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsInputCheckbox_AutoID";
+                    this.mIsInputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsInputCheckbox_ACheckBox;
+                return this.mIsInputCheckbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCheckBox mUIUI_IsInputCheckbox_ACheckBox;
+        private WpfCheckBox mIsInputCheckbox;
         #endregion
     }
     
@@ -36370,19 +36370,19 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCheckBox UIUI_IsOutputCheckbox_CheckBox
+        public WpfCheckBox IsOutputCheckbox
         {
             get
             {
-                if ((this.mUIUI_IsOutputCheckbox_CheckBox == null))
+                if ((this.mIsOutputCheckbox == null))
                 {
-                    this.mUIUI_IsOutputCheckbox_CheckBox = new WpfCheckBox(this);
+                    this.mIsOutputCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mUIUI_IsOutputCheckbox_CheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
-                    this.mUIUI_IsOutputCheckbox_CheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mIsOutputCheckbox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_IsOutputCheckbox_AutoID";
+                    this.mIsOutputCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUIUI_IsOutputCheckbox_CheckBox;
+                return this.mIsOutputCheckbox;
             }
         }
         #endregion
@@ -36390,7 +36390,7 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfCustom mValueEditor;
         
-        private WpfCheckBox mUIUI_IsOutputCheckbox_CheckBox;
+        private WpfCheckBox mIsOutputCheckbox;
         #endregion
     }
     
