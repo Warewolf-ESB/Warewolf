@@ -198,11 +198,11 @@ namespace Dev2.Activities.Specs.Permissions
                     environmentModel.ForceLoadResources();
                 }
             }
-            var resourceModels = environmentModel.ResourceRepository.All();
-            foreach (var resourceModel in resourceModels)
-            {
-                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
-            }
+//            var resourceModels = environmentModel.ResourceRepository.All();
+//            foreach (var resourceModel in resourceModels)
+//            {
+//                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
+//            }
             return environmentModel;
         }
 
