@@ -1061,6 +1061,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox">
+      <ParameterName />
+      <PropertyName>DisplayText</PropertyName>
+      <ExpectedValue>[[SomeVariable]]</ExpectedValue>
+      <MessageOnValidationFailure>Wrong variable name in debug output</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_DebugOutput_Contains_SomeVariable">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.DecisionDialog.DoneButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -4563,7 +4580,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIHelloWorldTreeItem">
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow">
       <ParameterName />
       <State>Expanded</State>
     </SetStateAction>
@@ -4702,7 +4719,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIHelloWorldTreeItem.UIHelloWorldTreeItem1.UIHelloWorldButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.UIHelloWorldTreeItem1.UIHelloWorldButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -11541,9 +11558,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new database source</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new database source</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11554,9 +11571,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new plugin source</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new plugin source</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11567,9 +11584,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new database connector</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new database connector</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11580,9 +11597,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new plugin connector</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new plugin connector</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11593,9 +11610,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new web source</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new web source</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11619,9 +11636,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Configure settings</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Configure settings</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11632,9 +11649,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Run and debug your workflow service</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Run and debug your workflow service</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11645,9 +11662,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Schedule a service to run</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Schedule a service to run</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11659,9 +11676,9 @@
                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Move resources between Warewolf servers</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Move resources between Warewolf servers</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11672,9 +11689,9 @@
                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Save this tab</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Save this tab</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -21447,7 +21464,38 @@
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants>
-                            <UIObject ControlType="TreeItem" Id="UIHelloWorldTreeItem" FriendlyName="Hello World" SpecialControlType="None">
+                            <UIObject ControlType="TreeItem" Id="Step1" FriendlyName="Assign (1)" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                              </WindowTitles>
+                              <SearchConfigurations>
+                                <SearchConfiguration>Expand</SearchConfiguration>
+                              </SearchConfigurations>
+                              <AndCondition>
+                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">Step</PropertyCondition>
+                                <PropertyCondition Name="Instance">1</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Text" Id="VariableTextbox" FriendlyName="[[SomeVariable]]" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">UI_DebugOutputVariableTextBlock_AutoID</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                            <UIObject ControlType="TreeItem" Id="SubWorkflow" FriendlyName="Hello World" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
@@ -21874,20 +21922,6 @@
               </Descendants>
             </UIObject>
           </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="DebugInputWindow" FriendlyName="Warewolf" SpecialControlType="None" SessionId="529504">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name" Operator="Contains">Warewolf</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants />
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="SaveDialogWindow" FriendlyName="SaveDialogView" SpecialControlType="None" SessionId="395224">
           <TechnologyName>UIA</TechnologyName>
