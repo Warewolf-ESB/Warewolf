@@ -43,7 +43,7 @@ namespace Dev2.Data.Util
         public const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        
+
         #endregion Class Members
 
         #region Constructor
@@ -144,7 +144,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-       
+
         /// <summary>
         /// Removes the brackets.
         /// </summary>
@@ -194,7 +194,7 @@ namespace Dev2.Data.Util
                 IList<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
                 CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
-                CreateObjectInputs(outerEnvironment, inputObjectList, env,update);
+                CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
             }
             finally
             {
@@ -203,7 +203,7 @@ namespace Dev2.Data.Util
             return env;
         }
 
-        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env,int update)
+        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env, int update)
         {
             foreach (var dev2Definition in inputObjectList)
             {
@@ -212,7 +212,7 @@ namespace Dev2.Data.Util
                     if (RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
                     {
                         var jVal = outerEnvironment.EvalJContainer(dev2Definition.RawValue);
-                        env.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Name),jVal);
+                        env.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Name), jVal);
                     }
                     else
                     {
@@ -234,7 +234,7 @@ namespace Dev2.Data.Util
                             }
                         }
                     }
-                    
+
                 }
             }
         }
@@ -392,7 +392,7 @@ namespace Dev2.Data.Util
 
             if (!string.IsNullOrEmpty(value))
             {
-                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value))
+                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value) && !value.Contains("."))
                 {
                     result = true;
                 }
@@ -508,7 +508,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-       
+
 
         /// <summary>
         /// Adds [[ ]] to a variable if they are not present already
@@ -604,7 +604,7 @@ namespace Dev2.Data.Util
 
             return ExtractIndexRegionFromRecordset(rs) == "*";
         }
-        
+
         /// <summary>
         /// Is the expression evaluated
         /// </summary>  
@@ -614,7 +614,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsFullyEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 
+            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
                 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
@@ -842,7 +842,7 @@ namespace Dev2.Data.Util
             }
         }
 
-      
+
 
         public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length)
         {
@@ -916,7 +916,7 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
-     
+
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
@@ -964,7 +964,7 @@ namespace Dev2.Data.Util
                         else
                         {
                             // scalar value, make it as such
-                            var name = jsonAttribute ? "@"+tmpNode.Name:tmpNode.Name;
+                            var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
                             var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
                             dev2Definition.IsObject = jsonAttribute;
                             result.Add(dev2Definition);
@@ -1005,7 +1005,7 @@ namespace Dev2.Data.Util
             if (isObjectAttribute != null)
             {
                 bool isObject;
-                if(bool.TryParse(isObjectAttribute.Value,out isObject))
+                if (bool.TryParse(isObjectAttribute.Value, out isObject))
                 {
                     return isObject;
                 }
