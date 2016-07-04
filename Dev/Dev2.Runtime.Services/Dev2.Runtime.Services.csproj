@@ -337,6 +337,8 @@
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceCatalogImpl\Common.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />
     <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />

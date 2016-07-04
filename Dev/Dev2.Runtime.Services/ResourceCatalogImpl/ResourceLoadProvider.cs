@@ -343,23 +343,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return GetResources(workspaceID).Count;
         }
 
-        public void RemoveWorkspace(Guid workspaceID)
-        {
-            object @lock;
-            lock (_loadLock)
-            {
-                if (!WorkspaceLocks.TryRemove(workspaceID, out @lock))
-                {
-                    @lock = new object();
-                }
-            }
-            lock (@lock)
-            {
-                List<IResource> resources;
-                WorkspaceResources.TryRemove(workspaceID, out resources);
-            }
-        }
-
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null)
         {
             while (true)
@@ -578,7 +561,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             return guids;
         }
-        private static IEnumerable<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func)
+
+        public  List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func)
         {
             List<IResource> resources;
             if (string.IsNullOrEmpty(type))
@@ -615,7 +599,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return resources;
         }
 
-        public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
+        private IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, params string[] folders)
         {
             ResourceCatalogBuilder builder = new ResourceCatalogBuilder();
 
@@ -658,7 +642,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var objects = resources.Select(r => GetResource<T>(ToPayload(r))).ToList();
             return objects;
         }
-        public StringBuilder ToPayload(IResource resource)
+
+        private StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();
 

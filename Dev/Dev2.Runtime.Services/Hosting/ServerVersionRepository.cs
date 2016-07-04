@@ -193,7 +193,7 @@ namespace Dev2.Runtime.Hosting
             if (res.ResourceName != oldResource.ResourceName)
             {
                 StoreVersion(res, "unknown", "Rollback", Guid.Empty);
-                _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType, null, false);
+                _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType, false);
             }
         }
 
