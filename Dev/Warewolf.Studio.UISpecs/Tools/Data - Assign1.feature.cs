@@ -17,7 +17,7 @@ namespace Warewolf.Studio.UISpecs.Tools
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class Date_AssignFeature
     {
         
@@ -97,7 +97,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 31
  testRunner.When("I \"Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 32
- testRunner.Then("I \"Assert_Assign_Large_View_Row1_Variable_Textbox_Text_is_SomeVariable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.When("I \"Click_Assign_Tool_Large_View_DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
