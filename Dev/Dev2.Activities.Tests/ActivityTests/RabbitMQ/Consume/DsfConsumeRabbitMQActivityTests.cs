@@ -7,6 +7,7 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Interfaces;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming

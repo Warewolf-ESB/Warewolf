@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Runtime.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
