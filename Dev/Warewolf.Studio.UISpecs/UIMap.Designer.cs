@@ -233,6 +233,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Assign_Large_View_Row1_Variable_Textbox_Exists - Use 'Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Assign_Large_View_Row1_Variable_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Textbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues.TextboxExists, textBox.Exists, "Assign large view row 1 variable textbox does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable - Use 'Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable()
@@ -5290,7 +5303,7 @@ namespace Warewolf.Studio.UISpecs
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable()
         {
             #region Variable Declarations
-            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.TextBox;
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Textbox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
@@ -7113,6 +7126,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues = new Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues();
                 }
                 return this.mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues = new Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues;
             }
         }
         
@@ -10508,6 +10533,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues mAssert_Assign_Small_View_Row1_Variable_Textbox_ExistsExpectedValues;
         
+        private Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues mAssert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues;
+        
         private Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues mAssert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariableExpectedValues;
         
         private Assert_Base_Conversion_Exists_OnDesignSurfaceExpectedValues mAssert_Base_Conversion_Exists_OnDesignSurfaceExpectedValues;
@@ -11290,6 +11317,21 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         /// <summary>
         /// Verify that the 'Exists' property of 'UI_TextBox_AutoID' text box equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Assign_Large_View_Row1_Variable_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
         /// </summary>
         public bool TextboxExists = true;
         #endregion
