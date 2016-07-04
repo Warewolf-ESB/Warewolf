@@ -116,7 +116,9 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ESB\Control\EnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
+    <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
