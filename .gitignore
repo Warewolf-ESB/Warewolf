@@ -42,6 +42,11 @@ bin
 *.tmp_proj
 /TestScripts/FullVersionString
 /Dev/AcceptanceTesting.sln.DotSettings
+/DotCoverOutput/**
+/RunResharper.dotConfig
+/ResharperOutput.xml
+/DotCoverRunner.xml
+/DotCoverOutput.html
 
 ####################################################################################
 # Rider
