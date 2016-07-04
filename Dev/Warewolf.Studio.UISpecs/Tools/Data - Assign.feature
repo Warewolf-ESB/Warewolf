@@ -38,6 +38,28 @@ Scenario: Multiassign With SomeVariable UI Test
 	When I "Click_Assign_Tool_Large_View_DoneButton"
 	Then I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
 	And I "Assert_VariableList_Scalar_Row1_Textbox_Equals_SomeVariable"
+	
+#@NeedsUnsavedWorkflow
+#Scenario: Clicking the save ribbon button opens save dialog
+	Given I "Assert_Save_Ribbon_Button_Exists"
+	When I "Click_Save_Ribbon_Button"
+	Then I "Assert_SaveDialog_Exists"
+	And I "Assert_SaveDialog_ServiceName_Textbox_Exists"
+
+#@NeedsSaveWorkflowDialog
+#Scenario: Entering a valid workflow name into the save dialog does not set the error state of the textbox to true
+#	Given I "Assert_Save_Workflow_Dialog_Exists"
+#	And I "Assert_Workflow_Name_Textbox_Exists"
+	When I "Enter_Workflowname_As_SomeWorkflow"
+	Then I "Assert_SaveDialog_SaveButton_Enabled"
+
+#Scenario: Clicking the save button in the save dialog creates a new explorer item
+#	Given I "Assert_Save_Workflow_Dialog_Exists"
+#	And I "Assert_Workflow_Name_Textbox_Exists"
+#	And I "Assert_Workflow_Name_Textbox_Text_Equals_SomeWorkflow"
+#	And I "Assert_SaveDialog_SaveButton_Enabled"
+	And I "Click_SaveDialog_YesButton"
+	Then "localhost\SomeWorkflow" exists in the explorer tree
 
 #@NeedsMultiAssignSmallViewToolWithSomeVariableOnTheDesignSurface
 #Scenario: Clicking Debug Button Shows Debug Input Dialog
@@ -64,21 +86,6 @@ Scenario: Multiassign With SomeVariable UI Test
 #Scenario: Clicking the tab close button prompts to save
 	Given I "Assert_Close_Tab_Button_Exists"
 	When I "Click_Close_Tab_Button"
-	Then I "Assert_MessageBox_Yes_Button_Exists"
-
-#@NeedsSaveUnsavedDialog
-#Scenario: Clicking the Yes Button on the Save Unsaved Prompt Opens the save dialog
-#	Given I "Assert_MessageBox_Yes_Button_Exists"
-	When I "Click_MessageBox_Yes"
-	Then I "Assert_SaveDialog_Exists"
-	And I "Assert_SaveDialog_ServiceName_Textbox_Exists"
-
-#@NeedsSaveWorkflowDialog
-#	Given I "Assert_Save_Workflow_Dialog_Exists"
-#	And I "Assert_Workflow_Name_Textbox_Exists"
-	When I "Enter_Workflowname_As_SomeWorkflow"
-	And I "Click_SaveDialog_YesButton"
-	Then "localhost\SomeWorkflow" exists in the explorer tree
 
 @ignore
 @Assign
