@@ -29,7 +29,7 @@ Scenario: Multiassign With SomeVariable UI Test
 #	Given I "Assert_Assign_Large_View_Exists_OnDesignSurface"
 #	And I "Assert_Assign_Large_View_Row1_Variable_Textbox_Exists"
 	When I "Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable"
-	Then I "Assert_Assign_Large_View_Row1_Variable_Textbox_Text_is_SomeVariable"
+	Then I "Assert_Assign_Large_View_Row1_Variable_Textbox_Text_Equals_SomeVariable"
 
 #@NeedsMultiAssignLargeViewToolOnTheDesignSurface
 #Scenario: Validating Multi Assign Tool with a variable entered into the Large View on the Design Surface Passes Validation and Variable is in the Variable list
