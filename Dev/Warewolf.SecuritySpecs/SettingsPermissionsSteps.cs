@@ -14,7 +14,6 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
 using Dev2.Services.Security;

@@ -418,7 +418,7 @@ namespace Dev2.Services.Execution
             {
                 try
                 {
-                    string toLoad = DataListUtil.StripJunk(input); // clean up the rubish ;)
+                    string toLoad = input.ToCleanXml(); // clean up the rubish ;)
                     XmlDocument xDoc = new XmlDocument();
                     toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
                     xDoc.LoadXml(toLoad);

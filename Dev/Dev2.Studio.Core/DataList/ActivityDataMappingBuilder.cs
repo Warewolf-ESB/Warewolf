@@ -501,7 +501,7 @@ namespace Dev2.DataList
         /// <returns></returns>
         private string FormatString(string recset, string field)
         {
-            var tmp = DataListUtil.ComposeIntoUserVisibleRecordset(recset, string.Empty, field);
+            var tmp = DataListUtil.CreateRecordsetDisplayValue(recset, field, string.Empty);
             return DataListUtil.AddBracketsToValueIfNotExist(tmp);
         }
 

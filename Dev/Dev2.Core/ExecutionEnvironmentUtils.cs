@@ -172,7 +172,7 @@ namespace Dev2
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
 
-            string toLoad = DataListUtil.StripJunk(rawPayload.ToString()); // clean up the rubish ;)
+            string toLoad = rawPayload.ToString().ToCleanXml(); // clean up the rubish ;)
             XmlDocument xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
             xDoc.LoadXml(toLoad);
@@ -198,7 +198,7 @@ namespace Dev2
         private static void UpdateEnviromentWithMappings(IDSFDataObject dataObject, StringBuilder rawPayload, List<string> mappings)
         {
             JObject inputObject;
-            string toLoad = DataListUtil.StripJunk(rawPayload.ToString());
+            string toLoad = rawPayload.ToString().ToCleanXml();
             if (string.IsNullOrEmpty(toLoad))
             {
                 return;

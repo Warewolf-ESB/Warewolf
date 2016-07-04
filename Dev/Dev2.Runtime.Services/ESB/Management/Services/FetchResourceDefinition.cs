@@ -27,38 +27,36 @@ using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
     /// Fetch a service body definition
     /// </summary>
-    public class FetchResourceDefintition : IEsbManagementEndpoint
+    public class FetchResourceDefinition : IEsbManagementEndpoint
     {
-        const string PayloadStart = "<XamlDefinition>";
-        const string PayloadEnd = "</XamlDefinition>";
-        const string AltPayloadStart = "<Actions>";
-        const string AltPayloadEnd = "</Actions>";
+        const string PayloadStart = @"<XamlDefinition>";
+        const string PayloadEnd = @"</XamlDefinition>";
+        const string AltPayloadStart = @"<Actions>";
+        const string AltPayloadEnd = @"</Actions>";
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
-
-
                 var res = new ExecuteMessage { HasError = false };
-
                 string serviceId = null;
                 bool prepairForDeployment = false;
                 StringBuilder tmp;
-                values.TryGetValue("ResourceID", out tmp);
+                values.TryGetValue(@"ResourceID", out tmp);
 
                 if (tmp != null)
                 {
                     serviceId = tmp.ToString();
                 }
 
-                values.TryGetValue("PrepairForDeployment", out tmp);
+                values.TryGetValue(@"PrepairForDeployment", out tmp);
 
                 if (tmp != null)
                 {
@@ -67,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
-                Dev2Logger.Info("Fetch Resource definition. ResourceId:" + resourceId);
+                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}");
                 try
                 {
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
@@ -76,56 +74,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var tempResource = new Resource(result.ToXElement());
                         var resource = tempResource;
 
-                        if (resource.ResourceType == "DbSource")
+                        if (resource.ResourceType == @"DbSource")
                         {
                             res.Message.Append(result);
                         }
                         else
                         {
-                            var startIdx = result.IndexOf(PayloadStart, 0, false);
-
-                            if (startIdx >= 0)
-                            {
-                                // remove beginning junk
-                                startIdx += PayloadStart.Length;
-                                result = result.Remove(0, startIdx);
-
-                                startIdx = result.IndexOf(PayloadEnd, 0, false);
-
-                                if (startIdx > 0)
-                                {
-                                    var len = result.Length - startIdx;
-                                    result = result.Remove(startIdx, len);
-
-                                    res.Message.Append(result.Unescape());
-                                }
-                            }
-                            else
-                            {
-                                // handle services ;)
-                                startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                                if (startIdx >= 0)
-                                {
-                                    // remove begging junk
-                                    startIdx += AltPayloadStart.Length;
-                                    result = result.Remove(0, startIdx);
-
-                                    startIdx = result.IndexOf(AltPayloadEnd, 0, false);
-
-                                    if (startIdx > 0)
-                                    {
-                                        var len = result.Length - startIdx;
-                                        result = result.Remove(startIdx, len);
-
-                                        res.Message.Append(result.Unescape());
-                                    }
-                                }
-                                else
-                                {
-                                    // send the entire thing ;)
-                                    res.Message.Append(result);
-                                }
-                            }
+                            DoWorkflowServiceMessage(result, res);
                         }
                     }
                 }
@@ -134,8 +89,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e);
                 }
             
-
-                // Finally, clean the definition as per execution hydration rules ;)
                 if (!res.Message.IsNullOrEmpty())
                 {
                     Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
@@ -149,7 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch(CryptographicException e)
                     {
-                        Dev2Logger.Error("Encryption had issues.",e);
+                        Dev2Logger.Error(@"Encryption had issues.",e);
                     }
                 }
 
@@ -160,6 +113,54 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Error(err);
                 throw;
+            }
+        }
+
+        private static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
+        {
+            var startIdx = result.IndexOf(PayloadStart, 0, false);
+
+            if(startIdx >= 0)
+            {
+                // remove beginning junk
+                startIdx += PayloadStart.Length;
+                result = result.Remove(0, startIdx);
+
+                startIdx = result.IndexOf(PayloadEnd, 0, false);
+
+                if(startIdx > 0)
+                {
+                    var len = result.Length - startIdx;
+                    result = result.Remove(startIdx, len);
+
+                    res.Message.Append(result.Unescape());
+                }
+            }
+            else
+            {
+                // handle services ;)
+                startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                if(startIdx >= 0)
+                {
+                    // remove begging junk
+                    startIdx += AltPayloadStart.Length;
+                    result = result.Remove(0, startIdx);
+
+                    startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+
+                    if(startIdx > 0)
+                    {
+                        var len = result.Length - startIdx;
+                        result = result.Remove(startIdx, len);
+
+                        res.Message.Append(result.Unescape());
+                    }
+                }
+                else
+                {
+                    // send the entire thing ;)
+                    res.Message.Append(result);
+                }
             }
         }
 
@@ -220,7 +221,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "FetchResourceDefinitionService";
+            return @"FetchResourceDefinitionService";
         }
 
     }

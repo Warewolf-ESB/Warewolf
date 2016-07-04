@@ -27,14 +27,12 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Messages;
-using Dev2.Models;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
@@ -65,6 +63,7 @@ using Dev2.PerformanceCounters.Management;
 using Warewolf.Core;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Tools.Specs.BaseTypes;
+// ReSharper disable NonLocalizedString
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedParameter.Global
@@ -74,14 +73,14 @@ namespace Dev2.Activities.Specs.Composition
     [Binding]
     public class WorkflowExecutionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        private readonly ScenarioContext _scenarioContext;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
-            this.scenarioContext = scenarioContext;
-            _commonSteps = new CommonSteps(this.scenarioContext);
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            _scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(_scenarioContext);
         }
 
         const int EnvironmentConnectionTimeout = 3000;
@@ -309,7 +308,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (timeout <= 0)
             {
-                scenarioContext.Add("ConnectTimeoutCountdown", 3000);
+                _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
             }
             environmentModel.Connect();
@@ -323,7 +322,7 @@ namespace Dev2.Activities.Specs.Composition
 
         void Add(string key, object value)
         {
-            scenarioContext.Add(key, value);
+            _scenarioContext.Add(key, value);
         }
 
         void Append(IDebugState debugState)
@@ -1049,12 +1048,12 @@ namespace Dev2.Activities.Specs.Composition
 
         T Get<T>(string keyName)
         {
-            return scenarioContext.Get<T>(keyName);
+            return _scenarioContext.Get<T>(keyName);
         }
 
         void TryGetValue<T>(string keyName, out T value)
         {
-            scenarioContext.TryGetValue(keyName, out value);
+            _scenarioContext.TryGetValue(keyName, out value);
         }
 
 
@@ -1263,7 +1262,7 @@ namespace Dev2.Activities.Specs.Composition
                     break;
             }
             _commonSteps.AddActivityToActivityList(parentName, activityName, forEach);
-            scenarioContext.Add(activityName, forEach);
+            _scenarioContext.Add(activityName, forEach);
         }
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
@@ -1271,7 +1270,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsWorkflowWithMappingAs(string forEachName, string nestedWF, Table mappings)
         // ReSharper restore InconsistentNaming
         {
-            var forEachAct = (DsfForEachActivity)scenarioContext[forEachName];
+            var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
@@ -1355,7 +1354,7 @@ namespace Dev2.Activities.Specs.Composition
             if(id == Guid.Empty)
             {
                 id = Guid.NewGuid();
-                scenarioContext.Add("SavedId", id);
+                _scenarioContext.Add("SavedId", id);
 
             }
             Save(workflowName, count, id);
@@ -1408,6 +1407,20 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
+        [Then(@"workflow ""(.*)"" is deleted as cleanup")]
+        public void ThenWorkflowIsDeletedAsCleanup(string workflowName)
+        {
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            repository.DeleteResourceFromWorkspace(resourceModel);
+            repository.DeleteResource(resourceModel);
+        }
+
         [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
         public void ThenWorkflowHasVersionsInExplorer(string workflowName, int numberOfVersions)
         {
@@ -1421,14 +1434,14 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("resourceRepo", out repository);
             var rep = new VersionManagerProxy(environmentModel.Connection, new CommunicationControllerFactory());
             var versions = rep.GetVersions(id);
-            scenarioContext["Versions"] = versions;
+            _scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);
         }
 
         [Then(@"explorer as")]
         public void ThenExplorerAs(Table table)
         {
-            var versions = scenarioContext["Versions"] as IList<IExplorerItem>;
+            var versions = _scenarioContext["Versions"] as IList<IExplorerItem>;
             if(versions == null || versions.Count == table.RowCount)
                 Assert.Fail("InvalidVersions");
             else
@@ -1469,7 +1482,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
 
                 List<ActivityDTO> fieldCollection;
-                scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -1572,14 +1585,14 @@ namespace Dev2.Activities.Specs.Composition
             Stopwatch st = new Stopwatch();
             st.Start();
             WhenIsExecuted(workflowName);
-            scenarioContext.Add(executionLabel, st.ElapsedMilliseconds);
+            _scenarioContext.Add(executionLabel, st.ElapsedMilliseconds);
         }
 
         [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
         public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
         {
-            int e1 = Convert.ToInt32(scenarioContext[executionLabelFirst]),
-                e2 = Convert.ToInt32(scenarioContext[executionLabelSecond]),
+            int e1 = Convert.ToInt32(_scenarioContext[executionLabelFirst]),
+                e2 = Convert.ToInt32(_scenarioContext[executionLabelSecond]),
                 d = maxDeltaMilliseconds;
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
         }
@@ -1967,11 +1980,14 @@ namespace Dev2.Activities.Specs.Composition
                 // ReSharper restore NotResolvedInText
             }
 
-            var postGreActivity = new DsfPostgreSqlActivity();
-            postGreActivity.ProcedureName = serviceName;
-            postGreActivity.SourceId = resource.ID;
-            postGreActivity.Outputs = new List<IServiceOutputMapping>();
-            postGreActivity.Inputs = new List<IServiceInput>();
+            var postGreActivity = new DsfPostgreSqlActivity
+            {
+                ProcedureName = serviceName,
+                DisplayName = serviceName,
+                SourceId = resource.ID,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = new List<IServiceInput>()
+            };
             foreach (var tableRow in table.Rows)
             {
                 var output = tableRow["Output from Service"];
