@@ -144,6 +144,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8DC9BC61
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceDecryptScript", "ResourceDecryptScript", "{61FA0A32-BD85-484D-AA7E-76B135C67008}"
+	ProjectSection(SolutionItems) = preProject
+		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

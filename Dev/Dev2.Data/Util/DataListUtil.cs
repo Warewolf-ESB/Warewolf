@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -44,18 +43,6 @@ namespace Dev2.Data.Util
         public const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        const string AdlRoot = "ADL";
-
-        private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
-        private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
-                                                         "<Dev2XMLResult>", "</Dev2XMLResult>", 
-                                                         "<WebXMLConfiguration>", "</WebXMLConfiguration>", 
-                                                         "<ActivityInput>", "</ActivityInput>", 
-                                                         "<ADL>","</ADL>",
-                                                         "<DL>","</DL>"
-                                                       };
-
-        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         #endregion Class Members
 
@@ -157,53 +144,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Remove XMLData and other nesting junk from the ADL
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <returns></returns>
-        public static string StripJunk(string payload)
-        {
-            string result = payload;
-            string[] veryNaughtyTags = NaughtyTags;
 
-            if (!string.IsNullOrEmpty(payload))
-            {
-                StripTags?.ToList()
-                    .ForEach(tag =>
-                    {
-                        result = result.Replace(tag, "");
-                    });
-
-                if (veryNaughtyTags != null)
-                {
-                    result = CleanupNaughtyTags(veryNaughtyTags, result);
-                }
-
-                // we now need to remove non-valid chars from the stream
-
-                int start = result.IndexOf("<", StringComparison.Ordinal);
-                if (start >= 0)
-                {
-                    result = result.Substring(start);
-                }
-
-                if (result.Contains("<") && result.Contains(">"))
-                {
-                    if (!IsXml(result))
-                    {
-                        // We need to replace DataList if present ;)
-                        result = result.Replace("<DataList>", "").Replace("</DataList>", "");
-                        result = result.Replace(string.Concat("<", AdlRoot, ">"), string.Empty).Replace(string.Concat("</", AdlRoot, ">"), "");
-                        result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
-                    }
-                }
-
-
-            }
-
-            return result;
-        }
         /// <summary>
         /// Removes the brackets.
         /// </summary>
@@ -237,10 +178,6 @@ namespace Dev2.Data.Util
             return result;
         }
 
-       
-
-     
-
         /// <summary>
         /// Shapes the definitions to data list.
         /// </summary>
@@ -257,7 +194,7 @@ namespace Dev2.Data.Util
                 IList<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
                 CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
-                CreateObjectInputs(outerEnvironment, inputObjectList, env,update);
+                CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
             }
             finally
             {
@@ -266,7 +203,7 @@ namespace Dev2.Data.Util
             return env;
         }
 
-        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env,int update)
+        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env, int update)
         {
             foreach (var dev2Definition in inputObjectList)
             {
@@ -275,7 +212,7 @@ namespace Dev2.Data.Util
                     if (RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
                     {
                         var jVal = outerEnvironment.EvalJContainer(dev2Definition.RawValue);
-                        env.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Name),jVal);
+                        env.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Name), jVal);
                     }
                     else
                     {
@@ -297,7 +234,7 @@ namespace Dev2.Data.Util
                             }
                         }
                     }
-                    
+
                 }
             }
         }
@@ -455,7 +392,7 @@ namespace Dev2.Data.Util
 
             if (!string.IsNullOrEmpty(value))
             {
-                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value))
+                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value) && !value.Contains("."))
                 {
                     result = true;
                 }
@@ -571,7 +508,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-       
+
 
         /// <summary>
         /// Adds [[ ]] to a variable if they are not present already
@@ -667,7 +604,7 @@ namespace Dev2.Data.Util
 
             return ExtractIndexRegionFromRecordset(rs) == "*";
         }
-        
+
         /// <summary>
         /// Is the expression evaluated
         /// </summary>  
@@ -677,7 +614,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsFullyEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0 
+            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
                 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
@@ -758,7 +695,7 @@ namespace Dev2.Data.Util
         {
             bool isFragment;
             bool isHtml;
-            var isXml = IsXml(data, out isFragment, out isHtml);
+            var isXml = XmlHelper.IsXml(data, out isFragment, out isHtml);
             return isXml && !isFragment && !isHtml;
         }
 
@@ -768,62 +705,8 @@ namespace Dev2.Data.Util
         public static bool IsXml(string data, out bool isFragment)
         {
             bool isHtml;
-            return IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
-        }
 
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
-        static bool IsXml(string data, out bool isFragment, out bool isHtml)
-        {
-            string trimedData = data.Trim();
-            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
-
-            isFragment = false;
-            isHtml = false;
-
-            if (result)
-            {
-                using (TextReader tr = new StringReader(trimedData))
-                {
-                    using (XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
-                    {
-
-                        try
-                        {
-                            long nodeCount = 0;
-                            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
-                            {
-                                nodeCount++;
-
-                                if (reader.NodeType != XmlNodeType.CDATA)
-                                {
-                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
-                                    {
-                                        isHtml = true;
-                                        result = false;
-                                    }
-
-                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
-                                    {
-                                        isFragment = true;
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Dev2Logger.Error("DataListUtil", ex);
-                            tr.Close();
-                            reader.Close();
-                            isFragment = false;
-                            result = false;
-                        }
-                    }
-                }
-            }
-
-            return result;
+            return XmlHelper.IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
         }
 
         public static bool IsJson(string data)
@@ -887,65 +770,6 @@ namespace Dev2.Data.Util
                 trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
-        }
-
-        /// <summary>
-        /// Cleanups the naughty tags.
-        /// </summary>
-        /// <param name="toRemove">To remove.</param>
-        /// <param name="payload">The payload.</param>
-        /// <returns></returns>
-        private static string CleanupNaughtyTags(string[] toRemove, string payload)
-        {
-            bool foundOpen = false;
-            string result = payload;
-
-            for (int i = 0; i < toRemove.Length; i++)
-            {
-                string myTag = toRemove[i];
-                if (myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
-                {
-                    foundOpen = true;
-                }
-                else if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
-                {
-                    // close tag
-                    if (foundOpen)
-                    {
-                        // remove data between
-                        int loc = i - 1;
-                        if (loc >= 0)
-                        {
-                            int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
-                            int end = result.IndexOf(myTag, StringComparison.Ordinal);
-                            if (start < end && start >= 0)
-                            {
-                                string canidate = result.Substring(start, end - start + myTag.Length);
-                                string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                if (tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
-                                {
-                                    // replace just the tags
-                                    result = result.Replace(myTag, "").Replace(toRemove[loc], "");
-                                }
-                                else
-                                {
-                                    // replace any tag and it's contents as long as it is not XML in side
-                                    result = result.Replace(canidate, "");
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        result = result.Replace(myTag, "");
-                    }
-
-                    foundOpen = false;
-                }
-            }
-
-            return result.Trim();
-
         }
 
         /// <summary>
@@ -1018,103 +842,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
-        {
-            try
-            {
-                var outputs = DataListFactory.CreateOutputParser().Parse(outputDefs);
-                var outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
-                var outputScalarList = DataListFactory.CreateScalarList(outputs, true);
-                var outputComplexObjectList = DataListFactory.CreateObjectList(outputs);
-                foreach (var recordSetDefinition in outputRecSets.RecordSets)
-                {
-                    var outPutRecSet = outputs.FirstOrDefault(definition => definition.IsRecordSet && definition.RecordSetName == recordSetDefinition.SetName);
-                    if (outPutRecSet != null)
-                    {
-                        foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
-                        {
-                            var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
-                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0);
-                            if (warewolfEvalResult.IsWarewolfAtomListresult)
-                            {
-                                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                                if (outPutRecSet.IsRecordSet)
-                                {
-                                    var enRecordsetIndexType = GetRecordsetIndexType(outputColumnDefinitions.RawValue);
-                                    if (enRecordsetIndexType == enRecordsetIndexType.Star)
-                                    {
-                                        if (recsetResult != null)
-                                        {
-                                            environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult, update);
-                                        }
-                                    }
-                                    if (enRecordsetIndexType == enRecordsetIndexType.Blank)
-                                    {
-                                        if (recsetResult != null)
-                                        {
 
-                                            environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, 0);
-                                        }
-                                    }
-                                    if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
-                                    {
-                                        if (recsetResult != null)
-                                        {
-
-                                            environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, 0);
-                                        }
-                                    }
-
-                                }
-                            }
-
-                        }
-                    }
-                }
-
-                foreach (var dev2Definition in outputScalarList)
-                {
-                    if (!dev2Definition.IsRecordSet && !dev2Definition.IsObject)
-                    {
-                        var warewolfEvalResult = innerEnvironment.Eval(AddBracketsToValueIfNotExist(dev2Definition.Name), update);
-                        if (warewolfEvalResult.IsWarewolfAtomListresult)
-                        {
-                            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            if (data != null && data.Item.Any())
-                            {
-                                environment.Assign("[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last()), update);
-                            }
-                        }
-                        else
-                        {
-                            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                            if (data != null)
-                            {
-                                environment.Assign(AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item), update);
-                            }
-                        }
-                    }
-                }
-
-                foreach (var dev2Definition in outputComplexObjectList)
-                {
-                    if (dev2Definition.IsObject)
-                    {
-                        var warewolfEvalResult = innerEnvironment.EvalJContainer(AddBracketsToValueIfNotExist(dev2Definition.Name));
-                        if (warewolfEvalResult != null)
-                        {
-                            environment.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Value), warewolfEvalResult);
-                        }
-                        
-                    }
-                }
-            }
-            finally
-            {
-                environment.CommitAssign();
-            }
-
-        }
 
         public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length)
         {
@@ -1188,7 +916,7 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
-     
+
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
@@ -1236,7 +964,7 @@ namespace Dev2.Data.Util
                         else
                         {
                             // scalar value, make it as such
-                            var name = jsonAttribute ? "@"+tmpNode.Name:tmpNode.Name;
+                            var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
                             var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
                             dev2Definition.IsObject = jsonAttribute;
                             result.Add(dev2Definition);
@@ -1277,7 +1005,7 @@ namespace Dev2.Data.Util
             if (isObjectAttribute != null)
             {
                 bool isObject;
-                if(bool.TryParse(isObjectAttribute.Value,out isObject))
+                if (bool.TryParse(isObjectAttribute.Value, out isObject))
                 {
                     return isObject;
                 }
