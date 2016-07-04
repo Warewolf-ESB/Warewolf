@@ -6948,6 +6948,32 @@ namespace Warewolf.Studio.UISpecs
             uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue;
         }
         
+        /// <summary>
+        /// Assert_Save_Ribbon_Button_Exists - Use 'Assert_Save_Ribbon_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Save_Ribbon_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.MainStudioWindow.SideMenuBar.SaveButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+            Assert.AreEqual(this.Assert_Save_Ribbon_Button_ExistsExpectedValues.SaveButtonExists, saveButton.Exists, "Save ribbon button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_SaveDialog_SaveButton_Enabled - Use 'Assert_SaveDialog_SaveButton_EnabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_SaveDialog_SaveButton_Enabled()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'Save' button equals 'True'
+            Assert.AreEqual(this.Assert_SaveDialog_SaveButton_EnabledExpectedValues.SaveButtonEnabled, saveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid.");
+        }
+        
         #region Properties
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
@@ -10429,6 +10455,30 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Save_Ribbon_Button_ExistsExpectedValues Assert_Save_Ribbon_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Save_Ribbon_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Save_Ribbon_Button_ExistsExpectedValues = new Assert_Save_Ribbon_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Save_Ribbon_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_SaveDialog_SaveButton_EnabledExpectedValues Assert_SaveDialog_SaveButton_EnabledExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_SaveDialog_SaveButton_EnabledExpectedValues == null))
+                {
+                    this.mAssert_SaveDialog_SaveButton_EnabledExpectedValues = new Assert_SaveDialog_SaveButton_EnabledExpectedValues();
+                }
+                return this.mAssert_SaveDialog_SaveButton_EnabledExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -10498,6 +10548,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mDecisionDialog = new DecisionDialog();
                 }
                 return this.mDecisionDialog;
+            }
+        }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -11083,6 +11145,10 @@ namespace Warewolf.Studio.UISpecs
         
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
+        private Assert_Save_Ribbon_Button_ExistsExpectedValues mAssert_Save_Ribbon_Button_ExistsExpectedValues;
+        
+        private Assert_SaveDialog_SaveButton_EnabledExpectedValues mAssert_SaveDialog_SaveButton_EnabledExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -11094,6 +11160,8 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private DecisionDialog mDecisionDialog;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -15454,6 +15522,36 @@ namespace Warewolf.Studio.UISpecs
         /// Type 's' in 'Description' cell
         /// </summary>
         public string UIDescriptionCellValue = "s";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Save_Ribbon_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Save_Ribbon_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Save this tab' button equals 'True'
+        /// </summary>
+        public bool SaveButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_SaveDialog_SaveButton_Enabled'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_SaveDialog_SaveButton_EnabledExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'Save' button equals 'True'
+        /// </summary>
+        public bool SaveButtonEnabled = true;
         #endregion
     }
     
@@ -38059,6 +38157,74 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemCustom UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemCustom mUIItemCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemCustom : WpfCustom
+    {
+        
+        public UIItemCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UISavethistabCTRLSButton
+        {
+            get
+            {
+                if ((this.mUISavethistabCTRLSButton == null))
+                {
+                    this.mUISavethistabCTRLSButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUISavethistabCTRLSButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Save this tab [CTRL+S]";
+                    this.mUISavethistabCTRLSButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUISavethistabCTRLSButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUISavethistabCTRLSButton;
         #endregion
     }
 }
