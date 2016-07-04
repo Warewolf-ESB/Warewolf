@@ -63,36 +63,6 @@ Scenario: Simple workflow executing against the server with a database service
 	 |               |
 	 | [[count]] = 9 |
 
-Scenario: Workflow with an assign and webservice
-	 Given I have a workflow "WorkflowWithWebService"
-	 And "WorkflowWithWebService" contains an Assign "Inputs" as
-	  | variable      | value |
-	  | [[extension]] | json  |
-	  | [[prefix]]    | a     |
-	 And "WorkflowWithWebService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | [[extension]] | Countries(*).CountryID   | [[Countries().CountryID]]   |
-	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
-	  When "WorkflowWithWebService" is executed
-	  Then the workflow execution has "NO" error
-	   And the "Inputs" in WorkFlow "WorkflowWithWebService" debug inputs as
-	  | # | Variable        | New Value |
-	  | 1 | [[extension]] = | json      |
-	  | 2 | [[prefix]] =    | a         |
-	  And the "Inputs" in Workflow "WorkflowWithWebService" debug outputs as    
-	  | # |                      |
-	  | 1 | [[extension]] = json |
-	  | 2 | [[prefix]] = a       |
-	   And the "InternalCountriesServiceTest" in WorkFlow "WorkflowWithWebService" debug inputs as
-	  | #            |                                                  |
-	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
-	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
-	  | Headers      |                                                  |
-	  And the "InternalCountriesServiceTest" in Workflow "WorkflowWithWebService" debug outputs as
-	  |                                            |
-	  | [[Countries(10).CountryID]] = 10           |
-	  | [[Countries(10).Description]] = Azerbaijan |
-
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteWF"
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
@@ -2450,6 +2420,7 @@ Scenario: Workflow Saving with Different Versions
 	  | v.3 DateTime Save   |
 	  | v.2 DateTime Save   |
 	  | v.1 DateTime Save   |
+	  And workflow "WorkflowWithVersionAssignTest" is deleted as cleanup
 
 Scenario: Executing workflow of different versions
 	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
@@ -2498,13 +2469,14 @@ Scenario: Executing workflow of different versions
 	  | v.3 DateTime        |
 	  | v.2 DateTime        |
 	  | v.1 DateTime        |	
-	  When I rollback "WorkflowWithVersionAssignExecuted" to version "1"
+	  When I rollback "WorkflowWithVersionAssignExecuted2" to version "1"
 	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
 	  Then the workflow execution has "NO" error
 	  And the "VarsAssign" in Workflow "WorkflowWithVersionAssignExecuted2" debug outputs as    
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = New  |
 	  | 2 | [[rec(2).a]] = Test |
+	  And workflow "WorkflowWithVersionAssignExecuted2" is deleted as cleanup
 
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn"t been assigned
 	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
@@ -3476,47 +3448,6 @@ Scenario: Example Executing Recordset - Unique Records example workflow
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
 
-Scenario: Example Executing Loop Constructs - For Each example workflow
-	  Given I have a workflow "Loop Constructs - For Each Test"
-	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Loop Constructs - For Each Test" is executed
-	  Then the workflow execution has "NO" error	  
-      And the "For Each1" in WorkFlow "Loop Constructs - For Each" debug inputs as 
-	    |                 | Number |
-	    | No. of Executes | 6      |
-	   And the "For Each1" in WorkFlow "Loop Constructs - For Each" has  "6" nested children 
-	   And the "Random1" in step 1 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 1 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(1).set]] = String |
-		And the "Random1" in step 2 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 2 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(2).set]] = String |
-		And the "Random1" in step 3 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 3 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(3).set]] = String |
-		And the "Random1" in step 4 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 4 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(4).set]] = String |
-		And the "Random1" in step 5 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 5 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(5).set]] = String |
-
 Scenario: Example Executing Control Flow - Sequence example workflow
 	  Given I have a workflow "Control Flow - Sequence Test"
 	  And "Control Flow - Sequence Test" contains "Control Flow - Sequence" from server "localhost" with mapping as
@@ -3935,7 +3866,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And I set logging to "OFF"
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
-	 And the delta between "first time" and "second time" is less than "1200" milliseconds
+	 And the delta between "first time" and "second time" is less than "1500" milliseconds
 
 
 Scenario: Ensure that End this Workflow is working 
@@ -4198,5 +4129,5 @@ Scenario Outline: Database PostgreSql Database service inputs and outputs
 	  | [[countries(2).Id]] = 2              |
 	  | [[countries(2).Name]] = South Africa |
 Examples: 
-    | WorkflowName             | ServiceName   | nameVariable        | emailVariable         | errorOccured |
-    | PostgreSqlDBGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
+    | WorkflowName           | ServiceName   | nameVariable        | emailVariable         | errorOccured |
+    | PostgreSqlGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |

@@ -3,7 +3,7 @@
 	As a Warewolf user
 	I want a tool that assigns data to variables
 	
-Scenario: Multiassign UI Test
+Scenario: Multiassign With SomeVariable UI Test
 	Given I "Assert_NewWorkFlow_RibbonButton_Exists"
 	When I "Click_New_Workflow_Ribbon_Button"
 	Then I "Assert_StartNode_Exists"
@@ -42,13 +42,15 @@ Scenario: Multiassign UI Test
 #Scenario: Clicking Debug Button Shows Debug Input Dialog
 #	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
 #	And I "Assert_Assign_Small_View_Row1_Variable_Textbox_Text_is_SomeVariable"
-	When I "Click_Exeute_Ribbon_Button"
-	Then I "Assert_Debug_Input_Dialog_Exists"
+	When I "Click_Debug_Ribbon_Button"
+	Then I "Assert_DebugInput_Window_Exists"
+	And I "Assert_DebugInput_DebugButton_Exists"
 
 #@NeedsDebugInputDialog
 #Scenario: Clicking Debug Button In Debug Input Dialog Generates Debug Output
 #	Given I "Assert_Debug_Input_Dialog_Exists"
-	When I "Click_Debug_In_Debug_Input_Dialog"
+#	And I "Assert_DebugInput_DebugButton_Exists"
+	When I "Click_DebugInput_DebugButton"
 	Then I "Assert_Debug_Output_Contains_SomeVariable"
 
 #@NeedsMultiAssignSmallViewOnTheDesignSurface
@@ -56,6 +58,26 @@ Scenario: Multiassign UI Test
 #	Given I "Assert_MultiAssign_Exists_OnDesignSurface"
 	When I "Open_Assign_Tool_Qvi_Large_View"
 	Then I "Assert_Assign_QVI_Large_View_Exists_OnDesignSurface"
+
+##@NeedsUnsavedWorkflow
+##Scenario: Clicking the tab close button prompts to save
+#	Given I "Assert_Close_Tab_Button_Exists"
+#	When I "Click_Close_Tab_Button"
+#	Then I "Assert_MessageBox_Yes_Button_Exists"
+#
+##@NeedsSaveUnsavedDialog
+##Scenario: Clicking the Yes Button on the Save Unsaved Prompt Opens the save dialog
+##	Given I "Assert_MessageBox_Yes_Button_Exists"
+#	When I "Click_MessageBox_Yes"
+#	Then I "Assert_Save_Workflow_Dialog_Exists"
+#	And I "Assert_Workflow_Name_Textbox_Exists"
+#
+##@NeedsSaveWorkflowDialog
+##	Given I "Assert_Save_Workflow_Dialog_Exists"
+##	And I "Assert_Workflow_Name_Textbox_Exists"
+#	When I "Enter_Workflowname_As_SomeWorkflow"
+#	And I "Click_Save_On_Save_Workflow_Dialog"
+#	Then I "Assert_SomeWorkflow_Exists_In_Explorer"
 
 @ignore
 @Assign

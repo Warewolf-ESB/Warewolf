@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;

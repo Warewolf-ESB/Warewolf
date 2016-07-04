@@ -311,7 +311,7 @@ namespace Dev2.Runtime.Hosting
         {
             StringBuilder contents = new StringBuilder();
 
-            if (resource == null || string.IsNullOrEmpty(resource.FilePath) || !_dev2FileWrapper.Exists(resource.FilePath))
+            if (string.IsNullOrEmpty(resource?.FilePath) || !_dev2FileWrapper.Exists(resource.FilePath))
             {
                 return contents;
             }
@@ -340,43 +340,6 @@ namespace Dev2.Runtime.Hosting
         #endregion
 
         #region GetPayload
-
-        /// <summary>
-        /// Gets the contents of the resource with the given guids.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="guidCsv">The guids to be queried.</param>
-        /// <param name="type">The type string: WorkflowService, Service, Source, ReservedService or *, to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        /// <exception cref="System.ArgumentNullException">type</exception>
-        public StringBuilder GetPayload(Guid workspaceID, string guidCsv, string type)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (guidCsv == null)
-            {
-                guidCsv = string.Empty;
-            }
-
-            var guids = new List<Guid>();
-            foreach (var guidStr in guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                Guid guid;
-                if (Guid.TryParse(guidStr, out guid))
-                {
-                    guids.Add(guid);
-                }
-            }
-
-            var workspaceResources = GetResources(workspaceID);
-            var resources = GetResourcesBasedOnType(type, workspaceResources, r => guids.Contains(r.ResourceID));
-            var result = ToPayload(resources);
-            return result;
-        }
-
 
 
         /// <summary>
@@ -413,19 +376,7 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        public IList<Resource> GetResourceList(Guid workspaceId, string guidCsv, string type)
-        {
-            if (guidCsv == null)
-            {
-                guidCsv = string.Empty;
-            }
 
-            var guids = SplitGuidsByComma(guidCsv);
-            var workspaceResources = GetResources(workspaceId);
-            var resources = GetResourcesBasedOnType(type, workspaceResources, r => guids.Contains(r.ResourceID));
-
-            return resources.Cast<Resource>().ToList();
-        }
         private List<Guid> SplitGuidsByComma(string guidCsv)
         {
             var guids = new List<Guid>();
@@ -461,22 +412,40 @@ namespace Dev2.Runtime.Hosting
             return resources;
         }
 
-        public IList<Resource> GetResourceList(Guid workspaceId, string resourceName, string type, string userRoles)
+        public IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams)
         {
-            if (string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
-            {
-                throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
-            }
-
-            if (string.IsNullOrEmpty(resourceName) || resourceName == "*")
-            {
-                resourceName = string.Empty;
-            }
-
+            string resourceName;
+            filterParams.TryGetValue("resourceName", out resourceName);
+            string type;
+            filterParams.TryGetValue("type", out type);
+            string guidCsv;
+            filterParams.TryGetValue("guidCsv", out guidCsv);
             var workspaceResources = GetResources(workspaceId);
-            var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourcePath.Contains(resourceName));
 
-            return resources.Cast<Resource>().ToList();
+            if (!string.IsNullOrEmpty(guidCsv) || filterParams.ContainsKey(nameof(guidCsv)))
+            {
+                if (guidCsv == null)
+                {
+                    guidCsv = string.Empty;
+                }
+                var guids = SplitGuidsByComma(guidCsv);
+                var resources = GetResourcesBasedOnType(type, workspaceResources, r => guids.Contains(r.ResourceID));
+                return resources.Cast<Resource>().ToList();
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
+                {
+                    throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
+                }
+                if (string.IsNullOrEmpty(resourceName) || resourceName == "*")
+                {
+                    resourceName = string.Empty;
+                }
+                var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourcePath.Contains(resourceName));
+                return resources.Cast<Resource>().ToList();
+
+            }
         }
 
         #endregion
@@ -864,7 +833,7 @@ namespace Dev2.Runtime.Hosting
             IResourceActivityCache parser;
             if (_parsers != null && _parsers.TryGetValue(workspaceID, out parser))
             {
-                if(resource != null)
+                if (resource != null)
                 {
                     parser.RemoveFromCache(resource.ResourceID);
                 }
@@ -1160,7 +1129,7 @@ namespace Dev2.Runtime.Hosting
             return false;
         }
 
-     
+
 
         #endregion
 
@@ -1228,25 +1197,25 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true)
         {
             ResourceCatalogResult saveResult = null;
-            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>{PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting);});
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting); });
             return saveResult;
         }
 
         private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
         {
             var fileManager = new TxFileManager();
-            using(TransactionScope tx = new TransactionScope())
+            using (TransactionScope tx = new TransactionScope())
             {
                 try
                 {
                     var resources = GetResources(workspaceID);
                     var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
-                    if(conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
+                    if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
                         saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
                         return;
                     }
-                    if(resource.ResourcePath.EndsWith("\\"))
+                    if (resource.ResourcePath.EndsWith("\\"))
                     {
                         resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
                     }
@@ -1254,7 +1223,7 @@ namespace Dev2.Runtime.Hosting
                     var originalRes = resource.ResourcePath ?? "";
                     int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
                     var resPath = resource.ResourcePath;
-                    if(indexOfName >= 0)
+                    if (indexOfName >= 0)
                     {
                         resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
                     }
@@ -1279,7 +1248,7 @@ namespace Dev2.Runtime.Hosting
                     tx.Complete();
                     saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     Transaction.Current.Rollback();
                     throw;
@@ -1291,10 +1260,10 @@ namespace Dev2.Runtime.Hosting
         {
             var index = resources.IndexOf(resource);
             var updated = false;
-            if(index != -1)
+            if (index != -1)
             {
                 var existing = resources[index];
-                if(!string.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
                 {
                     fileManager.Delete(existing.FilePath);
                 }
@@ -1312,16 +1281,16 @@ namespace Dev2.Runtime.Hosting
 
         private XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, string resPath, TxFileManager fileManager)
         {
-            if(!Directory.Exists(directoryName))
+            if (!Directory.Exists(directoryName))
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            if(_dev2FileWrapper.Exists(resource.FilePath))
+            if (_dev2FileWrapper.Exists(resource.FilePath))
             {
                 // Remove readonly attribute if it is set
                 var attributes = _dev2FileWrapper.GetAttributes(resource.FilePath);
-                if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                 {
                     _dev2FileWrapper.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
                 }
@@ -1329,7 +1298,7 @@ namespace Dev2.Runtime.Hosting
 
             XElement xml = contents.ToXElement();
             xml = resource.UpgradeXml(xml, resource);
-            if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+            if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
             {
                 var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
                 resource.ResourcePath = resourcePath;
@@ -1339,7 +1308,7 @@ namespace Dev2.Runtime.Hosting
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
-            lock(GetFileLock(resource.FilePath))
+            lock (GetFileLock(resource.FilePath))
             {
                 signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
             }
@@ -1575,29 +1544,6 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        StringBuilder ToPayload(IEnumerable<IResource> resources)
-        {
-            var result = new StringBuilder();
-            foreach (var resource in resources)
-            {
-                if (resource.ResourceType == "ReservedService")
-                {
-                    result.AppendFormat("<Service Name=\"{0}\" ResourceType=\"{1}\" />", resource.ResourceName, resource.ResourceType);
-                }
-                else
-                {
-                    var contents = GetResourceContents(resource);
-                    if (contents != null)
-                    {
-                        contents = contents.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
-                        result.Append(contents);
-                    }
-                }
-            }
-
-            return result;
-        }
-
         #endregion
 
         #region AddResourceAsDynamicServiceObject
@@ -1712,7 +1658,7 @@ namespace Dev2.Runtime.Hosting
             {
                 Dev2Logger.Error(err);
                 return ResourceCatalogResultBuilder.CreateFailResult($"{ErrorResource.FailedToRenameResource} '{resourceID}' to '{newName}'");
-                
+
             }
             return ResourceCatalogResultBuilder.CreateSuccessResult($"{"Renamed Resource"} '{resourceID}' to '{newName}'");
         }
