@@ -17,6 +17,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
