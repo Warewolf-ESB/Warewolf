@@ -6343,6 +6343,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source was not found. This service will not execute..
+        /// </summary>
+        public static string ServiceDesignerSourceNotFound {
+            get {
+                return ResourceManager.GetString("ServiceDesignerSourceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records	You can also put multiple fields into one field with other text much like the assign tool.	By default similar matches from the variable list are used where possible.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {

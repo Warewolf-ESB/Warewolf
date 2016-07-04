@@ -30,7 +30,6 @@ using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Warewolf.Resource.Errors;
@@ -51,7 +50,6 @@ namespace Dev2.Studio.Core.Models
         private string _displayName = string.Empty;
         private IEnvironmentModel _environment;
         private string _helpLink;
-        private string _iconPath;
         private bool _isDatabaseService;
         private bool _isDebugMode;
         private bool _isResourceService;
@@ -270,15 +268,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public string IconPath
-        {
-            get { return _iconPath; }
-            set
-            {
-                _iconPath = value;
-                NotifyOfPropertyChange("IconPath");
-            }
-        }
 
         public string UnitTestTargetWorkflowService
         {
@@ -539,7 +528,6 @@ namespace Dev2.Studio.Core.Models
                 ResourceType = resourceModel.ResourceType;
                 Tags = resourceModel.Tags;
                 DataList = resourceModel.DataList;
-                UpdateIconPath(resourceModel.IconPath);
                 Version = resourceModel.Version;
                 ConnectionString = resourceModel.ConnectionString;
                 ID = resourceModel.ID;
@@ -561,10 +549,6 @@ namespace Dev2.Studio.Core.Models
 
         public string ConnectionString { get; set; }
 
-        public void UpdateIconPath(string iconPath)
-        {
-            IconPath = string.IsNullOrEmpty(iconPath) ? ResourceType.GetIconLocation() : iconPath;
-        }
 
         public StringBuilder ToServiceDefinition(bool prepairForDeployment = false)
         {
@@ -645,7 +629,6 @@ namespace Dev2.Studio.Core.Models
                 new XElement("AuthorRoles", string.Empty),
                 new XElement("Comment", Comment ?? string.Empty),
                 new XElement("Tags", Tags ?? string.Empty),
-                new XElement("IconPath", IconPath ?? string.Empty),
                 new XElement("HelpLink", HelpLink ?? string.Empty),
                 new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                 dataList,
@@ -676,7 +659,6 @@ namespace Dev2.Studio.Core.Models
                 new XElement("AuthorRoles", string.Empty),
                 new XElement("Comment", Comment ?? string.Empty),
                 new XElement("Tags", Tags ?? string.Empty),
-                new XElement("IconPath", IconPath ?? string.Empty),
                 new XElement("HelpLink", HelpLink ?? string.Empty),
                 new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                 dataList,
@@ -745,18 +727,6 @@ namespace Dev2.Studio.Core.Models
                         return errMsg;
                     }
                     RemoveError("NoResourceName");
-                }
-
-                if (columnName == "IconPath")
-                {
-                    Uri testUri;
-                    if (!Uri.TryCreate(IconPath, UriKind.Absolute, out testUri) && !string.IsNullOrEmpty(IconPath))
-                    {
-                        errMsg = "Icon Path Does Not Exist or is not valid";
-                        AddError("IconPathFileDoesNotExist", errMsg);
-                        return errMsg;
-                    }
-                    RemoveError("IconPathFileDoesNotExist");
                 }
 
                 if (columnName == "HelpLink")

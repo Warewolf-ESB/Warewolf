@@ -105,7 +105,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
-            _debugWriterSubscriptionService.Subscribe(msg => { IDebugState debugState = msg.DebugState; Append(debugState);});
+            _debugWriterSubscriptionService.Subscribe(msg =>
+            {                
+                Append(msg.DebugState);
+            });
 
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
@@ -392,10 +395,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             get { return _searchText; }
             set
             {
-                if(value == _searchText)
-                {
+                if (value == _searchText)
                     return;
-                }
 
                 _searchText = value;
                 NotifyOfPropertyChange(() => SearchText);
@@ -412,10 +413,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if(_showDebugStatus == value)
-                {
+                if (_showDebugStatus == value)
                     return;
-                }
 
                 _showDebugStatus = value;
                 NotifyOfPropertyChange(() => ShowDebugStatus);
@@ -548,7 +547,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public ICommand SelectAllCommand => _selectAllCommand ?? (_selectAllCommand = new DelegateCommand(SelectAll));
 
-        void SelectAll(object obj)
+        private void SelectAll(object obj)
         {
             ClearSelection();
             IterateItems<DebugStateTreeViewItemViewModel>(RootItems, item =>
@@ -625,7 +624,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ///     Opens an item.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        void OpenItem(object payload)
+        private void OpenItem(object payload)
         {
             var debugState = payload as IDebugState;
 
@@ -639,7 +638,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <summary>
         ///     Rebuilds the tree.
         /// </summary>
-        void RebuildTree()
+        private void RebuildTree()
         {
             lock(_syncContext)
             {
@@ -741,7 +740,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private void AddItemToTreeImpl(IDebugState content)
         {
-
             if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished || _allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
             {
                 return;
@@ -824,7 +822,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region QueuePending
 
         // BUG 9735 - 2013.06.22 - TWR : added
-        bool QueuePending(IDebugState item)
+        private bool QueuePending(IDebugState item)
         {
             if(item.StateType == StateType.Message && IsProcessing)
             {
@@ -871,7 +869,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
+        private static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
             where T : IDebugTreeViewItemViewModel
         {
             foreach(var debugTreeViewItemViewModel in items.Where(i => i is T))
@@ -882,7 +880,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        static void ClearSelection()
+        private static void ClearSelection()
         {
             EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs
             {
