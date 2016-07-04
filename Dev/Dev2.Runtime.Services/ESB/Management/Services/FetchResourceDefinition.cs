@@ -27,6 +27,7 @@ using Dev2.Common.Utils;
 using System.Text.RegularExpressions;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -44,10 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-
-
                 var res = new ExecuteMessage { HasError = false };
-
                 string serviceId = null;
                 bool prepairForDeployment = false;
                 StringBuilder tmp;
@@ -82,50 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                         else
                         {
-                            var startIdx = result.IndexOf(PayloadStart, 0, false);
-
-                            if (startIdx >= 0)
-                            {
-                                // remove beginning junk
-                                startIdx += PayloadStart.Length;
-                                result = result.Remove(0, startIdx);
-
-                                startIdx = result.IndexOf(PayloadEnd, 0, false);
-
-                                if (startIdx > 0)
-                                {
-                                    var len = result.Length - startIdx;
-                                    result = result.Remove(startIdx, len);
-
-                                    res.Message.Append(result.Unescape());
-                                }
-                            }
-                            else
-                            {
-                                // handle services ;)
-                                startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                                if (startIdx >= 0)
-                                {
-                                    // remove begging junk
-                                    startIdx += AltPayloadStart.Length;
-                                    result = result.Remove(0, startIdx);
-
-                                    startIdx = result.IndexOf(AltPayloadEnd, 0, false);
-
-                                    if (startIdx > 0)
-                                    {
-                                        var len = result.Length - startIdx;
-                                        result = result.Remove(startIdx, len);
-
-                                        res.Message.Append(result.Unescape());
-                                    }
-                                }
-                                else
-                                {
-                                    // send the entire thing ;)
-                                    res.Message.Append(result);
-                                }
-                            }
+                            DoWorkflowServiceMessage(result, res);
                         }
                     }
                 }
@@ -158,6 +113,54 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Error(err);
                 throw;
+            }
+        }
+
+        private static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
+        {
+            var startIdx = result.IndexOf(PayloadStart, 0, false);
+
+            if(startIdx >= 0)
+            {
+                // remove beginning junk
+                startIdx += PayloadStart.Length;
+                result = result.Remove(0, startIdx);
+
+                startIdx = result.IndexOf(PayloadEnd, 0, false);
+
+                if(startIdx > 0)
+                {
+                    var len = result.Length - startIdx;
+                    result = result.Remove(startIdx, len);
+
+                    res.Message.Append(result.Unescape());
+                }
+            }
+            else
+            {
+                // handle services ;)
+                startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                if(startIdx >= 0)
+                {
+                    // remove begging junk
+                    startIdx += AltPayloadStart.Length;
+                    result = result.Remove(0, startIdx);
+
+                    startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+
+                    if(startIdx > 0)
+                    {
+                        var len = result.Length - startIdx;
+                        result = result.Remove(startIdx, len);
+
+                        res.Message.Append(result.Unescape());
+                    }
+                }
+                else
+                {
+                    // send the entire thing ;)
+                    res.Message.Append(result);
+                }
             }
         }
 
