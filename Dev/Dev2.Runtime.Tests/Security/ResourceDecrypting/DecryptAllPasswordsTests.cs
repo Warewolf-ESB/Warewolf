@@ -12,7 +12,7 @@ namespace Dev2.Tests.Runtime.Security
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("FetchResourceDefinition_DecryptAllPasswords")]
-        public void FetchResourceDefinition_DecryptAllPasswords_ValidResource_PasswordHasBeenRemoved()
+        public void FetchResourceDefinition_DecryptAllPasswords_WithGENDEVDbSourceResource_ConnectionStringHasBeenDecrypted()
         {
             //------------Setup for test--------------------------
             var fetchResourceDefinition = new FetchResourceDefinition();
