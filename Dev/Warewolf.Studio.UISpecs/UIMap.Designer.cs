@@ -238,11 +238,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Assign_Large_View_Row1_Variable_Textbox_Exists()
         {
             #region Variable Declarations
-            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Textbox;
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.TextBox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
-            Assert.AreEqual(this.Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues.TextboxExists, textBox.Exists, "Assign large view row 1 variable textbox does not exist");
+            Assert.AreEqual(this.Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues.TextBoxExists, textBox.Exists, "Assign large view row 1 variable textbox does not exist");
         }
         
         /// <summary>
@@ -11333,7 +11333,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'Exists' property of 'UI__Row1_FieldName_AutoID' text box equals 'True'
         /// </summary>
-        public bool TextboxExists = true;
+        public bool TextBoxExists = true;
         #endregion
     }
     
