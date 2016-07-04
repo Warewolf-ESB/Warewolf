@@ -797,26 +797,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_IDataErrorInfo")]
-        public void ResourceModel_IDataErrorInfo_ThisAccessor_IconPath()
-        {
-            //------------Setup for test--------------------------
-            var instanceID = Guid.NewGuid();
-
-            var err1 = new Mock<IErrorInfo>();
-            err1.Setup(e => e.InstanceID).Returns(instanceID);
-            var err2 = new Mock<IErrorInfo>();
-            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
-            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object) { IconPath = "somePath" };
-            //------------Execute Test---------------------------
-            var errMsg = model["IconPath"];
-            //-------------Assert Results------------------------
-            Assert.IsNotNull(errMsg);
-            Assert.AreEqual("Icon Path Does Not Exist or is not valid", errMsg);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_IDataErrorInfo")]
         public void ResourceModel_IDataErrorInfo_ThisAccessor_HelpLink()
         {
             //------------Setup for test--------------------------

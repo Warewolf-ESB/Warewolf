@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Explorer;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;

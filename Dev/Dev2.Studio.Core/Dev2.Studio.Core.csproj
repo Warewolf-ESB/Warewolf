@@ -190,14 +190,12 @@
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
     <Compile Include="AppResources\Converters\AllBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
-    <Compile Include="AppResources\Attributes\IconLocation.cs" />
     <Compile Include="AppResources\Attributes\TreeCategory.cs" />
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
     <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
     <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
-    <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
@@ -251,7 +249,6 @@
     <Compile Include="AppResources\Expression\ExpressionVisitorSQLImpl.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\EnumerableExtensionMethods.cs" />
-    <Compile Include="AppResources\ExtensionMethods\EnumExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\ModelPropertyCollection.cs" />
     <Compile Include="AppResources\ExtensionMethods\PaneLocationExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />

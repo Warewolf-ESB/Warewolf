@@ -131,7 +131,6 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
-            workflowDesigner.ChangeIsPossible = true;
 
             dataListItems.Add(dataListItem3);
             Thread.Sleep(3000);
@@ -163,7 +162,6 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
 
-            workflowDesigner.ChangeIsPossible = false;
             dataListItems.Add(dataListItem3);
             Thread.Sleep(3000);
 
@@ -398,7 +396,7 @@ namespace Dev2.Core.Tests.Workflows
 </Activity>");
         }
 
-        public StringBuilder GetAddMissingWorkflowXml()
+        private StringBuilder GetAddMissingWorkflowXml()
         {
             return new StringBuilder(@"<Activity mc:Ignorable=""sads sap"" x:Class=""AllTools""
  xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities""
@@ -1492,7 +1490,6 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsTrue(testAct.ServiceServer == envId2);
             Assert.AreEqual("Test *", testClass.DisplayName);
             Assert.AreEqual("WorkflowService", testClass.ResourceType.ToString());
-            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png", testClass.IconPath);
 
             var activity = new DsfActivity();
             var workflow = new ActivityBuilder { Implementation = activity };
@@ -1653,22 +1650,27 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             GetEnvironmentRepository(env); // Set the active environment
-
-
-
+            
             #region setup mock ModelChangedEventArgs
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-            eventArgs.Setup(c => c.ItemsAdded).Returns((IEnumerable<ModelItem>)null);
+            var mockModelChangeInfo = new Mock<ModelChangeInfo>();
+            mockModelChangeInfo.Setup(info => info.PropertyName).Returns("Handler");
+            mockModelChangeInfo.Setup(info => info.ModelChangeType).Returns(ModelChangeType.PropertyChanged);
             var mock = new Mock<ModelProperty>();
+            var mockModelItem = new Mock<ModelItem>();
+            mockModelItem.Setup(item => item.Content).Returns(mock.Object);
+            mockModelChangeInfo.Setup(info => info.Subject).Returns(mockModelItem.Object);
+
+            eventArgs.Setup(c => c.ModelChangeInfo).Returns(mockModelChangeInfo.Object);
+
             DsfActivity setValue = null;
             mock.Setup(property => property.SetValue(It.IsAny<object>())).Callback<object>(o =>
             {
                 setValue = o as DsfActivity;
             });
-            mock.Setup(property => property.Name).Returns("Handler");
-            eventArgs.Setup(c => c.PropertiesChanged).Returns(new List<ModelProperty> { mock.Object });
+            
 #pragma warning restore 618
 
             #endregion
@@ -1936,6 +1938,69 @@ namespace Dev2.Core.Tests.Workflows
                     Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
                 }
             }
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
+        [Owner("Pieter Terblanche")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfDecision_DecisionHandled()
+        // ReSharper restore InconsistentNaming
+        {
+            var notExpected = Guid.NewGuid().ToString();
+
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
+
+            #endregion
+
+            #region setup Mock ModelItem
+            var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+            var testAct = new FlowDecision(new TestDecisionActivity
+            {
+                DisplayName = "Test",
+                UniqueID = Guid.NewGuid().ToString()
+            });
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(c => c.Content).Returns(prop.Object);
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
+
+            #endregion
+
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object);
+
+            // Execute unit
+            var actual = wd.TestPerformAddItems(source.Object);
+
+            wd.Dispose();
+
+            //Assert Unique ID has changed
+            Assert.IsNotNull(actual);
+            Assert.IsNotNull(actual.Content);
         }
 
         #region TestModelServiceModelChangedNextReference
@@ -2705,6 +2770,66 @@ namespace Dev2.Core.Tests.Workflows
 
         #endregion
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkflowDesignerViewModel_HandleMessage")]
+        public void WorkflowDesignerViewModel_HandleMessage_EditActivity_NotNull()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+            #endregion
+
+            var message = new EditActivityMessage(source.Object, Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            viewModel.Handle(message);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(message);
+        }
 
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_CanSave")]
@@ -3018,6 +3143,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", displayWorkflowLink);
+            Assert.AreEqual(Visibility.Visible, viewModel.WorkflowLinkVisible);
         }
 
         [TestMethod]
@@ -3076,6 +3202,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", displayWorkflowLink);
             mockExtenalProcessExecutor.Verify(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
+            Assert.AreEqual(Visibility.Visible, viewModel.WorkflowLinkVisible);
         }
 
         [TestMethod]

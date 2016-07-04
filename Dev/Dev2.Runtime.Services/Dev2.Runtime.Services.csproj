@@ -294,6 +294,14 @@
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
+    <Compile Include="Interfaces\IResourceCatalog.cs" />
+    <Compile Include="Interfaces\IResourceCopyProvider.cs" />
+    <Compile Include="Interfaces\IResourceDeleteProvider.cs" />
+    <Compile Include="Interfaces\IResourceLoadProvider.cs" />
+    <Compile Include="Interfaces\IResourceRenameProvider.cs" />
+    <Compile Include="Interfaces\IResourceSaveProvider.cs" />
+    <Compile Include="Interfaces\IResourceSyncProvider.cs" />
+    <Compile Include="Interfaces\IResourceWorkspaceProvider.cs" />
     <Compile Include="Interfaces\IWcfProxyService.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
@@ -322,7 +330,6 @@
     <Compile Include="Execution\IExecutableService.cs" />
     <Compile Include="Execution\ExecutableServiceKey.cs" />
     <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
-    <Compile Include="Hosting\IResourceCatalog.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
@@ -330,6 +337,8 @@
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />
     <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />
     <Compile Include="ResourceUpgrades\EncryptionResourceUpgrader.cs" />
     <Compile Include="Security\ServerAuthorizationService.cs" />
