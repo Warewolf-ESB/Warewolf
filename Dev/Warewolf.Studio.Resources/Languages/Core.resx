@@ -597,6 +597,9 @@
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="ServiceDesignerSourceNotFound" xml:space="preserve">
+    <value>Source was not found. This service will not execute.</value>
+  </data>
   <data name="NewFolderLabel" xml:space="preserve">
     <value>New Folder</value>
   </data>

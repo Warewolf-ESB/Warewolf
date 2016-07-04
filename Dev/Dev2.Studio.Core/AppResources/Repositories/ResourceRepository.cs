@@ -569,38 +569,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        string GetIconPath(string type)
-        {
-            var iconPath = string.Empty;
-
-            switch (type)
-            {
-                case "DbService":
-                case "DbSource":
-                    iconPath = StringResources.Pack_Uri_DatabaseService_Image;
-                    break;
-                case "EmailSource":
-                    iconPath = StringResources.Pack_Uri_EmailSource_Image;
-                    break;
-                case "PluginService":
-                case "PluginSource":
-                    iconPath = StringResources.Pack_Uri_PluginService_Image;
-                    break;
-                case "WebService":
-                case "WebSource":
-                    iconPath = StringResources.Pack_Uri_WebService_Image;
-                    break;
-                case "WorkflowService":
-                    iconPath = StringResources.Pack_Uri_WorkflowService_Image;
-                    break;
-                case "Server":
-                    iconPath = StringResources.Pack_Uri_Server_Image;
-                    break;
-            }
-
-            return iconPath;
-        }
-
         protected virtual void LoadResources()
         {
             Dev2Logger.Warn("Loading Resources - Start");
@@ -734,7 +702,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.DisplayName = data.ResourceName;
                 resource.VersionInfo = data.VersionInfo;
 
-                resource.IconPath = GetIconPath(data.ResourceType);
                 resource.Category = data.ResourceCategory;
                 resource.UserPermissions = data.Permissions;
                 resource.Tags = string.Empty;
