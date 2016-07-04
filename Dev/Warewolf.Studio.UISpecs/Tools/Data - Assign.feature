@@ -50,7 +50,7 @@ Scenario: Multiassign With SomeVariable UI Test
 #Scenario: Clicking Debug Button In Debug Input Dialog Generates Debug Output
 #	Given I "Assert_Debug_Input_Dialog_Exists"
 #	And I "Assert_DebugInput_DebugButton_Exists"
-	When I "Click_DebugInput_Debug"
+	When I "Click_DebugInput_DebugButton"
 	Then I "Assert_Debug_Output_Contains_SomeVariable"
 
 #@NeedsMultiAssignSmallViewOnTheDesignSurface
