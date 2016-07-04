@@ -15242,19 +15242,18 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreSql Database service inputs and outputs: PostgreSqlDBGetCountries" +
-            "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database PostgreSql Database service inputs and outputs: PostgreSqlGetCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "PostgreSqlDBGetCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "PostgreSqlDBGetCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "PostgreSqlGetCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "PostgreSqlGetCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "get_countries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).Id]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabasePostgreSqlDatabaseServiceInputsAndOutputs_PostgreSqlDBGetCountries()
+        public virtual void DatabasePostgreSqlDatabaseServiceInputsAndOutputs_PostgreSqlGetCountries()
         {
-            this.DatabasePostgreSqlDatabaseServiceInputsAndOutputs("PostgreSqlDBGetCountries", "get_countries", "[[countries(*).Id]]", "[[countries(*).Name]]", "NO", ((string[])(null)));
+            this.DatabasePostgreSqlDatabaseServiceInputsAndOutputs("PostgreSqlGetCountries", "get_countries", "[[countries(*).Id]]", "[[countries(*).Name]]", "NO", ((string[])(null)));
 #line hidden
         }
     }

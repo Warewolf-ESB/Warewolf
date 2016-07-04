@@ -273,6 +273,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.SecuritySpecs", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Themes.Luna", "Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj", "{18717E42-DF21-45A4-9527-F0BB95D7135D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceDecryptScript", "ResourceDecryptScript", "{6A1B0257-1363-43A4-AAF2-4D151081DE6C}"
+	ProjectSection(SolutionItems) = preProject
+		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
