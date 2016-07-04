@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Transactions;
@@ -57,14 +56,13 @@ namespace Dev2.Runtime.Hosting
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class ResourceCatalog : IResourceCatalog
     {
-        readonly ConcurrentDictionary<string, object> _fileLocks = new ConcurrentDictionary<string, object>();
         readonly object _loadLock = new object();
 
-        readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         readonly IServerVersionRepository _versioningRepository;
         private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
         readonly IResourceLoadProvider _resourceLoadProvider;
         readonly IResourceSyncProvider _resourceSyncProvider;
+        readonly IResourceDeleteProvider _resourceDeleteProvider;
         #region Singleton Instance
 
         //
@@ -119,7 +117,7 @@ namespace Dev2.Runtime.Hosting
         {
             // MUST load management services BEFORE server workspace!!
             _versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-           _resourceLoadProvider = new ResourceLoadProvider(managementServices);
+            _resourceLoadProvider = new ResourceLoadProvider(managementServices);
             _resourceSyncProvider = new ResourceSyncProvider();
 
         }
@@ -130,6 +128,7 @@ namespace Dev2.Runtime.Hosting
             _versioningRepository = serverVersionRepository;
             _resourceLoadProvider = new ResourceLoadProvider(managementServices);
             _resourceSyncProvider = new ResourceSyncProvider();
+            _resourceDeleteProvider = new ResourceDeleteProvider(serverVersionRepository);
         }
         #endregion
 
@@ -155,7 +154,7 @@ namespace Dev2.Runtime.Hosting
         public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID) where TServiceType : DynamicServiceObjectBase
             => _resourceLoadProvider.GetDynamicObjects<TServiceType>(workspaceID, resourceID);
 
-        
+
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource) => _resourceLoadProvider.GetDynamicObjects(resource);
         public List<IResource> GetResources(Guid workspaceID) => _resourceLoadProvider.GetResources(workspaceID);
@@ -168,32 +167,11 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> GetResourceList(Guid workspaceId) => _resourceLoadProvider.GetResources(workspaceId);
         public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _resourceLoadProvider.GetResourceList<T>(workspaceId);
         IEnumerable<IResource> GetResources(Guid workspaceID, Func<IResource, bool> filterResources) => GetResources(workspaceID).Where(filterResources);
-
+        public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func) => _resourceLoadProvider.GetResourcesBasedOnType(type, workspaceResources, func);
         #endregion
 
-    
+
         #region GetPayload
-
-        private static List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func)
-        {
-            List<IResource> resources;
-            if (string.IsNullOrEmpty(type))
-            {
-                resources = workspaceResources.FindAll(func.Invoke);
-            }
-            else
-            {
-                Dictionary<string, List<IResource>> commands = new Dictionary<string, List<IResource>>()
-                {
-                    {"WorkflowService", workspaceResources.FindAll(r => func.Invoke(r) && r.IsService)},
-                    {"Source", workspaceResources.FindAll(r => func.Invoke(r) && r.IsSource)},
-                    {"ReservedService", workspaceResources.FindAll(r => func.Invoke(r) && r.IsReservedService)},
-                };
-
-                resources = commands.ContainsKey(type) ? commands[type] : workspaceResources.FindAll(func.Invoke);
-            }
-            return resources;
-        }
 
 
 
@@ -204,7 +182,7 @@ namespace Dev2.Runtime.Hosting
 
         public void LoadWorkspace(Guid workspaceID)
         {
-            var @lock = GetWorkspaceLock(workspaceID);
+            var @lock = ResourceCatalogImpl.Common.GetWorkspaceLock(workspaceID);
             if (_loading)
             {
                 return;
@@ -375,7 +353,7 @@ namespace Dev2.Runtime.Hosting
                     throw new ArgumentNullException(nameof(resourceXml));
                 }
 
-                var @lock = GetWorkspaceLock(workspaceID);
+                var @lock = ResourceCatalogImpl.Common.GetWorkspaceLock(workspaceID);
                 lock (@lock)
                 {
                     var xml = resourceXml.ToXElement();
@@ -409,7 +387,7 @@ namespace Dev2.Runtime.Hosting
                 throw new ArgumentNullException(nameof(resource));
             }
 
-            var @lock = GetWorkspaceLock(workspaceID);
+            var @lock = ResourceCatalogImpl.Common.GetWorkspaceLock(workspaceID);
             lock (@lock)
             {
                 if (resource.ResourceID == Guid.Empty)
@@ -453,132 +431,11 @@ namespace Dev2.Runtime.Hosting
 
         #region DeleteResource
 
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null, bool deleteVersions = true)
-        {
-            var @lock = GetWorkspaceLock(workspaceID);
-            lock (@lock)
-            {
-                if (resourceName == "*")
-                {
-                    var noWildcardsAllowedhResult = ResourceCatalogResultBuilder.CreateNoWildcardsAllowedhResult("<Result>Delete resources does not accept wildcards.</Result>.");
-                    return noWildcardsAllowedhResult;
-                }
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions = true) => _resourceDeleteProvider.DeleteResource(workspaceID, resourceName, type, deleteVersions);
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true) => _resourceDeleteProvider.DeleteResource(workspaceID, resourceID, type, deleteVersions);
+      
 
-                if (string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
-                {
-                    throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
-                }
-
-                var workspaceResources = GetResources(workspaceID);
-                var resources = GetResourcesBasedOnType(type, workspaceResources, r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
-                Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
-                {
-                    {
-                     0,ResourceCatalogResultBuilder.CreateNoMatchResult($"<Result>{type} '{resourceName}' was not found.</Result>")
-
-                    },
-                    {
-                        1, DeleteImpl(workspaceID, resources, workspaceResources, deleteVersions)
-                    },
-                 };
-                if (commands.ContainsKey(resources.Count))
-                {
-                    var resourceCatalogResult = commands[resources.Count];
-                    return resourceCatalogResult;
-                }
-
-                return ResourceCatalogResultBuilder.CreateDuplicateMatchResult($"<Result>Multiple matches found for {type} '{resourceName}'.</Result>");
-            }
-        }
-
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true)
-        {
-            try
-            {
-                var @lock = GetWorkspaceLock(workspaceID);
-                lock (@lock)
-                {
-                    if (resourceID == Guid.Empty || string.IsNullOrEmpty(type))
-                    {
-                        throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
-                    }
-
-                    var workspaceResources = GetResources(workspaceID);
-                    var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
-
-                    var commands = GetDeleteCommands(workspaceID, resourceID, type, deleteVersions, resources, workspaceResources);
-                    if (commands.ContainsKey(resources.Count))
-                    {
-                        var resourceCatalogResult = commands[resources.Count];
-                        return resourceCatalogResult;
-                    }
-                    return ResourceCatalogResultBuilder.CreateDuplicateMatchResult($"<Result>Multiple matches found for {type} '{resourceID}'.</Result>");
-                }
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Error("Delete Error", err);
-                throw;
-            }
-        }
-
-        private Dictionary<int, ResourceCatalogResult> GetDeleteCommands(Guid workspaceID, Guid resourceID, string type, bool deleteVersions, IEnumerable<IResource> resources, List<IResource> workspaceResources)
-        {
-            Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
-            {
-                {
-                    0,
-                    ResourceCatalogResultBuilder.CreateNoMatchResult($"<Result>{type} '{resourceID}' was not found.</Result>")
-                },
-                { 1, DeleteImpl(workspaceID, resources, workspaceResources, deleteVersions) },
-            };
-            return commands;
-        }
-
-        private ResourceCatalogResult DeleteImpl(Guid workspaceID, IEnumerable<IResource> resources, List<IResource> workspaceResources, bool deleteVersions = true)
-        {
-
-            IResource resource = resources.FirstOrDefault();
-
-            if (workspaceID == Guid.Empty && deleteVersions)
-                if (resource != null)
-                {
-                    var explorerItems = _versioningRepository.GetVersions(resource.ResourceID);
-                    explorerItems?.ForEach(a => _versioningRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber));
-                }
-
-            workspaceResources.Remove(resource);
-            if (resource != null && _dev2FileWrapper.Exists(resource.FilePath))
-            {
-                _dev2FileWrapper.Delete(resource.FilePath);
-            }
-            if (resource != null)
-            {
-                var messages = new List<ICompileMessageTO>
-                {
-                    new CompileMessageTO
-                    {
-                        ErrorType = ErrorType.Critical,
-                        MessageID = Guid.NewGuid(),
-                        MessagePayload = "The resource has been deleted",
-                        MessageType = CompileMessageType.ResourceDeleted,
-                        ServiceID = resource.ResourceID
-                    }
-                };
-                UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
-            }
-            if (workspaceID == GlobalConstants.ServerWorkspaceID)
-            {
-                if (resource != null)
-                {
-                    ServerAuthorizationService.Instance.Remove(resource.ResourceID);
-                }
-            }
-            RemoveFromResourceActivityCache(workspaceID, resource);
-            return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
-        }
-
-        void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
+        public void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
             IResourceActivityCache parser;
             if (_parsers != null && _parsers.TryGetValue(workspaceID, out parser))
@@ -597,7 +454,7 @@ namespace Dev2.Runtime.Hosting
 
         #region SyncTo
 
-        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null) => _resourceSyncProvider.SyncTo(sourceWorkspacePath,targetWorkspacePath, overwrite, delete, filesToIgnore);
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null) => _resourceSyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, filesToIgnore);
 
         #endregion
 
@@ -615,34 +472,6 @@ namespace Dev2.Runtime.Hosting
         #region Enum To Source Resource Conversion
 
         #endregion
-
-        #region GetResources
-
-
-
-        #endregion
-
-        #region GetWorkspaceLock
-
-        object GetWorkspaceLock(Guid workspaceID)
-        {
-            lock (_loadLock)
-            {
-                return WorkspaceLocks.GetOrAdd(workspaceID, guid => new object());
-            }
-        }
-
-        #endregion
-
-        #region GetFileLock
-
-        object GetFileLock(string file)
-        {
-            return _fileLocks.GetOrAdd(file, o => new object());
-        }
-
-        #endregion GetFileLock
-
 
 
         #region CompileAndSave
@@ -797,7 +626,7 @@ namespace Dev2.Runtime.Hosting
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
-            lock (GetFileLock(resource.FilePath))
+            lock (ResourceCatalogImpl.Common.GetFileLock(resource.FilePath))
             {
                 signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
             }
@@ -861,7 +690,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         //Sends the messages for effected resources
-        List<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
+        IEnumerable<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
         {
             var resourceId = resource.ResourceID;
             var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resourceId);
@@ -919,7 +748,7 @@ namespace Dev2.Runtime.Hosting
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
-            lock (GetFileLock(resource.FilePath))
+            lock (ResourceCatalogImpl.Common.GetFileLock(resource.FilePath))
             {
                 var fileManager = new TxFileManager();
                 using (TransactionScope tx = new TransactionScope())
@@ -1037,42 +866,11 @@ namespace Dev2.Runtime.Hosting
 
         #region AddResourceAsDynamicServiceObject
 
-        List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)
-        {
-            var xml = GetResourceContents(resource);
-            if (xml == null || xml.Length > 0)
-            {
-                return new ServiceDefinitionLoader().GenerateServiceGraph(xml);
-            }
-
-            return null;
-        }
-
         #endregion
 
-        public void LoadFrequentlyUsedServices()
-        {
-            // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES WHEN LOADING FROM FRESH ;)
-
-            var serviceNames = new[]
-            {
-                "XXX"
-            };
-
-            foreach (var serviceName in serviceNames)
-            {
-                var resourceName = serviceName;
 
 
-                var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-                var objects = GenerateObjectGraph(resource);
-                _frequentlyUsedServices.TryAdd(resourceName, objects);
 
-            }
-
-        }
-
-        
 
         public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName)
         {
@@ -1153,7 +951,7 @@ namespace Dev2.Runtime.Hosting
             //delete old resource in local workspace without updating dependants with compile messages
             if (_dev2FileWrapper.Exists(resource.FilePath))
             {
-                lock (GetFileLock(resource.FilePath))
+                lock (ResourceCatalogImpl.Common.GetFileLock(resource.FilePath))
                 {
                     _dev2FileWrapper.Delete(resource.FilePath);
                 }
@@ -1210,7 +1008,7 @@ namespace Dev2.Runtime.Hosting
                 //delete old resource
                 if (_dev2FileWrapper.Exists(dependantResource.FilePath))
                 {
-                    lock (GetFileLock(dependantResource.FilePath))
+                    lock (ResourceCatalogImpl.Common.GetFileLock(dependantResource.FilePath))
                     {
                         _dev2FileWrapper.Delete(dependantResource.FilePath);
                     }
@@ -1306,9 +1104,9 @@ namespace Dev2.Runtime.Hosting
             return resourceCatalogResult;
         }
 
-      
 
-      
+
+
 
         public void Dispose()
         {

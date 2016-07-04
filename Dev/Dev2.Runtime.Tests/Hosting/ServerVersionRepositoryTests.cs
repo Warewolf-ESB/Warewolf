@@ -364,7 +364,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
             cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService", null, false));
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService",  false));
         }
 
 
@@ -402,7 +402,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
             cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", null, false), Times.Never());
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

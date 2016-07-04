@@ -48,5 +48,6 @@ namespace Dev2.Runtime.Interfaces
         ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; }
         ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; }
         ConcurrentDictionary<Guid, object> WorkspaceLocks { get; }
+        List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func);
     }
 }
