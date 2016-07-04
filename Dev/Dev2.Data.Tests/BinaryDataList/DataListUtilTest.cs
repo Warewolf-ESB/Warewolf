@@ -18,10 +18,8 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
-using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using ServiceStack.Text;
 
 namespace Dev2.Data.Tests.BinaryDataList
