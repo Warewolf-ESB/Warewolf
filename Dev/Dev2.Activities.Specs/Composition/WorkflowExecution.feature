@@ -4129,5 +4129,5 @@ Scenario Outline: Database PostgreSql Database service inputs and outputs
 	  | [[countries(2).Id]] = 2              |
 	  | [[countries(2).Name]] = South Africa |
 Examples: 
-    | WorkflowName             | ServiceName   | nameVariable        | emailVariable         | errorOccured |
-    | PostgreSqlDBGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
+    | WorkflowName           | ServiceName   | nameVariable        | emailVariable         | errorOccured |
+    | PostgreSqlGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
