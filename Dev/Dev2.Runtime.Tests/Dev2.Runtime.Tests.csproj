@@ -201,7 +201,7 @@
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
-    <Compile Include="Security\ResourceDecrypting\DecryptAllPasswordsTests.cs" />
+    <Compile Include="Security\DecryptAllPasswordsTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
@@ -597,7 +597,7 @@
     <EmbeddedResource Include="XML\OauthSource.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Security\ResourceDecrypting\GenDev.xml">
+    <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
