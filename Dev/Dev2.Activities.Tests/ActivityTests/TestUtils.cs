@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Activities.ActivityTests

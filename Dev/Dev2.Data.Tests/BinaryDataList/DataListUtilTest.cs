@@ -18,11 +18,10 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
-using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using ServiceStack.Text;
+using Warewolf.Storage;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
@@ -1116,6 +1115,189 @@ namespace Dev2.Data.Tests.BinaryDataList
             var displayValue = DataListUtil.CreateRecordsetDisplayValue("rec", "Name", "1");
             //---------------Test Result -----------------------
             Assert.AreEqual("rec(1).Name", displayValue);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateSerializableDefsFromDataList_GivenInput_ShouldCreateInputDefination()
+        {
+            //---------------Set up test pack-------------------
+            const enDev2ColumnArgumentDirection enDev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.Input;
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var list = DataListUtil.GenerateSerializableDefsFromDataList("<DataList></DataList>", enDev2ColumnArgumentDirection);
+            //---------------Test Result -----------------------
+            var containsInput = list.Contains("Input");
+            Assert.IsTrue(containsInput);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateSerializableDefsFromDataList_GivenOutput_ShouldCreateOutPutDefination()
+        {
+            //---------------Set up test pack-------------------
+            const enDev2ColumnArgumentDirection enDev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.Output;
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var list = DataListUtil.GenerateSerializableDefsFromDataList("<DataList></DataList>", enDev2ColumnArgumentDirection);
+            //---------------Test Result -----------------------
+            var containsInput = list.Contains("Output");
+            Assert.IsTrue(containsInput);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void RemoveLanguageBrackets_GivenStringWithBrackets_ShouldReplaceWithNothing()
+        {
+            //---------------Set up test pack-------------------
+            var s1 = "[[V1]]";
+            var s2 = "V1]]";
+            var s3 = "V1]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            s1 = DataListUtil.RemoveLanguageBrackets(s1);
+            s2 = DataListUtil.RemoveLanguageBrackets(s2);
+            s3 = DataListUtil.RemoveLanguageBrackets(s3);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("V1", s1);
+            Assert.AreEqual("V1", s2);
+            Assert.AreEqual("V1", s3);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValueRecordsetWithFields_GivenValusHasRecsetNotation_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var rec = "[[rec().Name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isValueRecordsetWithFields = DataListUtil.IsValueRecordsetWithFields(rec);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isValueRecordsetWithFields);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValueRecordsetWithFields_GivenValueIsScalr_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            const string rec = "[[Name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isValueRecordsetWithFields = DataListUtil.IsValueRecordsetWithFields(rec);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isValueRecordsetWithFields);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsXml_GivenNotXml_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            var noXml = "kkk";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            bool isFragment;
+            var isXml = DataListUtil.IsXml(noXml, out isFragment);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isXml);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsXml_GivenNotXml_ShouldReturnFalse_Overload()
+        {
+            //---------------Set up test pack-------------------
+            var noXml = "kkk";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isXml = DataListUtil.IsXml(noXml);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isXml);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsXml_GivenXml_ShouldReturntrue()
+        {
+            //---------------Set up test pack-------------------
+            const string noXml = "<Person></Person>";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            bool isFragment;
+            var isXml = DataListUtil.IsXml(noXml, out isFragment);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isXml);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsXml_GivenXml_ShouldReturntrue_Overload()
+        {
+            //---------------Set up test pack-------------------
+            const string noXml = "<Person></Person>";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isXml = DataListUtil.IsXml(noXml);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isXml);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void RemoveRecordsetBracketsFromValue_GivenRecSet_ShouldRemoveBrackets()
+        {
+            //---------------Set up test pack-------------------
+            const string recSet = "rec().name";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var removeRecordsetBracketsFromValue = DataListUtil.RemoveRecordsetBracketsFromValue(recSet);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("rec.name", removeRecordsetBracketsFromValue);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValueScalar_GivenNotScalr_ShouldreturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            const string cmlObj = "[[person.name]]";
+            const string recSet = "[[person().name]]";
+            const string sclar = "[[name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var cmlpIsScalr = DataListUtil.IsValueScalar(cmlObj);
+            var recSetIsScalr = DataListUtil.IsValueScalar(recSet);
+            var sclarIsScalr = DataListUtil.IsValueScalar(sclar);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(sclarIsScalr);
+            Assert.IsFalse(cmlpIsScalr);
+            Assert.IsFalse(recSetIsScalr);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InputsToEnvironment_GivenGivenInputs_ShouldNeverThrowException()
+        {
+            //---------------Set up test pack-------------------
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+
+                var inputs = "<Inputs> <Input Name = \"CityName\" Source = \"CityName\" EmptyToNull = \"false\" DefaultValue = \"Paris-Aeroport Charles De Gaulle\" /> <Input Name = \"CountryName\" Source = \"CountryName\" EmptyToNull = \"false\" DefaultValue = \"France\" /> </Inputs >";
+                              var executionEnvironment = new ExecutionEnvironment();
+                var inputsToEnvironment = DataListUtil.InputsToEnvironment(executionEnvironment, inputs, 0);
+
+            }
+            catch (Exception ex)
+            {
+
+                Assert.Fail(ex.Message);
+            }
+
+            //---------------Test Result -----------------------
         }
     }
 }
