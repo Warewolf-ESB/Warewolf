@@ -5303,11 +5303,11 @@ namespace Warewolf.Studio.UISpecs
         public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable()
         {
             #region Variable Declarations
-            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.Textbox;
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.TextBox;
             #endregion
 
             // Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
-            textBox.Text = this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxText;
+            textBox.Text = this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextBoxText;
         }
         
         /// <summary>
@@ -15273,7 +15273,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
         /// </summary>
-        public string TextboxText = "[[SomeVariable]]";
+        public string TextBoxText = "[[SomeVariable]]";
         #endregion
     }
     
