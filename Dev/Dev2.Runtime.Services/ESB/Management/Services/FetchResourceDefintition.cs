@@ -33,12 +33,12 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Fetch a service body definition
     /// </summary>
-    public class FetchResourceDefintition : IEsbManagementEndpoint
+    public class FetchResourceDefinition : IEsbManagementEndpoint
     {
-        const string PayloadStart = "<XamlDefinition>";
-        const string PayloadEnd = "</XamlDefinition>";
-        const string AltPayloadStart = "<Actions>";
-        const string AltPayloadEnd = "</Actions>";
+        const string PayloadStart = @"<XamlDefinition>";
+        const string PayloadEnd = @"</XamlDefinition>";
+        const string AltPayloadStart = @"<Actions>";
+        const string AltPayloadEnd = @"</Actions>";
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -51,14 +51,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string serviceId = null;
                 bool prepairForDeployment = false;
                 StringBuilder tmp;
-                values.TryGetValue("ResourceID", out tmp);
+                values.TryGetValue(@"ResourceID", out tmp);
 
                 if (tmp != null)
                 {
                     serviceId = tmp.ToString();
                 }
 
-                values.TryGetValue("PrepairForDeployment", out tmp);
+                values.TryGetValue(@"PrepairForDeployment", out tmp);
 
                 if (tmp != null)
                 {
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid resourceId;
                 Guid.TryParse(serviceId, out resourceId);
-                Dev2Logger.Info("Fetch Resource definition. ResourceId:" + resourceId);
+                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}");
                 try
                 {
                     var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var tempResource = new Resource(result.ToXElement());
                         var resource = tempResource;
 
-                        if (resource.ResourceType == "DbSource")
+                        if (resource.ResourceType == @"DbSource")
                         {
                             res.Message.Append(result);
                         }
@@ -134,8 +134,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e);
                 }
             
-
-                // Finally, clean the definition as per execution hydration rules ;)
                 if (!res.Message.IsNullOrEmpty())
                 {
                     Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
@@ -149,7 +147,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch(CryptographicException e)
                     {
-                        Dev2Logger.Error("Encryption had issues.",e);
+                        Dev2Logger.Error(@"Encryption had issues.",e);
                     }
                 }
 
@@ -220,7 +218,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "FetchResourceDefinitionService";
+            return @"FetchResourceDefinitionService";
         }
 
     }
