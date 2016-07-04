@@ -31,11 +31,5 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Address = ExampleUri
             };
         }
-
-        public static  string ToCleanString(this string value)
-        {
-            var cleanString = new StringBuilder(value).Replace(Environment.NewLine, "\n").Replace("\r", "\n");
-            return cleanString.ToString();
-        }
     }
 }
