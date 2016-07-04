@@ -131,7 +131,6 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
-            workflowDesigner.ChangeIsPossible = true;
 
             dataListItems.Add(dataListItem3);
             Thread.Sleep(3000);
@@ -163,7 +162,6 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
 
-            workflowDesigner.ChangeIsPossible = false;
             dataListItems.Add(dataListItem3);
             Thread.Sleep(3000);
 
@@ -398,7 +396,7 @@ namespace Dev2.Core.Tests.Workflows
 </Activity>");
         }
 
-        public StringBuilder GetAddMissingWorkflowXml()
+        private StringBuilder GetAddMissingWorkflowXml()
         {
             return new StringBuilder(@"<Activity mc:Ignorable=""sads sap"" x:Class=""AllTools""
  xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities""
@@ -1492,7 +1490,6 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsTrue(testAct.ServiceServer == envId2);
             Assert.AreEqual("Test *", testClass.DisplayName);
             Assert.AreEqual("WorkflowService", testClass.ResourceType.ToString());
-            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png", testClass.IconPath);
 
             var activity = new DsfActivity();
             var workflow = new ActivityBuilder { Implementation = activity };
