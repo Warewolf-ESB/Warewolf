@@ -12,11 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
+using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using ServiceStack.Text;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
@@ -484,20 +490,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ComposeIntoUserVisibleRecordset_GivenFields_ShouldReturnValidRecordSetString()
-        {
-            //---------------Set up test pack-------------------
-
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var recordset = DataListUtil.ComposeIntoUserVisibleRecordset("rec", "1", "name");
-            //---------------Test Result -----------------------
-            Assert.AreEqual("rec(1).name", recordset);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void ReplaceRecordsetIndexWithBlank_GivenRecSetWithNoIndex_ShouldReturnOriginalExp()
         {
             //---------------Set up test pack-------------------
@@ -611,7 +603,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IsCalcEvaluation_GivenEndsWithAggCalcAggExp_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-            const string exp ="rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
+            const string exp = "rec(*).name" + GlobalConstants.AggregateCalculateTextConvertSuffix;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             string newExp;
@@ -1021,6 +1013,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //---------------Test Result -----------------------
             Assert.IsTrue(shouldEncrypt);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ShouldEncrypt_GivenValidRecset_ShouldReturnFalse()
@@ -1033,7 +1026,96 @@ namespace Dev2.Data.Tests.BinaryDataList
             //---------------Test Result -----------------------
             Assert.IsFalse(shouldEncrypt);
         }
+        public class Car
+        {
+            public string Name { get; set; }
+            public string SurName { get; set; }
+            public List<Car> Cars { get; set; }
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ConvertFromJsonToModel_GivenvalidModel_ShouldConvertBack()
+        {
+            //---------------Set up test pack-------------------
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            const string cars = "{ \"Name\":\"Mick\",\"SurName\":\"Mouse\",\"Cars\":[]}";
+            var model = DataListUtil.ConvertFromJsonToModel<Car>(new StringBuilder(cars));
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(model);
+            Assert.AreEqual(typeof(Car), model.GetType());
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ConvertModelToJson_GivenValidJson_ShouldCreateModel()
+        {
+            //---------------Set up test pack-------------------
+            Car car = new Car
+            {
+                Cars = new List<Car>()
+               ,
+                Name = "Mick"
+               ,
+                SurName = "Mouse"
+            };
+            const string cars = "{ \"Name\":\"Mick\",\"SurName\":\"Mouse\",\"Cars\":[]}";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var builder = DataListUtil.ConvertModelToJson(car);
+            //---------------Test Result -----------------------
+            string expected = cars.RemoveWhiteSpace().ToJson();
+            string actual = builder.ToString().RemoveWhiteSpace().ToJson();
+            Assert.AreEqual(expected, actual);
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateDefsFromDataListForDebug_GivenEmpty_ShouldReturnEmptyList()
+        {
+            //---------------Set up test pack-------------------
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug("", enDev2ColumnArgumentDirection.Output);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, generateDefsFromDataListForDebug.Count);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateDefsFromDataListForDebug_GivenEmptyDataList_ShouldReturnEmptyList()
+        {
+            //---------------Set up test pack-------------------
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug("<Datalist></Datalist>", enDev2ColumnArgumentDirection.Output);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, generateDefsFromDataListForDebug.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateDefsFromDataListForDebug_GivenLoadedDataList_ShouldReturnDebugList()
+        {
+            //---------------Set up test pack-------------------
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            const string datalist = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person></DataList>";
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug(datalist, enDev2ColumnArgumentDirection.Output);
+            //---------------Test Result -----------------------
+            Assert.AreNotEqual(0, generateDefsFromDataListForDebug.Count);
+            Assert.AreEqual(2, generateDefsFromDataListForDebug.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateRecordsetDisplayValue_GivenValues_ShouldCreateDisplayValue()
+        {
+            //---------------Set up test pack-------------------
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var displayValue = DataListUtil.CreateRecordsetDisplayValue("rec", "Name", "1");
+            //---------------Test Result -----------------------
+            Assert.AreEqual("rec(1).Name", displayValue);
+        }
     }
 }

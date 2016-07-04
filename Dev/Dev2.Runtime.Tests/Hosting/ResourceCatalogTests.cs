@@ -46,6 +46,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
+// ReSharper disable PossibleMultipleEnumeration
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Hosting
@@ -1168,7 +1169,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-        
+
         #region CopyResource
 
         [TestMethod]
@@ -2979,53 +2980,53 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetResourceList
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceCatalog_GetResourceList")]
-        public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesPresent_ExpectResourceList()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+        /*     [TestMethod]
+             [Owner("Travis Frisinger")]
+             [TestCategory("ResourceCatalog_GetResourceList")]
+             public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesPresent_ExpectResourceList()
+             {
+                 //------------Setup for test--------------------------
+                 var workspaceID = GlobalConstants.ServerWorkspaceID;
+                 var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                 var path = EnvironmentVariables.ResourcePath;
+                 Directory.CreateDirectory(path);
+                 const string resourceName = "Bug6619Dep";
+                 SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
-            //------------Execute Test---------------------------
-            var workflow = rc.GetResourceList(workspaceID, resourceName, "*", "");
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(workflow);
-            Assert.AreEqual(1, workflow.Count);
-            Assert.AreEqual(resourceName, workflow[0].ResourceName);
+                 var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+                 rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
+                 //------------Execute Test---------------------------
+                 var workflow = rc.GetResourceList(workspaceID, resourceName, "*", "");
+                 //------------Assert Results-------------------------
+                 Assert.IsNotNull(workflow);
+                 Assert.AreEqual(1, workflow.Count);
+                 Assert.AreEqual(resourceName, workflow[0].ResourceName);
 
-        }
+             }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceCatalog_GetResourceList")]
-        public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesPresentAndTypeNull_ExpectResourceList()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var path = EnvironmentVariables.ResourcePath;
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+             [TestMethod]
+             [Owner("Travis Frisinger")]
+             [TestCategory("ResourceCatalog_GetResourceList")]
+             public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesPresentAndTypeNull_ExpectResourceList()
+             {
+                 //------------Setup for test--------------------------
+                 var workspaceID = Guid.NewGuid();
+                 var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                 var path = EnvironmentVariables.ResourcePath;
+                 Directory.CreateDirectory(path);
+                 const string resourceName = "Bug6619Dep";
+                 SaveResources(workspacePath, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
-            //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, resourceName, null, "");
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(workflow);
-            Assert.AreEqual(1, workflow.Count);
-            Assert.AreEqual(resourceName, workflow[0].ResourceName);
+                 var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+                 rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
+                 //------------Execute Test---------------------------
+                 var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, resourceName, null, "");
+                 //------------Assert Results-------------------------
+                 Assert.IsNotNull(workflow);
+                 Assert.AreEqual(1, workflow.Count);
+                 Assert.AreEqual(resourceName, workflow[0].ResourceName);
 
-        }
+             }*/
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -3043,32 +3044,38 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, "Bob", "*");
+            var filterParams = new Dictionary<string, string>()
+            {
+                {"resourceName","Bob" },
+                {"type","*" }
+            };
+            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, filterParams);
+            //var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, "Bob", "*");
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, workflow.Count);
+            Assert.AreEqual(0, workflow.Count());
 
         }
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ResourceCatalog_GetResourceList")]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void ResourceCatalog_GetResourceList_WhenNameAndResourceNameAndTypeNull_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var path = Path.Combine(workspacePath, "Services");
-            Directory.CreateDirectory(path);
-            const string resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+        /*   [TestMethod]
+           [Owner("Travis Frisinger")]
+           [TestCategory("ResourceCatalog_GetResourceList")]
+           [ExpectedException(typeof(InvalidDataContractException))]
+           public void ResourceCatalog_GetResourceList_WhenNameAndResourceNameAndTypeNull_ExpectException()
+           {
+               //------------Setup for test--------------------------
+               var workspaceID = Guid.NewGuid();
+               var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+               var path = Path.Combine(workspacePath, "Services");
+               Directory.CreateDirectory(path);
+               const string resourceName = "Bug6619Dep";
+               SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
-            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
-            //------------Execute Test---------------------------
-            ResourceCatalog.Instance.GetResourceList(workspaceID, null, null, "");
+               var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+               rc.LoadWorkspaceViaBuilder(workspacePath, "Bugs");
+               //------------Execute Test---------------------------
+               ResourceCatalog.Instance.GetResourceList(workspaceID, null, null, "");
 
-        }
+           }*/
 
 
         [TestMethod]
@@ -3092,7 +3099,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (res.ResourceID + ","));
 
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, searchString, "*");
+            var filterParams = new Dictionary<string, string>()
+            {
+                {"guidCsv",searchString },
+                {"type","*" }
+            };
+            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, filterParams);
             //------------Assert Results-------------------------
             Assert.IsNotNull(workflow);
             Assert.AreEqual(2, workflow.Count);
@@ -3124,7 +3136,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (Guid.NewGuid() + ","));
 
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, searchString, "*");
+            var filterParams = new Dictionary<string, string>
+            {
+                {"guidCsv",searchString },
+                {"type","*" }
+            };
+            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, filterParams);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, workflow.Count);
 
@@ -3151,7 +3168,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var searchString = resources.Aggregate(string.Empty, (current, res) => current + (Guid.NewGuid() + ","));
 
             //------------Execute Test---------------------------
-            var resourceList = ResourceCatalog.Instance.GetResourceList(workspaceID, searchString, null);
+            var filterParams = new Dictionary<string, string>()
+            {
+                {"guidCsv",searchString },
+                {"type",null }
+            };
+            var resourceList = ResourceCatalog.Instance.GetResourceList(workspaceID, filterParams);
             Assert.IsNotNull(resourceList);
         }
 
@@ -3174,7 +3196,12 @@ namespace Dev2.Tests.Runtime.Hosting
             rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
 
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, null, "*");
+            var filterParams = new Dictionary<string, string>()
+            {
+                {"guidCsv",null },
+                {"type","*" }
+            };
+            var workflow = ResourceCatalog.Instance.GetResourceList(workspaceID, filterParams);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, workflow.Count);
 
