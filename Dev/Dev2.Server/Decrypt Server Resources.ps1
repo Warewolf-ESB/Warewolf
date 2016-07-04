@@ -16,7 +16,7 @@ Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.
 Write-Host Assembly loaded.
 
 Write-Host Loading type.
-$ResourceHandler = New-Object Dev2.Runtime.ESB.Management.Services.FetchResourceDefintition
+$ResourceHandler = New-Object Dev2.Runtime.ESB.Management.Services.FetchResourceDefinition
 Write-Host Type loaded.
 
 Write-Host Recursing through resources.
