@@ -831,6 +831,74 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_DebugOutput_Exists - Use 'Assert_DebugOutput_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DebugOutput_Exists()
+        {
+            #region Variable Declarations
+            WpfCustom debugOutput = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput;
+            #endregion
+
+            // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
+            Assert.AreEqual(this.Assert_DebugOutput_ExistsExpectedValues.DebugOutputExists, debugOutput.Exists, "Assert_DebugOutput_Exists");
+
+            // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
+            Assert.AreEqual(this.Assert_DebugOutput_ExistsExpectedValues.DebugOutputExists1, debugOutput.Exists, "Debug output does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_DebugOutput_ExpandCollapseButton_Exists - Use 'Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DebugOutput_ExpandCollapseButton_Exists()
+        {
+            #region Variable Declarations
+            WpfButton expandCollapseButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.ExpandCollapseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '+' button equals 'True'
+            Assert.AreEqual(this.Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_DebugOutput_FilterTextbox_Exists - Use 'Assert_DebugOutput_FilterTextbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DebugOutput_FilterTextbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.SearchTextBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+            Assert.AreEqual(this.Assert_DebugOutput_FilterTextbox_ExistsExpectedValues.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_DebugOutput_ResultsTree_Exists - Use 'Assert_DebugOutput_ResultsTree_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DebugOutput_ResultsTree_Exists()
+        {
+            #region Variable Declarations
+            WpfTree debugOutputTree = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
+            Assert.AreEqual(this.Assert_DebugOutput_ResultsTree_ExistsExpectedValues.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_DebugOutput_SettingsButton_Exists - Use 'Assert_DebugOutput_SettingsButton_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_DebugOutput_SettingsButton_Exists()
+        {
+            #region Variable Declarations
+            WpfButton settingsButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.SettingsButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Assert_DebugOutput_SettingsButton_ExistsExpectedValues.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Decision_Dialog_Done_Button_Exists - Use 'Assert_Decision_Dialog_Done_Button_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Decision_Dialog_Done_Button_Exists()
@@ -3398,6 +3466,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Assign_Tool_Large_View_DoneButton
+        /// </summary>
+        public void Click_Assign_Tool_Large_View_DoneButton()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(35, 6));
+        }
+        
+        /// <summary>
         /// Click_Cancel_Service_Picker_Dialog
         /// </summary>
         public void Click_Cancel_Service_Picker_Dialog()
@@ -3473,6 +3554,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Run and debug your workflow service' button
             Mouse.Click(runAndDebugButton, new Point(13, 14));
+        }
+        
+        /// <summary>
+        /// Click_DebugInput_DebugButton
+        /// </summary>
+        public void Click_DebugInput_DebugButton()
+        {
+            #region Variable Declarations
+            WpfButton debugF6Button = this.MainStudioWindow.DebugInputDialog.DebugF6Button;
+            #endregion
+
+            // Click 'Debug (F6)' button
+            Mouse.Click(debugF6Button, new Point(34, 10));
         }
         
         /// <summary>
@@ -3590,6 +3684,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'No' button
             Mouse.Click(noButton, new Point(32, 5));
+        }
+        
+        /// <summary>
+        /// Click_MessageBox_Yes
+        /// </summary>
+        public void Click_MessageBox_Yes()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(32, 5));
         }
         
         /// <summary>
@@ -3827,6 +3934,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_SaveDialog_YesButton
+        /// </summary>
+        public void Click_SaveDialog_YesButton()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(32, 11));
+        }
+        
+        /// <summary>
         /// Click_Scheduler_Create_New_Task_Ribbon_Button
         /// </summary>
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
@@ -4061,6 +4181,23 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Test_Connector_Calculate_Outputs - Use 'Click_Test_Connector_Calculate_OutputsParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Test_Connector_Calculate_Outputs()
+        {
+            #region Variable Declarations
+            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
+            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.TestActionButton;
+            #endregion
+
+            // Type 's' in 'Test data' text box
+            testData.Text = this.Click_Test_Connector_Calculate_OutputsParams.TestDataText;
+
+            // Click 'Test' button
+            Mouse.Click(testActionButton, new Point(47, 18));
+        }
+        
+        /// <summary>
         /// Click_Test_Plugin_Connector
         /// </summary>
         public void Click_Test_Plugin_Connector()
@@ -4149,100 +4286,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Yes' button
             Mouse.Click(yesButton, new Point(36, 6));
-        }
-        
-        /// <summary>
-        /// Close_Assign_Tool_Large_View
-        /// </summary>
-        public void Close_Assign_Tool_Large_View()
-        {
-            #region Variable Declarations
-            WpfButton doneButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton;
-            #endregion
-
-            // Click 'Done' button
-            Mouse.Click(doneButton, new Point(35, 6));
-        }
-        
-        /// <summary>
-        /// DebugInput_Add_New_Line_InputData - Use 'DebugInput_Add_New_Line_InputDataParams' to pass parameters into this method.
-        /// </summary>
-        public void DebugInput_Add_New_Line_InputData()
-        {
-            #region Variable Declarations
-            WpfCell uIDescriptionCell = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell;
-            #endregion
-
-            // Type 's' in 'Description' cell
-            uIDescriptionCell.Value = this.DebugInput_Add_New_Line_InputDataParams.UIDescriptionCellValue;
-        }
-        
-        /// <summary>
-        /// DebugOutput_Exists - Use 'DebugOutput_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void DebugOutput_Exists()
-        {
-            #region Variable Declarations
-            WpfCustom debugOutput = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput;
-            #endregion
-
-            // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
-            Assert.AreEqual(this.DebugOutput_ExistsExpectedValues.DebugOutputExists, debugOutput.Exists, "Assert_DebugOutput_Exists");
-
-            // Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
-            Assert.AreEqual(this.DebugOutput_ExistsExpectedValues.DebugOutputExists1, debugOutput.Exists, "Debug output does not exist");
-        }
-        
-        /// <summary>
-        /// DebugOutput_ExpandCollapseButton_Exists - Use 'DebugOutput_ExpandCollapseButton_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void DebugOutput_ExpandCollapseButton_Exists()
-        {
-            #region Variable Declarations
-            WpfButton expandCollapseButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.ExpandCollapseButton;
-            #endregion
-
-            // Verify that the 'Exists' property of '+' button equals 'True'
-            Assert.AreEqual(this.DebugOutput_ExpandCollapseButton_ExistsExpectedValues.ExpandCollapseButtonExists, expandCollapseButton.Exists, "Debug output expand collapse button does not exist");
-        }
-        
-        /// <summary>
-        /// DebugOutput_FilterTextbox_Exists - Use 'DebugOutput_FilterTextbox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void DebugOutput_FilterTextbox_Exists()
-        {
-            #region Variable Declarations
-            WpfEdit searchTextBox = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.SearchTextBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-            Assert.AreEqual(this.DebugOutput_FilterTextbox_ExistsExpectedValues.SearchTextBoxExists, searchTextBox.Exists, "Debug output filter textbox does not exist");
-        }
-        
-        /// <summary>
-        /// DebugOutput_ResultsTree_Exists - Use 'DebugOutput_ResultsTree_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void DebugOutput_ResultsTree_Exists()
-        {
-            #region Variable Declarations
-            WpfTree debugOutputTree = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputTree;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
-            Assert.AreEqual(this.DebugOutput_ResultsTree_ExistsExpectedValues.DebugOutputTreeExists, debugOutputTree.Exists, "Debug output results tree does not exist");
-        }
-        
-        /// <summary>
-        /// DebugOutput_SettingsButton_Exists - Use 'DebugOutput_SettingsButton_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void DebugOutput_SettingsButton_Exists()
-        {
-            #region Variable Declarations
-            WpfButton settingsButton = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.SettingsButton;
-            #endregion
-
-            // Verify that the 'Exists' property of '' button equals 'True'
-            Assert.AreEqual(this.DebugOutput_SettingsButton_ExistsExpectedValues.SettingsButtonExists, settingsButton.Exists, "Debug output settings button does not exist");
         }
         
         /// <summary>
@@ -5242,16 +5285,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable - Use 'Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams' to pass parameters into this method.
+        /// Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable - Use 'Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams' to pass parameters into this method.
         /// </summary>
-        public void Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable()
+        public void Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable()
         {
             #region Variable Declarations
-            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.VariableCell.Textbox;
+            WpfEdit textBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row1.VariableCell.TextBox;
             #endregion
 
-            // Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
-            textbox.Text = this.Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxText;
+            // Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
+            textBox.Text = this.Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams.TextboxText;
+        }
+        
+        /// <summary>
+        /// Enter_Workflowname_As_SomeWorkflow - Use 'Enter_Workflowname_As_SomeWorkflowParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_Workflowname_As_SomeWorkflow()
+        {
+            #region Variable Declarations
+            WpfEdit serviceNameTextBox = this.SaveDialogWindow.ServiceNameTextBox;
+            #endregion
+
+            // Type 'SomeWorkflow' in 'ServiceNameTextBox' text box
+            serviceNameTextBox.Text = this.Enter_Workflowname_As_SomeWorkflowParams.ServiceNameTextBoxText;
         }
         
         /// <summary>
@@ -6867,20 +6923,16 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Test_Connector_Calculate_Outputs - Use 'Test_Connector_Calculate_OutputsParams' to pass parameters into this method.
+        /// Type_S_Into_DebugInput_Row1_InputData - Use 'Type_S_Into_DebugInput_Row1_InputDataParams' to pass parameters into this method.
         /// </summary>
-        public void Test_Connector_Calculate_Outputs()
+        public void Type_S_Into_DebugInput_Row1_InputData()
         {
             #region Variable Declarations
-            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
-            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.TestActionButton;
+            WpfCell uIDescriptionCell = this.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell;
             #endregion
 
-            // Type 's' in 'Test data' text box
-            testData.Text = this.Test_Connector_Calculate_OutputsParams.TestDataText;
-
-            // Click 'Test' button
-            Mouse.Click(testActionButton, new Point(47, 18));
+            // Type 's' in 'Description' cell
+            uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue;
         }
         
         #region Properties
@@ -7613,6 +7665,66 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_DebugOutput_Contains_SomeVariableExpectedValues = new Assert_DebugOutput_Contains_SomeVariableExpectedValues();
                 }
                 return this.mAssert_DebugOutput_Contains_SomeVariableExpectedValues;
+            }
+        }
+        
+        public virtual Assert_DebugOutput_ExistsExpectedValues Assert_DebugOutput_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DebugOutput_ExistsExpectedValues == null))
+                {
+                    this.mAssert_DebugOutput_ExistsExpectedValues = new Assert_DebugOutput_ExistsExpectedValues();
+                }
+                return this.mAssert_DebugOutput_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues == null))
+                {
+                    this.mAssert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues = new Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues();
+                }
+                return this.mAssert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_DebugOutput_FilterTextbox_ExistsExpectedValues Assert_DebugOutput_FilterTextbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DebugOutput_FilterTextbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_DebugOutput_FilterTextbox_ExistsExpectedValues = new Assert_DebugOutput_FilterTextbox_ExistsExpectedValues();
+                }
+                return this.mAssert_DebugOutput_FilterTextbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_DebugOutput_ResultsTree_ExistsExpectedValues Assert_DebugOutput_ResultsTree_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DebugOutput_ResultsTree_ExistsExpectedValues == null))
+                {
+                    this.mAssert_DebugOutput_ResultsTree_ExistsExpectedValues = new Assert_DebugOutput_ResultsTree_ExistsExpectedValues();
+                }
+                return this.mAssert_DebugOutput_ResultsTree_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_DebugOutput_SettingsButton_ExistsExpectedValues Assert_DebugOutput_SettingsButton_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_DebugOutput_SettingsButton_ExistsExpectedValues == null))
+                {
+                    this.mAssert_DebugOutput_SettingsButton_ExistsExpectedValues = new Assert_DebugOutput_SettingsButton_ExistsExpectedValues();
+                }
+                return this.mAssert_DebugOutput_SettingsButton_ExistsExpectedValues;
             }
         }
         
@@ -10100,6 +10212,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Click_Test_Connector_Calculate_OutputsParams Click_Test_Connector_Calculate_OutputsParams
+        {
+            get
+            {
+                if ((this.mClick_Test_Connector_Calculate_OutputsParams == null))
+                {
+                    this.mClick_Test_Connector_Calculate_OutputsParams = new Click_Test_Connector_Calculate_OutputsParams();
+                }
+                return this.mClick_Test_Connector_Calculate_OutputsParams;
+            }
+        }
+        
         public virtual Click_VariableList_Recordset_Row1_IsInputCheckboxParams Click_VariableList_Recordset_Row1_IsInputCheckboxParams
         {
             get
@@ -10124,87 +10248,27 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual DebugInput_Add_New_Line_InputDataParams DebugInput_Add_New_Line_InputDataParams
+        public virtual Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams
         {
             get
             {
-                if ((this.mDebugInput_Add_New_Line_InputDataParams == null))
+                if ((this.mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams == null))
                 {
-                    this.mDebugInput_Add_New_Line_InputDataParams = new DebugInput_Add_New_Line_InputDataParams();
+                    this.mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams = new Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams();
                 }
-                return this.mDebugInput_Add_New_Line_InputDataParams;
+                return this.mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams;
             }
         }
         
-        public virtual DebugOutput_ExistsExpectedValues DebugOutput_ExistsExpectedValues
+        public virtual Enter_Workflowname_As_SomeWorkflowParams Enter_Workflowname_As_SomeWorkflowParams
         {
             get
             {
-                if ((this.mDebugOutput_ExistsExpectedValues == null))
+                if ((this.mEnter_Workflowname_As_SomeWorkflowParams == null))
                 {
-                    this.mDebugOutput_ExistsExpectedValues = new DebugOutput_ExistsExpectedValues();
+                    this.mEnter_Workflowname_As_SomeWorkflowParams = new Enter_Workflowname_As_SomeWorkflowParams();
                 }
-                return this.mDebugOutput_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual DebugOutput_ExpandCollapseButton_ExistsExpectedValues DebugOutput_ExpandCollapseButton_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mDebugOutput_ExpandCollapseButton_ExistsExpectedValues == null))
-                {
-                    this.mDebugOutput_ExpandCollapseButton_ExistsExpectedValues = new DebugOutput_ExpandCollapseButton_ExistsExpectedValues();
-                }
-                return this.mDebugOutput_ExpandCollapseButton_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual DebugOutput_FilterTextbox_ExistsExpectedValues DebugOutput_FilterTextbox_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mDebugOutput_FilterTextbox_ExistsExpectedValues == null))
-                {
-                    this.mDebugOutput_FilterTextbox_ExistsExpectedValues = new DebugOutput_FilterTextbox_ExistsExpectedValues();
-                }
-                return this.mDebugOutput_FilterTextbox_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual DebugOutput_ResultsTree_ExistsExpectedValues DebugOutput_ResultsTree_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mDebugOutput_ResultsTree_ExistsExpectedValues == null))
-                {
-                    this.mDebugOutput_ResultsTree_ExistsExpectedValues = new DebugOutput_ResultsTree_ExistsExpectedValues();
-                }
-                return this.mDebugOutput_ResultsTree_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual DebugOutput_SettingsButton_ExistsExpectedValues DebugOutput_SettingsButton_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mDebugOutput_SettingsButton_ExistsExpectedValues == null))
-                {
-                    this.mDebugOutput_SettingsButton_ExistsExpectedValues = new DebugOutput_SettingsButton_ExistsExpectedValues();
-                }
-                return this.mDebugOutput_SettingsButton_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams
-        {
-            get
-            {
-                if ((this.mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams == null))
-                {
-                    this.mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams = new Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams();
-                }
-                return this.mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams;
+                return this.mEnter_Workflowname_As_SomeWorkflowParams;
             }
         }
         
@@ -10328,15 +10392,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Test_Connector_Calculate_OutputsParams Test_Connector_Calculate_OutputsParams
+        public virtual Type_S_Into_DebugInput_Row1_InputDataParams Type_S_Into_DebugInput_Row1_InputDataParams
         {
             get
             {
-                if ((this.mTest_Connector_Calculate_OutputsParams == null))
+                if ((this.mType_S_Into_DebugInput_Row1_InputDataParams == null))
                 {
-                    this.mTest_Connector_Calculate_OutputsParams = new Test_Connector_Calculate_OutputsParams();
+                    this.mType_S_Into_DebugInput_Row1_InputDataParams = new Type_S_Into_DebugInput_Row1_InputDataParams();
                 }
-                return this.mTest_Connector_Calculate_OutputsParams;
+                return this.mType_S_Into_DebugInput_Row1_InputDataParams;
             }
         }
         
@@ -10535,6 +10599,16 @@ namespace Warewolf.Studio.UISpecs
         private Assert_DebugInput_Xml_Window_ExistsExpectedValues mAssert_DebugInput_Xml_Window_ExistsExpectedValues;
         
         private Assert_DebugOutput_Contains_SomeVariableExpectedValues mAssert_DebugOutput_Contains_SomeVariableExpectedValues;
+        
+        private Assert_DebugOutput_ExistsExpectedValues mAssert_DebugOutput_ExistsExpectedValues;
+        
+        private Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues mAssert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues;
+        
+        private Assert_DebugOutput_FilterTextbox_ExistsExpectedValues mAssert_DebugOutput_FilterTextbox_ExistsExpectedValues;
+        
+        private Assert_DebugOutput_ResultsTree_ExistsExpectedValues mAssert_DebugOutput_ResultsTree_ExistsExpectedValues;
+        
+        private Assert_DebugOutput_SettingsButton_ExistsExpectedValues mAssert_DebugOutput_SettingsButton_ExistsExpectedValues;
         
         private Assert_Decision_Dialog_Done_Button_ExistsExpectedValues mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues;
         
@@ -10950,23 +11024,15 @@ namespace Warewolf.Studio.UISpecs
         
         private Click_Settings_View_ResourcePermissionsParams mClick_Settings_View_ResourcePermissionsParams;
         
+        private Click_Test_Connector_Calculate_OutputsParams mClick_Test_Connector_Calculate_OutputsParams;
+        
         private Click_VariableList_Recordset_Row1_IsInputCheckboxParams mClick_VariableList_Recordset_Row1_IsInputCheckboxParams;
         
         private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
         
-        private DebugInput_Add_New_Line_InputDataParams mDebugInput_Add_New_Line_InputDataParams;
+        private Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams;
         
-        private DebugOutput_ExistsExpectedValues mDebugOutput_ExistsExpectedValues;
-        
-        private DebugOutput_ExpandCollapseButton_ExistsExpectedValues mDebugOutput_ExpandCollapseButton_ExistsExpectedValues;
-        
-        private DebugOutput_FilterTextbox_ExistsExpectedValues mDebugOutput_FilterTextbox_ExistsExpectedValues;
-        
-        private DebugOutput_ResultsTree_ExistsExpectedValues mDebugOutput_ResultsTree_ExistsExpectedValues;
-        
-        private DebugOutput_SettingsButton_ExistsExpectedValues mDebugOutput_SettingsButton_ExistsExpectedValues;
-        
-        private Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams mEnter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams;
+        private Enter_Workflowname_As_SomeWorkflowParams mEnter_Workflowname_As_SomeWorkflowParams;
         
         private Open_Assign_Tool_Qvi_Large_ViewParams mOpen_Assign_Tool_Qvi_Large_ViewParams;
         
@@ -10988,7 +11054,7 @@ namespace Warewolf.Studio.UISpecs
         
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
-        private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
+        private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -11916,6 +11982,86 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'DisplayText' property of '[[SomeVariable]]' label equals '[[SomeVariable]]'
         /// </summary>
         public string VariableTextboxDisplayText = "[[SomeVariable]]";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_DebugOutput_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_DebugOutput_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
+        /// </summary>
+        public bool DebugOutputExists = true;
+        
+        /// <summary>
+        /// Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
+        /// </summary>
+        public bool DebugOutputExists1 = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_DebugOutput_ExpandCollapseButton_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_DebugOutput_ExpandCollapseButton_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '+' button equals 'True'
+        /// </summary>
+        public bool ExpandCollapseButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_DebugOutput_FilterTextbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_DebugOutput_FilterTextbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+        /// </summary>
+        public bool SearchTextBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_DebugOutput_ResultsTree_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_DebugOutput_ResultsTree_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
+        /// </summary>
+        public bool DebugOutputTreeExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_DebugOutput_SettingsButton_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_DebugOutput_SettingsButton_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool SettingsButtonExists = true;
         #endregion
     }
     
@@ -15030,6 +15176,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Click_Test_Connector_Calculate_Outputs'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Click_Test_Connector_Calculate_OutputsParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 's' in 'Test data' text box
+        /// </summary>
+        public string TestDataText = "s";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Click_VariableList_Recordset_Row1_IsInputCheckbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15060,112 +15221,32 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'DebugInput_Add_New_Line_InputData'
+    /// Parameters to be passed into 'Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariable'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugInput_Add_New_Line_InputDataParams
+    public class Enter_Text_Into_Assign_Large_View_Row1_Variable_Textbox_As_SomeVariableParams
     {
         
         #region Fields
         /// <summary>
-        /// Type 's' in 'Description' cell
-        /// </summary>
-        public string UIDescriptionCellValue = "s";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'DebugOutput_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
-        /// </summary>
-        public bool DebugOutputExists = true;
-        
-        /// <summary>
-        /// Verify that the 'Exists' property of 'OUTPUT' custom control equals 'True'
-        /// </summary>
-        public bool DebugOutputExists1 = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'DebugOutput_ExpandCollapseButton_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput_ExpandCollapseButton_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '+' button equals 'True'
-        /// </summary>
-        public bool ExpandCollapseButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'DebugOutput_FilterTextbox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput_FilterTextbox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
-        /// </summary>
-        public bool SearchTextBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'DebugOutput_ResultsTree_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput_ResultsTree_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DebugOutputTree' tree equals 'True'
-        /// </summary>
-        public bool DebugOutputTreeExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'DebugOutput_SettingsButton_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DebugOutput_SettingsButton_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '' button equals 'True'
-        /// </summary>
-        public bool SettingsButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariable'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Enter_Text_Into_Assign_Small_View_Row1_Variable_Textbox_As_SomeVariableParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type '[[SomeVariable]]' in 'UI_TextBox_AutoID' text box
+        /// Type '[[SomeVariable]]' in 'UI__Row1_FieldName_AutoID' text box
         /// </summary>
         public string TextboxText = "[[SomeVariable]]";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_Workflowname_As_SomeWorkflow'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_Workflowname_As_SomeWorkflowParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'SomeWorkflow' in 'ServiceNameTextBox' text box
+        /// </summary>
+        public string ServiceNameTextBoxText = "SomeWorkflow";
         #endregion
     }
     
@@ -15320,17 +15401,17 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Test_Connector_Calculate_Outputs'
+    /// Parameters to be passed into 'Type_S_Into_DebugInput_Row1_InputData'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Test_Connector_Calculate_OutputsParams
+    public class Type_S_Into_DebugInput_Row1_InputDataParams
     {
         
         #region Fields
         /// <summary>
-        /// Type 's' in 'Test data' text box
+        /// Type 's' in 'Description' cell
         /// </summary>
-        public string TestDataText = "s";
+        public string UIDescriptionCellValue = "s";
         #endregion
     }
     
@@ -20999,10 +21080,30 @@ namespace Warewolf.Studio.UISpecs
                 return this.mExplorerTreeItemChild;
             }
         }
+        
+        public WpfTreeItem SomeWorkflow
+        {
+            get
+            {
+                if ((this.mSomeWorkflow == null))
+                {
+                    this.mSomeWorkflow = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSomeWorkflow.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSomeWorkflow.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSomeWorkflow.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSomeWorkflow.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSomeWorkflow;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfTreeItem mExplorerTreeItemChild;
+        
+        private WpfTreeItem mSomeWorkflow;
         #endregion
     }
     
