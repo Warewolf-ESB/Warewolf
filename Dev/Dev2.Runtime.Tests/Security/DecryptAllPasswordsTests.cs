@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime.Security
         {
             //------------Setup for test--------------------------
             var fetchResourceDefinition = new FetchResourceDefinition();
-            var resourceDefinition = File.ReadAllText(@"Security\ResourceDecrypting\GenDev.xml");
+            var resourceDefinition = File.ReadAllText(@"XML\GenDev.xml");
             var stringBuilder = new StringBuilder(resourceDefinition);
 
             //------------Execute Test---------------------------
