@@ -11859,9 +11859,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new service</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new service</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11872,9 +11872,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new web service</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Create a new web service</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11885,9 +11885,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Knowledge Base</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Knowledge Base</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11898,9 +11898,9 @@
                     <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Lock / unlock the menu</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="HelpText" Operator="Contains">Lock / unlock the menu</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />

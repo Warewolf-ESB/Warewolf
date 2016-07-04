@@ -20138,7 +20138,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mNewWorkflowButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mNewWorkflowButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new service";
+                    this.mNewWorkflowButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new service", PropertyExpressionOperator.Contains));
                     this.mNewWorkflowButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -20154,7 +20154,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mNewWebServiceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mNewWebServiceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new web service";
+                    this.mNewWebServiceButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Create a new web service", PropertyExpressionOperator.Contains));
                     this.mNewWebServiceButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -20170,7 +20170,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mKnowledgeBaseButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mKnowledgeBaseButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Knowledge Base";
+                    this.mKnowledgeBaseButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Knowledge Base", PropertyExpressionOperator.Contains));
                     this.mKnowledgeBaseButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -20186,7 +20186,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mLockMenuButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mLockMenuButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Lock / unlock the menu";
+                    this.mLockMenuButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "Lock / unlock the menu", PropertyExpressionOperator.Contains));
                     this.mLockMenuButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
