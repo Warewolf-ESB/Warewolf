@@ -15,13 +15,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -45,7 +42,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Unlimited.Framework.Converters.Graph.Ouput;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 // ReSharper disable InconsistentNaming
@@ -103,7 +100,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region This
 
-        [TestMethod]
+      /*  [TestMethod]
         public void ThisWithNewWorkspaceIDExpectedAddsCatalogForWorkspace()
         {
             List<IResource> resources;
@@ -1538,7 +1535,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
 
             Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
-            catalog.RemoveWorkspace(Guid.NewGuid());
+          //  catalog.RemoveWorkspace(Guid.NewGuid());
             Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
         }
 
@@ -1558,9 +1555,9 @@ namespace Dev2.Tests.Runtime.Hosting
                 workspaces.Add(id);
             }
             Assert.AreEqual(ExpectedWorkspaceCount, catalog.WorkspaceCount);
-            catalog.RemoveWorkspace(workspaces[3]);
+           // catalog.RemoveWorkspace(workspaces[3]);
             Assert.AreEqual(ExpectedWorkspaceCount - 1, catalog.WorkspaceCount);
-        }
+        }*/
 
         #endregion
 

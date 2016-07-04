@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer
