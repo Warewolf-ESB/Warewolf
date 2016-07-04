@@ -96,13 +96,9 @@ namespace Warewolf.Studio.UISpecs
                 var getNextTreeItemChildren = getNextChildren.Where(control => control.ControlType == ControlType.TreeItem);
                 CurrentTreeItem = getNextTreeItemChildren.FirstOrDefault(treeitem =>
                 {
-                    WpfTreeItem wpfTreeItem = (treeitem as WpfTreeItem);
-                    string label = null;
-                    if(wpfTreeItem != null)
-                    {
-                        label = wpfTreeItem.Header;
-                    }
-                    return label == folder;
+                    var GetNameFromLabel = treeitem.GetChildren();
+                    var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
+                    return label.DisplayText == folder;
                 });
             }
             return CurrentTreeItem;
