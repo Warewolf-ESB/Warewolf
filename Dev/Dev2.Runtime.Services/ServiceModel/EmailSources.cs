@@ -15,6 +15,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
