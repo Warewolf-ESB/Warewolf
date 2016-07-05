@@ -51,7 +51,7 @@ using Warewolf.Storage;
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
-    {
+    {        
         #region Fields
 
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
@@ -63,6 +63,9 @@ namespace Dev2.Studio.ViewModels.DataList
         private RelayCommand _deleteCommand;
         private RelayCommand _viewComplexObjectsCommand;
         private bool _viewSortDelete;
+
+        private readonly IMissingDataList _missingDataList;
+        private readonly IPartIsUsed _partIsUsed;
 
         #endregion Fields
 
@@ -236,6 +239,8 @@ namespace Dev2.Studio.ViewModels.DataList
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
             Provider = new Dev2TrieSugggestionProvider();
+            _missingDataList = new MissingDataList(RecsetCollection, ScalarCollection);
+            _partIsUsed = new PartIsUsed(RecsetCollection, ScalarCollection, ComplexObjectCollection);
         }
 
         public IJsonObjectsView JsonObjectsView
@@ -262,7 +267,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsComplexObject;
         }
 
-        bool CanDelete(Object itemx)
+        private bool CanDelete(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
@@ -319,6 +324,47 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion Commands
 
+        public class PartIsUsed : IPartIsUsed
+        {
+            readonly ObservableCollection<IRecordSetItemModel> _recsetCollection;
+            private readonly ObservableCollection<IScalarItemModel> _scalarCollection;
+            private readonly ObservableCollection<IComplexObjectItemModel> _complexObjectItemModels;
+            public PartIsUsed(ObservableCollection<IRecordSetItemModel> recsetCollection, ObservableCollection<IScalarItemModel> scalarCollection, ObservableCollection<IComplexObjectItemModel> complexObjectItemModels)
+            {
+                _recsetCollection = recsetCollection;
+                _scalarCollection = scalarCollection;
+                _complexObjectItemModels = complexObjectItemModels;
+            }
+            public void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed)
+            {
+                var scalarsToRemove = _scalarCollection.Where(c => c.DisplayName == part.Field);
+                scalarsToRemove.ToList().ForEach(scalarToRemove =>
+                {
+                    scalarToRemove.IsUsed = isUsed;
+                });
+            }
+
+            public void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
+            {
+                var recsetsToRemove = _recsetCollection.Where(c => c.DisplayName == part.Recordset);
+                recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
+            }
+
+            public void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
+            {
+                var objects = _complexObjectItemModels.Flatten(model => model.Children).Where(model => model.DisplayName == part.DisplayValue.Trim('@'));
+                objects.ForEach(model =>
+                {
+                    model.IsUsed = isUsed;
+                });
+            }
+        }
+        private interface IPartIsUsed
+        {
+            void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed);
+            void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed);
+            void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed);
+        }
         #region Add/Remove Missing Methods
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
@@ -327,35 +373,20 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (part.IsScalar)
                 {
-                    SetScalarPartIsUsed(part, isUsed);
+                    _partIsUsed.SetScalarPartIsUsed(part, isUsed);
                 }
                 else
                 {
-                    SetRecordSetPartIsUsed(part, isUsed);
+                    _partIsUsed.SetRecordSetPartIsUsed(part, isUsed);
                 }
                 if (part.IsJson)
                 {
-                    SetComplexObjectSetPartIsUsed(part,isUsed);
+                    _partIsUsed.SetComplexObjectSetPartIsUsed(part,isUsed);
                 }
             }
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
-
-        private void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
-        {
-            var recsetsToRemove = RecsetCollection.Where(c => c.DisplayName == part.Recordset);
-            recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
-        }
-
-        private void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
-        {
-            var objects = ComplexObjectCollection.Flatten(model => model.Children).Where(model => model.DisplayName==part.DisplayValue.Trim('@'));
-            objects.ForEach(model =>
-            {
-                model.IsUsed = isUsed;
-            });
-        }
-
+        
         private static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
         {
             if (recsetToRemove == null) return;
@@ -371,16 +402,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     childToRemove.IsUsed = isUsed;
                 });
             }
-        }
-
-        private void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed)
-        {
-            var scalarsToRemove = ScalarCollection.Where(c => c.DisplayName == part.Field);
-            scalarsToRemove.ToList().ForEach(scalarToRemove =>
-            {
-                scalarToRemove.IsUsed = isUsed;
-            });
-        }
+        }   
         
         public void RemoveUnusedDataListItems()
         {
@@ -560,8 +582,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
         }
-
-        
 
         #endregion Add/Remove Missing Methods
 
@@ -1613,8 +1633,8 @@ namespace Dev2.Studio.ViewModels.DataList
             if (DataList != null)
             {
                 // ReSharper disable once LoopCanBeConvertedToQuery
-                missingWorkflowParts.AddRange(MissingScalars(partsToVerify, excludeUnusedItems));
-                missingWorkflowParts.AddRange(MissingRecordsets(partsToVerify, excludeUnusedItems));
+                missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify, excludeUnusedItems));
+                missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify, excludeUnusedItems));
             }
             DetectUnusedComplexObjects(partsToVerify);
             return missingWorkflowParts;
@@ -1668,74 +1688,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private IEnumerable<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
-        {
-            var missingWorkflowParts = new List<IDataListVerifyPart>();
-            foreach (var dataListItem in RecsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
-            {
-                if (dataListItem.Children.Count > 0)
-                {
-                    if (partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0 &&
-                        dataListItem.IsEditable)
-                    {
-                        if (excludeUnusedItems && !dataListItem.IsUsed)
-                            continue;
-                        AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem);
-                        foreach (var child in dataListItem.Children.Where(p => !string.IsNullOrEmpty(p.DisplayName)))
-                            AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem, child);
-                    }
-                    else
-                    {
-                        missingWorkflowParts.AddRange(
-                            from child in dataListItem.Children
-                            where partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0 && child.IsEditable
-                            where !excludeUnusedItems || dataListItem.IsUsed
-                            select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
-                    }
-                }
-                else if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 &&
-                         dataListItem.IsEditable)
-                {
-                    // skip it if unused and exclude is on ;)
-                    if (excludeUnusedItems && !dataListItem.IsUsed)
-                        continue;
-                    missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
-                            dataListItem.Description));
-                }
-            }
-            return missingWorkflowParts;
-        }
-
-        private static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
-            IRecordSetItemModel dataListItem,
-            IRecordSetFieldItemModel child = null)
-        {
-            if (dataListItem.IsEditable)
-            {
-                if (child != null)
-                {
-                    missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
-                            child.DisplayName, child.Description));
-                }
-                else
-                {
-                    missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
-                                    string.Empty, dataListItem.Description));
-                }
-            }
-        }
-
-        private IEnumerable<IDataListVerifyPart> MissingScalars(IEnumerable<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
-        {
-            return (from dataListItem in ScalarCollection
-                    where !string.IsNullOrEmpty(dataListItem.DisplayName)
-                    where partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0
-                    where dataListItem.IsEditable
-                    where !excludeUnusedItems || dataListItem.IsUsed
-                    select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
-        }
+        
 
         public List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
         {
