@@ -22,7 +22,6 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.CountRecords;
 using Dev2.Activities.Designers2.Foreach;
