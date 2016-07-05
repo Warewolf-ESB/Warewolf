@@ -108,10 +108,6 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         #region Methods
 
-        public void UpdateIconPath(string iconPath)
-        {
-        }
-
         public bool IsNewWorkflow { get; set; }
         public string ServerResourceType { get; set; }
         public IVersionInfo VersionInfo { get; set; }

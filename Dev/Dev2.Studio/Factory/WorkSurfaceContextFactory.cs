@@ -17,7 +17,6 @@ using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -60,14 +59,14 @@ namespace Dev2.Studio.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>3/6/2013</date>
-        public static WorkSurfaceContextViewModel CreateUniqueWorkSurfaceContextViewModel<T>
+        private static WorkSurfaceContextViewModel CreateUniqueWorkSurfaceContextViewModel<T>
             (T vm, WorkSurfaceContext workSurfaceContext)
             where T : IWorkSurfaceViewModel
         {
 
             var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext) as WorkSurfaceKey;
             if (vm is SchedulerViewModel || vm is SettingsViewModel)
-                key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey; ;
+                key = WorkSurfaceKeyFactory.CreateEnvKey(workSurfaceContext, CustomContainer.Get<IShellViewModel>().ActiveServer.EnvironmentID) as WorkSurfaceKey;
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
 
@@ -80,7 +79,6 @@ namespace Dev2.Studio.Factory
            
             if (!(vm is SchedulerViewModel)&& !(vm is SettingsViewModel))
                 vm.DisplayName = workSurfaceContext.GetDescription();
-            vm.IconPath = workSurfaceContext.GetIconLocation();
             vm.WorkSurfaceContext = workSurfaceContext;
             return context;
         }

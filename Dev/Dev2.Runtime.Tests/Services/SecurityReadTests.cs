@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Tests.Runtime.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
