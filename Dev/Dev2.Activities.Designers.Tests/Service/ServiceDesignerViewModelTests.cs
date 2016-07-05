@@ -100,31 +100,6 @@ namespace Dev2.Activities.Designers.Tests.Service
             // No exception it passed ;)
         }
 
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServiceDesignerViewModel_Constructor")]
-        public void ServiceDesignerViewModel_Constructor_ImageSource_InitializedCorrectlyForType()
-        {
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("RemoteService", "RemoteWarewolf-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("DbService", "DatabaseService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("WebService", "WebService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("PluginService", "PluginService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Workflow", "Workflow-32", "");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Workflow", "RemoteWarewolf-32", "x");
-
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("BizRule", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("InvokeDynamicService", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("InvokeManagementDynamicService", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("InvokeServiceMethod", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Switch", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Unknown", "ToolService-32");
-
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("xxx", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType("", "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(null, "ToolService-32");
-        }
-
         void Verify_Constructor_ImageSource_InitializedCorrectlyForType(string type, string expectedImageSource, string serviceUri = null)
         {
 

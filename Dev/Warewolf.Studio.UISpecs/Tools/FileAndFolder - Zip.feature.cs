@@ -71,6 +71,28 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Zip onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxZipOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Zip onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_Zip_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_Zip_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Open_Zip_Tool_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_Zip_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip tool Small View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,9 +102,9 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip tool Small View", new string[] {
                         "Zip",
                         "ignore"});
-#line 9
+#line 19
 this.ScenarioSetup(scenarioInfo);
-#line 10
+#line 20
        testRunner.Given("I have Zip Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -93,7 +115,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 11
+#line 21
        testRunner.Then("Zip small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -107,9 +129,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip tool Large View", new string[] {
                         "ignore"});
-#line 16
+#line 26
 this.ScenarioSetup(scenarioInfo);
-#line 17
+#line 27
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -132,9 +154,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 18
+#line 28
        testRunner.Then("Zip Large View has", ((string)(null)), table2, "Then ");
-#line 21
+#line 31
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -143,11 +165,11 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 22
+#line 32
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 25
+#line 35
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 36
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,9 +183,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip tool Small View water marks", new string[] {
                         "ignore"});
-#line 29
+#line 39
 this.ScenarioSetup(scenarioInfo);
-#line 30
+#line 40
        testRunner.Given("I have Zip Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -174,7 +196,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[PathToZip]]",
                         "[[ZipFileName]]",
                         "[[Success]]"});
-#line 31
+#line 41
        testRunner.Then("Zip small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -188,9 +210,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip tool Large View Water marks", new string[] {
                         "ignore"});
-#line 36
+#line 46
 this.ScenarioSetup(scenarioInfo);
-#line 37
+#line 47
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -213,9 +235,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 38
+#line 48
        testRunner.Then("Zip Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 41
+#line 51
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -224,11 +246,11 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Error().Message]]",
                         "http://lcl:3142/services/err"});
-#line 42
+#line 52
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 45
+#line 55
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 56
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -242,11 +264,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip Large View is validating when clicking on done with blank fields", new string[] {
                         "ignore"});
-#line 49
+#line 59
 this.ScenarioSetup(scenarioInfo);
-#line 50
+#line 60
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 51
+#line 61
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -269,15 +291,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 52
+#line 62
        testRunner.And("Zip Large View has", ((string)(null)), table7, "And ");
-#line 55
+#line 65
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 66
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
+#line 67
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 58
+#line 68
        testRunner.And("Zip Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -291,9 +313,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 61
+#line 71
 this.ScenarioSetup(scenarioInfo);
-#line 62
+#line 72
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -316,9 +338,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 63
+#line 73
        testRunner.And("Zip Large View has", ((string)(null)), table8, "And ");
-#line 66
+#line 76
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -327,17 +349,17 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "",
                         ""});
-#line 67
+#line 77
        testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
-#line 70
+#line 80
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 81
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 82
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 73
+#line 83
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 74
+#line 84
        testRunner.And("Zip Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -348,7 +370,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\Test.zip",
                         "D:\\",
                         "[[Zip]]"});
-#line 75
+#line 85
        testRunner.And("Zip small view has", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -363,9 +385,9 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip  Compression is not changing by opening and closing large view", @__tags);
-#line 80
+#line 90
 this.ScenarioSetup(scenarioInfo);
-#line 81
+#line 91
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -388,9 +410,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         string.Format("{0}", compression),
                         ""});
-#line 82
+#line 92
        testRunner.And("Zip Large View has", ((string)(null)), table11, "And ");
-#line 85
+#line 95
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -399,19 +421,19 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "",
                         ""});
-#line 86
+#line 96
        testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
-#line 89
+#line 99
        testRunner.And("End this workflow is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 100
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 101
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 92
+#line 102
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 93
+#line 103
        testRunner.And("Zip Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 104
        testRunner.When("I open Zip largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -434,7 +456,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         string.Format("{0}", compression),
                         ""});
-#line 95
+#line 105
     testRunner.Then("Zip Large View has", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -500,9 +522,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 107
+#line 117
 this.ScenarioSetup(scenarioInfo);
-#line 108
+#line 118
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -525,9 +547,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 109
+#line 119
        testRunner.When("Zip Large View has", ((string)(null)), table14, "When ");
-#line 112
+#line 122
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -536,15 +558,15 @@ this.ScenarioSetup(scenarioInfo);
             table15.AddRow(new string[] {
                         "",
                         ""});
-#line 113
+#line 123
        testRunner.And("On Error box consists", ((string)(null)), table15, "And ");
-#line 116
+#line 126
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 127
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 128
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 119
+#line 129
        testRunner.And("Zip Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -567,13 +589,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 120
+#line 130
        testRunner.When("I edit Zip Large View", ((string)(null)), table16, "When ");
-#line 123
+#line 133
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 124
+#line 134
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 125
+#line 135
        testRunner.And("Zip Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -584,7 +606,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]]",
                         "D:\\",
                         "[[Zip]]"});
-#line 126
+#line 136
        testRunner.And("Zip small view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -598,9 +620,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 132
+#line 142
 this.ScenarioSetup(scenarioInfo);
-#line 133
+#line 143
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -623,9 +645,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 134
+#line 144
        testRunner.And("Zip Large View has", ((string)(null)), table18, "And ");
-#line 137
+#line 147
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -634,19 +656,19 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "",
                         ""});
-#line 138
+#line 148
        testRunner.And("On Error box consists", ((string)(null)), table19, "And ");
-#line 141
+#line 151
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 152
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 153
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 144
+#line 154
        testRunner.And("Zip Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 155
        testRunner.When("collapse \"Zip\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 146
+#line 156
        testRunner.Then("Zip Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -657,7 +679,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]",
                         "D:\\",
                         "[[Zip]]"});
-#line 147
+#line 157
        testRunner.And("Zip small view as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -672,11 +694,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip Large View is validating incorrect source path", @__tags);
-#line 153
+#line 163
 this.ScenarioSetup(scenarioInfo);
-#line 154
+#line 164
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 155
+#line 165
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -699,13 +721,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 156
+#line 166
        testRunner.And("Zip Large View has", ((string)(null)), table21, "And ");
-#line 159
+#line 169
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 170
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 161
+#line 171
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -874,11 +896,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip Large View is validating incorrect Destination path", @__tags);
-#line 178
+#line 188
 this.ScenarioSetup(scenarioInfo);
-#line 179
+#line 189
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 180
+#line 190
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -901,13 +923,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 181
+#line 191
        testRunner.And("Zip Large View has", ((string)(null)), table22, "And ");
-#line 184
+#line 194
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 195
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 186
+#line 196
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1076,11 +1098,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip Large View is validating incorrect variable in source username field", @__tags);
-#line 202
+#line 212
 this.ScenarioSetup(scenarioInfo);
-#line 203
+#line 213
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 204
+#line 214
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1103,13 +1125,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 205
+#line 215
        testRunner.And("Zip Large View has", ((string)(null)), table23, "And ");
-#line 208
+#line 218
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
+#line 219
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 210
+#line 220
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1278,11 +1300,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip Large View is validating incorrect variable in Destination username field", @__tags);
-#line 226
+#line 236
 this.ScenarioSetup(scenarioInfo);
-#line 227
+#line 237
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 228
+#line 238
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1305,13 +1327,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 229
+#line 239
        testRunner.And("Zip Large View has", ((string)(null)), table24, "And ");
-#line 232
+#line 242
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
+#line 243
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 234
+#line 244
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1482,11 +1504,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip Large View is validating incorrect variable in Result field", @__tags);
-#line 250
+#line 260
 this.ScenarioSetup(scenarioInfo);
-#line 251
+#line 261
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 252
+#line 262
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1509,13 +1531,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 253
+#line 263
        testRunner.And("Zip Large View has", ((string)(null)), table25, "And ");
-#line 256
+#line 266
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 267
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
+#line 268
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1628,9 +1650,9 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip On error fields incorrect variables are validating", @__tags);
-#line 270
+#line 280
 this.ScenarioSetup(scenarioInfo);
-#line 271
+#line 281
        testRunner.Given("I have Zip Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1653,9 +1675,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Normal (Default)",
                         ""});
-#line 272
+#line 282
        testRunner.And("Zip Large View with water marks has", ((string)(null)), table26, "And ");
-#line 275
+#line 285
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1664,15 +1686,15 @@ this.ScenarioSetup(scenarioInfo);
             table27.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 276
+#line 286
        testRunner.And("On Error box consists", ((string)(null)), table27, "And ");
-#line 279
+#line 289
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 280
+#line 290
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 281
+#line 291
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 282
+#line 292
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -66,8 +66,6 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public bool IsVersionResource { get; set; }
 
-        public bool RequiresSignOff { get; set; }
-
         public string ResourceName { get; set; }
 
         public ResourceType ResourceType { get; set; }

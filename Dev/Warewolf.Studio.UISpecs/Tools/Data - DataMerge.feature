@@ -1,8 +1,22 @@
-﻿@Ignore
-Feature: DataMerge
+﻿Feature: DataMerge
 	In order to merge data
 	As Warewolf user
 	I want a tool that joins two or more pieces of data together
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Data Merge onto a new workflow creates Data Merge tool with small view on the design surface
+	When I "Drag_Toolbox_Data_Merge_Onto_DesignSurface"
+	Then I "Assert_Data_Merge_Exists_OnDesignSurface"
+
+#@NeedsDataMergeToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Data Merge Tool Small View on the Design Surface Opens Large View
+	When I "Open_Data_Merge_Large_View"
+	Then I "Assert_Data_Merge_Large_View_Exists_OnDesignSurface"
+
+#@NeedsDataMergeLargeViewOnTheDesignSurface
+#Scenario: Click Data Merge Tool QVI Button Opens Qvi
+	When I "Open_Data_Merge_Tool_Qvi_Large_View"
+	Then I "Assert_Data_Merge_Qvi_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @DataMerge

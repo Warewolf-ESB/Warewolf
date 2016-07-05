@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: MySqlConnector
+﻿Feature: MySqlConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox MySql Tool onto a new workflow creates MySql tool with large view on the design surface
+	When I "Drag_Toolbox_MySql_Database_Onto_DesignSurface"
+	Then I "Assert_Mysql_Database_Large_View_Exists_OnDesignSurface"
+
+#@NeedsMySqlToolLargeViewOnTheDesignSurface
+#Scenario: Double Clicking MySql Tool Large View on the Design Surface Collapses it to Small View
+	When I "Open_MySql_Database_Tool_Small_View"
+	Then I "Assert_Mysql_Database_Large_View_Exists_OnDesignSurface"
 
 # Creating MySQL Connector
 # Opening Saved workflow with SQL Server tool

@@ -32,6 +32,18 @@ namespace Warewolf.Studio.UISpecs
             Mouse.DoubleClick(getTreeItem, new Point(40, 12));
         }
 
+        [When(@"I scroll down in the explorer tree")]
+        public void WhenIScrollDownInTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, -2);
+        }
+
+        [When(@"I scroll up in the explorer tree")]
+        public void WhenIScrollUpInTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, 2);
+        }
+
         [When(@"I right click ""(.*)"" in the explorer tree")]
         public void WhenIRightClickTheItemInTheExplorerTree(string path)
         {
@@ -64,13 +76,13 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(getToTreeItem, new Point(140, 3));
         }
 
-        //[Given("""(.*)"" exists in the explorer tree")]
-        //[Then("""(.*)"" exists in the explorer tree")]
-        //public void AssertExistsInTheDropdownList(string ListItem)
-        //{
-        //    UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
-        //    Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
-        //}
+        [Given(@"""(.*)"" exists in the explorer tree")]
+        [Then(@"""(.*)"" exists in the explorer tree")]
+        public void AssertExistsInExplorerTree(string ListItem)
+        {
+            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree. The explorer tree has virtualized children so it must be scolled into view.");
+        }
 
         [Given(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
         [Then(@"The View permission icon for ""(.*)"" exists in the explorer tree")]

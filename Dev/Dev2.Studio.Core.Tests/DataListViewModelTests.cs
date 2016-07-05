@@ -34,7 +34,7 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    public partial class DataListViewModelTests
+    public class DataListViewModelTests
     {
         #region Locals
 
@@ -1838,10 +1838,12 @@ namespace Dev2.Core.Tests
             complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild1, complexObjectDataModel));
             complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild2, complexObjectDataModel));
             dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
-            var parts = new List<IDataListVerifyPart>();
-            parts.Add(CreateComplexObjectPart(complexObject).Object);
-            parts.Add(CreateComplexObjectPart(complexObjectChild1).Object);
-            parts.Add(CreateComplexObjectPart(complexObjectChild2).Object);
+            var parts = new List<IDataListVerifyPart>
+            {
+                CreateComplexObjectPart(complexObject).Object,
+                CreateComplexObjectPart(complexObjectChild1).Object,
+                CreateComplexObjectPart(complexObjectChild2).Object
+            };
             //------------Execute Test---------------------------
             dataListViewModel.UpdateDataListItems(resourceModel, parts);
             //------------Assert Results-------------------------
@@ -2269,7 +2271,6 @@ namespace Dev2.Core.Tests
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-            PrivateObject p = new PrivateObject(dataListViewModel);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -2278,7 +2279,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(dataListViewModel.Resource == null);
             Assert.IsNotNull(dataListViewModel.ScalarCollection.Single());
             Assert.IsNotNull(dataListViewModel.RecsetCollection.Single());
-            Assert.AreEqual(0,dataListViewModel.ComplexObjectCollection.Count());
+            Assert.AreEqual(0,dataListViewModel.ComplexObjectCollection.Count);
         }
 
         IRecordSetFieldItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()

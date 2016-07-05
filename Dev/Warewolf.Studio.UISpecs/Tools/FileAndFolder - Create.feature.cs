@@ -71,6 +71,28 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Create_Path onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxCreate_PathOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Create_Path onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_Create_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_Create_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Open_Create_Tool_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_Create_Path_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create tool Small View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Create")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,9 +102,9 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Small View", new string[] {
                         "ignore",
                         "Create"});
-#line 10
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 11
+#line 21
        testRunner.Given("I have Create Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -91,7 +113,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "",
                         ""});
-#line 12
+#line 22
        testRunner.Then("Create small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -105,9 +127,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Large View", new string[] {
                         "ignore"});
-#line 16
+#line 26
 this.ScenarioSetup(scenarioInfo);
-#line 17
+#line 27
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -120,9 +142,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 18
+#line 28
        testRunner.Then("Create Large View has", ((string)(null)), table2, "Then ");
-#line 21
+#line 31
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -131,11 +153,11 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 22
+#line 32
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 25
+#line 35
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 36
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -149,9 +171,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Small View water marks", new string[] {
                         "ignore"});
-#line 28
+#line 38
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 39
        testRunner.Given("I have Create Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -160,7 +182,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "[[PathToCreate]]",
                         "[[Success]]"});
-#line 30
+#line 40
        testRunner.Then("Create small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -174,9 +196,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Large View Water marks", new string[] {
                         "ignore"});
-#line 34
+#line 44
 this.ScenarioSetup(scenarioInfo);
-#line 35
+#line 45
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -189,9 +211,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 36
+#line 46
        testRunner.Then("Create Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 39
+#line 49
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -200,11 +222,11 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "",
                         ""});
-#line 40
+#line 50
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 43
+#line 53
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 54
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -218,11 +240,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating when clicking on done with blank fields", new string[] {
                         "ignore"});
-#line 46
+#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 47
+#line 57
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
+#line 58
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -235,15 +257,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 49
+#line 59
        testRunner.And("Create Large View has", ((string)(null)), table7, "And ");
-#line 52
+#line 62
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 63
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 54
+#line 64
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 55
+#line 65
        testRunner.And("Create Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -257,9 +279,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 57
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 58
+#line 68
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -272,9 +294,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderCreated]]"});
-#line 59
+#line 69
        testRunner.And("Create Large View has", ((string)(null)), table8, "And ");
-#line 62
+#line 72
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -283,17 +305,17 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "",
                         ""});
-#line 63
+#line 73
        testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
-#line 66
+#line 76
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
+#line 77
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 78
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
+#line 79
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
+#line 80
        testRunner.And("Create Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -302,7 +324,7 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "C:\\Test",
                         "[[FolderCreated]]"});
-#line 71
+#line 81
        testRunner.And("Create small view has", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -316,9 +338,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 76
+#line 86
 this.ScenarioSetup(scenarioInfo);
-#line 77
+#line 87
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -331,9 +353,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderCreated]]"});
-#line 78
+#line 88
        testRunner.When("Create Large View has", ((string)(null)), table11, "When ");
-#line 81
+#line 91
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -342,15 +364,15 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "",
                         ""});
-#line 82
+#line 92
        testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
-#line 85
+#line 95
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 96
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 97
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 88
+#line 98
        testRunner.And("Create Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -363,13 +385,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderCreated]]"});
-#line 89
+#line 99
        testRunner.When("I edit Create Large View", ((string)(null)), table13, "When ");
-#line 92
+#line 102
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 93
+#line 103
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 94
+#line 104
        testRunner.And("Create Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -378,7 +400,7 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "C:\\[[a]]",
                         "[[FolderCreated]]"});
-#line 95
+#line 105
        testRunner.And("Create small view as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -392,9 +414,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 100
+#line 110
 this.ScenarioSetup(scenarioInfo);
-#line 101
+#line 111
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -407,9 +429,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderCreated]]"});
-#line 102
+#line 112
        testRunner.And("Create Large View has", ((string)(null)), table15, "And ");
-#line 105
+#line 115
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -418,19 +440,19 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 106
+#line 116
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 109
+#line 119
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 120
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 121
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 112
+#line 122
        testRunner.And("Create Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 123
        testRunner.When("collapse \"Create\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 114
+#line 124
        testRunner.Then("Create Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -439,7 +461,7 @@ this.ScenarioSetup(scenarioInfo);
             table17.AddRow(new string[] {
                         "C:\\[[a2@]]",
                         "[[FolderCreated]]"});
-#line 115
+#line 125
        testRunner.And("Create small view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -454,11 +476,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating incorrect path", @__tags);
-#line 120
+#line 130
 this.ScenarioSetup(scenarioInfo);
-#line 121
+#line 131
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
+#line 132
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -471,13 +493,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderCreated]]"});
-#line 123
+#line 133
        testRunner.And("Create Large View has", ((string)(null)), table18, "And ");
-#line 126
+#line 136
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 137
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 128
+#line 138
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -646,11 +668,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating incorrect variable in  username field", @__tags);
-#line 145
+#line 155
 this.ScenarioSetup(scenarioInfo);
-#line 146
+#line 156
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
+#line 157
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -663,13 +685,13 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", variable),
                         "",
                         "[[FolderCreated]]"});
-#line 148
+#line 158
        testRunner.And("Create Large View has", ((string)(null)), table19, "And ");
-#line 151
+#line 161
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 162
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 153
+#line 163
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -838,11 +860,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Large View is validating incorrect variable in Result field", @__tags);
-#line 170
+#line 180
 this.ScenarioSetup(scenarioInfo);
-#line 171
+#line 181
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
+#line 182
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -855,13 +877,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("{0}", result)});
-#line 173
+#line 183
        testRunner.And("Create Large View has", ((string)(null)), table20, "And ");
-#line 176
+#line 186
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 187
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 188
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -974,11 +996,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create On error fields incorrect variables are validating", @__tags);
-#line 190
+#line 200
 this.ScenarioSetup(scenarioInfo);
-#line 191
+#line 201
        testRunner.Given("I have Create Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 192
+#line 202
        testRunner.And("Create Large View with water marks has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -991,9 +1013,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Result]]"});
-#line 193
+#line 203
         testRunner.And("Create Large View has", ((string)(null)), table21, "And ");
-#line 196
+#line 206
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1002,15 +1024,15 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 197
+#line 207
        testRunner.And("On Error box consists", ((string)(null)), table22, "And ");
-#line 200
+#line 210
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 211
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 212
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 203
+#line 213
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
