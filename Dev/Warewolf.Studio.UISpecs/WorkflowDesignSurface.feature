@@ -61,7 +61,8 @@ Scenario: The Workflow Design Surface UI Test
 #	And I "Assert_Workflow_Name_Textbox_Exists"
 #	And I "Assert_Workflow_Name_Textbox_Text_Equals_SomeWorkflow"
 #	And I "Assert_SaveDialog_SaveButton_Enabled"
-	And I "Click_SaveDialog_YesButton"
+	When I "Click_SaveDialog_YesButton"
+	And I scroll down in the explorer tree
 	Then "localhost\SomeWorkflow" exists in the explorer tree
 
 #@NeedsMultiAssignSmallViewToolWithSomeVariableOnTheDesignSurface
