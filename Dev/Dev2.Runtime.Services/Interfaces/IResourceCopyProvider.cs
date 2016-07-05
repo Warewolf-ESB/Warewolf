@@ -1,6 +1,7 @@
 using System;
 using Dev2.Common.Interfaces.Data;
-
+// ReSharper disable PrivateMembersMustHaveComments
+// ReSharper disable PublicMembersMustHaveComments
 namespace Dev2.Runtime.Interfaces
 {
     public interface IResourceCopyProvider

@@ -354,7 +354,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
-            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
@@ -363,8 +363,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
-            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService", null, false));
+            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService",  false));
         }
 
 
@@ -392,7 +392,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + DateTime.Now.Ticks + "_jjj" });
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
-            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
@@ -401,8 +401,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
-            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", null, false), Times.Never());
+            cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>()));
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -587,7 +587,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         string CreateFileName(Guid versionId, int version)
         {
-            return string.Format("{0}_{1}_{2}_{3}", versionId, version, DateTime.Now.Ticks, "bob");
+            return $"{versionId}_{version}_{DateTime.Now.Ticks}_{"bob"}";
 
         }
 
