@@ -16,7 +16,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Tests.Runtime.Security;
@@ -62,7 +61,7 @@ namespace Dev2.Tests.Runtime.Services
             // ensure the contents are what we expect ;)
 
             var mockCatalog = new Mock<IResourceCatalog>();
-            mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
+            mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             //------------Execute Test---------------------------
             var securityRead = new SecurityRead
             {

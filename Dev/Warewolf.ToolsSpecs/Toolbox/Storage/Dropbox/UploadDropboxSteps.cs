@@ -14,7 +14,6 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core.Messages;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Interfaces;
