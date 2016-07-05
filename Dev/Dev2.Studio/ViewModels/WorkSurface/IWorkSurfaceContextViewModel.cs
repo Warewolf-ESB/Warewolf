@@ -59,7 +59,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void Handle(UpdateWorksurfaceDisplayName message);
 
-        void Handle(UpdateWorksurfaceFlowNodeDisplayName message);
 
         void SetDebugStatus(DebugStatus debugStatus);
 
