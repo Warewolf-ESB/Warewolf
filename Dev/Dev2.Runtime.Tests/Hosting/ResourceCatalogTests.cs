@@ -49,6 +49,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
+using Warewolf.ResourceManagement;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -3170,6 +3171,72 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Test Result -----------------------
             Assert.IsTrue(stringBuilder.Contains(reservedservice));
             Assert.IsTrue(stringBuilder.Contains(s));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void MapServiceActionDependencies_GivenServiceName_ShouldNotThrowException()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+                rc.MapServiceActionDependencies(workspaceID, new ServiceAction() { SourceName = "SourceName", ServiceID = id1});
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void LoadResourceActivityCache_GivenServiceName_ShouldNotThrowException()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, "Workflows");
+            
+            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            var mock = new Mock<IResourceActivityCache>();
+
+            _parsers.Add(workspaceID, mock.Object);
+            const string propertyName = "_parsers";
+            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            fieldInfo?.SetValue(rc,_parsers);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+                rc.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            //---------------Test Result -----------------------
         }
         #endregion
 
