@@ -6,7 +6,7 @@
 	debug output
 	workflow save dialog
 	
-Scenario: The Workflow Design Surface UI Test
+Scenario: Big Workflow Design Surface UI Test
 	Given I "Assert_NewWorkFlow_RibbonButton_Exists"
 	When I "Click_New_Workflow_Ribbon_Button"
 	Then I "Assert_StartNode_Exists"
@@ -56,6 +56,8 @@ Scenario: The Workflow Design Surface UI Test
 #	And I "Assert_Workflow_Name_Textbox_Text_Equals_SomeWorkflow"
 #	And I "Assert_SaveDialog_SaveButton_Enabled"
 	When I "Click_SaveDialog_YesButton"
+	And I scroll up in the explorer tree
+	And I scroll down in the explorer tree
 	And I scroll down in the explorer tree
 	Then "localhost\SomeWorkflow" exists in the explorer tree
 
