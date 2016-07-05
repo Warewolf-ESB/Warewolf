@@ -455,7 +455,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
-            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, null, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.ResourcePath).Returns("monkey\\dave");
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
@@ -494,7 +494,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
-            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, null, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.ResourcePath).Returns("monkey2");
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
@@ -532,7 +532,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
-            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, null, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.ResourcePath).Returns("monkey2");
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
@@ -572,7 +572,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
-            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, null, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.ResourcePath).Returns("monkey2");
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
@@ -610,7 +610,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
-            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, null, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             res.Setup(a => a.ResourcePath).Returns("monkey2");
             //------------Execute Test---------------------------
             var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());

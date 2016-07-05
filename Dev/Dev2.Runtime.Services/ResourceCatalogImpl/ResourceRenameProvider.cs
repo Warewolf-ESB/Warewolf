@@ -21,11 +21,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     public class ResourceRenameProvider : IResourceRenameProvider
     {
+        private readonly IResourceCatalog _resourceCatalog;
         private readonly IServerVersionRepository _versionRepository;
         private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
 
-        public ResourceRenameProvider(IServerVersionRepository versionRepository)
+        public ResourceRenameProvider(IResourceCatalog resourceCatalog,IServerVersionRepository versionRepository)
         {
+            _resourceCatalog = resourceCatalog;
             _versionRepository = versionRepository;
         }
 
@@ -35,7 +37,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             GlobalConstants.HandleEmptyParameters(resourceID, "resourceID");
             GlobalConstants.HandleEmptyParameters(newName, "newName");
-            var resourcesToUpdate = ResourceCatalog.Instance.GetResources(workspaceID).Where(resource => resource.ResourceID == resourceID).ToArray();
+            var resourcesToUpdate = _resourceCatalog.GetResources(workspaceID).Where(resource => resource.ResourceID == resourceID).ToArray();
             try
             {
                 if (!resourcesToUpdate.Any())
@@ -45,7 +47,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                 {
                     // ReSharper disable once PossibleInvalidOperationException
-                    _versionRepository.StoreVersion(ResourceCatalog.Instance.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID);
+                    _versionRepository.StoreVersion(_resourceCatalog.GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID);
                     //rename and save to workspace
                     var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
                     if (renameResult.Status != ExecStatus.Success)
@@ -69,7 +71,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             GlobalConstants.HandleEmptyParameters(newCategory, "newCategory");
             try
             {
-                var resourcesToUpdate = ResourceCatalog.Instance.GetResources(workspaceID).Where(resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
+                var resourcesToUpdate = _resourceCatalog.GetResources(workspaceID).Where(resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
 
                 return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
             }
@@ -98,7 +100,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             try
             {
                 var hasError = false;
-                foreach (var resource in resourcesToUpdate)
+                foreach (var resource in resourcesToUpdate.ToList())
                 {
                     var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, oldCategory, newCategory);
                     if (resourceCatalogResult.Status != ExecStatus.Success)
@@ -120,7 +122,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
-            var resourceContents = ResourceCatalog.Instance.GetResourceContents(workspaceID, resource.ResourceID);
+            var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, resource.ResourceID);
             var oldPath = resource.ResourcePath;
             var cat = oldCategory.Replace("\\", "\\\\");
             var newPath = Regex.Replace(oldPath, cat, newCategory, RegexOptions.IgnoreCase);
@@ -136,7 +138,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 categoryElement.SetValue(newPath);
             }
             var contents = resourceElement.ToStringBuilder();
-            var resourceCatalogResult = ResourceCatalog.Instance.SaveImpl(workspaceID, resource, contents, false);
+            var resourceCatalogResult = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, false);
             if (resourceCatalogResult.Status != ExecStatus.Success)
             {
                 resource.ResourcePath = oldPath;
@@ -153,10 +155,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 newCategory = oldCategory.Substring(0, indexOfCategory) + newName;
             }
-            RenameWhereUsed(ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID), workspaceID, resource.ResourcePath, newName);
+            RenameWhereUsed(_resourceCatalog.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID), workspaceID, resource.ResourcePath, newName);
 
             //rename resource
-            var resourceContents = ResourceCatalog.Instance.GetResourceContents(workspaceID, resource.ResourceID);
+            var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, resource.ResourceID);
 
             var resourceElement = resourceContents.ToXElement();
             //xml name attibute
@@ -209,7 +211,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             //re-create, resign and save to file system the new resource
             StringBuilder contents = resourceElement.ToStringBuilder();
 
-            return ResourceCatalog.Instance.SaveImpl(workspaceID, resource, contents);
+            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents);
 
         }
 
@@ -229,9 +231,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             foreach (var dependant in dependants)
             {
-                var dependantResource = ResourceCatalog.Instance.GetResource(workspaceID, dependant.ResourceID);
+                var dependantResource = _resourceCatalog.GetResource(workspaceID, dependant.ResourceID);
                 //rename where used
-                var resourceContents = ResourceCatalog.Instance.GetResourceContents(workspaceID, dependantResource.ResourceID);
+                var resourceContents = _resourceCatalog.GetResourceContents(workspaceID, dependantResource.ResourceID);
 
                 var resourceElement = resourceContents.ToXElement();
                 //in the xaml only
@@ -267,7 +269,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 //re-create, resign and save to file system the new resource
                 StringBuilder result = resourceElement.ToStringBuilder();
 
-                ResourceCatalog.Instance.SaveImpl(workspaceID, dependantResource, result);
+                ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, dependantResource, result);
             }
         }
 

@@ -29,16 +29,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     public class ResourceSaveProvider : IResourceSaveProvider
     {
+        private readonly IResourceCatalog _resourceCatalog;
         private readonly IServerVersionRepository _serverVersionRepository;
         private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
-
-        public ResourceSaveProvider(IServerVersionRepository serverVersionRepository)
+        public ResourceSaveProvider(IResourceCatalog resourceCatalog, IServerVersionRepository serverVersionRepository)
         {
+            _resourceCatalog = resourceCatalog;
             _serverVersionRepository = serverVersionRepository;
         }
+
         #region Implementation of IResourceSaveProvider
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "")
         {
             try
             {
@@ -71,7 +73,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason = "", string user = "")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "")
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
 
@@ -94,6 +96,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
+        public Action<IResource> ResourceSaved { get; set; }
+        public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
+
         internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
         {
             ResourceCatalogResult saveResult = null;
@@ -107,7 +112,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents)
         {
             // Find the service before edits ;)
-            DynamicService beforeService = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
+            DynamicService beforeService = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
 
             ServiceAction beforeAction = null;
             if (beforeService != null)
@@ -115,7 +120,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 beforeAction = beforeService.Actions.FirstOrDefault();
             }
 
-            var result = ResourceCatalog.Instance.SaveImpl(workspaceID, resource, contents);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents);
 
             if (result.Status == ExecStatus.Success)
             {
@@ -124,11 +129,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
                     SavedResourceCompileMessage(workspaceID, resource, result.Message);
                 }
-                if (ResourceCatalog.Instance.ResourceSaved != null)
+                if (ResourceSaved != null)
                 {
                     if (workspaceID == GlobalConstants.ServerWorkspaceID)
                     {
-                        ResourceCatalog.Instance.ResourceSaved(resource);
+                        ResourceSaved(resource);
                     }
                 }
             }
@@ -146,7 +151,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if (messages != null)
                 {
-                    var keys = ResourceCatalog.Instance.WorkspaceResources.Keys.ToList();
+                    var keys = ((ResourceCatalog)_resourceCatalog).WorkspaceResources.Keys.ToList();
                     CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
 
                     var dependsMessageList = new List<ICompileMessageTO>();
@@ -154,18 +159,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     {
                         dependsMessageList.AddRange(UpdateDependantResourceWithCompileMessages(workspace, resource, messages));
                     });
-                    ResourceCatalog.Instance.SendResourceMessages?.Invoke(resource.ResourceID, dependsMessageList);
+                    _resourceCatalog.SendResourceMessages?.Invoke(resource.ResourceID, dependsMessageList);
                 }
             }
         }
         private IEnumerable<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
         {
             var resourceId = resource.ResourceID;
-            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceId);
+            var dependants = _resourceCatalog.GetDependentsAsResourceForTrees(workspaceID, resourceId);
             var dependsMessageList = new List<ICompileMessageTO>();
             foreach (var dependant in dependants)
             {
-                var affectedResource = ResourceCatalog.Instance.GetResource(workspaceID, dependant.ResourceID);
+                var affectedResource = _resourceCatalog.GetResource(workspaceID, dependant.ResourceID);
                 foreach (var compileMessageTO in messages)
                 {
                     compileMessageTO.WorkspaceID = workspaceID;
@@ -179,7 +184,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 if (affectedResource != null)
                 {
-                    Common.UpdateResourceXml(workspaceID, affectedResource, messages);
+                    Common.UpdateResourceXml(_resourceCatalog,workspaceID, affectedResource, messages);
                 }
             }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
@@ -288,7 +293,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 try
                 {
-                    var resources = ResourceCatalog.Instance.GetResources(workspaceID);
+                    var resources = _resourceCatalog.GetResources(workspaceID);
                     var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
                     if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
                     {
@@ -323,8 +328,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     #endregion
 
-                    ResourceCatalog.Instance.RemoveFromResourceActivityCache(workspaceID, resource);
-                    ResourceCatalog.Instance.Parse(workspaceID, resource.ResourceID);
+                    ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
+                    ((ResourceCatalog)_resourceCatalog).Parse(workspaceID, resource.ResourceID);
                     tx.Complete();
                     saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
                 }

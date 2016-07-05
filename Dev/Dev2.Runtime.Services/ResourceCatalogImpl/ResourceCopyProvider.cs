@@ -11,11 +11,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     public class ResourceCopyProvider: IResourceCopyProvider
     {
+        private readonly IResourceCatalog _resourceCatalog;
+
+        public ResourceCopyProvider(IResourceCatalog resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+        }
         #region Implementation of IResourceCopyProvider
 
         public bool CopyResource(Guid resourceID, Guid sourceWorkspaceID, Guid targetWorkspaceID, string userRoles = null)
         {
-            var resource = ResourceCatalog.Instance.GetResource(sourceWorkspaceID, resourceID);
+            var resource = _resourceCatalog.GetResource(sourceWorkspaceID, resourceID);
             return CopyResource(resource, targetWorkspaceID, userRoles);
         }
 
@@ -24,14 +30,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (resource != null)
             {
                 var copy = new Resource(resource);
-                var globalResource = ResourceCatalog.Instance.GetResource(Guid.Empty, resource.ResourceID);
+                var globalResource = _resourceCatalog.GetResource(Guid.Empty, resource.ResourceID);
                 if (globalResource != null)
                 {
 
                     copy.VersionInfo = globalResource.VersionInfo;
                 }
-                var contents = ResourceCatalog.Instance.GetResourceContents(resource);
-                var saveResult = ResourceCatalog.Instance.SaveImpl(targetWorkspaceID, copy, contents);
+                var contents = _resourceCatalog.GetResourceContents(resource);
+                var saveResult = ((ResourceCatalog)_resourceCatalog).SaveImpl(targetWorkspaceID, copy, contents);
                 return saveResult.Status == ExecStatus.Success;
             }
             return false;
