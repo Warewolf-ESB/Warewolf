@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: FileAndFolder-Copy
+﻿Feature: FileAndFolder-Copy
 	In order to be able to Copy File or Folder 
 	as a Warewolf user
 	I want a tool that Copy File or Folder from a given location to another location
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Copy_Path onto a new workflow
+	When I "Drag_Toolbox_Copy_Onto_DesignSurface"
+	Then I "Assert_Copy_Exists_OnDesignSurface"
+
+#@NeedsCopy_PathToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Copy_Path Tool Small View on the Design Surface Opens Large View
+	When I "Open_Copy_Tool_Large_View"
+	Then I "Assert_Copy_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @Copy

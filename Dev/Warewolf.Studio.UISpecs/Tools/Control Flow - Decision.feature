@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: Decision
+﻿Feature: Decision
 	In order to branch based on the data
 	As Warewolf user
 	I want tool that be makes a true or false (yes/no) decision based on the data
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox decision onto a new workflow opens decision dialog
+	When I "Drag_Toolbox_Decision_Onto_DesignSurface"
+	Then I "Assert_Decision_Dialog_Done_Button_Exists"
+
+#@NeedsDecisionDialog
+#Scenario: Clicking Decision Dialog Done Button Creates a Desision on the Design Surface
+	When I "Click_Decision_Dialog_Done_Button"
+	Then I "Assert_Decision_Exists_OnDesignSurface"
 
 @ignore
 @Decision 
