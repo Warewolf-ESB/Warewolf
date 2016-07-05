@@ -67,12 +67,5 @@
                 </ig:DragDropManager.DropTarget>
             </ContentControl>
         </Grid>
-
-        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#88000000" 
-                Visibility="{Binding PopupContent, Converter={StaticResource NullToVisibilityConverter}}"
-                Padding="30" >
-            <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding PopupContent}"
-                        MaxHeight="600" MaxWidth="800" />
-        </Border>
     </Grid>
 </UserControl>
