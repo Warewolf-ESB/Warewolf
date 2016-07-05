@@ -17,7 +17,6 @@ namespace Dev2.Studio.Core.ViewModels
 {
     public interface IWorkflowDesignerViewModel : IDesignerViewModel
     {
-        bool HasErrors { get; set; }
         object SelectedModelItem { get; }
         string WorkflowName { get; }
         WorkflowDesigner Designer { get; }
