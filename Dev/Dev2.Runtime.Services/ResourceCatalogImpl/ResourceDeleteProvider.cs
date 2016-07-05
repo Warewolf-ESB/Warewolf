@@ -2,11 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Transactions;
-using ChinhDo.Transactions;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -168,58 +164,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 if (affectedResource != null)
                 {
-                    UpdateResourceXml(workspaceID, affectedResource, messages);
+                    Common.UpdateResourceXml(workspaceID, affectedResource, messages);
                 }
             }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
         }
-        void UpdateResourceXml(Guid workspaceID, IResource effectedResource, IList<ICompileMessageTO> compileMessagesTO)
-        {
-            var resourceContents = ResourceCatalog.Instance.GetResourceContents(workspaceID, effectedResource.ResourceID);
-            UpdateXmlToDisk(effectedResource, compileMessagesTO, resourceContents);
-            var serverResource = ResourceCatalog.Instance.GetResource(Guid.Empty, effectedResource.ResourceName);
-            if (serverResource != null)
-            {
-                resourceContents = ResourceCatalog.Instance.GetResourceContents(Guid.Empty, serverResource.ResourceID);
-                UpdateXmlToDisk(serverResource, compileMessagesTO, resourceContents);
-            }
-        }
-        void UpdateXmlToDisk(IResource resource, IList<ICompileMessageTO> compileMessagesTO, StringBuilder resourceContents)
-        {
 
-            var resourceElement = resourceContents.ToXElement();
-            if (compileMessagesTO.Count > 0)
-            {
-                Common.SetErrors(resourceElement, compileMessagesTO);
-                Common.UpdateIsValid(resourceElement);
-            }
-            else
-            {
-                Common.UpdateIsValid(resourceElement);
-            }
-
-            StringBuilder result = resourceElement.ToStringBuilder();
-
-            var signedXml = HostSecurityProvider.Instance.SignXml(result);
-
-            lock (Common.GetFileLock(resource.FilePath))
-            {
-                var fileManager = new TxFileManager();
-                using (TransactionScope tx = new TransactionScope())
-                {
-                    try
-                    {
-                        signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
-                        tx.Complete();
-                    }
-                    catch
-                    {
-                        Transaction.Current.Rollback();
-                    }
-                }
-
-            }
-        }
 
         private Dictionary<int, ResourceCatalogResult> GetDeleteCommands(Guid workspaceID, Guid resourceID, string type, bool deleteVersions, IEnumerable<IResource> resources, List<IResource> workspaceResources)
         {
@@ -238,9 +188,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         #region Implementation of IResourceDeleteProvider
 
-       
 
-       
+
+
 
         #endregion
     }

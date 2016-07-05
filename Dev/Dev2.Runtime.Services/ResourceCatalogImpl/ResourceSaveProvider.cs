@@ -1,0 +1,340 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Transactions;
+using System.Xml.Linq;
+using ChinhDo.Transactions;
+using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Common.Wrappers;
+using Dev2.Data.ServiceModel.Messages;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Compiler;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
+using Warewolf.Resource.Errors;
+
+namespace Dev2.Runtime.ResourceCatalogImpl
+{
+    public class ResourceSaveProvider : IResourceSaveProvider
+    {
+        private readonly IServerVersionRepository _serverVersionRepository;
+        private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
+
+        public ResourceSaveProvider(IServerVersionRepository serverVersionRepository)
+        {
+            _serverVersionRepository = serverVersionRepository;
+        }
+        #region Implementation of IResourceSaveProvider
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null, string reason = "", string user = "")
+        {
+            try
+            {
+                if (resourceXml == null || resourceXml.Length == 0)
+                {
+                    throw new ArgumentNullException(nameof(resourceXml));
+                }
+
+                var @lock = Common.GetWorkspaceLock(workspaceID);
+                lock (@lock)
+                {
+                    var xml = resourceXml.ToXElement();
+
+                    var resource = new Resource(xml);
+                    GlobalConstants.InvalidateCache(resource.ResourceID);
+                    Dev2Logger.Info("Save Resource." + resource);
+                    _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
+
+                    resource.UpgradeXml(xml, resource);
+
+                    StringBuilder result = xml.ToStringBuilder();
+
+                    return CompileAndSave(workspaceID, resource, result);
+                }
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error("Save Error", err);
+                throw;
+            }
+        }
+
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason = "", string user = "")
+        {
+            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID);
+
+            if (resource == null)
+            {
+                throw new ArgumentNullException(nameof(resource));
+            }
+
+            var @lock = Common.GetWorkspaceLock(workspaceID);
+            lock (@lock)
+            {
+                if (resource.ResourceID == Guid.Empty)
+                {
+                    resource.ResourceID = Guid.NewGuid();
+                }
+                GlobalConstants.InvalidateCache(resource.ResourceID);
+                resource.ResourcePath = Common.SanitizePath(resource.ResourcePath);
+                var result = resource.ToStringBuilder();
+                return CompileAndSave(workspaceID, resource, result);
+            }
+        }
+
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
+        {
+            ResourceCatalogResult saveResult = null;
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerfomSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting); });
+            return saveResult;
+        }
+
+        #endregion
+
+        #region Private Methods
+        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents)
+        {
+            // Find the service before edits ;)
+            DynamicService beforeService = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
+
+            ServiceAction beforeAction = null;
+            if (beforeService != null)
+            {
+                beforeAction = beforeService.Actions.FirstOrDefault();
+            }
+
+            var result = ResourceCatalog.Instance.SaveImpl(workspaceID, resource, contents);
+
+            if (result.Status == ExecStatus.Success)
+            {
+                if (workspaceID == GlobalConstants.ServerWorkspaceID)
+                {
+                    CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                    SavedResourceCompileMessage(workspaceID, resource, result.Message);
+                }
+                if (ResourceCatalog.Instance.ResourceSaved != null)
+                {
+                    if (workspaceID == GlobalConstants.ServerWorkspaceID)
+                    {
+                        ResourceCatalog.Instance.ResourceSaved(resource);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        protected void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, StringBuilder contents, ServiceAction beforeAction)
+        {
+            if (beforeAction != null)
+            {
+                // Compile the service 
+                ServiceModelCompiler smc = new ServiceModelCompiler();
+
+                var messages = GetCompileMessages(resource, contents, beforeAction, smc);
+                if (messages != null)
+                {
+                    var keys = ResourceCatalog.Instance.WorkspaceResources.Keys.ToList();
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
+
+                    var dependsMessageList = new List<ICompileMessageTO>();
+                    keys.ForEach(workspace =>
+                    {
+                        dependsMessageList.AddRange(UpdateDependantResourceWithCompileMessages(workspace, resource, messages));
+                    });
+                    ResourceCatalog.Instance.SendResourceMessages?.Invoke(resource.ResourceID, dependsMessageList);
+                }
+            }
+        }
+        private IEnumerable<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
+        {
+            var resourceId = resource.ResourceID;
+            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceId);
+            var dependsMessageList = new List<ICompileMessageTO>();
+            foreach (var dependant in dependants)
+            {
+                var affectedResource = ResourceCatalog.Instance.GetResource(workspaceID, dependant.ResourceID);
+                foreach (var compileMessageTO in messages)
+                {
+                    compileMessageTO.WorkspaceID = workspaceID;
+                    compileMessageTO.UniqueID = dependant.UniqueID;
+                    if (affectedResource != null)
+                    {
+                        compileMessageTO.ServiceName = affectedResource.ResourceName;
+                        compileMessageTO.ServiceID = affectedResource.ResourceID;
+                    }
+                    dependsMessageList.Add(compileMessageTO.Clone());
+                }
+                if (affectedResource != null)
+                {
+                    Common.UpdateResourceXml(workspaceID, affectedResource, messages);
+                }
+            }
+            CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
+            return dependsMessageList;
+        }
+
+
+        private static IList<ICompileMessageTO> GetCompileMessages(IResource resource, StringBuilder contents, ServiceAction beforeAction, ServiceModelCompiler smc)
+        {
+            List<ICompileMessageTO> messages = new List<ICompileMessageTO>();
+            switch (beforeAction.ActionType)
+            {
+                case enActionType.Workflow:
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WorkflowMappingChangeRule, beforeAction.ResourceDefinition, contents));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            return messages;
+        }
+
+        private void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
+        {
+            var savedResourceCompileMessage = new List<ICompileMessageTO>
+            {
+                new CompileMessageTO
+                {
+                    ErrorType = ErrorType.None,
+                    MessageID = Guid.NewGuid(),
+                    MessagePayload = saveMessage,
+                    ServiceID = resource.ResourceID,
+                    ServiceName = resource.ResourceName,
+                    MessageType = CompileMessageType.ResourceSaved,
+                    WorkspaceID = workspaceID,
+                }
+            };
+
+            CompileMessageRepo.Instance.AddMessage(workspaceID, savedResourceCompileMessage);
+        }
+        private XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, string resPath, TxFileManager fileManager)
+        {
+            if (!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+
+            if (_dev2FileWrapper.Exists(resource.FilePath))
+            {
+                // Remove readonly attribute if it is set
+                var attributes = _dev2FileWrapper.GetAttributes(resource.FilePath);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    _dev2FileWrapper.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
+                }
+            }
+
+            XElement xml = contents.ToXElement();
+            xml = resource.UpgradeXml(xml, resource);
+            if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+            {
+                var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
+                resource.ResourcePath = resourcePath;
+                xml.SetElementValue("Category", resourcePath);
+            }
+            StringBuilder result = xml.ToStringBuilder();
+
+            var signedXml = HostSecurityProvider.Instance.SignXml(result);
+
+            lock (Common.GetFileLock(resource.FilePath))
+            {
+                signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
+            }
+            return xml;
+        }
+        private static bool AddToCatalog(IResource resource, List<IResource> resources, TxFileManager fileManager, XElement xml)
+        {
+            var index = resources.IndexOf(resource);
+            var updated = false;
+            if (index != -1)
+            {
+                var existing = resources[index];
+                if (!string.Equals(existing.FilePath, resource.FilePath, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    fileManager.Delete(existing.FilePath);
+                }
+                resources.RemoveAt(index);
+                updated = true;
+            }
+            resource.GetInputsOutputs(xml);
+            resource.ReadDataList(xml);
+            resource.SetIsNew(xml);
+            resource.UpdateErrorsBasedOnXML(xml);
+
+            resources.Add(resource);
+            return updated;
+        }
+
+      
+
+
+
+        private void PerfomSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
+        {
+            var fileManager = new TxFileManager();
+            using (TransactionScope tx = new TransactionScope())
+            {
+                try
+                {
+                    var resources = ResourceCatalog.Instance.GetResources(workspaceID);
+                    var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
+                    if (conflicting != null && !conflicting.IsNewResource || conflicting != null && !overwriteExisting)
+                    {
+                        saveResult = ResourceCatalogResultBuilder.CreateDuplicateMatchResult(string.Format(ErrorResource.TypeConflict, conflicting.ResourceType));
+                        return;
+                    }
+                    if (resource.ResourcePath.EndsWith("\\"))
+                    {
+                        resource.ResourcePath = resource.ResourcePath.TrimEnd('\\');
+                    }
+                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                    var originalRes = resource.ResourcePath ?? "";
+                    int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
+                    var resPath = resource.ResourcePath;
+                    if (indexOfName >= 0)
+                    {
+                        resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
+                    }
+                    var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
+
+                    resource.FilePath = Path.Combine(directoryName, resource.ResourceName + ".xml");
+
+                    #region Save to disk
+
+                    var xml = SaveToDisk(resource, contents, directoryName, resPath, fileManager);
+
+                    #endregion
+
+                    #region Add to catalog
+
+                    var updated = AddToCatalog(resource, resources, fileManager, xml);
+
+                    #endregion
+
+                    ResourceCatalog.Instance.RemoveFromResourceActivityCache(workspaceID, resource);
+                    ResourceCatalog.Instance.Parse(workspaceID, resource.ResourceID);
+                    tx.Complete();
+                    saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
+                }
+                catch (Exception)
+                {
+                    Transaction.Current.Rollback();
+                    throw;
+                }
+            }
+        }
+        #endregion
+    }
+}
