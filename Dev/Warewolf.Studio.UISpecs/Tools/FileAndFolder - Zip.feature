@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: FileAndFolder-Zip
+﻿Feature: FileAndFolder-Zip
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Zip onto a new workflow
+	When I "Drag_Toolbox_Zip_Onto_DesignSurface"
+	Then I "Assert_Zip_Exists_OnDesignSurface"
+
+#@NeedsZipToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Zip Tool Small View on the Design Surface Opens Large View
+	When I "Open_Zip_Tool_Large_View"
+	Then I "Assert_Zip_Large_View_Exists_OnDesignSurface"
 
 @Zip
 @ignore
