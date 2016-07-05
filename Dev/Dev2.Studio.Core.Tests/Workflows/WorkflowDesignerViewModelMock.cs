@@ -116,6 +116,11 @@ namespace Dev2.Core.Tests.Workflows
             return ApplyForDrop(dataObject);
         }
 
+        public void SetupGetWorkflowFieldsFromFlowNodes(IEnumerable<ModelItem> flowNodes)
+        {
+            GetWorkflowFieldsFromFlowNodes(flowNodes);
+        }
+
         public void SetupRequestExapandAll()
         {
             RequestedExpandAll = false;

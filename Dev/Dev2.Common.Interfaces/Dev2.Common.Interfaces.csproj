@@ -223,7 +223,6 @@
     <Compile Include="IEmailAttachmentVm.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
-    <Compile Include="IExecutionEnvironment.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
     <Compile Include="IExecutionToken.cs" />
