@@ -1151,18 +1151,6 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #endregion
 
-        public bool HasErrors
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public object SelectedModelItem
         {
             get { throw new NotImplementedException(); }
