@@ -40,7 +40,6 @@ namespace Dev2.Studio.Core.Interfaces
         string HelpLink { get; set; }
         bool IsDebugMode { get; set; }
         bool IsVersionResource { get; set; }
-        bool RequiresSignOff { get; set; }
         string ResourceName { get; set; }
         ResourceType ResourceType { get; set; }
         StringBuilder WorkflowXaml { get; set; }
