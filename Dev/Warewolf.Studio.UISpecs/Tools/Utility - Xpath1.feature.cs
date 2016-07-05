@@ -71,6 +71,32 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox XPath onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - XPath")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxXPathOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox XPath onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_XPath_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_XPath_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Open_Xpath_Tool_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_Xpath_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 19
+ testRunner.When("I \"Open_Xpath_Tool_Qvi_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 20
+ testRunner.Then("I \"Assert_Xpath_Qvi_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Xpath small view and Large view")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - XPath")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Xpath")]
@@ -78,11 +104,11 @@ namespace Warewolf.Studio.UISpecs.Tools
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xpath small view and Large view", new string[] {
                         "Xpath"});
-#line 9
+#line 24
 this.ScenarioSetup(scenarioInfo);
-#line 10
+#line 25
  testRunner.Given("I have Xpath small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 11
+#line 26
  testRunner.And("I have XML is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -97,11 +123,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         ""});
-#line 12
+#line 27
  testRunner.And("Xpath snall view grid has", ((string)(null)), table1, "And ");
-#line 16
+#line 31
  testRunner.When("I open LArge View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
+#line 32
  testRunner.Then("I have XML is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -116,11 +142,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         ""});
-#line 18
+#line 33
  testRunner.And("Xpath snall view grid has", ((string)(null)), table2, "And ");
-#line 22
+#line 37
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 38
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -132,11 +158,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void XpathLargeViewIsValidatingEmptyFields()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xpath Large view is validating empty fields", ((string[])(null)));
-#line 25
+#line 40
 this.ScenarioSetup(scenarioInfo);
-#line 26
+#line 41
  testRunner.Given("I have Xpath Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
+#line 42
  testRunner.Then("I have XML is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -151,15 +177,15 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         ""});
-#line 28
+#line 43
  testRunner.And("Xpath snall view grid has", ((string)(null)), table3, "And ");
-#line 32
+#line 47
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 48
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 49
  testRunner.When("I click on Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 50
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -171,11 +197,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void XpathWaterMarksSmallViewAndLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xpath water marks small view and Large view", ((string[])(null)));
-#line 37
+#line 52
 this.ScenarioSetup(scenarioInfo);
-#line 38
+#line 53
  testRunner.Given("I have Xpath small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 39
+#line 54
  testRunner.And("I have XML watermarks is \"[[Xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -190,13 +216,13 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         "Xpath"});
-#line 40
+#line 55
  testRunner.And("Xpath snall view grid has watermarks", ((string)(null)), table4, "And ");
-#line 44
+#line 59
  testRunner.When("I open LArge View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
+#line 60
  testRunner.Then("I have XML  watermarks \"[[Xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 46
+#line 61
  testRunner.Then("I have XML watermarks is \"[[Xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -211,11 +237,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         "Xpath"});
-#line 47
+#line 62
  testRunner.And("Xpath snall view grid has watermarks", ((string)(null)), table5, "And ");
-#line 51
+#line 66
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 67
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -224,11 +250,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void XpathLargeViewIsValidatingIncorrectVariables(string no, string xML, string vaL, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xpath Large view is validating Incorrect Variables", exampleTags);
-#line 53
+#line 68
 this.ScenarioSetup(scenarioInfo);
-#line 54
+#line 69
  testRunner.Given("I have Xpath Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 70
  testRunner.Then("I enter XML is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -243,15 +269,15 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         ""});
-#line 56
+#line 71
  testRunner.And("Xpath snall view grid has", ((string)(null)), table6, "And ");
-#line 60
+#line 75
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 76
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 77
  testRunner.When("I click on Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 78
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", vaL), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -403,11 +429,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void XpathLargeViewIsValidatingIncorrectOutputVariables(string no, string output, string vaL, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Xpath Large view is validating Incorrect Output variables", exampleTags);
-#line 78
+#line 93
 this.ScenarioSetup(scenarioInfo);
-#line 79
+#line 94
  testRunner.Given("I have Xpath Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 80
+#line 95
  testRunner.Then("I enter XML is \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><numb" +
                     "er id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -423,15 +449,15 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "",
                         ""});
-#line 81
+#line 96
  testRunner.And("Xpath snall view grid has", ((string)(null)), table7, "And ");
-#line 85
+#line 100
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 101
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 102
  testRunner.When("I click on Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 103
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", vaL), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -547,11 +573,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertingRowsInLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Inserting Rows in large view", ((string[])(null)));
-#line 100
+#line 115
 this.ScenarioSetup(scenarioInfo);
-#line 101
+#line 116
  testRunner.Given("I have Xpath Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
+#line 117
  testRunner.Then("I enter XML is \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><numb" +
                     "er id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -587,11 +613,11 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "",
                         ""});
-#line 103
+#line 118
  testRunner.And("Xpath Large view grid has", ((string)(null)), table8, "And ");
-#line 112
+#line 127
  testRunner.And("Scroll bar is \"Enaabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 128
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -630,7 +656,7 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "",
                         ""});
-#line 114
+#line 129
  testRunner.When("I Insert Row at \"2\"", ((string)(null)), table9, "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -642,11 +668,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingRowsInLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Rows in large view", ((string[])(null)));
-#line 124
+#line 139
 this.ScenarioSetup(scenarioInfo);
-#line 125
+#line 140
  testRunner.Given("I have Xpath Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 126
+#line 141
  testRunner.Then("I enter XML is \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><numb" +
                     "er id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -682,13 +708,13 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "",
                         ""});
-#line 127
+#line 142
  testRunner.And("Xpath Laarge view grid has", ((string)(null)), table10, "And ");
-#line 136
+#line 151
  testRunner.And("Scroll bar is \"Enaabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
+#line 152
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 153
  testRunner.When("I Delete Row at \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -719,7 +745,7 @@ this.ScenarioSetup(scenarioInfo);
                         "6",
                         "",
                         ""});
-#line 139
+#line 154
  testRunner.And("Xpath Laarge view grid has", ((string)(null)), table11, "And ");
 #line hidden
             this.ScenarioCleanup();

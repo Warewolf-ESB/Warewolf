@@ -1,10 +1,21 @@
-﻿@Ignore
-Feature: Utility - Email
+﻿Feature: Utility - Email
 	In order to send an email
 	As a warewolf user
 	I want a tool that performs this action
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Email onto a new workflow
+	When I "Drag_Toolbox_Email_Onto_DesignSurface"
+	Then I "Assert_Email_Exists_OnDesignSurface"
+
+#@NeedsEmailOnDesignSurface
+#Scenario: Click Nested Workflow Name Opens Nested Workflow Edit Tab
+	#Given I "Assert_Email_Exists_OnDesignSurface"
+	When I "Open_Email_Tool_Large_View"
+	Then I "Assert_Email_Large_View_Exists_OnDesignSurface"
 
 @Email
+@Ignore
 Scenario: Email tool small view
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -14,6 +25,7 @@ Scenario: Email tool small view
 	And body is "" 
 	And result is ""
 
+@Ignore
 Scenario: Email tool small view water marks 
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -22,6 +34,7 @@ Scenario: Email tool small view water marks
 	And body Watermark is "Email Content" 
 	And result Watermark is "[[EmailSuccess]]"
 
+@Ignore
 Scenario: Email tool Large view
 	Given I have email tool large view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -43,8 +56,8 @@ Scenario: Email tool Large view
     |                            |                       |
     And End this workflow is "Unselected"
     And Done button is "Visible"
-
-
+	
+@Ignore
 Scenario: Email tool water marks Large view
 	Given I have email tool large view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -67,8 +80,8 @@ Scenario: Email tool water marks Large view
     And End this workflow is "Unselected"
     And Done button is "Visible"
 
-
-
+	
+@Ignore
 Scenario: Email tool small view to large view persiting data
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -94,8 +107,8 @@ Scenario: Email tool small view to large view persiting data
 	And body is "" 
 	And result is "[[Result]]"
 	 And Done button is "Visible"
-
-
+	 
+@Ignore
 Scenario: Email tool Done is validating when no source selected
 	Given I have email tool large view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -115,8 +128,8 @@ Scenario: Email tool Done is validating when no source selected
 	And Done button is "Visible"
 	When I click on "Done"
 	Then Validation message is thrown
-
-
+	
+@Ignore
 Scenario: Email tool New email source opens New Email Source tab
 	Given I have email tool large view in design surface
 	When Mail source selected as "New Email Source..."
@@ -124,8 +137,8 @@ Scenario: Email tool New email source opens New Email Source tab
 	When I save "Test Email" email source
 	Then focus is "Mail Source"
 	Then Mail source selected as "Test Email"
-
-
+	
+@Ignore
 Scenario: From address field is updating when I select source
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -159,6 +172,7 @@ Scenario: Validation is thrown on done button if To address is incorrect
 	When I click on "Done"
 	Then Validation message is thrown
 		
+@Ignore
 Scenario: Validation is thrown for incorrect email in CC field 
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -177,7 +191,8 @@ Scenario: Validation is thrown for incorrect email in CC field
 	When I edit Cc is "test@gmail.com"
 	And I click on "Done"	
 	Then Validation message is not thrown
-
+	
+@Ignore
 Scenario: Validation is thrown for incorrect email in Bcc field 
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -214,6 +229,7 @@ Scenario: Attachemets fiels is showing attaced file paths by seperating them wit
 	When I click on "Done"
 	Then Validation message is not thrown
 	
+@Ignore
 Scenario Outline: Throwing validation error for incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -244,7 +260,8 @@ Examples:
    | 15 | [[a]].com        | False      |
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | True       |
-
+   
+@Ignore
 Scenario Outline: Throwing validation error for Bcc incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -276,7 +293,7 @@ Examples:
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | False      |
 
- @ignore   
+@ignore   
 Scenario Outline: Throwing validation error for Cc incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -307,7 +324,8 @@ Examples:
    | 15 | [[a]].com        | False      |
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | False      |
-
+   
+@Ignore
 Scenario Outline: Throwing validation error for Subject incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -339,7 +357,8 @@ Examples:
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | False      |
 
-
+   
+@Ignore
 Scenario Outline: Throwing validation error for Result incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -374,7 +393,8 @@ Scenario: Validation is not thrown when I close large view
 	When I clode large view
 	Then Validation message is not thrown  
     And "Email" Small view is opened	
-
+	
+@Ignore
 Scenario: Create new Email source from tool
 	Given I have a new Workflow
 	And I drag Email Tool onto the design surface
@@ -385,7 +405,8 @@ Scenario: Create new Email source from tool
 	And "Body" input is ""
 	When I select "New Email Source"
 	Then the new Email Source Tab is opened
-
+	
+@Ignore
 Scenario: Edit Email source from tool
 	Given I have a new Workflow
 	And I drag Email Tool onto the design surface
@@ -398,7 +419,8 @@ Scenario: Edit Email source from tool
 	Then "Edit" is Enabled
 	And I Click "Edit"
 	Then the "Email Source" Tab is opened
-
+	
+@Ignore
 Scenario: Change Email source
 	Given I have a new Workflow
 	And I drag Email Tool onto the design surface

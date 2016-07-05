@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: Utility - Web Request
+﻿Feature: Utility - Web Request
 	In order to download html content
 	As a Warewolf user
 	I want a tool that I can input a url and get a html document
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Get Web Request Tool onto a new workflow creates Get Web Request tool with large view on the design surface
+	When I "Drag_GetWeb_RequestTool_Onto_DesignSurface"
+	Then I "Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface"
+
+#@NeedsWebRequestSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Web Request Tool Small View on the Design Surface Opens Large View
+	When I "Open_WebRequest_LargeView"
+	Then I "Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @WebRequest
