@@ -49,6 +49,7 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Activities.Designers2.Service
 {
