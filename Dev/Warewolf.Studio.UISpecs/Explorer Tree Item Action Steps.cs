@@ -110,14 +110,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     var GetNameFromLabel = treeitem.GetChildren();
                     var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
-                    if (label != null)
-                    {
-                        return label.DisplayText == folder;
-                    }
-                    else
-                    {
-                        return !path.EndsWith(folder);
-                    }
+                    return label.DisplayText == folder;
                 });
             }
             return CurrentTreeItem;
