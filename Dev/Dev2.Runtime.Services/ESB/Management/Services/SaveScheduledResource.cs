@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public IServerSchedulerFactory SchedulerFactory
         {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(a.ResourceId)); }
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(GlobalConstants.ServerWorkspaceID, a.ResourceId)); }
             set { _schedulerFactory = value; }
         }
 

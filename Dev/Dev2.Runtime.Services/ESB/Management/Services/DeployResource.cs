@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
 
-            var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition,null,"Deploy","unknown");
+            var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition,"Deploy","unknown");
             WorkspaceRepository.Instance.RefreshWorkspaces();
 
             var result = new ExecuteMessage { HasError = false };

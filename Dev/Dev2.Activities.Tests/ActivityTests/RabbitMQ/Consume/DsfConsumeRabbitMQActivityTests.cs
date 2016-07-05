@@ -1,6 +1,5 @@
 ﻿using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RabbitMQ.Client;

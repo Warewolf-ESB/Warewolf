@@ -98,28 +98,44 @@ namespace Warewolf.Studio.UISpecs
             Assert.IsTrue(GetExecuteButton(path).Exists, "Execute button does not exist for " + path);
         }
 
+//      private UITestControl GetTreeItemFromPath(string path)
+//      {
+//          var pathAsArray = path.Split('\\');
+//          UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
+//          foreach (var folder in pathAsArray)
+//          {
+//              var getNextChildren = CurrentTreeItem.GetChildren();
+//              var getNextTreeItemChildren = getNextChildren.Where(control => control.ControlType == ControlType.TreeItem);
+//              CurrentTreeItem = getNextTreeItemChildren.FirstOrDefault(treeitem =>
+//              {
+//                  var GetNameFromLabel = treeitem.GetChildren();
+//                  var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
+//                  return label.DisplayText == folder;
+//              });
+//          }
+//          return CurrentTreeItem;
+//      }
+
+//      Workaround for virtualized treeitems being indistinguishable from each other (because they lose their textbox children)
         private UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
             UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
-            foreach (var folder in pathAsArray)
+            var endNode = pathAsArray[pathAsArray.Length - 1];
+            var getNextChildren = CurrentTreeItem.GetChildren();
+            getNextChildren.ToList().ForEach(getNextTreeItemChildren =>
             {
-                var getNextChildren = CurrentTreeItem.GetChildren();
-                var getNextTreeItemChildren = getNextChildren.Where(control => control.ControlType == ControlType.TreeItem);
-                CurrentTreeItem = getNextTreeItemChildren.FirstOrDefault(treeitem =>
+                if  (getNextTreeItemChildren.ControlType == ControlType.TreeItem)
                 {
-                    var GetNameFromLabel = treeitem.GetChildren();
-                    var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
-                    if (label != null)
+                    CurrentTreeItem = getNextTreeItemChildren.GetChildren().FirstOrDefault(treeitem =>
                     {
-                        return label.DisplayText == folder;
-                    }
-                    else
-                    {
-                        return !path.EndsWith(folder);
-                    }
-                });
-            }
+                        var GetNameFromLabel = treeitem.GetChildren();
+                        var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
+                        var displayText = label != null ? label.DisplayText : string.Empty;
+                        return label != null && displayText == endNode;
+                    });
+                }
+            });
             return CurrentTreeItem;
         }
 
