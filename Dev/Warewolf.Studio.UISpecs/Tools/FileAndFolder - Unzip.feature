@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: FileAndFolder-Unzip
+﻿Feature: FileAndFolder-Unzip
 	In order to be able to Unzip File or Folder 
 	as a Warewolf user
 	I want a tool that will Unzip File(s) or Folder(s) at a given location
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Unzip onto a new workflow
+	When I "Drag_Toolbox_Unzip_Onto_DesignSurface"
+	Then I "Assert_Unzip_Exists_OnDesignSurface"
+
+#@NeedsUnzipToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Unzip Tool Small View on the Design Surface Opens Large View
+	When I "Open_Unzip_Tool_Large_View"
+	Then I "Assert_Unzip_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @Unzip 

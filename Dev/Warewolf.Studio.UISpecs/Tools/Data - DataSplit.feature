@@ -1,8 +1,22 @@
-﻿@Ignore
-Feature: DataSplit
+﻿Feature: DataSplit
 	In order to split data
 	As a Warewolf user
 	I want a tool that splits two or more pieces of data
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Data_Split onto a new workflow
+	When I "Drag_Toolbox_Data_Split_Onto_DesignSurface"
+	Then I "Assert_Data_Split_Exists_OnDesignSurface"
+
+#@NeedsDataSplitToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Data Split Tool Small View on the Design Surface Opens Large View
+	When I "Open_Data_Split_Large_View"
+	Then I "Assert_Data_Split_Large_View_Exists_OnDesignSurface"
+
+#@NeedsDataSplitLargeViewOnTheDesignSurface
+#Scenario: Click Data Split Tool QVI Button Opens Qvi
+	When I "Open_Data_Split_Tool_Qvi_Large_View"
+	Then I "Assert_Data_Split_Qvi_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @DataSplit
