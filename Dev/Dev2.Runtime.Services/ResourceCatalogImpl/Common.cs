@@ -2,9 +2,16 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Transactions;
 using System.Xml.Linq;
+using ChinhDo.Transactions;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
@@ -93,6 +100,81 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             else
             {
                 isValidAttrib.SetValue(isValid);
+            }
+        }
+
+        public static string SanitizePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return "";
+            }
+
+            if (path.ToLower().StartsWith("root\\"))
+            {
+                path = path.Remove(0, 5);
+            }
+
+            if (path.ToLower().Equals("root"))
+            {
+                path = path.Remove(0, 4);
+            }
+
+            if (path.StartsWith("\\"))
+            {
+                path = path.Remove(0, 1);
+            }
+
+            return path.Replace("\\\\", "\\")
+                 .Replace("\\\\", "\\");
+        }
+
+        public static void UpdateResourceXml(Guid workspaceID, IResource effectedResource, IList<ICompileMessageTO> compileMessagesTO)
+        {
+            var resourceContents = ResourceCatalog.Instance.GetResourceContents(workspaceID, effectedResource.ResourceID);
+            UpdateXmlToDisk(effectedResource, compileMessagesTO, resourceContents);
+            var serverResource = ResourceCatalog.Instance.GetResource(Guid.Empty, effectedResource.ResourceName);
+            if (serverResource != null)
+            {
+                resourceContents = ResourceCatalog.Instance.GetResourceContents(Guid.Empty, serverResource.ResourceID);
+                UpdateXmlToDisk(serverResource, compileMessagesTO, resourceContents);
+            }
+        }
+
+       private static void UpdateXmlToDisk(IResource resource, IList<ICompileMessageTO> compileMessagesTO, StringBuilder resourceContents)
+        {
+
+            var resourceElement = resourceContents.ToXElement();
+            if (compileMessagesTO.Count > 0)
+            {
+                SetErrors(resourceElement, compileMessagesTO);
+                UpdateIsValid(resourceElement);
+            }
+            else
+            {
+                UpdateIsValid(resourceElement);
+            }
+
+            StringBuilder result = resourceElement.ToStringBuilder();
+
+            var signedXml = HostSecurityProvider.Instance.SignXml(result);
+
+            lock (GetFileLock(resource.FilePath))
+            {
+                var fileManager = new TxFileManager();
+                using (TransactionScope tx = new TransactionScope())
+                {
+                    try
+                    {
+                        signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
+                        tx.Complete();
+                    }
+                    catch
+                    {
+                        Transaction.Current.Rollback();
+                    }
+                }
+
             }
         }
     }
