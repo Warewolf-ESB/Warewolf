@@ -24,10 +24,9 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    public class ResourceLoadProvider: IResourceLoadProvider
-
+    public class ResourceLoadProvider : IResourceLoadProvider
     {
-        public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; } = new ConcurrentDictionary<Guid, List<IResource>>();
+        private readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
         public ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; } = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
@@ -37,8 +36,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         readonly IPerformanceCounter _perfCounter;
 
 
-        public ResourceLoadProvider(IEnumerable<DynamicService> managementServices = null)
-            :this(new FileWrapper())
+        public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IEnumerable<DynamicService> managementServices = null)
+            : this(new FileWrapper())
         {
             // MUST load management services BEFORE server workspace!!
             try
@@ -60,10 +59,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     ManagementServices.TryAdd(resource.ResourceID, resource);
                 }
             }
+            _workspaceResources = workspaceResources;
             LoadFrequentlyUsedServices();
         }
 
-        private ResourceLoadProvider(FileWrapper  fileWrapper)
+        private ResourceLoadProvider(FileWrapper fileWrapper)
         {
             _dev2FileWrapper = fileWrapper;
         }
@@ -112,10 +112,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return null;
         }
 
-        public string GetResourcePath(Guid id)
+        public string GetResourcePath(Guid workspaceID,Guid resourceId)
         {
-            return GetResource(Guid.Empty, id).ResourcePath;
+            var resource = GetResource(workspaceID, resourceId);
+            return resource.ResourcePath;
         }
+
         public List<IResource> GetResources(Guid workspaceID)
         {
             try
@@ -123,10 +125,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 var @lock = GetWorkspaceLock(workspaceID);
                 lock (@lock)
                 {
-                    var resources = WorkspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
+                    if (_workspaceResources != null)
+                    {
+                        var resources = _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
 
-                    return resources;
+                        return resources;
+                    }
                 }
+                return new List<IResource>();
             }
             catch (Exception e)
             {
@@ -135,25 +141,25 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public IResource GetResource(string resourceName, Guid workspaceId)
-        {
-            if (string.IsNullOrEmpty(resourceName))
-            {
-                return null;
-            }
-            var allResources = GetResources(workspaceId);
-            IResource foundResource = null;
-            if (allResources != null)
-            {
-                foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
-                if (foundResource == null && workspaceId != Guid.Empty)
-                {
-                    allResources = GetResources(GlobalConstants.ServerWorkspaceID);
-                    foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
-                }
-            }
-            return foundResource;
-        }
+        //public IResource GetResource(string resourceName, Guid workspaceId)
+        //{
+        //    if (string.IsNullOrEmpty(resourceName))
+        //    {
+        //        return null;
+        //    }
+        //    var allResources = GetResources(workspaceId);
+        //    IResource foundResource = null;
+        //    if (allResources != null)
+        //    {
+        //        foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
+        //        if (foundResource == null && workspaceId != Guid.Empty)
+        //        {
+        //            allResources = GetResources(GlobalConstants.ServerWorkspaceID);
+        //            foundResource = allResources.FirstOrDefault(resource => resourceName.Equals(resource.ResourceName, StringComparison.OrdinalIgnoreCase));
+        //        }
+        //    }
+        //    return foundResource;
+        //}
 
         /// <summary>
         /// Gets the contents of the resources with the given source type.
@@ -301,7 +307,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             return workspaceResources.ToList();
         }
-      
+
         public IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams)
         {
             string resourceName;
@@ -387,14 +393,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 lock (_workspaceLock)
                 {
                     List<IResource> resources;
-                    if (WorkspaceResources.TryGetValue(workspaceID, out resources))
+                    if (_workspaceResources.TryGetValue(workspaceID, out resources))
                     {
                         foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
                     }
 
                     if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                     {
-                        if (WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                        if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                         {
                             foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
                         }
@@ -419,14 +425,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             lock (_workspaceLock)
             {
                 List<IResource> resources;
-                if (WorkspaceResources.TryGetValue(workspaceID, out resources))
+                if (_workspaceResources.TryGetValue(workspaceID, out resources))
                 {
                     foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
 
                 if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
-                    if (WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                    if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                     {
                         foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
                     }
@@ -562,7 +568,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return guids;
         }
 
-        public  List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func)
+        public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func)
         {
             List<IResource> resources;
             if (string.IsNullOrEmpty(type))
@@ -663,6 +669,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             return result;
         }
+
         #endregion
 
     }

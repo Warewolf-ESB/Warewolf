@@ -24,6 +24,7 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    // ReSharper disable once UnusedMember.Global
     public class GetDependanciesOnList : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<string>
@@ -152,7 +153,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         IEnumerable<string> FetchRecursiveDependancies(Guid workspaceId, string resourceName)
         {
-            var resource = ResourceCatalog.Instance.GetResource(resourceName, workspaceId);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName);
             if (resource != null)
             {
                 return FetchRecursiveDependancies(resource.ResourceID, workspaceId);

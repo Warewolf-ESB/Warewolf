@@ -10,7 +10,7 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using ServiceStack.Common.Extensions;
 
@@ -129,14 +129,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                  .Replace("\\\\", "\\");
         }
 
-        public static void UpdateResourceXml(Guid workspaceID, IResource effectedResource, IList<ICompileMessageTO> compileMessagesTO)
+        public static void UpdateResourceXml(IResourceCatalog  resourceCatalog,  Guid workspaceID, IResource effectedResource, IList<ICompileMessageTO> compileMessagesTO)
         {
-            var resourceContents = ResourceCatalog.Instance.GetResourceContents(workspaceID, effectedResource.ResourceID);
+            var resourceContents = resourceCatalog.GetResourceContents(workspaceID, effectedResource.ResourceID);
             UpdateXmlToDisk(effectedResource, compileMessagesTO, resourceContents);
-            var serverResource = ResourceCatalog.Instance.GetResource(Guid.Empty, effectedResource.ResourceName);
+            var serverResource = resourceCatalog.GetResource(Guid.Empty, effectedResource.ResourceName);
             if (serverResource != null)
             {
-                resourceContents = ResourceCatalog.Instance.GetResourceContents(Guid.Empty, serverResource.ResourceID);
+                resourceContents = resourceCatalog.GetResourceContents(Guid.Empty, serverResource.ResourceID);
                 UpdateXmlToDisk(serverResource, compileMessagesTO, resourceContents);
             }
         }

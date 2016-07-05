@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -31,87 +32,27 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable LocalizableElement
-// ReSharper disable PrivateMembersMustHaveComments
-// ReSharper disable PublicMembersMustHaveComments
 
 namespace Dev2.Runtime.Hosting
 {
-    internal class ResourceCatalogPluginContainer
-    {
-        private readonly IServerVersionRepository _versionRepository;
-        private readonly IEnumerable<DynamicService> _managementServices;
-
-        public ResourceCatalogPluginContainer(IServerVersionRepository versionRepository, IEnumerable<DynamicService> managementServices = null)
-        {
-            _versionRepository = versionRepository;
-            _managementServices = managementServices;
-        }
-
-        public IResourceLoadProvider LoadProvider { get; private set; }
-        public IResourceSyncProvider SyncProvider { get; private set; }
-        public IResourceDeleteProvider DeleteProvider { get; private set; }
-        public IResourceRenameProvider RenameProvider { get; private set; }
-        public IResourceCopyProvider CopyProvider { get; private set; }
-        public IResourceSaveProvider SaveProvider { get; private set; }
-        public void Build()
-        {
-            LoadProvider = new ResourceLoadProvider(_managementServices);
-            SyncProvider = new ResourceSyncProvider();
-            DeleteProvider = new ResourceDeleteProvider(_versionRepository);
-            RenameProvider = new ResourceRenameProvider(_versionRepository);
-            CopyProvider = new ResourceCopyProvider();
-            SaveProvider = new ResourceSaveProvider(_versionRepository);
-        }
-    }
-
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-    public class ResourceCatalog : IResourceCatalog
+    public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
 
-         private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
+        private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
         #region Singleton Instance
-        //
-        // Multi-threaded implementation - see http://msdn.microsoft.com/en-us/library/ff650316.aspx
-        //
-        // This approach ensures that only one instance is created and only when the instance is needed. 
-        // Also, the variable is declared to be volatile to ensure that assignment to the instance variable
-        // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
-        // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
-        //
-        static volatile ResourceCatalog _instance;
-        static readonly object SyncRoot = new object();
-        public Action<IResource> ResourceSaved;
-        public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages;
+        private static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
+                                            {
+                                                var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
+                                                CompileMessageRepo.Instance.Ping();
+                                                return c;
+                                            }, LazyThreadSafetyMode.PublicationOnly);
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
-        public static ResourceCatalog Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (SyncRoot)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-                            CompileMessageRepo.Instance.Ping();
-
-                        }
-                    }
-                }
-
-                return _instance;
-            }
-        }
-
+        public static ResourceCatalog Instance => LazyCat.Value;
 
         #endregion
 
@@ -126,35 +67,43 @@ namespace Dev2.Runtime.Hosting
         /// <param name="managementServices">The management services to be loaded.</param>
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
+            InitializeWorkspaceResources();
             // MUST load management services BEFORE server workspace!!
             IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, managementServices);
-            _catalogPluginContainer.Build();
+            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
+            _catalogPluginContainer.Build(this);
+
 
         }
         [ExcludeFromCodeCoverage]//Used by tests only
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
+            InitializeWorkspaceResources();
             // MUST load management services BEFORE server workspace!!
             var versioningRepository = serverVersionRepository;
-            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, managementServices);
-            _catalogPluginContainer.Build();
+            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
+            _catalogPluginContainer.Build(this);
         }
         #endregion
+
+        private void InitializeWorkspaceResources()
+        {
+            WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
+        }
 
         #region Properties
 
         public ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices => _catalogPluginContainer.LoadProvider.FrequentlyUsedServices;
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _catalogPluginContainer.LoadProvider.ManagementServices;
         public ConcurrentDictionary<Guid, object> WorkspaceLocks => _catalogPluginContainer.LoadProvider.WorkspaceLocks;
-        public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources => _catalogPluginContainer.LoadProvider.WorkspaceResources;
+        public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
         #endregion
 
         #region ResourceLoadProvider
 
         public int GetResourceCount(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResourceCount(workspaceID);
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, resourceType, version);
-        public IResource GetResource(string resourceName, Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResource(resourceName, workspaceId);
+        //public IResource GetResource(string resourceName, Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResource(resourceName, workspaceId);
         public StringBuilder GetResourceContents(IResource resource) => _catalogPluginContainer.LoadProvider.GetResourceContents(resource);
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResourceContents(workspaceID, resourceID);
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType) => _catalogPluginContainer.LoadProvider.GetModels(workspaceID, sourceType);
@@ -168,7 +117,7 @@ namespace Dev2.Runtime.Hosting
         public virtual IResource GetResource(Guid workspaceID, Guid serviceID) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, serviceID);
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, serviceID);
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, resourceName);
-        public string GetResourcePath(Guid id) => _catalogPluginContainer.LoadProvider.GetResourcePath(id);
+        public string GetResourcePath(Guid workspaceID,Guid resourceId) => _catalogPluginContainer.LoadProvider.GetResourcePath(workspaceID,resourceId);
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId) => _catalogPluginContainer.LoadProvider.GetDependants(workspaceID, resourceId);
         public List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, Guid resourceId) => _catalogPluginContainer.LoadProvider.GetDependentsAsResourceForTrees(workspaceID, resourceId);
         public IList<IResource> GetResourceList(Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResources(workspaceId);
@@ -193,7 +142,6 @@ namespace Dev2.Runtime.Hosting
                 WorkspaceResources.AddOrUpdate(workspaceID,
                     id => LoadWorkspaceImpl(workspaceID),
                     (id, resources) => LoadWorkspaceImpl(workspaceID));
-
             }
 
             _loading = false;
@@ -319,8 +267,32 @@ namespace Dev2.Runtime.Hosting
 
         #region SaveResource
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, userRoles, reason, user);
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, userRoles, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, reason, user);
+
+        public Action<IResource> ResourceSaved
+        {
+            get
+            {
+                return _catalogPluginContainer.SaveProvider.ResourceSaved;
+            }
+            set
+            {
+                _catalogPluginContainer.SaveProvider.ResourceSaved = value;
+            }
+        }
+        public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages
+        {
+            get
+            {
+                return _catalogPluginContainer.SaveProvider.SendResourceMessages;
+            }
+            set
+            {
+                _catalogPluginContainer.SaveProvider.SendResourceMessages = value;
+            }
+        }
+
         internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting);
 
         #endregion
@@ -334,7 +306,7 @@ namespace Dev2.Runtime.Hosting
 
         #region SyncTo
 
-        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null) =>  _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, filesToIgnore);
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, filesToIgnore);
 
         #endregion
 
@@ -394,7 +366,7 @@ namespace Dev2.Runtime.Hosting
             _parsers = new Dictionary<Guid, IResourceActivityCache>();
         }
 
-        public static Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+        private static Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID)

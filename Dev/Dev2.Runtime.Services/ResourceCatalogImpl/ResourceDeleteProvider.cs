@@ -21,9 +21,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
     {
         private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
         readonly IServerVersionRepository _serverVersionRepository;
+        private readonly IResourceCatalog _resourceCatalog;
+       
 
-        public ResourceDeleteProvider(IServerVersionRepository serverVersionRepository)
+        public ResourceDeleteProvider(IResourceCatalog resourceCatalog, IServerVersionRepository serverVersionRepository)
         {
+            _resourceCatalog = resourceCatalog;
             _serverVersionRepository = serverVersionRepository;
         }
 
@@ -44,8 +47,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
                 }
 
-                var workspaceResources = ResourceCatalog.Instance.GetResources(workspaceID);
-                var resources = ResourceCatalog.Instance.GetResourcesBasedOnType(type, workspaceResources, r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
+                var workspaceResources = _resourceCatalog.GetResources(workspaceID);
+                var resources = _resourceCatalog.GetResourcesBasedOnType(type, workspaceResources, r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
                 Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
                 {
                     {
@@ -78,7 +81,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
                     }
 
-                    var workspaceResources = ResourceCatalog.Instance.GetResources(workspaceID);
+                    var workspaceResources = _resourceCatalog.GetResources(workspaceID);
                     var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
 
                     var commands = GetDeleteCommands(workspaceID, resourceID, type, deleteVersions, resources, workspaceResources);
@@ -140,17 +143,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     ServerAuthorizationService.Instance.Remove(resource.ResourceID);
                 }
             }
-            ResourceCatalog.Instance.RemoveFromResourceActivityCache(workspaceID, resource);
+            ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
             return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
         }
         void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
         {
             var resourceId = resource.ResourceID;
-            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceId);
+            var dependants = _resourceCatalog.GetDependentsAsResourceForTrees(workspaceID, resourceId);
             var dependsMessageList = new List<ICompileMessageTO>();
             foreach (var dependant in dependants)
             {
-                var affectedResource = ResourceCatalog.Instance.GetResource(workspaceID, dependant.ResourceID);
+                var affectedResource = _resourceCatalog.GetResource(workspaceID, dependant.ResourceID);
                 foreach (var compileMessageTO in messages)
                 {
                     compileMessageTO.WorkspaceID = workspaceID;
@@ -164,7 +167,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 if (affectedResource != null)
                 {
-                    Common.UpdateResourceXml(workspaceID, affectedResource, messages);
+                    Common.UpdateResourceXml(_resourceCatalog,workspaceID, affectedResource, messages);
                 }
             }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
@@ -185,13 +188,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         #endregion
-
-        #region Implementation of IResourceDeleteProvider
-
-
-
-
-
-        #endregion
+        
     }
 }
