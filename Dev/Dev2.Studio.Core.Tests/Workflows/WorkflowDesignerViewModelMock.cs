@@ -12,11 +12,9 @@ using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -116,6 +114,11 @@ namespace Dev2.Core.Tests.Workflows
         public bool SetApplyForDrop(IDataObject dataObject)
         {
             return ApplyForDrop(dataObject);
+        }
+
+        public void SetupGetWorkflowFieldsFromFlowNodes(IEnumerable<ModelItem> flowNodes)
+        {
+            GetWorkflowFieldsFromFlowNodes(flowNodes);
         }
 
         public void SetupRequestExapandAll()
