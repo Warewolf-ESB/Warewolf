@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {

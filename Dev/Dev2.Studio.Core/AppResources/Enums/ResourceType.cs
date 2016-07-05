@@ -18,19 +18,16 @@ namespace Dev2.Studio.Core.AppResources.Enums
     public enum ResourceType
     {
         [TreeCategory("WORKFLOWS")]
-        [IconLocation("pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png")]
         [Description("Workflow service")]
         [Display(Order = 1)]
         WorkflowService,
 
         [TreeCategory("SERVICES")]
-        [IconLocation("pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png")]
         [Description("Worker Service")]
         [Display(Order = 2)]
         Service,
 
         [TreeCategory("SOURCES")]
-        [IconLocation("pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png")]
         [Description("Source")]
         [Display(Order = 3)]
         Source,

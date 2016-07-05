@@ -17,7 +17,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;

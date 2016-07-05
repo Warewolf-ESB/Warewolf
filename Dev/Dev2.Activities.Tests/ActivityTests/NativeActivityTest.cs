@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Simulation;
 using Dev2.Tests.Activities.XML;
 using Dev2.Util;

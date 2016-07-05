@@ -9,8 +9,6 @@
 */
 
 using System;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable once CheckNamespace
@@ -18,25 +16,6 @@ namespace Dev2.Studio.Core
 {
     public static class ResourceHelper
     {
-        public static string GetIconPath(IContextualResourceModel resource)
-        {
-            string iconPath = resource.IconPath;
-            if(string.IsNullOrEmpty(resource.UnitTestTargetWorkflowService))
-            {
-                if(string.IsNullOrEmpty(resource.IconPath))
-                {
-                    iconPath = ResourceType.WorkflowService.GetIconLocation();
-                }
-            }
-            else
-            {
-                iconPath = string.IsNullOrEmpty(resource.IconPath)
-                               ? string.Empty
-                               : resource.IconPath;
-            }
-            return iconPath;
-        }
-
         /// <summary>
         /// Gets the display name associated with a specific resource and environment - used for tab headers
         /// </summary>

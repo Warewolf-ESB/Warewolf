@@ -180,7 +180,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
-            mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
@@ -196,7 +195,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
-            mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
@@ -214,7 +212,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Category\\Testing");
-            mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
 
