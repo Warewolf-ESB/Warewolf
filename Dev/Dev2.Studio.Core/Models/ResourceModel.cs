@@ -53,7 +53,6 @@ namespace Dev2.Studio.Core.Models
         private bool _isDatabaseService;
         private bool _isDebugMode;
         private bool _isResourceService;
-        private bool _requiresSignOff;
         private string _resourceName;
         private ResourceType _resourceType;
         private string _tags;
@@ -87,7 +86,7 @@ namespace Dev2.Studio.Core.Models
             _tagList = new List<string>();
             Environment = environment;
 
-            if (environment != null && environment.Connection != null)
+            if (environment?.Connection != null)
             {
                 ServerID = environment.Connection.ServerID;
             }
@@ -111,7 +110,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isValid = value;
-                NotifyOfPropertyChange("IsValid");
+                NotifyOfPropertyChange(nameof(IsValid));
             }
         }
 
@@ -127,10 +126,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isWorkflowSaved = value;
-                if (OnResourceSaved != null)
-                {
-                    OnResourceSaved(this);
-                }
+                OnResourceSaved?.Invoke(this);
             }
         }
 
@@ -147,7 +143,7 @@ namespace Dev2.Studio.Core.Models
                     // BUG 9634 - 2013.07.17 - TWR : added
                     _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
                 }
-                NotifyOfPropertyChange("Environment");
+                NotifyOfPropertyChange(nameof(Environment));
                 // ReSharper disable NotResolvedInText
                 NotifyOfPropertyChange("CanExecute");
                 // ReSharper restore NotResolvedInText
@@ -163,7 +159,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isDatabaseService = value;
-                NotifyOfPropertyChange("IsDatabaseService");
+                NotifyOfPropertyChange(nameof(IsDatabaseService));
             }
         }
 
@@ -173,7 +169,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isPluginService = value;
-                NotifyOfPropertyChange("IsPluginService");
+                NotifyOfPropertyChange(nameof(IsPluginService));
             }
         }
 
@@ -183,7 +179,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isResourceService = value;
-                NotifyOfPropertyChange("IsResourceService");
+                NotifyOfPropertyChange(nameof(IsResourceService));
             }
         }
 
@@ -193,10 +189,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _id = value;
-                if (_validationService != null)
-                {
-                    _validationService.Subscribe(_id, ReceiveDesignValidation);
-                }
+                _validationService?.Subscribe(_id, ReceiveDesignValidation);
             }
         }
 
@@ -225,7 +218,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _version = value;
-                NotifyOfPropertyChange("Version");
+                NotifyOfPropertyChange(nameof(Version));
             }
         }
 
@@ -235,7 +228,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _allowCategoryEditing = value;
-                NotifyOfPropertyChange("AllowCategoryEditing");
+                NotifyOfPropertyChange(nameof(AllowCategoryEditing));
             }
         }
 
@@ -246,7 +239,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _resourceName = value.Trim();
-                NotifyOfPropertyChange("ResourceName");
+                NotifyOfPropertyChange(nameof(ResourceName));
             }
         }
 
@@ -264,7 +257,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _displayName = value;
-                NotifyOfPropertyChange("DisplayName");
+                NotifyOfPropertyChange(nameof(DisplayName));
             }
         }
 
@@ -275,7 +268,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _unitTestTargetWorkflowService = value;
-                NotifyOfPropertyChange("UnitTestTargetWorkflowService");
+                NotifyOfPropertyChange(nameof(UnitTestTargetWorkflowService));
             }
         }
 
@@ -289,11 +282,8 @@ namespace Dev2.Studio.Core.Models
                 if (value != _dataList)
                 {
                     _dataList = value;
-                    NotifyOfPropertyChange("DataList");
-                    if (OnDataListChanged != null)
-                    {
-                        OnDataListChanged();
-                    }
+                    NotifyOfPropertyChange(nameof(DataList));
+                    OnDataListChanged?.Invoke();
                 }
 
             }
@@ -305,7 +295,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _resourceType = value;
-                NotifyOfPropertyChange("ResourceType");
+                NotifyOfPropertyChange(nameof(ResourceType));
             }
         }
 
@@ -316,7 +306,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _category = value;
-                NotifyOfPropertyChange("Category");
+                NotifyOfPropertyChange(nameof(Category));
             }
         }
 
@@ -326,7 +316,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _tags = value;
-                NotifyOfPropertyChange("Tags");
+                NotifyOfPropertyChange(nameof(Tags));
             }
         }
 
@@ -337,7 +327,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _comment = value;
-                NotifyOfPropertyChange("Comment");
+                NotifyOfPropertyChange(nameof(Comment));
             }
         }
 
@@ -350,21 +340,11 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _workflowXaml = value;
-                NotifyOfPropertyChange("WorkflowXaml");
+                NotifyOfPropertyChange(nameof(WorkflowXaml));
             }
         }
 
         public bool IsVersionResource { get; set; }
-
-        public bool RequiresSignOff
-        {
-            get { return _requiresSignOff; }
-            set
-            {
-                _requiresSignOff = value;
-                NotifyOfPropertyChange("RequiresSignOff");
-            }
-        }
 
         public bool HasErrors => ValidationErrors.Count > 0;
 
@@ -374,7 +354,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _dataTags = value;
-                NotifyOfPropertyChange("DataTags");
+                NotifyOfPropertyChange(nameof(DataTags));
             }
         }
 
@@ -385,7 +365,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _helpLink = value;
-                NotifyOfPropertyChange("HelpLink");
+                NotifyOfPropertyChange(nameof(HelpLink));
             }
         }
 
@@ -395,7 +375,7 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isDebugMode = value;
-                NotifyOfPropertyChange("IsDebugMode");
+                NotifyOfPropertyChange(nameof(IsDebugMode));
             }
         }
 
@@ -416,7 +396,7 @@ namespace Dev2.Studio.Core.Models
                     return;
                 }
                 _versionInfo = value;
-                NotifyOfPropertyChange("VersionInfo");
+                NotifyOfPropertyChange(nameof(VersionInfo));
             }
         }
 
@@ -450,10 +430,7 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
             }
-            if (OnDesignValidationReceived != null)
-            {
-                OnDesignValidationReceived(this, memo);
-            }
+            OnDesignValidationReceived?.Invoke(this, memo);
         }
 
         public void ClearErrors()
@@ -523,7 +500,6 @@ namespace Dev2.Studio.Core.Models
                 VersionInfo = resourceModel.VersionInfo;
                 HelpLink = resourceModel.HelpLink;
                 IsDebugMode = resourceModel.IsDebugMode;
-                RequiresSignOff = resourceModel.RequiresSignOff;
                 ResourceName = resourceModel.ResourceName;
                 ResourceType = resourceModel.ResourceType;
                 Tags = resourceModel.Tags;
@@ -559,7 +535,7 @@ namespace Dev2.Studio.Core.Models
                 var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
                 StringBuilder xaml = WorkflowXaml;
 
-                if ((xaml==null || xaml.Length==0) && msg != null && msg.Message != null)
+                if ((xaml==null || xaml.Length==0) && msg?.Message != null)
                 {
                     xaml = msg.Message;
                 }
@@ -618,7 +594,7 @@ namespace Dev2.Studio.Core.Models
             XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
-                new XAttribute("Version", Version != null ? Version.ToString() : "1.0"),
+                new XAttribute("Version", Version?.ToString() ?? "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ResourceType),
@@ -649,7 +625,7 @@ namespace Dev2.Studio.Core.Models
             var contentElement = content.ToXElement();
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
-                new XAttribute("Version", Version != null ? Version.ToString() : "1.0"),
+                new XAttribute("Version", Version?.ToString() ?? "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ServerResourceType ?? ResourceType.ToString()),
@@ -748,10 +724,7 @@ namespace Dev2.Studio.Core.Models
 
         protected override void OnDispose()
         {
-            if (_validationService != null)
-            {
-                _validationService.Dispose();
-            }
+            _validationService?.Dispose();
             base.OnDispose();
         }
     }

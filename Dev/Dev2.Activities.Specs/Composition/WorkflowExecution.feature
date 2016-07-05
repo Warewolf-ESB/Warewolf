@@ -4125,7 +4125,7 @@ Scenario Outline: Database PostgreSql Database service inputs and outputs
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
 	  |                                       |
 	  | [[countries(1).Id]] = 1               |
-	  | [[countries(2).Id]] = 2               |
+	  | [[countries(2).Id]] = 3               |
 	  | [[countries(1).Name]] = United States |
 	  | [[countries(2).Name]] = South Africa  |
 Examples: 
