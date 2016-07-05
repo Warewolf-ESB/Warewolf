@@ -32,6 +32,18 @@ namespace Warewolf.Studio.UISpecs
             Mouse.DoubleClick(getTreeItem, new Point(40, 12));
         }
 
+        [When(@"I scroll down in the explorer tree")]
+        public void WhenIScrollDownInTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, -1);
+        }
+
+        [When(@"I scroll up in the explorer tree")]
+        public void WhenIScrollUpInTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, 1);
+        }
+
         [When(@"I right click ""(.*)"" in the explorer tree")]
         public void WhenIRightClickTheItemInTheExplorerTree(string path)
         {
@@ -104,7 +116,7 @@ namespace Warewolf.Studio.UISpecs
                     }
                     else
                     {
-                        return true;
+                        return !path.EndsWith(folder);
                     }
                 });
             }
