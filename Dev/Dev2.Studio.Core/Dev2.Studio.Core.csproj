@@ -265,11 +265,13 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
+    <Compile Include="DataList\Common.cs" />
     <Compile Include="DataList\ComplexObjectHandler.cs" />
     <Compile Include="DataList\MissingDataList.cs" />
     <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
     <Compile Include="DataList\PartIsUsed.cs" />
     <Compile Include="DataList\RecordsetHandler.cs" />
+    <Compile Include="DataList\ScalarHandler.cs" />
     <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
     <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
     <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
@@ -281,6 +283,7 @@
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Interfaces\IPartIsUsed.cs" />
     <Compile Include="Interfaces\IRecordsetHandler.cs" />
+    <Compile Include="Interfaces\IScalarHandler.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />

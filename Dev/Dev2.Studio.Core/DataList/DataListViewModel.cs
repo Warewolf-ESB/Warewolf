@@ -21,7 +21,6 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Utils;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -44,17 +43,13 @@ using Warewolf.Resource.Errors;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
-    public interface IScalarHandler
-    {
-
-    }
-
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
     {
         #region Fields
 
         readonly IComplexObjectHandler _complexObjectHandler;
         readonly IRecordsetHandler _recordsetHandler;
+        readonly IScalarHandler _scalarHandler;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -229,6 +224,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _partIsUsed = new PartIsUsed(RecsetCollection, ScalarCollection, ComplexObjectCollection);
             _complexObjectHandler = new ComplexObjectHandler(this);
             _recordsetHandler = new RecordsetHandler(this);
+            _scalarHandler = new ScalarHandler(this);
         }
 
         public IJsonObjectsView JsonObjectsView
@@ -640,11 +636,8 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void RemoveBlankScalars()
         {
-            List<IScalarItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-
-            if (blankList.Count <= 1) return;
-
-            ScalarCollection.Remove(blankList.First());
+            _scalarHandler.RemoveBlankScalars();
+            
         }
 
         #endregion Methods
@@ -653,7 +646,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void ValidateScalar()
         {
-            CheckDataListItemsForDuplicates(DataList);
+            _scalarHandler.ValidateScalar();
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
@@ -681,28 +674,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void AddRowToScalars()
         {
-            List<IScalarItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-            if (blankList.Count != 0) return;
-
-            var scalar = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
-            ScalarCollection.Add(scalar);
+            _scalarHandler.AddRowToScalars();
         }
 
-        static void FixNamingForScalar(IDataListItemModel scalar)
+         void FixNamingForScalar(IDataListItemModel scalar)
         {
-            if (scalar.DisplayName.Contains("()"))
-            {
-                scalar.DisplayName = scalar.DisplayName.Replace("()", "");
-            }
-            FixCommonNamingProblems(scalar);
-        }
-
-        static void FixCommonNamingProblems(IDataListItemModel recset)
-        {
-            if (recset.DisplayName.Contains("[") || recset.DisplayName.Contains("]"))
-            {
-                recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
-            }
+            _scalarHandler.FixNamingForScalar(scalar);
         }
 
         private bool HasAnyUnusedItems()
@@ -794,13 +771,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void SortScalars(bool ascending)
         {
-            IList<IScalarItemModel> newScalarCollection = @ascending ? ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList() : ScalarCollection.OrderByDescending(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
-            ScalarCollection.Clear();
-            foreach (var item in newScalarCollection)
-            {
-                ScalarCollection.Add(item);
-            }
-            ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel(string.Empty));
+            _scalarHandler.SortScalars(ascending);
         }
 
         /// <summary>
@@ -922,84 +893,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void AddScalars(XmlNode c)
         {
-            if (c.Attributes != null)
-            {
-                IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
-                if (scalar != null)
-                {
-                    scalar.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
-                    if (string.IsNullOrEmpty(_searchText))
-                        ScalarCollection.Add(scalar);
-                    else if (scalar.DisplayName.ToUpper().StartsWith(_searchText.ToUpper()))
-                    {
-                        ScalarCollection.Add(scalar);
-                    }
-                }
-            }
-            else
-            {
-                IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(c.Name, ParseDescription(null), ParseColumnIODirection(null));
-                if (scalar != null)
-                {
-                    scalar.IsEditable = ParseIsEditable(null);
-                    if (String.IsNullOrEmpty(_searchText))
-                        ScalarCollection.Add(scalar);
-                    else if (scalar.DisplayName.ToUpper().StartsWith(_searchText.ToUpper()))
-                    {
-                        ScalarCollection.Add(scalar);
-                    }
-                }
-            }
+            _scalarHandler.AddScalars(c);
         }
-
-        private string ParseDescription(XmlAttribute attr)
-        {
-            var result = string.Empty;
-            if (attr != null)
-            {
-                result = attr.Value;
-            }
-            return result;
-        }
-
-        private bool ParseIsEditable(XmlAttribute attr)
-        {
-            return ParseBoolAttribute(attr);
-        }
-
-        private bool ParseBoolAttribute(XmlAttribute attr)
-        {
-            var result = true;
-            if (attr != null)
-            {
-                bool.TryParse(attr.Value, out result);
-            }
-            return result;
-        }
-        // ReSharper disable InconsistentNaming
-        private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
-        // ReSharper restore InconsistentNaming
-        {
-            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
-
-            if (attr == null)
-            {
-                return result;
-            }
-            if (!Enum.TryParse(attr.Value, true, out result))
-            {
-                result = enDev2ColumnArgumentDirection.None;
-            }
-            return result;
-        }
-
-        private const string RootTag = "DataList";
-        private const string Description = "Description";
-        private const string IsEditable = "IsEditable";
 
         private string GetDataListString()
         {
-            StringBuilder result = new StringBuilder("<" + RootTag + ">");
+            StringBuilder result = new StringBuilder("<" + Core.DataList.Common.RootTag + ">");
             foreach (var recSet in RecsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
             {
                 IEnumerable<IDataListItemModel> filledRecordSet = recSet.Children.Where(c => !c.IsBlank && !c.HasError);
@@ -1010,9 +909,9 @@ namespace Dev2.Studio.ViewModels.DataList
                 foreach (var col in cols)
                 {
                     result.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" {5}=\"{6}\" />", col.ColumnName
-                    , Description
+                    , Core.DataList.Common.Description
                     , col.ColumnDescription
-                    , IsEditable
+                    , Core.DataList.Common.IsEditable
                     , col.IsEditable
                     , GlobalConstants.DataListIoColDirection
                     , col.ColumnIODirection);
@@ -1034,7 +933,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 _complexObjectHandler.AddComplexObjectsToBuilder(result, complexObjectItemModel);
             }
 
-            result.Append("</" + RootTag + ">");
+            result.Append("</" + Core.DataList.Common.RootTag + ">");
             return result.ToString();
         }
 
@@ -1042,9 +941,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             result.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" {5}=\"{6}\" ",
                 item.DisplayName
-                , Description
+                , Core.DataList.Common.Description
                 , item.Description
-                , IsEditable
+                , Core.DataList.Common.IsEditable
                 , item.IsEditable
                 , GlobalConstants.DataListIoColDirection
                 , item.ColumnIODirection);
@@ -1095,8 +994,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void SetScalarItemsAsUsed()
         {
-            foreach (var dataListItemModel in ScalarCollection.Where(model => !model.IsUsed))
-                dataListItemModel.IsUsed = true;
+            _scalarHandler.SetScalarItemsAsUsed();
         }
 
         #endregion
@@ -1135,9 +1033,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void FindMissingForScalar(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
         {
-            if (!part.IsScalar) return;
-            if (ScalarCollection.Count(c => c.DisplayName == part.Field) == 0)
-                missingDataParts.Add(part);
+            _scalarHandler.FindMissingForScalar(part, missingDataParts);
         }
 
         public List<IDataListVerifyPart> UpdateDataListItems(IResourceModel resourceModel, IList<IDataListVerifyPart> workflowFields)
