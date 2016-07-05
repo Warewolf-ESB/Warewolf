@@ -71,6 +71,23 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsArray(ref string path)
+        {
+            var isArray = false;
+
+            if (path.Contains("()") || path.Contains("(*)"))
+            {
+                isArray = true;
+                path = path.Replace("(*)", "()");
+            }
+            return isArray;
+        }
+
+        /// <summary>
         /// Replaces the index of a recordset with a blank index.
         /// </summary>
         /// <param name="expression">The expession.</param>
@@ -521,7 +538,6 @@ namespace Dev2.Data.Util
 
             if (!value.Contains(ClosingSquareBrackets))
             {
-                // missing both
                 result = !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets);
             }
             else

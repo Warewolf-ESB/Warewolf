@@ -26,7 +26,7 @@ namespace Dev2.Runtime.Interfaces
     {
         T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new();
         T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new();
-        string GetResourcePath(Guid id);
+        string GetResourcePath(Guid workspaceID,Guid id);
         IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new();
         IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams);
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains = false) where TServiceType : DynamicServiceObjectBase;
@@ -41,12 +41,11 @@ namespace Dev2.Runtime.Interfaces
         StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID);
         StringBuilder GetResourceContents(IResource resource);
         List<IResource> GetResources(Guid workspaceID);
-        IResource GetResource(string resourceName, Guid workspaceId);
         IEnumerable GetModels(Guid workspaceID, enSourceType sourceType);
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID) where TServiceType : DynamicServiceObjectBase;
-        ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; }
         ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; }
         ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; }
         ConcurrentDictionary<Guid, object> WorkspaceLocks { get; }
+        List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func);
     }
 }

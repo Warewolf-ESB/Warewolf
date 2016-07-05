@@ -17,7 +17,6 @@ using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
