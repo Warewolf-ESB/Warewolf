@@ -18,7 +18,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     public class BaseWorkSurfaceViewModel : BaseViewModel,
         IWorkSurfaceViewModel
     {
-        private string _iconPath;
         private WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
 
         public BaseWorkSurfaceViewModel(IEventAggregator eventPublisher)
@@ -36,21 +35,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
                 _workSurfaceContext = value;
                 NotifyOfPropertyChange(() => WorkSurfaceContext);
-            }
-        }
-
-        public virtual string IconPath
-        {
-            get
-            {
-                return _iconPath;
-            }
-            set
-            {
-                if(_iconPath == value) return;
-
-                _iconPath = value;
-                NotifyOfPropertyChange(() => IconPath);
             }
         }
 

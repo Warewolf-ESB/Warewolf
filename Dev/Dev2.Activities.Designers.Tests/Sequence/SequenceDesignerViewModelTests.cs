@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -19,8 +18,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -460,28 +457,6 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         {
             var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
             return modelItem;
-        }
-    }
-
-
-    public class TestDataWithContexResourceModel
-    {
-        public ResourceModel DataContext
-        {
-            get
-            {
-                var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-                mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.NewGuid());
-                mockEnvironmentModel.Setup(model => model.Name).Returns("testEnv");
-                var resourceModel = new ResourceModel(mockEnvironmentModel.Object)
-                    {
-                        ResourceType = Studio.Core.AppResources.Enums.ResourceType.Service,
-                        ServerResourceType = "DbService",
-                        ResourceName = "MyDBService",
-                        IconPath = "IconPath"
-                    };
-                return resourceModel;
-            }
         }
     }
 

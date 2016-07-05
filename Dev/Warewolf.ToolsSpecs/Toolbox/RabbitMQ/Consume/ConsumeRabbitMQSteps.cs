@@ -11,6 +11,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Runtime.Interfaces;
 using TechTalk.SpecFlow;
 
 namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
