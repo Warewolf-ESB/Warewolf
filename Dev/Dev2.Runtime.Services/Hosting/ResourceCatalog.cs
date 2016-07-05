@@ -93,7 +93,6 @@ namespace Dev2.Runtime.Hosting
 
         #region Properties
 
-        public ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices => _catalogPluginContainer.LoadProvider.FrequentlyUsedServices;
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _catalogPluginContainer.LoadProvider.ManagementServices;
         public ConcurrentDictionary<Guid, object> WorkspaceLocks => _catalogPluginContainer.LoadProvider.WorkspaceLocks;
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
@@ -176,7 +175,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        void BuildResourceActivityCache(Guid workspaceID, IEnumerable<IResource> userServices)
+        private void BuildResourceActivityCache(Guid workspaceID, IEnumerable<IResource> userServices)
         {
             if (_parsers.ContainsKey(workspaceID))
             {
