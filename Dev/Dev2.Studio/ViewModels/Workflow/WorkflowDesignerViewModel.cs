@@ -113,7 +113,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         // ReSharper disable once InconsistentNaming
         private ModelService ModelService;
         IContextualResourceModel _resourceModel;
-        Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
+        // ReSharper disable once InconsistentNaming
+        protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
         // ReSharper disable InconsistentNaming
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
@@ -293,8 +294,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         [ExcludeFromCodeCoverage]
         public virtual object SelectedModelItem => _wd?.Context?.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
-
-        public bool HasErrors { get; set; }
 
         public IContextualResourceModel ResourceModel { get { return _resourceModel; } set { _resourceModel = value; } }
 
@@ -633,18 +632,23 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var flowNodes = modelService.Find(modelService.Root, typeof (FlowNode));
 
-                foreach (var flowNode in flowNodes)
-                {
-                    var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
-                    foreach (var field in workflowFields)
-                    {
-                        var isJsonObjectSource = field.StartsWith("@");
-                        WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts, isJsonObjectSource);
-                    }
-                }
+                GetWorkflowFieldsFromFlowNodes(flowNodes);
             }
             var flattenedList = _uniqueWorkflowParts.Keys.ToList();
             return flattenedList;
+        }
+
+        protected void GetWorkflowFieldsFromFlowNodes(IEnumerable<ModelItem> flowNodes)
+        {
+            foreach (var flowNode in flowNodes)
+            {
+                var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
+                foreach (var field in workflowFields)
+                {
+                    var isJsonObjectSource = field.StartsWith("@");
+                    WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts, isJsonObjectSource);
+                }
+            }
         }
 
         private IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
@@ -1021,6 +1025,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }
 
+        [ExcludeFromCodeCoverage]
         private void OnViewOnLostFocus(object sender, RoutedEventArgs args)
         {
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
@@ -1747,6 +1752,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
+        [ExcludeFromCodeCoverage]
         private void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete)
