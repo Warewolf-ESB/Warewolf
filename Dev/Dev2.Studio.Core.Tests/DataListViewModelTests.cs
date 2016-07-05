@@ -2246,9 +2246,15 @@ namespace Dev2.Core.Tests
         public void SetComplexObjectParentIsUsed_GivenParentAndChild_ShouldSetAllToIsUsed()
         {
             //---------------Set up test pack-------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            
             var parent = CreateComplexObjectDataListModel("Child");
             var child = CreateComplexObjectDataListModel("Child", parent);
-            ComplexObjectHandler handler = new ComplexObjectHandler(new OptomizedObservableCollection<IComplexObjectItemModel>() { child });
+            dataListViewModel.ComplexObjectCollection.Add(child);
+            ComplexObjectHandler handler = new ComplexObjectHandler(dataListViewModel);
             PrivateObject p = new PrivateObject(handler);
             //---------------Assert Precondition----------------
 
