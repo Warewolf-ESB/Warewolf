@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -11,6 +10,7 @@ using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -18,23 +18,23 @@ namespace Dev2.Studio.Core.DataList
 {
     public class ComplexObjectHandler: IComplexObjectHandler
     {
-        private readonly ObservableCollection<IComplexObjectItemModel> _collection;
+        private readonly DataListViewModel _vm;
         private const string Description = "Description";
         private const string IsEditable = "IsEditable";
-        public ComplexObjectHandler(ObservableCollection<IComplexObjectItemModel> collection)
+        public ComplexObjectHandler(DataListViewModel vm)
         {
-            _collection = collection;
+            _vm = vm;
         }
 
         #region Implementation of IComplexObjectHandler
 
         public void RemoveBlankComplexObjects()
         {
-            var complexObjectItemModels = _collection.Where(model => string.IsNullOrEmpty(model.DisplayName));
+            var complexObjectItemModels = _vm.ComplexObjectCollection .Where(model => string.IsNullOrEmpty(model.DisplayName));
             var objectItemModels = complexObjectItemModels as IList<IComplexObjectItemModel> ?? complexObjectItemModels.ToList();
             if (objectItemModels.Count <= 1) return;
             for (var i = objectItemModels.Count; i > 0; i--)
-                _collection.Remove(objectItemModels[i - 1]);
+                _vm.ComplexObjectCollection.Remove(objectItemModels[i - 1]);
         }
 
         public void AddComplexObject(IDataListVerifyPart part)
@@ -53,11 +53,11 @@ namespace Dev2.Studio.Core.DataList
                 if (itemModel == null)
                 {
                     itemModel =
-                        _collection.FirstOrDefault(
+                        _vm.ComplexObjectCollection.FirstOrDefault(
                             model => model.DisplayName == pathToMatch && model.IsArray == isArray);
                     if (itemModel != null) continue;
                     itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
-                    _collection.Add(itemModel);
+                    _vm.ComplexObjectCollection.Add(itemModel);
                 }
                 else
                 {
@@ -99,11 +99,11 @@ namespace Dev2.Studio.Core.DataList
 
         public void SortComplexObjects(bool @ascending)
         {
-            IList<IComplexObjectItemModel> newRecsetCollection = @ascending ? _collection.OrderBy(c => c.DisplayName).ToList() : _collection.OrderByDescending(c => c.DisplayName).ToList();
-            _collection.Clear();
+            IList<IComplexObjectItemModel> newRecsetCollection = @ascending ? _vm.ComplexObjectCollection.OrderBy(c => c.DisplayName).ToList() : _vm.ComplexObjectCollection.OrderByDescending(c => c.DisplayName).ToList();
+            _vm.ComplexObjectCollection.Clear();
             foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
             {
-                _collection.Add(item);
+                _vm.ComplexObjectCollection.Add(item);
             }
         }
 
@@ -111,11 +111,11 @@ namespace Dev2.Studio.Core.DataList
         {
             if (parentObjectName.Contains("."))
                 parentObjectName = parentObjectName.Split('.')[0];
-            var parentObj = _collection.FirstOrDefault(model => model.Name == parentObjectName);
+            var parentObj = _vm.ComplexObjectCollection.FirstOrDefault(model => model.Name == parentObjectName);
             if (parentObj == null)
             {
                 parentObj = new ComplexObjectItemModel(parentObjectName);
-                _collection.Add(parentObj);
+                _vm.ComplexObjectCollection.Add(parentObj);
             }
             var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
             if (objToProcess != null)
@@ -181,7 +181,7 @@ namespace Dev2.Studio.Core.DataList
             }
             else
             {
-                _collection.Add(complexObjectItemModel);
+                _vm.ComplexObjectCollection.Add(complexObjectItemModel);
             }
             if (xmlNode.HasChildNodes)
             {
@@ -225,7 +225,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void DetectUnusedComplexObjects(IEnumerable<IDataListVerifyPart> partsToVerify)
         {
-            var items = _collection.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
+            var items = _vm.ComplexObjectCollection.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
             var models = items as IList<IComplexObjectItemModel> ?? items.ToList();
             var unusedItems =
                 from itemModel in models
@@ -254,7 +254,7 @@ namespace Dev2.Studio.Core.DataList
                     complexObjectItemModel.IsUsed = true;
                 }
             }
-            foreach (var complexObjectItemModel in _collection)
+            foreach (var complexObjectItemModel in _vm.ComplexObjectCollection)
             {
                 var getChildrenToCheck = complexObjectItemModel.Children.Flatten(model => model.Children).Where(model => !string.IsNullOrEmpty(model.DisplayName));
                 complexObjectItemModel.IsUsed = getChildrenToCheck.All(model => model.IsUsed) && complexObjectItemModel.IsUsed;

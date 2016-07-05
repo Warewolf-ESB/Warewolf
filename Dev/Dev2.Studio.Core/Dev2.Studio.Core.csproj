@@ -269,6 +269,7 @@
     <Compile Include="DataList\MissingDataList.cs" />
     <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
     <Compile Include="DataList\PartIsUsed.cs" />
+    <Compile Include="DataList\RecordsetHandler.cs" />
     <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
     <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
     <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
@@ -279,6 +280,7 @@
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Interfaces\IPartIsUsed.cs" />
+    <Compile Include="Interfaces\IRecordsetHandler.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
