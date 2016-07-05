@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -19,8 +18,6 @@ namespace Dev2.Studio.Core.DataList
     public class ComplexObjectHandler: IComplexObjectHandler
     {
         private readonly DataListViewModel _vm;
-        private const string Description = "Description";
-        private const string IsEditable = "IsEditable";
         public ComplexObjectHandler(DataListViewModel vm)
         {
             _vm = vm;
@@ -155,23 +152,15 @@ namespace Dev2.Studio.Core.DataList
             return name;
         }
 
-        private bool ParseBoolAttribute(XmlAttribute attr)
-        {
-            var result = true;
-            if (attr != null)
-            {
-                bool.TryParse(attr.Value, out result);
-            }
-            return result;
-        }
+      
         public void AddComplexObjectFromXmlNode(XmlNode xmlNode, ComplexObjectItemModel parent)
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;
             if (xmlNode.Attributes != null)
             {
-                isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
-                ioDirection = ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]);
+                isArray =Common.ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
+                ioDirection = Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]);
             }
             var name = GetNameForArrayComplexObject(xmlNode, isArray);
             var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray, Parent = parent, ColumnIODirection = ioDirection };
@@ -203,9 +192,9 @@ namespace Dev2.Studio.Core.DataList
             }
             result.AppendFormat("{0} {1}=\"{2}\"{3}=\"{4}\" IsJson=\"{5}\" IsArray=\"{6}\" {7}\"{8}\">"
                 , name
-                , Description
+                , Common.Description
                 , complexObjectItemModel.Description
-                , IsEditable
+                , Common.IsEditable
                 , complexObjectItemModel.IsEditable
                 , true
                 , complexObjectItemModel.IsArray
@@ -269,21 +258,6 @@ namespace Dev2.Studio.Core.DataList
                 SetComplexObjectParentIsUsed(complexObjectItemModel.Parent);
             }
         }
-        private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
-        {
-            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
-
-            if (attr == null)
-            {
-                return result;
-            }
-            if (!Enum.TryParse(attr.Value, true, out result))
-            {
-                result = enDev2ColumnArgumentDirection.None;
-            }
-            return result;
-        }
-
         #endregion
     }
 }
