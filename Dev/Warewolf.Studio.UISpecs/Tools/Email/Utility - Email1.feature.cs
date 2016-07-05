@@ -10,15 +10,14 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.Studio.UISpecs.Tools.Utility_Email
+namespace Warewolf.Studio.UISpecs.Tools.Email
 {
     using TechTalk.SpecFlow;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class Utility_EmailFeature
     {
         
@@ -32,8 +31,7 @@ namespace Warewolf.Studio.UISpecs.Tools.Utility_Email
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Utility - Email", "\tIn order to send an email\r\n\tAs a warewolf user\r\n\tI want a tool that performs thi" +
-                    "s action", ProgrammingLanguage.CSharp, new string[] {
-                        "Ignore"});
+                    "s action", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -50,7 +48,7 @@ namespace Warewolf.Studio.UISpecs.Tools.Utility_Email
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Utility - Email")))
             {
-                Warewolf.Studio.UISpecs.Tools.Utility_Email.Utility_EmailFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.Email.Utility_EmailFeature.FeatureSetup(null);
             }
         }
         
@@ -71,28 +69,52 @@ namespace Warewolf.Studio.UISpecs.Tools.Utility_Email
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Email onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxEmailOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Email onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 7
+this.ScenarioSetup(scenarioInfo);
+#line 8
+ testRunner.When("I \"Drag_Toolbox_Email_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 9
+ testRunner.Then("I \"Assert_Email_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Open_Email_Tool_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_Email_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool small view")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Email")]
         public virtual void EmailToolSmallView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool small view", new string[] {
-                        "Email"});
-#line 8
+                        "Email",
+                        "Ignore"});
+#line 19
 this.ScenarioSetup(scenarioInfo);
-#line 9
+#line 20
  testRunner.Given("I have email tool small view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 10
+#line 21
  testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
+#line 22
  testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 23
  testRunner.And("to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 24
  testRunner.And("subject is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 25
  testRunner.And("body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 26
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -101,22 +123,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool small view water marks")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EmailToolSmallViewWaterMarks()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool small view water marks", ((string[])(null)));
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool small view water marks", new string[] {
+                        "Ignore"});
+#line 29
 this.ScenarioSetup(scenarioInfo);
-#line 18
+#line 30
  testRunner.Given("I have email tool small view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 31
  testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
+#line 32
  testRunner.And("To address Watermark is \"Account or email address\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 33
  testRunner.And("subject Watermark is \"Message Subject\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 34
  testRunner.And("body Watermark is \"Email Content\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 35
  testRunner.And("result Watermark is \"[[EmailSuccess]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -125,40 +149,42 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool Large view")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EmailToolLargeView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool Large view", ((string[])(null)));
-#line 25
-this.ScenarioSetup(scenarioInfo);
-#line 26
- testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
- testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
- testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
- testRunner.And("From Address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
- testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
- testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
- testRunner.And("To address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
- testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
- testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
- testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
- testRunner.And("Subject is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
- testRunner.And("Attachement is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool Large view", new string[] {
+                        "Ignore"});
 #line 38
- testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 39
- testRunner.And("body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
+ testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.And("From Address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
+ testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+ testRunner.And("To address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+ testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+ testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+ testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+ testRunner.And("Subject is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+ testRunner.And("Attachement is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+ testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+ testRunner.And("body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -167,11 +193,11 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "",
                         ""});
-#line 41
+#line 54
  testRunner.And("On Error box consists", ((string)(null)), table1, "And ");
-#line 44
+#line 57
     testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 58
     testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -180,40 +206,42 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool water marks Large view")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EmailToolWaterMarksLargeView()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool water marks Large view", ((string[])(null)));
-#line 48
-this.ScenarioSetup(scenarioInfo);
-#line 49
- testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 50
- testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
- testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
- testRunner.And("From Address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
- testRunner.And("Password Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
- testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
- testRunner.And("To address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
- testRunner.And("Cc address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
- testRunner.And("Bcc address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And("Subject Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
- testRunner.And("Attachement Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool water marks Large view", new string[] {
+                        "Ignore"});
 #line 61
- testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 62
- testRunner.And("body Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 63
+ testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
+ testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+ testRunner.And("From Address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.And("Password Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+ testRunner.And("To address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.And("Cc address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+ testRunner.And("Bcc address Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+ testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+ testRunner.And("Subject Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
+ testRunner.And("Attachement Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
+ testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 75
+ testRunner.And("body Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
  testRunner.And("result Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -222,11 +250,11 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "[[Errors().Message",
                         "http://lcl:3142/service/err"});
-#line 64
+#line 77
  testRunner.And("On Error box Watermark", ((string)(null)), table2, "And ");
-#line 67
+#line 80
     testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 81
     testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -235,58 +263,60 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool small view to large view persiting data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EmailToolSmallViewToLargeViewPersitingData()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool small view to large view persiting data", ((string[])(null)));
-#line 72
-this.ScenarioSetup(scenarioInfo);
-#line 73
- testRunner.Given("I have email tool small view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
- testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
- testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
- testRunner.And("I enter to  address \"Testwarewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
- testRunner.And("I enter subject is \"Test Email Tool For Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
- testRunner.And("I enter body is \"Warewolf Rocking\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
- testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
- testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 81
- testRunner.Then("\"Email\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
- testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
- testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
- testRunner.And("From Address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool small view to large view persiting data", new string[] {
+                        "Ignore"});
 #line 85
- testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 86
- testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have email tool small view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 87
- testRunner.And("To address is \"Testwarewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
- testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter to  address \"Testwarewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
- testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter subject is \"Test Email Tool For Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
- testRunner.And("Subject is \"Warewolf Rocking\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter body is \"Warewolf Rocking\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
- testRunner.And("Attachement is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
- testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 94
- testRunner.And("body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"Email\" large view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 95
- testRunner.And("result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
+ testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+ testRunner.And("From Address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+ testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+ testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+ testRunner.And("To address is \"Testwarewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+ testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+ testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("Subject is \"Warewolf Rocking\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("Attachement is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+ testRunner.And("body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.And("result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
   testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -295,46 +325,48 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool Done is validating when no source selected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EmailToolDoneIsValidatingWhenNoSourceSelected()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool Done is validating when no source selected", ((string[])(null)));
-#line 99
-this.ScenarioSetup(scenarioInfo);
-#line 100
- testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 101
- testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
- testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
- testRunner.And("From Address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
- testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
- testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
- testRunner.And("I enter To address is \"Testwarewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
- testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
- testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
- testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
- testRunner.And("I enter Subject is \"Warewolf Rocking\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
- testRunner.And("Attachement is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool Done is validating when no source selected", new string[] {
+                        "Ignore"});
 #line 112
- testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 113
- testRunner.And("I enter body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 114
- testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mail source selected as \"Select an Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
- testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mail source edit button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("From Address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
+ testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+ testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+ testRunner.And("I enter To address is \"Testwarewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+ testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 121
+ testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+ testRunner.And("Priority selected \"Normal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 123
+ testRunner.And("I enter Subject is \"Warewolf Rocking\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+ testRunner.And("Attachement is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+ testRunner.And("Edit Attachememts is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+ testRunner.And("I enter body is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+ testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+ testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 130
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -343,22 +375,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Email tool New email source opens New Email Source tab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EmailToolNewEmailSourceOpensNewEmailSourceTab()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool New email source opens New Email Source tab", ((string[])(null)));
-#line 120
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Email tool New email source opens New Email Source tab", new string[] {
+                        "Ignore"});
+#line 133
 this.ScenarioSetup(scenarioInfo);
-#line 121
+#line 134
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
+#line 135
  testRunner.When("Mail source selected as \"New Email Source...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 123
+#line 136
  testRunner.Then("new Email source tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 124
+#line 137
  testRunner.When("I save \"Test Email\" email source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
+#line 138
  testRunner.Then("focus is \"Mail Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 126
+#line 139
  testRunner.Then("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,22 +401,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("From address field is updating when I select source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void FromAddressFieldIsUpdatingWhenISelectSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("From address field is updating when I select source", ((string[])(null)));
-#line 129
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("From address field is updating when I select source", new string[] {
+                        "Ignore"});
+#line 142
 this.ScenarioSetup(scenarioInfo);
-#line 130
+#line 143
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
+#line 144
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 132
+#line 145
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 133
+#line 146
  testRunner.And("From Address is \"Testwarewolf@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 147
  testRunner.And("Password is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
+#line 148
  testRunner.And("Test button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -396,25 +432,25 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is thrown on done button if there is no To address", new string[] {
                         "ignore"});
-#line 139
+#line 152
 this.ScenarioSetup(scenarioInfo);
-#line 140
+#line 153
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 141
+#line 154
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 142
+#line 155
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 143
+#line 156
  testRunner.And("To address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
+#line 157
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 158
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 159
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 160
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 161
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -428,25 +464,25 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is thrown on done button if To address is incorrect", new string[] {
                         "ignore"});
-#line 151
+#line 164
 this.ScenarioSetup(scenarioInfo);
-#line 152
+#line 165
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 153
+#line 166
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 154
+#line 167
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 155
+#line 168
  testRunner.And("I enter To address is \"testwarewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 156
+#line 169
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
+#line 170
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
+#line 171
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
+#line 172
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 160
+#line 173
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -455,44 +491,46 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation is thrown for incorrect email in CC field")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ValidationIsThrownForIncorrectEmailInCCField()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is thrown for incorrect email in CC field", ((string[])(null)));
-#line 162
-this.ScenarioSetup(scenarioInfo);
-#line 163
- testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 164
- testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 165
- testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
- testRunner.And("I enter To address is \"testwarewolf@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
- testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
- testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
- testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 170
- testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 171
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 172
- testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 173
- testRunner.And("I open large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
- testRunner.When("I enter Cc is \"testgmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
- testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is thrown for incorrect email in CC field", new string[] {
+                        "Ignore"});
 #line 176
- testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 177
- testRunner.When("I edit Cc is \"test@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 178
- testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 179
+ testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 180
+ testRunner.And("I enter To address is \"testwarewolf@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 181
+ testRunner.And("Cc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
+ testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 183
+ testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 184
+ testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 186
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 187
+ testRunner.And("I open large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 188
+ testRunner.When("I enter Cc is \"testgmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 189
+ testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 190
+ testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 191
+ testRunner.When("I edit Cc is \"test@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 192
+ testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 193
  testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -501,44 +539,46 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Validation is thrown for incorrect email in Bcc field")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ValidationIsThrownForIncorrectEmailInBccField()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is thrown for incorrect email in Bcc field", ((string[])(null)));
-#line 181
-this.ScenarioSetup(scenarioInfo);
-#line 182
- testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 183
- testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 184
- testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 185
- testRunner.And("I enter To address is \"testwarewolf@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
- testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
- testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
- testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
- testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
- testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 191
- testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 192
- testRunner.And("I open large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
- testRunner.When("I enter Cc is \"testgmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 194
- testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 195
- testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is thrown for incorrect email in Bcc field", new string[] {
+                        "Ignore"});
 #line 196
- testRunner.When("I edit Cc is \"test@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 197
- testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 198
+ testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 199
+ testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 200
+ testRunner.And("I enter To address is \"testwarewolf@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 201
+ testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 202
+ testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 203
+ testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 204
+ testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 205
+ testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 206
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 207
+ testRunner.And("I open large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 208
+ testRunner.When("I enter Cc is \"testgmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 209
+ testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 210
+ testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 211
+ testRunner.When("I edit Cc is \"test@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 212
+ testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 213
  testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -554,35 +594,35 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Attachemets fiels is showing attaced file paths by seperating them with semicolon" +
                     "", new string[] {
                         "ignore"});
-#line 201
+#line 216
 this.ScenarioSetup(scenarioInfo);
-#line 202
+#line 217
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 203
+#line 218
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
+#line 219
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 205
+#line 220
  testRunner.And("I enter To address is \"testwarewolf@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
+#line 221
  testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 222
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
+#line 223
  testRunner.And("I attach button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
+#line 224
  testRunner.And("I select \"c/test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
+#line 225
  testRunner.And("I select \"d/Warewolf.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 211
+#line 226
  testRunner.Then("attachement is \"c/test.txt;d/Warewolf.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 212
+#line 227
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
+#line 228
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
+#line 229
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 215
+#line 230
  testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -590,28 +630,34 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ThrowingValidationErrorForIncorrectVariables(string no, string toAddress, string validation, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for incorrect variables", exampleTags);
-#line 217
+            string[] @__tags = new string[] {
+                    "Ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for incorrect variables", @__tags);
+#line 233
 this.ScenarioSetup(scenarioInfo);
-#line 218
+#line 234
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 219
+#line 235
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 220
+#line 236
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 221
+#line 237
  testRunner.And(string.Format("I enter To address is \"{0}\"", toAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 238
  testRunner.And("Bcc address is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 223
+#line 239
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 224
+#line 240
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 241
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 242
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 227
+#line 243
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -620,6 +666,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec().a]]")]
@@ -633,6 +680,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[a]]")]
@@ -646,6 +694,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[a]][[b]]")]
@@ -659,6 +708,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec().a]][[a]]")]
@@ -672,6 +722,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec(*).a]]")]
@@ -685,6 +736,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "123")]
@@ -698,6 +750,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[a!1]]")]
@@ -711,6 +764,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec().a!]]")]
@@ -724,6 +778,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec([[a]]).a]]")]
@@ -737,6 +792,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec().[[a]]]]")]
@@ -750,6 +806,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[[[a]]]]")]
@@ -763,6 +820,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[a]")]
@@ -776,6 +834,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec()]]")]
@@ -789,6 +848,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[rec().a]")]
@@ -802,6 +862,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "[[a]].com")]
@@ -815,6 +876,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "test@[[a]].com")]
@@ -828,6 +890,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for incorrect variables: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To Address", "")]
@@ -840,28 +903,34 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ThrowingValidationErrorForBccIncorrectVariables(string no, string bccAddress, string validation, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Bcc incorrect variables", exampleTags);
-#line 248
+            string[] @__tags = new string[] {
+                    "Ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Bcc incorrect variables", @__tags);
+#line 265
 this.ScenarioSetup(scenarioInfo);
-#line 249
+#line 266
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 250
+#line 267
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 251
+#line 268
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 252
+#line 269
  testRunner.And("I enter To address is \"test@gmail.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 270
  testRunner.And(string.Format("I enter Bcc address is \"{0}\"", bccAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
+#line 271
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
+#line 272
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
+#line 273
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 274
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
+#line 275
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -870,6 +939,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec().a]]")]
@@ -883,6 +953,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[a]]")]
@@ -896,6 +967,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[a]][[b]]")]
@@ -909,6 +981,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec().a]][[a]]")]
@@ -922,6 +995,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec(*).a]]")]
@@ -935,6 +1009,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "123")]
@@ -948,6 +1023,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[a!1]]")]
@@ -961,6 +1037,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec().a!]]")]
@@ -974,6 +1051,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec([[a]]).a]]")]
@@ -987,6 +1065,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec().[[a]]]]")]
@@ -1000,6 +1079,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[[[a]]]]")]
@@ -1013,6 +1093,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[a]")]
@@ -1026,6 +1107,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec()]]")]
@@ -1039,6 +1121,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[rec().a]")]
@@ -1052,6 +1135,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "[[a]].com")]
@@ -1065,6 +1149,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "test@[[a]].com")]
@@ -1078,6 +1163,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Bcc incorrect variables: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Bcc Address", "")]
@@ -1097,27 +1183,27 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Cc incorrect variables", @__tags);
-#line 280
+#line 297
 this.ScenarioSetup(scenarioInfo);
-#line 281
+#line 298
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 282
+#line 299
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 283
+#line 300
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 284
+#line 301
  testRunner.And("I enter To address is \"test@gmail.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 285
+#line 302
  testRunner.And(string.Format("I enter Cc address is \"{0}\"", ccAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 286
+#line 303
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
+#line 304
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
+#line 305
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
+#line 306
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 290
+#line 307
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1363,28 +1449,34 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ThrowingValidationErrorForSubjectIncorrectVariables(string no, string subject, string validation, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Subject incorrect variables", exampleTags);
-#line 311
+            string[] @__tags = new string[] {
+                    "Ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Subject incorrect variables", @__tags);
+#line 329
 this.ScenarioSetup(scenarioInfo);
-#line 312
+#line 330
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 313
+#line 331
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 314
+#line 332
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 315
+#line 333
  testRunner.And("I enter To address is \"test@gmail.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 316
+#line 334
  testRunner.And(string.Format("I enter Subject is \"{0}\"", subject), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
+#line 335
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
+#line 336
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
+#line 337
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
+#line 338
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 321
+#line 339
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1393,6 +1485,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec().a]]")]
@@ -1406,6 +1499,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[a]]")]
@@ -1419,6 +1513,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[a]][[b]]")]
@@ -1432,6 +1527,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec().a]][[a]]")]
@@ -1445,6 +1541,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec(*).a]]")]
@@ -1458,6 +1555,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "123")]
@@ -1471,6 +1569,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[a!1]]")]
@@ -1484,6 +1583,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec().a!]]")]
@@ -1497,6 +1597,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec([[a]]).a]]")]
@@ -1510,6 +1611,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec().[[a]]]]")]
@@ -1523,6 +1625,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[[[a]]]]")]
@@ -1536,6 +1639,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[a]")]
@@ -1549,6 +1653,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec()]]")]
@@ -1562,6 +1667,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[rec().a]")]
@@ -1575,6 +1681,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "[[a]].com")]
@@ -1588,6 +1695,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "test@[[a]].com")]
@@ -1601,6 +1709,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Subject incorrect variables: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Subject", "")]
@@ -1613,28 +1722,34 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ThrowingValidationErrorForResultIncorrectVariables(string no, string result, string validation, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Result incorrect variables", exampleTags);
-#line 343
+            string[] @__tags = new string[] {
+                    "Ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Throwing validation error for Result incorrect variables", @__tags);
+#line 362
 this.ScenarioSetup(scenarioInfo);
-#line 344
+#line 363
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 345
+#line 364
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 346
+#line 365
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 347
+#line 366
  testRunner.And("I enter To address is \"test@gmail.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 348
+#line 367
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 349
+#line 368
  testRunner.And("I enter Subject is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 350
+#line 369
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 351
+#line 370
  testRunner.And(string.Format("I enter result is \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
+#line 371
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 353
+#line 372
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1643,6 +1758,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "result")]
@@ -1656,6 +1772,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[result]]")]
@@ -1669,6 +1786,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[a]][[b]]")]
@@ -1682,6 +1800,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec([[a]]).a]]")]
@@ -1695,6 +1814,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[[[a]]]]")]
@@ -1708,6 +1828,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec(*).a]]")]
@@ -1721,6 +1842,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Throwing validation error for Result incorrect variables: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "[[rec().a@]]")]
@@ -1739,27 +1861,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation is not thrown when I close large view", new string[] {
                         "ignore"});
-#line 366
+#line 385
 this.ScenarioSetup(scenarioInfo);
-#line 367
+#line 386
  testRunner.Given("I have email tool large view in design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 368
+#line 387
  testRunner.When("Mail source selected as \"Test Email\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 369
+#line 388
  testRunner.Then("Mail source edit button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 370
+#line 389
  testRunner.And("I enter To address is \"testwarewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 371
+#line 390
  testRunner.And("I enter Subject is \"Te[t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
+#line 391
  testRunner.And("I enter Body is \"Test Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 373
+#line 392
  testRunner.And("I enter result is \"[[Result#2#]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 374
+#line 393
  testRunner.When("I clode large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 375
+#line 394
  testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 376
+#line 395
     testRunner.And("\"Email\" Small view is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1768,28 +1890,30 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create new Email source from tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void CreateNewEmailSourceFromTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create new Email source from tool", ((string[])(null)));
-#line 378
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create new Email source from tool", new string[] {
+                        "Ignore"});
+#line 398
 this.ScenarioSetup(scenarioInfo);
-#line 379
+#line 399
  testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 380
+#line 400
  testRunner.And("I drag Email Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 381
+#line 401
  testRunner.Then("\"Mail Source\" is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 382
+#line 402
  testRunner.And("\"Edit\" is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 383
+#line 403
  testRunner.And("\"To\" input is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 384
+#line 404
  testRunner.And("\"Subject\" input is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 385
+#line 405
  testRunner.And("\"Body\" input is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 386
+#line 406
  testRunner.When("I select \"New Email Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 387
+#line 407
  testRunner.Then("the new Email Source Tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1798,32 +1922,34 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Edit Email source from tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EditEmailSourceFromTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit Email source from tool", ((string[])(null)));
-#line 389
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit Email source from tool", new string[] {
+                        "Ignore"});
+#line 410
 this.ScenarioSetup(scenarioInfo);
-#line 390
+#line 411
  testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 391
+#line 412
  testRunner.And("I drag Email Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
+#line 413
  testRunner.Then("\"Mail Source\" is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 393
+#line 414
  testRunner.And("\"Edit\" is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 394
+#line 415
  testRunner.And("\"To\" input is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 395
+#line 416
  testRunner.And("\"Subject\" input is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 396
+#line 417
  testRunner.And("\"Body\" input is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 418
  testRunner.When("I select \"Email Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 398
+#line 419
  testRunner.Then("\"Edit\" is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 399
+#line 420
  testRunner.And("I Click \"Edit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 400
+#line 421
  testRunner.Then("the \"Email Source\" Tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1832,38 +1958,40 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Email source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Email")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ChangeEmailSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Email source", ((string[])(null)));
-#line 402
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Email source", new string[] {
+                        "Ignore"});
+#line 424
 this.ScenarioSetup(scenarioInfo);
-#line 403
+#line 425
  testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 404
+#line 426
  testRunner.And("I drag Email Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
+#line 427
  testRunner.Then("\"Mail Source\" is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 406
+#line 428
  testRunner.And("\"Edit\" is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 407
+#line 429
  testRunner.When("I select \"Email Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 408
+#line 430
  testRunner.Then("\"Edit\" is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 409
+#line 431
  testRunner.And("\"To\" input is \"warewolfworks@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
+#line 432
  testRunner.And("\"Subject\" input is \"Sample Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 411
+#line 433
  testRunner.And("\"Body\" input is \"Text should not clear\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
+#line 434
  testRunner.When("\"Mail Source\" is changed from \"Email Source\" to \"NewEmailSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 413
+#line 435
  testRunner.Then("the \"Email Source\" Tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 414
+#line 436
  testRunner.And("\"To\" input is \"warewolfworks@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 415
+#line 437
  testRunner.And("\"Subject\" input is \"Sample Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 416
+#line 438
  testRunner.And("\"Body\" input is \"Text should not clear\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

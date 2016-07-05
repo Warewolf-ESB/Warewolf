@@ -71,6 +71,28 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox switch onto a new workflow opens switch dialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Switch")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxSwitchOntoANewWorkflowOpensSwitchDialog()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox switch onto a new workflow opens switch dialog", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_Switch_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_Decision_Dialog_Done_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Click_Switch_Dialog_Done_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_Switch_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Switch On Design Surface")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Switch")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,15 +102,15 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Switch On Design Surface", new string[] {
                         "ignore",
                         "Switch"});
-#line 10
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 11
+#line 21
  testRunner.Given("I have Switch large view opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 12
+#line 22
  testRunner.And("Variable to switch on \"\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 23
  testRunner.And("Display text \"\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 24
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -102,19 +124,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding Switch Variable in Large View", new string[] {
                         "ignore"});
-#line 17
+#line 27
 this.ScenarioSetup(scenarioInfo);
-#line 18
+#line 28
  testRunner.Given("I have Switch large view opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 29
  testRunner.When("I enter Variable to switch on \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 30
  testRunner.Then("Display text is updated as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 21
+#line 31
  testRunner.When("I click on Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 22
+#line 32
  testRunner.Then("Switch large view is closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 23
+#line 33
  testRunner.And("Switch Small View is visible with display text as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -128,21 +150,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Display Text is updating in Small View", new string[] {
                         "ignore"});
-#line 26
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 27
+#line 37
  testRunner.Given("Switch Small View is visible with display text as \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 28
+#line 38
  testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
+#line 39
  testRunner.And("Variable to switch on \"[[a]]\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 40
  testRunner.And("Display text \"[[a]]\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 41
  testRunner.When("I edit Display text as \"This is Switch\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 32
+#line 42
  testRunner.And("I click on Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 43
  testRunner.And("Switch sma ll view is visible with with display text as \"This is Switch\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
