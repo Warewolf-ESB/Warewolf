@@ -1,8 +1,18 @@
-﻿@Ignore
-Feature: FileAndFolder-Move
+﻿Feature: FileAndFolder-Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Move onto a new workflow
+	When I "Drag_Toolbox_Move_Onto_DesignSurface"
+	Then I "Assert_Move_Exists_OnDesignSurface"
+
+#@NeedsMoveToolOnTheDesignSurface
+#Scenario: Open Move Tool Large View
+	Given I "Assert_Move_Exists_OnDesignSurface"
+	When I "Open_Move_Tool_Large_View"
+	Then I "Assert_Move_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @Move
@@ -30,6 +40,7 @@ Scenario: Move tool Small View water marks
        Then Move small view watermarks are
        | File or Folder | Destination    | Result      |
        | [[PathToMove]] | [[MoveToPath]] | [[Success]] |
+
 @ignore
 Scenario: Move tool Large View Water marks
        Given I have Move Large View on design surface
@@ -42,6 +53,7 @@ Scenario: Move tool Large View Water marks
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
+
 @ignore
 Scenario: Move Large View is validating when clicking on done with blank fields
        Given I have Move Large View on design surface
@@ -53,6 +65,7 @@ Scenario: Move Large View is validating when clicking on done with blank fields
        When I click "Done"
        Then Validation message is thrown
        And Move Small View is "Not Visible"
+
 @ignore	     
 Scenario: Move tool Large View to small view persisting data correctly
        Given I have Move Large View on design surface

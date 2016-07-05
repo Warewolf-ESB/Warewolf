@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: Scripting - CMD Line
+﻿Feature: Scripting - CMD Line
 	In order to execute command line scripts
 	As a Warewolf user
 	I want a tool that allows me to execute commands 
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox CMD_Line onto a new workflow
+	When I "Drag_Toolbox_CMD_Line_Onto_DesignSurface"
+	Then I "Assert_CMD_Line_Exists_OnDesignSurface"
+
+#@NeedsCMDLineToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking CMD Line Tool Small View on the Design Surface Opens Large View
+	When I "Open_CMD_Line_Tool_Large_View"
+	Then I "Assert_CMD_Line_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @CMD 
