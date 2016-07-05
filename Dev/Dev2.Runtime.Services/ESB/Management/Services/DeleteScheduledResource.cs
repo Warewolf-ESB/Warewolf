@@ -46,8 +46,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (tmp != null)
             {
                 var res = serializer.Deserialize<IScheduledResource>(tmp);
-                Dev2Logger.Info("Delete Scheduled Resource Service." +res);
-                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+                Dev2Logger.Info("Delete Scheduled Resource Service." + res);
+                using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
                     model.DeleteSchedule(res);
                 }
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IServerSchedulerFactory SchedulerFactory
         {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(a=>ResourceCatalogue.GetResourcePath(a.ResourceId)); }
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(GlobalConstants.ServerWorkspaceID, a.ResourceId)); }
             set { _schedulerFactory = value; }
         }
 

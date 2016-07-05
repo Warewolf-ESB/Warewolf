@@ -243,10 +243,6 @@
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
-    <Compile Include="AppResources\Expression\ExpressionEvaluator.cs" />
-    <Compile Include="AppResources\Expression\ExpressionVisitor.cs" />
-    <Compile Include="AppResources\Expression\ExpressionVisitorDSFImpl.cs" />
-    <Compile Include="AppResources\Expression\ExpressionVisitorSQLImpl.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\EnumerableExtensionMethods.cs" />
     <Compile Include="AppResources\ExtensionMethods\ModelPropertyCollection.cs" />
