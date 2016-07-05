@@ -3854,7 +3854,7 @@ Scenario: ForEach using * in CSV executed as a sub execution passes out an order
 
 Scenario: Workflow with AsyncLogging and ForEach
      Given I have a workflow "WFWithAsyncLoggingForEach"
-     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3000"
+     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2000"
 	 And "ForEachTest" contains an Assign "Rec To Convert" as
 	  | variable    | value |
 	  | [[Warewolf]] | bob   |
@@ -3866,7 +3866,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And I set logging to "OFF"
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
-	 And the delta between "first time" and "second time" is less than "1500" milliseconds
+	 And the delta between "first time" and "second time" is less than "2500" milliseconds
 
 
 Scenario: Ensure that End this Workflow is working 
@@ -4123,11 +4123,11 @@ Scenario Outline: Database PostgreSql Database service inputs and outputs
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                      |
-	  | [[countries(1).Id]] = 1              |
-	  | [[countries(1).Name]] = United States|
-	  | [[countries(2).Id]] = 2              |
-	  | [[countries(2).Name]] = South Africa |
+	  |                                       |
+	  | [[countries(1).Id]] = 1               |
+	  | [[countries(2).Id]] = 2               |
+	  | [[countries(1).Name]] = United States |
+	  | [[countries(2).Name]] = South Africa  |
 Examples: 
     | WorkflowName           | ServiceName   | nameVariable        | emailVariable         | errorOccured |
     | PostgreSqlGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
