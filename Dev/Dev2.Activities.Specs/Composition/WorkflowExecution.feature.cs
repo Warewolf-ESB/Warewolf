@@ -15230,7 +15230,7 @@ this.FeatureBackground();
             table807.AddRow(new string[] {
                         "[[countries(1).Id]] = 1"});
             table807.AddRow(new string[] {
-                        "[[countries(2).Id]] = 2"});
+                        "[[countries(2).Id]] = 3"});
             table807.AddRow(new string[] {
                         "[[countries(1).Name]] = United States"});
             table807.AddRow(new string[] {

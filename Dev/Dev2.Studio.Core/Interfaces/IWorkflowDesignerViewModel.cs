@@ -20,7 +20,6 @@ namespace Dev2.Studio.Core.ViewModels
         bool HasErrors { get; set; }
         object SelectedModelItem { get; }
         string WorkflowName { get; }
-        bool RequiredSignOff { get; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
         void UpdateWorkflowLink(string newLink);
