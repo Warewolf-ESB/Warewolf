@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.Studio.UISpecs.Tools
+namespace Warewolf.Studio.UISpecs.Tools.Recordset
 {
     using TechTalk.SpecFlow;
     
@@ -24,7 +24,7 @@ namespace Warewolf.Studio.UISpecs.Tools
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Recordset - FindRecordIndex.feature"
+#line 1 "FindIndex.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
@@ -32,7 +32,7 @@ namespace Warewolf.Studio.UISpecs.Tools
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Recordset - FindRecordIndex", "\tIn order to search for pieces of data in a recordset\r\n\tAs a Warewolf user\r\n\tI wa" +
-                    "nt a tool I can use to find an index ", ProgrammingLanguage.CSharp, new string[] {
+                    "nt a tool I can use to find an index", ProgrammingLanguage.CSharp, new string[] {
                         "Ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -50,7 +50,7 @@ namespace Warewolf.Studio.UISpecs.Tools
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Recordset - FindRecordIndex")))
             {
-                Warewolf.Studio.UISpecs.Tools.Recordset_FindRecordIndexFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.Recordset.Recordset_FindRecordIndexFeature.FeatureSetup(null);
             }
         }
         
@@ -71,6 +71,30 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Find_Record_Index onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Recordset - FindRecordIndex")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxFind_Record_IndexOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Find_Record_Index onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_Find_Record_Index_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_Find_Record_Index_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.Given("I \"Assert_Find_Record_Index_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 15
+ testRunner.When("I \"Open_Find_Record_Index_Tool_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 16
+ testRunner.Then("I \"Assert_Find_Record_index_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find Record Index small view")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Recordset - FindRecordIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,21 +104,21 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record Index small view", new string[] {
                         "ignore",
                         "FindRecordIndex"});
-#line 10
+#line 21
 this.ScenarioSetup(scenarioInfo);
-#line 11
+#line 22
  testRunner.Given("I have Find Record Index Small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 12
+#line 23
  testRunner.And("Infield is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 24
  testRunner.And("Mtach type \"Row 1\" is \"Select\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 25
  testRunner.And("Match at \"Row 1\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 26
  testRunner.And("Mtach type \"Row 2\" is \"Select\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
+#line 27
  testRunner.And("Match at \"Row 2\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 28
  testRunner.And("Scrool bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -109,9 +133,9 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 18
+#line 29
  testRunner.And("find Record Index small view as", ((string)(null)), table1, "And ");
-#line 22
+#line 33
  testRunner.And("result is as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -125,21 +149,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record Index Large view", new string[] {
                         "ignore"});
-#line 25
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 26
+#line 37
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
+#line 38
  testRunner.And("Infield is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 39
  testRunner.And("Mtach type \"Row 1\" is \"Select\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 40
  testRunner.And("Match at \"Row 1\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 41
  testRunner.And("Mtach type \"Row 2\" is \"Select\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 42
  testRunner.And("Match at \"Row 2\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 43
  testRunner.And("Scrool bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -154,15 +178,15 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 33
+#line 44
  testRunner.And("Find Record Index large view as", ((string)(null)), table2, "And ");
-#line 37
+#line 48
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 49
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 50
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 51
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -171,11 +195,11 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 41
+#line 52
  testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 44
+#line 55
  testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 56
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -189,21 +213,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record Index small view water marks", new string[] {
                         "ignore"});
-#line 48
+#line 59
 this.ScenarioSetup(scenarioInfo);
-#line 49
+#line 60
  testRunner.Given("I have Find Record Index Small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 50
+#line 61
  testRunner.And("Infield water mark is \"[[Recordset().Field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 62
  testRunner.And("Mtach type water mark for \"Row 1\" is \"Choose...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 63
  testRunner.And("Match at \"Row 1\" water mark for is \"Match\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 64
  testRunner.And("Mtach type water mark for \"Row 2\" is \"Choose...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 65
  testRunner.And("Match at \"Row 2\" water mark for is \"Match\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 66
  testRunner.And("result water mark is \"[[RowWithResult]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -217,19 +241,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record Index Large view water marks", new string[] {
                         "ignore"});
-#line 58
+#line 69
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 70
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 71
  testRunner.And("Infield water mark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 72
  testRunner.And("Mtach type \"Row 1\" water mark is \"Choose...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 73
  testRunner.And("Match at \"Row 1\" water mark is \"Match\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 74
  testRunner.And("Mtach type \"Row 2\" water mark is \"Choose...\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 75
  testRunner.And("Match at \"Row 2\" is \"Match\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -244,15 +268,15 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 65
+#line 76
  testRunner.And("Find Record Index large view as", ((string)(null)), table4, "And ");
-#line 69
+#line 80
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 81
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 82
  testRunner.And("result water mark is \"[[RowWithResult]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 83
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -263,9 +287,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Error().Message]]",
                         "http://lcl:3142/services/err",
                         "UnSelected"});
-#line 73
+#line 84
  testRunner.And("On Error water mark", ((string)(null)), table5, "And ");
-#line 76
+#line 87
     testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -279,11 +303,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI small view to large view data persisting correctly", new string[] {
                         "ignore"});
-#line 80
+#line 91
 this.ScenarioSetup(scenarioInfo);
-#line 81
+#line 92
  testRunner.Given("I have Find Record Index Small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 93
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -298,11 +322,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 83
+#line 94
  testRunner.When("I enter find Record Index small view", ((string)(null)), table6, "When ");
-#line 87
+#line 98
  testRunner.And("result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 99
  testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -317,17 +341,17 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 89
+#line 100
  testRunner.And("Find Record Index large view as", ((string)(null)), table7, "And ");
-#line 93
+#line 104
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 105
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 106
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
+#line 107
  testRunner.And("result water mark is \"[[RowWithResult]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 108
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -338,9 +362,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "UnSelected"});
-#line 98
+#line 109
  testRunner.And("On Error water mark", ((string)(null)), table8, "And ");
-#line 101
+#line 112
     testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -354,11 +378,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("In small view Rows are creating one after one and scroll bar is enabling", new string[] {
                         "ignore"});
-#line 104
+#line 115
 this.ScenarioSetup(scenarioInfo);
-#line 105
+#line 116
  testRunner.Given("I have Find Record Index Small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 106
+#line 117
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -373,11 +397,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 107
+#line 118
  testRunner.When("I enter find Record Index small view", ((string)(null)), table9, "When ");
-#line 111
+#line 122
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 123
  testRunner.And("result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -396,11 +420,11 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "Choose...",
                         "Disabled"});
-#line 113
+#line 124
  testRunner.When("I enter find Record Index small view", ((string)(null)), table10, "When ");
-#line 118
+#line 129
  testRunner.And("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 130
  testRunner.When("I open largeview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -419,17 +443,17 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "Choose...",
                         "Disabled"});
-#line 120
+#line 131
  testRunner.And("Find Record Index large view as", ((string)(null)), table11, "And ");
-#line 125
+#line 136
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 137
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 138
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 139
  testRunner.And("result water mark is \"[[RowWithResult]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 140
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -443,11 +467,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fields are creating one after one in large view", new string[] {
                         "ignore"});
-#line 133
+#line 144
 this.ScenarioSetup(scenarioInfo);
-#line 134
+#line 145
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 135
+#line 146
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -482,21 +506,21 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "Choose...",
                         "Disabled"});
-#line 136
- testRunner.And("Find Record Index large view as", ((string)(null)), table12, "And ");
-#line 145
- testRunner.And("Scroll bar is \"Enaabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
- testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
+ testRunner.And("Find Record Index large view as", ((string)(null)), table12, "And ");
+#line 156
+ testRunner.And("Scroll bar is \"Enaabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 157
+ testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 158
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 159
  testRunner.And("result is \"[[res]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 160
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 161
  testRunner.When("I close Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
+#line 162
  testRunner.Then("FRI small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -531,9 +555,9 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "Choose...",
                         "Disabled"});
-#line 152
+#line 163
  testRunner.And("Assign small view as", ((string)(null)), table13, "And ");
-#line 161
+#line 172
   testRunner.And("Scroll bar is \"Enaabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -548,11 +572,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("LargeView Selecting Match Type from dropbox", @__tags);
-#line 164
+#line 175
 this.ScenarioSetup(scenarioInfo);
-#line 165
+#line 176
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 166
+#line 177
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -567,11 +591,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 167
+#line 178
  testRunner.When("I Enter Find Record Index large view", ((string)(null)), table14, "When ");
-#line 171
+#line 182
  testRunner.When("I close large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 172
+#line 183
  testRunner.Then("FRI small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -586,7 +610,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 173
+#line 184
  testRunner.And("Small View as", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1043,11 +1067,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Small View Selecting Match Type from dropbox", @__tags);
-#line 215
+#line 226
 this.ScenarioSetup(scenarioInfo);
-#line 216
+#line 227
  testRunner.Given("I have Find Record Index Small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 217
+#line 228
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1062,11 +1086,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 218
+#line 229
  testRunner.When("I Enter Find Record Index Small view", ((string)(null)), table16, "When ");
-#line 222
+#line 233
     testRunner.When("I open Assign large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 223
+#line 234
  testRunner.Then("FRI Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1081,7 +1105,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 224
+#line 235
  testRunner.And("Large view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1571,11 +1595,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI is validating when I click on done with empty fields", new string[] {
                         "ignore"});
-#line 268
+#line 279
 this.ScenarioSetup(scenarioInfo);
-#line 269
+#line 280
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 270
+#line 281
  testRunner.And("Infield is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1590,13 +1614,13 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 271
+#line 282
  testRunner.And("Find Record Index large view as", ((string)(null)), table18, "And ");
-#line 275
+#line 286
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
+#line 287
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 288
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1605,15 +1629,15 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "",
                         ""});
-#line 278
+#line 289
  testRunner.And("On Error box consists", ((string)(null)), table19, "And ");
-#line 281
+#line 292
  testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
+#line 293
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 283
+#line 294
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 284
+#line 295
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1628,11 +1652,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI large view is validating Invalid variables in InField", @__tags);
-#line 288
+#line 299
 this.ScenarioSetup(scenarioInfo);
-#line 289
+#line 300
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 290
+#line 301
  testRunner.And("Infield is \"<Infields>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1647,13 +1671,13 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 291
+#line 302
  testRunner.And("Find Record Index large view as", ((string)(null)), table20, "And ");
-#line 295
+#line 306
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 296
+#line 307
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 297
+#line 308
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1662,17 +1686,17 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "",
                         ""});
-#line 298
+#line 309
  testRunner.And("On Error box consists", ((string)(null)), table21, "And ");
-#line 301
+#line 312
  testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
+#line 313
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 303
+#line 314
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 304
+#line 315
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 305
+#line 316
  testRunner.And(string.Format("FRI small view is \"{0}\"", smallView), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1942,11 +1966,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI large view is validating Invalid variables in Match Fields", @__tags);
-#line 327
+#line 338
 this.ScenarioSetup(scenarioInfo);
-#line 328
+#line 339
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 329
+#line 340
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1961,13 +1985,13 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 330
+#line 341
  testRunner.And("Find Record Index large view as", ((string)(null)), table22, "And ");
-#line 334
+#line 345
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 335
+#line 346
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 336
+#line 347
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1976,17 +2000,17 @@ this.ScenarioSetup(scenarioInfo);
             table23.AddRow(new string[] {
                         "",
                         ""});
-#line 337
+#line 348
  testRunner.And("On Error box consists", ((string)(null)), table23, "And ");
-#line 340
+#line 351
  testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 341
+#line 352
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 342
+#line 353
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 343
+#line 354
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 344
+#line 355
  testRunner.And(string.Format("FRI small view is \"{0}\"", smallView), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2255,11 +2279,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI large view deleting row", new string[] {
                         "ignore"});
-#line 366
+#line 377
 this.ScenarioSetup(scenarioInfo);
-#line 367
+#line 378
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 368
+#line 379
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2282,17 +2306,17 @@ this.ScenarioSetup(scenarioInfo);
                         "4",
                         "Choose...",
                         "Disabled"});
-#line 369
+#line 380
  testRunner.And("Find Record Index large view as", ((string)(null)), table24, "And ");
-#line 375
+#line 386
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 376
+#line 387
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 377
+#line 388
  testRunner.And("result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 378
+#line 389
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 379
+#line 390
  testRunner.When("I Delete \"Row 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2311,11 +2335,11 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "Choose...",
                         "Disabled"});
-#line 380
+#line 391
  testRunner.Then("Find Record Index large view as", ((string)(null)), table25, "Then ");
-#line 385
+#line 396
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 386
+#line 397
  testRunner.And("FRI small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2334,7 +2358,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "Choose...",
                         "Disabled"});
-#line 387
+#line 398
  testRunner.And("find Record Index small view as", ((string)(null)), table26, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2349,11 +2373,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI large view is validating Invalid variables in Result Fields", @__tags);
-#line 394
+#line 405
 this.ScenarioSetup(scenarioInfo);
-#line 395
+#line 406
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 396
+#line 407
  testRunner.And("Infield is \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2368,21 +2392,21 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 397
+#line 408
  testRunner.And("Find Record Index large view as", ((string)(null)), table27, "And ");
-#line 401
+#line 412
  testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 402
+#line 413
  testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 403
+#line 414
  testRunner.And(string.Format("result is \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 404
+#line 415
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
+#line 416
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 406
+#line 417
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 407
+#line 418
  testRunner.And(string.Format("FRI small view is \"{0}\"", smallView), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2651,11 +2675,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FRI is not validating when I close large view with incorrect fields", new string[] {
                         "ignore"});
-#line 429
+#line 440
 this.ScenarioSetup(scenarioInfo);
-#line 430
+#line 441
  testRunner.Given("I have Find Record Index Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 431
+#line 442
  testRunner.And("Infield is \"[[rec().a@]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2670,23 +2694,23 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 432
- testRunner.And("Find Record Index large view as", ((string)(null)), table28, "And ");
-#line 436
- testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 437
- testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 438
- testRunner.And("result is \"[[result#]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 439
- testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 440
- testRunner.When("I close large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 441
- testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 442
- testRunner.And("FRI small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 443
+ testRunner.And("Find Record Index large view as", ((string)(null)), table28, "And ");
+#line 447
+ testRunner.And("Require All Matches To Be True is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+ testRunner.And("Require All Fields To Match is \"Unseleted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
+ testRunner.And("result is \"[[result#]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 450
+ testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 451
+ testRunner.When("I close large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 452
+ testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 453
+ testRunner.And("FRI small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 454
  testRunner.And("Infield is \"[[rec().a@]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2701,7 +2725,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "Choose...",
                         "Disabled"});
-#line 444
+#line 455
  testRunner.And("find Record Index small view as", ((string)(null)), table29, "And ");
 #line hidden
             this.ScenarioCleanup();

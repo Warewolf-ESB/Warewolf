@@ -1,8 +1,18 @@
-﻿@Ignore
-Feature: Recordset - FindRecordIndex
+﻿Feature: Recordset - FindRecordIndex
 	In order to search for pieces of data in a recordset
 	As a Warewolf user
-	I want a tool I can use to find an index 
+	I want a tool I can use to find an index
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Find_Record_Index onto a new workflow
+	When I "Drag_Toolbox_Find_Record_Index_Onto_DesignSurface"
+	Then I "Assert_Find_Record_Index_Exists_OnDesignSurface"
+
+#@NeedsFindRecordsToolOnTheDesignSurface
+#Scenario: Open Find Record Index Tool Large View
+	Given I "Assert_Find_Record_Index_Exists_OnDesignSurface"
+	When I "Open_Find_Record_Index_Tool_Large_View"
+	Then I "Assert_Find_Record_index_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @FindRecordIndex

@@ -1,8 +1,12 @@
-﻿@Ignore
-Feature: FileAndFolder-Delete
+﻿Feature: FileAndFolder-Delete
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Delete_Path onto a new workflow
+	When I "Drag_Toolbox_Delete_Onto_DesignSurface"
+	Then I "Assert_Delete_Exists_OnDesignSurface"
 
 @ignore
 @Delete

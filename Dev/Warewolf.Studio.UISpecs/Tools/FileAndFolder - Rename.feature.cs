@@ -71,6 +71,28 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Rename onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxRenameOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Rename onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_Rename_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_Rename_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Open_Rename_Tool_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_Rename_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename tool Small View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,9 +102,9 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Small View", new string[] {
                         "ignore",
                         "Rename"});
-#line 10
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 11
+#line 21
        testRunner.Given("I have Rename Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -93,7 +115,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 12
+#line 22
        testRunner.Then("Rename small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -105,9 +127,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenameToolLargeView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Large View", ((string[])(null)));
-#line 15
+#line 25
 this.ScenarioSetup(scenarioInfo);
-#line 16
+#line 26
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -126,9 +148,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 17
+#line 27
        testRunner.Then("Rename Large View has", ((string)(null)), table2, "Then ");
-#line 20
+#line 30
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -137,11 +159,11 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 21
+#line 31
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 24
+#line 34
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 35
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -155,9 +177,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Small View water marks", new string[] {
                         "ignore"});
-#line 28
+#line 38
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 39
        testRunner.Given("I have Rename Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -168,7 +190,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[PathToRename]]",
                         "[[FileOrFolderName]]",
                         "[[Success]]"});
-#line 30
+#line 40
        testRunner.Then("Rename small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -180,9 +202,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenameToolLargeViewWaterMarks()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Large View Water marks", ((string[])(null)));
-#line 33
+#line 43
 this.ScenarioSetup(scenarioInfo);
-#line 34
+#line 44
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -201,9 +223,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 35
+#line 45
        testRunner.Then("Rename Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 38
+#line 48
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -212,11 +234,11 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Errors().Message",
                         "http://lcl:3142/service/err"});
-#line 39
+#line 49
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 42
+#line 52
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 53
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -228,11 +250,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenameLargeViewIsValidatingWhenClickingOnDoneWithBlankFields()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating when clicking on done with blank fields", ((string[])(null)));
-#line 44
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 45
+#line 55
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 46
+#line 56
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -251,15 +273,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 47
+#line 57
        testRunner.And("Rename Large View has", ((string)(null)), table7, "And ");
-#line 50
+#line 60
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 61
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 52
+#line 62
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 53
+#line 63
        testRunner.And("Rename Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -273,9 +295,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 55
+#line 65
 this.ScenarioSetup(scenarioInfo);
-#line 56
+#line 66
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -294,9 +316,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 57
+#line 67
        testRunner.And("Rename Large View has", ((string)(null)), table8, "And ");
-#line 60
+#line 70
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -305,17 +327,17 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "",
                         ""});
-#line 61
+#line 71
        testRunner.And("On Error box consists", ((string)(null)), table9, "And ");
-#line 64
+#line 74
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 75
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 76
        testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 67
+#line 77
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 68
+#line 78
        testRunner.And("Rename Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -326,7 +348,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\ Test",
                         "C:\\ Rename",
                         "[[Rename]]"});
-#line 69
+#line 79
        testRunner.And("Rename small view has", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -340,9 +362,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 74
+#line 84
 this.ScenarioSetup(scenarioInfo);
-#line 75
+#line 85
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -361,9 +383,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 76
+#line 86
        testRunner.When("Rename Large View has", ((string)(null)), table11, "When ");
-#line 79
+#line 89
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -372,15 +394,15 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "",
                         ""});
-#line 80
+#line 90
        testRunner.And("On Error box consists", ((string)(null)), table12, "And ");
-#line 83
+#line 93
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 94
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 95
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 86
+#line 96
        testRunner.And("Rename Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -399,13 +421,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 87
+#line 97
        testRunner.When("I edit Rename Large View", ((string)(null)), table13, "When ");
-#line 90
+#line 100
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 91
+#line 101
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 92
+#line 102
        testRunner.And("Rename Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -416,7 +438,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]]",
                         "C:\\ Rename",
                         "[[Rename]]"});
-#line 93
+#line 103
        testRunner.And("Rename small view as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -430,9 +452,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 98
+#line 108
 this.ScenarioSetup(scenarioInfo);
-#line 99
+#line 109
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -451,9 +473,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 100
+#line 110
        testRunner.And("Rename Large View has", ((string)(null)), table15, "And ");
-#line 103
+#line 113
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -462,19 +484,19 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 104
+#line 114
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 107
+#line 117
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 118
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 119
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 110
+#line 120
        testRunner.And("Rename Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 121
        testRunner.When("collapse \"Rename\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
+#line 122
        testRunner.Then("Rename Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -485,7 +507,7 @@ this.ScenarioSetup(scenarioInfo);
                         "C:\\[[a]",
                         "C:\\ Rename",
                         "[[Rename]]"});
-#line 113
+#line 123
        testRunner.And("Rename small view as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -500,11 +522,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect source path", @__tags);
-#line 118
+#line 128
 this.ScenarioSetup(scenarioInfo);
-#line 119
+#line 129
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
+#line 130
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -523,13 +545,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 121
+#line 131
        testRunner.And("Rename Large View has", ((string)(null)), table18, "And ");
-#line 124
+#line 134
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
+#line 135
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 126
+#line 136
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -698,11 +720,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect New Name path", @__tags);
-#line 142
+#line 152
 this.ScenarioSetup(scenarioInfo);
-#line 143
+#line 153
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 144
+#line 154
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -721,13 +743,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 145
+#line 155
        testRunner.And("Rename Large View has", ((string)(null)), table19, "And ");
-#line 148
+#line 158
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 159
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
+#line 160
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -896,11 +918,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect variable in File Username field", @__tags);
-#line 167
+#line 177
 this.ScenarioSetup(scenarioInfo);
-#line 168
+#line 178
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 169
+#line 179
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -919,13 +941,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Rename]]"});
-#line 170
+#line 180
        testRunner.And("Rename Large View has", ((string)(null)), table20, "And ");
-#line 173
+#line 183
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
+#line 184
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
+#line 185
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1094,11 +1116,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect variable in New Name username field", @__tags);
-#line 193
+#line 203
 this.ScenarioSetup(scenarioInfo);
-#line 194
+#line 204
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 195
+#line 205
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1117,13 +1139,13 @@ this.ScenarioSetup(scenarioInfo);
                         "\"<Username>\"",
                         "abc",
                         "[[Rename]]"});
-#line 196
+#line 206
        testRunner.And("Rename Large View has", ((string)(null)), table21, "And ");
-#line 199
+#line 209
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 210
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 201
+#line 211
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1294,11 +1316,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename Large View is validating incorrect variable in Result field", @__tags);
-#line 218
+#line 228
 this.ScenarioSetup(scenarioInfo);
-#line 219
+#line 229
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 220
+#line 230
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1317,13 +1339,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("\"{0}\"", result)});
-#line 221
+#line 231
        testRunner.And("Rename Large View has", ((string)(null)), table22, "And ");
-#line 224
+#line 234
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 235
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 226
+#line 236
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1436,9 +1458,9 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename On error fields incorrect variables are validating", @__tags);
-#line 238
+#line 248
 this.ScenarioSetup(scenarioInfo);
-#line 239
+#line 249
        testRunner.Given("I have Rename Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1457,9 +1479,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 240
+#line 250
        testRunner.And("Rename Large View with water marks has", ((string)(null)), table23, "And ");
-#line 243
+#line 253
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1468,15 +1490,15 @@ this.ScenarioSetup(scenarioInfo);
             table24.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 244
+#line 254
        testRunner.And("On Error box consists", ((string)(null)), table24, "And ");
-#line 247
+#line 257
        testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 258
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 259
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 250
+#line 260
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

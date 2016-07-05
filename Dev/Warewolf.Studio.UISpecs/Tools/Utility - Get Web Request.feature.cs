@@ -24,7 +24,7 @@ namespace Warewolf.Studio.UISpecs.Tools
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Utility - Web Request.feature"
+#line 1 "Utility - Get Web Request.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
@@ -71,6 +71,30 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Get Web Request Tool onto a new workflow creates Get Web Request too" +
+            "l with large view on the design surface")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Web Request")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxGetWebRequestToolOntoANewWorkflowCreatesGetWebRequestToolWithLargeViewOnTheDesignSurface()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Get Web Request Tool onto a new workflow creates Get Web Request too" +
+                    "l with large view on the design surface", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_GetWeb_RequestTool_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I \"Open_WebRequest_LargeView\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("I \"Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Web Request Tool small view")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Utility - Web Request")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,17 +104,17 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Request Tool small view", new string[] {
                         "ignore",
                         "WebRequest"});
-#line 10
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 11
+#line 21
  testRunner.Given("I have Web Request small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 12
+#line 22
  testRunner.And("I have URL \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 23
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 24
  testRunner.And("Header is Not Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 25
  testRunner.And("Preview is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -104,19 +128,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Request Tool Large view", new string[] {
                         "ignore"});
-#line 17
+#line 27
 this.ScenarioSetup(scenarioInfo);
-#line 18
+#line 28
  testRunner.Given("I have Web Request small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 29
  testRunner.When("I open Web Request Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 30
  testRunner.Then("I have URL \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 21
+#line 31
  testRunner.And("I have header \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 32
  testRunner.And("i result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 33
  testRunner.And("Preview button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -125,11 +149,11 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "",
                         ""});
-#line 24
+#line 34
  testRunner.And("On Error box consists", ((string)(null)), table1, "And ");
-#line 27
+#line 37
  testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 38
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -143,19 +167,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Request Tool Large view is not throwing error for valid data", new string[] {
                         "ignore"});
-#line 30
+#line 40
 this.ScenarioSetup(scenarioInfo);
-#line 31
+#line 41
  testRunner.Given("I have Web Request small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
+#line 42
  testRunner.When("I open Web Request Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
+#line 43
  testRunner.Then("I Enter URL \"http://[[site]][[file]]l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 34
+#line 44
  testRunner.And("I Enter header \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 45
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 46
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -164,13 +188,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[site]] ="});
             table2.AddRow(new string[] {
                         "[[file]] ="});
-#line 37
+#line 47
  testRunner.And("Preview is", ((string)(null)), table2, "And ");
-#line 41
+#line 51
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 52
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 53
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -179,11 +203,11 @@ this.ScenarioSetup(scenarioInfo);
                         "[[site]] = rsaklfsvrtfsbld/IntegrationTestSite/"});
             table3.AddRow(new string[] {
                         "[[file]] = Proxy.ashx?html"});
-#line 44
+#line 54
  testRunner.When("I Enter in preview", ((string)(null)), table3, "When ");
-#line 48
+#line 58
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
+#line 59
  testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -198,25 +222,25 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Request Tool Large view is validating incorrect variables", @__tags);
-#line 52
+#line 62
 this.ScenarioSetup(scenarioInfo);
-#line 53
+#line 63
  testRunner.Given("I have Web Request small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 64
  testRunner.When("I open Web Request Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 65
  testRunner.Then(string.Format("I Enter URL \"{0}\"", uRL), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 56
+#line 66
  testRunner.And("I Enter header \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 67
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 68
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 69
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 70
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 61
+#line 71
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -323,25 +347,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WebRequestToolLargeViewIsValidatingIncorrectVariablesInHeader(string no, string uRL, string validation, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Web Request Tool Large view is validating incorrect variables in Header", exampleTags);
-#line 73
+#line 83
 this.ScenarioSetup(scenarioInfo);
-#line 74
+#line 84
  testRunner.Given("I have Web Request small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 75
+#line 85
  testRunner.When("I open Web Request Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 76
+#line 86
  testRunner.Then("I Enter URL \"http://[[site]][[file]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 77
+#line 87
  testRunner.And("I Enter header \"<Header>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 78
+#line 88
  testRunner.And("I enter result is \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 79
+#line 89
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 90
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 91
  testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 82
+#line 92
  testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

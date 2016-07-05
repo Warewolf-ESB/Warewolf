@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: Switch
+﻿Feature: Switch
 	In order to branch based on the data
 	As Warewolf user
 	I want tool has multiple branching decisions based on the data
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox switch onto a new workflow opens switch dialog
+	When I "Drag_Toolbox_Switch_Onto_DesignSurface"
+	Then I "Assert_Decision_Dialog_Done_Button_Exists"
+
+#@NeedsSwitchDialog
+#Scenario: Clicking Switch Dialog Done Button Creates a Switch on the Design Surface
+	When I "Click_Switch_Dialog_Done_Button"
+	Then I "Assert_Switch_Exists_OnDesignSurface"
 
 @ignore
 @Switch 
