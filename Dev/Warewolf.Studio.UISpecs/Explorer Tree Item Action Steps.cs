@@ -35,13 +35,13 @@ namespace Warewolf.Studio.UISpecs
         [When(@"I scroll down in the explorer tree")]
         public void WhenIScrollDownInTheExplorerTree()
         {
-            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, -1);
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, -2);
         }
 
         [When(@"I scroll up in the explorer tree")]
         public void WhenIScrollUpInTheExplorerTree()
         {
-            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, 1);
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, 2);
         }
 
         [When(@"I right click ""(.*)"" in the explorer tree")]
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.UISpecs
         public void AssertExistsInExplorerTree(string ListItem)
         {
             UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
-            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
+            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree. The explorer tree has virtualized children so it must be scolled into view.");
         }
 
         [Given(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
@@ -110,14 +110,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     var GetNameFromLabel = treeitem.GetChildren();
                     var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
-                    if (label != null)
-                    {
-                        return label.DisplayText == folder;
-                    }
-                    else
-                    {
-                        return !path.EndsWith(folder);
-                    }
+                    return label.DisplayText == folder;
                 });
             }
             return CurrentTreeItem;

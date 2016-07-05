@@ -302,12 +302,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
-        {
-            Dev2Logger.Info(message.GetType().Name);
-            NotifyOfPropertyChange(nameof(ContextualResourceModel));
-        }
-
         #endregion IHandle
 
         public IContextualResourceModel ContextualResourceModel
