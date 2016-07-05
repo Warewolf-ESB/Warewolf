@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: FileAndFolder-Read Folder
+﻿Feature: FileAndFolder-Read Folder
 	In order to be able to Read Folder File or Folder 
 	as a Warewolf user
 	I want a tool that reads the contents of a Folder at a given location
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Read_Folder onto a new workflow
+	When I "Drag_Toolbox_Read_Folder_Onto_DesignSurface"
+	Then I "Assert_Read_Folder_Exists_OnDesignSurface"
+
+#@NeedsRead_FolderToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Read_Folder Tool Small View on the Design Surface Opens Large View
+	When I "Open_Read_Folder_Tool_Large_View"
+	Then I "Assert_Read_Folder_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @ReadFolder

@@ -452,15 +452,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png.
-        /// </summary>
-        public static string Pack_Uri_DatabaseService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_DatabaseService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png.
         /// </summary>
         public static string Pack_Uri_Debug_Image {
@@ -470,56 +461,11 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png.
-        /// </summary>
-        public static string Pack_Uri_EmailSource_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_EmailSource_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png.
-        /// </summary>
-        public static string Pack_Uri_PluginService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_PluginService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png.
-        /// </summary>
-        public static string Pack_Uri_Server_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Server_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png.
         /// </summary>
         public static string Pack_Uri_Stop_Image {
             get {
                 return ResourceManager.GetString("Pack_Uri_Stop_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/WebService-32.png.
-        /// </summary>
-        public static string Pack_Uri_WebService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_WebService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png.
-        /// </summary>
-        public static string Pack_Uri_WorkflowService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_WorkflowService_Image", resourceCulture);
             }
         }
         

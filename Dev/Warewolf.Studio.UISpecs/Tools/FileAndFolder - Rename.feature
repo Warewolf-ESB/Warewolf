@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: FileAndFolder-Rename
+﻿Feature: FileAndFolder-Rename
 	In order to be able to Rename File or Folder 
 	as a Warewolf user
 	I want a tool that will rename a File or Floder at a given location
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Rename onto a new workflow
+	When I "Drag_Toolbox_Rename_Onto_DesignSurface"
+	Then I "Assert_Rename_Exists_OnDesignSurface"
+
+#@NeedsRename_FolderToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Rename_Folder Tool Small View on the Design Surface Opens Large View
+	When I "Open_Rename_Tool_Large_View"
+	Then I "Assert_Rename_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @Rename

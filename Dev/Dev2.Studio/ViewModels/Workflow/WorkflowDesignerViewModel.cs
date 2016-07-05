@@ -11,7 +11,6 @@
 using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
-using System.Activities.Debugger;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Model;
@@ -107,8 +106,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Overrides of Screen
 
-        public delegate void SourceLocationEventHandler(SourceLocation src);
-
         protected readonly IDesignerManagementService DesignerManagementService;
         readonly IWorkflowHelper _workflowHelper;
         DelegateCommand _collapseAllCommand;
@@ -116,6 +113,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected dynamic DataObject { get; set; }
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
+        // ReSharper disable once InconsistentNaming
         private ModelService ModelService;
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
@@ -297,14 +295,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public Visibility WorkflowLinkVisible => _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
 
-        public override string IconPath => ResourceHelper.GetIconPath(ResourceModel);
-
-        //2012.10.01: massimo.guerrera - AddMode Remove buttons made into one:)
         public IPopupController PopUp { get; set; }
-
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public UserControl PopupContent
         {
@@ -338,7 +329,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        // BUG 9304 - 2013.05.08 - TWR - Refactored and removed setter
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
 
         #endregion
@@ -425,7 +415,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var computedValue = mi.Content?.ComputedValue;
                 if (computedValue is IDev2Activity)
                 {
-                    //2013.08.19: Ashley Lewis for bug 10116 - New unique id on paste
                     (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
                 }
 
@@ -563,8 +552,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         d.IconPath = bitmapImage.UriSource.ToString();
                     }
                     UpdateForRemote(d, theResource);
-                    //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
-                    //Setting it twice causes double connection to startnode
                 }
             }
             DataObject = null;
@@ -611,7 +598,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
-        private void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
+        private void EditActivity(ModelItem modelItem, Guid parentEnvironmentID)
         {
             if (Designer == null)
             {
@@ -621,7 +608,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
-                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID,parentEnvironmentID);
             }
         }
 
@@ -756,7 +743,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 int endindex = expression.IndexOf('"', startIndex);
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
-                //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
                 try
                 {
                     var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
@@ -1039,14 +1025,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
 
-                //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
                 CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
-                //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
                 Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
             }
-            // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(ModelService);
 
             if (!liteInit)
@@ -1280,7 +1263,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     // log the trace for fetch ;)
                     Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                    // BUG 9304 - 2013.05.08 - TWR 
                     _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
                     BindToModel();
                 }
@@ -1367,7 +1349,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
-            _changeIsPossible = true;
             if (_firstWorkflowChange)
             {
                 AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
@@ -1558,7 +1539,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     string itemFn = item.ItemType.FullName;
 
-                    //2013.03.20: Ashley Lewis - Bug 9202 Don't open any wizards if the source is a 'Microsoft.Windows.Themes.ScrollChrome' object
                     if (dp != null && string.Equals(dp.ToString(), "Microsoft.Windows.Themes.ScrollChrome", StringComparison.InvariantCulture))
                     {
                         WizardEngineAttachedProperties.SetDontOpenWizard(dp, true);
@@ -1672,12 +1652,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             _resourcePickerDialog = null;
         }
 
-        // BUG 9143 - 2013.07.03 - TWR - added
-        //
         // Activity : Next
         // Decision : True, False
         // Switch   : Default, Key
-        //
         public static readonly string[] SelfConnectProperties =
         {
             "Next", 
@@ -1692,14 +1669,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private WorkflowInputDataViewModel _workflowInputDataViewModel;
         private string _workflowLink;
         private ICommand _openWorkflowLinkCommand;
-        private bool _changeIsPossible;
-
-        public bool ChangeIsPossible
-        {
-            get { return _changeIsPossible; }
-            set { _changeIsPossible = value; }
-        }
-
         private bool _firstWorkflowChange;
         private readonly IAsyncWorker _asyncWorker;
         private readonly IExternalProcessExecutor _executor;
@@ -1712,7 +1681,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
         {
-            // BUG 9143 - 2013.07.03 - TWR - added
             if (e.ModelChangeInfo != null &&
                 e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
@@ -1725,23 +1693,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     return;
                 }
-
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
                     return;
                 }
-            }
 
-            //ItemsAdded is obsolete - see e.ModelChangeInfo for correct usage
-            //Code below is obsolete
-#pragma warning disable 618
-            if (e.ItemsAdded != null)
-            {
-                PerformAddItems(e.ItemsAdded.ToList());
-            }
-            else if (e.PropertiesChanged != null)
-            {
-                if (e.PropertiesChanged.Any(mp => mp.Name == "Handler"))
+                if (e.ModelChangeInfo.PropertyName == "Handler")
                 {
                     if (DataObject != null)
                     {
@@ -1753,12 +1710,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
+
+            if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.CollectionItemAdded)
+            {
+                PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value});
+            }            
         }
 
         private void ModelItemAdded(ModelChangedEventArgs e)
         {
-            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
-#pragma warning restore 618
+            ModelProperty modelProperty = e.ModelChangeInfo.Subject.Content;
 
             if (modelProperty != null)
             {
@@ -1770,7 +1731,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
 
                         droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
-                        droppedActivity.IconPath = resource.IconPath;
 
                         modelProperty.SetValue(droppedActivity);
                     }
@@ -1782,7 +1742,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void ModelItemPropertyChanged(ModelChangedEventArgs e)
         {
-#pragma warning disable 618
             Guid? envID = null;
             Guid? resourceID = null;
             var explorerItem = DataObject as IExplorerItemViewModel;
@@ -1793,9 +1752,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 resourceID = explorerItem.ResourceId;
             }
 
-            // ReSharper disable CSharpWarnings::CS0618
-            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
-            // ReSharper restore CSharpWarnings::CS0618
+            ModelProperty modelProperty = e.ModelChangeInfo.Subject.Content;
 
             if (envID!=null && modelProperty != null)
             {
@@ -1803,16 +1760,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var resource = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
                 if (resource != null)
                 {
-                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                    d.IconPath = resource.IconPath;
                     UpdateForRemote(d, resource);
                     modelProperty.SetValue(d);
                 }
             }
             DataObject = null;
-#pragma warning restore 618
         }
 
         private void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
@@ -1852,35 +1806,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 PreventCommandFromBeingExecuted(e);
             }
-            if (e.Command == ApplicationCommands.Paste || e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
-            {
-                PreventPasteFromBeingExecuted(e);
-            }
-        }
-
-        private void PreventPasteFromBeingExecuted(CanExecuteRoutedEventArgs e)
-        {
-            var second = Clipboard.GetText();
-            if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"") || second.Contains("Type=\"WebService\"")))
-            {
-                var id = second.IndexOf("ResourceID=\"", StringComparison.Ordinal);
-                if (id == -1)
-                {
-                    e.Handled = true;
-                    e.CanExecute = false;
-                    return;
-                }
-                var idEnd = second.Substring(id + 12, 36);
-                if(!(second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"") || second.Contains("Type=\"WebService\"")))
-                {
-                    IResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(a => a.ID == Guid.Parse(idEnd));
-                    if (resource == null)
-                    {
-                        e.Handled = true;
-                        e.CanExecute = false;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -1894,7 +1819,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (e.Command == ApplicationCommands.Delete)
             {
-                //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd?.View?.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
@@ -1998,7 +1922,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Handle(EditActivityMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
-            EditActivity(message.ModelItem, message.ParentEnvironmentID, message.EnvironmentRepository);
+            EditActivity(message.ModelItem, message.ParentEnvironmentID);
         }
 
         #endregion

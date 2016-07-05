@@ -49,25 +49,26 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Activities.Designers2.Service
 {
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
-        const string SourceNotFoundMessage = "Source was not found. This service will not execute.";
+        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
             Message = "Service Working Normally"
         };
         private bool _resourcesUpdated;
-        readonly IEventAggregator _eventPublisher;
+        private readonly IEventAggregator _eventPublisher;
 
-        IDesignValidationService _validationService;
-        IErrorInfo _worstDesignError;
-        bool _isDisposed;
-        const string DoneText = "Done";
-        const string FixText = "Fix";
+        private IDesignValidationService _validationService;
+        private IErrorInfo _worstDesignError;
+        private bool _isDisposed;
+        private const string DoneText = "Done";
+        private const string FixText = "Fix";
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
@@ -137,7 +138,6 @@ namespace Dev2.Activities.Designers2.Service
                 _environment = environment;
             }
 
-
             InitializeValidationService(_environment);
             if (!InitializeResourceModel(_environment))
             {
@@ -152,21 +152,14 @@ namespace Dev2.Activities.Designers2.Service
                 {
                     Expand();
                     IsItemDragged.Instance.IsDragged = false;
-
                 }
             }
-            if (_environment != null)
+            var source = _environment?.ResourceRepository.FindSingle(a => a.ID == SourceId);
+            if (source != null)
             {
-                var source = _environment.ResourceRepository.FindSingle(a => a.ID == SourceId);
-                if (source != null)
-                {
-                    FriendlySourceName = source.DisplayName;
-                   
-                }
-
-
+                FriendlySourceName = source.DisplayName;
             }
-   
+
             InitializeProperties();
             if (_environment != null)
             {
@@ -180,18 +173,17 @@ namespace Dev2.Activities.Designers2.Service
             }, CanViewComplexObjects);
         }
 
-        bool CanViewComplexObjects(Object itemx)
+        private static bool CanViewComplexObjects(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsComplexObject;
         }
 
-        private void ViewJsonObjects(IComplexObjectItemModel item)
+        private static void ViewJsonObjects(IComplexObjectItemModel item)
         {
             if (item != null)
             {
-                var window = new JsonObjectsView();
-                window.Height = 280;
+                var window = new JsonObjectsView {Height = 280};
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
@@ -203,15 +195,15 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
+        private void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
-            if (_environment != null && _environment.AuthorizationService != null)
+            if (_environment?.AuthorizationService != null)
             {
                 _environment.AuthorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsChanged;
             }
         }
 
-        void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
+        private void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
         {
             RemovePermissionsError();
 
@@ -234,24 +226,24 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        void RemovePermissionsError()
+        private void RemovePermissionsError()
         {
             var errorInfos = DesignValidationErrors.Where(info => info.FixType == FixType.InvalidPermissions);
             RemoveErrors(errorInfos.ToList());
         }
 
-        bool HasNoPermission()
+        private bool HasNoPermission()
         {
             var hasNoPermission = _environment.AuthorizationService != null && _environment.AuthorizationService.GetResourcePermissions(ResourceID) == Permissions.None;
             return hasNoPermission;
         }
 
-        void DoneCompleted()
+        private void DoneCompleted()
         {
             IsFixed = true;
         }
 
-        void Done()
+        private void Done()
         {
             if (!IsWorstErrorReadOnly)
             {
@@ -273,7 +265,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public ICommand DoneCommand { get; private set; }
 
-        public RelayCommand ViewComplexObjectsCommand { get; set; }
+        private RelayCommand ViewComplexObjectsCommand { get; set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
 
@@ -294,7 +286,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             get { return _activityFactory ?? new InstanceWebActivityFactory(); }
             set { _activityFactory = value; }
-
         }
 
         public IDataMappingViewModelFactory MappingFactory
@@ -421,7 +412,7 @@ namespace Dev2.Activities.Designers2.Service
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                    WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
         }
@@ -453,9 +444,6 @@ namespace Dev2.Activities.Designers2.Service
         // ReSharper restore InconsistentNaming
         public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
-
-
-
 
         public string ButtonDisplayValue
         {
@@ -535,10 +523,8 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeMappings()
         {
-
             var webAct = ActivityFactory.CreateWebActivity(ModelItem, ResourceModel, ServiceName);
             DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
-
         }
 
         void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -649,7 +635,6 @@ namespace Dev2.Activities.Designers2.Service
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
         }
 
-
         private void GetResourceModel(IEnvironmentModel environmentModel)
         {
             var resourceId = ResourceID;
@@ -673,12 +658,9 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (LastValidationMemo != null && LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
             {
-
-                RemoveErrors(
-                    LastValidationMemo.Errors.Where(
+                RemoveErrors(LastValidationMemo.Errors.Where(
                         a => a.Message.Contains("This service will only execute when the server is online.")).ToList());
                 UpdateWorstError();
-
             }
             var webAct = ActivityFactory.CreateWebActivity(NewModel, NewModel, ServiceName);
             var newMapping = MappingFactory.CreateModel(webAct, OnMappingCollectionChanged);
@@ -712,16 +694,10 @@ namespace Dev2.Activities.Designers2.Service
                 return false;
             }
             return true;
-
-
-
         }
-
-
 
         private void UpdateLastValidationMemoWithVersionChanged()
         {
-
             var memo = new DesignValidationMemo
             {
                 InstanceID = UniqueID,
@@ -734,9 +710,7 @@ namespace Dev2.Activities.Designers2.Service
                 FixType = FixType.ReloadMapping,
                 Message = "Incorrect Version. The remote workflow has changed.Please refresh"
             });
-
             UpdateLastValidationMemo(memo, false);
-
         }
 
         bool CheckSourceMissing()
@@ -781,7 +755,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeValidationService(IEnvironmentModel environmentModel)
         {
-            if (environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
+            if (environmentModel?.Connection?.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
                 _validationService.Subscribe(UniqueID, a => UpdateLastValidationMemo(a));
@@ -794,7 +768,6 @@ namespace Dev2.Activities.Designers2.Service
             AddProperty("Source :", FriendlySourceName);
             AddProperty("Type :", Type);
             AddProperty("Procedure :", ActionName);
-     
         }
 
         void AddProperty(string key, string value)
@@ -811,7 +784,6 @@ namespace Dev2.Activities.Designers2.Service
             ImageSource = GetIconPath(actionType);
         }
 
-
         public string ResourceType
         {
             get;
@@ -822,18 +794,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             switch (actionType)
             {
-                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
-                    ResourceType = "DbService";
-                    return "DatabaseService-32";
-
-                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
-                    ResourceType = "WebService";
-                    return "WebService-32";
-
-                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
-                    ResourceType = "PluginService";
-                    return "PluginService-32";
-
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
                     if(string.IsNullOrEmpty(ServiceUri))
                     {
@@ -872,7 +832,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (!IsDeleted)
             {
-                _eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID, null));
+                _eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID));
             }
         }
 
@@ -892,15 +852,11 @@ namespace Dev2.Activities.Designers2.Service
                     UpdateMappings();
                 }
             }
-            if (OnDesignValidationReceived != null)
-            {
-                OnDesignValidationReceived(this, memo);
-            }
+            OnDesignValidationReceived?.Invoke(this, memo);
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
         {
-
             var memo = new DesignValidationMemo
             {
                 InstanceID = UniqueID,
@@ -911,7 +867,7 @@ namespace Dev2.Activities.Designers2.Service
                 InstanceID = UniqueID,
                 ErrorType = ErrorType.Critical,
                 FixType = FixType.None,
-                Message = SourceNotFoundMessage
+                Message = _sourceNotFoundMessage
             });
             UpdateDesignValidationErrors(memo.Errors);
         }
@@ -923,9 +879,7 @@ namespace Dev2.Activities.Designers2.Service
                 switch (result)
                 {
                     case ConnectResult.Success:
-
                         break;
-
                     case ConnectResult.ConnectFailed:
                     case ConnectResult.LoginFailed:
                         var uniqueId = UniqueID;
@@ -946,7 +900,6 @@ namespace Dev2.Activities.Designers2.Service
                         UpdateLastValidationMemo(memo);
                         break;
                 }
-
             });
         }
 
@@ -964,16 +917,13 @@ namespace Dev2.Activities.Designers2.Service
                     foreach (var input in inputOutputViewModels)
                     {
                         IInputOutputViewModel currentInputViewModel = input;
-                        if (DataMappingViewModel != null)
+                        var inputOutputViewModel = DataMappingViewModel?.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
+                        if (inputOutputViewModel != null)
                         {
-                            var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
-                            if (inputOutputViewModel != null)
+                            inputOutputViewModel.Required = input.Required;
+                            if (inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
                             {
-                                inputOutputViewModel.Required = input.Required;
-                                if (inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
-                                {
-                                    keepError = true;
-                                }
+                                keepError = true;
                             }
                         }
                     }
@@ -990,7 +940,6 @@ namespace Dev2.Activities.Designers2.Service
 
         void CheckIsDeleted(DesignValidationMemo memo)
         {
-            // BUG 9940 - 2013.07.30 - TWR - added
             var error = memo.Errors.FirstOrDefault(c => c.FixType == FixType.Delete);
             IsDeleted = error != null;
             IsEditable = !IsDeleted;
@@ -1053,7 +1002,6 @@ namespace Dev2.Activities.Designers2.Service
             return string.Concat("<Input>", result, "</Input>");
         }
 
-        // PBI 6690 - 2013.07.04 - TWR : added
         void FixErrors()
         {
             if (!_versionsDifferent && (WorstDesignError.ErrorType == ErrorType.None || WorstDesignError.FixData == null))
@@ -1121,7 +1069,7 @@ namespace Dev2.Activities.Designers2.Service
 
         XElement FetchXElementFromFixData()
         {
-            if (WorstDesignError != null && !string.IsNullOrEmpty(WorstDesignError.FixData))
+            if (!string.IsNullOrEmpty(WorstDesignError?.FixData))
             {
                 try
                 {
@@ -1251,16 +1199,11 @@ namespace Dev2.Activities.Designers2.Service
 
         public void Handle(UpdateResourceMessage message)
         {
-            if (message != null && message.ResourceModel != null)
+            if (message?.ResourceModel != null)
             {
-                //                if(message.ResourceModel.ID == ResourceID)
-                //                {
-                //                    InitializeMappings();
-                //                }
                 if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
                 {
-
-                    IErrorInfo sourceNotAvailableMessage = DesignValidationErrors.FirstOrDefault(info => info.Message == SourceNotFoundMessage);
+                    IErrorInfo sourceNotAvailableMessage = DesignValidationErrors.FirstOrDefault(info => info.Message == _sourceNotFoundMessage);
                     if (sourceNotAvailableMessage != null)
                     {
                         RemoveError(sourceNotAvailableMessage);
@@ -1305,18 +1248,13 @@ namespace Dev2.Activities.Designers2.Service
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (_validationService != null)
-                    {
-                        _validationService.Dispose();
-                    }
+                    _validationService?.Dispose();
                     if (_environment != null)
                     {
                         _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
                     }
                 }
-
                 // Dispose unmanaged resources.
-
                 _isDisposed = true;
             }
         }
@@ -1329,20 +1267,19 @@ namespace Dev2.Activities.Designers2.Service
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }
+
+
+
+
+
