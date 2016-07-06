@@ -324,47 +324,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion Commands
 
-        public class PartIsUsed : IPartIsUsed
-        {
-            readonly ObservableCollection<IRecordSetItemModel> _recsetCollection;
-            private readonly ObservableCollection<IScalarItemModel> _scalarCollection;
-            private readonly ObservableCollection<IComplexObjectItemModel> _complexObjectItemModels;
-            public PartIsUsed(ObservableCollection<IRecordSetItemModel> recsetCollection, ObservableCollection<IScalarItemModel> scalarCollection, ObservableCollection<IComplexObjectItemModel> complexObjectItemModels)
-            {
-                _recsetCollection = recsetCollection;
-                _scalarCollection = scalarCollection;
-                _complexObjectItemModels = complexObjectItemModels;
-            }
-            public void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed)
-            {
-                var scalarsToRemove = _scalarCollection.Where(c => c.DisplayName == part.Field);
-                scalarsToRemove.ToList().ForEach(scalarToRemove =>
-                {
-                    scalarToRemove.IsUsed = isUsed;
-                });
-            }
-
-            public void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
-            {
-                var recsetsToRemove = _recsetCollection.Where(c => c.DisplayName == part.Recordset);
-                recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
-            }
-
-            public void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
-            {
-                var objects = _complexObjectItemModels.Flatten(model => model.Children).Where(model => model.DisplayName == part.DisplayValue.Trim('@'));
-                objects.ForEach(model =>
-                {
-                    model.IsUsed = isUsed;
-                });
-            }
-        }
-        private interface IPartIsUsed
-        {
-            void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed);
-            void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed);
-            void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed);
-        }
         #region Add/Remove Missing Methods
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
@@ -386,23 +345,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
-        
-        private static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
-        {
-            if (recsetToRemove == null) return;
-            if (string.IsNullOrEmpty(part.Field))
-            {
-                recsetToRemove.IsUsed = isUsed;
-            }
-            else
-            {
-                var childrenToRemove = recsetToRemove.Children.Where(c => c.DisplayName == part.Field);
-                childrenToRemove.ToList().ForEach(childToRemove =>
-                {
-                    childToRemove.IsUsed = isUsed;
-                });
-            }
-        }   
         
         public void RemoveUnusedDataListItems()
         {
@@ -1696,12 +1638,12 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var part in partsToVerify.Where(part => DataList != null))
             {
                 FindMissingPartsForRecordset(part, missingDataParts);
-                FindMissingForScalar(part, missingDataParts);
+                FindMissingPartsForScalar(part, missingDataParts);
             }
             return missingDataParts;
         }
 
-        private void FindMissingForScalar(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
+        private void FindMissingPartsForScalar(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
         {
             if (!part.IsScalar) return;
             if (ScalarCollection.Count(c => c.DisplayName == part.Field) == 0)
