@@ -23,7 +23,6 @@ namespace Dev2.Common.Interfaces.Wrappers
         void Copy(string source, string destination);
 
         void WriteAllBytes(string path, byte[] contents);
-        FileAttributes GetAttributes(string path);
-        void SetAttributes(string path, System.IO.FileAttributes fileAttributes);
+        void AppendAllText(string path, string contents);
     }
 }
