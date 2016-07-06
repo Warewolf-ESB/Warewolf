@@ -330,18 +330,33 @@ namespace Dev2.Studio.ViewModels.DataList
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
-
-
         public void RemoveUnusedDataListItems()
         {
-            var unusedScalars = ScalarCollection.Where(c => c.IsUsed == false).ToList();
-            if (unusedScalars.Any())
+            RemoveUnusedScalars();
+            RemoveUnusedRecordSets();
+            RemoveUnusedComplexObjects();
+
+            WriteToResourceModel();
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
+            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+            ViewComplexObjectsCommand.RaiseCanExecuteChanged();
+            DeleteCommand.RaiseCanExecuteChanged();
+        }
+
+        private void RemoveUnusedComplexObjects()
+        {
+            var unusedComplexObjects = ComplexObjectCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedComplexObjects.Any())
             {
-                foreach (var dataListItemModel in unusedScalars)
+                foreach (var dataListItemModel in unusedComplexObjects)
                 {
-                    ScalarCollection.Remove(dataListItemModel);
+                    RemoveDataListItem(dataListItemModel);
                 }
             }
+        }
+
+        private void RemoveUnusedRecordSets()
+        {
             var unusedRecordsets = RecsetCollection.Where(c => c.IsUsed == false).ToList();
             if (unusedRecordsets.Any())
             {
@@ -360,21 +375,18 @@ namespace Dev2.Studio.ViewModels.DataList
                     recset.Children.Remove(unusedRecsetChild);
                 }
             }
+        }
 
-            var unusedComplexObjects = ComplexObjectCollection.Where(c => c.IsUsed == false).ToList();
-            if (unusedComplexObjects.Any())
+        private void RemoveUnusedScalars()
+        {
+            var unusedScalars = ScalarCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedScalars.Any())
             {
-                foreach (var dataListItemModel in unusedComplexObjects)
+                foreach (var dataListItemModel in unusedScalars)
                 {
-                    RemoveDataListItem(dataListItemModel);
+                    ScalarCollection.Remove(dataListItemModel);
                 }
             }
-
-            WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
-            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
-            ViewComplexObjectsCommand.RaiseCanExecuteChanged();
-            DeleteCommand.RaiseCanExecuteChanged();
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts)
@@ -390,14 +402,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if (part.IsScalar)
                     {
-                        if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
-                        {
-                            var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description);
-                            if (ScalarCollection.Count > 0)
-                                ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
-                            else
-                                ScalarCollection.Add(scalar);
-                        }
+                        AddMissingScalarParts(part);
                     }
                     else
                     {
@@ -407,23 +412,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
                         if (recsetToAddTo != null)
                         {
-                            if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
-                            {
-                                var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
-                                if (recsetToAddTo.Children.Count > 0)
-                                    recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
-                                else
-                                    recsetToAddTo.Children.Add(child);
-                            }
+                            AddMissingRecordSetPart(recsetToAddTo, part);
                         }
                         else if (tmpRecset != null)
                         {
-                            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
-                            if (child != null)
-                            {
-                                child.DisplayName = part.Recordset + "()." + part.Field;
-                                tmpRecset.Children.Add(child);
-                            }
+                            AddMissingTempRecordSet(part, tmpRecset);
                         }
                         else
                         {
@@ -434,6 +427,58 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
+            AddMissingTempRecordSetList(tmpRecsetList);
+
+            _scalarHandler.RemoveBlankScalars();
+            RemoveBlankRecordsets();
+            RemoveBlankRecordsetFields();
+            _complexObjectHandler.RemoveBlankComplexObjects();
+            if (parts.Count > 0)
+                AddBlankRow(null);
+
+            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
+            Provider.VariableList = new ObservableCollection<string>(items);
+
+            WriteToResourceModel();
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
+        }
+
+        private void AddMissingScalarParts(IDataListVerifyPart part)
+        {
+            if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
+            {
+                var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description);
+                if (ScalarCollection.Count > 0)
+                    ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
+                else
+                    ScalarCollection.Add(scalar);
+            }
+        }
+
+        private static void AddMissingRecordSetPart(IRecordSetItemModel recsetToAddTo, IDataListVerifyPart part)
+        {
+            if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
+            {
+                var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
+                if (recsetToAddTo.Children.Count > 0)
+                    recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                else
+                    recsetToAddTo.Children.Add(child);
+            }
+        }
+
+        private static void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset)
+        {
+            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
+            if (child != null)
+            {
+                child.DisplayName = part.Recordset + "()." + part.Field;
+                tmpRecset.Children.Add(child);
+            }
+        }
+
+        private void AddMissingTempRecordSetList(List<IRecordSetItemModel> tmpRecsetList)
+        {
             foreach (var item in tmpRecsetList)
             {
                 if (item.Children.Count == 0)
@@ -449,19 +494,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     RecsetCollection.Add(item);
                 }
             }
-
-            _scalarHandler.RemoveBlankScalars();
-            RemoveBlankRecordsets();
-            RemoveBlankRecordsetFields();
-            _complexObjectHandler.RemoveBlankComplexObjects();
-            if (parts.Count > 0)
-                AddBlankRow(null);
-
-            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
-            Provider.VariableList = new ObservableCollection<string>(items);
-
-            WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         #endregion Add/Remove Missing Methods
