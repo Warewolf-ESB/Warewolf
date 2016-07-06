@@ -110,6 +110,7 @@
     <Compile Include="DecisionsTests\NotEndsWithTests.cs" />
     <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="Operations\Dev2ActivityIOBrokerTests.cs" />
     <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
     <Compile Include="Operations\Dev2IndexFinderTests.cs" />
     <Compile Include="Operations\Dev2IOBrokerTests.cs" />
