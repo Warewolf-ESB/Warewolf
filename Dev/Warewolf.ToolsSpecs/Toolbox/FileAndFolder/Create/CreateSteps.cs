@@ -68,13 +68,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         [BeforeScenario("fileFeature")]
         public void SetupForTesting()
         {
-            StartSftpServer();
         }
 
         [AfterScenario("fileFeature")]
         public void CleanUpFiles()
         {
-            ShutdownSftpServer();
             try
             {
                 RemovedFilesCreatedForTesting();
@@ -84,8 +82,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
                 Console.Write(e.Message);
               
             }
-           
-          
         }
     }
 }

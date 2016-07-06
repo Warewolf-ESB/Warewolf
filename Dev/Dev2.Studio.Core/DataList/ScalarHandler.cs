@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void ValidateScalar()
         {
-            Common.CheckDataListItemsForDuplicates(_vm.DataList);
+          //  _vm.CheckDataListItemsForDuplicates(_vm.DataList);
         }
 
         #endregion
