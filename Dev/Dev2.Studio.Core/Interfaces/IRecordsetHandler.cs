@@ -13,15 +13,10 @@ namespace Dev2.Studio.Core.Interfaces
         void RemoveBlankRecordsetFields();
         void ValidateRecordsetChildren(IRecordSetItemModel recset);
         void ValidateRecordset();
-        bool RecordSetHasChildren(IRecordSetItemModel model);
-        void CheckForEmptyRecordset();
-        void CheckForFixedEmptyRecordsets();
         void AddRowToRecordsets();
-        void FixNamingForRecset(IDataListItemModel recset);
         void AddRecordSet();
         void SortRecset(bool @ascending);
         void AddRecordSets(XmlNode xmlNode);
-        IRecordSetItemModel CreateRecordSet(XmlNode xmlNode);
         void SetRecordSetItemsAsUsed();
         void FindMissingPartsForRecordset(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts);
         bool BuildRecordSetErrorMessages(IRecordSetItemModel model, out string errorMessage);
