@@ -47,9 +47,9 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Fields
 
-        readonly IComplexObjectHandler _complexObjectHandler;
-        readonly IRecordsetHandler _recordsetHandler;
-        readonly IScalarHandler _scalarHandler;
+        private readonly IComplexObjectHandler _complexObjectHandler;
+        private readonly IRecordsetHandler _recordsetHandler;
+        private readonly IScalarHandler _scalarHandler;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -149,7 +149,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null) return;
             foreach (INotifyPropertyChanged item in args.NewItems)
@@ -201,7 +201,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        bool _toggleSortOrder = true;
+        private bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
         private IJsonObjectsView _jsonObjectView;
 
@@ -235,17 +235,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void ViewJsonObjects(IComplexObjectItemModel item)
         {
-            if (item != null)
-            {
-                if (JsonObjectsView != null)
-                {
-                    var json = item.GetJson();
-                    JsonObjectsView.ShowJsonString(JSONUtils.Format(json));
-                }
-            }
+            if (item == null) return;
+            if (JsonObjectsView == null) return;
+            var json = item.GetJson();
+            JsonObjectsView.ShowJsonString(JSONUtils.Format(json));
         }
 
-        bool CanViewComplexObjects(Object itemx)
+        private static bool CanViewComplexObjects(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsComplexObject;
