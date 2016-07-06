@@ -647,8 +647,8 @@ namespace Dev2
                 string webServerSslPort = null;
                 var webServerPort = ParseArguments(ref webServerSslPort);
 
-                GlobalConstants.WebServerPort = webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
-                GlobalConstants.WebServerSslPort = webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
+                GlobalConstants.WebServerPort = webServerPort = !string.IsNullOrEmpty(webServerPort) ? webServerPort : ConfigurationManager.AppSettings["webServerPort"];
+                GlobalConstants.WebServerSslPort = webServerSslPort = !string.IsNullOrEmpty(webServerSslPort) ? webServerSslPort : ConfigurationManager.AppSettings["webServerSslPort"];
 
                 _isWebServerEnabled = false;
 
