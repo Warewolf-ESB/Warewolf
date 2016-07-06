@@ -905,37 +905,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (!liteInit)
             {
-                var hashTable = new Hashtable
-                {
-                    {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
-                    {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
-                    {WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
-                    {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]},
-                };
+                SetHashTable();
+                SetDesignerConfigService();
 
-                _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
-                // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade            
-                var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
-                if (designerConfigService != null)
-                {
-                    // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
-                    designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
-                    designerConfigService.AutoConnectEnabled = true;
-                    designerConfigService.AutoSplitEnabled = true;
-                    designerConfigService.PanModeEnabled = true;
-                    designerConfigService.RubberBandSelectionEnabled = true;
-                    designerConfigService.BackgroundValidationEnabled = true; // prevent design-time background validation from blocking UI thread
-                    // Disabled for now
-                    designerConfigService.AnnotationEnabled = false;
-                    designerConfigService.AutoSurroundWithSequenceEnabled = false;
-                }
                 _wdMeta = new DesignerMetadata();
                 _wdMeta.Register();
                 var builder = new AttributeTableBuilder();
@@ -946,26 +918,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 MetadataStore.AddAttributeTable(builder.CreateTable());
 
+                _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
                 _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
-            }
+                _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
+                _wd.Context.Services.Publish(DesignerManagementService);
 
-            LoadDesignerXaml();
-
-            if (!liteInit)
-            {
-                _wdMeta.Register();
-                
+                _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
-
-                _wd.View.Measure(new Size(2000, 2000));
-
                 _wd.View.LostFocus += OnViewOnLostFocus;
-                _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
-
-                _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
-                _wd.Context.Services.Publish(DesignerManagementService);
 
                 //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
                 CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
@@ -973,7 +935,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Focus();
 
                 int indexOfOpenItem = -1;
-                if(_wd.ContextMenu?.Items != null)
+                if (_wd.ContextMenu?.Items != null)
                 {
                     foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
                     {
@@ -990,15 +952,73 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
-            }
-            _workflowHelper.EnsureImplementation(ModelService);
+                LoadDesignerXaml();
+                _workflowHelper.EnsureImplementation(ModelService);
 
-            if (!liteInit)
-            {
                 //For Changing the icon of the flowchart.
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
+            }
+        }
+
+        private void SetHashTable()
+        {
+            var hashTable = new Hashtable
+            {
+                {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
+                {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
+                {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
+                {
+                    WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey,
+                    Application.Current.Resources["WorkflowBackgroundBrush"]
+                },
+                {
+                    WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey,
+                    Application.Current.Resources["WorkflowBackgroundBrush"]
+                },
+                {
+                    WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey,
+                    Application.Current.Resources["WorkflowSelectedBorderBrush"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
+                {
+                    WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey,
+                    Application.Current.Resources["DesignerBackground"]
+                },
+            };
+
+            _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
+        }
+
+        private void SetDesignerConfigService()
+        {
+            var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
+            if (designerConfigService != null)
+            {
+                // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
+                designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
+                designerConfigService.AutoConnectEnabled = true;
+                designerConfigService.AutoSplitEnabled = true;
+                designerConfigService.PanModeEnabled = true;
+                designerConfigService.RubberBandSelectionEnabled = true;
+                designerConfigService.BackgroundValidationEnabled = true;
+                // prevent design-time background validation from blocking UI thread
+                // Disabled for now
+                designerConfigService.AnnotationEnabled = false;
+                designerConfigService.AutoSurroundWithSequenceEnabled = false;
             }
         }
 
@@ -1486,42 +1506,63 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return true;
                 }
 
-                // Travis.Frisinger - 28.01.2013 : Case Amendments
-                if (item != null)
+                HandleDependencyObject(dp, item);
+            }
+            return false;
+        }
+
+        [ExcludeFromCodeCoverage]
+        private void HandleDependencyObject(DependencyObject dp, ModelItem item)
+        {
+            if (item != null)
+            {
+                string itemFn = item.ItemType.FullName;
+
+                if (dp != null && string.Equals(dp.ToString(), "Microsoft.Windows.Themes.ScrollChrome", StringComparison.InvariantCulture))
                 {
-                    string itemFn = item.ItemType.FullName;
+                    WizardEngineAttachedProperties.SetDontOpenWizard(dp, true);
+                }
 
-                    if (dp != null && string.Equals(dp.ToString(), "Microsoft.Windows.Themes.ScrollChrome", StringComparison.InvariantCulture))
+                // Handle Case Edits
+                if (itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal) &&
+                    !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))
+                {
+                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                     {
-                        WizardEngineAttachedProperties.SetDontOpenWizard(dp, true);
-                    }
-
-                    // Handle Case Edits
-                    if (itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal) && !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))
-                    {
-                        if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
+                        FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage
                         {
-                            FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
-                        }
-                    }
-
-                    // Handle Switch Edits
-                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
-                    {
-                        _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
-                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
-                    }
-
-                    //// Handle Decision Edits
-                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
-                    {
-                        _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
-                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                            ModelItem = item,
+                            EnvironmentModel = _resourceModel.Environment
+                        });
                     }
                 }
 
+                // Handle Switch Edits
+                if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                    item.ItemType == typeof(FlowSwitch<string>))
+                {
+                    _expressionString =
+                        FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage
+                        {
+                            ModelItem = item,
+                            EnvironmentModel = _resourceModel.Environment
+                        });
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                }
+
+                //// Handle Decision Edits
+                if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                    item.ItemType == typeof(FlowDecision))
+                {
+                    _expressionString =
+                        FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage
+                        {
+                            ModelItem = item,
+                            EnvironmentModel = _resourceModel.Environment
+                        });
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                }
             }
-            return false;
         }
 
         [ExcludeFromCodeCoverage]
