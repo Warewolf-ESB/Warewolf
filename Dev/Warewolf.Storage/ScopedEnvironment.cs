@@ -237,10 +237,6 @@ namespace Warewolf.Storage
            return _inner.GetIndexes(exp);
         }
 
-        public IList<string> EvalJsonAsListOfStrings(string json, int update)
-        {
-            return _inner.EvalJsonAsListOfStrings(json, update);
-        }
         #endregion
 
         public void SetDataSource(string ds)
