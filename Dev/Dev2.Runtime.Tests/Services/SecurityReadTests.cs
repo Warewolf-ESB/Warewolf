@@ -61,7 +61,7 @@ namespace Dev2.Tests.Runtime.Services
             // ensure the contents are what we expect ;)
 
             var mockCatalog = new Mock<IResourceCatalog>();
-            mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
+            mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             //------------Execute Test---------------------------
             var securityRead = new SecurityRead
             {
