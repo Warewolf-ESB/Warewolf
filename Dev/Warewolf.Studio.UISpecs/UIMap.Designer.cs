@@ -2633,19 +2633,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Service_Picker_Exists_OnDesignSurface - Use 'Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Service_Picker_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfWindow servicePickerWindow = this.ServicePickerWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
-            Assert.AreEqual(this.Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues.ServicePickerWindowExists, servicePickerWindow.Exists, "Services Picker tool on the design surface does not exist");
-        }
-        
-        /// <summary>
         /// Assert_ServiceLabel_DestinationServer_Exists - Use 'Assert_ServiceLabel_DestinationServer_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_ServiceLabel_DestinationServer_Exists()
@@ -3518,19 +3505,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_Cancel_Service_Picker_Dialog
-        /// </summary>
-        public void Click_Cancel_Service_Picker_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton cancel = this.MainStudioWindow.ServicePickerDialog.Cancel;
-            #endregion
-
-            // Click 'Cancel' button
-            Mouse.Click(cancel, new Point(57, 6));
-        }
-        
-        /// <summary>
         /// Click_Close_FullScreen
         /// </summary>
         public void Click_Close_FullScreen()
@@ -3580,6 +3554,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'Close' menu item
             Mouse.Click(close, new Point(27, 13));
+        }
+        
+        /// <summary>
+        /// Click_Connect_Control_InExplorer
+        /// </summary>
+        public void Click_Connect_Control_InExplorer()
+        {
+            #region Variable Declarations
+            WpfButton serverListComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ServerListComboBox;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(serverListComboBox, new Point(217, 8));
         }
         
         /// <summary>
@@ -4100,6 +4087,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Select 'Run task as soon as possible after a scheduled sta...' check box
             runTaskCheckBox.Checked = this.Click_Scheduler_RunTaskParams.RunTaskCheckBoxChecked;
+        }
+        
+        /// <summary>
+        /// Click_Service_Picker_Dialog_Cancel
+        /// </summary>
+        public void Click_Service_Picker_Dialog_Cancel()
+        {
+            #region Variable Declarations
+            WpfButton cancelButton = this.SaveDialogWindow.CancelButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(cancelButton, new Point(57, 6));
         }
         
         /// <summary>
@@ -9215,18 +9215,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues = new Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
         public virtual Assert_ServiceLabel_DestinationServer_ExistsExpectedValues Assert_ServiceLabel_DestinationServer_ExistsExpectedValues
         {
             get
@@ -10367,18 +10355,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public ServicePickerWindow ServicePickerWindow
-        {
-            get
-            {
-                if ((this.mServicePickerWindow == null))
-                {
-                    this.mServicePickerWindow = new ServicePickerWindow();
-                }
-                return this.mServicePickerWindow;
-            }
-        }
-        
         public SplashPageWindow SplashPageWindow
         {
             get
@@ -10803,8 +10779,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Service_Picker_Dialog_ExistsExpectedValues mAssert_Service_Picker_Dialog_ExistsExpectedValues;
         
-        private Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
-        
         private Assert_ServiceLabel_DestinationServer_ExistsExpectedValues mAssert_ServiceLabel_DestinationServer_ExistsExpectedValues;
         
         private Assert_ServicesCount_Label_ExistsExpectedValues mAssert_ServicesCount_Label_ExistsExpectedValues;
@@ -10994,8 +10968,6 @@ namespace Warewolf.Studio.UISpecs
         private MessageBoxWindow mMessageBoxWindow;
         
         private SaveDialogWindow mSaveDialogWindow;
-        
-        private ServicePickerWindow mServicePickerWindow;
         
         private SplashPageWindow mSplashPageWindow;
         
@@ -13995,21 +13967,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
         /// </summary>
         public bool ServicePickerDialogExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Service_Picker_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
-        /// </summary>
-        public bool ServicePickerWindowExists = true;
         #endregion
     }
     
@@ -36084,20 +36041,6 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfTreeItem mExplorerTreeItem;
         #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServicePickerWindow : WpfWindow
-    {
-        
-        public ServicePickerWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
