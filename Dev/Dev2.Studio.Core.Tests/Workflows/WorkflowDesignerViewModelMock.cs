@@ -73,6 +73,11 @@ namespace Dev2.Core.Tests.Workflows
             ActiveEnvironment = environmentModel;
         }
 
+        public IEnvironmentModel GetActiveEnvironment()
+        {
+            return ActiveEnvironment;
+        }
+
         public void SetIsDesignerViewVisible(bool isVisible)
         {
             _isDesignerViewVisible = isVisible;
