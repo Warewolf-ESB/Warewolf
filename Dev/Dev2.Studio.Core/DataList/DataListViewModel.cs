@@ -50,6 +50,7 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Fields
 
         readonly IComplexObjectHandler _complexObjectHandler;
+        readonly IScalarHandler _scalarHandler;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -223,6 +224,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _missingDataList = new MissingDataList(RecsetCollection, ScalarCollection);
             _partIsUsed = new PartIsUsed(RecsetCollection, ScalarCollection, ComplexObjectCollection);
             _complexObjectHandler = new ComplexObjectHandler(this);
+            _scalarHandler = new ScalarHandler(this);
         }
 
         public IJsonObjectsView JsonObjectsView
@@ -448,7 +450,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-            RemoveBlankScalars();
+            _scalarHandler.RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
             _complexObjectHandler.RemoveBlankComplexObjects();
@@ -538,7 +540,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (!(item is IRecordSetItemModel) && !(item is IScalarItemModel))
                 {
-                    AddRowToScalars();
+                    _scalarHandler.AddRowToScalars();
                 }
                 else if (item is IRecordSetItemModel)
                 {
@@ -547,7 +549,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             else
             {
-                AddRowToScalars();
+                _scalarHandler.AddRowToScalars();
                 AddRowToRecordsets();
             }
         }
@@ -558,7 +560,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (!(item is IRecordSetItemModel) && item is IScalarItemModel)
             {
-                RemoveBlankScalars();
+                _scalarHandler.RemoveBlankScalars();
             }
             else if (item is IRecordSetItemModel)
             {
@@ -636,7 +638,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string WriteToResourceModel()
         {
-            ScalarCollection.ForEach(FixNamingForScalar);
+            ScalarCollection.ForEach(_scalarHandler.FixNamingForScalar);
             AddRecordsetNamesIfMissing();
             var result = GetDataListString();
             if (Resource != null)
@@ -721,15 +723,6 @@ namespace Dev2.Studio.ViewModels.DataList
             RecsetCollection.Remove(blankList.First());
         }
 
-        private void RemoveBlankScalars()
-        {
-            List<IScalarItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-
-            if (blankList.Count <= 1) return;
-
-            ScalarCollection.Remove(blankList.First());
-        }
-
         private void RemoveBlankRecordsetFields()
         {
             foreach (var recset in RecsetCollection)
@@ -810,15 +803,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        void AddRowToScalars()
-        {
-            List<IScalarItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-            if (blankList.Count != 0) return;
-
-            var scalar = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
-            ScalarCollection.Add(scalar);
-        }
-
         void AddRowToRecordsets()
         {
             List<IRecordSetItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
@@ -849,15 +833,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 recset.DisplayName = string.Concat(recset.DisplayName, "()");
             }
             FixCommonNamingProblems(recset);
-        }
-
-        static void FixNamingForScalar(IDataListItemModel scalar)
-        {
-            if (scalar.DisplayName.Contains("()"))
-            {
-                scalar.DisplayName = scalar.DisplayName.Replace("()", "");
-            }
-            FixCommonNamingProblems(scalar);
         }
 
         static void FixCommonNamingProblems(IDataListItemModel recset)
@@ -963,7 +938,7 @@ namespace Dev2.Studio.ViewModels.DataList
             try
             {
                 IsSorting = true;
-                SortScalars(_toggleSortOrder);
+                _scalarHandler.SortScalars(_toggleSortOrder);
                 SortRecset(_toggleSortOrder);
                 SortComplexObjects(_toggleSortOrder);
                 _toggleSortOrder = !_toggleSortOrder;
@@ -973,20 +948,6 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public bool IsSorting { get; set; }
-
-        /// <summary>
-        ///     Sorts the scalars.
-        /// </summary>
-        private void SortScalars(bool ascending)
-        {
-            IList<IScalarItemModel> newScalarCollection = @ascending ? ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList() : ScalarCollection.OrderByDescending(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
-            ScalarCollection.Clear();
-            foreach (var item in newScalarCollection)
-            {
-                ScalarCollection.Add(item);
-            }
-            ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel(string.Empty));
-        }
 
         /// <summary>
         ///     Sorts the recordsets.
@@ -1004,12 +965,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private void SortComplexObjects(bool ascending)
         {
             _complexObjectHandler.SortComplexObjects(ascending);
-            IList<IComplexObjectItemModel> newRecsetCollection = @ascending ? ComplexObjectCollection.OrderBy(c => c.DisplayName).ToList() : ComplexObjectCollection.OrderByDescending(c => c.DisplayName).ToList();
-            ComplexObjectCollection.Clear();
-            foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
-            {
-                ComplexObjectCollection.Add(item);
-            }
         }
 
         /// <summary>
@@ -1136,34 +1091,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void AddScalars(XmlNode c)
         {
-            if (c.Attributes != null)
-            {
-                IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
-                if (scalar != null)
-                {
-                    scalar.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
-                    if (string.IsNullOrEmpty(_searchText))
-                        ScalarCollection.Add(scalar);
-                    else if (scalar.DisplayName.ToUpper().StartsWith(_searchText.ToUpper()))
-                    {
-                        ScalarCollection.Add(scalar);
-                    }
-                }
-            }
-            else
-            {
-                IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(c.Name, ParseDescription(null), ParseColumnIODirection(null));
-                if (scalar != null)
-                {
-                    scalar.IsEditable = ParseIsEditable(null);
-                    if (String.IsNullOrEmpty(_searchText))
-                        ScalarCollection.Add(scalar);
-                    else if (scalar.DisplayName.ToUpper().StartsWith(_searchText.ToUpper()))
-                    {
-                        ScalarCollection.Add(scalar);
-                    }
-                }
-            }
+            _scalarHandler.AddScalars(c);
         }
 
         void AddRecordSets(XmlNode c)
@@ -1353,7 +1281,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void UpdateDataListItemsAsUsed()
         {
-            SetScalarItemsAsUsed();
+            _scalarHandler.SetScalarItemsAsUsed();
             SetRecordSetItemsAsUsed();
         }
 
@@ -1370,12 +1298,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                 }
             }
-        }
-
-        private void SetScalarItemsAsUsed()
-        {
-            foreach (var dataListItemModel in ScalarCollection.Where(model => !model.IsUsed))
-                dataListItemModel.IsUsed = true;
         }
 
         #endregion
@@ -1407,16 +1329,9 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var part in partsToVerify.Where(part => DataList != null))
             {
                 FindMissingPartsForRecordset(part, missingDataParts);
-                FindMissingForScalar(part, missingDataParts);
+                _scalarHandler.FindMissingForScalar(part, missingDataParts);
             }
             return missingDataParts;
-        }
-
-        private void FindMissingForScalar(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
-        {
-            if (!part.IsScalar) return;
-            if (ScalarCollection.Count(c => c.DisplayName == part.Field) == 0)
-                missingDataParts.Add(part);
         }
 
         private void FindMissingPartsForRecordset(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
