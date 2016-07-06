@@ -19,6 +19,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -2249,10 +2250,12 @@ namespace Dev2.Core.Tests
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-            PrivateObject p = new PrivateObject(dataListViewModel);
-
+            
             var parent = CreateComplexObjectDataListModel("Child");
             var child = CreateComplexObjectDataListModel("Child", parent);
+            dataListViewModel.ComplexObjectCollection.Add(child);
+            ComplexObjectHandler handler = new ComplexObjectHandler(dataListViewModel);
+            PrivateObject p = new PrivateObject(handler);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -2264,7 +2267,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OnDispose_ShouldClearAndKillTheResource ()
+        public void OnDispose_ShouldClearAndKillTheResource()
         {
             //---------------Set up test pack-------------------
             IResourceModel resourceModel = new Mock<IResourceModel>().Object;
@@ -2279,7 +2282,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(dataListViewModel.Resource == null);
             Assert.IsNotNull(dataListViewModel.ScalarCollection.Single());
             Assert.IsNotNull(dataListViewModel.RecsetCollection.Single());
-            Assert.AreEqual(0,dataListViewModel.ComplexObjectCollection.Count);
+            Assert.AreEqual(0, dataListViewModel.ComplexObjectCollection.Count);
         }
 
         IRecordSetFieldItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()
