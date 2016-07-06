@@ -351,9 +351,9 @@ namespace Dev2.Core.Tests
             parts.Add(part2.Object);
 
             IRecordSetItemModel mod = new RecordSetItemModel("testing");
-            mod.Children.Add(new RecordSetFieldItemModel("f1", parent: mod));
+            mod.Children.Add(new RecordSetFieldItemModel("f1", mod));
             IRecordSetItemModel mod2 = new RecordSetItemModel("testing");
-            mod2.Children.Add(new RecordSetFieldItemModel("f2", parent: mod2));
+            mod2.Children.Add(new RecordSetFieldItemModel("f2", mod2));
 
             _dataListViewModel.RecsetCollection.Add(mod);
             _dataListViewModel.RecsetCollection.Add(mod2);
@@ -515,7 +515,7 @@ namespace Dev2.Core.Tests
             Setup();
             Assert.AreEqual(0, _dataListViewModel.ComplexObjectCollection.Count);
 
-            var jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
+            const string jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
             _dataListViewModel.GenerateComplexObjectFromJson("@Person", jsonString);
 
             Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
@@ -529,7 +529,7 @@ namespace Dev2.Core.Tests
             Setup();
             Assert.AreEqual(0, _dataListViewModel.ComplexObjectCollection.Count);
 
-            var jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
+            const string jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
             _dataListViewModel.GenerateComplexObjectFromJson("@Persons.Person", jsonString);
 
             Assert.AreEqual(1, _dataListViewModel.ComplexObjectCollection.Count);
@@ -2384,18 +2384,7 @@ namespace Dev2.Core.Tests
 
         private IEnumerable<IScalarItemModel> CreateScalarListItems(IEnumerable<IDataListVerifyPart> parts)
         {
-            var results = new List<IScalarItemModel>();
-
-            foreach (var part in parts)
-            {
-                if (part.IsScalar)
-                {
-                    results.Add(DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description));
-                }
-            }
-            return results;
+            return (from part in parts where part.IsScalar select DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description)).ToList();
         }
-
-
     }
 }
