@@ -25,8 +25,8 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(AllItems.FirstOrDefault(listitem => listitem.Name == ListItem), new Point(396, 11));
         }
 
-        [Given("\"(.*)\" exists in the dropdown list")]
-        [Then("\"(.*)\" exists in the dropdown list")]
+        [Given(@"""(.*)"" exists in the dropdown list")]
+        [Then(@"""(.*)"" exists in the dropdown list")]
         public void AssertExistsInTheDropdownList(string ListItem)
         {
             var AllItems = Uimap.MainStudioWindow.GetChildren().Where(child => child.ClassName == "Uia.ComboEditorItemControl");

@@ -1699,6 +1699,8 @@ namespace Dev2.Core.Tests.Workflows
             var eventAggregator = new Mock<IEventAggregator>();
             var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
             wd.SetActiveEnvironment(env.Object);
+            var activeEnvironment = wd.GetActiveEnvironment();
+            Assert.AreEqual(activeEnvironment, env.Object);
             wd.SetDataObject(new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object));
 
             // Execute unit
