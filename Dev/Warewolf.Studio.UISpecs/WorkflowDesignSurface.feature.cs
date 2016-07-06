@@ -17,7 +17,7 @@ namespace Warewolf.Studio.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class WorkflowDesignSurfaceFeature
     {
         
@@ -69,11 +69,11 @@ namespace Warewolf.Studio.UISpecs
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("The Workflow Design Surface UI Test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Big Workflow Design Surface UI Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowDesignSurface")]
-        public virtual void TheWorkflowDesignSurfaceUITest()
+        public virtual void BigWorkflowDesignSurfaceUITest()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The Workflow Design Surface UI Test", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Big Workflow Design Surface UI Test", ((string[])(null)));
 #line 9
 this.ScenarioSetup(scenarioInfo);
 #line 10
@@ -119,26 +119,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 58
  testRunner.When("I \"Click_SaveDialog_YesButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 59
- testRunner.And("I scroll down in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I scroll up in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
+ testRunner.And("I scroll down in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+ testRunner.And("I scroll down in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
  testRunner.Then("\"localhost\\SomeWorkflow\" exists in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 65
- testRunner.When("I \"Click_Debug_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 66
- testRunner.Then("I \"Assert_DebugInput_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 67
+ testRunner.When("I \"Click_Debug_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
+ testRunner.Then("I \"Assert_DebugInput_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 69
  testRunner.And("I \"Assert_DebugInput_DebugButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 74
  testRunner.When("I \"Click_DebugInput_DebugButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 73
+#line 75
  testRunner.Then("I \"Assert_DebugOutput_Contains_SomeVariable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 77
+#line 79
  testRunner.When("I \"Open_Assign_Tool_Qvi_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 78
+#line 80
  testRunner.Then("I \"Assert_Assign_QVI_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 81
+#line 83
  testRunner.Given("I \"Assert_Close_Tab_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 84
  testRunner.When("I \"Click_Close_Tab_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();

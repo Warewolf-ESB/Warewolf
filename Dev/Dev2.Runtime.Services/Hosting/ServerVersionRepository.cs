@@ -168,7 +168,7 @@ namespace Dev2.Runtime.Hosting
             UpdateCategoryIfRenamed(res, oldResource, xml);
             StoreAndDeleteCurrentIfRenamed(res, oldResource);
             UpdateVersionInfoIfNotExists(resourceId, xml, res);
-            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), null, "Rollback", "WorkflowService");
+            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(), "Rollback", "WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
                 _catalogue.GetResource(Guid.Empty, res.ResourceID).ResourceName = oldResource.ResourceName;
             return new RollbackResult { DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId) };
@@ -193,7 +193,7 @@ namespace Dev2.Runtime.Hosting
             if (res.ResourceName != oldResource.ResourceName)
             {
                 StoreVersion(res, "unknown", "Rollback", Guid.Empty);
-                _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType, null, false);
+                _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType, false);
             }
         }
 
