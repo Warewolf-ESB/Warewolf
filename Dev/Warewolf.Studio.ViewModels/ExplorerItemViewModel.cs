@@ -1108,33 +1108,41 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Filter(filter);
             }
-            if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion)))
+            if (string.IsNullOrEmpty(filter))
+            {
+                EmptyFilterValue();
+            }
+            else
+            {
+                IsExpanded = IsFolder;
+                ValidateResourceIsVisible(filter);
+            }
+            OnPropertyChanged(() => Children);
+        }
+
+        private void EmptyFilterValue()
+        {
+            if (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion))
             {
                 IsVisible = true;
             }
-            else
+            if (IsFolder)
             {
-                if (!String.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
-                {
-                    IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
+                IsExpanded = false;
+            }
+        }
 
-                    if (IsVersion)
-                    {
-                        IsVisible = Parent.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
-                    }
+        private void ValidateResourceIsVisible(string filter)
+        {
+            if (!string.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
+            {
+                IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
+
+                if (IsVersion)
+                {
+                    IsVisible = Parent.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
             }
-            if (!String.IsNullOrEmpty(filter))
-            {
-                if (IsFolder)
-                    IsExpanded = true;
-            }
-            else
-            {
-                if (IsFolder)
-                    IsExpanded = false;
-            }
-            OnPropertyChanged(() => Children);
         }
 
         public string Inputs { get; set; }
