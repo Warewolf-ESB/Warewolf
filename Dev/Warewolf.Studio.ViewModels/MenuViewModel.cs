@@ -134,8 +134,8 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (IsPanelLockedOpen)
-                    return "UnlockAlt";
-                return "Lock";
+                    return @"UnlockAlt";
+                return @"Lock";
             }
         }
 
