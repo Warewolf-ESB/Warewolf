@@ -24,11 +24,6 @@ namespace Warewolf.Studio.UISpecs
             var AllItems = Uimap.MainStudioWindow.GetChildren().Where(child => child.ClassName == "Uia.ComboEditorItemControl");
             Mouse.Click(AllItems.FirstOrDefault(listitem => listitem.Name == ListItem), new Point(396, 11));
         }
-        
-        public void ThenExistsInTheDropdownList(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [Given(@"""(.*)"" exists in the dropdown list")]
         [Then(@"""(.*)"" exists in the dropdown list")]
