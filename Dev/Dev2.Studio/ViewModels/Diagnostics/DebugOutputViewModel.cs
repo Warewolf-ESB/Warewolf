@@ -438,13 +438,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if (_outputViewModelUtil.ContenIsNotValid(content)) return;
 
-            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
-            {
-                if(content.StateType != StateType.End)
-                {
-                    _lastStep = content;
-                }
-            }
+            IsDebugStateLastStep(content);
 
             _continueDebugDispatch = false;
             if (content.IsFinalStep())
@@ -452,12 +446,20 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 _allDebugReceived = true;
                 _continueDebugDispatch = true;
             }
+
             if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
-
             AddItemToTree(content);
         }
-        
+
+        private void IsDebugStateLastStep(IDebugState content)
+        {
+            if ((DebugStatus != DebugStatus.Stopping && DebugStatus != DebugStatus.Finished) ||
+                content.StateType == StateType.Message) return;
+            if (content.StateType != StateType.End)
+                _lastStep = content;
+        }
+
         public void AppendX(IDebugState content)
         {
             content.SessionID = SessionID;
@@ -466,39 +468,40 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if (item == null)
-            {
-                Dev2Logger.Debug("Debug line item is null, did not proceed");
-                return;
-            }
+            if (_outputViewModelUtil.IsValidLineItem(item)) return;
 
-            if (string.IsNullOrEmpty(item.MoreLink))
+            if(_outputViewModelUtil.IsItemMoreLinkValid(item))
+                CreatProcessController(item);
+        }
+       
+        private void CreatProcessController(IDebugLineItem item)
+        {
+            try
             {
-                Dev2Logger.Debug("Link is empty");
+                var debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
+                Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
+                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                    Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
-                    ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex);
-                    if (ex.Message.Contains("The remote name could not be resolved"))
-                        _popup.Show(
-                            "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
-                            "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
-                            false,
-                            true, false, false);
-                    else
-                        throw;
-                }
+                Dev2Logger.Error(ex);
+                ProcessControllerHasError(ex);
             }
         }
 
+        private void ProcessControllerHasError(Exception ex)
+        {
+            if (ex.Message.Contains("The remote name could not be resolved"))
+                _popup.Show(
+                    "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
+                    "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
+                    false,
+                    true, false, false);
+            else
+                throw ex;
+        }
+
+       
         public bool CanOpenMoreLink(IDebugLineItem item)
         {
             return !string.IsNullOrEmpty(item?.MoreLink);
