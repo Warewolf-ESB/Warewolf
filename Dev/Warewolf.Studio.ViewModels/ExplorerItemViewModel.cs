@@ -1108,40 +1108,41 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Filter(filter);
             }
-            if (string.IsNullOrEmpty(filter))
-            {
-                EmptyFilterValue();
-            }
-            else
-            {
-                IsExpanded = IsFolder;
-                ValidateResourceIsVisible(filter);
-            }
-            OnPropertyChanged(() => Children);
-        }
-
-        private void EmptyFilterValue()
-        {
-            if (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion))
+            if (string.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion)))
             {
                 IsVisible = true;
             }
-            if (IsFolder)
+            else
             {
-                IsExpanded = false;
+                if (!string.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
+                {
+                    ValidateIsVisible(filter);
+                }
+            }
+            ValidateFolderExpand(filter);
+            OnPropertyChanged(() => Children);
+        }
+
+        private void ValidateIsVisible(string filter)
+        {
+            IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
+
+            if (IsVersion)
+            {
+                IsVisible = Parent.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
             }
         }
 
-        private void ValidateResourceIsVisible(string filter)
+        private void ValidateFolderExpand(string filter)
         {
-            if (!string.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
+            if (!string.IsNullOrEmpty(filter))
             {
-                IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
-
-                if (IsVersion)
-                {
-                    IsVisible = Parent.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
-                }
+                IsExpanded = IsFolder;
+            }
+            else
+            {
+                if (IsFolder)
+                    IsExpanded = false;
             }
         }
 
