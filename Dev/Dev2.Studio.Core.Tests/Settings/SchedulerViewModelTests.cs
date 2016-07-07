@@ -77,6 +77,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SchedulerViewModel_EmptyConstructor")]
+        [ExpectedException(typeof(Exception))]
         public void SchedulerViewModel_EmptyConstructor_Nothing_Happens()
         {
             //------------Setup for test--------------------------
