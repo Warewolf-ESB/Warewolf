@@ -24,5 +24,7 @@ namespace Dev2.Common.Interfaces.Wrappers
 
         void WriteAllBytes(string path, byte[] contents);
         void AppendAllText(string path, string contents);
+
+        byte[] ReadAllBytes(string path);
     }
 }

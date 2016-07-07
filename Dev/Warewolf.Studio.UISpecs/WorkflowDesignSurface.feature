@@ -47,18 +47,14 @@ Scenario: Big Workflow Design Surface UI Test
 #Scenario: Entering a valid workflow name into the save dialog does not set the error state of the textbox to true
 #	Given I "Assert_Save_Workflow_Dialog_Exists"
 #	And I "Assert_Workflow_Name_Textbox_Exists"
-	When I "Enter_Workflowname_As_SomeWorkflow"
+	When I "Enter_Servicename_As_SomeWorkflow"
 	Then I "Assert_SaveDialog_SaveButton_Enabled"
 
 #Scenario: Clicking the save button in the save dialog creates a new explorer item
-#	Given I "Assert_Save_Workflow_Dialog_Exists"
-#	And I "Assert_Workflow_Name_Textbox_Exists"
-#	And I "Assert_Workflow_Name_Textbox_Text_Equals_SomeWorkflow"
-#	And I "Assert_SaveDialog_SaveButton_Enabled"
+#	Given I "Assert_SaveDialog_SaveButton_Enabled"
 	When I "Click_SaveDialog_YesButton"
 	And I scroll up in the explorer tree
-	And I scroll down in the explorer tree
-	And I scroll down in the explorer tree
+	And I scroll to the bottom of the explorer tree
 	Then "localhost\SomeWorkflow" exists in the explorer tree
 
 #Scenario: Clicking Debug Button Shows Debug Input Dialog

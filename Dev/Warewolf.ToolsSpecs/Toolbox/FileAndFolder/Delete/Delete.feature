@@ -26,8 +26,8 @@ Scenario Outline: Delete file at location
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | "Success" | NO           |                      |
 	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.txt                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
-	| SFTP       | [[path]] | sftp://localhost/filetodelete.txt                                      | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://localhost/filetodelete1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
+	| SFTP       | [[path]] | sftp://rsaklfsvrsbspdc/filetodelete.txt                                      | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
+	| SFTP PK    | [[path]] | sftp://rsaklfsvrsbspdc/filetodelete1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Delete file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -45,8 +45,8 @@ Scenario Outline: Delete file at location Null
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | password | [[result]] | "Failure" | NO           |                      |
 	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.xtx                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | ""        | NO           |                      |
-	| SFTP       | [[path]] | sftp://localhost/Memo.txt                                              | dev2.local                   | Q/ulw&]  | [[result]] | ""        | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://localhost                                                       | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\key.opk     |
+	| SFTP       | [[path]] | sftp://rsaklfsvrsbspdc/Memo.txt                                              | dev2.local                   | Q/ulw&]  | [[result]] | ""        | NO           |                      |
+	| SFTP PK    | [[path]] | sftp://rsaklfsvrsbspdc                                                       | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\key.opk     |
 
 Scenario Outline: Delete file Validation
     Given I have a variable "[[a]]" with a value "<Val1>"
@@ -133,26 +133,3 @@ Scenario Outline: Delete file at location with incorrect directories
 	| Local      | 1234         | c:\filetodelete.txt | ""                           | ""       | [[result]] | ""     | AN           | 
 	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] | ""     | AN           | 
 	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] | ""     | AN           | 
-
-#Complex Types WOLF-1042
-@ignore
-Scenario Outline: Delete file at location using complex types
-	Given I have a source path "<source>" with value "<sourceLocation>"
-	And source credentials as "<username>" and "<password>"
-	And result as "<resultVar>"
-	When the delete file tool is executed
-	Then the result variable "<resultVar>" will be "<result>"
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Input Path                  | Username   | Password |
-         | <source> = <sourceLocation> | <username> | String   |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-	Examples: 
-	| Name  | source                              | sourceLocation      | username | password | resultVar  | result    | errorOccured |
-	| Local | [[file().resources().path]]         | c:\filetodelete.txt | ""       | ""       | [[result]] | "Success" | NO           |
-	| Local | [[file(*).resources(3).path]]       | c:\filetodelete.txt | ""       | ""       | [[result]] | "Success" | NO           |
-	| Local | [[file(1).resources([[int]]).path]] | c:\delete.txt       | ""       | ""       | [[result]] | "Success" | NO           |
-
-
