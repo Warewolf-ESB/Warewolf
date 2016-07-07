@@ -18,6 +18,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ServiceStack.Text;
@@ -29,6 +30,111 @@ namespace Dev2.Data.Tests.BinaryDataList
     // ReSharper disable InconsistentNaming
     public class DataListUtilTest
     {
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsArray_GivenGivenNotArray_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            string scalr = "[[a]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isArray = DataListUtil.IsArray(ref scalr);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isArray);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsArray_GivenGivenArray_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            string scalr = "[[a()]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var isArray = DataListUtil.IsArray(ref scalr);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isArray);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetAllPossibleExpressionsForFunctionOperations_GivenValidArgs_ShouldReturnsCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            var env = new Mock<IExecutionEnvironment>();
+            env.Setup(environment => environment.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string>());
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            try
+            {
+                ErrorResultTO errorResultTO;
+                var operations = DataListUtil.GetAllPossibleExpressionsForFunctionOperations("[[a]]", env.Object, out errorResultTO, 1);
+                Assert.AreEqual(0, operations.Count);
+                env.Setup(environment => environment.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Throws(new Exception("error"));
+                DataListUtil.GetAllPossibleExpressionsForFunctionOperations("[[a]]", env.Object, out errorResultTO, 1);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("error", ex.Message);
+
+            }
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateDefsFromDataList_GivenDataList_ShouldReurnList()
+        {
+            //---------------Set up test pack-------------------
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+                var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+                Assert.IsNotNull(generateDefsFromDataList);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+
+            }
+
+            //---------------Test Result -----------------------
+
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateDefsFromDataList_GivenDataList_ShouldReurnListWithEntries()
+        {
+            //---------------Set up test pack-------------------
+            const string trueString = "True";
+            const string noneString = "Input";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+                var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+                Assert.IsNotNull(generateDefsFromDataList);
+                Assert.AreNotEqual(0, generateDefsFromDataList.Count);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+
+            }
+
+            //---------------Test Result -----------------------
+
+
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -1287,7 +1393,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             {
 
                 var inputs = "<Inputs> <Input Name = \"CityName\" Source = \"CityName\" EmptyToNull = \"false\" DefaultValue = \"Paris-Aeroport Charles De Gaulle\" /> <Input Name = \"CountryName\" Source = \"CountryName\" EmptyToNull = \"false\" DefaultValue = \"France\" /> </Inputs >";
-                              var executionEnvironment = new ExecutionEnvironment();
+                var executionEnvironment = new ExecutionEnvironment();
                 var inputsToEnvironment = DataListUtil.InputsToEnvironment(executionEnvironment, inputs, 0);
 
             }

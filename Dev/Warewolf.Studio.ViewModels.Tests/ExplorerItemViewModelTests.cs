@@ -390,6 +390,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
+            _target.IsResourceUnchecked = false;
             _target.IsFolderChecked = true;
             _target.CanCreateFolder = true;
             _target.CanCreateSource = true;
@@ -413,6 +414,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
+            Assert.AreEqual(_target.IsResourceUnchecked, createdFolder.IsResourceUnchecked);
             Assert.AreEqual(_target.IsFolderChecked, createdFolder.IsFolderChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, createdFolder.CanCreateSource);
@@ -426,6 +428,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
             Assert.IsTrue(createdFolder.IsSelected);
             Assert.IsTrue(createdFolder.IsRenaming);
+        }
+
+        [TestMethod]
+        public void TestCanShowServerVersion()
+        {
+            //arrange
+            _target.CanShowServerVersion = false;
+
+            //act
+            _target.CanShowServerVersion = !_target.CanShowServerVersion;
+
+            //assert
+            Assert.IsTrue(_target.CanShowServerVersion);
         }
 
         [TestMethod]
@@ -880,6 +895,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Children.Add(childMockMessage.Object);
             _target.Children.Add(childMockFolder.Object);
             _target.Children.Add(childMockServer.Object);
+
+            _target.UpdateChildrenCount();
 
             //act
             var childrenCount = _target.ChildrenCount;
