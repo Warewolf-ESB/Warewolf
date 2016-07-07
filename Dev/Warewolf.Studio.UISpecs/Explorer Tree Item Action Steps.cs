@@ -35,13 +35,13 @@ namespace Warewolf.Studio.UISpecs
         [When(@"I scroll down in the explorer tree")]
         public void WhenIScrollDownInTheExplorerTree()
         {
-            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, -2);
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -2);
         }
 
         [When(@"I scroll up in the explorer tree")]
         public void WhenIScrollUpInTheExplorerTree()
         {
-            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.Explorer.ExplorerTree, 2);
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 2);
         }
 
         [When(@"I right click ""(.*)"" in the explorer tree")]
@@ -120,7 +120,7 @@ namespace Warewolf.Studio.UISpecs
         private UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
-            UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
+            UITestControl CurrentTreeItem = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree;
             var endNode = pathAsArray[pathAsArray.Length - 1];
             var getNextChildren = CurrentTreeItem.GetChildren();
             getNextChildren.ToList().ForEach(getNextTreeItemChildren =>
