@@ -15,9 +15,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2;
 using Warewolf.Resource.Errors;
 using WarewolfParserInterop;
+// ReSharper disable ThrowingSystemException
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Warewolf.Storage
 {
@@ -27,7 +29,7 @@ namespace Warewolf.Storage
 
         public ExecutionEnvironment()
         {
-            _env = PublicFunctions.CreateEnv("");
+            _env = PublicFunctions.CreateEnv(@"");
             Errors = new HashSet<string>();
             AllErrors = new HashSet<string>();
         }
@@ -44,7 +46,7 @@ namespace Warewolf.Storage
             }
             catch (Exception e)
             {
-                if (throwsifnotexists || e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
+                if (throwsifnotexists || e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int")) throw;
                 return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
         }
@@ -96,7 +98,7 @@ namespace Warewolf.Storage
         {
             var res = Eval(exp, update);
             if (IsNothing(res))
-                throw new NullValueInVariableException("The expression" + exp + "has no value assigned", exp);
+                throw new NullValueInVariableException($"The expression {exp} has no value assigned.", exp);
             return res;
         }
 
@@ -153,9 +155,7 @@ namespace Warewolf.Storage
             if (x.IsRecordSetNameExpression)
             {
                 var recsetName = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                // ReSharper disable PossibleNullReferenceException
-                return _env.RecordSets.ContainsKey(recsetName.Item.Name);
-                // ReSharper restore PossibleNullReferenceException
+                return _env.RecordSets.ContainsKey(recsetName?.Item.Name);
             }
             return false;
         }
@@ -165,42 +165,20 @@ namespace Warewolf.Storage
             var result = Eval(expression, update);
             if (result.IsWarewolfAtomResult)
             {
-                // ReSharper disable PossibleNullReferenceException
-                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
-                // ReSharper restore PossibleNullReferenceException
+                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
                 return new List<string> { WarewolfAtomToString(x) };
             }
-            // ReSharper disable PossibleNullReferenceException
-            // ReSharper disable PossibleNullReferenceException
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             if (warewolfAtomListresult != null)
             {
                 var x = warewolfAtomListresult.Item;
-                // ReSharper restore PossibleNullReferenceException
                 return x.Select(WarewolfAtomToString).ToList();
             }
             throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
-
-        public IList<string> EvalJsonAsListOfStrings(string expression, int update)
-        {
-            if (string.IsNullOrEmpty(expression)) return new List<string>();
-            var warewolfAtoms = EvalAsList(ToStar(expression), update, true).ToList();
-            var atom = warewolfAtoms.ToList()[0];
-            var jString = atom.ToString();
-            var dev2IJsonListEvaluator = new Dev2IJsonListEvaluator(jString);
-            var evalaJsonAsList = dev2IJsonListEvaluator.EvalaJsonAsList().ToList();
-            return new List<string>(evalaJsonAsList.Cast<string>());
-
-        }
-
         public static string WarewolfAtomToString(DataStorage.WarewolfAtom a)
         {
-            if (a == null)
-            {
-                return "";
-            }
-            return a.ToString();
+            return a?.ToString() ?? string.Empty;
         }
 
         public static string WarewolfAtomToStringNullAsNothing(DataStorage.WarewolfAtom a)
@@ -212,11 +190,11 @@ namespace Warewolf.Storage
         {
             if (a == null)
             {
-                return "";
+                return string.Empty;
             }
             if (a.IsNothing)
             {
-                throw new NullValueInVariableException(ErrorResource.VariableIsNull, "");
+                throw new NullValueInVariableException(ErrorResource.VariableIsNull, string.Empty);
             }
             return a.ToString();
         }
@@ -236,7 +214,7 @@ namespace Warewolf.Storage
 
         public static bool IsValidVariableExpression(string expression, out string errorMessage, int update)
         {
-            errorMessage = "";
+            errorMessage = string.Empty;
             try
             {
                 var x = EvaluationFunctions.parseLanguageExpression(expression, update);
@@ -264,33 +242,28 @@ namespace Warewolf.Storage
                     if (x.IsNothing) return null;
                     return WarewolfAtomToStringErrorIfNull(x);
                 }
-                throw new Exception("null when f# said it should not be");
+                throw new Exception(@"Null when value should have been returned.");
             }
-            // ReSharper disable RedundantIfElseBlock
-            else
-            // ReSharper restore RedundantIfElseBlock
+            var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            if (warewolfAtomListresult != null)
             {
-                var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                if (warewolfAtomListresult != null)
+                var x = warewolfAtomListresult.Item;
+                StringBuilder res = new StringBuilder();
+                for (int index = 0; index < x.Count; index++)
                 {
-                    var x = warewolfAtomListresult.Item;
-                    StringBuilder res = new StringBuilder();
-                    for (int index = 0; index < x.Count; index++)
+                    var warewolfAtom = x[index];
+                    if (index == x.Count - 1)
                     {
-                        var warewolfAtom = x[index];
-                        if (index == x.Count - 1)
-                        {
-                            res.Append(warewolfAtom);
-                        }
-                        else
-                        {
-                            res.Append(warewolfAtom).Append(",");
-                        }
+                        res.Append(warewolfAtom);
                     }
-                    return res.ToString();
+                    else
+                    {
+                        res.Append(warewolfAtom).Append(@",");
+                    }
                 }
-                throw new Exception("null when f# said it should not be");
+                return res.ToString();
             }
+            throw new Exception(@"Null when value should have been returned.");
         }
 
         public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -306,7 +279,6 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
         }
 
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
         {
             _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
@@ -341,7 +313,7 @@ namespace Warewolf.Storage
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
                 if (rec != null)
                 {
-                    return "[[" + rec.Item.Name + "(*)." + rec.Item.Column + "]]";
+                    return $"[[{rec.Item.Name}(*).{rec.Item.Column}]]";
                 }
             }
 
@@ -350,13 +322,13 @@ namespace Warewolf.Storage
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetNameExpression;
                 if (rec != null)
                 {
-                    return "[[" + rec.Item.Name + "(*)" + "]]";
+                    return $"[[{rec.Item.Name}(*)]]";
                 }
             }
 
             if (exp.IsJsonIdentifierExpression)
             {
-                var replace = expression.Replace("()", "(*)");
+                var replace = expression.Replace(@"()", @"(*)");
                 return replace;
             }
 
@@ -368,26 +340,16 @@ namespace Warewolf.Storage
             var result = Eval(expression, update, throwsifnotexists);
             if (result.IsWarewolfAtomResult)
             {
-                // ReSharper disable PossibleNullReferenceException
                 var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (warewolfAtomResult != null)
                 {
-                    var x = warewolfAtomResult.Item;
-                    // ReSharper restore PossibleNullReferenceException
-                    return new List<DataStorage.WarewolfAtom> { x };
+                    var item = warewolfAtomResult.Item;
+                    return new List<DataStorage.WarewolfAtom> { item };
                 }
-                throw new Exception("null when f# said it should not be");
+                throw new Exception(@"Null when value should have been returned.");
             }
-            // ReSharper disable RedundantIfElseBlock
-            else
-            // ReSharper restore RedundantIfElseBlock
-            {
-                // ReSharper disable PossibleNullReferenceException
-                // ReSharper disable PossibleNullReferenceException
-                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
-                // ReSharper restore PossibleNullReferenceException
-                return x.ToList();
-            }
+            var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
+            return x?.ToList();
         }
 
         public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update)
@@ -432,7 +394,7 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp, int update)
         {
-            return string.IsNullOrEmpty(exp) ? "" : EvaluationFunctions.evalToExpression(_env, update, exp);
+            return string.IsNullOrEmpty(exp) ? String.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
@@ -440,9 +402,9 @@ namespace Warewolf.Storage
             var output = EvaluationFunctions.parseLanguageExpression(outputVar, 0);
             if (output.IsRecordSetExpression)
             {
-                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression).Item;
-                if (Equals(outputidentifier.Index, LanguageAST.Index.Star))
-                    return "[[" + outputidentifier.Name + "(" + i + ")." + outputidentifier.Column + "]]";
+                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression)?.Item;
+                if (Equals(outputidentifier?.Index, LanguageAST.Index.Star))
+                    return $"[[{outputidentifier?.Name}({i}).{outputidentifier?.Column}]]";
             }
             return outputVar;
         }
@@ -481,17 +443,11 @@ namespace Warewolf.Storage
         public static string GetPositionColumnExpression(string recordset)
         {
             var rec = EvaluationFunctions.parseLanguageExpression(recordset, 0);
-            if (rec.IsRecordSetExpression)
-            {
-                var index = (rec as LanguageAST.LanguageExpression.RecordSetExpression).Item;
-                return "[[" + index.Name + "(" + "*" + ")." + EvaluationFunctions.PositionColumn + "]]";
-            }
-            if (rec.IsRecordSetNameExpression)
-            {
-                var index = (rec as LanguageAST.LanguageExpression.RecordSetNameExpression).Item;
-                return "[[" + index.Name + "(" + "*" + ")." + EvaluationFunctions.PositionColumn + "]]";
-            }
-            return recordset;
+            if(!rec.IsRecordSetExpression && !rec.IsRecordSetNameExpression) return recordset;
+            var recordSetExpression = rec as LanguageAST.LanguageExpression.RecordSetExpression;
+            var recordSetNameExpression = rec as LanguageAST.LanguageExpression.RecordSetNameExpression;
+            var index = recordSetExpression?.Item?.Name ?? recordSetNameExpression?.Item?.Name;
+            return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
         }
 
         public static bool IsValidRecordSetIndex(string exp)
@@ -527,23 +483,14 @@ namespace Warewolf.Storage
 
         public JContainer EvalJContainer(string exp)
         {
-            if (!string.IsNullOrEmpty(exp))
-            {
-                var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
-                if (var.IsJsonIdentifierExpression)
-                {
-                    var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-                    if (jsonIdentifierExpression != null)
-                    {
-                        var nameExpression = jsonIdentifierExpression.Item as LanguageAST.JsonIdentifierExpression.NameExpression;
-                        if (nameExpression != null)
-                        {
-                            return _env.JsonObjects[nameExpression.Item.Name];
-                        }
-                    }
-                }
-            }
-            return null;
+            if(string.IsNullOrEmpty(exp))
+                return null;
+            var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+            if(!var.IsJsonIdentifierExpression)
+                return null;
+            var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
+            var nameExpression = jsonIdentifierExpression?.Item as LanguageAST.JsonIdentifierExpression.NameExpression;
+            return nameExpression != null ? _env.JsonObjects[nameExpression.Item.Name] : null;
         }
 
         public List<string> GetIndexes(string exp)
@@ -555,30 +502,26 @@ namespace Warewolf.Storage
                 
                 if (var.IsJsonIdentifierExpression)
                 {
-
-                    
                     var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
                     if (jsonIdentifierExpression != null)
                     {
                         BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
                     }
-                }else
+                }
+                else if(var.IsRecordSetExpression)
                 {
-                    if(var.IsRecordSetExpression)
+                    var recSetExpression = var as LanguageAST.LanguageExpression.RecordSetExpression;
+                    if(recSetExpression != null)
                     {
-                        var recSetExpression = var as LanguageAST.LanguageExpression.RecordSetExpression;
-                        if(recSetExpression != null)
+                        var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
+                        foreach(var index in indexes)
                         {
-                            var indexes = EvalRecordSetIndexes("[["+recSetExpression.Item.Name+"(*)]]", 0);
-                            foreach(var index in indexes)
-                            {
-                                indexMap.Add(exp.Replace("(*).","("+index+")."));
-                            }
+                            indexMap.Add(exp.Replace(@"(*).", $"({index})."));
                         }
                     }
-                }                
+                }
             }
-            return indexMap.Where(s => !s.Contains("(*)")).ToList();
+            return indexMap.Where(s => !s.Contains(@"(*)")).ToList();
         }
 
         private void BuildIndexMap(LanguageAST.JsonIdentifierExpression var,string exp, List<string> indexMap,JContainer container)
@@ -618,8 +561,8 @@ namespace Warewolf.Storage
                         {
                             if (!string.IsNullOrEmpty(exp))
                             {
-                                var indexed = objectName + "(" + i + ")";
-                                var updatedExp = exp.Replace(objectName + "(*)", indexed);
+                                var indexed = objectName + @"(" + i + @")";
+                                var updatedExp = exp.Replace(objectName + @"(*)", indexed);
                                 indexMap.Add(updatedExp);
                                 BuildIndexMap(nameExpression.Item.Next, updatedExp, indexMap, arr[i - 1] as JContainer);
                             }
