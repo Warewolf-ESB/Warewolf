@@ -28,7 +28,6 @@ namespace Dev2.Common.Interfaces
         ICommand OpenVersionCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }
-        ICommand ItemSelectedCommand { get; set; }
         ICommand LostFocus { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();

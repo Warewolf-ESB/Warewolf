@@ -64,17 +64,13 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="RemoteServer.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RemoteServer.feature</DependentUpon>
-    </Compile>
+    <Compile Include="RemoteServer.cs" />
+    <Compile Include="WorkflowDesignSurface.cs" />
     <Compile Include="StudioUISpecs.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StudioUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
     <Compile Include="ActionSteps.cs" />
     <Compile Include="Tools\Base Conversion.feature.cs">
@@ -363,18 +359,9 @@
     <Compile Include="UIMap.Designer.cs">
       <DependentUpon>UIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowDesignSurface.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WorkflowDesignSurface.feature</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="RemoteServer.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RemoteServer.feature.cs</LastGenOutput>
-    </None>
     <None Include="StudioUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
@@ -607,17 +594,12 @@
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="WorkflowDesignSurface.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowDesignSurface.feature.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
     <Content Include="UIMapTemplate.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
