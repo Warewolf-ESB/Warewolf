@@ -50,7 +50,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         readonly IComplexObjectHandler _complexObjectHandler;
         readonly IScalarHandler _scalarHandler;
-        IRecordsetHandler _recordsetHandler;
+        readonly IRecordsetHandler _recordsetHandler;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IRecordSetItemModel> _recsetCollection;
@@ -431,8 +431,8 @@ namespace Dev2.Studio.ViewModels.DataList
             AddMissingTempRecordSetList(tmpRecsetList);
 
             _scalarHandler.RemoveBlankScalars();
-            RemoveBlankRecordsets();
-            RemoveBlankRecordsetFields();
+            _recordsetHandler.RemoveBlankRecordsets();
+            _recordsetHandler.RemoveBlankRecordsetFields();
             _complexObjectHandler.RemoveBlankComplexObjects();
             if (parts.Count > 0)
                 AddBlankRow(null);
@@ -583,7 +583,7 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 _scalarHandler.AddRowToScalars();
-                AddRowToRecordsets();
+                _recordsetHandler.AddRowToRecordsets();
             }
         }
 
@@ -597,11 +597,11 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             else if (item is IRecordSetItemModel)
             {
-                RemoveBlankRecordsets();
+                _recordsetHandler.RemoveBlankRecordsets();
             }
             else
             {
-                RemoveBlankRecordsetFields();
+                _recordsetHandler.RemoveBlankRecordsetFields();
             }
         }
 
@@ -672,7 +672,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public string WriteToResourceModel()
         {
             ScalarCollection.ForEach(_scalarHandler.FixNamingForScalar);
-            AddRecordsetNamesIfMissing();
+            _recordsetHandler.AddRecordsetNamesIfMissing();
             var result = GetDataListString();
             if (Resource != null)
             {
@@ -734,12 +734,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (item is IRecordSetItemModel)
             {
-                ValidateRecordset();
+                _recordsetHandler.ValidateRecordset();
             }
             else if (item is IRecordSetFieldItemModel)
             {
                 IRecordSetFieldItemModel rs = (IRecordSetFieldItemModel)item;
-                ValidateRecordsetChildren(rs.Parent);
+                _recordsetHandler.ValidateRecordsetChildren(rs.Parent);
             }
             else
             {
@@ -747,70 +747,13 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void RemoveBlankRecordsets()
-        {
-            List<IRecordSetItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-
-            if (blankList.Count <= 1) return;
-
-            RecsetCollection.Remove(blankList.First());
-        }
-
-        private void RemoveBlankRecordsetFields()
-        {
-            foreach (var recset in RecsetCollection)
-            {
-                List<IRecordSetFieldItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-
-                if (blankChildList.Count <= 1) continue;
-
-                recset.Children.Remove(blankChildList.First());
-            }
-        }
-
         #endregion Methods
 
         #region Private Methods
 
-        void ValidateRecordsetChildren(IRecordSetItemModel recset)
-        {
-            CheckForEmptyRecordset();
-            if (recset != null)
-            {
-                CheckDataListItemsForDuplicates(recset.Children);
-            }
-            CheckForFixedEmptyRecordsets();
-        }
-
-        void ValidateRecordset()
-        {
-            CheckForEmptyRecordset();
-            CheckDataListItemsForDuplicates(DataList);
-            CheckForFixedEmptyRecordsets();
-        }
-
         void ValidateScalar()
         {
             CheckDataListItemsForDuplicates(DataList);
-        }
-
-        void CheckForEmptyRecordset()
-        {
-            foreach (var recordset in RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].DisplayName) && !string.IsNullOrEmpty(c.DisplayName)))
-            {
-                recordset.SetError(StringResources.ErrorMessageEmptyRecordSet);
-            }
-        }
-
-        void CheckForFixedEmptyRecordsets()
-        {
-            foreach (var recset in RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].DisplayName)))
-            {
-                if (recset.ErrorMessage != StringResources.ErrorMessageDuplicateRecordset || recset.ErrorMessage != StringResources.ErrorMessageInvalidChar)
-                {
-                    recset.RemoveError();
-                }
-            }
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
