@@ -69,10 +69,7 @@ namespace SFTPServerService
             }
             File.WriteAllText(PrivatePublicKeyFile, privateKeyData);
             // add keys, bindings and users
-            _server = new SftpServer
-            {
-                Log = TextWriter.Synchronized(new StreamWriter(@"C:\Temp\SFTPLog.txt"))
-            };
+            _server = new SftpServer();
             _server.Keys.Add(rsaKey);
             _server.Keys.Add(dssKey);
             _server.Bindings.Add(IPAddress.Any, 22);
