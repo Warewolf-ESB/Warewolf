@@ -42,7 +42,7 @@ namespace Dev2.PathOperations
         private static readonly ReaderWriterLockSlim FileLock = new ReaderWriterLockSlim();
         const string ResultOk = "Success";
         const string ResultBad = "Failure";
-        private static List<string> _filesToDelete;
+        private  List<string> _filesToDelete;
 
         public Dev2ActivityIOBroker()
             : this(new FileWrapper(), new Data.Util.Common())
@@ -191,7 +191,7 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        string MoveTmpFileToDestination(IActivityIOOperationsEndPoint dst, string tmp, string result)
+        private string MoveTmpFileToDestination(IActivityIOOperationsEndPoint dst, string tmp, string result)
         {
             using (Stream s = new MemoryStream(_fileWrapper.ReadAllBytes(tmp)))
             {
