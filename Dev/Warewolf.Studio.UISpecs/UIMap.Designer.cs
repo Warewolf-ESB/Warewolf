@@ -4012,20 +4012,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_SaveDialog_YesButton_1
-        /// </summary>
-        public void Click_SaveDialog_YesButton_1()
-        {
-            #region Variable Declarations
-            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
-            #endregion
-
-            // Wait for 1 seconds for user delay between actions; Click 'Save' button
-            Playback.Wait(1000);
-            Mouse.Click(saveButton, new Point(32, 11));
-        }
-        
-        /// <summary>
         /// Click_Scheduler_Create_New_Task_Ribbon_Button
         /// </summary>
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
@@ -6916,6 +6902,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Type 'tst-ci-' in 'Text' text box
             addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
+        }
+        
+        /// <summary>
+        /// Click_SaveDialog_YesButton
+        /// </summary>
+        public void Click_SaveDialog_YesButton()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(25, 4));
         }
         
         #region Properties
