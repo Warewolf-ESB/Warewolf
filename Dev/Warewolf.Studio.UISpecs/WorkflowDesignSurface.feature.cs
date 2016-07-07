@@ -113,34 +113,34 @@ this.ScenarioSetup(scenarioInfo);
 #line 45
  testRunner.And("I \"Assert_SaveDialog_ServiceName_Textbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.When("I \"Enter_Workflowname_As_SomeWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I \"Enter_Servicename_As_SomeWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 51
  testRunner.Then("I \"Assert_SaveDialog_SaveButton_Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 58
+#line 55
  testRunner.When("I \"Click_SaveDialog_YesButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 59
+#line 56
  testRunner.And("I scroll up in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 57
  testRunner.And("I scroll to the bottom of the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 58
  testRunner.Then("\"localhost\\SomeWorkflow\" exists in the explorer tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 66
+#line 63
  testRunner.When("I \"Click_Debug_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 67
+#line 64
  testRunner.Then("I \"Assert_DebugInput_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 68
+#line 65
  testRunner.And("I \"Assert_DebugInput_DebugButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 70
  testRunner.When("I \"Click_DebugInput_DebugButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 74
+#line 71
  testRunner.Then("I \"Assert_DebugOutput_Contains_SomeVariable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 78
+#line 75
  testRunner.When("I \"Open_Assign_Tool_Qvi_Large_View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 79
+#line 76
  testRunner.Then("I \"Assert_Assign_QVI_Large_View_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
+#line 79
  testRunner.Given("I \"Assert_Close_Tab_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 83
+#line 80
  testRunner.When("I \"Click_Close_Tab_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
