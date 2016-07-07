@@ -1596,7 +1596,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.TSTCIREMOTEListItem">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemTSTCIREMOTE">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1605,6 +1605,23 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ComboboxListItemTSTCIREMOTE">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>False</ExpectedValue>
+      <MessageOnValidationFailure>TSTCIREMOTE does exist in explorer remote server drop down list</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -1622,6 +1639,23 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Explorer_ServerName_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.Delete">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Delete does not exist in ExplorerContextMenu</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_ExplorerContextMenu_Delete_Exists">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -5843,24 +5877,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MessageBoxWindow.YesButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="36" Y="6" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Yes_DeleteConfirmDialog">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.DotNetDLLConnector.DotNetDLLConnectorImage">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -9376,8 +9392,8 @@
                     <SearchConfiguration>Expand</SearchConfiguration>
                   </SearchConfigurations>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="AutomationId">Delete</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
@@ -20986,7 +21002,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="TSTCIREMOTEListItem" FriendlyName="TSTCIREMOTE" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxListItemTSTCIREMOTE" FriendlyName="TSTCIREMOTE" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
