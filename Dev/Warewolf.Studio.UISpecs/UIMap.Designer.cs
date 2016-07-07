@@ -641,7 +641,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Database_Source_Dropdownlist_Exists()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'SourcesComboBox' custom control equals 'True'
@@ -990,6 +990,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Deploy_Destination_Server_Edit_Exists - Use 'Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Deploy_Destination_Server_Edit_Exists()
+        {
+            #region Variable Declarations
+            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues.EditSourceButtonExists, editSourceButton.Exists, "Edit source server button does not exist in the deploy window");
+        }
+        
+        /// <summary>
         /// Assert_Deploy_Ribbon_Button_Exists - Use 'Assert_Deploy_Ribbon_Button_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Deploy_Ribbon_Button_Exists()
@@ -1196,6 +1209,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
             Assert.AreEqual(this.Assert_Explorer_ExistsExpectedValues.ExplorerExists, explorer.Exists, "Explorer does not exist in the studio");
+        }
+        
+        /// <summary>
+        /// Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer - Use 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer()
+        {
+            #region Variable Declarations
+            WpfCustom newRemoteServerListItem = this.MainStudioWindow.NewRemoteServerListItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues.NewRemoteServerListItemExists, newRemoteServerListItem.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
         }
         
         /// <summary>
@@ -2594,6 +2620,45 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Server_Source_Wizard_Address_Textbox_Exists - Use 'Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Server_Source_Wizard_Address_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Text' text box equals 'True'
+            Assert.AreEqual(this.Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues.AddressEditBoxExists, addressEditBox.Exists, "Server source wizard address textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTE - Use 'Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTE()
+        {
+            #region Variable Declarations
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            #endregion
+
+            // Verify that the 'Text' property of 'Text' text box equals 'TST-CI-REMOTE'
+            Assert.AreEqual(this.Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues.AddressEditBoxText, addressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
+        }
+        
+        /// <summary>
+        /// Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTE - Use 'Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTE()
+        {
+            #region Variable Declarations
+            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
+            #endregion
+
+            // Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
+            Assert.AreEqual(this.Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues.TSTCIREMOTEExists, tSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list");
+        }
+        
+        /// <summary>
         /// Assert_Server_Version_Exists - Use 'Assert_Server_Version_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Server_Version_Exists()
@@ -2877,19 +2942,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'DsfSortRecordsActivity' custom control equals 'True'
             Assert.AreEqual(this.Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues.SortRecordsExists, sortRecords.Exists, "Sort Record tool on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_Source_Server_Edit_Exists - Use 'Assert_Source_Server_Edit_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Source_Server_Edit_Exists()
-        {
-            #region Variable Declarations
-            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton;
-            #endregion
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Assert_Source_Server_Edit_ExistsExpectedValues.EditSourceButtonExists, editSourceButton.Exists, "Edit source server button does not exist in the deploy window");
         }
         
         /// <summary>
@@ -3367,7 +3419,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_WebSource_ReqTypeComboBox_Exists()
         {
             #region Variable Declarations
-            WpfComboBox requestTypesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox;
+            WpfComboBox requestTypesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WebConnectorWizardTab.WorkSurfaceContext.RequestTypesComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'RequestTypes' combo box equals 'True'
@@ -3960,19 +4012,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_SaveDialog_YesButton
-        /// </summary>
-        public void Click_SaveDialog_YesButton()
-        {
-            #region Variable Declarations
-            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
-            #endregion
-
-            // Click 'Save' button
-            Mouse.Click(saveButton, new Point(32, 11));
-        }
-        
-        /// <summary>
         /// Click_Scheduler_Create_New_Task_Ribbon_Button
         /// </summary>
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
@@ -4225,8 +4264,8 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Test_Connector_Calculate_Outputs()
         {
             #region Variable Declarations
-            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
-            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.TestActionButton;
+            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
+            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.TestActionButton;
             #endregion
 
             // Type 's' in 'Test data' text box
@@ -4242,7 +4281,7 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Test_Plugin_Connector()
         {
             #region Variable Declarations
-            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.TestButton;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.TestButton;
             #endregion
 
             // Click 'Test' button
@@ -6481,7 +6520,7 @@ namespace Warewolf.Studio.UISpecs
         public void Select_Action_Droplist_DB_Connector()
         {
             #region Variable Declarations
-            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox;
+            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ActionsComboBox;
             #endregion
 
             // Click 'ActionsComboBox' custom control
@@ -6533,7 +6572,7 @@ namespace Warewolf.Studio.UISpecs
         public void Select_Data_Source_Droplist()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Click 'SourcesComboBox' custom control
@@ -6658,6 +6697,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Select_NewRemoteServer_From_Explorer_Server_Dropdownlist
+        /// </summary>
+        public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
+        {
+            #region Variable Declarations
+            WpfText newRemoteServerItemText = this.MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText;
+            #endregion
+
+            // Click 'New Remote Server...' label
+            Mouse.Click(newRemoteServerItemText, new Point(114, 10));
+        }
+        
+        /// <summary>
         /// Select_NewServerSource_FromExplorerContextMenu
         /// </summary>
         public void Select_NewServerSource_FromExplorerContextMenu()
@@ -6728,7 +6780,7 @@ namespace Warewolf.Studio.UISpecs
         public void Select_Plugin_Connector_Action_Droplist()
         {
             #region Variable Declarations
-            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox;
+            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.ActionsComboBox;
             #endregion
 
             // Click 'ActionsComboBox' custom control
@@ -6741,7 +6793,7 @@ namespace Warewolf.Studio.UISpecs
         public void Select_Plugin_Connector_Namespace_Droplist()
         {
             #region Variable Declarations
-            WpfCustom namespacesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox;
+            WpfCustom namespacesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.NamespacesComboBox;
             #endregion
 
             // Click 'NamespaceComboBox' custom control
@@ -6754,7 +6806,7 @@ namespace Warewolf.Studio.UISpecs
         public void Select_Plugin_Connector_Source_Droplist()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Click 'SourcesComboBox' custom control
@@ -6814,6 +6866,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist
+        /// </summary>
+        public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
+        {
+            #region Variable Declarations
+            WpfListItem tSTCIREMOTE = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE;
+            #endregion
+
+            // Click 'TST-CI-REMOTE' list item
+            Mouse.Click(tSTCIREMOTE, new Point(70, 19));
+        }
+        
+        /// <summary>
         /// Type_S_Into_DebugInput_Row1_InputData - Use 'Type_S_Into_DebugInput_Row1_InputDataParams' to pass parameters into this method.
         /// </summary>
         public void Type_S_Into_DebugInput_Row1_InputData()
@@ -6824,6 +6889,32 @@ namespace Warewolf.Studio.UISpecs
 
             // Type 's' in 'Description' cell
             uIDescriptionCell.Value = this.Type_S_Into_DebugInput_Row1_InputDataParams.UIDescriptionCellValue;
+        }
+        
+        /// <summary>
+        /// Type_tstci_into_Server_Source_Wizard_Address_Textbox - Use 'Type_tstci_into_Server_Source_Wizard_Address_TextboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Type_tstci_into_Server_Source_Wizard_Address_Textbox()
+        {
+            #region Variable Declarations
+            WpfEdit addressEditBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox;
+            #endregion
+
+            // Type 'tst-ci-' in 'Text' text box
+            addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
+        }
+        
+        /// <summary>
+        /// Click_SaveDialog_YesButton
+        /// </summary>
+        public void Click_SaveDialog_YesButton()
+        {
+            #region Variable Declarations
+            WpfButton saveButton = this.SaveDialogWindow.SaveButton;
+            #endregion
+
+            // Click 'Save' button
+            Mouse.Click(saveButton, new Point(25, 4));
         }
         
         #region Properties
@@ -7703,6 +7794,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Deploy_Destination_Server_Edit_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Deploy_Destination_Server_Edit_ExistsExpectedValues = new Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues();
+                }
+                return this.mAssert_Deploy_Destination_Server_Edit_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_Deploy_Ribbon_Button_ExistsExpectedValues Assert_Deploy_Ribbon_Button_ExistsExpectedValues
         {
             get
@@ -7892,6 +7995,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Explorer_ExistsExpectedValues = new Assert_Explorer_ExistsExpectedValues();
                 }
                 return this.mAssert_Explorer_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues = new Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues();
+                }
+                return this.mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
             }
         }
         
@@ -9179,6 +9294,42 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues = new Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues == null))
+                {
+                    this.mAssert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues = new Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues();
+                }
+                return this.mAssert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues == null))
+                {
+                    this.mAssert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues = new Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues();
+                }
+                return this.mAssert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues;
+            }
+        }
+        
         public virtual Assert_Server_Version_ExistsExpectedValues Assert_Server_Version_ExistsExpectedValues
         {
             get
@@ -9440,18 +9591,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Sort_Records_Exists_OnDesignSurfaceExpectedValues = new Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Sort_Records_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Source_Server_Edit_ExistsExpectedValues Assert_Source_Server_Edit_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Source_Server_Edit_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Source_Server_Edit_ExistsExpectedValues = new Assert_Source_Server_Edit_ExistsExpectedValues();
-                }
-                return this.mAssert_Source_Server_Edit_ExistsExpectedValues;
             }
         }
         
@@ -10319,6 +10458,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Type_tstci_into_Server_Source_Wizard_Address_TextboxParams Type_tstci_into_Server_Source_Wizard_Address_TextboxParams
+        {
+            get
+            {
+                if ((this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams == null))
+                {
+                    this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams = new Type_tstci_into_Server_Source_Wizard_Address_TextboxParams();
+                }
+                return this.mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -10527,6 +10678,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Delete_Record_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Record_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues mAssert_Deploy_Destination_Server_Edit_ExistsExpectedValues;
+        
         private Assert_Deploy_Ribbon_Button_ExistsExpectedValues mAssert_Deploy_Ribbon_Button_ExistsExpectedValues;
         
         private Assert_DeployButton_DestinationServer_ExistsExpectedValues mAssert_DeployButton_DestinationServer_ExistsExpectedValues;
@@ -10558,6 +10711,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Explorer_Edit_Connect_Control_Button_ExistsExpectedValues mAssert_Explorer_Edit_Connect_Control_Button_ExistsExpectedValues;
         
         private Assert_Explorer_ExistsExpectedValues mAssert_Explorer_ExistsExpectedValues;
+        
+        private Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
         
         private Assert_Explorer_ServerName_ExistsExpectedValues mAssert_Explorer_ServerName_ExistsExpectedValues;
         
@@ -10773,6 +10928,12 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Sequence_Exists_OnDesignSurfaceExpectedValues mAssert_Sequence_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues mAssert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues;
+        
+        private Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues mAssert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues;
+        
+        private Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues mAssert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues;
+        
         private Assert_Server_Version_ExistsExpectedValues mAssert_Server_Version_ExistsExpectedValues;
         
         private Assert_Service_Picker_Cancel_Button_ExistsExpectedValues mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
@@ -10816,8 +10977,6 @@ namespace Warewolf.Studio.UISpecs
         private Assert_ShowDependencies_Button_DestinationServer_ExistsExpectedValues mAssert_ShowDependencies_Button_DestinationServer_ExistsExpectedValues;
         
         private Assert_Sort_Records_Exists_OnDesignSurfaceExpectedValues mAssert_Sort_Records_Exists_OnDesignSurfaceExpectedValues;
-        
-        private Assert_Source_Server_Edit_ExistsExpectedValues mAssert_Source_Server_Edit_ExistsExpectedValues;
         
         private Assert_Source_Server_Name_ExistsExpectedValues mAssert_Source_Server_Name_ExistsExpectedValues;
         
@@ -10962,6 +11121,8 @@ namespace Warewolf.Studio.UISpecs
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
         private Type_S_Into_DebugInput_Row1_InputDataParams mType_S_Into_DebugInput_Row1_InputDataParams;
+        
+        private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -12076,6 +12237,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Deploy_Destination_Server_Edit_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool EditSourceButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Deploy_Ribbon_Button_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -12312,6 +12488,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'UI_ExplorerControl_AutoID' custom control equals 'True'
         /// </summary>
         public bool ExplorerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'New Remote Server...' custom control equals 'True'
+        /// </summary>
+        public bool NewRemoteServerListItemExists = true;
         #endregion
     }
     
@@ -13926,6 +14117,51 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Server_Source_Wizard_Address_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Server_Source_Wizard_Address_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Text' text box equals 'True'
+        /// </summary>
+        public bool AddressEditBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTE'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTEExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Text' property of 'Text' text box equals 'TST-CI-REMOTE'
+        /// </summary>
+        public string AddressEditBoxText = "TST-CI-REMOTE";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTE'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTEExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'TST-CI-REMOTE' list item equals 'True'
+        /// </summary>
+        public bool TSTCIREMOTEExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Server_Version_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14252,21 +14488,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfSortRecordsActivity' custom control equals 'True'
         /// </summary>
         public bool SortRecordsExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Source_Server_Edit_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Source_Server_Edit_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditSourceButtonExists = true;
         #endregion
     }
     
@@ -15350,6 +15571,21 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'Type_tstci_into_Server_Source_Wizard_Address_Textbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Type_tstci_into_Server_Source_Wizard_Address_TextboxParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'tst-ci-' in 'Text' text box
+        /// </summary>
+        public string AddressEditBoxText = "tst-ci-";
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MainStudioWindow : WpfWindow
     {
@@ -15539,6 +15775,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mDebugInputDialog;
             }
         }
+        
+        public NewRemoteServerListItem NewRemoteServerListItem
+        {
+            get
+            {
+                if ((this.mNewRemoteServerListItem == null))
+                {
+                    this.mNewRemoteServerListItem = new NewRemoteServerListItem(this);
+                }
+                return this.mNewRemoteServerListItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -15567,6 +15815,8 @@ namespace Warewolf.Studio.UISpecs
         private ServicePickerDialog mServicePickerDialog;
         
         private DebugInputDialog mDebugInputDialog;
+        
+        private NewRemoteServerListItem mNewRemoteServerListItem;
         #endregion
     }
     
@@ -20696,27 +20946,27 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public NewWebConnectorTab NewWebConnectorTab
+        public WebConnectorWizardTab WebConnectorWizardTab
         {
             get
             {
-                if ((this.mNewWebConnectorTab == null))
+                if ((this.mWebConnectorWizardTab == null))
                 {
-                    this.mNewWebConnectorTab = new NewWebConnectorTab(this);
+                    this.mWebConnectorWizardTab = new WebConnectorWizardTab(this);
                 }
-                return this.mNewWebConnectorTab;
+                return this.mWebConnectorWizardTab;
             }
         }
         
-        public NewServerSourceTab NewServerSourceTab
+        public ServerSourceWizardTab ServerSourceWizardTab
         {
             get
             {
-                if ((this.mNewServerSourceTab == null))
+                if ((this.mServerSourceWizardTab == null))
                 {
-                    this.mNewServerSourceTab = new NewServerSourceTab(this);
+                    this.mServerSourceWizardTab = new ServerSourceWizardTab(this);
                 }
-                return this.mNewServerSourceTab;
+                return this.mServerSourceWizardTab;
             }
         }
         
@@ -20756,27 +21006,27 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public NewDBConnectorTab NewDBConnectorTab
+        public DBConnectorWizardTab DBConnectorWizardTab
         {
             get
             {
-                if ((this.mNewDBConnectorTab == null))
+                if ((this.mDBConnectorWizardTab == null))
                 {
-                    this.mNewDBConnectorTab = new NewDBConnectorTab(this);
+                    this.mDBConnectorWizardTab = new DBConnectorWizardTab(this);
                 }
-                return this.mNewDBConnectorTab;
+                return this.mDBConnectorWizardTab;
             }
         }
         
-        public NewPluginConnectorTab NewPluginConnectorTab
+        public PluginConnectorWizardTab PluginConnectorWizardTab
         {
             get
             {
-                if ((this.mNewPluginConnectorTab == null))
+                if ((this.mPluginConnectorWizardTab == null))
                 {
-                    this.mNewPluginConnectorTab = new NewPluginConnectorTab(this);
+                    this.mPluginConnectorWizardTab = new PluginConnectorWizardTab(this);
                 }
-                return this.mNewPluginConnectorTab;
+                return this.mPluginConnectorWizardTab;
             }
         }
         
@@ -20816,9 +21066,9 @@ namespace Warewolf.Studio.UISpecs
         
         private DeployTab mDeployTab;
         
-        private NewWebConnectorTab mNewWebConnectorTab;
+        private WebConnectorWizardTab mWebConnectorWizardTab;
         
-        private NewServerSourceTab mNewServerSourceTab;
+        private ServerSourceWizardTab mServerSourceWizardTab;
         
         private SchedulerTab mSchedulerTab;
         
@@ -20826,9 +21076,9 @@ namespace Warewolf.Studio.UISpecs
         
         private WorkflowTab mWorkflowTab;
         
-        private NewDBConnectorTab mNewDBConnectorTab;
+        private DBConnectorWizardTab mDBConnectorWizardTab;
         
-        private NewPluginConnectorTab mNewPluginConnectorTab;
+        private PluginConnectorWizardTab mPluginConnectorWizardTab;
         
         private FilesMenu mFilesMenu;
         
@@ -21488,10 +21738,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewWebConnectorTab : WpfTabPage
+    public class WebConnectorWizardTab : WpfTabPage
     {
         
-        public NewWebConnectorTab(UITestControl searchLimitContainer) : 
+        public WebConnectorWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21558,10 +21808,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewServerSourceTab : WpfTabPage
+    public class ServerSourceWizardTab : WpfTabPage
     {
         
-        public NewServerSourceTab(UITestControl searchLimitContainer) : 
+        public ServerSourceWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -21697,21 +21947,6 @@ namespace Warewolf.Studio.UISpecs
                 return this.mNewServerTabIcon;
             }
         }
-        
-        public WpfImage UIItemImage
-        {
-            get
-            {
-                if ((this.mUIItemImage == null))
-                {
-                    this.mUIItemImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIItemImage;
-            }
-        }
         #endregion
         
         #region Fields
@@ -21730,8 +21965,6 @@ namespace Warewolf.Studio.UISpecs
         private WpfText mAddressText;
         
         private WpfImage mNewServerTabIcon;
-        
-        private WpfImage mUIItemImage;
         #endregion
     }
     
@@ -21880,10 +22113,28 @@ namespace Warewolf.Studio.UISpecs
                 return this.mAddressEditBox;
             }
         }
+        
+        public WpfListItem TSTCIREMOTE
+        {
+            get
+            {
+                if ((this.mTSTCIREMOTE == null))
+                {
+                    this.mTSTCIREMOTE = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mTSTCIREMOTE.SearchProperties[WpfListItem.PropertyNames.Name] = "TST-CI-REMOTE";
+                    this.mTSTCIREMOTE.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTSTCIREMOTE;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfEdit mAddressEditBox;
+        
+        private WpfListItem mTSTCIREMOTE;
         #endregion
     }
     
@@ -26739,10 +26990,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewDBConnectorTab : WpfTabPage
+    public class DBConnectorWizardTab : WpfTabPage
     {
         
-        public NewDBConnectorTab(UITestControl searchLimitContainer) : 
+        public DBConnectorWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -27883,10 +28134,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class NewPluginConnectorTab : WpfTabPage
+    public class PluginConnectorWizardTab : WpfTabPage
     {
         
-        public NewPluginConnectorTab(UITestControl searchLimitContainer) : 
+        public PluginConnectorWizardTab(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -35627,6 +35878,43 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfCustom mJSONWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NewRemoteServerListItem : WpfCustom
+    {
+        
+        public NewRemoteServerListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "New Remote Server...";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText NewRemoteServerItemText
+        {
+            get
+            {
+                if ((this.mNewRemoteServerItemText == null))
+                {
+                    this.mNewRemoteServerItemText = new WpfText(this);
+                    #region Search Criteria
+                    this.mNewRemoteServerItemText.SearchProperties[WpfText.PropertyNames.Name] = "New Remote Server...";
+                    this.mNewRemoteServerItemText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mNewRemoteServerItemText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mNewRemoteServerItemText;
         #endregion
     }
     

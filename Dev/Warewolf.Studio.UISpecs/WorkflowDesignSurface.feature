@@ -57,8 +57,7 @@ Scenario: Big Workflow Design Surface UI Test
 #	And I "Assert_SaveDialog_SaveButton_Enabled"
 	When I "Click_SaveDialog_YesButton"
 	And I scroll up in the explorer tree
-	And I scroll down in the explorer tree
-	And I scroll down in the explorer tree
+	And I scroll to the bottom of the explorer tree
 	Then "localhost\SomeWorkflow" exists in the explorer tree
 
 #Scenario: Clicking Debug Button Shows Debug Input Dialog
