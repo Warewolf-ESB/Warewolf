@@ -14,17 +14,19 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
-using WarewolfParserInterop;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Dev2.Data.Util
@@ -43,7 +45,8 @@ namespace Dev2.Data.Util
         public const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-
+        static readonly Lazy<ICommon> Lazy = new Lazy<ICommon>(()=> new Common(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommon Common => Lazy.Value;
         #endregion Class Members
 
         #region Constructor
@@ -209,169 +212,15 @@ namespace Dev2.Data.Util
                 IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
                 IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
                 IList<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
-                CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
-                CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
-                CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
+                Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
+                Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
+                Common.CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
             }
             finally
             {
                 env.CommitAssign();
             }
             return env;
-        }
-
-        private static void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env, int update)
-        {
-            foreach (var dev2Definition in inputObjectList)
-            {
-                if (!string.IsNullOrEmpty(dev2Definition.RawValue))
-                {
-                    if (RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
-                    {
-                        var jVal = outerEnvironment.EvalJContainer(dev2Definition.RawValue);
-                        env.AddToJsonObjects(AddBracketsToValueIfNotExist(dev2Definition.Name), jVal);
-                    }
-                    else
-                    {
-                        var result = outerEnvironment.Eval(dev2Definition.RawValue, update);
-                        if (result.IsWarewolfAtomListresult)
-                        {
-                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            if (data != null && data.Item.Any())
-                            {
-                                env.AssignWithFrame(new AssignValue(AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
-                            }
-                        }
-                        else
-                        {
-                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                            if (data != null)
-                            {
-                                env.AssignWithFrame(new AssignValue(AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env, int update)
-        {
-            foreach (var recordSetDefinition in inputRecSets.RecordSets)
-            {
-                var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
-                if (outPutRecSet != null)
-                {
-                    var emptyList = new List<string>();
-                    foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
-                    {
-                        if (dev2ColumnDefinition.IsRecordSet)
-                        {
-                            var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
-
-
-                            if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
-                            {
-                                if (!emptyList.Contains(defn))
-                                {
-                                    emptyList.Add(defn);
-                                    continue;
-                                }
-                            }
-                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, update);
-
-                            if (warewolfEvalResult.IsWarewolfAtomListresult)
-                            {
-                                AtomListInputs(warewolfEvalResult, dev2ColumnDefinition, env);
-                            }
-                            if (warewolfEvalResult.IsWarewolfAtomResult)
-                            {
-                                AtomInputs(warewolfEvalResult, dev2ColumnDefinition, env);
-                            }
-                        }
-                    }
-                    foreach (var defn in emptyList)
-                    {
-                        env.AssignDataShape(defn);
-                    }
-                }
-            }
-        }
-
-        static void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env, int update)
-        {
-            foreach (var dev2Definition in inputScalarList)
-            {
-                if (!string.IsNullOrEmpty(dev2Definition.Name))
-                {
-                    env.AssignDataShape("[[" + dev2Definition.Name + "]]");
-                }
-                if (!dev2Definition.IsRecordSet)
-                {
-                    if (!string.IsNullOrEmpty(dev2Definition.RawValue))
-                    {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
-                        if (warewolfEvalResult.IsWarewolfAtomListresult)
-                        {
-                            ScalarAtomList(warewolfEvalResult, env, dev2Definition);
-                        }
-                        else
-                        {
-                            ScalarAtom(warewolfEvalResult, env, dev2Definition);
-                        }
-                    }
-                }
-            }
-        }
-
-        static void ScalarAtom(CommonFunctions.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
-        {
-            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (data != null)
-            {
-                env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
-            }
-        }
-
-        static void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
-        {
-            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (data != null && data.Item.Any())
-            {
-                env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
-            }
-        }
-
-        static void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
-        {
-            var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-
-            if (dev2ColumnDefinition.IsRecordSet)
-            {
-
-
-                if (recsetResult != null)
-                {
-                    var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
-
-                    env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)), 0);
-                }
-            }
-        }
-
-        static void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
-        {
-            var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-
-            GetRecordsetIndexType(dev2ColumnDefinition.Value);
-
-            if (recsetResult != null)
-            {
-                var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
-
-                env.EvalAssignFromNestedStar(correctRecSet, recsetResult, 0);
-            }
         }
 
         /// <summary>
@@ -969,6 +818,7 @@ namespace Dev2.Data.Util
                             for (int q = 0; q < childNl.Count; q++)
                             {
                                 var xmlNode = childNl[q];
+                                if(xmlNode == null) continue;
                                 var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
                                 if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
                                 {
