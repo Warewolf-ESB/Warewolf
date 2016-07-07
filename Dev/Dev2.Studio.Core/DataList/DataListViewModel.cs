@@ -413,11 +413,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
                         if (recsetToAddTo != null)
                         {
-                            AddMissingRecordSetPart(recsetToAddTo, part);
+                            _recordsetHandler.AddMissingRecordSetPart(recsetToAddTo, part);
                         }
                         else if (tmpRecset != null)
                         {
-                            AddMissingTempRecordSet(part, tmpRecset);
+                            _recordsetHandler.AddMissingTempRecordSet(part, tmpRecset);
                         }
                         else
                         {
@@ -428,7 +428,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-            AddMissingTempRecordSetList(tmpRecsetList);
+            _recordsetHandler.AddMissingTempRecordSetList(tmpRecsetList);
 
             _scalarHandler.RemoveBlankScalars();
             _recordsetHandler.RemoveBlankRecordsets();
@@ -453,47 +453,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
                 else
                     ScalarCollection.Add(scalar);
-            }
-        }
-
-        private static void AddMissingRecordSetPart(IRecordSetItemModel recsetToAddTo, IDataListVerifyPart part)
-        {
-            if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
-            {
-                var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
-                if (recsetToAddTo.Children.Count > 0)
-                    recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
-                else
-                    recsetToAddTo.Children.Add(child);
-            }
-        }
-
-        private static void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset)
-        {
-            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
-            if (child != null)
-            {
-                child.DisplayName = part.Recordset + "()." + part.Field;
-                tmpRecset.Children.Add(child);
-            }
-        }
-
-        private void AddMissingTempRecordSetList(IEnumerable<IRecordSetItemModel> tmpRecsetList)
-        {
-            foreach (var item in tmpRecsetList)
-            {
-                if (item.Children.Count == 0)
-                {
-                    item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty, string.Empty, item));
-                }
-                if (RecsetCollection.Count > 0)
-                {
-                    RecsetCollection.Insert(RecsetCollection.Count - 1, item);
-                }
-                else
-                {
-                    RecsetCollection.Add(item);
-                }
             }
         }
 
@@ -529,6 +488,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IEnumerable<string> RefreshRecordSets(IEnumerable<IRecordSetItemModel> toList, IList<string> accList)
         {
+            
             foreach (var dataListItemModel in toList)
             {
                 if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
@@ -807,28 +767,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             return fullDataList;
         }
-        /// <summary>
-        ///     Adds a record set.
-        /// </summary>
-        private void AddRecordSet()
-        {
-            IRecordSetItemModel recset = DataListItemModelFactory.CreateRecordSetItemModel(string.Empty);
-            IRecordSetFieldItemModel childItem = DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty);
-            if (recset != null)
-            {
-                recset.IsComplexObject = false;
-                recset.AllowNotes = false;
-                recset.IsExpanded = false;
-                if (childItem != null)
-                {
-                    childItem.IsComplexObject = false;
-                    childItem.AllowNotes = false;
-                    childItem.Parent = recset;
-                    recset.Children.Add(childItem);
-                }
-                RecsetCollection.Add(recset);
-            }
-        }
 
         /// <summary>
         ///     Sorts the items.
@@ -839,8 +777,8 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 IsSorting = true;
                 _scalarHandler.SortScalars(_toggleSortOrder);
-                SortRecset(_toggleSortOrder);
-                SortComplexObjects(_toggleSortOrder);
+                _recordsetHandler.SortRecset(_toggleSortOrder);
+                _complexObjectHandler.SortComplexObjects(_toggleSortOrder);
                 _toggleSortOrder = !_toggleSortOrder;
                 WriteToResourceModel();
             }
@@ -848,24 +786,6 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public bool IsSorting { get; set; }
-
-        /// <summary>
-        ///     Sorts the recordsets.
-        /// </summary>
-        private void SortRecset(bool ascending)
-        {
-            IList<IRecordSetItemModel> newRecsetCollection = @ascending ? RecsetCollection.OrderBy(c => c.DisplayName).ToList() : RecsetCollection.OrderByDescending(c => c.DisplayName).ToList();
-            RecsetCollection.Clear();
-            foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
-            {
-                RecsetCollection.Add(item);
-            }
-            AddRecordSet();
-        }
-        private void SortComplexObjects(bool ascending)
-        {
-            _complexObjectHandler.SortComplexObjects(ascending);
-        }
 
         /// <summary>
         ///     Creates the list of data list item view model to bind to.
@@ -894,7 +814,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 ScalarCollection.Clear();
                 ComplexObjectCollection.Clear();
 
-                AddRecordSet();
+                _recordsetHandler.AddRecordSet();
             }
 
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
@@ -912,7 +832,7 @@ namespace Dev2.Studio.ViewModels.DataList
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             if (RecsetCollection.Count == 0)
             {
-                AddRecordSet();
+                _recordsetHandler.AddRecordSet();
             }
             BaseCollection.Add(recordsetsNode);
 

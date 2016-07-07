@@ -7,7 +7,6 @@ namespace Dev2.Studio.Core.Interfaces
 {
     public interface IRecordsetHandler
     {
-        IEnumerable<string> RefreshRecordSets(IEnumerable<IRecordSetItemModel> toList, IList<string> accList);
         void AddRecordsetNamesIfMissing();
         void RemoveBlankRecordsets();
         void RemoveBlankRecordsetFields();
@@ -20,5 +19,8 @@ namespace Dev2.Studio.Core.Interfaces
         void SetRecordSetItemsAsUsed();
         void FindMissingPartsForRecordset(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts);
         bool BuildRecordSetErrorMessages(IRecordSetItemModel model, out string errorMessage);
+        void AddMissingTempRecordSetList(IEnumerable<IRecordSetItemModel> tmpRecsetList);
+        void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset);
+        void AddMissingRecordSetPart(IRecordSetItemModel recsetToAddTo, IDataListVerifyPart part);
     }
 }

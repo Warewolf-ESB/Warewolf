@@ -10,7 +10,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using ServiceStack.Common.Extensions;
-using Warewolf.Storage;
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -24,46 +23,6 @@ namespace Dev2.Studio.Core.DataList
         }
 
         #region Implementation of IRecordsetHandler
-
-        public IEnumerable<string> RefreshRecordSets(IEnumerable<IRecordSetItemModel> toList, IList<string> accList)
-        {
-            foreach (var dataListItemModel in toList)
-            {
-                if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
-                {
-                    var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
-                    var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
-
-                    accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
-                    accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
-                }
-                foreach (var listItemModel in dataListItemModel.Children)
-                {
-                    if (!string.IsNullOrEmpty(listItemModel.Name))
-                    {
-                        var rec = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(dataListItemModel.DisplayName, listItemModel.DisplayName, ""));
-                        if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
-                        {
-                            accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
-                            accList.Add(rec);
-                        }
-                    }
-                }
-                foreach (var listItemModel in _vm.RecsetCollection)
-                {
-                    if (!string.IsNullOrEmpty(listItemModel.DisplayName))
-                    {
-                        var rec = "[[" + listItemModel.DisplayName + "]]";
-                        if (ExecutionEnvironment.IsScalar(rec))
-                        {
-                            accList.Add(rec);
-                        }
-                    }
-                }
-
-            }
-            return accList;
-        }
 
         public void AddRecordsetNamesIfMissing()
         {
@@ -325,6 +284,47 @@ namespace Dev2.Studio.Core.DataList
             if (childErrors.Any())
                 errorMessage = string.Join(Environment.NewLine, childErrors.Select(BuildErrorMessage));
             return true;
+        }
+
+        public void AddMissingTempRecordSetList(IEnumerable<IRecordSetItemModel> tmpRecsetList)
+        {
+            foreach (var item in tmpRecsetList)
+            {
+                if (item.Children.Count == 0)
+                {
+                    item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty, string.Empty, item));
+                }
+                if (_vm.RecsetCollection.Count > 0)
+                {
+                    _vm.RecsetCollection.Insert(_vm.RecsetCollection.Count - 1, item);
+                }
+                else
+                {
+                    _vm.RecsetCollection.Add(item);
+                }
+            }
+        }
+
+        public void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset)
+        {
+            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
+            if (child != null)
+            {
+                child.DisplayName = part.Recordset + "()." + part.Field;
+                tmpRecset.Children.Add(child);
+            }
+        }
+
+        public void AddMissingRecordSetPart(IRecordSetItemModel recsetToAddTo, IDataListVerifyPart part)
+        {
+            if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
+            {
+                var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
+                if (recsetToAddTo.Children.Count > 0)
+                    recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                else
+                    recsetToAddTo.Children.Add(child);
+            }
         }
 
         #endregion
