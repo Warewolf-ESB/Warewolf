@@ -386,7 +386,6 @@
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
     <Compile Include="Messages\SelectItemInDeployMessage.cs" />
-    <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
@@ -586,7 +585,7 @@
   <ItemGroup>
     <Folder Include="AppResources\Exceptions\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

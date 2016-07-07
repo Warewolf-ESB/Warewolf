@@ -823,7 +823,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1290,6 +1290,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Edit source server button does not exist in the deploy window</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Deploy_Destination_Server_Edit_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.DeployButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -1554,6 +1571,23 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Explorer_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.NewRemoteServerListItem">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>New Remote Server... does not exist in explorer remote server drop down list</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -3389,6 +3423,57 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Server source wizard address textbox does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Server_Source_Wizard_Address_Textbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox">
+      <ParameterName />
+      <PropertyName>Text</PropertyName>
+      <ExpectedValue>TST-CI-REMOTE</ExpectedValue>
+      <MessageOnValidationFailure>Server source address textbox text does not equal TST-CI-REMOTE</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTE">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>TSTCIREMOTE does not exist in server source wizard drop down list</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Server_Source_Wizard_DropdownList_Contains_TSTCIREMOTE">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.SplashPageWindow">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -3755,23 +3840,6 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Sort_Records_Exists_OnDesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Edit source server button does not exist in the deploy window</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Source_Server_Edit_Exists">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -4392,7 +4460,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WebConnectorWizardTab.WorkSurfaceContext.RequestTypesComboBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -5196,24 +5264,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.SaveDialogWindow.SaveButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="32" Y="11" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_SaveDialog_YesButton">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -5516,12 +5566,12 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData">
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData">
       <ParameterName />
       <Value Encoded="false">s</Value>
       <Type>String</Type>
     </SetValueAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.TestActionButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.TestActionButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -5539,7 +5589,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.TestButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.TestButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -8353,7 +8403,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.ActionsComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -8425,7 +8475,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DBConnectorWizardTab.WorkSurfaceContext.SourcesComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -8605,6 +8655,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.NewRemoteServerListItem.NewRemoteServerItemText">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="114" Y="10" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Select_NewRemoteServer_From_Explorer_Server_Dropdownlist">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.NewServerSource">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -8695,7 +8763,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.ActionsComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -8713,7 +8781,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.NamespacesComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -8731,7 +8799,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.PluginConnectorWizardTab.WorkSurfaceContext.SourcesComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -8821,12 +8889,63 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.TSTCIREMOTE">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="70" Y="19" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
     <SetValueAction UIObjectName="UIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell">
       <ParameterName />
       <Value Encoded="false">s</Value>
       <Type>String</Type>
     </SetValueAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Type_S_Into_DebugInput_Row1_InputData">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetValueAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.AddressComboBox.AddressEditBox">
+      <ParameterName />
+      <Value Encoded="false">tst-ci-</Value>
+      <Type>String</Type>
+      <PreferEdit>True</PreferEdit>
+    </SetValueAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Type_tstci_into_Server_Source_Wizard_Address_Textbox">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.SaveDialogWindow.SaveButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="25" Y="4" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_SaveDialog_YesButton">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -12346,7 +12465,7 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
-                            <UIObject ControlType="TabPage" Id="NewWebConnectorTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="WebConnectorWizardTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
@@ -12388,7 +12507,7 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
-                            <UIObject ControlType="TabPage" Id="NewServerSourceTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="ServerSourceWizardTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf</WindowTitle>
@@ -12474,6 +12593,19 @@
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                 <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                 <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="ListItem" Id="TSTCIREMOTE" FriendlyName="TST-CI-REMOTE" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">TST-CI-REMOTE</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
@@ -12574,18 +12706,6 @@
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="ControlType">Image</PropertyCondition>
                                     <PropertyCondition Name="AutomationId">New Server Source</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Image" Id="UIItemImage" FriendlyName="" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Image</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
@@ -15471,7 +15591,7 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
-                            <UIObject ControlType="TabPage" Id="NewDBConnectorTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="DBConnectorWizardTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -16183,7 +16303,7 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
-                            <UIObject ControlType="TabPage" Id="NewPluginConnectorTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="PluginConnectorWizardTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -20594,6 +20714,34 @@
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
                     <PropertyCondition Name="AutomationId">UI_Browserbtn_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="NewRemoteServerListItem" FriendlyName="New Remote Server..." SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                <PropertyCondition Name="Name">New Remote Server...</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Text" Id="NewRemoteServerItemText" FriendlyName="New Remote Server..." SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                    <PropertyCondition Name="Name">New Remote Server...</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
