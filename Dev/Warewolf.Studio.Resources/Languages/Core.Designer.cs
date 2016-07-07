@@ -5848,6 +5848,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name can not be blank.
+        /// </summary>
+        public static string SchedulerBlankNameErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerBlankNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a workflow to schedule.
+        /// </summary>
+        public static string SchedulerBlankWorkflowNameErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerBlankWorkflowNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scheduler Task has changes.
         /// </summary>
         public static string SchedulerChangesHeader {
@@ -5875,11 +5893,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is already a task with the same name.
+        /// </summary>
+        public static string SchedulerDuplicateNameErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerDuplicateNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Logon failure: unknown user name or bad password.
+        /// </summary>
+        public static string SchedulerLoginErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerLoginErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new scheduled task.
         /// </summary>
         public static string SchedulerNewScheduleTooltipTrigger {
             get {
                 return ResourceManager.GetString("SchedulerNewScheduleTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Task.
+        /// </summary>
+        public static string SchedulerNewTaskName {
+            get {
+                return ResourceManager.GetString("SchedulerNewTaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Server unreachable..
+        /// </summary>
+        public static string SchedulerNotConnectedErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerNotConnectedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving:.
+        /// </summary>
+        public static string SchedulerSaveErrorPrefix {
+            get {
+                return ResourceManager.GetString("SchedulerSaveErrorPrefix", resourceCulture);
             }
         }
         

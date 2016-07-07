@@ -1110,6 +1110,27 @@
   <data name="CopyHelpResult" xml:space="preserve">
     <value>Only variables go in here.	Returns Success or will be blank depending on the success of the Copy action.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
+  <data name="SchedulerDuplicateNameErrorMessage" xml:space="preserve">
+    <value>There is already a task with the same name</value>
+  </data>
+  <data name="SchedulerNotConnectedErrorMessage" xml:space="preserve">
+    <value>Error while saving: Server unreachable.</value>
+  </data>
+  <data name="SchedulerLoginErrorMessage" xml:space="preserve">
+    <value>Error while saving: Logon failure: unknown user name or bad password</value>
+  </data>
+  <data name="SchedulerBlankWorkflowNameErrorMessage" xml:space="preserve">
+    <value>Please select a workflow to schedule</value>
+  </data>
+  <data name="SchedulerBlankNameErrorMessage" xml:space="preserve">
+    <value>The name can not be blank</value>
+  </data>
+  <data name="SchedulerSaveErrorPrefix" xml:space="preserve">
+    <value>Error while saving:</value>
+  </data>
+  <data name="SchedulerNewTaskName" xml:space="preserve">
+    <value>New Task</value>
+  </data>
   <data name="CopyHelpUsername" xml:space="preserve">
     <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>

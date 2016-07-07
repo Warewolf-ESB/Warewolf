@@ -254,6 +254,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
             schedulerViewModel.RunAsapIfScheduleMissed = true;
             //------------Assert Results-------------------------
+            Assert.IsTrue(schedulerViewModel.RunAsapIfScheduleMissed);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
@@ -270,6 +271,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(schedulerViewModel.SelectedTask.IsDirty);
             schedulerViewModel.Status = SchedulerStatus.Disabled;
             //------------Assert Results-------------------------
+            Assert.AreEqual(SchedulerStatus.Disabled, schedulerViewModel.Status);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
@@ -355,12 +357,13 @@ namespace Dev2.Core.Tests.Settings
                 }
             };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
-            Assert.AreEqual("Error while saving: Logon failure: unknown user name or bad password", schedulerViewModel.Error);
+            schedulerViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             //------------Execute Test---------------------------
             schedulerViewModel.AccountName = "someAccountName";
             //------------Assert Results-------------------------
-            Assert.AreEqual("", schedulerViewModel.Error);
+            Assert.AreEqual("someAccountName", schedulerViewModel.AccountName);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
             Assert.AreEqual("someAccountName", schedulerViewModel.SelectedTask.UserName);
             Assert.IsTrue(_accountNameChanged);
@@ -378,8 +381,8 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
-            Assert.AreEqual("Error while saving: Logon failure: unknown user name or bad password", schedulerViewModel.Error);
+            schedulerViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             schedulerViewModel.AccountName = "someAccountName";
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
@@ -389,7 +392,7 @@ namespace Dev2.Core.Tests.Settings
                 }
             };
             //--------------Assert Preconditions------------------
-            Assert.AreEqual("", schedulerViewModel.Error);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             var scheduledResource = schedulerViewModel.SelectedTask;
             Assert.IsTrue(scheduledResource.IsDirty);
             Assert.AreEqual("someAccountName", scheduledResource.UserName);
@@ -414,12 +417,13 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
-            Assert.AreEqual("Error while saving: Logon failure: unknown user name or bad password", schedulerViewModel.Error);
+            schedulerViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             //------------Execute Test---------------------------
             schedulerViewModel.Password = "somePassword";
             //------------Assert Results-------------------------
-            Assert.AreEqual("", schedulerViewModel.Error);
+            Assert.AreEqual("somePassword", schedulerViewModel.Password);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
