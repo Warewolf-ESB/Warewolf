@@ -616,7 +616,7 @@
     <Content Include="UIMapTemplate.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
