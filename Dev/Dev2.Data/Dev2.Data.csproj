@@ -306,6 +306,7 @@
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\DatalistFormat.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />
+    <Compile Include="Util\Common.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />
     <Compile Include="Util\DataListUtil.cs" />
     <Compile Include="Util\Scrubber.cs" />
@@ -375,7 +376,7 @@
     <Folder Include="Storage\ProtocolBuffers\" />
     <Folder Include="Value Objects\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
