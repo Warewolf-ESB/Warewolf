@@ -74,7 +74,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudioUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
     <Compile Include="ActionSteps.cs" />
     <Compile Include="Tools\Base Conversion.feature.cs">
@@ -617,7 +616,7 @@
     <Content Include="UIMapTemplate.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"
