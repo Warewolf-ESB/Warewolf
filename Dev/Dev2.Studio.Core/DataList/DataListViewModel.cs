@@ -577,7 +577,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 else if (item is IRecordSetItemModel)
                 {
-                    AddRowToRecordsets();
+                    _recordsetHandler.AddRowToRecordsets();
                 }
             }
             else
@@ -688,43 +688,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void AddRecordsetNamesIfMissing()
         {
-            var recsetNum = RecsetCollection?.Count ?? 0;
-            int recsetCount = 0;
-
-            while (recsetCount < recsetNum)
-            {
-                IRecordSetItemModel recset = RecsetCollection?[recsetCount];
-
-                if (!string.IsNullOrWhiteSpace(recset?.DisplayName))
-                {
-                    FixNamingForRecset(recset);
-                    int childrenNum = recset.Children.Count;
-                    int childrenCount = 0;
-
-                    while (childrenCount < childrenNum)
-                    {
-                        IRecordSetFieldItemModel child = recset.Children[childrenCount];
-
-                        if (!string.IsNullOrWhiteSpace(child?.DisplayName))
-                        {
-                            int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
-                            if (indexOfDot > -1)
-                            {
-                                string recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
-                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
-                            }
-                            else
-                            {
-                                child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
-                            }
-                            FixCommonNamingProblems(child);
-                        }
-                        childrenCount++;
-                    }
-                }
-                recsetCount++;
-            }
-            NotifyOfPropertyChange(() => DataList);
+            _recordsetHandler.AddRecordsetNamesIfMissing();
         }
 
         public void ValidateNames(IDataListItemModel item)
@@ -776,46 +740,6 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                     });
                 }
-            }
-        }
-
-        void AddRowToRecordsets()
-        {
-            List<IRecordSetItemModel> blankList = RecsetCollection.Where(c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
-
-            if (blankList.Count == 0)
-            {
-                AddRecordSet();
-            }
-
-            foreach (var recset in RecsetCollection)
-            {
-                List<IRecordSetFieldItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-                if (blankChildList.Count != 0) continue;
-
-                IRecordSetFieldItemModel newChild = DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty);
-                if (newChild != null)
-                {
-                    newChild.Parent = recset;
-                    recset.Children.Add(newChild);
-                }
-            }
-        }
-
-        static void FixNamingForRecset(IDataListItemModel recset)
-        {
-            if (!recset.DisplayName.EndsWith("()"))
-            {
-                recset.DisplayName = string.Concat(recset.DisplayName, "()");
-            }
-            FixCommonNamingProblems(recset);
-        }
-
-        static void FixCommonNamingProblems(IDataListItemModel recset)
-        {
-            if (recset.DisplayName.Contains("[") || recset.DisplayName.Contains("]"))
-            {
-                recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
             }
         }
 
