@@ -843,7 +843,6 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
-        public ICommand ItemSelectedCommand { get; set; }
         public ICommand LostFocus { get; set; }
         public bool CanExecute
         {
