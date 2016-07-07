@@ -1230,11 +1230,24 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE()
         {
             #region Variable Declarations
-            WpfCustom tSTCIREMOTEListItem = this.MainStudioWindow.TSTCIREMOTEListItem;
+            WpfCustom comboboxListItemTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemTSTCIREMOTE;
             #endregion
 
             // Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues.TSTCIREMOTEListItemExists, tSTCIREMOTEListItem.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
+            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues.ComboboxListItemTSTCIREMOTEExists, comboboxListItemTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
+        }
+        
+        /// <summary>
+        /// Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE - Use 'Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE()
+        {
+            #region Variable Declarations
+            WpfCustom comboboxListItemTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemTSTCIREMOTE;
+            #endregion
+
+            // Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'False'
+            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues.ComboboxListItemTSTCIREMOTEExists, comboboxListItemTSTCIREMOTE.Exists, "TSTCIREMOTE does exist in explorer remote server drop down list");
         }
         
         /// <summary>
@@ -1248,6 +1261,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
             Assert.AreEqual(this.Assert_Explorer_ServerName_ExistsExpectedValues.ExplorerTreeItemChildExists, explorerTreeItemChild.Exists, "Server Name does not exist in the Explorer");
+        }
+        
+        /// <summary>
+        /// Assert_ExplorerContextMenu_Delete_Exists - Use 'Assert_ExplorerContextMenu_Delete_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_ExplorerContextMenu_Delete_Exists()
+        {
+            #region Variable Declarations
+            WpfMenuItem delete = this.MainStudioWindow.ExplorerContextMenu.Delete;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Delete' menu item equals 'True'
+            Assert.AreEqual(this.Assert_ExplorerContextMenu_Delete_ExistsExpectedValues.DeleteExists, delete.Exists, "Delete does not exist in ExplorerContextMenu");
         }
         
         /// <summary>
@@ -4469,19 +4495,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Select 'UI_IsInputCheckbox_AutoID' check box
             isInputCheckbox.Checked = this.Click_VariableList_Scalar_Row1_IsInputCheckboxParams.IsInputCheckboxChecked;
-        }
-        
-        /// <summary>
-        /// Click_Yes_DeleteConfirmDialog
-        /// </summary>
-        public void Click_Yes_DeleteConfirmDialog()
-        {
-            #region Variable Declarations
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
-            #endregion
-
-            // Click 'Yes' button
-            Mouse.Click(yesButton, new Point(36, 6));
         }
         
         /// <summary>
@@ -8153,6 +8166,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues = new Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues();
+                }
+                return this.mAssert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues;
+            }
+        }
+        
         public virtual Assert_Explorer_ServerName_ExistsExpectedValues Assert_Explorer_ServerName_ExistsExpectedValues
         {
             get
@@ -8162,6 +8187,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Explorer_ServerName_ExistsExpectedValues = new Assert_Explorer_ServerName_ExistsExpectedValues();
                 }
                 return this.mAssert_Explorer_ServerName_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_ExplorerContextMenu_Delete_ExistsExpectedValues Assert_ExplorerContextMenu_Delete_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_ExplorerContextMenu_Delete_ExistsExpectedValues == null))
+                {
+                    this.mAssert_ExplorerContextMenu_Delete_ExistsExpectedValues = new Assert_ExplorerContextMenu_Delete_ExistsExpectedValues();
+                }
+                return this.mAssert_ExplorerContextMenu_Delete_ExistsExpectedValues;
             }
         }
         
@@ -10931,7 +10968,11 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues;
         
+        private Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues;
+        
         private Assert_Explorer_ServerName_ExistsExpectedValues mAssert_Explorer_ServerName_ExistsExpectedValues;
+        
+        private Assert_ExplorerContextMenu_Delete_ExistsExpectedValues mAssert_ExplorerContextMenu_Delete_ExistsExpectedValues;
         
         private Assert_Filter_Exists_InExplorerExpectedValues mAssert_Filter_Exists_InExplorerExpectedValues;
         
@@ -12746,7 +12787,22 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'True'
         /// </summary>
-        public bool TSTCIREMOTEListItemExists = true;
+        public bool ComboboxListItemTSTCIREMOTEExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'False'
+        /// </summary>
+        public bool ComboboxListItemTSTCIREMOTEExists = false;
         #endregion
     }
     
@@ -12762,6 +12818,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool ExplorerTreeItemChildExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_ExplorerContextMenu_Delete_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_ExplorerContextMenu_Delete_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Delete' menu item equals 'True'
+        /// </summary>
+        public bool DeleteExists = true;
         #endregion
     }
     
@@ -16122,15 +16193,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public TSTCIREMOTEListItem TSTCIREMOTEListItem
+        public ComboboxListItemTSTCIREMOTE ComboboxListItemTSTCIREMOTE
         {
             get
             {
-                if ((this.mTSTCIREMOTEListItem == null))
+                if ((this.mComboboxListItemTSTCIREMOTE == null))
                 {
-                    this.mTSTCIREMOTEListItem = new TSTCIREMOTEListItem(this);
+                    this.mComboboxListItemTSTCIREMOTE = new ComboboxListItemTSTCIREMOTE(this);
                 }
-                return this.mTSTCIREMOTEListItem;
+                return this.mComboboxListItemTSTCIREMOTE;
             }
         }
         #endregion
@@ -16164,7 +16235,7 @@ namespace Warewolf.Studio.UISpecs
         
         private NewRemoteServerListItem mNewRemoteServerListItem;
         
-        private TSTCIREMOTEListItem mTSTCIREMOTEListItem;
+        private ComboboxListItemTSTCIREMOTE mComboboxListItemTSTCIREMOTE;
         #endregion
     }
     
@@ -36373,10 +36444,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class TSTCIREMOTEListItem : WpfCustom
+    public class ComboboxListItemTSTCIREMOTE : WpfCustom
     {
         
-        public TSTCIREMOTEListItem(UITestControl searchLimitContainer) : 
+        public ComboboxListItemTSTCIREMOTE(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
