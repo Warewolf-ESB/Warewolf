@@ -896,6 +896,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Children.Add(childMockFolder.Object);
             _target.Children.Add(childMockServer.Object);
 
+            _target.UpdateChildrenCount();
+
             //act
             var childrenCount = _target.ChildrenCount;
 
