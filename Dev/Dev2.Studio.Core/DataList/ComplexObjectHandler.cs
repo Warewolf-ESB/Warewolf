@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Studio.Core.DataList
 {
-    public class ComplexObjectHandler: IComplexObjectHandler
+    internal class ComplexObjectHandler: IComplexObjectHandler
     {
         private readonly DataListViewModel _vm;
         public ComplexObjectHandler(DataListViewModel vm)
@@ -190,9 +190,9 @@ namespace Dev2.Studio.Core.DataList
             {
                 name = name.Replace("()", "");
             }
-            result.AppendFormat("{0} {1}=\"{2}\"{3}=\"{4}\" IsJson=\"{5}\" IsArray=\"{6}\" {7}\"{8}\">"
+            result.AppendFormat("{0} {1}=\"{2}\" {3}=\"{4}\" IsJson=\"{5}\" IsArray=\"{6}\" {7}=\"{8}\">"
                 , name
-                , Common.Description
+                , Common. Description
                 , complexObjectItemModel.Description
                 , Common.IsEditable
                 , complexObjectItemModel.IsEditable

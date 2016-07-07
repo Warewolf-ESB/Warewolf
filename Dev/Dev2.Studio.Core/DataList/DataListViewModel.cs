@@ -477,7 +477,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void AddMissingTempRecordSetList(List<IRecordSetItemModel> tmpRecsetList)
+        private void AddMissingTempRecordSetList(IEnumerable<IRecordSetItemModel> tmpRecsetList)
         {
             foreach (var item in tmpRecsetList)
             {

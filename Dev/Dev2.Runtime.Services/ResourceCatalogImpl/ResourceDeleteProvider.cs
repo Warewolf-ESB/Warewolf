@@ -17,7 +17,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    public class ResourceDeleteProvider : IResourceDeleteProvider
+    internal class ResourceDeleteProvider : IResourceDeleteProvider
     {
         private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
         readonly IServerVersionRepository _serverVersionRepository;
