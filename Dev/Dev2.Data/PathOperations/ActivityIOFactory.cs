@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Data.Util;
+using Dev2.Data.Interfaces;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace

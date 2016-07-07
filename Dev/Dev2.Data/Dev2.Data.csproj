@@ -126,6 +126,7 @@
     <Compile Include="IIndexIterator.cs" />
     <Compile Include="IndexIterator.cs" />
     <Compile Include="IndexList.cs" />
+    <Compile Include="Interfaces\ICommon.cs" />
     <Compile Include="Interfaces\IDataListItem.cs" />
     <Compile Include="ListIndexIterator.cs" />
     <Compile Include="ListOfIndex.cs" />
