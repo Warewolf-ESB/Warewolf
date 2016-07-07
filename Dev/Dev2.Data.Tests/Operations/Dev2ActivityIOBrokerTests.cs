@@ -8,6 +8,7 @@ using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.PathOperations;
 using Ionic.Zip;
+using Ionic.Zlib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Resource.Errors;
@@ -386,6 +387,21 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void ExtractZipCompressionLevel_GivenLevel_ShouldCorreclty()
+        {
+            //---------------Set up test pack-------------------
+            Util.Common common = new Util.Common();
+            var level = common.ExtractZipCompressionLevel("Test");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(level);
+            Assert.AreEqual(CompressionLevel.Default, level);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void AppendToTemp_GivenStreamAndTempString_ShouldNotThroException()
         {
             //---------------Set up test pack-------------------
@@ -670,6 +686,88 @@ namespace Dev2.Data.Tests.Operations
             
 
             //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void MoveTmpFileToDestination_GiventmpFile_ShouldReturnSucces()
+        {
+            //---------------Set up test pack-------------------
+            var tempFileName = Path.GetTempFileName();
+            var commonMock = new Mock<ICommon>();
+            var fileMock = new Mock<IFile>();
+            fileMock.Setup(file => file.ReadAllBytes(It.IsAny<string>())).Returns(Encoding.ASCII.GetBytes("Hello world"));
+            var activityOperationsBroker = CreateBroker(fileMock.Object, commonMock.Object);
+            PrivateObject privateObject = new PrivateObject(activityOperationsBroker);
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
+            dst.Setup(point => point.PathSeperator()).Returns(",");
+            dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
+            dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            const string result = "";
+            try
+            {
+                privateObject.SetField("_filesToDelete", new List<string>());
+                privateObject.Invoke("MoveTmpFileToDestination", dst.Object, tempFileName, result);
+                
+            }
+            catch(Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            
+
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void EnsureFilesDontExists_GivenPathExistsAndPasthIsFile_ShouldThrowException()
+        {
+            //---------------Set up test pack-------------------
+            var tempFileName = Path.GetTempFileName();
+            var tempSrcName = Path.GetTempFileName();
+            var commonMock = new Mock<ICommon>();
+            var fileMock = new Mock<IFile>();
+            fileMock.Setup(file => file.ReadAllBytes(It.IsAny<string>())).Returns(Encoding.ASCII.GetBytes("Hello world"));
+            var activityOperationsBroker = CreateBroker(fileMock.Object, commonMock.Object);
+            PrivateObject privateObject = new PrivateObject(activityOperationsBroker);
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(true);
+            dst.Setup(point => point.PathSeperator()).Returns(",");
+            src.Setup(point => point.PathSeperator()).Returns(",");
+            dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
+            src.Setup(point => point.IOPath.Path).Returns(tempSrcName);
+            dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.File);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            try
+            {
+                privateObject.Invoke("EnsureFilesDontExists", src.Object, dst.Object);
+            }
+            catch(Exception e)
+            {
+                //---------------Test Result -----------------------
+                Assert.AreEqual(ErrorResource.FileWithSameNameExist, e.Message);
+                dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+                dst.Setup(point => point.ListDirectory(It.IsAny<IActivityIOPath>())).Returns(new List<IActivityIOPath>());
+                try
+                {
+                    privateObject.Invoke("EnsureFilesDontExists", src.Object, dst.Object);
+                }
+                catch(Exception ex)
+                {
+                   Assert.Fail(ex.Message);
+                }
+               
+
+            }
+            
+            
         }
 
     }
