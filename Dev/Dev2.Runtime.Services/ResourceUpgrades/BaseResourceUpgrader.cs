@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ResourceUpgrades
         XElement Upgrade(XElement arg)
         {
 
-            return XElement.Parse(arg.ToString().Replace("clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure", "clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces").Replace("clr-namespace:Dev2.Interfaces;assembly=Dev2.Core", "clr-namespace:Dev2.Common.Interfaces.Core.Convertors.Case;assembly=Dev2.Common.Interfaces").Replace("uaba:DsfSequenceActivity","da:DsfSequenceActivity"));
+            return XElement.Parse(arg.ToString().Replace("clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure", "clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.CommonDataUtils.Interfaces").Replace("clr-namespace:Dev2.Interfaces;assembly=Dev2.Core", "clr-namespace:Dev2.CommonDataUtils.Interfaces.Core.Convertors.Case;assembly=Dev2.CommonDataUtils.Interfaces").Replace("uaba:DsfSequenceActivity","da:DsfSequenceActivity"));
         }
 
         public Func<XElement, XElement> UpgradeFunc { get; private set; }

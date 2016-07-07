@@ -45,7 +45,7 @@ namespace Dev2.PathOperations
         private  List<string> _filesToDelete;
 
         public Dev2ActivityIOBroker()
-            : this(new FileWrapper(), new Data.Util.Common())
+            : this(new FileWrapper(), new Data.Util.CommonDataUtils())
         {
             _filesToDelete = new List<string>();
         }

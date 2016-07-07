@@ -14,7 +14,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Studio.Core.DataList
 {
-    public class RecordsetHandler : IRecordsetHandler
+    internal class RecordsetHandler : IRecordsetHandler
     {
         private readonly DataListViewModel _vm;
 

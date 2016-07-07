@@ -24,10 +24,10 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    public class ResourceLoadProvider : IResourceLoadProvider
+    internal class ResourceLoadProvider : IResourceLoadProvider
     {
         private readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
-        public ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
+        private ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; } = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
         readonly object _loadLock = new object();
