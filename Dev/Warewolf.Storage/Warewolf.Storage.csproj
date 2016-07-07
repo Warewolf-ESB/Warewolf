@@ -60,8 +60,10 @@
   <ItemGroup>
     <Compile Include="ExecutionEnvironment.cs" />
     <Compile Include="FSInteropFunctions.cs" />
+    <Compile Include="IIndexMapBuilder.cs" />
     <Compile Include="IExecutionEnvironment.cs" />
     <Compile Include="ScopedEnvironment.cs" />
+    <Compile Include="IndexMapBuilder.cs" />
     <Compile Include="WarewolfAtomIterator.cs" />
     <Compile Include="WarewolfListIterator.cs" />
   </ItemGroup>

@@ -63,6 +63,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly object _syncContext = new object();
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
 
+        private readonly IDebugOutputViewModelUtil _outputViewModelUtil;
+
         IDebugState _lastStep;
         DebugStatus _debugStatus;        
         ICommand _expandAllCommand;
@@ -113,12 +115,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
-        
+
         #endregion
 
         #region Properties
-        
+
         public int PendingItemCount => _pendingItems.Count;
         public int ContentItemCount => _contentItems.Count;
 
@@ -423,6 +426,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion
 
+       
+
         #region public methods
 
         /// <summary>
@@ -431,19 +436,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         public virtual void Append(IDebugState content)
         {
-            if(content == null || content.SessionID != SessionID)
-            {
-                return;
-            }
-            if (content.Name == "EsbServiceInvoker" && content.ExecutionOrigin == ExecutionOrigin.Unknown)
-            {
-                return;
-            }
-            
-            if(content.StateType == StateType.Start && !content.IsFirstStep())
-            {
-                return;
-            }
+            if (_outputViewModelUtil.ContenIsNotValid(content)) return;
 
             if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
             {
@@ -454,20 +447,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
 
             _continueDebugDispatch = false;
+            _outputViewModelUtil.IsContentFinalSetp(content, ref _allDebugReceived, ref _continueDebugDispatch);
 
-            if(content.IsFinalStep())
-            {
-                _allDebugReceived = true;
-                _continueDebugDispatch = true;
-            }
-
-            if(QueuePending(content))
-            {
+            if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
-            }
 
             AddItemToTree(content);
         }
+
+        
 
         public void AppendX(IDebugState content)
         {
@@ -822,15 +810,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region QueuePending
 
         // BUG 9735 - 2013.06.22 - TWR : added
-        private bool QueuePending(IDebugState item)
-        {
-            if(item.StateType == StateType.Message && IsProcessing)
-            {
-                _pendingItems.Add(item);
-                return true;
-            }
-            return false;
-        }
+       
 
         #endregion
 
