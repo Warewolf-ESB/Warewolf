@@ -35,13 +35,29 @@ namespace Warewolf.Studio.UISpecs
         [When(@"I scroll down in the explorer tree")]
         public void WhenIScrollDownInTheExplorerTree()
         {
+            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
             Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -2);
+        }
+
+        [When(@"I scroll to the bottom of the explorer tree")]
+        public void WhenIScrollToTheBottomOfTheExplorerTree()
+        {
+            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -999);
         }
 
         [When(@"I scroll up in the explorer tree")]
         public void WhenIScrollUpInTheExplorerTree()
         {
+            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
             Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 2);
+        }
+
+        [When(@"I scroll to the top of the explorer tree")]
+        public void WhenIScrollToTheTopOfTheExplorerTree()
+        {
+            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 999);
         }
 
         [When(@"I right click ""(.*)"" in the explorer tree")]
