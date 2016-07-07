@@ -61,7 +61,9 @@ Scenario: Big Remote Server UI Test
 #Scenario: Clicking the save button in the save dialog adds it to the explorer remote servers dropdown list
 #	Given I "Assert_SaveDialog_SaveButton_Enabled"
 	When I "Click_SaveDialog_YesButton"
+#TODO: Remove this workaround
 	And I scroll up in the explorer tree
+#TODO: Remove this workaround
 	And I scroll to the bottom of the explorer tree
 	Then "localhost\TSTCIREMOTE" exists in the explorer tree
 
@@ -69,4 +71,36 @@ Scenario: Big Remote Server UI Test
 #	Given "localhost\TSTCIREMOTE" exists in the explorer tree
 	When I "Click_Connect_Control_InExplorer"
 	Then I "Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE"
+	And I "Click_Connect_Control_InExplorer"
 	
+
+
+
+
+
+
+#These units must go last:
+#Scenario: Explorer context menu delete exists
+#	Given "localhost\TSTCIREMOTE" exists in the explorer tree
+#TODO: Remove this workaround
+	When I scroll up in the explorer tree
+#TODO: Remove this workaround
+	And I scroll to the bottom of the explorer tree
+	And I right click "localhost\TSTCIREMOTE" in the explorer tree
+	Then I "Assert_ExplorerContextMenu_Delete_Exists"
+
+#Scenario: Clicking delete in the explorer context menu on TSTCIREMOTE server source shows message box
+#	Given I "Assert_ExplorerConextMenu_Delete_Exists"
+	When I "Select_Delete_FromExplorerContextMenu"
+	Then I "Assert_MessageBox_Yes_Button_Exists"
+
+#Scenario: Clicking Yes on the delete prompt dialog removes TSTCIREMOTE from the explorer tree
+#	Given I "Assert_MessageBox_Yes_Button_Exists"
+	When I "Click_MessageBox_Yes"
+	Then "localhost\TSTCIREMOTE" does not exist in the explorer tree
+
+#Scenario: When a server source is deleted from the explorer tree it must be removed from the explorer remote server dropdown list
+#	Given "localhost\TSTCIREMOTE" does not exist in the explorer tree
+	When I "Click_Connect_Control_InExplorer"
+	Then I "Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE"
+	And I "Click_Connect_Control_InExplorer"
