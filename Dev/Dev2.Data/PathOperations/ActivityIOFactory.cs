@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Data.Util;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
@@ -145,9 +146,9 @@ namespace Dev2.PathOperations
         /// Create an operations broker object
         /// </summary>
         /// <returns></returns>
-        public static IActivityOperationsBroker CreateOperationsBroker(IFile file)
+        public static IActivityOperationsBroker CreateOperationsBroker(IFile file, ICommon common)
         {
-            return new Dev2ActivityIOBroker(file);
+            return new Dev2ActivityIOBroker(file, common);
         }
 
         /// <summary>
