@@ -1131,6 +1131,9 @@
   <data name="SchedulerNewTaskName" xml:space="preserve">
     <value>New Task</value>
   </data>
+  <data name="SchedulerConnectionError" xml:space="preserve">
+    <value>You don't have permission to schedule on this server. You need Administrator permission.</value>
+  </data>
   <data name="CopyHelpUsername" xml:space="preserve">
     <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
