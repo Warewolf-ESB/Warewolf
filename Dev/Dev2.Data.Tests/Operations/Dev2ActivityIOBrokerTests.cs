@@ -193,8 +193,8 @@ namespace Dev2.Data.Tests.Operations
             pathMock.Setup(path => path.Path).Returns(txt);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Util.Common common = new Util.Common();
-            var value = common.IsNotFtpTypePath( pathMock.Object);
+            Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
+            var value = commonDataUtils.IsNotFtpTypePath( pathMock.Object);
             //---------------Test Result -----------------------
             Assert.IsTrue(bool.Parse(value.ToString()));
         }
@@ -209,8 +209,8 @@ namespace Dev2.Data.Tests.Operations
             pathMock.Setup(path => path.Path).Returns(txt);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Util.Common common = new Util.Common();
-            var value = common.IsNotFtpTypePath(pathMock.Object);
+            Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
+            var value = commonDataUtils.IsNotFtpTypePath(pathMock.Object);
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(value.ToString()));
         }
@@ -223,10 +223,10 @@ namespace Dev2.Data.Tests.Operations
             const string txt = "\\\\Home\\a.txt";
             var pathMock = new Mock<IActivityIOPath>();
             pathMock.Setup(path => path.Path).Returns(txt);
-            Util.Common common = new Util.Common();
+            Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var value = common.IsUncFileTypePath(pathMock.Object);
+            var value = commonDataUtils.IsUncFileTypePath(pathMock.Object);
             //---------------Test Result -----------------------
             Assert.IsTrue(bool.Parse(value.ToString()));
         }
@@ -261,8 +261,8 @@ namespace Dev2.Data.Tests.Operations
             //---------------Execute Test ----------------------
             try
             {
-                Util.Common common = new Util.Common();
-                common.ValidateEndPoint( endPoint.Object, dev2CrudOperationTO);
+                Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
+                commonDataUtils.ValidateEndPoint( endPoint.Object, dev2CrudOperationTO);
             }
             catch (Exception e)
             {
@@ -286,8 +286,8 @@ namespace Dev2.Data.Tests.Operations
             //---------------Execute Test ----------------------
             try
             {
-                Dev2.Data.Util.Common common = new Util.Common();
-                common.ValidateEndPoint(endPoint.Object, dev2CrudOperationTO);
+                Dev2.Data.Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
+                commonDataUtils.ValidateEndPoint(endPoint.Object, dev2CrudOperationTO);
             }
             catch (Exception e)
             {
@@ -303,7 +303,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //---------------Set up test pack-------------------
             var file = new Mock<IFile>();
-            var activityOperationsBroker = CreateBroker(file.Object, new Util.Common());
+            var activityOperationsBroker = CreateBroker(file.Object, new Util.CommonDataUtils());
             PrivateObject privateObject = new PrivateObject(activityOperationsBroker);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -324,7 +324,7 @@ namespace Dev2.Data.Tests.Operations
             //---------------Set up test pack-------------------
             var file = new Mock<IFile>();
             file.Setup(file1 => file1.Delete(It.IsAny<string>()));
-            var activityOperationsBroker = CreateBroker(file.Object, new Util.Common());
+            var activityOperationsBroker = CreateBroker(file.Object, new Util.CommonDataUtils());
             PrivateObject privateObject = new PrivateObject(activityOperationsBroker);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -377,8 +377,8 @@ namespace Dev2.Data.Tests.Operations
             PrivateObject privateObject = new PrivateObject(activityOperationsBroker);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Util.Common common = new Util.Common();
-            var path = common.CreateTmpDirectory();
+            Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
+            var path = commonDataUtils.CreateTmpDirectory();
             //---------------Test Result -----------------------
             Assert.IsNotNull(path);
             Assert.IsTrue(Directory.Exists(path));
@@ -390,8 +390,8 @@ namespace Dev2.Data.Tests.Operations
         public void ExtractZipCompressionLevel_GivenLevel_ShouldCorreclty()
         {
             //---------------Set up test pack-------------------
-            Util.Common common = new Util.Common();
-            var level = common.ExtractZipCompressionLevel("Test");
+            Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
+            var level = commonDataUtils.ExtractZipCompressionLevel("Test");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
 
@@ -406,7 +406,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
-            Util.Common  common = new Util.Common();
+            Util.CommonDataUtils  commonDataUtils = new Util.CommonDataUtils();
             const string dispatcherInvoke = "Dispatcher.Invoke";
             Stream stream = new MemoryStream(Encoding.ASCII.GetBytes(dispatcherInvoke));
             const string ranString = "Rando.net";
@@ -414,7 +414,7 @@ namespace Dev2.Data.Tests.Operations
             //---------------Execute Test ----------------------
             try
             {
-                common.AppendToTemp( stream, ranString);
+                commonDataUtils.AppendToTemp( stream, ranString);
             }
             catch (Exception ex)
             {
@@ -674,9 +674,9 @@ namespace Dev2.Data.Tests.Operations
             //---------------Execute Test ----------------------
             try
             {
-                Util.Common common = new Util.Common();
+                Util.CommonDataUtils commonDataUtils = new Util.CommonDataUtils();
                 file.Save(tempFileName);
-                common.ExtractFile(operationTO, file, tempPath);
+                commonDataUtils.ExtractFile(operationTO, file, tempPath);
             }
             catch(Exception ex)
             {

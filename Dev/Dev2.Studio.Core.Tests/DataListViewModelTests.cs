@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Xml;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
@@ -2250,7 +2251,7 @@ namespace Dev2.Core.Tests
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-            
+
             var parent = CreateComplexObjectDataListModel("Child");
             var child = CreateComplexObjectDataListModel("Child", parent);
             dataListViewModel.ComplexObjectCollection.Add(child);
@@ -2283,6 +2284,34 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(dataListViewModel.ScalarCollection.Single());
             Assert.IsNotNull(dataListViewModel.RecsetCollection.Single());
             Assert.AreEqual(0, dataListViewModel.ComplexObjectCollection.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDataListString_GivenComplexobjectModel_ShouldBuildXmlCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+
+            IComplexObjectItemModel item = new ComplexObjectItemModel("Name", null, enDev2ColumnArgumentDirection.Input, "Name", null, false, "", true, true, false, false);
+            dataListViewModel.ComplexObjectCollection.Add(item);
+            PrivateObject privateObject = new PrivateObject(dataListViewModel);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            try
+            {
+                //---------------Test Result -----------------------
+                var invoke = privateObject.Invoke("GetDataListString");
+                XmlDocument document = new XmlDocument();
+                document.LoadXml(invoke.ToString());
+            }
+            catch(Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
         }
 
         IRecordSetFieldItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()

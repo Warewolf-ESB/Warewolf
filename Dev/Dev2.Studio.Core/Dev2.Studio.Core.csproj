@@ -265,7 +265,7 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
-    <Compile Include="DataList\Common.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="DataList\ComplexObjectHandler.cs" />
     <Compile Include="DataList\MissingDataList.cs" />
     <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
@@ -585,7 +585,6 @@
   <ItemGroup>
     <Folder Include="AppResources\Exceptions\" />
   </ItemGroup>
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
