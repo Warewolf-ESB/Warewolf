@@ -74,7 +74,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudioUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
     <Compile Include="ActionSteps.cs" />
     <Compile Include="Tools\Base Conversion.feature.cs">
