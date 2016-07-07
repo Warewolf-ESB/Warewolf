@@ -14,15 +14,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _sessionId = sessionId;
         }
 
-        public void IsContentFinalSetp(IDebugState content, ref bool allDebugReceived, ref bool continueDebugDispatch)
-        {
-            if (content.IsFinalStep())
-            {
-                allDebugReceived = true;
-                continueDebugDispatch = true;
-            }
-        }
-
         public bool QueuePending(IDebugState item, List<IDebugState> pendingItems, bool isProcessing)
         {
             if (item.StateType == StateType.Message && isProcessing)
