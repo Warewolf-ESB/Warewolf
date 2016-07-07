@@ -9,6 +9,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using ServiceStack.Common.Extensions;
 using Warewolf.Storage;
 
 namespace Dev2.Studio.Core.DataList
@@ -126,7 +127,7 @@ namespace Dev2.Studio.Core.DataList
             CheckForEmptyRecordset();
             if (recset != null)
             {
-                Common.CheckDataListItemsForDuplicates(recset.Children);
+                CheckDataListItemsForDuplicates(recset.Children);
             }
             CheckForFixedEmptyRecordsets();
         }
@@ -134,16 +135,16 @@ namespace Dev2.Studio.Core.DataList
         public void ValidateRecordset()
         {
             CheckForEmptyRecordset();
-            Common.CheckDataListItemsForDuplicates(_vm.DataList);
+            CheckDataListItemsForDuplicates(_vm.DataList);
             CheckForFixedEmptyRecordsets();
         }
 
-        public bool RecordSetHasChildren(IRecordSetItemModel model)
+        private bool RecordSetHasChildren(IRecordSetItemModel model)
         {
             return model.Children != null && model.Children.Count > 0;
         }
 
-        public void CheckForEmptyRecordset()
+        private void CheckForEmptyRecordset()
         {
             foreach (var recordset in _vm.RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].DisplayName) && !string.IsNullOrEmpty(c.DisplayName)))
             {
@@ -151,7 +152,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void CheckForFixedEmptyRecordsets()
+        private void CheckForFixedEmptyRecordsets()
         {
             foreach (var recset in _vm.RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].DisplayName)))
             {
@@ -184,8 +185,29 @@ namespace Dev2.Studio.Core.DataList
                 }
             }
         }
+        void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
+        {
+            List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
+            foreach (var duplicate in duplicates)
+            {
+                if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                {
+                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                }
+                else
+                {
+                    duplicate.ForEach(model =>
+                    {
+                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                        {
+                            model.RemoveError();
+                        }
+                    });
+                }
+            }
+        }
 
-        public void FixNamingForRecset(IDataListItemModel recset)
+        private void FixNamingForRecset(IDataListItemModel recset)
         {
             if (!recset.DisplayName.EndsWith("()"))
             {
@@ -235,7 +257,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public IRecordSetItemModel CreateRecordSet(XmlNode xmlNode)
+        private IRecordSetItemModel CreateRecordSet(XmlNode xmlNode)
         {
             IRecordSetItemModel recset;
             if (xmlNode.Attributes != null)
