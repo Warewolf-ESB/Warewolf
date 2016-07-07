@@ -13,7 +13,7 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace Warewolf.Studio.UISpecs
 {
     /// <summary>
-    /// Summary description for CodedUITest1
+    /// Summary description for RemoteServer
     /// </summary>
     [CodedUITest]
     public class RemoteServer
