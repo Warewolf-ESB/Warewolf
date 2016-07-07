@@ -45,7 +45,7 @@ namespace Dev2.Data.Util
         public const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        static readonly Lazy<ICommon> Lazy = new Lazy<ICommon>(()=> new Common(), LazyThreadSafetyMode.ExecutionAndPublication);
+        static readonly Lazy<ICommon> Lazy = new Lazy<ICommon>(()=> new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);
         private static ICommon Common => Lazy.Value;
         #endregion Class Members
 
