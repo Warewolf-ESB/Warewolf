@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -78,6 +79,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Resource = Dev2.Runtime.ServiceModel.Data.Resource;
 using Dev2.Studio.Core;
+// ReSharper disable CatchAllClause
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
@@ -87,7 +89,6 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<DeleteFolderMessage>,
                                         IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
-                                        IHandle<SetActiveEnvironmentMessage>,
                                         IHandle<ShowEditResourceWizardMessage>,
                                         IHandle<ShowNewResourceWizard>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
@@ -113,11 +114,6 @@ namespace Dev2.Studio.ViewModels
         bool _hasActiveConnection;
         bool _canDebug = true;
         bool _menuExpanded;
-
-
-
-
-        IWindowManager WindowManager { get; }
 
         public Common.Interfaces.Studio.Controller.IPopupController PopupProvider { private get; set; }
 
@@ -185,7 +181,6 @@ namespace Dev2.Studio.ViewModels
             SaveCommand.UpdateContext(ActiveEnvironment);
         }
 
-        #region Commands
 
         public AuthorizeCommand EditCommand
         {
@@ -329,7 +324,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        #endregion
 
 
 
@@ -348,8 +342,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        #region ctor
-
+        [ExcludeFromCodeCoverage]
         public MainViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), Core.EnvironmentRepository.Instance, new VersionChecker())
         {
@@ -357,7 +350,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            Common.Interfaces.Studio.Controller.IPopupController popupController = null, IWindowManager windowManager = null, IExplorerViewModel explorer = null)
+            Common.Interfaces.Studio.Controller.IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
             if (environmentRepository == null)
@@ -384,15 +377,8 @@ namespace Dev2.Studio.ViewModels
             MenuPanelWidth = 60;
             _menuExpanded = false;
 
-            if (explorer != null)
-            {
-                ExplorerViewModel = explorer;
-            }
-            if (ExplorerViewModel == null)
-            {
-                ExplorerViewModel = new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
-            }
-
+            ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
+            
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             AddWorkspaceItems();
             ShowStartPage();
@@ -400,11 +386,7 @@ namespace Dev2.Studio.ViewModels
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
         }
-
-        #endregion ctor
-
-        #region IHandle
-
+        
         public void Handle(ShowReverseDependencyVisualizer message)
         {
             Dev2Logger.Debug(message.GetType().Name);
@@ -445,18 +427,12 @@ namespace Dev2.Studio.ViewModels
         {
             Dev2Logger.Info(message.GetType().Name);
             var result = PopupProvider;
-            if (ShowDeleteDialogForFolder(message.FolderName, result))
+            if (ShowDeleteDialogForFolder(message.FolderName))
             {
                 message.ActionToDoOnDelete?.Invoke();
             }
         }
 
-        public void Handle(SetActiveEnvironmentMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name);
-            var activeEnvironment = message.EnvironmentModel;
-            SetActiveEnvironment(activeEnvironment);
-        }
 
         public void SetActiveEnvironment(IEnvironmentModel activeEnvironment)
         {
@@ -549,22 +525,17 @@ namespace Dev2.Studio.ViewModels
         {
             if (ActiveItem?.Environment != null)
             {
-                Dev2Logger.Debug("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                EventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
+               SetActiveEnvironment(ActiveItem.Environment);
             }
         }
-
-        #endregion
-
-        #region Private Methods
-
+        
         private void TempSave(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
         {
             string newWorflowName = NewWorkflowNames.Instance.GetNext();
 
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
                                                                                               newWorflowName);
-            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? "Unassigned\\" + newWorflowName : resourcePath + "\\" + newWorflowName;
+            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\\" + newWorflowName : resourcePath + @"\\" + newWorflowName;
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;
@@ -590,7 +561,7 @@ namespace Dev2.Studio.ViewModels
             var result = PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName),
                 $"Save {workflowVm.ResourceModel.ResourceName}?",
                                             MessageBoxButton.YesNoCancel,
-                                            MessageBoxImage.Information, "", false, false, true, false);
+                                            MessageBoxImage.Information, @"", false, false, true, false);
 
             switch (result)
             {
@@ -599,7 +570,7 @@ namespace Dev2.Studio.ViewModels
                     Dev2Logger.Info(@"Publish message of type - " + typeof(SaveResourceMessage));
                     EventPublisher.Publish(new SaveResourceMessage(workflowVm.ResourceModel, false, false));
 
-                    return !workflowVm.WorkflowName.ToLower().StartsWith("unsaved");
+                    return !workflowVm.WorkflowName.ToLower().StartsWith(@"unsaved");
                 case MessageBoxResult.No:
                     // We need to remove it ;)
                     var model = workflowVm.ResourceModel;
@@ -607,7 +578,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         if (workflowVm.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) && workflowVm.ResourceModel.IsNewWorkflow)
                         {
-                            DeleteResources(new List<IContextualResourceModel> { model }, "", false);
+                            DeleteResources(new List<IContextualResourceModel> { model }, @"", false);
                         }
                         else
                         {
@@ -638,7 +609,6 @@ namespace Dev2.Studio.ViewModels
                 PersistTabs();
             }
 
-            // we need to load it so we can extract the sourceID ;)
             if (resourceModel.WorkflowXaml == null)
             {
                 resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
@@ -924,12 +894,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenResource(Guid resourceId, IServer server)
         {
-            var environmentModel = EnvironmentRepository.Get(server.EnvironmentID);
-            if (environmentModel != null)
-            {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                DisplayResourceWizard(contextualResourceModel, true);
-            }
+            OpenResource(resourceId,server.EnvironmentID);
         }
         public void OpenResource(Guid resourceId, Guid environmentId)
         {
@@ -974,12 +939,12 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowPopup(IPopupMessage popupMessage)
         {
-            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, "", false, true, false, false);
+            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, @"", false, true, false, false);
         }
 
         public void EditServer(IServerSource selectedServer)
         {
-            var viewModel = new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, _asyncWorker, new ExternalProcessExecutor());
+            var viewModel = new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, @""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, _asyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IServerSource>(EventPublisher, viewModel, PopupProvider, new ManageServerControl());
 
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
@@ -1087,7 +1052,7 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        private void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var oauthSourceViewModel = new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), selectedSource);
             var vm = new SourceViewModel<IOAuthSource>(EventPublisher, oauthSourceViewModel, PopupProvider, new ManageOAuthSourceControl());
@@ -1171,56 +1136,59 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
             Task<IRequestServiceNameViewModel> saveViewModel = GetSaveViewModel(resourcePath, resourceType);
-            if (resourceType == "EmailSource")
+            switch(resourceType)
             {
-                AddEmailWorkSurface(saveViewModel);
-            }
-            else if (resourceType == "DropboxSource")
-            {
-                CreateOAuthSourceType(saveViewModel);
-            }
-            else if (resourceType == "ServerSource" || resourceType.ToLower() == "server")
-            {
-                AddNewServerSourceSurface(saveViewModel);
-            }
-            else if (resourceType == "DbSource")
-            {
-                AddNewDbSourceSurface(saveViewModel);
-            }
+                case "EmailSource":
+                    AddEmailWorkSurface(saveViewModel);
+                    break;
+                case "DropboxSource":
+                    CreateOAuthSourceType(saveViewModel);
+                    break;
+                default:
+                    if (resourceType == "ServerSource" || resourceType.ToLower() == "server")
+                    {
+                        AddNewServerSourceSurface(saveViewModel);
+                    }
+                    else if (resourceType == "DbSource")
+                    {
+                        AddNewDbSourceSurface(saveViewModel);
+                    }
 
-            else if (resourceType == "WebSource")
-            {
-                AddNewWebSourceSurface(saveViewModel);
-            }
+                    else if (resourceType == "WebSource")
+                    {
+                        AddNewWebSourceSurface(saveViewModel);
+                    }
 
-            else if (resourceType == "PluginSource")
-            {
-                AddNewPluginSourceSurface(saveViewModel);
-            }
+                    else if (resourceType == "PluginSource")
+                    {
+                        AddNewPluginSourceSurface(saveViewModel);
+                    }
 
-            else if (resourceType == "SharepointServerSource")
-            {
-                AddNewSharePointServerSource(saveViewModel);
-            }
+                    else if (resourceType == "SharepointServerSource")
+                    {
+                        AddNewSharePointServerSource(saveViewModel);
+                    }
 
-            else if (resourceType == "ExchangeSource")
-            {
-                AddExchangeWorkSurface(saveViewModel);
-            }
-            else if (resourceType == "WcfSource")
-            {
-                AddNewWcfSourceSurface(saveViewModel);
-            }
-            else if (resourceType == "RabbitMQSource")
-            {
-                AddNewRabbitMQSourceSurface(saveViewModel);
-            }
-            else
-            {
-                var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-                resourceModel.Category = string.IsNullOrEmpty(resourcePath) ? null : resourcePath;
-                resourceModel.ID = Guid.Empty;
-                DisplayResourceWizard(resourceModel, false);
+                    else if (resourceType == "ExchangeSource")
+                    {
+                        AddExchangeWorkSurface(saveViewModel);
+                    }
+                    else if (resourceType == "WcfSource")
+                    {
+                        AddNewWcfSourceSurface(saveViewModel);
+                    }
+                    else if (resourceType == "RabbitMQSource")
+                    {
+                        AddNewRabbitMQSourceSurface(saveViewModel);
+                    }
+                    else
+                    {
+                        var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+                        resourceModel.Category = string.IsNullOrEmpty(resourcePath) ? null : resourcePath;
+                        resourceModel.ID = Guid.Empty;
+                        DisplayResourceWizard(resourceModel, false);
+                    }
+                    break;
             }
         }
 
@@ -1304,7 +1272,7 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public void CreateOAuthSourceType(Task<IRequestServiceNameViewModel> saveViewModel)
+        private void CreateOAuthSourceType(Task<IRequestServiceNameViewModel> saveViewModel)
         {
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
             key.ServerID = ActiveServer.ServerID;
@@ -1346,15 +1314,15 @@ namespace Dev2.Studio.ViewModels
                     ActiveEnvironment.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                 var xamlElement = XElement.Parse(workflowXaml.ToString());
-                var dataList = xamlElement.Element("DataList");
-                var dataListString = "";
+                var dataList = xamlElement.Element(@"DataList");
+                var dataListString = @"";
                 if (dataList != null)
                 {
                     dataListString = dataList.ToString();
                 }
-                var action = xamlElement.Element("Action");
+                var action = xamlElement.Element(@"Action");
                 var xamlString = "";
-                var xaml = action?.Element("XamlDefinition");
+                var xaml = action?.Element(@"XamlDefinition");
                 if (xaml != null)
                 {
                     xamlString = xaml.Value;
@@ -1397,11 +1365,6 @@ namespace Dev2.Studio.ViewModels
             DisplayResourceWizard(resourceModel, true);
         }
 
-
-        #endregion Private Methods
-
-        #region Public Methods
-
         public async void ShowStartPage()
         {
 
@@ -1417,11 +1380,7 @@ namespace Dev2.Studio.ViewModels
         {
             BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
         }
-
-        #region Overrides of ViewAware
-        
-        #endregion
-
+      
         public bool IsActiveEnvironmentConnected()
         {
             if (ActiveEnvironment == null)
@@ -1463,9 +1422,6 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        #endregion
-
-        #region Overrides
 
         protected override void Dispose(bool disposing)
         {
@@ -1623,9 +1579,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        #endregion
-        #region Resource Deletion
-
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
             if (!models.Any(model => model.Environment.ResourceRepository.HasDependencies(model)))
@@ -1664,7 +1617,7 @@ namespace Dev2.Studio.ViewModels
                     if (contextualResourceModel != null)
                     {
                         var folderBeingDeleted = folderName;
-                        return ShowDeleteDialogForFolder(folderBeingDeleted, result);
+                        return ShowDeleteDialogForFolder(folderBeingDeleted);
                     }
                 }
                 if (models.Count == 1)
@@ -1682,7 +1635,7 @@ namespace Dev2.Studio.ViewModels
 
                         var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
                                                               StringResources.DialogTitle_ConfirmDelete,
-                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, "", false, false, true, false) == MessageBoxResult.Yes;
+                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false) == MessageBoxResult.Yes;
 
                         return shouldDelete;
                     }
@@ -1691,22 +1644,17 @@ namespace Dev2.Studio.ViewModels
             return false;
         }
 
-        // ReSharper disable once UnusedParameter.Local
-        bool ShowDeleteDialogForFolder(string folderBeingDeleted, Common.Interfaces.Studio.Controller.IPopupController result)
+        public bool ShowDeleteDialogForFolder(string folderBeingDeleted)
         {
             var popupResult = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmFolderDelete, folderBeingDeleted),
                                StringResources.DialogTitle_ConfirmDelete,
-                               MessageBoxButton.YesNo, MessageBoxImage.Information, "", false, false, true, false);
+                               MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false);
 
             var confirmDelete = popupResult == MessageBoxResult.Yes;
 
             return confirmDelete;
         }
-
-        public bool ShowDeleteDialogForFolder(string folderBeingDeleted)
-        {
-            return ShowDeleteDialogForFolder(folderBeingDeleted, PopupProvider);
-        }
+        
 
         private void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm = true, System.Action actionToDoOnDelete = null)
         {
@@ -1728,9 +1676,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        #endregion delete
 
-        #region WorkspaceItems management
 
         public double MenuPanelWidth { get; set; }
 
@@ -1769,7 +1715,7 @@ namespace Dev2.Studio.ViewModels
 
                 if (environment?.ResourceRepository == null)
                 {
-                    Dev2Logger.Info("Environment Not Found");
+                    Dev2Logger.Info(@"Environment Not Found");
                     if (environment != null && item.EnvironmentID == environment.ID)
                     {
                         workspaceItemsToRemove.Add(item);
@@ -1818,9 +1764,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        #endregion
 
-        #region Tab Management
 
 
 
@@ -1844,28 +1788,6 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel ctx = WorkSurfaceContextFactory.Create(context, initParms, out vmr);
             AddAndActivateWorkSurface(ctx);
             return vmr;
-        }
-
-        private void CreateAndActivateWorkSurface<T>
-            (WorkSurfaceKey key, Tuple<string, object>[] initParms = null)
-            where T : IWorkSurfaceViewModel
-        {
-            WorkSurfaceContextViewModel ctx = WorkSurfaceContextFactory.Create<T>(key, initParms);
-            AddAndActivateWorkSurface(ctx);
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private void ActivateOrCreateWorkSurface<T>(WorkSurfaceContext context, IContextualResourceModel resourceModel,
-                                                          Tuple<string, object>[] initParms = null)
-            where T : IWorkSurfaceViewModel
-        {
-            WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(context, resourceModel);
-            bool exists = ActivateWorkSurfaceIfPresent(key, initParms);
-
-            if (!exists)
-            {
-                CreateAndActivateWorkSurface<T>(key, initParms);
-            }
         }
 
         private T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context,
@@ -1979,7 +1901,6 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            //Activates if exists
             var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
 
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel);
@@ -2008,12 +1929,7 @@ namespace Dev2.Studio.ViewModels
             _canDebug = true;
         }
 
-        readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) =>
-        {
-            // ReSharper disable ConvertToLambdaExpression
-            return WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
-            // ReSharper restore ConvertToLambdaExpression
-        };
+        readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
 
         private bool IsInOpeningState(IContextualResourceModel resource)
         {
@@ -2072,8 +1988,6 @@ namespace Dev2.Studio.ViewModels
 
                 lock (_locker)
                 {
-
-
                     foreach (var ctx in Items.Where(a => true).ToList())
                     {
                         if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
@@ -2099,7 +2013,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        // ReSharper disable once CyclomaticComplexity
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false)
         {
             bool remove = true;
@@ -2257,8 +2170,6 @@ namespace Dev2.Studio.ViewModels
                 environmentModel.Disconnect();
             }
         }
-
-        #endregion
 
 
 

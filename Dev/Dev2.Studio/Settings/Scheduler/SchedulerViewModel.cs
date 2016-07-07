@@ -59,19 +59,11 @@ namespace Dev2.Settings.Scheduler
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
         #region Fields
-
-        const string DuplicateNameErrorMessage = "There is already a task with the same name";
-        const string LoginErrorMessage = "Error while saving: Logon failure: unknown user name or bad password";
-        const string NotConnectedErrorMessage = "Error while saving: Server unreachable.";
-        const string BlankWorkflowNameErrorMessage = "Please select a workflow to schedule";
-        const string BlankNameErrorMessage = "The name can not be blank";
-        const string SaveErrorPrefix = "Error while saving:";
-        const string NewTaskName = "New Task";
+        
         IResourcePickerDialog _currentResourcePicker;
         int _newTaskCounter = 1;
         ICommand _saveCommand;
         ICommand _newCommand;
-        ICommand _closeCommand;
         ICommand _deleteCommand;
         ICommand _editTriggerCommand;
         ICommand _addWorkflowCommand;
@@ -92,7 +84,6 @@ namespace Dev2.Settings.Scheduler
         string _connectionError;
         bool _hasConnectionError;
         IEnvironmentModel _currentEnvironment;
-        IConnectControlViewModel _connectControlViewModel;
         Task<IResourcePickerDialog> _task;
         IScheduledResourceModel _scheduledResourceModel;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
@@ -102,7 +93,7 @@ namespace Dev2.Settings.Scheduler
 
         #region Ctor
 
-        public SchedulerViewModel()
+        protected SchedulerViewModel()
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
         }
@@ -140,7 +131,6 @@ namespace Dev2.Settings.Scheduler
             IShellViewModel vm = CustomContainer.Get<IShellViewModel>();
             CreateEnvironmentFromServer(vm.ActiveServer, vm);
             Server = server;
-            server.NetworkStateChanged += server_NetworkStateChanged;
             SetupServer(server);
         }
 
@@ -175,14 +165,9 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        void server_NetworkStateChanged(INetworkStateChangedEventArgs args, IServer server)
-        {
-
-        }
-
         void CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
-            if (server != null && server.UpdateRepository != null)
+            if (server?.UpdateRepository != null)
             {
                 server.UpdateRepository.ItemSaved += Refresh;
             }
@@ -246,23 +231,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public IConnectControlViewModel ConnectControlViewModel
-        {
-            get
-            {
-                return _connectControlViewModel;
-            }
-            set
-            {
-                if (Equals(value, _connectControlViewModel))
-                {
-                    return;
-                }
-                _connectControlViewModel = value;
-                NotifyOfPropertyChange(() => ConnectControlViewModel);
-            }
-        }
-
         public ActivityDesignerToggle HelpToggle { get; private set; }
 
         public IClientSchedulerFactory SchedulerFactory
@@ -292,7 +260,7 @@ namespace Dev2.Settings.Scheduler
         {
             get
             {
-                return SelectedTask != null ? SelectedTask.Status : SchedulerStatus.Enabled;
+                return SelectedTask?.Status ?? SchedulerStatus.Enabled;
             }
             set
             {
@@ -321,11 +289,11 @@ namespace Dev2.Settings.Scheduler
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        ShowError(BlankWorkflowNameErrorMessage);
+                        ShowError(Core.SchedulerBlankWorkflowNameErrorMessage);
                     }
                     else
                     {
-                        ClearError(BlankWorkflowNameErrorMessage);
+                        ClearError(Core.SchedulerBlankWorkflowNameErrorMessage);
                     }
 
                     if (value == SelectedTask.WorkflowName)
@@ -354,24 +322,24 @@ namespace Dev2.Settings.Scheduler
                 }
                 if (string.IsNullOrEmpty(value))
                 {
-                    ShowError(BlankNameErrorMessage);
+                    ShowError(Core.SchedulerBlankNameErrorMessage);
                 }
                 else
                 {
-                    ClearError(BlankNameErrorMessage);
+                    ClearError(Core.SchedulerBlankNameErrorMessage);
                 }
 
                 if (TaskList.Any(c => c.Name == value))
                 {
                     foreach (var resource in TaskList.Where(a => a.Name == value))
                     {
-                        resource.Errors.AddError(DuplicateNameErrorMessage);
+                        resource.Errors.AddError(Core.SchedulerDuplicateNameErrorMessage);
                     }
-                    ShowError(DuplicateNameErrorMessage);
+                    ShowError(Core.SchedulerDuplicateNameErrorMessage);
                 }
                 else
                 {
-                    ClearError(DuplicateNameErrorMessage);
+                    ClearError(Core.SchedulerDuplicateNameErrorMessage);
                 }
                 SelectedTask.Name = value;
                 SelectedTask.IsDirty = true;
@@ -404,7 +372,7 @@ namespace Dev2.Settings.Scheduler
         {
             get
             {
-                return SelectedTask != null ? SelectedTask.NumberOfHistoryToKeep.ToString(CultureInfo.InvariantCulture) : string.Empty;
+                return SelectedTask?.NumberOfHistoryToKeep.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
             }
             set
             {
@@ -486,7 +454,6 @@ namespace Dev2.Settings.Scheduler
         {
             get
             {
-
                 if (ScheduledResourceModel != null)
                 {
                     return ScheduledResourceModel.ScheduledResources;
@@ -595,7 +562,7 @@ namespace Dev2.Settings.Scheduler
                     {
                         return;
                     }
-                    ClearError(LoginErrorMessage);
+                    ClearError(Core.SchedulerDuplicateNameErrorMessage);
                     SelectedTask.UserName = value;
                     SelectedTask.IsDirty = true;
                     NotifyOfPropertyChange(() => AccountName);
@@ -617,14 +584,13 @@ namespace Dev2.Settings.Scheduler
                     {
                         return;
                     }
-                    ClearError(LoginErrorMessage);
+                    ClearError(Core.SchedulerDuplicateNameErrorMessage);
                     SelectedTask.Password = value;
                     SelectedTask.IsDirty = true;
                     NotifyOfPropertyChange(() => Password);
                 }
             }
         }
-
 
         public IEnvironmentModel CurrentEnvironment
         {
@@ -646,7 +612,8 @@ namespace Dev2.Settings.Scheduler
             get { return _selectedTask != null ? _selectedTask.Errors : new ErrorResultTO(); }
             set
             {
-                if (_selectedTask != null) _selectedTask.Errors = value;
+                if (_selectedTask != null)
+                    _selectedTask.Errors = value;
                 NotifyOfPropertyChange(() => Errors);
             }
         }
@@ -742,16 +709,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public ICommand CloseHelpCommand
-        {
-            get
-            {
-                return _closeCommand ??
-                    (_closeCommand = new DelegateCommand(param => CloseHelp()));
-            }
-
-        }
-
         public ICommand NewCommand
         {
             get
@@ -774,7 +731,6 @@ namespace Dev2.Settings.Scheduler
                                SelectedTask = taskToBeDeleted;
                                DeleteTask();
                            }
-
                        }));
             }
         }
@@ -800,11 +756,6 @@ namespace Dev2.Settings.Scheduler
 
         #region Private Methods
 
-        void CloseHelp()
-        {
-            HelpToggle.IsChecked = false;
-        }
-
         void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
@@ -828,13 +779,13 @@ namespace Dev2.Settings.Scheduler
                 {
                     if (SelectedTask != null && SelectedTask.OldName != null && SelectedTask.IsDirty)
                     {
-                        if (HasErrors && !Error.StartsWith(SaveErrorPrefix))
+                        if (HasErrors && !Error.StartsWith(Core.SchedulerSaveErrorPrefix))
                         {
                             ShowSaveErrorDialog(Error);
                             return false;
                         }
 
-                        if (SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName) && !SelectedTask.IsNew)
+                        if (SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(Core.SchedulerNewTaskName) && !SelectedTask.IsNew)
                         {
                             var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
                                                                                                    SelectedTask.Name);
@@ -848,7 +799,7 @@ namespace Dev2.Settings.Scheduler
                                 NotifyOfPropertyChange(() => Name);
                             }
                         }
-                        if (SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(NewTaskName))
+                        if (SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(Core.SchedulerNewTaskName))
                         {
                             SelectedTask.OldName = SelectedTask.Name;
                         }
@@ -881,7 +832,7 @@ namespace Dev2.Settings.Scheduler
                 }
                 return true;
             }
-            ShowError(NotConnectedErrorMessage);
+            ShowError(Core.SchedulerNotConnectedErrorMessage);
             return false;
         }
 
@@ -895,7 +846,7 @@ namespace Dev2.Settings.Scheduler
 
             var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
             var scheduleTrigger = _schedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
-            ScheduledResource scheduledResource = new ScheduledResource(NewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString()) { IsDirty = true };
+            ScheduledResource scheduledResource = new ScheduledResource(Core.SchedulerNewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString()) { IsDirty = true };
             scheduledResource.OldName = scheduledResource.Name;
             var newres = ScheduledResourceModel.ScheduledResources[ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : ScheduledResourceModel.ScheduledResources.Count - 1];
             ScheduledResourceModel.ScheduledResources[ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : ScheduledResourceModel.ScheduledResources.Count - 1] = scheduledResource;
@@ -924,7 +875,7 @@ namespace Dev2.Settings.Scheduler
                             int indexInFilteredList = TaskList.IndexOf(SelectedTask);
                             if (index != -1)
                             {
-                                Dev2Logger.Info(String.Format("Delete Schedule Name: {0} Resource:{1} Env:{2}", SelectedTask.Name, SelectedTask.ResourceId, CurrentEnvironment.Name));
+                                Dev2Logger.Info($"Delete Schedule Name: {SelectedTask.Name} Resource:{SelectedTask.ResourceId} Env:{CurrentEnvironment.Name}");
 
                                 ScheduledResourceModel.DeleteSchedule(SelectedTask);
                                 //if delete is successfull then do the code below
@@ -949,7 +900,7 @@ namespace Dev2.Settings.Scheduler
                 }
                 else
                 {
-                    ShowError(NotConnectedErrorMessage);
+                    ShowError(Core.SchedulerNotConnectedErrorMessage);
                 }
             }
         }
@@ -1010,7 +961,7 @@ namespace Dev2.Settings.Scheduler
         {
             CurrentEnvironment = ToEnvironmentModel(tmpEnv);
 
-            if (CurrentEnvironment != null && CurrentEnvironment.AuthorizationService != null && CurrentEnvironment.IsConnected)
+            if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected)
             {
                 if (tmpEnv.Permissions.Any(a => a.Administrator))
                 {
@@ -1043,10 +994,7 @@ namespace Dev2.Settings.Scheduler
                             {
                                 CurrentResourcePickerDialog = _task.Result;
                                 var cmd = AddWorkflowCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                                if (cmd != null)
-                                {
-                                    cmd.RaiseCanExecuteChanged();
-                                }
+                                cmd?.RaiseCanExecuteChanged();
 
                                 foreach (var scheduledResource in ScheduledResourceModel.ScheduledResources.Where(a => !a.IsNewItem))
                                 {
@@ -1105,10 +1053,7 @@ namespace Dev2.Settings.Scheduler
             Password = string.Empty;
             NumberOfRecordsToKeep = string.Empty;
             Trigger = null;
-            if (ScheduledResourceModel != null)
-            {
-                ScheduledResourceModel.ScheduledResources.Clear();
-            }
+            ScheduledResourceModel?.ScheduledResources.Clear();
             NotifyOfPropertyChange(() => TaskList);
             NotifyOfPropertyChange(() => History);
             Errors.ClearErrors();
@@ -1187,7 +1132,6 @@ namespace Dev2.Settings.Scheduler
             return true;
         }
 
-
         public virtual void ShowSaveErrorDialog(string error)
         {
             _popupController.ShowSaveErrorDialog(error);
@@ -1215,7 +1159,7 @@ namespace Dev2.Settings.Scheduler
             while ((String.IsNullOrEmpty(AccountName) || String.IsNullOrEmpty(Password)) && !cancelled)
             {
                 NetworkCredential cred;
-                GetCredentialsVistaAndUp(scheduledResource.Name,out cred);
+                GetCredentialsVistaAndUp(scheduledResource.Name, out cred);
                 if (cred == null)
                 {
                     cancelled = true;
@@ -1257,7 +1201,6 @@ namespace Dev2.Settings.Scheduler
             set;
         }
 
-
         [DllImport("ole32.dll")]
         public static extern void CoTaskMemFree(IntPtr ptr);
 
@@ -1270,7 +1213,6 @@ namespace Dev2.Settings.Scheduler
             public string pszCaptionText;
             public IntPtr hbmBanner;
         }
-
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]
         private static extern bool CredUnPackAuthenticationBuffer(int dwFlags,
@@ -1327,7 +1269,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if (CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,
                                                    domainBuf, ref maxDomain, passwordBuf, ref maxPassword))
-                {                    
+                {
                     CoTaskMemFree(outCredBuffer);
                     networkCredential = new NetworkCredential
                     {

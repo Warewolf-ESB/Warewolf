@@ -386,7 +386,6 @@
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
     <Compile Include="Messages\SelectItemInDeployMessage.cs" />
-    <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
