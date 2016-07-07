@@ -929,7 +929,7 @@ namespace Dev2.Activities.Specs.Composition
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
 
-            repository.Save(resourceModel, false);
+            repository.Save(resourceModel);
             repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);
@@ -1401,7 +1401,7 @@ namespace Dev2.Activities.Specs.Composition
 
             for(int i = 0; i < count; i++)
             {
-                repository.Save(resourceModel, false);
+                repository.Save(resourceModel);
                 repository.SaveToServer(resourceModel);
             }
 

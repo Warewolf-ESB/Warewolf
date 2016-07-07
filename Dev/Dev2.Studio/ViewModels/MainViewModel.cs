@@ -933,7 +933,7 @@ namespace Dev2.Studio.ViewModels
             var environmentModel = EnvironmentRepository.Get(destinationEnvironmentId);
             var sourceEnvironmentModel = EnvironmentRepository.Get(sourceEnvironmentId);
             var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList() };
-            environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto, CustomContainer.Get<IEventAggregator>());
+            environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
         }
 
