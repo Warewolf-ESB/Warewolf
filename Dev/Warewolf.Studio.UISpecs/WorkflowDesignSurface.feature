@@ -53,7 +53,9 @@ Scenario: Big Workflow Design Surface UI Test
 #Scenario: Clicking the save button in the save dialog creates a new explorer item
 #	Given I "Assert_SaveDialog_SaveButton_Enabled"
 	When I "Click_SaveDialog_YesButton"
+#TODO: Remove this workaround
 	And I scroll up in the explorer tree
+#TODO: Remove this workaround
 	And I scroll to the bottom of the explorer tree
 	Then "localhost\SomeWorkflow" exists in the explorer tree
 
@@ -75,6 +77,21 @@ Scenario: Big Workflow Design Surface UI Test
 	When I "Open_Assign_Tool_Qvi_Large_View"
 	Then I "Assert_Assign_QVI_Large_View_Exists_OnDesignSurface"
 
-#Scenario: Clicking the tab close button prompts to save
-	Given I "Assert_Close_Tab_Button_Exists"
-	When I "Click_Close_Tab_Button"
+#Scenario: Explorer context menu delete exists
+#	Given "localhost\SomeWorkflow" exists in the explorer tree
+#TODO: Remove this workaround
+	When I scroll up in the explorer tree
+#TODO: Remove this workaround
+	And I scroll to the bottom of the explorer tree
+	And I right click "localhost\SomeWorkflow" in the explorer tree
+	Then I "Assert_ExplorerContextMenu_Delete_Exists"
+
+#Scenario: Clicking delete in the explorer context menu on SomeWorkflow shows message box
+#	Given I "Assert_ExplorerConextMenu_Delete_Exists"
+	When I "Select_Delete_FromExplorerContextMenu"
+	Then I "Assert_MessageBox_Yes_Button_Exists"
+
+#Scenario: Clicking Yes on the delete prompt dialog removes SomeWorkflow from the explorer tree
+#	Given I "Assert_MessageBox_Yes_Button_Exists"
+	When I "Click_MessageBox_Yes"
+	Then "localhost\SomeWorkflow" does not exist in the explorer tree
