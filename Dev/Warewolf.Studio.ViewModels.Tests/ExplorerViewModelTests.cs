@@ -213,6 +213,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.SelectedItem = selectedItemMock.Object;
+            _target.SelectedItem = selectedItemMock.Object;
 
             //assert
             Assert.AreSame(_target.SelectedItem, selectedItemMock.Object);
@@ -503,6 +504,27 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
             environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
+        }
+
+        [TestMethod]
+        public void TestRefreshSelectedEnvironment()
+        {
+            //arrange
+            var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
+            var serverMock = new Mock<IServer>();
+            var envId = Guid.NewGuid();
+            serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
+            environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
+            environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
+            _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
+            _target.SelectedEnvironment = environmentViewModelMock.Object;
+
+            //act
+            _target.RefreshSelectedEnvironment();
+
+            //assert
+            environmentViewModelMock.VerifyGet(it => it.IsConnected);
+            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>()));
         }
 
         [TestMethod]
