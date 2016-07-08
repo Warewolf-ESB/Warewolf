@@ -40,13 +40,16 @@ namespace Dev2.Data.Util
         #region Class Members
 
         public const string OpeningSquareBrackets = "[[";
-        public const string ClosingSquareBrackets = "]]";
-        public const string RecordsetIndexOpeningBracket = "(";
-        public const string RecordsetIndexClosingBracket = ")";
+        internal const string ClosingSquareBrackets = "]]";
+        internal const string RecordsetIndexOpeningBracket = "(";
+        internal const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        static readonly Lazy<ICommon> Lazy = new Lazy<ICommon>(()=> new Common(), LazyThreadSafetyMode.ExecutionAndPublication);
-        private static ICommon Common => Lazy.Value;
+        private static readonly Lazy<ICommon> LazyCommon = new Lazy<ICommon>(()=> new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommon Common => LazyCommon.Value;
+
+        private static readonly Lazy<ICommonRecordSetUtil> LazyRecSetCommon = new Lazy<ICommonRecordSetUtil>(()=>new CommonRecordSetUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommonRecordSetUtil RecSetCommon => LazyRecSetCommon.Value;
         #endregion Class Members
 
         #region Constructor
@@ -95,39 +98,14 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="expression">The expession.</param>
         /// <returns></returns>
-        public static string ReplaceRecordsetIndexWithBlank(string expression)
-        {
-            var index = ExtractIndexRegionFromRecordset(expression);
-
-            if (string.IsNullOrEmpty(index))
-            {
-                return expression;
-            }
-
-            string extractIndexRegionFromRecordset = $"({index})";
-            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
-                                        expression.Replace(extractIndexRegionFromRecordset, "()");
-        }
-
+        public static string ReplaceRecordsetIndexWithBlank(string expression) => RecSetCommon.ReplaceRecordsetIndexWithBlank(expression);
 
         /// <summary>
         /// Replaces the index of a recordset with a blank index.
         /// </summary>
         /// <param name="expression">The expession.</param>
         /// <returns></returns>
-        public static string ReplaceRecordsetIndexWithStar(string expression)
-        {
-            var index = ExtractIndexRegionFromRecordset(expression);
-
-            if (string.IsNullOrEmpty(index))
-            {
-                return expression;
-            }
-
-            string extractIndexRegionFromRecordset = $"({index})";
-            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
-                                        expression.Replace(extractIndexRegionFromRecordset, "(*)");
-        }
+        public static string ReplaceRecordsetIndexWithStar(string expression) => RecSetCommon.ReplaceRecordsetIndexWithStar(expression);
 
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
@@ -230,20 +208,7 @@ namespace Dev2.Data.Util
         /// <returns>
         ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsValueRecordset(string value)
-        {
-            bool result = false;
-
-            if (!string.IsNullOrEmpty(value))
-            {
-                if (value.Contains(RecordsetIndexOpeningBracket) && value.Contains(RecordsetIndexClosingBracket))
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
+        public static bool IsValueRecordset(string value) => RecSetCommon.IsValueRecordset(value);
 
         /// <summary>
         /// Determines whether the value is a recordset.
@@ -271,70 +236,28 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool IsValueRecordsetWithFields(string value)
-        {
-            return !string.IsNullOrEmpty(value) && value.Contains(").");
-        }
+        public static bool IsValueRecordsetWithFields(string value) => RecSetCommon.IsValueRecordsetWithFields(value);
 
         /// <summary>
         /// Used to extract a recordset name from a string as per the Dev2 data language spec
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        public static string ExtractRecordsetNameFromValue(string value)
-        {
-            if (value == null)
-            {
-                return string.Empty;
-            }
-
-            value = StripBracketsFromValue(value);
-            string result = string.Empty;
-
-            int openBracket = value.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            if (openBracket > 0)
-            {
-                result = value.Substring(0, openBracket);
-            }
-
-            return result;
-        }
+        public static string ExtractRecordsetNameFromValue(string value) => RecSetCommon.ExtractRecordsetNameFromValue(value);
 
         /// <summary>
         /// Used to extract a field name from our recordset notation
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        public static string ExtractFieldNameFromValue(string value)
-        {
-            string result = string.Empty;
-            value = StripBracketsFromValue(value);
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            if (dotIdx > 0)
-            {
-                result = value.Substring(dotIdx + 1);
-            }
-
-            return result;
-        }
+        public static string ExtractFieldNameFromValue(string value) => RecSetCommon.ExtractFieldNameFromValue(value);
 
         /// <summary>
         /// Used to extract a field name from our recordset notation
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        public static string ExtractFieldNameOnlyFromValue(string value)
-        {
-            string result = string.Empty;
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            int closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
-            if (dotIdx > 0)
-            {
-                result = value.Substring(dotIdx + 1, closeIdx - dotIdx - 1);
-            }
-
-            return result;
-        }
+        public static string ExtractFieldNameOnlyFromValue(string value) => RecSetCommon.ExtractFieldNameOnlyFromValue(value);
 
         /// <summary>
         /// Remove [[ ]] from a value if present
@@ -403,72 +326,21 @@ namespace Dev2.Data.Util
         /// <param name="value">The value.</param>
         /// <param name="starNotation">if set to <c>true</c> [star notation].</param>
         /// <returns></returns>
-        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false)
-        {
-            var inject = "()";
-
-            if (starNotation)
-            {
-                inject = "(*)";
-            }
-
-            string result = StripBracketsFromValue(value);
-
-            if (result.EndsWith(RecordsetIndexOpeningBracket))
-            {
-                result = string.Concat(result, RecordsetIndexClosingBracket);
-            }
-            else if (result.EndsWith(RecordsetIndexClosingBracket))
-            {
-                return result.Replace(RecordsetIndexClosingBracket, inject);
-            }
-            else if (!result.EndsWith("()"))
-            {
-                result = string.Concat(result, inject);
-            }
-            return result;
-        }
+        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
 
         /// <summary>
         /// Used to extract an index in the recordset notation
         /// </summary>
         /// <param name="rs">The rs.</param>
         /// <returns></returns>
-        public static string ExtractIndexRegionFromRecordset(string rs)
-        {
-            string result = string.Empty;
-
-            int start = rs.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            if (start > 0)
-            {
-                int end = rs.LastIndexOf(RecordsetIndexClosingBracket, StringComparison.Ordinal);
-                if (end < 0)
-                {
-                    end = rs.Length;
-                }
-
-                start += 1;
-                result = rs.Substring(start, end - start);
-            }
-
-            return result;
-        }
-
+        public static string ExtractIndexRegionFromRecordset(string rs) => RecSetCommon.ExtractIndexRegionFromRecordset(rs);
 
         /// <summary>
         /// Determines if recordset has a star index
         /// </summary>
         /// <param name="rs"></param>
         /// <returns></returns>
-        public static bool IsStarIndex(string rs)
-        {
-            if (string.IsNullOrEmpty(rs))
-            {
-                return false;
-            }
-
-            return ExtractIndexRegionFromRecordset(rs) == "*";
-        }
+        public static bool IsStarIndex(string rs) => RecSetCommon.IsStarIndex(rs);
 
         /// <summary>
         /// Is the expression evaluated
@@ -526,30 +398,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
-        public static enRecordsetIndexType GetRecordsetIndexType(string expression)
-        {
-            enRecordsetIndexType result = enRecordsetIndexType.Error;
-
-            string idx = ExtractIndexRegionFromRecordset(expression);
-            if (idx == "*")
-            {
-                result = enRecordsetIndexType.Star;
-            }
-            else if (string.IsNullOrEmpty(idx))
-            {
-                result = enRecordsetIndexType.Blank;
-            }
-            else
-            {
-                int convertIntTest;
-                if (Int32.TryParse(idx, out convertIntTest))
-                {
-                    result = enRecordsetIndexType.Numeric;
-                }
-            }
-
-            return result;
-        }
+        public static enRecordsetIndexType GetRecordsetIndexType(string expression) => RecSetCommon.GetRecordsetIndexType(expression);
 
         //used in the replace node method
 
@@ -642,10 +491,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static string RemoveRecordsetBracketsFromValue(string value)
-        {
-            return value.Replace("()", "");
-        }
+        public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
 
         /// <summary>
         /// Creates a recordset display value.
@@ -654,10 +500,7 @@ namespace Dev2.Data.Util
         /// <param name="colName">Name of the column.</param>
         /// <param name="indexNum">The index number.</param>
         /// <returns></returns>
-        public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum)
-        {
-            return string.Concat(recsetName, RecordsetIndexOpeningBracket, indexNum, ").", colName);
-        }
+        public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
         /// <summary>
         /// Upserts the tokens.
@@ -709,35 +552,11 @@ namespace Dev2.Data.Util
 
 
 
-        public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length)
-        {
-            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
-            if (blankIndex != -1)
-            {
-                return fullRecSetName.Replace("().", $"({length}).");
-            }
-            return fullRecSetName;
-        }
+        public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length) => RecSetCommon.ReplaceRecordsetBlankWithIndex(fullRecSetName, length);
 
-        public static string ReplaceRecordsetBlankWithStar(string fullRecSetName)
-        {
-            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
-            if (blankIndex != -1)
-            {
-                return fullRecSetName.Replace("().", $"({"*"}).");
-            }
-            return fullRecSetName;
-        }
+        public static string ReplaceRecordsetBlankWithStar(string fullRecSetName) => RecSetCommon.ReplaceRecordsetBlankWithStar(fullRecSetName);
 
-        public static string ReplaceRecordBlankWithStar(string fullRecSetName)
-        {
-            var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
-            if (blankIndex != -1)
-            {
-                return fullRecSetName.Replace("()", $"({"*"})");
-            }
-            return fullRecSetName;
-        }
+        public static string ReplaceRecordBlankWithStar(string fullRecSetName) => RecSetCommon.ReplaceRecordBlankWithStar(fullRecSetName);
 
         public static bool HasNegativeIndex(string variable)
         {

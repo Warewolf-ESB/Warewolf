@@ -5,7 +5,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Interfaces
 {
-    public interface IScalarHandler
+    internal interface IScalarHandler
     {
         void FindMissingForScalar(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts);
         void SetScalarItemsAsUsed();
@@ -14,6 +14,7 @@ namespace Dev2.Studio.Core.Interfaces
         void FixNamingForScalar(IDataListItemModel scalar);
         void AddRowToScalars();
         void RemoveBlankScalars();
-        void ValidateScalar();
+        void RemoveUnusedScalars();
+        void AddMissingScalarParts(IDataListVerifyPart part);
     }
 }

@@ -20,13 +20,13 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BaseResourceUpgrader_Upgrade_HasMatchin_ExpectReplace()
 
         {
             //------------Setup for test--------------------------
             var baseResourceUpgrader = new BaseResourceUpgrader();
-            
+
             //------------Execute Test---------------------------
             Assert.AreEqual("<a>clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces</a>", baseResourceUpgrader.UpgradeFunc(XElement.Parse("<a>clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure</a>")).ToString());
             //------------Assert Results-------------------------
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
             var baseResourceUpgrader = new BaseResourceUpgrader();
 
             //------------Execute Test---------------------------
-            Assert.AreEqual("<a>bob</a>", baseResourceUpgrader.UpgradeFunc( XElement.Parse("<a>bob</a>")).ToString());
+            Assert.AreEqual("<a>bob</a>", baseResourceUpgrader.UpgradeFunc(XElement.Parse("<a>bob</a>")).ToString());
             //------------Assert Results-------------------------
         }
         // ReSharper restore InconsistentNaming

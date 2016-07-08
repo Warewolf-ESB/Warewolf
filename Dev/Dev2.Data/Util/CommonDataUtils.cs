@@ -17,7 +17,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Data.Util
 {
-    public class Common : ICommon
+    public class CommonDataUtils : ICommon
     {
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, Dev2CRUDOperationTO args)
         {
@@ -31,8 +31,6 @@ namespace Dev2.Data.Util
                 throw new Exception(ErrorResource.DestinationDirectoryExist);
             }
         }
-
-
 
         public void ExtractFile(Dev2UnZipOperationTO args, ZipFile zip, string extractFromPath)
         {

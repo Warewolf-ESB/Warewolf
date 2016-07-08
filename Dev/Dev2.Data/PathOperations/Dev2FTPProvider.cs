@@ -22,6 +22,7 @@ using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using Renci.SshNet;
 using Warewolf.Resource.Errors;
+// ReSharper disable ThrowFromCatchWithNoInnerException
 
 namespace Dev2.Data.PathOperations
 {
@@ -60,14 +61,14 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    Dev2Logger.Debug(String.Format("SFTP_GET:{0}", path.Path));
+                    Dev2Logger.Debug($"SFTP_GET:{path.Path}");
                     ReadFromSftp(path, ref result, filesToCleanup);
                 }
             }
             catch(Exception ex)
             {
                 Dev2Logger.Error(this, ex);
-                var message = string.Format("{0} ,  [{1}]", ex.Message, path.Path);
+                var message = $"{ex.Message} ,  [{path.Path}]";
                 throw new Exception(message, ex);
             }
             return result;
@@ -108,7 +109,7 @@ namespace Dev2.Data.PathOperations
                     }
                     else
                     {
-                        throw new Exception("Fail");
+                        throw new Exception(@"Fail");
                     }
                 }
             }
@@ -154,18 +155,17 @@ namespace Dev2.Data.PathOperations
                     throw new Exception(ErrorResource.PathIsInIncorrectFormat);
                 }
             }
-            return "";
+            return string.Empty;
         }
 
         SftpClient BuildSftpClient(IActivityIOPath path)
         {
 
             var hostName = ExtractHostNameFromPath(path.Path);
-            if(hostName.ToLower().StartsWith("localhost"))
-                hostName = hostName.Replace("localhost", "127.0.0.1");
-            var methods = new List<AuthenticationMethod>();
-            methods.Add(new PasswordAuthenticationMethod(path.Username, path.Password));
-            
+            if(hostName.ToLower().StartsWith(@"localhost"))
+                hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+            var methods = new List<AuthenticationMethod> { new PasswordAuthenticationMethod(path.Username, path.Password) };
+
             if(!string.IsNullOrEmpty(path.PrivateKeyFile))
             {
                 var keyFile = string.IsNullOrEmpty(path.Password) ? new PrivateKeyFile(path.PrivateKeyFile) : new PrivateKeyFile(path.PrivateKeyFile,path.Password);
@@ -181,21 +181,21 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception e)
             {
-                Dev2Logger.Debug("Exception Creating SFTP Client");
+                Dev2Logger.Debug(@"Exception Creating SFTP Client");
                 Dev2Logger.Debug(e.Message);
                 Dev2Logger.Debug(e.StackTrace);
                 {
 
                 }
-                if(e.Message.Contains("timeout"))
+                if(e.Message.Contains(@"timeout"))
                 {
                     throw new Exception(ErrorResource.ConnectionTimedOut);
                 }
-                if(e.Message.Contains("Auth failed"))
+                if(e.Message.Contains(@"Auth failed"))
                 {
                     throw new Exception(string.Format(ErrorResource.IncorrectUsernameAndPassword, path.Path));
                 }
-                if(path.Path.Contains("\\"))
+                if(path.Path.Contains(@"\\"))
                 {
                     throw new Exception(string.Format(ErrorResource.BadFormatForSFTP, path.Path));
                 }
@@ -220,7 +220,7 @@ namespace Dev2.Data.PathOperations
                     throw new Exception(ErrorResource.PathIsInIncorrectFormat);
                 }
             }
-            return "";
+            return string.Empty;
         }
 
         public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
@@ -258,7 +258,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    Dev2Logger.Debug("Exception in Put command");
+                    Dev2Logger.Debug(@"Exception in Put command");
                     Dev2Logger.Debug(ex.Message);
                     Dev2Logger.Debug(ex.StackTrace);
 
@@ -334,7 +334,7 @@ namespace Dev2.Data.PathOperations
                         catch(Exception e)
                         {
 
-                            Dev2Logger.Debug("Exception WriteToSFTP");
+                            Dev2Logger.Debug(@"Exception WriteToSFTP");
                             Dev2Logger.Debug(e.Message);
                             Dev2Logger.Debug(e.StackTrace);
                             sftp.Disconnect();
@@ -363,7 +363,10 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    DeleteOp(src); // file delete
+                    if (!DeleteOp(src))
+                    {
+                        Dev2Logger.Error($"Error Deleting Path: {src.Path}");
+                    }
                 }
             }
             catch(Exception ex)
@@ -445,10 +448,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                if(response != null)
-                {
-                    response.Close();
-                }
+                response?.Close();
             }
 
             return result;
@@ -456,11 +456,11 @@ namespace Dev2.Data.PathOperations
 
         static string BuildValidPathForFtp(IActivityIOPath src, string fileName)
         {
-            if(src.Path.EndsWith("/") || fileName.StartsWith("/"))
+            if(src.Path.EndsWith(@"/") || fileName.StartsWith(@"/"))
             {
-                return string.Format("{0}{1}", src.Path, fileName);
+                return $"{src.Path}{fileName}";
             }
-            return string.Format("{0}/{1}", src.Path, fileName);
+            return $"{src.Path}/{fileName}";
         }
 
         IList<IActivityIOPath> ListDirectorySftp(IActivityIOPath src)
@@ -472,7 +472,7 @@ namespace Dev2.Data.PathOperations
                 var fromPath = ExtractFileNameFromPath(src.Path);
                 var fileList = sftp.ListDirectory(fromPath).Select(a => a.Name);
                 result.AddRange(from string file in fileList
-                                where !file.EndsWith("..") && !file.EndsWith(".")
+                                where !file.EndsWith(@"..") && !file.EndsWith(@".")
                                 select BuildValidPathForFtp(src, file)
                                     into uri
                                     select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile));
@@ -543,7 +543,7 @@ namespace Dev2.Data.PathOperations
                 {
                     if(response.StatusCode != FtpStatusCode.PathnameCreated)
                     {
-                        throw new Exception("Fail");
+                        throw new Exception(@"Fail");
                     }
                 }
             }
@@ -553,10 +553,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                if(response != null)
-                {
-                    response.Close();
-                }
+                response?.Close();
             }
             return true;
         }
@@ -610,7 +607,7 @@ namespace Dev2.Data.PathOperations
 
         public string PathSeperator()
         {
-            return "/";
+            return @"/";
         }
 
         /// <summary>
@@ -624,17 +621,15 @@ namespace Dev2.Data.PathOperations
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
                                                  src.IsNotCertVerifiable,src.PrivateKeyFile);
-                dirs = ExtractDirectoryList(src.Path, tmpDirData);
+                dirs = ExtractList(src.Path, tmpDirData, IsDirectory);
 
-                // remove the this directory ;)
-                dirs.Remove(".");
-                // remove th directory up too ;)
-                dirs.Remove("..");
+                dirs.Remove(@".");
+                dirs.Remove(@"..");
             }
             catch(Exception ex)
             {
                 Dev2Logger.Error(this, ex);
-                string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
+                string message = $"{ex.Message} : [{src.Path}]";
                 throw new Exception(message, ex);
             }
             return dirs.Select(dir => BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
@@ -649,17 +644,16 @@ namespace Dev2.Data.PathOperations
             List<string> dirs;
             try
             {
-                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
-                                                 src.IsNotCertVerifiable,src.PrivateKeyFile);
-                dirs = ExtractFileList(src.Path, tmpDirData);
+                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src), src.IsNotCertVerifiable, src.PrivateKeyFile);
+                dirs = ExtractList(src.Path, tmpDirData,IsFile);
             }
             catch(Exception ex)
             {
                 Dev2Logger.Error(this, ex);
-                string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
+                string message = $"{ex.Message} : [{src.Path}]";
                 throw new Exception(message, ex);
             }
-            return dirs.Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
+            return dirs.Select(dir => BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
         }
 
         #region Private Methods
@@ -679,7 +673,7 @@ namespace Dev2.Data.PathOperations
         {
             string result = path;
 
-            result = result.Replace("FTPS:", "FTP:").Replace("ftps:", "ftp:");
+            result = result.Replace(@"FTPS:", @"FTP:").Replace(@"ftps:", @"ftp:");
 
             return result;
         }
@@ -693,8 +687,9 @@ namespace Dev2.Data.PathOperations
 
                 bool addBack = true;
 
-                IList<IActivityIOPath> allFiles = ListFilesInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile)).GroupBy(a => a.Path).Select(g => g.First()).ToList();
-                IList<IActivityIOPath> allDirs = ListFoldersInDirectory(ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile));
+                var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile);
+                IList<IActivityIOPath> allFiles = ListFilesInDirectory(pathFromString).GroupBy(a => a.Path).Select(g => g.First()).ToList();
+                IList<IActivityIOPath> allDirs = ListFoldersInDirectory(pathFromString);
 
                 if(allDirs.Count == 0)
                 {
@@ -703,7 +698,7 @@ namespace Dev2.Data.PathOperations
                     {
                         DeleteOp(file);
                     }
-                    IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile);
+                    IActivityIOPath tmpPath = pathFromString;
                     DeleteOp(tmpPath);
                     addBack = false;
                 }
@@ -725,7 +720,7 @@ namespace Dev2.Data.PathOperations
 
         string ExtendedDirList(string path, string user, string pass, bool ssl, bool isNotCertVerifiable,string privateKeyFile)
         {
-            if(path.Contains("sftp://"))
+            if(path.Contains(@"sftp://"))
             {
                 return ExtendedDirListSftp(path, user, pass, privateKeyFile);
             }
@@ -776,10 +771,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                if(resp != null)
-                {
-                    resp.Close();
-                }
+                resp?.Close();
             }
             return result;
         }
@@ -792,18 +784,7 @@ namespace Dev2.Data.PathOperations
             try
             {
                 var fromPath = ExtractFileNameFromPath(pathFromString.Path);
-                var fileList = sftp.ListDirectory(fromPath);
-                sftp.Disconnect();
-                sftp.Dispose();
-                foreach(var filePath in fileList)
-                {
-                    string filename = filePath.FullName;
-                    if(filename == ".." || filename == "." || filename.EndsWith("."))
-                    {
-                        continue;
-                    }
-                    result.AppendLine(filePath.FullName);
-                }
+                AddResults(sftp, fromPath, result);
             }
             catch(Exception ex)
             {
@@ -811,7 +792,27 @@ namespace Dev2.Data.PathOperations
                 Dev2Logger.Error(this, ex);
                 throw new Exception(string.Format(ErrorResource.DirectoryNotFound, path));
             }
+            finally
+            {
+                sftp.Disconnect();
+                sftp.Dispose();
+            }
             return result.ToString();
+        }
+
+        private static void AddResults(SftpClient sftp, string fromPath, StringBuilder result)
+        {
+            var fileList = sftp.ListDirectory(fromPath);
+
+            foreach(var filePath in fileList)
+            {
+                string filename = filePath.Name;
+                if(filename == @".." || filename == @"." || filename.EndsWith(@"."))
+                {
+                    continue;
+                }
+                result.AppendLine(filename);
+            }
         }
 
         /// <summary>
@@ -819,65 +820,34 @@ namespace Dev2.Data.PathOperations
         /// </summary>
         /// <param name="basePath"></param>
         /// <param name="payload"></param>
+        /// <param name="matchFunc"></param>
         /// <returns></returns>
-        private List<string> ExtractDirectoryList(string basePath, string payload)
+        private List<string> ExtractList(string basePath, string payload, Func<string,bool> matchFunc)
         {
             List<string> result = new List<string>();
 
             var parts = GetParts(payload);
-
-            if(parts.Length > 1)
+            foreach(string p in parts)
             {
-                foreach(string p in parts)
+                int idx = p.LastIndexOf(@" ", StringComparison.Ordinal);
+                if(idx > 0)
                 {
-                    int idx = p.LastIndexOf(" ", StringComparison.Ordinal);
-                    if(idx > 0)
+                    string part = p.Substring(idx + 1).Trim();
+                    if(matchFunc(p))
                     {
-                        string part = p.Substring(idx + 1).Trim();
-                        if(IsDirectory(p))
+                        // directory -- add it
+                        if(!basePath.EndsWith(@"/"))
                         {
-                            // directory -- add it
-                            if(!basePath.EndsWith("/"))
-                            {
-                                basePath += "/";
-                            }
-                            result.Add(part);
+                            basePath += @"/";
                         }
+                        result.Add(part);
                     }
                 }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Extract files from dir list
-        /// </summary>
-        /// <param name="basePath"></param>
-        /// <param name="payload"></param>
-        /// <returns></returns>
-        private List<string> ExtractFileList(string basePath, string payload)
-        {
-            List<string> result = new List<string>();
-
-            var parts = GetParts(payload);
-
-            if(parts.Length > 1)
-            {
-                foreach(string p in parts)
+                else
                 {
-                    int idx = p.LastIndexOf(" ", StringComparison.Ordinal);
-                    if(idx > 0)
+                    if(matchFunc(p))
                     {
-                        string part = p.Substring(idx + 1).Trim();
-                        if(!IsDirectory(p))
-                        {
-                            // directory -- add it
-                            if(!basePath.EndsWith("/"))
-                            {
-                                basePath += "/";
-                            }
-                            result.Add(basePath + part);
-                        }
+                        result.Add(p);
                     }
                 }
             }
@@ -886,24 +856,31 @@ namespace Dev2.Data.PathOperations
 
         static bool IsDirectory(string part)
         {
-            return part.ToLower().StartsWith("d") || part.ToLower().Contains("<dir>");
+            return Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower().Contains(@"<dir>");
+        }
+
+        static bool IsFile(string part)
+        {
+            return !IsDirectory(part);
         }
 
         static string[] GetParts(string payload)
         {
-            char token = '\n';
+            string[] parts = payload.Split(new[] { '\r','\n' },StringSplitOptions.RemoveEmptyEntries);
 
-            string[] parts = payload.Split(token);
-
-            if(parts.Length == 1)
+            if (parts.Length == 1)
             {
-                token = '\r';
-                parts = payload.Split(token);
+                parts = parts[0].Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            
+            if (parts.Length == 1)
+            {
+                parts = parts[0].Split(new[] { '\r' }, StringSplitOptions.RemoveEmptyEntries);
             }
             return parts;
         }
 
-        internal bool DeleteOp(IActivityIOPath src)
+        private bool DeleteOp(IActivityIOPath src)
         {
             return IsStandardFtp(src) ? DeleteUsingStandardFtp(src) : DeleteUsingSftp(src);
         }
@@ -936,7 +913,7 @@ namespace Dev2.Data.PathOperations
                 {
                     if(response.StatusCode != FtpStatusCode.FileActionOK)
                     {
-                        throw new Exception("Fail");
+                        throw new Exception(@"Fail");
                     }
                 }
             }
@@ -946,10 +923,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                if(response != null)
-                {
-                    response.Close();
-                }
+                response?.Close();
             }
             return true;
         }
@@ -966,7 +940,10 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    sftp.DeleteFile(fromPath);
+                    if (IsFilePresentSftp(src))
+                    {
+                        sftp.DeleteFile(fromPath);
+                    }
                 }
             }
             catch(Exception)
@@ -1050,10 +1027,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                if(response != null)
-                {
-                    response.Close();
-                }
+                response?.Close();
             }
 
             return isAlive;
@@ -1143,10 +1117,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                if(response != null)
-                {
-                    response.Close();
-                }
+                response?.Close();
             }
             return isAlive;
         }
@@ -1176,7 +1147,7 @@ namespace Dev2.Data.PathOperations
             return isAlive;
         }
 
-        public bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        private bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
