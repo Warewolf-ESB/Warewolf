@@ -90,7 +90,6 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<DeleteFolderMessage>,
                                         IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
-                                        IHandle<ShowEditResourceWizardMessage>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
                                         IHandle<SaveAllOpenTabsMessage>,
                                         IHandle<ShowReverseDependencyVisualizer>,
@@ -198,19 +197,6 @@ namespace Dev2.Studio.ViewModels
             SchedulerCommand.UpdateContext(ActiveEnvironment);
             DebugCommand.UpdateContext(ActiveEnvironment);
             SaveCommand.UpdateContext(ActiveEnvironment);
-        }
-
-
-        public AuthorizeCommand EditCommand
-        {
-            get
-            {
-                if (ActiveItem == null)
-                {
-                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
-                }
-                return ActiveItem.EditCommand;
-            }
         }
 
         public AuthorizeCommand SaveCommand
@@ -591,12 +577,6 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public void Handle(ShowEditResourceWizardMessage message)
-        {
-            Dev2Logger.Debug(message.GetType().Name);
-            ShowEditResourceWizard(message.ResourceModel);
-        }
-
         public void Handle(RemoveResourceAndCloseTabMessage message)
         {
             Dev2Logger.Debug(message.GetType().Name);
@@ -748,32 +728,15 @@ namespace Dev2.Studio.ViewModels
                     EditSharePointSource(resourceModel);
                     break;
                 case "OauthSource":
-                    ShowEditResourceWizard(resourceModel);
+                    EditDropBoxSource(resourceModel);
                     break;
                 case "RabbitMQSource":
                     EditRabbitMQSource(resourceModel);
                     break;
                 case "Server":
                 case "Dev2Server":
-                case "ServerSource":
-                    var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
-                    string address = null;
-                    Uri uri;
-                    if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out uri))
-                    {
-                        address = uri.Host;
-                    }
-                    EditServer(new ServerSource
-                    {
-                        Address = connection.Address,
-                        ID = connection.ResourceID,
-                        AuthenticationType = connection.AuthenticationType,
-                        UserName = connection.UserName,
-                        Password = connection.Password,
-                        ServerName = address,
-                        Name = connection.ResourceName,
-                        ResourcePath = connection.ResourcePath
-                    });
+                case "ServerSource":                   
+                    EditServer(resourceModel);
                     break;
                 default:
                     AddWorkSurfaceContext(resourceModel);
@@ -905,7 +868,7 @@ namespace Dev2.Studio.ViewModels
         {
             var db = new DropBoxSource(resourceModel.WorkflowXaml.ToXElement());
 
-            var def = new DropBoxSource()
+            var def = new DropBoxSource
             {
                 AccessToken = db.AccessToken,
                 ResourceID = db.ResourceID,
@@ -923,7 +886,7 @@ namespace Dev2.Studio.ViewModels
         private void EditRabbitMQSource(IContextualResourceModel resourceModel)
         {
             var source = new RabbitMQSource(resourceModel.WorkflowXaml.ToXElement());
-            var def = new RabbitMQServiceSourceDefinition()
+            var def = new RabbitMQServiceSourceDefinition
             {
                 ResourceID = source.ResourceID,
                 ResourceName = source.ResourceName,
@@ -945,7 +908,7 @@ namespace Dev2.Studio.ViewModels
         {
             var wcfsource = new WcfSource(resourceModel.WorkflowXaml.ToXElement());
 
-            var def = new WcfServiceSourceDefinition()
+            var def = new WcfServiceSourceDefinition
             {
                 Id = wcfsource.Id,
                 Name = wcfsource.ResourceName,
@@ -1040,6 +1003,31 @@ namespace Dev2.Studio.ViewModels
         public void ShowPopup(IPopupMessage popupMessage)
         {
             PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, @"", false, true, false, false);
+        }
+
+        public void EditServer(IContextualResourceModel resourceModel)
+        {
+            var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
+            string address = null;
+            Uri uri;
+            if (Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out uri))
+            {
+                address = uri.Host;
+            }
+
+            var selectedServer = new ServerSource
+            {
+                Address = connection.Address,
+                ID = connection.ResourceID,
+                AuthenticationType = connection.AuthenticationType,
+                UserName = connection.UserName,
+                Password = connection.Password,
+                ServerName = address,
+                Name = connection.ResourceName,
+                ResourcePath = connection.ResourcePath
+            };
+
+            EditServer(selectedServer);
         }
 
         public void EditServer(IServerSource selectedServer)
@@ -1365,22 +1353,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void ShowEditResourceWizard(object resourceModelToEdit)
-        {
-            var resourceModel = resourceModelToEdit as IContextualResourceModel;
-
-            //Activates if exists
-            var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
-
-            if (exists)
-            {
-                ActivateWorkSurfaceIfPresent(resourceModel);
-                return;
-            }
-
-            DisplayResourceWizard(resourceModel, true);
-        }
-
         public async void ShowStartPage()
         {
 
@@ -1522,7 +1494,6 @@ namespace Dev2.Studio.ViewModels
                 {
                     AddWorkspaceItem(wfItem.ResourceModel);
                 }
-                NotifyOfPropertyChange(() => EditCommand);
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
                 NotifyOfPropertyChange(() => QuickDebugCommand);
