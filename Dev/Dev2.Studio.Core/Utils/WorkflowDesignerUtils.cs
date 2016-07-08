@@ -16,6 +16,7 @@ using System.Parsing.Intellisense;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Data.Exceptions;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
