@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
@@ -38,7 +40,7 @@ namespace Dev2.Data.Util
             {
                 using (zip)
                 {
-                    if (!string.IsNullOrEmpty(args.ArchivePassword))
+                    if (!String.IsNullOrEmpty(args.ArchivePassword))
                     {
                         zip.Password = args.ArchivePassword;
                     }
@@ -234,7 +236,7 @@ namespace Dev2.Data.Util
         {
             foreach (var dev2Definition in inputObjectList)
             {
-                if (!string.IsNullOrEmpty(dev2Definition.RawValue))
+                if (!String.IsNullOrEmpty(dev2Definition.RawValue))
                 {
                     if (DataListUtil.RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
                     {
@@ -270,13 +272,13 @@ namespace Dev2.Data.Util
         {
             foreach (var dev2Definition in inputScalarList)
             {
-                if (!string.IsNullOrEmpty(dev2Definition.Name))
+                if (!String.IsNullOrEmpty(dev2Definition.Name))
                 {
                     env.AssignDataShape("[[" + dev2Definition.Name + "]]");
                 }
                 if (!dev2Definition.IsRecordSet)
                 {
-                    if (!string.IsNullOrEmpty(dev2Definition.RawValue))
+                    if (!String.IsNullOrEmpty(dev2Definition.RawValue))
                     {
                         var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
@@ -307,7 +309,7 @@ namespace Dev2.Data.Util
                             var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
 
 
-                            if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
+                            if (String.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
                             {
                                 if (!emptyList.Contains(defn))
                                 {
@@ -333,6 +335,132 @@ namespace Dev2.Data.Util
                     }
                 }
             }
+        }
+
+        public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
+            if (!String.IsNullOrEmpty(dataList))
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(dataList);
+
+                XmlNodeList tmpRootNl = xDoc.ChildNodes;
+                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+
+                for (int i = 0; i < nl.Count; i++)
+                {
+                    XmlNode tmpNode = nl[i];
+
+                    var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
+
+                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    {
+                        var jsonAttribute = false;
+                        var xmlAttribute = tmpNode.Attributes?["IsJson"];
+                        if (xmlAttribute != null)
+                        {
+                            Boolean.TryParse(xmlAttribute.Value, out jsonAttribute);
+                        }
+                        if (tmpNode.HasChildNodes && !jsonAttribute)
+                        {
+                            // it is a record set, make it as such
+                            string recordsetName = tmpNode.Name;
+                            // now extract child node defs
+                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            for (int q = 0; q < childNl.Count; q++)
+                            {
+                                var xmlNode = childNl[q];
+                                if (xmlNode == null) continue;
+                                var fieldIODirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                                {
+                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                                false, "", false));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // scalar value, make it as such
+                            var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
+                            var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
+                            dev2Definition.IsObject = jsonAttribute;
+                            result.Add(dev2Definition);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static bool IsObject(XmlNode tmpNode)
+        {
+            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsJson"];
+
+            if (isObjectAttribute != null)
+            {
+                bool isObject;
+                if (Boolean.TryParse(isObjectAttribute.Value, out isObject))
+                {
+                    return isObject;
+                }
+            }
+            return false;
+        }
+
+        public IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
+            if (!String.IsNullOrEmpty(dataList))
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(dataList);
+
+                XmlNodeList tmpRootNl = xDoc.ChildNodes;
+                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+
+                for (int i = 0; i < nl.Count; i++)
+                {
+                    XmlNode tmpNode = nl[i];
+
+                    var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
+                    var isObject = IsObject(tmpNode);
+                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
+                    {
+                        result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
+                                                                            false, "", false));
+                    }
+                    else if (tmpNode.HasChildNodes && !isObject)
+                    {
+                        // it is a record set, make it as such
+                        string recordsetName = tmpNode.Name;
+                        // now extract child node defs
+                        XmlNodeList childNl = tmpNode.ChildNodes;
+                        for (int q = 0; q < childNl.Count; q++)
+                        {
+                            var xmlNode = childNl[q];
+                            var fieldIODirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                            {
+                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                            false, "", false));
+                            }
+                        }
+                    }
+                    else if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    {
+                        // scalar value, make it as such
+                        result.Add(isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "") : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                    }
+
+                }
+            }
+
+            return result;
         }
 
         private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
