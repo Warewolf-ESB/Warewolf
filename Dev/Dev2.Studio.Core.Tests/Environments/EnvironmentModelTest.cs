@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Network;
 using Caliburn.Micro;
@@ -23,7 +22,6 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Threading;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -307,7 +305,7 @@ namespace Dev2.Core.Tests.Environments
 
             env.LoadResources();
 
-            resourceRepo.Verify(r => r.UpdateWorkspace(It.IsAny<List<IWorkspaceItem>>()), Times.Once());
+            resourceRepo.Verify(r => r.UpdateWorkspace(), Times.Once());
         }
 
         [TestMethod]

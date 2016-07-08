@@ -360,61 +360,6 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         /// <summary>
-        /// Test case for creating a resource and saving the resource model in resource factory
-        /// </summary>
-        [TestMethod]
-        public void ForceLoadWith2ReservedResourcesExpectsServicesAdded()
-        {
-            //Arrange
-            Setup();
-            var conn = SetupConnection();
-
-            const string Reserved1 = "TestName1";
-            const string Reserved2 = "TestName2";
-
-            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2 }, "ReservedService");
-
-            var msg = new ExecuteMessage();
-            var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
-            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt == 0)
-                    {
-                        callCnt = 1;
-                        return Task.FromResult(new StringBuilder(payload));
-                    }
-
-                    return Task.FromResult(new StringBuilder(resourceData));
-                });
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt == 0)
-                    {
-                        callCnt = 1;
-                        return new StringBuilder(payload);
-                    }
-
-                    return new StringBuilder(resourceData);
-                });
-
-
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            var resourceModel = new Mock<IResourceModel>();
-            resourceModel.SetupGet(p => p.ResourceName).Returns("My WF");
-            resourceModel.SetupGet(p => p.Category).Returns("Root");
-            resourceModel.Setup(model => model.ToServiceDefinition(It.IsAny<bool>())).Returns(new StringBuilder("SomeXaml"));
-            _repo.Save(resourceModel.Object);
-            _repo.ForceLoad();
-
-            Assert.IsTrue(_repo.IsReservedService(Reserved1));
-            Assert.IsTrue(_repo.IsReservedService(Reserved2));
-        }
-
-        /// <summary>
         /// Create resource with source type
         /// </summary>
         [TestMethod]
@@ -761,37 +706,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion Save Tests
 
-        #region RemoveResource Tests
-
-        [TestMethod]
-        public void WorkFlowService_OnDelete_Expected_NotInRepository()
-        {
-            var msg = new ExecuteMessage();
-            var payload = JsonConvert.SerializeObject(msg);
-
-            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.IsConnected).Returns(true);
-            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
-
-            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
-
-            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
-
-            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
-            mockEnvironmentModel.Setup(x => x.LoadResources());
-
-            var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource" };
-            mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
-            int exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
-            ResourceRepository.Remove(myItem);
-            Assert.AreEqual(exp - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
-            mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
-            Assert.AreEqual(1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
-
-        }
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceRepository_OnDeleteFromWorkspace")]
@@ -1020,7 +935,6 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
         }
 
-        #endregion RemoveResource Tests
 
         #region Missing Environment Information Tests
 
@@ -1129,59 +1043,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion
 
-        #region GetDependanciesOnList Tests
-
-        [TestMethod]
-        public void GetDependanciesOnListWithNullEnvModel()
-        {
-            ResourceRepository resourceRepository = new ResourceRepository(new Mock<IEnvironmentModel>().Object);
-            var result = resourceRepository.GetDependanciesOnList(new List<IContextualResourceModel>(), null);
-
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void GetDependanciesOnListWithNullModelReturnsEmptyList()
-        {
-
-            var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
-            var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            testEnvironmentModel2.Setup(e => e.ResourceRepository.All()).Returns(testResources);
-
-            var resourceRepo = new ResourceRepository(new Mock<IEnvironmentModel>().Object);
-            var resources = new List<IContextualResourceModel>();
-
-            var result = resourceRepo.GetDependanciesOnList(resources, testEnvironmentModel2.Object);
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void GetDependanciesOnListWithModel()
-        {
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(StringResourcesTest.ResourceDependencyTestJsonReturn)).Verifiable();
-            mockConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            mockConnection.Setup(c => c.IsConnected).Returns(true);
-
-            var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
-            testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
-
-            var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
-            var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach (var resourceModel in testResources)
-            {
-                resRepo.Add(resourceModel);
-            }
-
-            testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
-
-            var resources = new List<IContextualResourceModel> { new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" } };
-
-            resRepo.GetDependanciesOnList(resources, testEnvironmentModel2.Object);
-            mockConnection.Verify(e => e.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Exactly(1));
-        }
-
-        #endregion GetDependanciesOnList Tests
 
         #region GetDependanciesAsXML Tests
 
@@ -1680,7 +1541,7 @@ namespace BusinessDesignStudio.Unit.Tests
             ResourceRepository resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            IList<DropBoxSource> result = resourceRepository.GetResourceList<DropBoxSource>(env.Object, _workspaceID);
+            IList<DropBoxSource> result = resourceRepository.GetResourceList<DropBoxSource>(env.Object);
             //---------------Test Result -----------------------
             Assert.AreNotEqual(0, result.Count);
         }
@@ -1773,81 +1634,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
         #endregion
+        
 
-        #region IsWorkflow
-        [TestMethod]
-        public void IsWorkflowValidWorkflowExpectTrue()
-        {
-            //------------Setup for test--------------------------
-            Setup();
-            var conn = SetupConnection();
-            var newGuid = Guid.NewGuid();
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { newGuid });
-
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(resourceObj);
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            _repo.ForceLoad();
-            //------------Execute Test---------------------------
-            var isWorkFlow = _repo.IsWorkflow("TestWorkflowService");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isWorkFlow);
-        }
-
-        [TestMethod]
-        public void IsWorkflowNotValidWorkflowExpectFalse()
-        {
-            //------------Setup for test--------------------------
-            Setup();
-            var conn = SetupConnection();
-            var newGuid = Guid.NewGuid();
-            var guid2 = newGuid.ToString();
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(new StringBuilder($"<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{_resourceGuid}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{guid2}\"></Service></Payload>"));
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            _repo.ForceLoad();
-            //------------Execute Test---------------------------
-            var isWorkFlow = _repo.IsWorkflow("TestWorkflowService");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isWorkFlow);
-        }
-        #endregion
-
-        #region RemoveEnvironment
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void RemoveEnvironment_With_NullParameters_Expected_ThrowsArgumentNullException()
-        {
-            ResourceRepository resourceRepository = GetResourceRepository();
-            resourceRepository.RemoveEnvironment(null, null);
-        }
-
-        [TestMethod]
-        public void RemoveEnvironment_With_NonNullParameters_Expected_InvokesExecuteCommandOnTargetEnvironment()
-        {
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
-            msg.SetMessage($"<XmlData>{string.Join("\n", new {})}</XmlData>");
-            var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
-
-            var testEnv = EnviromentRepositoryTest.CreateMockEnvironment();
-            ResourceRepository resourceRepository = GetResourceRepository();
-            var targetEnv = new Mock<IEnvironmentModel>();
-            var rand = new Random();
-            var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(c => c.AppServerUri).Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}/dsf"));
-            connection.Setup(c => c.WebServerUri).Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}"));
-            connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(Task.FromResult(payload));
-            targetEnv.Setup(e => e.Connection).Returns(connection.Object);
-
-            resourceRepository.RemoveEnvironment(targetEnv.Object, testEnv.Object);
-
-            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()));
-        }
-
-        #endregion
-
+     
         #region IsLoaded
 
 
@@ -2044,65 +1833,7 @@ namespace BusinessDesignStudio.Unit.Tests
         }
         #endregion
 
-        #region RemoveFromCache
-
-        [TestMethod]
-        public void RemoveFromCacheExpectsWhenResourceInCacheRemovesFromCache()
-        {
-            //--------------------------Setup-------------------------------------------
-            Setup();
-            var conn = SetupConnection();
-            var guid2 = Guid.NewGuid();
-
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid2 });
-
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(resourceObj);
-            _repo.ForceLoad();
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            var guid = Guid.NewGuid();
-
-            resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid });
-
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(resourceObj);
-            _repo.ForceLoad();
-            //--------------------------------------------Assert Precondtion----------------------------------------------
-            var isInCache = _repo.IsInCache(guid);
-            Assert.IsTrue(isInCache);
-            //--------------------------------------------Execute--------------------------------------------------------------
-            _repo.RemoveFromCache(guid);
-            //--------------------------------------------Assert Results----------------------------------------------------
-            isInCache = _repo.IsInCache(guid);
-            Assert.IsFalse(isInCache);
-        }
-
-        [TestMethod]
-        public void RemoveFromCacheExpectsWhenResourceNotInCacheDoesNothing()
-        {
-            //--------------------------Setup-------------------------------------------
-            Setup();
-            var conn = SetupConnection();
-            var guid2 = Guid.NewGuid().ToString();
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(new StringBuilder($"<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{_resourceGuid}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{guid2}\"></Service></Payload>"));
-            _repo.ForceLoad();
-            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            var guid = Guid.NewGuid();
-            guid2 = guid.ToString();
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-             .Returns(new StringBuilder($"<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{_resourceGuid}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{guid2}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>"));
-            _repo.ForceLoad();
-            //--------------------------------------------Assert Precondition-------------------------------------------
-            var newGuid = Guid.NewGuid();
-            var isInCache = _repo.IsInCache(newGuid);
-            Assert.IsFalse(isInCache);
-            //--------------------------------------------Execute--------------------------------------------------------------
-            _repo.RemoveFromCache(newGuid);
-            //--------------------------------------------Assert Results----------------------------------------------------
-            isInCache = _repo.IsInCache(newGuid);
-            Assert.IsFalse(isInCache);
-        }
-
-        #endregion
+      
 
         #region DeployResources
 
@@ -2140,7 +1871,7 @@ namespace BusinessDesignStudio.Unit.Tests
             IDeployDto dto = new DeployDto { ResourceModels = deployModels };
 
             //------------Execute Test---------------------------
-            _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
+            _repo.DeployResources(srcModel.Object, targetModel.Object, dto);
 
             //------------Assert Results-------------------------
         }
@@ -2226,7 +1957,7 @@ namespace BusinessDesignStudio.Unit.Tests
             IDeployDto dto = new DeployDto { ResourceModels = deployModels };
 
             //------------Execute Test---------------------------
-            _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);
+            _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto);
 
             //------------Assert Results-------------------------
 
@@ -2253,152 +1984,10 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
         #endregion
-
-        #region Rename
-
-        [TestMethod]
-        [TestCategory("ResourceRepositoryUnitTest")]
-        [Description("Test for ResourceRepository's rename function: Rename is called and connection is expected to be open with correct package to the server")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var resID = Guid.NewGuid();
-            const string newResName = "New Test Name";
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-
-            var msg = MakeMsg("Renamed Resource");
-            var payload = JsonConvert.SerializeObject(msg);
-
-            mockEnvironmentConnection.Setup(c => c.IsConnected).Returns(true);
-            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
-
-            //mockEnvironment.Setup(c => c.Connection.SecurityContext);
-            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
-
-            var vm = new ResourceRepository(mockEnvironment.Object);
-            var resourceModel = new Mock<IResourceModel>();
-            resourceModel.Setup(res => res.ID).Returns(resID);
-            string actualRenamedValue = null;
-            resourceModel.SetupSet(res => res.ResourceName = It.IsAny<string>()).Callback<string>(value =>
-                {
-                    actualRenamedValue = value;
-                });
-            vm.Add(resourceModel.Object);
-
-
-            //exe
-            vm.Rename(resID.ToString(), newResName);
-
-            //assert
-            mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
-            Assert.IsNotNull(actualRenamedValue, "Resource not renamed locally");
-            Assert.AreEqual(newResName, actualRenamedValue);
-        }
-
-        [TestMethod]
-        [TestCategory("ResourceRepositoryUnitTest")]
-        [Description("Test for ResourceRepository's rename category function")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void ResourceRepository_ResourceRepositoryUnitTest_RenameCategory_ExecuteCommandIsCalledOnce()
-        // ReSharper restore InconsistentNaming
-        {
-            var msg = MakeMsg("Renamed Resource");
-            var payload = JsonConvert.SerializeObject(msg);
-
-            //MEF!!!!
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-            mockEnvironmentConnection.Setup(c => c.IsConnected).Returns(true);
-            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
-            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
-            var vm = new ResourceRepository(mockEnvironment.Object);
-            vm.RenameCategory("Test Category", "New Test Category", Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
-
-            mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory("ResourceRepositoryUnitTest")]
-        [Description("Test for ResourceRepository's rename function: Rename is called and connection is expected to be executed with correct package")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void ResourceRepository_RenameResource_DashesInTheName_ExecuteCommandExecutesTheRightXmlPayload()
-        // ReSharper restore InconsistentNaming
-        {
-            var resourceID = Guid.NewGuid().ToString();
-
-            var msg = MakeMsg("Renamed Resource");
-            var payload = JsonConvert.SerializeObject(msg);
-
-            //init conn
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
-            mockEnvironmentConnection.Setup(c => c.IsConnected).Returns(true);
-            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
-
-            //init repo
-            var repo = new ResourceRepository(mockEnvironment.Object);
-
-            //exe rename
-            repo.Rename(resourceID, "New-Test-Name");
-
-            //assert correct command sent to server
-            mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
-        }
-
-        #endregion
-
+        
         #region Helper Methods
 
-        #region Get ServerLog TempPath
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ResourceRepository_GetServerLogTempPath")]
-        public void ResourceRepository_GetServerLogTempPath_ServerLogFileBlank_DoNotCreateTempFile()
-        {
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(conn => conn.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
-            mockConnection.Setup(c => c.IsConnected).Returns(true);
-            var mockEnv = new Mock<IEnvironmentModel>();
-            mockEnv.Setup(svr => svr.Connection).Returns(mockConnection.Object);
-            ResourceRepository resourceRepository = new ResourceRepository(mockEnv.Object);
-            //------------Execute Test---------------------------
-            var actual = resourceRepository.GetServerLogTempPath(mockEnv.Object);
-
-            // Assert DoNotCreateTempFile
-            Assert.IsNull(actual, "Path returned for blank log file");
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceRepository_GetServerLogTempPath")]
-        public void ResourceRepository_GetServerLogTempPath_ServerDisconnected_DoNotCreateTempFile()
-        {
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(conn => conn.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
-            mockConnection.Setup(c => c.IsConnected).Returns(false); // causes exception which is now caught!
-
-            var mockEnv = new Mock<IEnvironmentModel>();
-            mockEnv.Setup(svr => svr.Connection).Returns(mockConnection.Object);
-            ResourceRepository resourceRepository = new ResourceRepository(mockEnv.Object);
-
-            //------------Execute Test---------------------------
-            var actual = resourceRepository.GetServerLogTempPath(mockEnv.Object);
-
-            // Assert DoNotCreateTempFile
-            Assert.IsNull(actual, "Path returned for disconnected server");
-        }
-
-        #endregion
-
-
+ 
         private SerializableResource BuildSerializableResourceFromName(string name, string typeOf, bool isNewResource = false)
         {
 

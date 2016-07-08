@@ -19,7 +19,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    public class ResourceRenameProvider : IResourceRenameProvider
+    internal class ResourceRenameProvider : IResourceRenameProvider
     {
         private readonly IResourceCatalog _resourceCatalog;
         private readonly IServerVersionRepository _versionRepository;
