@@ -745,30 +745,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(AuthorizationContext.None, authorizeCommand.AuthorizationContext);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_EditCommand")]
-        public void MainViewModel_EditCommand_NotNull()
-        {
-            CreateFullExportsAndVm();
-            //------------Execute Test---------------------------
-            var authorizeCommand = MainViewModel.EditCommand;
-            Assert.IsNotNull(authorizeCommand);
-            Assert.AreEqual(MainViewModel.ActiveItem.EditCommand, authorizeCommand);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_EditCommand")]
-        public void MainViewModel_EditCommandNoActiveItem_NotNull()
-        {
-            CreateFullExportsAndVmWithEmptyRepo();
-            MainViewModel.DeactivateItem(MainViewModel.ActiveItem, true);
-            //------------Execute Test---------------------------
-            var authorizeCommand = MainViewModel.EditCommand;
-            Assert.IsNotNull(authorizeCommand);
-            Assert.AreEqual(AuthorizationContext.None, authorizeCommand.AuthorizationContext);
-        }
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

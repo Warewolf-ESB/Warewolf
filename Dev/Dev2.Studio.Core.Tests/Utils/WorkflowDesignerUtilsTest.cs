@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests.Utils
         }
     }
 
-    internal class TestHandleMessages : IHandle<AddWorkSurfaceMessage>, IHandle<ShowEditResourceWizardMessage>
+    internal class TestHandleMessages : IHandle<AddWorkSurfaceMessage>
     {
         #region Implementation of IHandle<AddWorkSurfaceMessage>
 
@@ -154,15 +154,6 @@ namespace Dev2.Core.Tests.Utils
 
         #endregion
 
-        #region Implementation of IHandle<ShowEditResourceWizardMessage>
-
-        public void Handle(ShowEditResourceWizardMessage message)
-        {
-            EditResourceMessageCalled = true;
-        }
-
-        public bool EditResourceMessageCalled { get; set; }
-
-        #endregion
+        
     }
 }
