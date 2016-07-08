@@ -5,7 +5,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Interfaces
 {
-    public interface IRecordsetHandler
+    internal interface IRecordsetHandler
     {
         void AddRecordsetNamesIfMissing();
         void RemoveBlankRecordsets();
