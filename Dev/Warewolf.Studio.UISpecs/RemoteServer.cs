@@ -28,6 +28,10 @@ namespace Warewolf.Studio.UISpecs
             var uimap = new UIMap();
             var explorerTreeItemActionSteps = new Explorer_Tree_Item_Action_Steps();
 
+            uimap.Assert_NewWorkFlow_RibbonButton_Exists();
+            uimap.Click_New_Workflow_Ribbon_Button();
+            uimap.Assert_StartNode_Exists();
+
             //Action Unit: Explorer dropdownlist contains "New Remote Server..." option
             uimap.Assert_Connect_Control_Exists_InExplorer();
             uimap.Click_Connect_Control_InExplorer();    
@@ -64,7 +68,8 @@ namespace Warewolf.Studio.UISpecs
             //uimap.Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTE();
             //uimap.Assert_Server_Source_Wizard_Test_Connection_Button_Exists();
             uimap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Playback.Wait(5000);
+            Playback.Wait(1000);
+            uimap.Assert_Server_Source_Wizard_Test_Passed();
             uimap.Assert_Save_Ribbon_Button_Enabled();
 
             //Action Unit: Saving a new server source opens save dialog
@@ -82,38 +87,23 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: Clicking the save button in the save dialog adds it to the explorer remote servers dropdown list
             //uimap.Assert_SaveDialog_SaveButton_Enabled();
             uimap.Click_SaveDialog_YesButton();
-            Playback.Wait(1000);
-            //TODO: Remove this workaround
-            explorerTreeItemActionSteps.WhenIScrollUpInTheExplorerTree();
-            //TODO: Remove this workaround
-            explorerTreeItemActionSteps.WhenIScrollToTheBottomOfTheExplorerTree();
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
+            uimap.Click_Close_Server_Source_Wizard_Tab_Button();
+            explorerTreeItemActionSteps.AssertItemExistsAtBottomOfExplorer("localhost\\TSTCIREMOTE");
 
-            //Action Unit: Server source named TSTCIREMOTE appears in the explorer remote server dropdown list
-            //Given "localhost\TSTCIREMOTE" exists in the explorer tree
+            //Action Step: TSTCIREMOTE server source exists in remote server dropdown list
+            //Given: explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
             uimap.Click_Connect_Control_InExplorer();
             uimap.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE();
-            uimap.Click_Connect_Control_InExplorer();
-
-            uimap.Assert_NewWorkFlow_RibbonButton_Exists();
-            uimap.Click_New_Workflow_Ribbon_Button();
-            uimap.Assert_StartNode_Exists();
 
             //Action Unit: Selecting a remote server in the explorer remote server dropdown list selected that server source in the connect control
             //Given: uimap.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE();
-            uimap.Click_Connect_Control_InExplorer();
-            uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List();
+            uimap.Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List_2();
             uimap.Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_Selected();
 
             //Action Unit: Clicking the explorer remote server connect button loads the workflow1 remote resource
             //Given: uimap.Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_Selected();
             uimap.Click_Explorer_RemoteServer_Connect_Button();
-            Playback.Wait(1000);
-            //TODO: Remove this workaround
-            explorerTreeItemActionSteps.WhenIScrollUpInTheExplorerTree();
-            //TODO: Remove this workaround
-            explorerTreeItemActionSteps.WhenIScrollToTheBottomOfTheExplorerTree();
-            explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE\\workflow1");
+            explorerTreeItemActionSteps.AssertItemExistsAtBottomOfExplorer("TSTCIREMOTE\\workflow1");
 
             //Action Unit: Dragging on a remote workflow onto a local workflow design surface
             //Given: explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE\\workflow1");
@@ -200,6 +190,7 @@ namespace Warewolf.Studio.UISpecs
         public void MyTestInitialize()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
+            Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.SearchTimeout = 10000;
             //ActionSteps.StartTest();
         }
