@@ -15,9 +15,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Enums;
+using Dev2.Data.Exceptions;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -81,7 +83,6 @@ namespace Dev2.Data.Parsers
             }, _expressionCache);
         }
 
-
         /// <summary>
         /// Used to extract intellisense options, and validate closed regions
         /// </summary>
@@ -91,7 +92,7 @@ namespace Dev2.Data.Parsers
         /// <param name="filterTo">The filter TO.</param>
         /// <param name="isFromIntellisense">if set to <c>true</c> [is from intellisense].</param>
         /// <returns></returns>
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false)
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IIntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false)
         {
             return WrapAndClear(() =>
             {
@@ -131,8 +132,9 @@ namespace Dev2.Data.Parsers
             {
                 return runFunc();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Dev2Logger.Error(e);
                 clearIfException.Clear();
                 throw;
             }
@@ -967,7 +969,7 @@ namespace Dev2.Data.Parsers
                 });
         }
 
-        private static bool MatchVariablesWithNoFields(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IIntellisenseResult> result, bool isRs, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1)
+        private bool MatchVariablesWithNoFields(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IIntellisenseResult> result, bool isRs, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1)
         {
             string match = t1.Name.ToLower();
 
@@ -1204,7 +1206,7 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        private static void ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        private void ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
         {
             IDataListVerifyPart part;
 
@@ -1255,7 +1257,7 @@ namespace Dev2.Data.Parsers
             return search;
         }
 
-        void ProcessForOnlyOpenRegion(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
+       private void ProcessForOnlyOpenRegion(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
         {
             bool addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
 
@@ -1449,20 +1451,20 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        private static bool CheckCurrentIndex(ParseTO to, int start, string raw, int end)
+        private bool CheckCurrentIndex(ParseTO to, int start, string raw, int end)
         {
             start += 1;
             string part = raw.Substring(start, raw.Length - (start + 1));
 
-            if(part.Contains(DataListUtil.OpeningSquareBrackets) || part == "*")
+            if (part.Contains(DataListUtil.OpeningSquareBrackets) || part == "*")
             {
             }
             else
             {
                 int partAsInt;
-                if(int.TryParse(part, out partAsInt))
+                if (int.TryParse(part, out partAsInt))
                 {
-                    if(partAsInt >= 1)
+                    if (partAsInt >= 1)
                     {
                     }
                     else
@@ -1476,10 +1478,11 @@ namespace Dev2.Data.Parsers
                     throw new Dev2DataLanguageParseError(message, to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonNumericRecordsetIndex);
                 }
             }
+
             return true;
         }
 
-        private static bool CheckValidIndex(ParseTO to, string part, int start, int end)
+        private bool CheckValidIndex(ParseTO to, string part, int start, int end)
         {
             int partAsInt;
             if(int.TryParse(part, out partAsInt))
