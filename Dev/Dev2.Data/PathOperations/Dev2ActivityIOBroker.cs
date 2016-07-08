@@ -40,9 +40,9 @@ namespace Dev2.PathOperations
         private readonly IFile _fileWrapper;
         private readonly ICommon _common;
         private static readonly ReaderWriterLockSlim FileLock = new ReaderWriterLockSlim();
-        const string ResultOk = "Success";
-        const string ResultBad = "Failure";
-        private  List<string> _filesToDelete;
+        private const string ResultOk = "Success";
+        private const string ResultBad = "Failure";
+        private readonly List<string> _filesToDelete;
 
         public Dev2ActivityIOBroker()
             : this(new FileWrapper(), new Data.Util.CommonDataUtils())
