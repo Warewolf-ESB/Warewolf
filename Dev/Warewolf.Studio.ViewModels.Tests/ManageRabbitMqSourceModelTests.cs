@@ -141,7 +141,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageRabbitMQSourceModel.CreateNewSource();
             //------------Assert Results-------------------------
 
-            shellViewModel.Verify(a => a.NewResource("RabbitMQSource", ""), Times.Once);
+            shellViewModel.Verify(a => a.NewRabbitMQSource(""), Times.Once);
         }
 
 

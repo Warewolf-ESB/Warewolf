@@ -37,7 +37,6 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
 using Dev2.Validation;
@@ -502,7 +501,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void CreateDbSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("DbSource"));
+            CustomContainer.Get<IShellViewModel>().NewDatabaseSource(string.Empty);
             RefreshDatabases();
         }
 

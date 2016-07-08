@@ -294,14 +294,12 @@ namespace Dev2.CustomControls.Connections
 
                 if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
                 {
-                    // ADD OPTION TO CREATE NEW SERVER
-                    _mainViewModel.NewResourceCommand.Execute("Server");
+                    _mainViewModel.NewServerSourceCommand.Execute(string.Empty);
                 }
                 else
                 {
                     SelectedServer = selectedServer;
                     var environmentModel = EnvironmentRepository.Instance.Get(selectedServer.EnvironmentModel.ID);
-                    //_callbackHandler(selectedServer.EnvironmentModel);
                     _callbackHandler(environmentModel);
                 }
                 OnPropertyChanged();
