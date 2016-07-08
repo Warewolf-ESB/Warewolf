@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Dev2.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 
@@ -24,7 +23,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public IEnumerable<T> FetchSources<T>() where T : new()
         {
-            var resourceList = _targetEnvironment.ResourceRepository.GetResourceList<T>(_targetEnvironment, GlobalConstants.ServerWorkspaceID);
+            var resourceList = _targetEnvironment.ResourceRepository.GetResourceList<T>(_targetEnvironment);
             return resourceList;
         }
 

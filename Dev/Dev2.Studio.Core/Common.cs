@@ -2,9 +2,9 @@ using System;
 using System.Xml;
 using Dev2.Data.Binary_Objects;
 
-namespace Dev2.Studio.Core.DataList
+namespace Dev2.Studio.Core
 {
-    public static class Common
+    internal static class Common
     {
         public const string RootTag = "DataList";
         public const string Description = "Description";
