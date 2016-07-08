@@ -35,10 +35,57 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.OpenVersion(resourceId, versionInfo);
         }
 
-        public void NewCommand(string type, string resourcePath, IServer server)
+        public void NewServiceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewResource(type, resourcePath);
+            _shellViewModel.NewService(resourcePath);
+        }
+
+        public void NewDropboxSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewDropboxSource(resourcePath);
+        }
+        public void NewSharepointSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewSharepointSource(resourcePath);
+        }
+        public void NewRabbitMQSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewRabbitMQSource(resourcePath);
+        }
+        public void NewExchangeSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewExchangeSource(resourcePath);
+        }
+        public void NewEmailSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewEmailSource(resourcePath);
+        }
+        public void NewWebSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewWebSource(resourcePath);
+        }
+        public void NewPluginSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewPluginSource(resourcePath);
+        }
+        public void NewDatabaseSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewDatabaseSource(resourcePath);
+        }
+
+        public void NewServerSourceCommand( string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewServerSource(resourcePath);
         }
 
         private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
