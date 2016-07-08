@@ -50,6 +50,10 @@ namespace Dev2.Data.Util
 
         private static readonly Lazy<ICommonRecordSetUtil> LazyRecSetCommon = new Lazy<ICommonRecordSetUtil>(()=>new CommonRecordSetUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
         private static ICommonRecordSetUtil RecSetCommon => LazyRecSetCommon.Value;
+
+        private static readonly Lazy<ICommonScalarUtil> LazyScalarCommon = new Lazy<ICommonScalarUtil>(()=>new CommonScalarUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommonScalarUtil ScalarCommon => LazyScalarCommon.Value;
+
         #endregion Class Members
 
         #region Constructor
@@ -217,20 +221,8 @@ namespace Dev2.Data.Util
         /// <returns>
         ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsValueScalar(string value)
-        {
-            bool result = false;
+        public static bool IsValueScalar(string value) => ScalarCommon.IsValueScalar(value);
 
-            if (!string.IsNullOrEmpty(value))
-            {
-                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value) && !value.Contains("."))
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
         /// <summary>
         /// Determines whether is a recordset with fields
         /// </summary>
@@ -600,74 +592,16 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
-
-        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
-        {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
-
-            if (!string.IsNullOrEmpty(dataList))
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(dataList);
-
-                XmlNodeList tmpRootNl = xDoc.ChildNodes;
-                XmlNodeList nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
-                {
-                    XmlNode tmpNode = nl[i];
-
-                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
-
-                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                    {
-                        var jsonAttribute = false;
-                        var xmlAttribute = tmpNode.Attributes?["IsJson"];
-                        if (xmlAttribute != null)
-                        {
-                            bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                        }
-                        if (tmpNode.HasChildNodes && !jsonAttribute)
-                        {
-                            // it is a record set, make it as such
-                            string recordsetName = tmpNode.Name;
-                            // now extract child node defs
-                            XmlNodeList childNl = tmpNode.ChildNodes;
-                            for (int q = 0; q < childNl.Count; q++)
-                            {
-                                var xmlNode = childNl[q];
-                                if(xmlNode == null) continue;
-                                var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
-                                if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
-                                {
-                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                                false, "", false));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // scalar value, make it as such
-                            var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
-                            var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
-                            dev2Definition.IsObject = jsonAttribute;
-                            result.Add(dev2Definition);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-        static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
+        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
         {
             return ioDirection == dev2ColumnArgumentDirection ||
                    ioDirection == enDev2ColumnArgumentDirection.Both &&
                    (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
         }
 
-        static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
+        internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
         {
             XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
@@ -683,71 +617,8 @@ namespace Dev2.Data.Util
             return ioDirection;
         }
 
-        static bool IsObject(XmlNode tmpNode)
-        {
-            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsJson"];
-
-            if (isObjectAttribute != null)
-            {
-                bool isObject;
-                if (bool.TryParse(isObjectAttribute.Value, out isObject))
-                {
-                    return isObject;
-                }
-            }
-            return false;
-        }
-        public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
-        {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
-
-            if (!string.IsNullOrEmpty(dataList))
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(dataList);
-
-                XmlNodeList tmpRootNl = xDoc.ChildNodes;
-                XmlNodeList nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
-                {
-                    XmlNode tmpNode = nl[i];
-
-                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
-                    var isObject = IsObject(tmpNode);
-                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
-                    {
-                        result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
-                                                                            false, "", false));
-                    }
-                    else if (tmpNode.HasChildNodes && !isObject)
-                    {
-                        // it is a record set, make it as such
-                        string recordsetName = tmpNode.Name;
-                        // now extract child node defs
-                        XmlNodeList childNl = tmpNode.ChildNodes;
-                        for (int q = 0; q < childNl.Count; q++)
-                        {
-                            var xmlNode = childNl[q];
-                            var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
-                            if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
-                            {
-                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                            false, "", false));
-                            }
-                        }
-                    }
-                    else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                    {
-                        // scalar value, make it as such
-                        result.Add(isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "") : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
-                    }
-
-                }
-            }
-
-            return result;
-        }
+       
+        public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataListForDebug(dataList, dev2ColumnArgumentDirection);
 
         /// <summary>
         /// Converts from to.
@@ -775,6 +646,5 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
     }
 }
