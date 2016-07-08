@@ -204,7 +204,55 @@ namespace Warewolf.Studio.ViewModels
                 }
             });
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
-            NewCommand = new DelegateCommand<string>(type => { _explorerItemViewModelCommandController.NewCommand(type.ToString(), ResourcePath, Server); });
+           
+            NewServerCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewServerSourceCommand(ResourcePath, Server);
+            });
+
+            NewDatabaseSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewDatabaseSourceCommand(ResourcePath, Server);
+            });
+
+            NewPluginSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewPluginSourceCommand(ResourcePath, Server);
+            });
+
+            NewWebSourceSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewWebSourceCommand(ResourcePath, Server);
+            });
+
+            NewEmailSourceSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewEmailSourceCommand(ResourcePath, Server);
+            });
+
+            NewExchangeSourceSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewExchangeSourceCommand(ResourcePath, Server);
+            });
+
+            NewRabbitMQSourceSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewRabbitMQSourceCommand(ResourcePath, Server);
+            });
+
+            NewSharepointSourceSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewSharepointSourceCommand(ResourcePath, Server);
+            });
+
+            NewDropboxSourceSourceCommand = new DelegateCommand(() =>
+            {
+                _explorerItemViewModelCommandController.NewDropboxSourceCommand(ResourcePath, Server);
+            });
+            NewServiceCommand = new DelegateCommand<string>(type =>
+            {
+                _explorerItemViewModelCommandController.NewServiceCommand(ResourcePath, Server);
+            });
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(() =>
@@ -692,7 +740,16 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanderVisible);
             }
         }
-        public ICommand NewCommand { get; set; }
+        public ICommand NewServiceCommand { get; set; }
+        public ICommand NewServerCommand { get; set; }
+        public ICommand NewDatabaseSourceCommand { get; set; }
+        public ICommand NewPluginSourceCommand { get; set; }
+        public ICommand NewWebSourceSourceCommand { get; set; }
+        public ICommand NewEmailSourceSourceCommand { get; set; }
+        public ICommand NewExchangeSourceSourceCommand { get; set; }
+        public ICommand NewRabbitMQSourceSourceCommand { get; set; }
+        public ICommand NewSharepointSourceSourceCommand { get; set; }
+        public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
 
         public bool IsSelected
