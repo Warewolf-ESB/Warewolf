@@ -327,6 +327,28 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
+        public void RemoveUnusedRecordSets()
+        {
+            var unusedRecordsets = _vm.RecsetCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedRecordsets.Any())
+            {
+                foreach (var dataListItemModel in unusedRecordsets)
+                {
+                    _vm.RecsetCollection.Remove(dataListItemModel);
+                }
+            }
+            foreach (var recset in _vm.RecsetCollection)
+            {
+                if (recset.Children.Count <= 0) continue;
+                var unusedRecsetChildren = recset.Children.Where(c => c.IsUsed == false).ToList();
+                if (!unusedRecsetChildren.Any()) continue;
+                foreach (var unusedRecsetChild in unusedRecsetChildren)
+                {
+                    recset.Children.Remove(unusedRecsetChild);
+                }
+            }
+        }
+
         #endregion
 
         static void FixCommonNamingProblems(IDataListItemModel recset)

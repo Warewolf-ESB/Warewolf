@@ -102,9 +102,28 @@ namespace Dev2.Studio.Core.DataList
             _vm.ScalarCollection.Remove(blankList.First());
         }
 
-        public void ValidateScalar()
+        public void RemoveUnusedScalars()
         {
-          //  _vm.CheckDataListItemsForDuplicates(_vm.DataList);
+            var unusedScalars = _vm.ScalarCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedScalars.Any())
+            {
+                foreach (var dataListItemModel in unusedScalars)
+                {
+                    _vm.ScalarCollection.Remove(dataListItemModel);
+                }
+            }
+        }
+
+        public void AddMissingScalarParts(IDataListVerifyPart part)
+        {
+            if (_vm.ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
+            {
+                var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description);
+                if (_vm.ScalarCollection.Count > 0)
+                    _vm.ScalarCollection.Insert(_vm.ScalarCollection.Count - 1, scalar);
+                else
+                    _vm.ScalarCollection.Add(scalar);
+            }
         }
 
         #endregion
