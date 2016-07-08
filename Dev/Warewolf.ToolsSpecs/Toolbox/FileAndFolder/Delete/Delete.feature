@@ -46,7 +46,6 @@ Scenario Outline: Delete file at location Null
 	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.xtx                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | ""        | NO           |                      |
 	| SFTP       | [[path]] | sftp://rsaklfsvrsbspdc/Memo.txt                                              | dev2.local                   | Q/ulw&]  | [[result]] | ""        | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://rsaklfsvrsbspdc                                                       | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\key.opk     |
 
 Scenario Outline: Delete file Validation
     Given I have a variable "[[a]]" with a value "<Val1>"

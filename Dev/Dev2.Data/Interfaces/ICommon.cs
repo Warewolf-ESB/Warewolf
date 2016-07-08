@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.PathOperations;
 using Ionic.Zip;
@@ -23,5 +24,7 @@ namespace Dev2.Data.Interfaces
         void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env, int update);
         void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env, int update);
         void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env, int update);
+        IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection);
+        IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection);
     }
 }

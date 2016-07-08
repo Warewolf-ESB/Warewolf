@@ -127,6 +127,8 @@
     <Compile Include="IndexIterator.cs" />
     <Compile Include="IndexList.cs" />
     <Compile Include="Interfaces\ICommon.cs" />
+    <Compile Include="Interfaces\ICommonRecordSetUtil.cs" />
+    <Compile Include="Interfaces\ICommonScalarUtil.cs" />
     <Compile Include="Interfaces\IDataListItem.cs" />
     <Compile Include="ListIndexIterator.cs" />
     <Compile Include="ListOfIndex.cs" />
@@ -307,7 +309,9 @@
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\DatalistFormat.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />
-    <Compile Include="Util\Common.cs" />
+    <Compile Include="Util\CommonDataUtils.cs" />
+    <Compile Include="Util\CommonRecordSetUtil.cs" />
+    <Compile Include="Util\CommonScalarUtil.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />
     <Compile Include="Util\DataListUtil.cs" />
     <Compile Include="Util\Scrubber.cs" />
