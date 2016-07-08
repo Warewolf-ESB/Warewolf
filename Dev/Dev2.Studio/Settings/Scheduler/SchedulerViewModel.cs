@@ -62,35 +62,35 @@ namespace Dev2.Settings.Scheduler
         #region Fields
 
         IResourcePickerDialog _currentResourcePicker;
-        int _newTaskCounter = 1;
-        ICommand _saveCommand;
-        ICommand _newCommand;
-        ICommand _deleteCommand;
-        ICommand _editTriggerCommand;
-        ICommand _addWorkflowCommand;
+        private int _newTaskCounter = 1;
+        private ICommand _saveCommand;
+        private ICommand _newCommand;
+        private ICommand _deleteCommand;
+        private ICommand _editTriggerCommand;
+        private ICommand _addWorkflowCommand;
 
-        IClientSchedulerFactory _schedulerFactory;
-        IScheduledResource _selectedTask;
-        TriggerEditDialog _triggerEditDialog;
-        readonly IPopupController _popupController;
-        readonly IAsyncWorker _asyncWorker;
+        private IClientSchedulerFactory _schedulerFactory;
+        private IScheduledResource _selectedTask;
+        private TriggerEditDialog _triggerEditDialog;
+        private readonly IPopupController _popupController;
+        private readonly IAsyncWorker _asyncWorker;
 
-        IResourceHistory _selectedHistory;
-        IList<IResourceHistory> _history;
-        TabItem _activeItem;
-        bool _isProgressBarVisible;
-        bool _isHistoryTabVisible;
-        string _helpText;
-        bool _isLoading;
-        string _connectionError;
-        bool _hasConnectionError;
-        IEnvironmentModel _currentEnvironment;
-        Task<IResourcePickerDialog> _task;
-        IScheduledResourceModel _scheduledResourceModel;
+        private IResourceHistory _selectedHistory;
+        private IList<IResourceHistory> _history;
+        private TabItem _activeItem;
+        private bool _isProgressBarVisible;
+        private bool _isHistoryTabVisible;
+        private string _helpText;
+        private bool _isLoading;
+        private string _connectionError;
+        private bool _hasConnectionError;
+        private IEnvironmentModel _currentEnvironment;
+        private Task<IResourcePickerDialog> _task;
+        private IScheduledResourceModel _scheduledResourceModel;
         private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
         private bool _errorShown;
         private EnvironmentViewModel _source;
-        private Task<IResourcePickerDialog> _resourcePickerDialogTask;
+        private readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
 
         #endregion
 
@@ -959,13 +959,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        private Task<IResourcePickerDialog> GetResourcePickerDialog
-        {
-            get
-            {
-                return _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
-            }
-        }
+        private Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
 
         void SetupServer(IServer tmpEnv)
         {
@@ -1058,10 +1052,6 @@ namespace Dev2.Settings.Scheduler
             NotifyOfPropertyChange(() => History);
             Errors.ClearErrors();
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void ClearError(string description)
         {
