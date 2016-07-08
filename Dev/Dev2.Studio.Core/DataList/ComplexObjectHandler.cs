@@ -119,7 +119,7 @@ namespace Dev2.Studio.Core.DataList
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
         }
 
-        public void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
+        private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
         {
             var properties = objToProcess.Properties();
             foreach (var property in properties)
@@ -146,7 +146,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        private string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
         {
             var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
             return name;
@@ -250,7 +250,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)
+        private void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)
         {
             complexObjectItemModel.IsUsed = true;
             if (complexObjectItemModel.Parent != null)
@@ -258,6 +258,19 @@ namespace Dev2.Studio.Core.DataList
                 SetComplexObjectParentIsUsed(complexObjectItemModel.Parent);
             }
         }
+
+        public void RemoveUnusedComplexObjects()
+        {
+            var unusedComplexObjects = _vm.ComplexObjectCollection.Where(c => c.IsUsed == false).ToList();
+            if (unusedComplexObjects.Any())
+            {
+                foreach (var dataListItemModel in unusedComplexObjects)
+                {
+                    _vm.RemoveDataListItem(dataListItemModel);
+                }
+            }
+        }
+
         #endregion
     }
 }

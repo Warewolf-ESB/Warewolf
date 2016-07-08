@@ -333,61 +333,15 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void RemoveUnusedDataListItems()
         {
-            RemoveUnusedScalars();
-            RemoveUnusedRecordSets();
-            RemoveUnusedComplexObjects();
+            _scalarHandler.RemoveUnusedScalars();
+            _recordsetHandler.RemoveUnusedRecordSets();
+            _complexObjectHandler.RemoveUnusedComplexObjects();
 
             WriteToResourceModel();
             EventPublisher.Publish(new UpdateIntellisenseMessage());
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
             ViewComplexObjectsCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
-        }
-
-        private void RemoveUnusedComplexObjects()
-        {
-            var unusedComplexObjects = ComplexObjectCollection.Where(c => c.IsUsed == false).ToList();
-            if (unusedComplexObjects.Any())
-            {
-                foreach (var dataListItemModel in unusedComplexObjects)
-                {
-                    RemoveDataListItem(dataListItemModel);
-                }
-            }
-        }
-
-        private void RemoveUnusedRecordSets()
-        {
-            var unusedRecordsets = RecsetCollection.Where(c => c.IsUsed == false).ToList();
-            if (unusedRecordsets.Any())
-            {
-                foreach (var dataListItemModel in unusedRecordsets)
-                {
-                    RecsetCollection.Remove(dataListItemModel);
-                }
-            }
-            foreach (var recset in RecsetCollection)
-            {
-                if (recset.Children.Count <= 0) continue;
-                var unusedRecsetChildren = recset.Children.Where(c => c.IsUsed == false).ToList();
-                if (!unusedRecsetChildren.Any()) continue;
-                foreach (var unusedRecsetChild in unusedRecsetChildren)
-                {
-                    recset.Children.Remove(unusedRecsetChild);
-                }
-            }
-        }
-
-        private void RemoveUnusedScalars()
-        {
-            var unusedScalars = ScalarCollection.Where(c => c.IsUsed == false).ToList();
-            if (unusedScalars.Any())
-            {
-                foreach (var dataListItemModel in unusedScalars)
-                {
-                    ScalarCollection.Remove(dataListItemModel);
-                }
-            }
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts)
@@ -403,7 +357,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if (part.IsScalar)
                     {
-                        AddMissingScalarParts(part);
+                        _scalarHandler.AddMissingScalarParts(part);
                     }
                     else
                     {
@@ -444,18 +398,6 @@ namespace Dev2.Studio.ViewModels.DataList
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
-        private void AddMissingScalarParts(IDataListVerifyPart part)
-        {
-            if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
-            {
-                var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description);
-                if (ScalarCollection.Count > 0)
-                    ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
-                else
-                    ScalarCollection.Add(scalar);
-            }
-        }
-
         #endregion Add/Remove Missing Methods
 
         #region Methods
@@ -488,7 +430,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IEnumerable<string> RefreshRecordSets(IEnumerable<IRecordSetItemModel> toList, IList<string> accList)
         {
-            
+
             foreach (var dataListItemModel in toList)
             {
                 if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
@@ -873,7 +815,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     if (DataListUtil.IsSystemTag(child.Name)) continue;
                     if (IsJsonAttribute(child))
                     {
-                        AddComplexObjectFromXmlNode(child, null);
+                        _complexObjectHandler.AddComplexObjectFromXmlNode(child, null);
                     }
                     else
                     {
@@ -902,12 +844,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (xmlAttribute != null)
                 bool.TryParse(xmlAttribute.Value, out jsonAttribute);
             return jsonAttribute;
-        }
-
-        private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObjectItemModel parent)
-        {
-            _complexObjectHandler.AddComplexObjectFromXmlNode(c, parent);
-        }
+        } 
 
         void AddScalars(XmlNode c)
         {
