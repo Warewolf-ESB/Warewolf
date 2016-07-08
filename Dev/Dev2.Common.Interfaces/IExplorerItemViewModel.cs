@@ -41,9 +41,4 @@ namespace Dev2.Common.Interfaces
         void Filter(Func<IExplorerItemViewModel, bool> filter);
         void ShowErrorMessage(string errorMessage, string header);
     }
-
-    public enum ExplorerEventContext
-    {
-        Selected
-    }
 }
