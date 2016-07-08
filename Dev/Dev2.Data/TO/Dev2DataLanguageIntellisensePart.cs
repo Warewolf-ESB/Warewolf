@@ -10,8 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.DataList.Contract;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.TO
 {
     [Serializable]
     public class Dev2DataLanguageIntellisensePart : IDev2DataLanguageIntellisensePart
