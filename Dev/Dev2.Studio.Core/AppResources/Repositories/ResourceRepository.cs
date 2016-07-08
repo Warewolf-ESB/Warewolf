@@ -37,17 +37,15 @@ using Dev2.Utils;
 using Warewolf.Resource.Errors;
 // ReSharper disable NonLocalizedString
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
-
 // ReSharper disable RedundantNameQualifier
-
 // ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
     public class ResourceRepository : IResourceRepository
     {
         readonly HashSet<Guid> _cachedServices;
         readonly IEnvironmentModel _environmentModel;
-        readonly List<string> _reservedServices;
         protected readonly List<IResourceModel> ResourceModels;
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
@@ -67,7 +65,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (!value)
                 {
                     _cachedServices.Clear();
-                    _reservedServices.Clear();
                 }
 
                 _isLoaded = value;
@@ -97,7 +94,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             try
             {
                 ResourceModels.Clear();
-                _reservedServices.Clear();
                 LoadResources();
             }
             catch
@@ -111,7 +107,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             try
             {
                 ResourceModels.Clear();
-                _reservedServices.Clear();
                 await LoadResourcesAsync();
                 IsLoaded = true;
             }
@@ -129,11 +124,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public List<IResourceModel> ReloadResource(Guid resourceId, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
+        public List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
         {
             var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
             comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
+            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(ResourceType), resourceType));
 
             var con = _environmentModel.Connection;
             comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
@@ -143,14 +138,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return effectedResources;
         }
 
-        private List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
+        private List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
         {
             CommunicationController comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             var resourceIds = resourceId.Select(a => a.ToString() + ",").Aggregate((a, b) => a + b);
             resourceIds = resourceIds.EndsWith(",") ? resourceIds.Substring(0, resourceIds.Length - 1) : resourceIds;
 
             comsController.AddPayloadArgument("GuidCsv", resourceIds);
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
+            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(ResourceType), resourceType));
 
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             var effectedResources = new List<IResourceModel>();
@@ -181,7 +176,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), Enums.ResourceType.WorkflowService));
+            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(ResourceType), ResourceType.WorkflowService));
             var workspaceIdToUse = workspaceId ?? con.WorkspaceID;
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
@@ -222,16 +217,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
-            if (toReloadResources != null && toReloadResources.Count == 1)
-            {
-                var serializableResource = toReloadResources[0];
-                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, true, true);
-                var contextualResourceModel = new ResourceModel(_environmentModel);
-                contextualResourceModel.Update(resource);
-                return contextualResourceModel;
-            }
-            Dev2Logger.Error(ErrorResource.MultipleResourcesFound + resourceId);
-            return null;
+            return GetContextualResourceModel(resourceId, toReloadResources);
         }
 
         public async Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId)
@@ -240,7 +226,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
             var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
-            if (toReloadResources != null && toReloadResources.Count == 1)
+            return GetContextualResourceModel(resourceId, toReloadResources);
+        }
+
+        private IContextualResourceModel GetContextualResourceModel(Guid resourceId, List<SerializableResource> toReloadResources)
+        {
+            if(toReloadResources != null && toReloadResources.Count == 1)
             {
                 var serializableResource = toReloadResources[0];
                 var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, true, true);
@@ -248,59 +239,55 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
             }
-            Dev2Logger.Error(ErrorResource.MultipleResourcesFound + resourceId);
+            Dev2Logger.Error(string.Format(ErrorResource.MultipleResourcesFound, resourceId));
             return null;
         }
 
         public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchPayload = false, bool prepairForDeployment = false)
         {
-            if (expression != null && _reservedServices != null)
+            var func = expression?.Compile();
+            if (func?.Method != null)
             {
-                var func = expression.Compile();
-                if (func.Method != null)
+                var result = ResourceModels.Find(func.Invoke);
+
+                // force a payload fetch ;)
+                if (result != null && ((result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
                 {
-                    var result = ResourceModels.Find(func.Invoke);
-
-                    // force a payload fetch ;)
-                    if (result != null && ((result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
+                    var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
+                    if (msg != null)
                     {
-                        var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
-                        if (msg != null)
-                        {
-                            result.WorkflowXaml = msg.Message;
-                        }
+                        result.WorkflowXaml = msg.Message;
                     }
-
-                    return result;
                 }
+
+                return result;
             }
             return null;
         }
        
         public ExecuteMessage Save(IResourceModel instanceObj)
         {
-            Dev2Logger.Info($"Save Resource: {instanceObj.Category}  Environment:{_environmentModel.Name}");
-            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
-
-            if (workflow == null)
-            {
-                ResourceModels.Add(instanceObj);
-            }
+            AddResourceIfNotExist(instanceObj);
 
             var executeMessage = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _environmentModel.Connection.WorkspaceID);
             
             return executeMessage;
         }
 
-        public ExecuteMessage SaveToServer(IResourceModel instanceObj)
+        private void AddResourceIfNotExist(IResourceModel instanceObj)
         {
             Dev2Logger.Info($"Save Resource: {instanceObj.Category}  Environment:{_environmentModel.Name}");
-            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+            var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase) && c.Category.Equals(instanceObj.Category, StringComparison.CurrentCultureIgnoreCase));
 
-            if (workflow == null)
+            if(workflow == null)
             {
                 ResourceModels.Add(instanceObj);
             }
+        }
+
+        public ExecuteMessage SaveToServer(IResourceModel instanceObj)
+        {
+            AddResourceIfNotExist(instanceObj);
             var saveResource = SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
             if (saveResource != null && !saveResource.HasError)
             {
@@ -311,7 +298,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         
         public void DeployResource(IResourceModel resource)
         {
-            // bobcar
             if (resource == null)
             {
                 throw new ArgumentNullException(nameof(resource));
@@ -443,11 +429,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected virtual void LoadResources()
         {
-            Dev2Logger.Warn("Loading Resources - Start");
-            var comsController = new CommunicationController { ServiceName = "FindResourceService" };
-            comsController.AddPayloadArgument("ResourceName", "*");
-            comsController.AddPayloadArgument("ResourceId", "*");
-            comsController.AddPayloadArgument("ResourceType", string.Empty);
+            var comsController = GetCommunicationControllerForLoadResources();
 
             var con = _environmentModel.Connection;
             var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
@@ -461,14 +443,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Warn("Loading Resources - End");
         }
 
-        private async Task<bool> LoadResourcesAsync()
+        private static CommunicationController GetCommunicationControllerForLoadResources()
         {
             Dev2Logger.Warn("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceId", "*");
             comsController.AddPayloadArgument("ResourceType", string.Empty);
+            return comsController;
+        }
 
+        private async Task<bool> LoadResourcesAsync()
+        {
+            var comsController = GetCommunicationControllerForLoadResources();
             var con = _environmentModel.Connection;
             var resourceList = await comsController.ExecuteCommandAsync<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
 
@@ -501,7 +488,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                     if (resourceType == "ReservedService")
                     {
-                        _reservedServices.Add(item.ResourceName.ToUpper());
                         continue;
                     }
 
@@ -928,8 +914,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     _environmentModel.Connection.PermissionsModified += AuthorizationServiceOnPermissionsModified;
                 }
             };
-
-            _reservedServices = new List<string>();
             ResourceModels = new List<IResourceModel>();
             _cachedServices = new HashSet<Guid>();
         }
