@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
+using Dev2.DataList.Contract;
 using Dev2.Dialogs;
 using Dev2.Scheduler;
 using Dev2.Services.Security;
@@ -141,6 +142,37 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsNotNull(schdulerViewModel);
             Assert.IsNotNull(schdulerViewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_ValidConstruction_ShouldSetErrors()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var scheduledResourceForTest = new ScheduledResourceForTest();
+            schedulerViewModel.SelectedTask = scheduledResourceForTest;
+            schedulerViewModel.SelectedTask.Errors = new ErrorResultTO();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel);
+            Assert.IsNotNull(schedulerViewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_SetDisplayName_OnlyForCoverage()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            schedulerViewModel.DisplayName = "displayName";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Scheduler - ", schedulerViewModel.DisplayName);
         }
 
         [TestMethod]
@@ -348,6 +380,8 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.NumberOfRecordsToKeep = "10";
             //------------Assert Results-------------------------
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.NumberOfRecordsToKeep = "10";
         }
 
         [TestMethod]
@@ -1192,6 +1226,7 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
+            schedulerViewModel.ActiveItem = activeItem;
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
@@ -1444,6 +1479,9 @@ namespace Dev2.Core.Tests.Settings
             mockScheduledResourceModel.Verify(model => model.CreateHistory(It.IsAny<IScheduledResource>()), Times.Once());
             Assert.IsNotNull(resourceHistories);
             Assert.IsTrue(schedulerViewModel.IsHistoryTabVisible);
+            Assert.IsFalse(schedulerViewModel.IsProgressBarVisible);
+
+            schedulerViewModel.IsProgressBarVisible = false;
             Assert.IsFalse(schedulerViewModel.IsProgressBarVisible);
         }
 

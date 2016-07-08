@@ -40,13 +40,20 @@ namespace Dev2.Data.Util
         #region Class Members
 
         public const string OpeningSquareBrackets = "[[";
-        public const string ClosingSquareBrackets = "]]";
-        public const string RecordsetIndexOpeningBracket = "(";
-        public const string RecordsetIndexClosingBracket = ")";
+        internal const string ClosingSquareBrackets = "]]";
+        internal const string RecordsetIndexOpeningBracket = "(";
+        internal const string RecordsetIndexClosingBracket = ")";
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        static readonly Lazy<ICommon> Lazy = new Lazy<ICommon>(()=> new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);
-        private static ICommon Common => Lazy.Value;
+        private static readonly Lazy<ICommon> LazyCommon = new Lazy<ICommon>(()=> new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommon Common => LazyCommon.Value;
+
+        private static readonly Lazy<ICommonRecordSetUtil> LazyRecSetCommon = new Lazy<ICommonRecordSetUtil>(()=>new CommonRecordSetUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommonRecordSetUtil RecSetCommon => LazyRecSetCommon.Value;
+
+        private static readonly Lazy<ICommonScalarUtil> LazyScalarCommon = new Lazy<ICommonScalarUtil>(()=>new CommonScalarUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
+        private static ICommonScalarUtil ScalarCommon => LazyScalarCommon.Value;
+
         #endregion Class Members
 
         #region Constructor
@@ -95,39 +102,14 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="expression">The expession.</param>
         /// <returns></returns>
-        public static string ReplaceRecordsetIndexWithBlank(string expression)
-        {
-            var index = ExtractIndexRegionFromRecordset(expression);
-
-            if (string.IsNullOrEmpty(index))
-            {
-                return expression;
-            }
-
-            string extractIndexRegionFromRecordset = $"({index})";
-            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
-                                        expression.Replace(extractIndexRegionFromRecordset, "()");
-        }
-
+        public static string ReplaceRecordsetIndexWithBlank(string expression) => RecSetCommon.ReplaceRecordsetIndexWithBlank(expression);
 
         /// <summary>
         /// Replaces the index of a recordset with a blank index.
         /// </summary>
         /// <param name="expression">The expession.</param>
         /// <returns></returns>
-        public static string ReplaceRecordsetIndexWithStar(string expression)
-        {
-            var index = ExtractIndexRegionFromRecordset(expression);
-
-            if (string.IsNullOrEmpty(index))
-            {
-                return expression;
-            }
-
-            string extractIndexRegionFromRecordset = $"({index})";
-            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
-                                        expression.Replace(extractIndexRegionFromRecordset, "(*)");
-        }
+        public static string ReplaceRecordsetIndexWithStar(string expression) => RecSetCommon.ReplaceRecordsetIndexWithStar(expression);
 
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
@@ -230,20 +212,7 @@ namespace Dev2.Data.Util
         /// <returns>
         ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsValueRecordset(string value)
-        {
-            bool result = false;
-
-            if (!string.IsNullOrEmpty(value))
-            {
-                if (value.Contains(RecordsetIndexOpeningBracket) && value.Contains(RecordsetIndexClosingBracket))
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
+        public static bool IsValueRecordset(string value) => RecSetCommon.IsValueRecordset(value);
 
         /// <summary>
         /// Determines whether the value is a recordset.
@@ -252,89 +221,35 @@ namespace Dev2.Data.Util
         /// <returns>
         ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsValueScalar(string value)
-        {
-            bool result = false;
+        public static bool IsValueScalar(string value) => ScalarCommon.IsValueScalar(value);
 
-            if (!string.IsNullOrEmpty(value))
-            {
-                if (value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets) && !IsValueRecordset(value) && !value.Contains("."))
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
         /// <summary>
         /// Determines whether is a recordset with fields
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool IsValueRecordsetWithFields(string value)
-        {
-            return !string.IsNullOrEmpty(value) && value.Contains(").");
-        }
+        public static bool IsValueRecordsetWithFields(string value) => RecSetCommon.IsValueRecordsetWithFields(value);
 
         /// <summary>
         /// Used to extract a recordset name from a string as per the Dev2 data language spec
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        public static string ExtractRecordsetNameFromValue(string value)
-        {
-            if (value == null)
-            {
-                return string.Empty;
-            }
-
-            value = StripBracketsFromValue(value);
-            string result = string.Empty;
-
-            int openBracket = value.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            if (openBracket > 0)
-            {
-                result = value.Substring(0, openBracket);
-            }
-
-            return result;
-        }
+        public static string ExtractRecordsetNameFromValue(string value) => RecSetCommon.ExtractRecordsetNameFromValue(value);
 
         /// <summary>
         /// Used to extract a field name from our recordset notation
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        public static string ExtractFieldNameFromValue(string value)
-        {
-            string result = string.Empty;
-            value = StripBracketsFromValue(value);
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            if (dotIdx > 0)
-            {
-                result = value.Substring(dotIdx + 1);
-            }
-
-            return result;
-        }
+        public static string ExtractFieldNameFromValue(string value) => RecSetCommon.ExtractFieldNameFromValue(value);
 
         /// <summary>
         /// Used to extract a field name from our recordset notation
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns></returns>
-        public static string ExtractFieldNameOnlyFromValue(string value)
-        {
-            string result = string.Empty;
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            int closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
-            if (dotIdx > 0)
-            {
-                result = value.Substring(dotIdx + 1, closeIdx - dotIdx - 1);
-            }
-
-            return result;
-        }
+        public static string ExtractFieldNameOnlyFromValue(string value) => RecSetCommon.ExtractFieldNameOnlyFromValue(value);
 
         /// <summary>
         /// Remove [[ ]] from a value if present
@@ -403,72 +318,21 @@ namespace Dev2.Data.Util
         /// <param name="value">The value.</param>
         /// <param name="starNotation">if set to <c>true</c> [star notation].</param>
         /// <returns></returns>
-        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false)
-        {
-            var inject = "()";
-
-            if (starNotation)
-            {
-                inject = "(*)";
-            }
-
-            string result = StripBracketsFromValue(value);
-
-            if (result.EndsWith(RecordsetIndexOpeningBracket))
-            {
-                result = string.Concat(result, RecordsetIndexClosingBracket);
-            }
-            else if (result.EndsWith(RecordsetIndexClosingBracket))
-            {
-                return result.Replace(RecordsetIndexClosingBracket, inject);
-            }
-            else if (!result.EndsWith("()"))
-            {
-                result = string.Concat(result, inject);
-            }
-            return result;
-        }
+        public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
 
         /// <summary>
         /// Used to extract an index in the recordset notation
         /// </summary>
         /// <param name="rs">The rs.</param>
         /// <returns></returns>
-        public static string ExtractIndexRegionFromRecordset(string rs)
-        {
-            string result = string.Empty;
-
-            int start = rs.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            if (start > 0)
-            {
-                int end = rs.LastIndexOf(RecordsetIndexClosingBracket, StringComparison.Ordinal);
-                if (end < 0)
-                {
-                    end = rs.Length;
-                }
-
-                start += 1;
-                result = rs.Substring(start, end - start);
-            }
-
-            return result;
-        }
-
+        public static string ExtractIndexRegionFromRecordset(string rs) => RecSetCommon.ExtractIndexRegionFromRecordset(rs);
 
         /// <summary>
         /// Determines if recordset has a star index
         /// </summary>
         /// <param name="rs"></param>
         /// <returns></returns>
-        public static bool IsStarIndex(string rs)
-        {
-            if (string.IsNullOrEmpty(rs))
-            {
-                return false;
-            }
-
-            return ExtractIndexRegionFromRecordset(rs) == "*";
-        }
+        public static bool IsStarIndex(string rs) => RecSetCommon.IsStarIndex(rs);
 
         /// <summary>
         /// Is the expression evaluated
@@ -526,30 +390,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
-        public static enRecordsetIndexType GetRecordsetIndexType(string expression)
-        {
-            enRecordsetIndexType result = enRecordsetIndexType.Error;
-
-            string idx = ExtractIndexRegionFromRecordset(expression);
-            if (idx == "*")
-            {
-                result = enRecordsetIndexType.Star;
-            }
-            else if (string.IsNullOrEmpty(idx))
-            {
-                result = enRecordsetIndexType.Blank;
-            }
-            else
-            {
-                int convertIntTest;
-                if (Int32.TryParse(idx, out convertIntTest))
-                {
-                    result = enRecordsetIndexType.Numeric;
-                }
-            }
-
-            return result;
-        }
+        public static enRecordsetIndexType GetRecordsetIndexType(string expression) => RecSetCommon.GetRecordsetIndexType(expression);
 
         //used in the replace node method
 
@@ -642,10 +483,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static string RemoveRecordsetBracketsFromValue(string value)
-        {
-            return value.Replace("()", "");
-        }
+        public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
 
         /// <summary>
         /// Creates a recordset display value.
@@ -654,10 +492,7 @@ namespace Dev2.Data.Util
         /// <param name="colName">Name of the column.</param>
         /// <param name="indexNum">The index number.</param>
         /// <returns></returns>
-        public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum)
-        {
-            return string.Concat(recsetName, RecordsetIndexOpeningBracket, indexNum, ").", colName);
-        }
+        public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
         /// <summary>
         /// Upserts the tokens.
@@ -709,35 +544,11 @@ namespace Dev2.Data.Util
 
 
 
-        public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length)
-        {
-            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
-            if (blankIndex != -1)
-            {
-                return fullRecSetName.Replace("().", $"({length}).");
-            }
-            return fullRecSetName;
-        }
+        public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length) => RecSetCommon.ReplaceRecordsetBlankWithIndex(fullRecSetName, length);
 
-        public static string ReplaceRecordsetBlankWithStar(string fullRecSetName)
-        {
-            var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
-            if (blankIndex != -1)
-            {
-                return fullRecSetName.Replace("().", $"({"*"}).");
-            }
-            return fullRecSetName;
-        }
+        public static string ReplaceRecordsetBlankWithStar(string fullRecSetName) => RecSetCommon.ReplaceRecordsetBlankWithStar(fullRecSetName);
 
-        public static string ReplaceRecordBlankWithStar(string fullRecSetName)
-        {
-            var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
-            if (blankIndex != -1)
-            {
-                return fullRecSetName.Replace("()", $"({"*"})");
-            }
-            return fullRecSetName;
-        }
+        public static string ReplaceRecordBlankWithStar(string fullRecSetName) => RecSetCommon.ReplaceRecordBlankWithStar(fullRecSetName);
 
         public static bool HasNegativeIndex(string variable)
         {
@@ -781,74 +592,16 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
-
-        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
-        {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
-
-            if (!string.IsNullOrEmpty(dataList))
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(dataList);
-
-                XmlNodeList tmpRootNl = xDoc.ChildNodes;
-                XmlNodeList nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
-                {
-                    XmlNode tmpNode = nl[i];
-
-                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
-
-                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                    {
-                        var jsonAttribute = false;
-                        var xmlAttribute = tmpNode.Attributes?["IsJson"];
-                        if (xmlAttribute != null)
-                        {
-                            bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                        }
-                        if (tmpNode.HasChildNodes && !jsonAttribute)
-                        {
-                            // it is a record set, make it as such
-                            string recordsetName = tmpNode.Name;
-                            // now extract child node defs
-                            XmlNodeList childNl = tmpNode.ChildNodes;
-                            for (int q = 0; q < childNl.Count; q++)
-                            {
-                                var xmlNode = childNl[q];
-                                if(xmlNode == null) continue;
-                                var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
-                                if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
-                                {
-                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                                false, "", false));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // scalar value, make it as such
-                            var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
-                            var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
-                            dev2Definition.IsObject = jsonAttribute;
-                            result.Add(dev2Definition);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-        static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
+        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
         {
             return ioDirection == dev2ColumnArgumentDirection ||
                    ioDirection == enDev2ColumnArgumentDirection.Both &&
                    (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
         }
 
-        static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
+        internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
         {
             XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
@@ -864,71 +617,8 @@ namespace Dev2.Data.Util
             return ioDirection;
         }
 
-        static bool IsObject(XmlNode tmpNode)
-        {
-            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsJson"];
-
-            if (isObjectAttribute != null)
-            {
-                bool isObject;
-                if (bool.TryParse(isObjectAttribute.Value, out isObject))
-                {
-                    return isObject;
-                }
-            }
-            return false;
-        }
-        public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
-        {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
-
-            if (!string.IsNullOrEmpty(dataList))
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(dataList);
-
-                XmlNodeList tmpRootNl = xDoc.ChildNodes;
-                XmlNodeList nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
-                {
-                    XmlNode tmpNode = nl[i];
-
-                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
-                    var isObject = IsObject(tmpNode);
-                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
-                    {
-                        result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
-                                                                            false, "", false));
-                    }
-                    else if (tmpNode.HasChildNodes && !isObject)
-                    {
-                        // it is a record set, make it as such
-                        string recordsetName = tmpNode.Name;
-                        // now extract child node defs
-                        XmlNodeList childNl = tmpNode.ChildNodes;
-                        for (int q = 0; q < childNl.Count; q++)
-                        {
-                            var xmlNode = childNl[q];
-                            var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
-                            if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
-                            {
-                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                            false, "", false));
-                            }
-                        }
-                    }
-                    else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                    {
-                        // scalar value, make it as such
-                        result.Add(isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "") : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
-                    }
-
-                }
-            }
-
-            return result;
-        }
+       
+        public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataListForDebug(dataList, dev2ColumnArgumentDirection);
 
         /// <summary>
         /// Converts from to.
@@ -956,6 +646,5 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
     }
 }

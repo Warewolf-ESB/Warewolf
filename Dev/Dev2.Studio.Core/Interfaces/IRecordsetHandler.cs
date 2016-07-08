@@ -22,5 +22,6 @@ namespace Dev2.Studio.Core.Interfaces
         void AddMissingTempRecordSetList(IEnumerable<IRecordSetItemModel> tmpRecsetList);
         void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset);
         void AddMissingRecordSetPart(IRecordSetItemModel recsetToAddTo, IDataListVerifyPart part);
+        void RemoveUnusedRecordSets();
     }
 }
