@@ -187,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
             NewCommand = new DelegateCommand<string>(type =>
             {
                 SetActiveStates(shellViewModel);
-                shellViewModel.NewResource(type.ToString(), ResourcePath);
+                shellViewModel.NewService(ResourcePath);
             });
             CanShowDependencies = true;
             ShowDependenciesCommand = new DelegateCommand(() =>

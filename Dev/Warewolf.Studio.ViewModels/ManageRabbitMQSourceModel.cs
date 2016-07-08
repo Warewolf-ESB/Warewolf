@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shellViewModel.NewResource("RabbitMQSource", "");
+            _shellViewModel.NewRabbitMQSource(string.Empty);
         }
 
         public void EditSource(IRabbitMQServiceSourceDefinition selectedSource)

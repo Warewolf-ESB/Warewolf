@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         public TestVm(ModelItem modelItem, Action<Type> showExampleWorkflow)
-            : base(modelItem, showExampleWorkflow)
+            : base(modelItem)
         {
         }
 
