@@ -212,10 +212,9 @@ namespace Warewolf.Storage
             try
             {
                 var x = EvaluationFunctions.parseLanguageExpression(expression, update);
-                if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression || x.IsRecordSetNameExpression)
-                {
+                if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression ||
+                    x.IsRecordSetNameExpression)
                     return true;
-                }
             }
             catch (Exception e)
             {
@@ -273,7 +272,7 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
         }
 
-        private void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
+        public void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
         {
             _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
         }
@@ -437,7 +436,7 @@ namespace Warewolf.Storage
         public static string GetPositionColumnExpression(string recordset)
         {
             var rec = EvaluationFunctions.parseLanguageExpression(recordset, 0);
-            if(!rec.IsRecordSetExpression && !rec.IsRecordSetNameExpression) return recordset;
+            if (!rec.IsRecordSetExpression && !rec.IsRecordSetNameExpression) return recordset;
             var recordSetExpression = rec as LanguageAST.LanguageExpression.RecordSetExpression;
             var recordSetNameExpression = rec as LanguageAST.LanguageExpression.RecordSetNameExpression;
             var index = recordSetExpression?.Item?.Name ?? recordSetNameExpression?.Item?.Name;
