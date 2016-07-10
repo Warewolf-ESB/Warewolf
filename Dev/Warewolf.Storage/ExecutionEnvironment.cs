@@ -61,10 +61,6 @@ namespace Warewolf.Storage
             {
                 return PublicFunctions.EvalEnvExpression(exp, 0, _env);
             }
-            catch (IndexOutOfRangeException)
-            {
-                throw;
-            }
             catch (Exception e)
             {
                 if (e is IndexOutOfRangeException) throw;
@@ -189,9 +185,7 @@ namespace Warewolf.Storage
         public static string WarewolfAtomToStringErrorIfNull(DataStorage.WarewolfAtom a)
         {
             if (a == null)
-            {
                 return string.Empty;
-            }
             if (a.IsNothing)
             {
                 throw new NullValueInVariableException(ErrorResource.VariableIsNull, string.Empty);
@@ -394,7 +388,7 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp, int update)
         {
-            return string.IsNullOrEmpty(exp) ? String.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
+            return string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
@@ -495,7 +489,7 @@ namespace Warewolf.Storage
 
         public List<string> GetIndexes(string exp)
         {
-            List<string> indexMap = new List<string>();
+            var indexMap = new List<string>();
             if (!string.IsNullOrEmpty(exp))
             {
                 var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
