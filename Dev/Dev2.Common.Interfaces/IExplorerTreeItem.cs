@@ -39,7 +39,6 @@ namespace Dev2.Common.Interfaces
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
 
-        ICommand NewCommand { get; set; }
         ICommand DeployCommand { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand CreateFolderCommand { get; set; }

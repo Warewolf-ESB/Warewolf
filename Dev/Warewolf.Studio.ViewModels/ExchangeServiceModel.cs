@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource("ExchangeSource", "");
+            _shell.NewExchangeSource(string.Empty);
         }
 
         public void EditSource(IExchangeSource selectedSource)

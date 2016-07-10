@@ -395,29 +395,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             //------------Assert Results-------------------------
             Assert.AreEqual(ZIndexPosition.Back, viewModel.ZIndexPosition);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ActivityDesignerViewModel_ShowItemHelpCommand")]
-        public void ActivityDesignerViewModel_ShowItemHelpCommand_InvokesGivenAction()
-        {
-            //------------Setup for test--------------------------
-            Type showExampleType = null;
-            var mockModelItem = GenerateMockModelItem();
-
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object, type =>
-            {
-                showExampleType = type;
-            });
-
-            //------------Execute Test---------------------------
-            viewModel.ShowItemHelpCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(showExampleType);
-            Assert.AreEqual(mockModelItem.Object.ItemType, showExampleType);
-        }
-
+        
         static Mock<ModelItem> GenerateMockModelItem()
         {
             var properties = new Dictionary<string, Mock<ModelProperty>>();

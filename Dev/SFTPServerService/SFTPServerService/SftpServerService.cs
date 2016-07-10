@@ -10,7 +10,7 @@ namespace SFTPServerService
     public partial class SftpServerService : ServiceBase
     {
         private SftpServer _server;
-        const string PrivatePublicKeyFile = @"C:\\Temp\\key.opk";
+        const string PrivatePublicKeyFile = @"D:\\Temp\\key.opk";
         public SftpServerService()
         {
             InitializeComponent();
@@ -63,25 +63,22 @@ namespace SFTPServerService
             {
                 File.Delete(PrivatePublicKeyFile);
             }
-            if(!Directory.Exists("C:\\Temp"))
+            if(!Directory.Exists("D:\\Temp"))
             {
-                Directory.CreateDirectory("C:\\Temp");
+                Directory.CreateDirectory("D:\\Temp");
             }
             File.WriteAllText(PrivatePublicKeyFile, privateKeyData);
             // add keys, bindings and users
-            _server = new SftpServer
-            {
-                Log = TextWriter.Synchronized(new StreamWriter(@"C:\Temp\SFTPLog.txt"))
-            };
+            _server = new SftpServer();
             _server.Keys.Add(rsaKey);
             _server.Keys.Add(dssKey);
             _server.Bindings.Add(IPAddress.Any, 22);
-            if(Directory.Exists(@"C:\Temp\SFTP"))
+            if(Directory.Exists(@"D:\Temp\SFTP"))
             {
-                Directory.Delete(@"C:\Temp\SFTP", true);
+                Directory.Delete(@"D:\Temp\SFTP", true);
             }
-            Directory.CreateDirectory(@"C:\Temp\SFTP");
-            _server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp\SFTP"));
+            Directory.CreateDirectory(@"D:\Temp\SFTP");
+            _server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"D:\Temp\SFTP"));
 
             // start the server                                                    
             _server.Start();

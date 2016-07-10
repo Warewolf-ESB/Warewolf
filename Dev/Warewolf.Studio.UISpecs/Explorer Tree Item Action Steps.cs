@@ -35,28 +35,24 @@ namespace Warewolf.Studio.UISpecs
         [When(@"I scroll down in the explorer tree")]
         public void WhenIScrollDownInTheExplorerTree()
         {
-            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
             Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -2);
         }
 
         [When(@"I scroll to the bottom of the explorer tree")]
         public void WhenIScrollToTheBottomOfTheExplorerTree()
         {
-            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
             Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -999);
         }
 
         [When(@"I scroll up in the explorer tree")]
         public void WhenIScrollUpInTheExplorerTree()
         {
-            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
             Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 2);
         }
 
         [When(@"I scroll to the top of the explorer tree")]
         public void WhenIScrollToTheTopOfTheExplorerTree()
         {
-            Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.WaitForControlReady();
             Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 999);
         }
 
@@ -64,7 +60,7 @@ namespace Warewolf.Studio.UISpecs
         public void WhenIRightClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
-            Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
+            Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(80, 12));
         }
 
         [When(@"I expand ""(.*)"" in the explorer tree")]
@@ -98,6 +94,14 @@ namespace Warewolf.Studio.UISpecs
         {
             UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
             Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree. The explorer tree has virtualized children so it must be scolled into view.");
+        }
+
+        [Given(@"""(.*)"" does not exist in the explorer tree")]
+        [Then(@"""(.*)"" does not exist in the explorer tree")]
+        public void AssertDoesNotExistInExplorerTree(string ListItem)
+        {
+            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+            Assert.IsNull(getFromTreeItem, ListItem + " does exist in the explorer tree. The explorer tree has virtualized children so it must be scolled into view.");
         }
 
         [Given(@"The View permission icon for ""(.*)"" exists in the explorer tree")]

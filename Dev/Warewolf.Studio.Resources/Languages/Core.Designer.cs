@@ -5875,6 +5875,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to schedule on this server. You need Administrator permission..
+        /// </summary>
+        public static string SchedulerConnectionError {
+            get {
+                return ResourceManager.GetString("SchedulerConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete this scheduled task.
         /// </summary>
         public static string SchedulerDeleteHelpTextTrigger {
