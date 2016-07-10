@@ -28,7 +28,6 @@ namespace Dev2.Common.Interfaces
         ICommand OpenVersionCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }
-        ICommand ItemSelectedCommand { get; set; }
         ICommand LostFocus { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
@@ -41,10 +40,5 @@ namespace Dev2.Common.Interfaces
         void Filter(string filter);
         void Filter(Func<IExplorerItemViewModel, bool> filter);
         void ShowErrorMessage(string errorMessage, string header);
-    }
-
-    public enum ExplorerEventContext
-    {
-        Selected
     }
 }

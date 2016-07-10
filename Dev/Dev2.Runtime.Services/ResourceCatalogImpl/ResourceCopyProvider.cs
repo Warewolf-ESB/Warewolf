@@ -9,7 +9,7 @@ using Dev2.Runtime.ServiceModel.Data;
 // ReSharper disable PublicMembersMustHaveComments
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    public class ResourceCopyProvider: IResourceCopyProvider
+    internal class ResourceCopyProvider: IResourceCopyProvider
     {
         private readonly IResourceCatalog _resourceCatalog;
 

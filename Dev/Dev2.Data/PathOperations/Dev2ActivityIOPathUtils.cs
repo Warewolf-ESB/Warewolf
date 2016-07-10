@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using System.Text;
+// ReSharper disable CheckNamespace
 
 namespace Dev2.PathOperations
 {
@@ -100,7 +101,7 @@ namespace Dev2.PathOperations
 
             string fileName = Path.GetFileName(uri.LocalPath);
 
-            if(fileName != null && (fileName.Contains("*") || fileName.Contains("?")))
+            if(fileName.Contains(@"*") || fileName.Contains(@"?"))
             {
                 result = true;
             }
@@ -117,34 +118,41 @@ namespace Dev2.PathOperations
         {
             bool result = false;
 
-            if(path.Contains("ftp://") || path.Contains("ftps://") || path.Contains("sftp://"))
+            if(path.Contains(@"ftp://") || path.Contains(@"ftps://") || path.Contains(@"sftp://"))
             {
                 var ftpUri = new Uri(path);
-                var isFile = ftpUri.LocalPath.Contains(".");
+                var isFile = ftpUri.LocalPath.Contains(@".");
                 return !isFile;
             }
 
-            if(path.EndsWith("\\") || path.EndsWith("/"))
+            if(path.EndsWith(@"\\") || path.EndsWith(@"/"))
             {
                 result = true;
             }
             else
             {
-                int idx = path.LastIndexOf("\\", StringComparison.Ordinal);
+                int idx = path.LastIndexOf(@"\\", StringComparison.Ordinal);
 
                 if(idx > 0)
                 {
-                    if(!path.Substring(idx).Contains("."))
+                    if(!path.Substring(idx).Contains(@"."))
                     {
                         result = true;
                     }
                 }
                 else
                 {
-                    idx = path.LastIndexOf("/", StringComparison.Ordinal);
+                    idx = path.LastIndexOf(@"/", StringComparison.Ordinal);
                     if(idx > 0)
                     {
-                        if(!path.Substring(idx).Contains("."))
+                        if(!path.Substring(idx).Contains(@"."))
+                        {
+                            result = true;
+                        }
+                    }
+                    else
+                    {
+                        if (!path.Contains(@"."))
                         {
                             result = true;
                         }
@@ -165,7 +173,7 @@ namespace Dev2.PathOperations
 
             while(pos < vals.Length && result == enActivityIOPathType.Invalid)
             {
-                string toCheck = vals.GetValue(pos) + ":";
+                string toCheck = vals.GetValue(pos) + @":";
                 string checkPath = path.ToUpper();
                 if(checkPath.StartsWith(toCheck))
                 {

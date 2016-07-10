@@ -14,7 +14,7 @@ namespace Dev2.Common.Interfaces.Studio
 {
     public interface IMenuViewModel
     {
-        ICommand NewCommand { get; set; }
+        ICommand NewServiceCommand { get; set; }
         ICommand DeployCommand { get; set; }
         ICommand SaveCommand { get; set; }
         ICommand OpenSettingsCommand { get; set; }
@@ -48,6 +48,9 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand SupportCommand { get; }
         bool IsProcessing { get; set; }
         ICommand StartPageCommand { get; }
+        ICommand NewDatabaseSourceCommand { get; set; }
+        ICommand NewPluginSourceCommand { get; set; }
+        ICommand NewWebSourceCommand { get; set; }
 
         void Lock();
     }

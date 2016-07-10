@@ -60,6 +60,11 @@ namespace Dev2.Common.Wrappers
             File.AppendAllText(path, contents);
         }
 
+        public byte[] ReadAllBytes(string path)
+        {
+            return File.ReadAllBytes(path);
+        }
+
         public FileAttributes GetAttributes(string path)
         {
             return File.GetAttributes(path);

@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _startPageCommandMock = new Mock<ICommand>();
 
             _mainViewModelMock.Setup(it => it.CheckForNewVersion()).ReturnsAsync(true);
-            _mainViewModelMock.SetupGet(it => it.NewResourceCommand).Returns(_newCommand);
+            _mainViewModelMock.SetupGet(it => it.NewServiceCommand).Returns(_newCommand);
             _mainViewModelMock.SetupGet(it => it.DeployCommand).Returns(_deployCommandMock.Object);
             _mainViewModelMock.SetupGet(it => it.SaveCommand).Returns(_saveCommand);
             _mainViewModelMock.SetupGet(it => it.SchedulerCommand).Returns(_openSchedulerCommand);
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestNewCommand()
         {
-            Assert.AreSame(_newCommand, _target.NewCommand);
+            Assert.AreSame(_newCommand, _target.NewServiceCommand);
         }
 
         [TestMethod]

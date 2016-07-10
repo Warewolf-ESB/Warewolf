@@ -1,7 +1,7 @@
 ﻿<Activity mc:Ignorable="sap sads" x:Class="Calculate_RecordSet_Subtract"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
- xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.Common"
+ xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.CommonDataUtils"
  xmlns:ddc="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
  xmlns:ddcb="clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"
  xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"

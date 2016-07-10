@@ -13,17 +13,13 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Parsing.Intellisense;
-using System.Windows;
-using Caliburn.Micro;
-using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Data.Exceptions;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 
@@ -263,80 +259,6 @@ namespace Dev2.Utils
 
             return missingWorkflowParts;
         }
-
-        public static void EditResource(IResourceModel resource, IEventAggregator eventAggregator)
-        {
-            if(eventAggregator == null)
-            {
-                throw new ArgumentNullException("eventAggregator");
-            }
-            if(resource != null)
-            {
-                switch(resource.ResourceType)
-                {
-                    case ResourceType.WorkflowService:
-                        eventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                        break;
-
-                    case ResourceType.Service:
-                        eventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                        break;
-                    case ResourceType.Source:
-                        eventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                        break;
-                }
-            }
-
-        }
-
-        public static void ShowExampleWorkflow(string activityName, IEnvironmentModel environment, IPopupController popupController)
-        {
-            var resourceID = GetExampleID(activityName);
-            var resource = environment.ResourceRepository
-                      .FindSingle(r => r.ID.Equals(resourceID));
-
-            if(resource == null)
-            {
-                if(popupController == null)
-                {
-                    var message =
-                        string.Format(
-                            StringResources.ExampleWorkflowNotFound,
-                            GetExampleName(activityName));
-                    MessageBox.Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    popupController.Buttons = MessageBoxButton.OK;
-                    popupController.Description = string.Format(StringResources.ExampleWorkflowNotFound, resourceID);
-                    popupController.Header = "Example Workflow Not Found";
-                    popupController.ImageType = MessageBoxImage.Information;
-                    popupController.Show();
-                }
-            }
-            else
-            {
-                resource.ResourceType = ResourceType.WorkflowService;
-                EditResource(resource, EventPublishers.Aggregator);
-            }
-        }
-
-
-        private static Guid GetExampleID(string activityName)
-        {
-            var exampleIDString = ResolveExampleResource
-                .ResourceManager
-                .GetString(activityName);
-            Guid exampleID;
-            Guid.TryParse(exampleIDString, out exampleID);
-            return exampleID;
-        }
-
-        private static string GetExampleName(string activityName)
-        {
-            return ResolveExampleResourceNames
-                .ResourceManager
-                .GetString(activityName);
-        }
+        
     }
 }

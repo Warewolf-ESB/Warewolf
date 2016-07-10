@@ -2074,7 +2074,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

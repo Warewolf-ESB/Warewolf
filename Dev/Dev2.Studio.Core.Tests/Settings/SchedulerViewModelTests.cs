@@ -19,10 +19,12 @@ using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
+using Dev2.DataList.Contract;
 using Dev2.Dialogs;
 using Dev2.Scheduler;
 using Dev2.Services.Security;
@@ -55,8 +57,8 @@ namespace Dev2.Core.Tests.Settings
             lcl.Setup(a => a.ResourceName).Returns("Localhost");
             shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
             shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
-            CustomContainer.Register<IShellViewModel>(shell.Object);
-            CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(shell.Object);
+            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
         }
 
         [TestMethod]
@@ -69,6 +71,20 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
             new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a=> new Mock<IEnvironmentModel>().Object);
+            // ReSharper restore ObjectCreationAsStatement
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_EmptyConstructor")]
+        [ExpectedException(typeof(Exception))]
+        public void SchedulerViewModel_EmptyConstructor_Nothing_Happens()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
+            new SchedulerViewModel();
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -128,6 +144,69 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(schdulerViewModel.Errors);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_ValidConstruction_ShouldSetErrors()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var scheduledResourceForTest = new ScheduledResourceForTest();
+            schedulerViewModel.SelectedTask = scheduledResourceForTest;
+            schedulerViewModel.SelectedTask.Errors = new ErrorResultTO();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel);
+            Assert.IsNotNull(schedulerViewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_SetDisplayName_OnlyForCoverage()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            schedulerViewModel.DisplayName = "displayName";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Scheduler - ", schedulerViewModel.DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_ServerNotNull_ShouldSetDisplayName()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schdulerViewModel);
+            Assert.IsNotNull(schdulerViewModel.Errors);
+            Assert.AreEqual("Scheduler - ", schdulerViewModel.DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_ServerNull_ShouldSetDisplayName()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schdulerViewModel);
+            Assert.IsNotNull(schdulerViewModel.Errors);
+
+            schdulerViewModel.Server = null;
+            Assert.AreEqual("Scheduler", schdulerViewModel.DisplayName);
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -141,7 +220,11 @@ namespace Dev2.Core.Tests.Settings
             string expectedHelpText = Warewolf.Studio.Resources.Languages.Core.SchedulerSettingsHelpTextSettingsView;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedHelpText, schedulerViewModel.HelpText); 
+            Assert.IsNotNull(schedulerViewModel.HelpToggle);
+            Assert.AreEqual(expectedHelpText, schedulerViewModel.HelpText);
+
+            schedulerViewModel.HelpText = expectedHelpText;
+            Assert.AreEqual(expectedHelpText, schedulerViewModel.HelpText);
         }
 
         [TestMethod]
@@ -156,6 +239,7 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.ShowError("Error while saving: test error");
             //------------Assert Results-------------------------
             Assert.IsTrue(schedulerViewModel.HasErrors);
+            Assert.IsFalse(schedulerViewModel.IsLoading);
         }
 
         [TestMethod]
@@ -238,6 +322,7 @@ namespace Dev2.Core.Tests.Settings
             ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
             schedulerViewModel.Trigger = scheduleTrigger;
             //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel.Trigger);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
         }
 
@@ -256,6 +341,9 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsTrue(schedulerViewModel.RunAsapIfScheduleMissed);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.RunAsapIfScheduleMissed = true;
+            Assert.IsTrue(schedulerViewModel.RunAsapIfScheduleMissed);
         }
 
         [TestMethod]
@@ -273,6 +361,9 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(SchedulerStatus.Disabled, schedulerViewModel.Status);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.Status = SchedulerStatus.Disabled;
+            Assert.AreEqual(SchedulerStatus.Disabled, schedulerViewModel.Status);
         }
 
         [TestMethod]
@@ -289,6 +380,8 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.NumberOfRecordsToKeep = "10";
             //------------Assert Results-------------------------
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.NumberOfRecordsToKeep = "10";
         }
 
         [TestMethod]
@@ -333,9 +426,14 @@ namespace Dev2.Core.Tests.Settings
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest; //Fires DebugOutMessage for null SelectedHistory
             //------------Execute Test---------------------------
-            schedulerViewModel.SelectedHistory = new ResourceHistoryForTest(); //Fires DebugOutMessage for set SelectedHistory
+            var selectedHistory = new ResourceHistoryForTest();
+            schedulerViewModel.SelectedHistory = selectedHistory; //Fires DebugOutMessage for set SelectedHistory
             //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel.SelectedHistory);
             eventAggregator.Verify(c => c.Publish(It.IsAny<DebugOutputMessage>()), Times.Exactly(2));
+
+            schedulerViewModel.SelectedHistory = selectedHistory;
+            Assert.IsNotNull(schedulerViewModel.SelectedHistory);
         }
 
         [TestMethod]
@@ -358,15 +456,19 @@ namespace Dev2.Core.Tests.Settings
             };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage);
+            Assert.AreEqual("Scheduler", schedulerViewModel.ResourceType);
             Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
             //------------Execute Test---------------------------
             schedulerViewModel.AccountName = "someAccountName";
             //------------Assert Results-------------------------
             Assert.AreEqual("someAccountName", schedulerViewModel.AccountName);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
+            Assert.AreEqual("", schedulerViewModel.Error);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
             Assert.AreEqual("someAccountName", schedulerViewModel.SelectedTask.UserName);
             Assert.IsTrue(_accountNameChanged);
+
+            schedulerViewModel.AccountName = "someAccountName";
+            Assert.AreEqual("someAccountName", schedulerViewModel.AccountName);
         }
 
         [TestMethod]
@@ -392,7 +494,7 @@ namespace Dev2.Core.Tests.Settings
                 }
             };
             //--------------Assert Preconditions------------------
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
+            Assert.AreEqual("", schedulerViewModel.Error);
             var scheduledResource = schedulerViewModel.SelectedTask;
             Assert.IsTrue(scheduledResource.IsDirty);
             Assert.AreEqual("someAccountName", scheduledResource.UserName);
@@ -423,8 +525,33 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.Password = "somePassword";
             //------------Assert Results-------------------------
             Assert.AreEqual("somePassword", schedulerViewModel.Password);
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage, schedulerViewModel.Error);
+            Assert.AreEqual("", schedulerViewModel.Error);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
+
+            schedulerViewModel.Password = "somePassword";
+            Assert.AreEqual("somePassword", schedulerViewModel.Password);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_ConnectionError")]
+        public void SchedulerViewModel_ConnectionError_SetAndClearError_ValidErrorSetAndClear()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+
+            //------------Execute Test---------------------------
+            schedulerViewModel.SetConnectionError();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SchedulerConnectionError, schedulerViewModel.ConnectionError);
+            Assert.IsTrue(schedulerViewModel.HasConnectionError);
+
+            schedulerViewModel.ClearConnectionError();
+
+            Assert.AreEqual("", schedulerViewModel.ConnectionError);
+            Assert.IsFalse(schedulerViewModel.HasConnectionError);
         }
 
         [TestMethod]
@@ -456,6 +583,42 @@ namespace Dev2.Core.Tests.Settings
             string errorMessage;
             mockScheduledResourceModel.Verify(model => model.Save(It.IsAny<IScheduledResource>(), out errorMessage), Times.Once());
             auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_SetupServer_Validate()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
+            resources.Add(scheduledResourceForTest);
+            var env = new Mock<IEnvironmentModel>();
+            var auth = new Mock<IAuthorizationService>();
+            
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+
+            var secAuth = new Mock<ISecurityService>();
+            secAuth.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission> { WindowsGroupPermission.CreateAdministrators() });
+            env.Setup(a => a.AuthorizationService.SecurityService).Returns(secAuth.Object);
+
+            var mockEnvConnection = new Mock<IEnvironmentConnection>();
+            mockEnvConnection.Setup(connection => connection.ServerID).Returns(Guid.NewGuid());
+            env.Setup(a => a.Connection).Returns(mockEnvConnection.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
+
+            var server = new Mock<IServer>();
+            server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission> {WindowsGroupPermission.CreateAdministrators()});
+            
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), server.Object, a => env.Object, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel.CurrentEnvironment);
+            Assert.IsNotNull(schedulerViewModel.CurrentEnvironment.AuthorizationService);
+            Assert.IsTrue(schedulerViewModel.CurrentEnvironment.IsConnected);
         }
 
         [TestMethod]
@@ -1063,6 +1226,7 @@ namespace Dev2.Core.Tests.Settings
             var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
+            schedulerViewModel.ActiveItem = activeItem;
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
                 switch (args.PropertyName)
@@ -1314,6 +1478,11 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             mockScheduledResourceModel.Verify(model => model.CreateHistory(It.IsAny<IScheduledResource>()), Times.Once());
             Assert.IsNotNull(resourceHistories);
+            Assert.IsTrue(schedulerViewModel.IsHistoryTabVisible);
+            Assert.IsFalse(schedulerViewModel.IsProgressBarVisible);
+
+            schedulerViewModel.IsProgressBarVisible = false;
+            Assert.IsFalse(schedulerViewModel.IsProgressBarVisible);
         }
 
         [TestMethod]
@@ -1651,6 +1820,8 @@ namespace Dev2.Core.Tests.Settings
 
             schedulerViewModel.EditTriggerCommand.Execute(null);
             //------------Assert Results-------------------------
+
+            Assert.IsNotNull(schedulerViewModel.TriggerEditDialog);
             Assert.IsTrue(_triggerTextChange);
             Assert.AreEqual("bob", schedulerViewModel.SelectedTask.Name);
             Assert.AreEqual(2013, schedulerViewModel.SelectedTask.NextRunDate.Year);
@@ -1658,6 +1829,9 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(21, schedulerViewModel.SelectedTask.NextRunDate.Minute);
             Assert.IsTrue(schedulerViewModel.TriggerText.StartsWith("At"));
             Assert.IsTrue(schedulerViewModel.TriggerText.EndsWith("AM every day"));
+
+            schedulerViewModel.SelectedTask = null;
+            Assert.AreEqual("", schedulerViewModel.TriggerText);
         }
 
         [TestMethod]
@@ -1720,6 +1894,9 @@ namespace Dev2.Core.Tests.Settings
                         break;
                 }
             };
+
+            var canExec = schedulerViewModel.AddWorkflowCommand.CanExecute(null);
+            Assert.IsTrue(canExec);
 
             schedulerViewModel.AddWorkflowCommand.Execute(null);
             //------------Assert Results-------------------------  
@@ -1878,8 +2055,72 @@ namespace Dev2.Core.Tests.Settings
             auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null));
             Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.", schedulerViewModel.Error);
 
+            schedulerViewModel.SelectedTask = null;
+            schedulerViewModel.DoDeactivate(true);
+        }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_HandleServerSelectionChangedMessage")]
+        public void SchedulerViewModel_FalseDeActivateSave_AttemptsSave()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
+            resources.Add(scheduledResourceForTest);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializeObject = serializer.SerializeToBuilder(resources);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            ResourceRepository resourceRepo = new ResourceRepository(mockEnvironmentModel.Object);
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow2");
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow1").Object);
+            resourceRepo.Add(setupResourceModelMock.Object);
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
+            mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest };
 
+            var auth = new Mock<IAuthorizationService>();
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
+            schedulerViewModel.CurrentEnvironment = mockEnvironmentModel.Object;
+            //------------Execute Test---------------------------
+            schedulerViewModel.DoDeactivate(false);
+            //------------Assert Results-------------------------
+            auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null));
+            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server. You need Administrator permission.", schedulerViewModel.Error);
+
+            schedulerViewModel.SelectedTask = null;
+            schedulerViewModel.DoDeactivate(false);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_ShowSaveErrorDialog")]
+        public void SchedulerViewModel_ShowSaveErrorDialog_GivenMessage_Result()
+        {
+            //------------Setup for test--------------------------
+            string errorMessageUsed = "This is an error";
+            string errorMessageCalled = null;
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.ShowSaveErrorDialog(It.IsAny<string>())).Callback(
+                (string errorMessage) =>
+                {
+                    errorMessageCalled = errorMessage;
+                });
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
+            //------------Execute Test---------------------------
+            schedulerViewModel.CallShowErrorDialog(errorMessageUsed);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(errorMessageCalled);
+            Assert.AreEqual(errorMessageUsed,errorMessageCalled);
         }
 
     }
@@ -1915,12 +2156,16 @@ namespace Dev2.Core.Tests.Settings
             private set;
         }
 
-        public override void ShowSaveErrorDialog(string error)
+        public void CallShowErrorDialog(string error)
+        {
+            base.ShowSaveErrorDialog(error);
+        }
+        protected override void ShowSaveErrorDialog(string error)
         {
             ShowSaveErrorDialogCalled = true;
         }
 
-        public override void GetCredentials(IScheduledResource scheduledResource)
+        protected override void GetCredentials(IScheduledResource scheduledResource)
         {
             if (string.IsNullOrEmpty(scheduledResource.UserName) || string.IsNullOrEmpty(scheduledResource.Password))
             {
@@ -1930,7 +2175,7 @@ namespace Dev2.Core.Tests.Settings
             }
         }
 
-        public override IScheduleTrigger ShowEditTriggerDialog()
+        protected override IScheduleTrigger ShowEditTriggerDialog()
         {
             DailyTrigger dailyTrigger = new DailyTrigger { StartBoundary = new DateTime(2013, 04, 01, 02, 21, 25) };
             return SchedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, dailyTrigger));

@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 
 // ReSharper disable CheckNamespace
@@ -26,7 +27,7 @@ namespace Dev2.DataList.Contract
         /// <param name="filterTo">The filter TO.</param>
         /// <param name="isFromIntellisense"></param>
         /// <returns></returns>
-        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false);
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IIntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false);
 
         /// <summary>
         /// Makes the parts.

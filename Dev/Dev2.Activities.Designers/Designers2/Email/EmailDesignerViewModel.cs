@@ -186,7 +186,7 @@ namespace Dev2.Activities.Designers2.Email
 
         public void CreateEmailSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
+            CustomContainer.Get<IShellViewModel>().NewEmailSource(string.Empty);
             RefreshSources();
         }
 
@@ -366,12 +366,12 @@ namespace Dev2.Activities.Designers2.Email
         void ChooseAttachments()
         {
 
-            const string Separator = ";";
+            const string Separator = @";";
             var message = new FileChooserMessage();
             message.SelectedFiles = Attachments.Split(Separator.ToCharArray());
             message.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "SelectedFiles")
+                if (args.PropertyName == @"SelectedFiles")
                 {
                     if (message.SelectedFiles != null)
                     {

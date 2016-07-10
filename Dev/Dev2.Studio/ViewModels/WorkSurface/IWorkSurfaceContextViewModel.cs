@@ -33,7 +33,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         IDataListViewModel DataListViewModel { get; set; }
         IWorkSurfaceViewModel WorkSurfaceViewModel { get; set; }
         IContextualResourceModel ContextualResourceModel { get; }
-        AuthorizeCommand EditCommand { get; }
         AuthorizeCommand SaveCommand { get; }
         AuthorizeCommand RunCommand { get; }
         AuthorizeCommand ViewInBrowserCommand { get; }

@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Data.Interfaces;
+using Dev2.Data.TO;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
@@ -27,7 +29,7 @@ namespace Dev2.DataList.Contract
 
         public string DataList { set; private get; }
 
-        public IntellisenseFilterOpsTO FilterTO { get; set; }
+        public IIntellisenseFilterOpsTO FilterTO { get; set; }
 
         /// <summary>
         /// Generates this instance.

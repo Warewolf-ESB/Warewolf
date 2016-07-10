@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Interfaces;
@@ -28,7 +27,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016
             var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var oauthSources = new List<DropBoxSource> { new DropBoxSource { ResourceName = "Dropbox Source" } };
-            mockResourceRepo.Setup(repository => repository.GetResourceList<DropBoxSource>(env.Object, GlobalConstants.ServerWorkspaceID)).Returns(oauthSources);
+            mockResourceRepo.Setup(repository => repository.GetResourceList<DropBoxSource>(env.Object)).Returns(oauthSources);
             env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             return env.Object;
         });

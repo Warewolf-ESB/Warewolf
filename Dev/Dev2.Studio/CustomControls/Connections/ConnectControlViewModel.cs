@@ -294,14 +294,12 @@ namespace Dev2.CustomControls.Connections
 
                 if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
                 {
-                    // ADD OPTION TO CREATE NEW SERVER
-                    _mainViewModel.NewResourceCommand.Execute("Server");
+                    _mainViewModel.NewServerSourceCommand.Execute(string.Empty);
                 }
                 else
                 {
                     SelectedServer = selectedServer;
                     var environmentModel = EnvironmentRepository.Instance.Get(selectedServer.EnvironmentModel.ID);
-                    //_callbackHandler(selectedServer.EnvironmentModel);
                     _callbackHandler(environmentModel);
                 }
                 OnPropertyChanged();
@@ -390,8 +388,8 @@ namespace Dev2.CustomControls.Connections
         void GetServerToEdit(object param)
         {
 
-            var path = SelectedServer.EnvironmentModel.Category??"";
-            _mainViewModel.EditServer(new ServerSource()
+            var path = SelectedServer.EnvironmentModel.Category??string.Empty;
+            _mainViewModel.EditServer(new ServerSource
             {
                 Address = SelectedServer.EnvironmentModel.Connection.AppServerUri.ToString(), 
                 ID = SelectedServer.EnvironmentModel.ID, 

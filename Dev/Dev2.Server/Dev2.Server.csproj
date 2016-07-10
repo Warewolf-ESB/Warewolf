@@ -391,7 +391,7 @@
   <ItemGroup>
     <Content Include="Main.ico" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
