@@ -120,7 +120,7 @@ namespace Dev2.Common.DateAndTime.TO
                 if (DaysOfWeek != 0)
                 {
                     var tmpDate = new DateTime(Years, Months, Days);
-                    Days = tmpDate.AddDays(DaysOfWeek - DateTimeParser.GetDayOfWeekInt(tmpDate.DayOfWeek)).Day;
+                    Days = tmpDate.AddDays(DaysOfWeek - DateTimeParserHelper.GetDayOfWeekInt(tmpDate.DayOfWeek)).Day;
                 }
             }
 
