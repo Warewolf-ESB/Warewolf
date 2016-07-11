@@ -10,6 +10,8 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 
 // ReSharper disable InconsistentNaming
 
@@ -46,6 +48,24 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
             //------------Assert Results-------------------------
             Assert.IsNull(vm);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("RabbitMQPublishDesignerViewModel_Handle")]
+        public void RabbitMQPublishDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQSourceModel>().Object);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

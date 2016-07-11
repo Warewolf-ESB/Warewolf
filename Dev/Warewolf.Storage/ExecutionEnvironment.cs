@@ -61,16 +61,17 @@ namespace Warewolf.Storage
             {
                 return PublicFunctions.EvalEnvExpression(exp, 0, _env);
             }
-            catch (Exception e)
+            catch (IndexOutOfRangeException)
             {
-                if (e is IndexOutOfRangeException) throw;
-                if (IsRecordsetIdentifier(exp))
-                {
-                    var res = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
-                    res.AddNothing();
-                    return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(res);
-                }
-                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
+                throw;
+            }
+            catch (Exception)
+            {
+                if (!IsRecordsetIdentifier(exp))
+                    return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
+                var res = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
+                res.AddNothing();
+                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(res);
             }
         }
 
@@ -165,12 +166,12 @@ namespace Warewolf.Storage
                 return new List<string> { WarewolfAtomToString(x) };
             }
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (warewolfAtomListresult != null)
+            if (warewolfAtomListresult == null)
+                throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
             {
                 var x = warewolfAtomListresult.Item;
                 return x.Select(WarewolfAtomToString).ToList();
             }
-            throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
         public static string WarewolfAtomToString(DataStorage.WarewolfAtom a)
         {
@@ -324,7 +325,6 @@ namespace Warewolf.Storage
                 var replace = expression.Replace(@"()", @"(*)");
                 return replace;
             }
-
             return expression;
         }
 
@@ -334,12 +334,9 @@ namespace Warewolf.Storage
             if (result.IsWarewolfAtomResult)
             {
                 var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (warewolfAtomResult != null)
-                {
-                    var item = warewolfAtomResult.Item;
-                    return new List<DataStorage.WarewolfAtom> { item };
-                }
-                throw new Exception(@"Null when value should have been returned.");
+                if (warewolfAtomResult == null) throw new Exception(@"Null when value should have been returned.");
+                var item = warewolfAtomResult.Item;
+                return new List<DataStorage.WarewolfAtom> { item };
             }
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
             return x?.ToList();
@@ -356,13 +353,9 @@ namespace Warewolf.Storage
             _env = temp;
         }
 
-        public HashSet<string> Errors { get; private set; }
+        public HashSet<string> Errors { get; }
 
-        public HashSet<string> AllErrors
-        {
-            get;
-            private set;
-        }
+        public HashSet<string> AllErrors { get; }
 
         public void AddError(string error)
         {

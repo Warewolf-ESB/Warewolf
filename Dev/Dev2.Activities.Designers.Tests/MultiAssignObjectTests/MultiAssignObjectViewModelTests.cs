@@ -15,6 +15,8 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -48,6 +50,24 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MultiAssignObjectActivityViewModel_Handle")]
+        public void MultiAssignObjectActivityViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateDsfMultiAssignObjectActivityViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("MultiAssignObjectActivityViewModel_Constructor")]
         // ReSharper disable InconsistentNaming
@@ -63,6 +83,7 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
 
             //exe
             var vm = CreateDsfMultiAssignObjectActivityViewModel();
+            vm.Validate();
 
             //assert
             Assert.AreEqual(ExpectedCollectionName, vm.CollectionName, "Collection Name not initialized on Multi Assign load");
