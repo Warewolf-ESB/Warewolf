@@ -11,8 +11,11 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Common.DateAndTime;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeDifference
@@ -50,9 +53,28 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
+            viewModel.Validate();
             const string ExpectedValue = "Normal";
             viewModel.SelectedOutputType = ExpectedValue;
             Assert.AreEqual(ExpectedValue, viewModel.OutputType);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DateTimeDifferenceDesignerViewModel_Handle")]
+        public void DateTimeDifferenceDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new TestDateTimeDifferenceDesignerViewModel(CreateModelItem());
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         static ModelItem CreateModelItem()

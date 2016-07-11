@@ -706,8 +706,6 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table26.AddRow(new string[] {
                         "[[results(1).res]] = <string>value1</string>"});
-            table26.AddRow(new string[] {
-                        "[[results(2).res]] = <DataList><Result>Wait Successful</Result></DataList>"});
 #line 192
  testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden

@@ -9,7 +9,9 @@ using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Dev2.Util;
@@ -25,7 +27,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         const string AppLocalhost = "http://localhost:3142";
         [TestInitialize]
-        public void Initialize()
+        public void DropboxFileList_Initialize()
         {
             AppSettings.LocalHost = AppLocalhost;
         }
@@ -46,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DropBoxFileListViewModel_GivenIsNew_ShouldReturnInstance()
+        public void DropboxFileList_DropBoxFileListViewModel_GivenIsNew_ShouldReturnInstance()
         {
             //---------------Set up test pack-------------------
             var viewModel = new DropBoxFileListDesignerViewModel(CreateModelItem(), TestResourceCatalog.EventAggr.Value.Object, TestResourceCatalog.LazySourceManager.Value);
@@ -57,12 +59,31 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DropBoxFileListViewModel_Handle")]
+        public void DropBoxFileListViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateMockViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DropBoxFileListViewModel_Construct")]
-        public void DropBoxFileListViewModel_Construct_GivenNewInstance_ShouldBeActivityViewModel()
+        public void DropboxFileList_DropBoxFileListViewModel_Construct_GivenNewInstance_ShouldBeActivityViewModel()
         {
             //------------Setup for test--------------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
+            dropBoxFileListViewModel.Validate();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxFileListViewModel);
             //------------Assert Results-------------------------
@@ -72,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Sources_GivenANewDropBoxViewModel_ShouldHaveNotBeNull()
+        public void DropboxFileList_Sources_GivenANewDropBoxViewModel_ShouldHaveNotBeNull()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -87,7 +108,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        public void DropboxFileList_ToPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -98,7 +119,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Files_GivenActivityIsNew_ShouldBeEmpty()
+        public void DropboxFileList_Files_GivenActivityIsNew_ShouldBeEmpty()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -112,7 +133,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        public void DropboxFileList_Result_GivenActivityIsNew_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -125,7 +146,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsRecursive_GivenActivityIsNew_ShouldBeFalse()
+        public void DropboxFileList_IsRecursive_GivenActivityIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -138,7 +159,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeMediaInfo_GivenActivityIsNew_ShouldBeFalse()
+        public void DropboxFileList_IncludeMediaInfo_GivenActivityIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -151,7 +172,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeDeleted_GivenActivityIsNew_ShouldBeFalse()
+        public void DropboxFileList_IncludeDeleted_GivenActivityIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -164,7 +185,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesSelected_GivenActivityIsNew_ShouldBeTrue()
+        public void DropboxFileList_IsFilesSelected_GivenActivityIsNew_ShouldBeTrue()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -177,7 +198,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFoldersSelected_GivenActivityIsNew_ShouldBeFalse()
+        public void DropboxFileList_IsFoldersSelected_GivenActivityIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -190,7 +211,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesAndFoldersSelected_GivenActivityIsNew_ShouldBeFalse()
+        public void DropboxFileList_IsFilesAndFoldersSelected_GivenActivityIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -204,7 +225,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SelectedSourceName_GivenActivityIsNewAndNoSourceSelected_ShouldBeNullOrEmpty()
+        public void DropboxFileList_SelectedSourceName_GivenActivityIsNewAndNoSourceSelected_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var dropBoxFileListViewModel = CreateMockViewModel();
@@ -221,7 +242,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void dropBoxFileListViewModel_EditSourcePublishesMessage()
+        public void DropboxFileList_dropBoxFileListViewModel_EditSourcePublishesMessage()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -239,23 +260,26 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void dropBoxFileListViewModel_NewSourcePublishesMessage()
+        public void DropboxFileList_dropBoxFileListViewModel_NewSourcePublishesMessage()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
-
+            CustomContainer.DeRegister<IShellViewModel>();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
             var dropBoxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
-            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Execute Test---------------------------
+            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Assert Results-------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
             CustomContainer.DeRegister<IShellViewModel>();
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void dropBoxFileListViewModel_EditSourceOnlyAvailableIfSourceSelected()
+        public void DropboxFileList_dropBoxFileListViewModel_EditSourceOnlyAvailableIfSourceSelected()
         {
             var agg = new Mock<IEventAggregator>();
             var sources = GetSources();
@@ -272,7 +296,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void downloadViewModel_EditSourceAvailableIfSourceSelected()
+        public void DropboxFileList_downloadViewModel_EditSourceAvailableIfSourceSelected()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -286,7 +310,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_ToPath_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -308,7 +332,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeMediaInfo_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_IncludeMediaInfo_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -330,7 +354,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsRecursive_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_IsRecursive_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -352,7 +376,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeDeleted_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_IncludeDeleted_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -374,7 +398,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesSelected_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_IsFilesSelected_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -395,7 +419,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFoldersSelected_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_IsFoldersSelected_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -416,7 +440,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesAndFoldersSelected_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_IsFilesAndFoldersSelected_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -438,7 +462,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxFileList_Result_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -461,7 +485,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateOAuthSource_GivenCanPublish_ShouldResfreshSources()
+        public void DropboxFileList_CreateOAuthSource_GivenCanPublish_ShouldResfreshSources()
         {
             var agg = new Mock<IEventAggregator>();
 
@@ -486,21 +510,24 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateOAuthSource_GivenCanPublish_ShouldPusbilsh()
+        public void DropboxFileList_CreateOAuthSource_GivenCanPublish_ShouldPublish()
         {
             var agg = new Mock<IEventAggregator>();
             agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
             var model = CreateModelItem();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-           
-            
+
+
             var mockVM = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             //---------------Assert Precondition----------------
-            mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            mockVM.CreateOAuthSource();
             //---------------Test Result -----------------------
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
         }
 
 

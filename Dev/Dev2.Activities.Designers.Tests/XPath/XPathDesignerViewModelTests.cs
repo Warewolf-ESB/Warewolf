@@ -11,8 +11,11 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.XPath;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.XPath
@@ -29,6 +32,26 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var items = new List<XPathDTO> { new XPathDTO() };
             var viewModel = new XPathDesignerViewModel(CreateModelItem(items));
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("XPathDesignerViewModel_Handle")]
+        public void XPathDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var items = new List<XPathDTO> { new XPathDTO() };
+            var viewModel = new XPathDesignerViewModel(CreateModelItem(items));
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
