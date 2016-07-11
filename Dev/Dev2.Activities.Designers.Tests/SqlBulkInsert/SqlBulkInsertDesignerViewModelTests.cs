@@ -83,7 +83,12 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem());
+
+            var modelItem = CreateModelItem();
+            const int DatabaseCount = 2;
+            var databases = CreateDatabases(DatabaseCount);
+
+            var viewModel = CreateViewModel(modelItem, databases);
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
