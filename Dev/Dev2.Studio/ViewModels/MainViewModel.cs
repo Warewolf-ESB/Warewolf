@@ -184,6 +184,7 @@ namespace Dev2.Studio.ViewModels
         void OnActiveEnvironmentChanged()
         {
             NewDatabaseSourceCommand.UpdateContext(ActiveEnvironment);
+            NewServiceCommand.UpdateContext(ActiveEnvironment);
             NewPluginSourceCommand.UpdateContext(ActiveEnvironment);
             NewWebSourceCommand.UpdateContext(ActiveEnvironment);
             NewWcfSourceCommand.UpdateContext(ActiveEnvironment);
