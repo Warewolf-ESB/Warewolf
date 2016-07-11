@@ -11,8 +11,11 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.FindIndex
@@ -77,7 +80,28 @@ namespace Dev2.Activities.Designers.Tests.FindIndex
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestFindIndexDesignerViewModel(modelItem);
+            viewModel.Validate();
             Assert.AreEqual(2, viewModel.DirectionList.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FindDirectionDesignerViewModel_Handle")]
+        public void FindDirectionDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var modelItem = CreateModelItem();
+            var viewModel = new TestFindIndexDesignerViewModel(modelItem);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

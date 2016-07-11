@@ -7,7 +7,9 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
 using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -47,6 +49,24 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("DropBoxDeleteViewModel_Handle")]
+        public void DropBoxDeleteViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateMockViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("DropBoxDeleteViewModel_Sources")]
         public void DropBoxDeleteViewModel_Sources_GivenANewDropBoxViewModel_ShouldHaveNotBeNull()
         {
@@ -54,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var dropBoxDeleteViewModel = CreateMockViewModel();
 
             //------------Execute Test---------------------------
-
+            dropBoxDeleteViewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxDeleteViewModel, typeof(ActivityDesignerViewModel));
             Assert.IsNotNull(dropBoxDeleteViewModel.Sources);
