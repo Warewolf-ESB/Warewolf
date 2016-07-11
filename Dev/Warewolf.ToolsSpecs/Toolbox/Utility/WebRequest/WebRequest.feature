@@ -189,6 +189,3 @@ Scenario: Enter a recordset star input and output
 	| URL                                                                     | Header |
 	| [[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx |        |
 	| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15  |        |
-	And the debug output as 
-	|                                                                                      |
-	| [[results(1).res]] = <string>value1</string>                                         |
