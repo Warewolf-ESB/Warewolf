@@ -64,7 +64,6 @@ namespace Dev2.Tests.Activities.TOTests
                     jsonMappingEvaluatedLocal.EvalResult.Should().Be(dataObject.Environment.EvalForJson(scalarsSn[i]));
                     jsonMappingEvaluatedLocal.EvalResultAsObject.Should().Be(scalarsV[i]);
                 }
-
                 jsonMappingEvaluatedLocal.Count.Should().Be(1);
             }
 
