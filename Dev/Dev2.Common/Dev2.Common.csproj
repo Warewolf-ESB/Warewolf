@@ -104,9 +104,11 @@
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
     <Compile Include="Common\NullValueInVariableException.cs" />
+    <Compile Include="DateAndTime\CompareTextValueToDateTimePart.cs" />
     <Compile Include="DateAndTime\DateTimeComparer.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactory.cs" />
     <Compile Include="DateAndTime\DateTimeFormatter.cs" />
+    <Compile Include="DateAndTime\DateTimeLiteralProcessor.cs" />
     <Compile Include="DateAndTime\DateTimeParser.cs" />
     <Compile Include="DateAndTime\TO\DateTimeDiffTO.cs" />
     <Compile Include="DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
