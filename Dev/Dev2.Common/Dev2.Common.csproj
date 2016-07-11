@@ -138,6 +138,13 @@
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="IDev2IJsonListEvaluator.cs" />
     <Compile Include="IncludeApi.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatForwardLookup.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatForwardLookupsForDotNet.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatPart.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatPartsForDotNet.cs" />
+    <Compile Include="Interfaces\IDateTimeParserBuilder.cs" />
+    <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
+    <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="MaintainerApi.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
@@ -151,6 +158,8 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatPart.cs" />
+    <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="Utils\StringTransform.cs" />
