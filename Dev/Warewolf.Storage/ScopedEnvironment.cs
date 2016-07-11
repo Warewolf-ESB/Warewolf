@@ -39,14 +39,12 @@ namespace Warewolf.Storage
             _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
         }
 
-
-
         private string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
         {
             return exp.Replace(_alias, datasource);
         }
 
-        static string ReplaceStarWithFixedIndex(string exp, int idx)
+        public static string ReplaceStarWithFixedIndex(string exp, int idx)
         {
             return idx > 0 ? exp.Replace("(*)", "(" + idx + ")") : exp;
         }
@@ -197,7 +195,6 @@ namespace Warewolf.Storage
 
         public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
         {
-
             return _inner.EvalForDataMerge(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
 
 // ReSharper disable InconsistentNaming
@@ -30,7 +31,6 @@ namespace Warewolf.Storage.Tests
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "bob", "builder");
 
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
             PrivateObject p = new PrivateObject(scopedEnvironment);
             Assert.AreEqual(_mockEnv.Object, p.GetField("_inner"));
@@ -50,6 +50,18 @@ namespace Warewolf.Storage.Tests
             scopedEnvironment.Eval("[[a]]", 0);
             //------------Assert Results-------------------------
             _mockEnv.Verify(a => a.Eval("[[Person(*)]]", 0, false));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_Eval")]
+        public void GivenValueWithStars_ScopedEnvironment_ReplaceStarWithFixedIndex_ShouldReplaceStarsWithIndex()
+        {
+            //------------Setup for test--------------------------            
+            //------------Execute Test---------------------------
+            var replaceStarWithFixedIndex = ScopedEnvironment.ReplaceStarWithFixedIndex("[[Person(*)]]", 3);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[[Person(3)]]", replaceStarWithFixedIndex);
         }
 
         [TestMethod]
@@ -476,9 +488,8 @@ namespace Warewolf.Storage.Tests
         {
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(1)]]", "[[a]]");
             SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalForDataMerge("[[a]]", 1));
-
-
         }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ScopedEnvironment_EvalForDataMerge")]
@@ -488,9 +499,7 @@ namespace Warewolf.Storage.Tests
             SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalForDataMerge("[[b]]", 1));
 
         }
-
-
-
+        
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ScopedEnvironment_HasRecordSet")]
@@ -563,6 +572,131 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_ApplyUpdate_expectPassThrough()
+        {
+            var personName = "[[@Person(*).Name]]";
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
+            var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => atom);
+            _mockEnv.Setup(environment => environment.Eval(personName, 0, false))
+                .Returns(() => CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing));            
+            scopedEnvironment.ApplyUpdate(personName, clause, 0);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_AssignJson_expectPassThrough()
+        {
+            var personName = "[[@Person(*).Name]]";
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
+            scopedEnvironment.AssignJson(new AssignValue(personName, "[[a]]"),0);
+            _mockEnv.Verify(environment => environment.AssignJson(new AssignValue(personName, "[[a]]"), 0));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void GivenListOfJsonObjcts_ScopedEnvironment_AssignJson_ShouldAssighnAll()
+        {
+            var personName = "[[@Person(*).Name]]";
+            var assignValues = new List<IAssignValue>
+            {
+                new AssignValue("[[@Person.Name]]", "John"),
+                new AssignValue("[[@Person(2).Name]]", "James"),
+                new AssignValue("[[@Person(3).Name]]", "Jason")
+            };
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
+            scopedEnvironment.AssignJson(assignValues, 0);
+            _mockEnv.Verify(environment => environment.AssignJson(assignValues, 0));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void GivenListOfJsonObjct_ScopedEnvironment_AddToJsonObjects_ShouldAddJsonObject()
+        {            
+            var personName = "[[@Person().Name]]";
+            var childName = "[[@Person().Name]]";
+
+            var obj = new JArray(personName);
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
+            scopedEnvironment.AddToJsonObjects(childName,  obj);
+            _mockEnv.Verify(environment => environment.AddToJsonObjects(childName, obj));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void GivenListOfJsonObjct_ScopedEnvironment_EvalForJson_ShouldAddJsonObject()
+        {
+            var personName = "[[@Person().Name]]";
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
+            scopedEnvironment.EvalForJson(personName);
+            _mockEnv.Verify(environment => environment.EvalForJson(personName));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void GivenListOfJsonObjct_ScopedEnvironment_AssignUnique_Should()
+        {
+            var personName = "[[@Person().Name]]";
+            var recs = new List<string>
+            {
+                "[[Person().Name]]",
+                "[[Person(1).Name]]",
+                "[[Person(2).Name]]"
+            };
+            var values = new List<string> {personName};
+            var resList = new List<string>();
+            Assert.IsNotNull(resList);
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
+            scopedEnvironment.AssignUnique(recs, values, resList, 0);
+            _mockEnv.Verify(environment => environment.AssignUnique(recs, values, resList, 0));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_GetIndexes_ShouldGetIndex()
+        {
+            var datasource = "[[@Person(*).Name]]";
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, datasource, "[[a]]");
+            scopedEnvironment.GetIndexes(datasource);            
+            _mockEnv.Verify(environment => environment.GetIndexes(datasource));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_EvalJContainer_Should()
+        {
+            var datasource = "[[@Person(*).Name]]";
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, datasource, "[[a]]");
+            scopedEnvironment.EvalJContainer(datasource);            
+            _mockEnv.Verify(environment => environment.EvalJContainer(datasource));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_SetDataSource_ShouldSetNewDataSource()
+        {
+            var datasource = "[[Person(*)]]";
+            var personName = "[[@Person(*).Name]]";
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, datasource, "[[a]]");
+            var privateObj = new PrivateObject(scopedEnvironment);
+            var ds = privateObj.GetField("_datasource");
+            Assert.IsNotNull(ds);
+            Assert.AreEqual(datasource, ds);
+            scopedEnvironment.SetDataSource(personName);
+            ds = privateObj.GetField("_datasource");
+            Assert.AreEqual(personName, ds);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
         public void ScopedEnvironment_AssignDataShape_expectPassThrough_NoReplace()
         {
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
@@ -593,7 +727,6 @@ namespace Warewolf.Storage.Tests
 
          void SetupReplacementFunction(ScopedEnvironment env, IEnumerable<string> originals, IEnumerable<string> replacements, Action<ScopedEnvironment> envAction)
         {
-
             var orzipped = originals.Zip(replacements, (a, b) => new Tuple<string, string>(a, b));
            PrivateObject p = new PrivateObject(env);
            var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int,string,string>;
@@ -606,32 +739,25 @@ namespace Warewolf.Storage.Tests
                    Assert.IsTrue(orzipped.Any(a=>a.Item1==val&&a.Item2==replaced));
                   
                    return replaced;
-               } 
-               )
-               );
+               }));
            envAction(env);
         }
-         void SetupReplacementFunctionDoesNotOccur(ScopedEnvironment env,  Action<ScopedEnvironment> envAction)
-         {
 
+        void SetupReplacementFunctionDoesNotOccur(ScopedEnvironment env, Action<ScopedEnvironment> envAction)
+        {
+            PrivateObject p = new PrivateObject(env);
+            var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int, string, string>;
+            p.SetFieldOrProperty("_doReplace", new Func<string, int, string, string>(
+                (s, i, val) =>
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    var replaced = fun(s, i, val);
 
-             PrivateObject p = new PrivateObject(env);
-             var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int, string, string>;
-             p.SetFieldOrProperty("_doReplace", new Func<string, int, string, string>(
-                 (s, i, val) =>
-                 {
+                    Assert.AreEqual(replaced, val);
+                    return replaced;
+                }));
+            envAction(env);
 
-                     // ReSharper disable once PossibleNullReferenceException
-                     var replaced = fun(s, i, val);
-    
-                     Assert.AreEqual(replaced,val);
-                     return replaced;
-                 }
-                 )
-                 );
-             envAction(env);
-          
-         }
-      
+        }
     }
 }
