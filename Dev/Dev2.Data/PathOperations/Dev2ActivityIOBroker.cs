@@ -52,6 +52,7 @@ namespace Dev2.PathOperations
         {
             _fileWrapper = fileWrapper;
             _common = common;
+            _filesToDelete = new List<string>();
         }
 
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
