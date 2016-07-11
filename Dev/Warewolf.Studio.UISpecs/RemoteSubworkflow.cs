@@ -16,14 +16,14 @@ namespace Warewolf.Studio.UISpecs
     /// Summary description for RemoteServer
     /// </summary>
     [CodedUITest]
-    public class RemoteWorkflow
+    public class RemoteSubworkflow
     {
-        public RemoteWorkflow()
+        public RemoteSubworkflow()
         {
         }
 
         [TestMethod]
-        public void BigRemoteWorkflowUITest()
+        public void BigRemoteSubworkflowUITest()
         {
             Uimap.Assert_NewWorkFlow_RibbonButton_Exists();
             Uimap.Click_New_Workflow_Ribbon_Button();
