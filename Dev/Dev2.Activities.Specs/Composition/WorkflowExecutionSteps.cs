@@ -2050,5 +2050,48 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
+        [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
+        public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
+        {
+            //Load Source based on the name
+            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.LoadResources();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\testingDBSrc").FirstOrDefault();
+
+            if (resource == null)
+            {
+                // ReSharper disable NotResolvedInText
+                throw new ArgumentNullException("resource");
+                // ReSharper restore NotResolvedInText
+            }
+
+            var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
+            {
+                ProcedureName = serviceName,
+                DisplayName = serviceName,
+                SourceId = resource.ID,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = new List<IServiceInput>()
+            };
+            foreach (var tableRow in table.Rows)
+            {
+                var output = tableRow["Output from Service"];
+                var toVariable = tableRow["To Variable"];
+                var recSetName = DataListUtil.ExtractRecordsetNameFromValue(toVariable);
+                mySqlDatabaseActivity.Outputs.Add(new ServiceOutputMapping(output, toVariable, recSetName));
+                _commonSteps.AddVariableToVariableList(toVariable);
+
+                var input = tableRow["Input to Service"];
+                var fromVariable = tableRow["From Variable"];
+                if (!string.IsNullOrEmpty(input))
+                {
+                    mySqlDatabaseActivity.Inputs.Add(new ServiceInput(input, fromVariable));
+                    _commonSteps.AddVariableToVariableList(fromVariable);
+                }
+            }
+            _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
+        }
+
     }
 }

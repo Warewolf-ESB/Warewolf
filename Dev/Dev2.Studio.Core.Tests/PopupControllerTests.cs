@@ -11,8 +11,9 @@
 using System;
 using System.Windows;
 using Dev2.Common;
-using Dev2.Studio.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Studio.Core.Popup;
+using PopupController = Dev2.Studio.Controller.PopupController;
 
 namespace Dev2.Core.Tests
 {
@@ -51,6 +52,530 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(MessageBoxButton.YesNo, buttons);
             Assert.AreEqual("Are you sure?", header);
             Assert.AreEqual("Are you sure you want to delete " + NameOfItemBeingDeleted + "?", description);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeleteVersionMessage")]
+        public void PopupController_ShowDeleteVersionMessage_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            const string NameOfItemBeingDeleted = "Random button";
+            //------------Execute Test---------------------------
+            popupController.ShowDeleteVersionMessage(NameOfItemBeingDeleted);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNo, buttons);
+            Assert.AreEqual("Delete version", header);
+            Assert.AreEqual("Are you sure you want to delete " + NameOfItemBeingDeleted + "?", description);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployConflict")]
+        public void PopupController_ShowDeployConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+            
+            //------------Execute Test---------------------------
+            int conflictCount = 1;
+
+            popupController.ShowDeployConflict(conflictCount);
+
+            string correctDesc = String.Empty;
+            if (conflictCount == 1)
+            {
+                correctDesc = "There is [ " + conflictCount + " ] conflict that occurs";
+            }
+
+            string Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Continue to deploy resources." + Environment.NewLine +
+                          "Cancel - Cancel the deploy and view the conflicts.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual("Deploy conflicts", header);
+            Assert.AreEqual(Description, description);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployConflict")]
+        public void PopupController_ShowDeployConflictTwo_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            int conflictCount = 2;
+
+            popupController.ShowDeployConflict(conflictCount);
+
+            string correctDesc = String.Empty;
+            if (conflictCount > 1)
+            {
+                correctDesc = "There are [ " + conflictCount + " ] conflicts that occur";
+            }
+
+            string Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Continue to deploy resources." + Environment.NewLine +
+                          "Cancel - Cancel the deploy and view the conflicts.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual("Deploy conflicts", header);
+            Assert.AreEqual(Description, description);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployNameConflict")]
+        public void PopupController_ShowDeployNameConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string message = "Workflow1 already exists";
+            popupController.ShowDeployNameConflict(message);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual("Deploy Name conflicts", header);
+            Assert.AreEqual(message, description);
+            Assert.IsFalse(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployResourceNameConflict")]
+        public void PopupController_ShowDeployResourceNameConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string conflictResourceName = "Workflow1";
+            popupController.ShowDeployResourceNameConflict(conflictResourceName);
+
+            string message = "There is a conflict between the two resources in this deploy." +
+                Environment.NewLine + "Conflict Resource Name: " + conflictResourceName +
+                Environment.NewLine + "Click OK and rename the conflicting resource/s." +
+                Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Cancel the deploy.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Deploy ResourceName conflicts", header);
+            Assert.AreEqual(message, description);
+            Assert.IsTrue(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsFalse(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployServerMinVersionConflict")]
+        public void PopupController_ShowDeployServerMinVersionConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string sourceServerVersion = "0.0.0.9";
+            string destinationServerVersion = "1.0.0.0";
+            popupController.ShowDeployServerMinVersionConflict(sourceServerVersion, destinationServerVersion);
+
+            string message = "There is a conflict between the two versions in this deploy." +
+                Environment.NewLine + "Source Server Version: " + sourceServerVersion +
+                Environment.NewLine + "Destination Minimum supported version: " + destinationServerVersion +
+                Environment.NewLine + "The destination server does not support all the same features as the source server and your deployment is not guaranteed to work. " +
+                Environment.NewLine + "Click OK to continue or Cancel to return." +
+                Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Continue to deploy resources." + Environment.NewLine +
+                          "Cancel - Cancel the deploy.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual("Deploy Version conflicts", header);
+            Assert.AreEqual(message, description);
+            Assert.IsTrue(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsFalse(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployServerVersionConflict")]
+        public void PopupController_ShowDeployServerVersionConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string sourceServerVersion = "0.0.0.9";
+            string destinationServerVersion = "1.0.0.0";
+            popupController.ShowDeployServerVersionConflict(sourceServerVersion, destinationServerVersion);
+
+            string message = "There is a conflict between the two versions in this deploy." +
+                Environment.NewLine + "Source Server Version: " + sourceServerVersion +
+                Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
+                Environment.NewLine + "Click OK to continue or Cancel to return." +
+                Environment.NewLine +
+                          "--------------------------------------------------------------------------------" +
+                              Environment.NewLine +
+                          "OK - Continue to deploy resources." + Environment.NewLine +
+                          "Cancel - Cancel the deploy.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OKCancel, buttons);
+            Assert.AreEqual("Deploy Version conflicts", header);
+            Assert.AreEqual(message, description);
+            Assert.IsTrue(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsFalse(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowRollbackVersionMessage")]
+        public void PopupController_ShowRollbackVersionMessage_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string displayName = "DisplayName";
+            popupController.ShowRollbackVersionMessage(displayName);
+
+            var message = $"{displayName} will become the current version.{Environment.NewLine}Do you want to proceed ?";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNo, buttons);
+            Assert.AreEqual("Make current version", header);
+            Assert.AreEqual(message, description);
+            Assert.IsTrue(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsFalse(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowServerNotConnected")]
+        public void PopupController_ShowServerNotConnected_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string server = "localhost";
+            popupController.ShowServerNotConnected(server);
+
+            var message = "The server " + server + " is unreachable and will be removed form your explorer tab. Please reconnect to save any unsaved work.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Server is not connected", header);
+            Assert.AreEqual(message, description);
+            Assert.IsFalse(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowConnectServerVersionConflict")]
+        public void PopupController_ShowConnectServerVersionConflict_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string selectedServerVersion = "0.0.0.9";
+            string currentServerVersion = "1.0.0.0";
+            popupController.ShowConnectServerVersionConflict(selectedServerVersion, currentServerVersion);
+
+            string message = "There is a version conflict with the current selected server." + Environment.NewLine +
+                Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
+                Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
+                Environment.NewLine + "Please make sure that the server you are trying to connect to has the latest version.";
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Server Version conflict", header);
+            Assert.AreEqual(message, description);
+            Assert.IsFalse(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowConnectionTimeoutConfirmation")]
+        public void PopupController_ShowConnectionTimeoutConfirmation_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string server = "localhost";
+            popupController.ShowConnectionTimeoutConfirmation(server);
+
+            var message = " Unable to reach " + server + ": Connection timed out." + Environment.NewLine
+                              + " Make sure the remote computer is powered on." + Environment.NewLine
+                              + Environment.NewLine
+                              + " Would you like to re-try? " + Environment.NewLine;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNo, buttons);
+            Assert.AreEqual("Server is unreachable", header);
+            Assert.AreEqual(message, description);
+            Assert.IsFalse(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowPopupMessage")]
+        public void PopupController_ShowPopupMessage_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            var popupMessage = new PopupMessage
+            {
+                Description = "This is a test error message",
+                Image = MessageBoxImage.Error,
+                Buttons = MessageBoxButton.OK,
+                IsError = true,
+                Header = @"Error"
+
+            };
+
+            //------------Execute Test---------------------------
+            popupController.Show(popupMessage);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Error", header);
+            Assert.AreEqual("This is a test error message", description);
+            Assert.IsFalse(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
         }
 
         [TestMethod]
