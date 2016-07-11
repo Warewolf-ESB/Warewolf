@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -34,7 +35,7 @@ namespace Dev2.Settings.Logging
     {
         public IEnvironmentModel CurrentEnvironment
         {
-            get
+            private get
             {
                 return _currentEnvironment;
             }
@@ -47,18 +48,18 @@ namespace Dev2.Settings.Logging
         }
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
-        LogLevel _serverEventLogLevel;
-        LogLevel _studioEventLogLevel;
-        ProgressDialogViewModel _progressDialogViewModel;
-        string _serverLogFile;
-        IEnvironmentModel _currentEnvironment;
+        private LogLevel _serverEventLogLevel;
+        private LogLevel _studioEventLogLevel;
+        private ProgressDialogViewModel _progressDialogViewModel;
+        private string _serverLogFile;
+        private IEnvironmentModel _currentEnvironment;
         private LogLevel _serverFileLogLevel;
         private LogLevel _studioFileLogLevel;
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
-            if (logging == null) throw new ArgumentNullException("logging");
-            if (currentEnvironment == null) throw new ArgumentNullException("currentEnvironment");
+            if (logging == null) throw new ArgumentNullException(nameof(logging));
+            if (currentEnvironment == null) throw new ArgumentNullException(nameof(currentEnvironment));
             CurrentEnvironment = currentEnvironment;
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
@@ -110,12 +111,14 @@ namespace Dev2.Settings.Logging
            
         }
 
+        [ExcludeFromCodeCoverage]
         void DownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs)
         {
             _progressDialogViewModel.Close();
             Process.Start(_serverLogFile);
         }
 
+        [ExcludeFromCodeCoverage]
         void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             _progressDialogViewModel.SubLabel = "";
