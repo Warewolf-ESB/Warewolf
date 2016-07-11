@@ -87,6 +87,7 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: Clicking the save button in the save dialog adds it to the explorer remote servers dropdown list
             //uimap.Assert_SaveDialog_SaveButton_Enabled();
             uimap.Click_SaveDialog_YesButton();
+            //TODO: Remove this workaround
             uimap.Click_Close_Server_Source_Wizard_Tab_Button();
             explorerTreeItemActionSteps.AssertItemExistsAtBottomOfExplorer("localhost\\TSTCIREMOTE");
 
