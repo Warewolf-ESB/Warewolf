@@ -1749,3 +1749,4 @@ namespace Dev2.Common.DateAndTime
         public List<IDateTimeFormatPartTO> DateTimeFormatParts => DateTimeFormatsParts.Values.ToList();
     }
 }
+
