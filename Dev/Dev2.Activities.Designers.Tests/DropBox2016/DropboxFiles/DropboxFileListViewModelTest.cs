@@ -243,13 +243,16 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
-
+            CustomContainer.DeRegister<IShellViewModel>();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
             var dropBoxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
-            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Execute Test---------------------------
+            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Assert Results-------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
             CustomContainer.DeRegister<IShellViewModel>();
         }
         [TestMethod]
@@ -491,16 +494,19 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
             var model = CreateModelItem();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-           
-            
+
+
             var mockVM = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             //---------------Assert Precondition----------------
-            mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            mockVM.CreateOAuthSource();
             //---------------Test Result -----------------------
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
         }
 
 

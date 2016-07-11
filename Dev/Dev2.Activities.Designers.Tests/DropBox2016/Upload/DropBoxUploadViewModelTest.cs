@@ -164,13 +164,16 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
-          
+            CustomContainer.DeRegister<IShellViewModel>();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
             var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
-            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Execute Test---------------------------
+            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Assert Results-------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
             CustomContainer.DeRegister<IShellViewModel>();
         }
 
