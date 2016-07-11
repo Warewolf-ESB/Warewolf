@@ -291,14 +291,18 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
             var model = CreateModelItem();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //---------------Setup for test-----------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
             var mockVM = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             //---------------Assert Precondition------------------
-            mockVM.CreateOAuthSource();
+
             //---------------Execute Test ------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            mockVM.CreateOAuthSource();
             //---------------Test Result -------------------------
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()),Times.Once);
         }
     }
 }
