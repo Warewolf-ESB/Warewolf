@@ -17,6 +17,8 @@ using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -58,10 +60,29 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
             //------------Execute Test---------------------------
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem);
+            sequenceDesignerViewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(sequenceDesignerViewModel);
             Assert.IsInstanceOfType(sequenceDesignerViewModel, typeof(ActivityDesignerViewModel));
             Assert.AreEqual("Created Sequence", sequenceDesignerViewModel.ModelItem.GetProperty("DisplayName"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SequenceDesignerViewModel_Handle")]
+        public void SequenceDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new SequenceDesignerViewModel(CreateModelItem());
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

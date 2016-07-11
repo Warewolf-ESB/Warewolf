@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 
 // ReSharper disable InconsistentNaming
 
@@ -91,6 +93,24 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm.EditRabbitMQSourceCommand);
             Assert.IsNotNull(vm.NewRabbitMQSourceCommand);
             Assert.IsNotNull(vm.RabbitMQSources);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("RabbitMQConsumeDesignerViewModel_Handle")]
+        public void RabbitMQConsumeDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQSourceModel>().Object);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
