@@ -12,10 +12,13 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
@@ -167,6 +170,31 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             //------------Assert Results-------------------------
             Assert.AreEqual(isSearchCriteriaEnabled, findRecordsTO.IsSearchCriteriaEnabled);
             Assert.AreEqual(isSearchCriteriaBlank, string.IsNullOrEmpty(findRecordsTO.SearchCriteria));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FindRecordsMultipleCriteriaViewModel_Handle")]
+        public void FindRecordsMultipleCriteriaViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------   
+            var items = new List<FindRecordsTO>
+            {
+                new FindRecordsTO("xxxx", "Equals", 1),
+                new FindRecordsTO("yyyy", "Contains", 2)
+            };
+
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(CreateModelItem(items));
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
 

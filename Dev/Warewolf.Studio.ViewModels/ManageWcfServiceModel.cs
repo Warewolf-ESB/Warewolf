@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource("WcfSource", "");
+            _shell.NewWcfSource(string.Empty);
         }
 
 

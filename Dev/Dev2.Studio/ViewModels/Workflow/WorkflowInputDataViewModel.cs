@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -47,7 +46,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         //2012.10.11: massimo.guerrera - Added for PBI 5781
         private OptomizedObservableCollection<IDataListItem> _workflowInputs;
         private RelayCommand _executeCommmand;
-        private DelegateCommand _cancelComand;
         private string _xmlData;
         private static IContextualResourceModel _resourceModel;
         private bool _rememberInputs;
@@ -61,23 +59,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         public event Action DebugExecutionStart;
         public event Action DebugExecutionFinished;
 
-        void OnDebugExecutionFinished()
+        private void OnDebugExecutionFinished()
         {
             var handler = DebugExecutionFinished;
-            if (handler != null)
-            {
-                handler();
-            }
+            handler?.Invoke();
         }
 
         void OnDebugExecutionStart()
         {
             Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
             var handler = DebugExecutionStart;
-            if (handler != null)
-            {
-                handler();
-            }
+            handler?.Invoke();
         }
 
         #region Ctor
@@ -132,7 +124,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// The transfer object that holds all the information needed for a debug session
         /// </summary>
-        public DebugTO DebugTo { get; set; }
+        public DebugTO DebugTo { get; private set; }
 
         /// <summary>
         /// Collection of IDataListItems that contain all the inputs
@@ -158,7 +150,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Boolean that contains the option for remembering the inputs for that workflow
         /// </summary>
-        public bool RememberInputs
+        private bool RememberInputs
         {
             get
             {
@@ -190,7 +182,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
-        public bool CanViewInBrowser
+        private bool CanViewInBrowser
         {
             get
             {
@@ -208,7 +200,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public bool CanDebug
+        private bool CanDebug
         {
             get
             {
@@ -226,7 +218,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public RelayCommand OkCommand
+        private RelayCommand OkCommand
         {
             get
             {
@@ -234,22 +226,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public RelayCommand ViewInBrowserCommand
+        private RelayCommand ViewInBrowserCommand
         {
             get
             {
                 return _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
             }
         }
-
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
-            }
-        }
-        public bool IsInError { get; set; }
+   
+        public bool IsInError { private get; set; }
 
         #endregion Cammands
 
@@ -286,28 +271,23 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ExecuteWorkflow()
         {
-            if (_resourceModel == null || _resourceModel.Environment == null)
+            if (_resourceModel?.Environment == null)
             {
                 return;
             }
 
             var context = Parent as WorkSurfaceContextViewModel;
-            if (context != null)
-            {
-                context.BindToModel();
-            }
+            context?.BindToModel();
 
             var clientContext = _resourceModel.Environment.Connection;
-            if (clientContext != null)
-            {
-                var dataList = XElement.Parse(DebugTo.XmlData);
-                //
-                dataList.Add(new XElement("BDSDebugMode", DebugTo.IsDebugMode));
-                dataList.Add(new XElement("DebugSessionID", DebugTo.SessionID));
-                dataList.Add(new XElement("EnvironmentID", _resourceModel.Environment.ID));
-                OnDebugExecutionStart();
-                SendExecuteRequest(dataList);
-            }
+            if (clientContext == null) return;
+            var dataList = XElement.Parse(DebugTo.XmlData);
+            //
+            dataList.Add(new XElement("BDSDebugMode", DebugTo.IsDebugMode));
+            dataList.Add(new XElement("DebugSessionID", DebugTo.SessionID));
+            dataList.Add(new XElement("EnvironmentID", _resourceModel.Environment.ID));
+            OnDebugExecutionStart();
+            SendExecuteRequest(dataList);
         }
 
         protected virtual void SendExecuteRequest(XElement payload)
@@ -390,11 +370,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void LoadWorkflowInputs()
         {
             WorkflowInputs.Clear();
-            if (Broker != null)
-                Broker.Dispose();
+            Broker?.Dispose();
             Broker = Dev2StudioSessionFactory.CreateBroker();
-            if (DebugTo != null)
-                DebugTo.CleanUp();
+            DebugTo?.CleanUp();
             DebugTo = Broker.InitDebugSession(DebugTo);
             XmlData = DebugTo.XmlData;
             RememberInputs = DebugTo.RememberInputs;
@@ -553,47 +531,47 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string JsonData { get; set; }
+        public string JsonData { get; private set; }
 
         private void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
         {
             foreach (var o in objects)
             {
-                if (o != null)
+                var json = "";
+                if (DataListSingleton.ActiveDataList != null)
                 {
-                    string json = "";
-                    if (DataListSingleton.ActiveDataList != null)
+                    if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
                     {
-                        if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
-                        {
-                            var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
+                        var complexObjectItemModel =
+                            DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(
+                                model => model.Name == o.DisplayValue);
 
-                            if (complexObjectItemModel != null)
-                            {
-                                json = complexObjectItemModel.GetJson();
-                            }
-                        }
-                        try
+                        if (complexObjectItemModel != null)
                         {
-                            var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
-                            var value = JsonConvert.DeserializeObject(objValue) as JObject;
-                            if (value != null)
-                            {
-                                var prop = value.Properties().FirstOrDefault(property => property.Name == o.Field);
-                                if (prop != null)
-                                {
-                                    value = prop.Value as JObject;
-                                }
-
-                            }
-                            dataListObject.Add(o.Field, value);
-                        }
-                        catch (Exception)
-                        {
-                            ShowInvalidDataPopupMessage();
+                            json = complexObjectItemModel.GetJson();
                         }
                     }
+                    AddToDataListObject(dataListObject, o, json);
                 }
+            }
+        }
+
+        private void AddToDataListObject(JObject dataListObject, IDataListItem o, string json)
+        {
+            try
+            {
+                var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
+                var value = JsonConvert.DeserializeObject(objValue) as JObject;
+                var prop = value?.Properties().FirstOrDefault(property => property.Name == o.Field);
+                if (prop != null)
+                {
+                    value = prop.Value as JObject;
+                }
+                dataListObject.Add(o.Field, value);
+            }
+            catch (Exception)
+            {
+                ShowInvalidDataPopupMessage();
             }
         }
 
@@ -776,7 +754,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
 
             var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId);
-            if (resourceModel != null && resourceModel.Environment != null && resourceModel.Environment.AuthorizationService != null)
+            if (resourceModel?.Environment?.AuthorizationService != null)
             {
                 result.CanDebug = resourceModel.Environment.AuthorizationService.GetResourcePermissions(resourceModel.ID).CanDebug();
             }

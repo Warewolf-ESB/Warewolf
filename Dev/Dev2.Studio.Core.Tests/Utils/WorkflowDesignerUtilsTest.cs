@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Utils;
@@ -88,69 +87,6 @@ namespace Dev2.Core.Tests.Utils
         }
 
         [TestMethod]
-        public void EditResource_UnitTest_EditResourceWhereWorkflow_ExpectAddWorksurfaceMessageHandled()
-        {
-            //------------Setup for test--------------------------
-            var mockResourceModel = new Mock<IResourceModel>();
-            mockResourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
-            var eventAggregator = new EventAggregator();
-            var handleMessages = new TestHandleMessages();
-            eventAggregator.Subscribe(handleMessages);
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, eventAggregator);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(handleMessages.WorkSurfaceMessageCalled);
-            Assert.IsFalse(handleMessages.EditResourceMessageCalled);
-        }
-
-        [TestMethod]
-        public void EditResource_UnitTest_EditResourceWhereService_ExpectShowEditResourceWizardMessageHandled()
-        {
-            //------------Setup for test--------------------------
-            var mockResourceModel = new Mock<IResourceModel>();
-            mockResourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
-            var eventAggregator = new EventAggregator();
-            var handleMessages = new TestHandleMessages();
-            eventAggregator.Subscribe(handleMessages);
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, eventAggregator);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(handleMessages.EditResourceMessageCalled);
-            Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }
-
-        [TestMethod]
-        public void EditResource_UnitTest_EditResourceWhereSource_ExpectShowEditResourceWizardMessageHandled()
-        {
-            //------------Setup for test--------------------------
-            var mockResourceModel = new Mock<IResourceModel>();
-            mockResourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Source);
-            var eventAggregator = new EventAggregator();
-            var handleMessages = new TestHandleMessages();
-            eventAggregator.Subscribe(handleMessages);
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, eventAggregator);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(handleMessages.EditResourceMessageCalled);
-            Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void EditResource_UnitTest_EditResourceWhereNullEventAggregator_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var mockResourceModel = new Mock<IResourceModel>();
-            mockResourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
-            var eventAggregator = new EventAggregator();
-            var handleMessages = new TestHandleMessages();
-            eventAggregator.Subscribe(handleMessages);
-            //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, null);
-            //------------Assert Results-------------------------
-        }
-        
-        [TestMethod]
         [Owner("Leon rajindrapersadh")]
         [TestCategory("WorkflowDesignerUtils_OnClick")]
         public void WorkflowDesignerUtils_CheckIfRemoteWorkflowAndSetProperties_ServerName_SetAsSource()
@@ -205,7 +141,7 @@ namespace Dev2.Core.Tests.Utils
         }
     }
 
-    internal class TestHandleMessages : IHandle<AddWorkSurfaceMessage>, IHandle<ShowEditResourceWizardMessage>
+    internal class TestHandleMessages : IHandle<AddWorkSurfaceMessage>
     {
         #region Implementation of IHandle<AddWorkSurfaceMessage>
 
@@ -218,15 +154,6 @@ namespace Dev2.Core.Tests.Utils
 
         #endregion
 
-        #region Implementation of IHandle<ShowEditResourceWizardMessage>
-
-        public void Handle(ShowEditResourceWizardMessage message)
-        {
-            EditResourceMessageCalled = true;
-        }
-
-        public bool EditResourceMessageCalled { get; set; }
-
-        #endregion
+        
     }
 }

@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource("PluginSource", "");
+            _shell.NewPluginSource(string.Empty);
         }
 
         public void EditSource(IPluginSource selectedSource)

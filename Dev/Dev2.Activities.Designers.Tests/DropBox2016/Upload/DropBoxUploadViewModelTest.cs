@@ -9,7 +9,9 @@ using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,10 +44,29 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             //------------Setup for test--------------------------
             var dropBoxUploadViewModel = CreateMockViewModel();
+            dropBoxUploadViewModel.Validate();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxUploadViewModel);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxUploadViewModel, typeof(ActivityDesignerViewModel));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DropBoxUploadViewModel_Handle")]
+        public void DropBoxUploadViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateMockViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
 
@@ -164,13 +185,16 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
-          
+            CustomContainer.DeRegister<IShellViewModel>();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
             var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
-            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Execute Test---------------------------
+            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Assert Results-------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
             CustomContainer.DeRegister<IShellViewModel>();
         }
 

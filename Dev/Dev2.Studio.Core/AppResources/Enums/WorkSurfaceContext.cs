@@ -40,6 +40,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         EmailSource,
         ServerSource,
         DbSource,
+        OAuthSource,
         WebSource,
         PluginSource,
         SharepointServerSource,
