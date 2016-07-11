@@ -258,7 +258,7 @@ namespace Warewolf.Studio.ViewModels
                         if (mainViewModel != null)
                         {
                             mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                            mainViewModel.NewResource("ServerSource", "");
+                            mainViewModel.NewServerSource(string.Empty);
                         }
                         IsConnected = false;
                         AllowConnection = false;

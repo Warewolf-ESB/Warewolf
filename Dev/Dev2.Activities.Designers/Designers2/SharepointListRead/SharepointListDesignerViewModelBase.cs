@@ -18,7 +18,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.TO;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -351,7 +350,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         void CreateSharepointServerSource()
         {
             IsRefreshing = true;
-            _eventPublisher.Publish(new ShowNewResourceWizard("SharepointServerSource"));
+            CustomContainer.Get<IShellViewModel>().NewSharepointSource(string.Empty);
             RefreshSharepointSources();
             IsRefreshing = false;
         }

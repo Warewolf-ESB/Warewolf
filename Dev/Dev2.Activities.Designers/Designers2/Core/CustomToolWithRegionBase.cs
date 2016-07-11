@@ -1,4 +1,3 @@
-using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,13 +36,6 @@ namespace Dev2.Activities.Designers2.Core
         // ReSharper disable PublicConstructorInAbstractClass
         public CustomToolWithRegionBase(ModelItem modelItem, IList<IToolRegion> regions)
             : base(modelItem)
-        {
-            _regions = regions;
-        }
-
-        // ReSharper disable once PublicConstructorInAbstractClass
-        public CustomToolWithRegionBase(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
-            : base(modelItem, showExampleWorkflow)
         {
             _regions = regions;
         }

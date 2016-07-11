@@ -745,30 +745,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(AuthorizationContext.None, authorizeCommand.AuthorizationContext);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_EditCommand")]
-        public void MainViewModel_EditCommand_NotNull()
-        {
-            CreateFullExportsAndVm();
-            //------------Execute Test---------------------------
-            var authorizeCommand = MainViewModel.EditCommand;
-            Assert.IsNotNull(authorizeCommand);
-            Assert.AreEqual(MainViewModel.ActiveItem.EditCommand, authorizeCommand);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_EditCommand")]
-        public void MainViewModel_EditCommandNoActiveItem_NotNull()
-        {
-            CreateFullExportsAndVmWithEmptyRepo();
-            MainViewModel.DeactivateItem(MainViewModel.ActiveItem, true);
-            //------------Execute Test---------------------------
-            var authorizeCommand = MainViewModel.EditCommand;
-            Assert.IsNotNull(authorizeCommand);
-            Assert.AreEqual(AuthorizationContext.None, authorizeCommand.AuthorizationContext);
-        }
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -883,7 +860,7 @@ namespace Dev2.Core.Tests
             EmptyEnvRepo.Setup(p => p.Get(It.IsAny<Guid>())).Returns(environmentRepo.Object);
 
             MainViewModel.ActiveEnvironment = environmentRepo.Object;
-            MainViewModel.NewResourceCommand.Execute("Workflow");
+            MainViewModel.NewServiceCommand.Execute("");
             //Assert
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
         }
@@ -1637,7 +1614,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVmWithEmptyRepo();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthorizationContext.Contribute, MainViewModel.NewResourceCommand.AuthorizationContext);
+            Assert.AreEqual(AuthorizationContext.Contribute, MainViewModel.NewServiceCommand.AuthorizationContext);
             Assert.AreEqual(AuthorizationContext.Administrator, MainViewModel.SettingsCommand.AuthorizationContext);
         }
 
@@ -1649,7 +1626,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------            
             CreateFullExportsAndVmWithEmptyRepo();
 
-            Assert.IsNull(MainViewModel.NewResourceCommand.AuthorizationService);
+            Assert.IsNull(MainViewModel.NewServiceCommand.AuthorizationService);
             Assert.IsNull(MainViewModel.SettingsCommand.AuthorizationService);
 
             var authService = new Mock<IAuthorizationService>();
@@ -1661,7 +1638,7 @@ namespace Dev2.Core.Tests
             MainViewModel.ActiveEnvironment = env.Object;
 
             //------------Assert Results-------------------------
-            Assert.AreSame(authService.Object, MainViewModel.NewResourceCommand.AuthorizationService);
+            Assert.AreSame(authService.Object, MainViewModel.NewServiceCommand.AuthorizationService);
             Assert.AreSame(authService.Object, MainViewModel.SettingsCommand.AuthorizationService);
         }
 

@@ -323,28 +323,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DebugCommand.UpdateContext(Environment, ContextualResourceModel);
             RunCommand.UpdateContext(Environment, ContextualResourceModel);
             SaveCommand.UpdateContext(Environment, ContextualResourceModel);
-            EditCommand.UpdateContext(Environment, ContextualResourceModel);
             QuickViewInBrowserCommand.UpdateContext(Environment, ContextualResourceModel);
             QuickDebugCommand.UpdateContext(Environment, ContextualResourceModel);
         }
 
         #region commands
-
-        public AuthorizeCommand EditCommand
-        {
-            get
-            {
-                return _editResourceCommand ??
-                       (_editResourceCommand =
-                           new AuthorizeCommand(AuthorizationContext.Contribute, param =>
-                           {
-                               Dev2Logger.Debug("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
-                               EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
-                           }
-                            , param => CanExecute()));
-            }
-        }
-
+        
         public AuthorizeCommand SaveCommand
         {
             get

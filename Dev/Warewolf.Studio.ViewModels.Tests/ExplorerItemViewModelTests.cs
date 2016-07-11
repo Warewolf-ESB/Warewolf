@@ -151,25 +151,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(_target.IsRenaming);
         }
-
-        [TestMethod]
-        public void TestNewCommand()
-        {
-            //arrange
-            _target.ResourcePath = Guid.NewGuid().ToString();
-            const string resourceType = "DbService";
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-
-            //act
-            _target.NewCommand.Execute(resourceType);
-            Assert.IsTrue(_target.NewCommand.CanExecute(resourceType));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
-            _shellViewModelMock.Verify(it => it.NewResource(resourceType.ToString(), _target.ResourcePath));
-        }
-
+        
         [TestMethod]
         public void TestShowDependenciesCommand()
         {

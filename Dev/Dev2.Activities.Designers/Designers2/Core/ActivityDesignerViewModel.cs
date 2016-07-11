@@ -26,8 +26,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Utils;
-using Dev2.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -39,32 +37,20 @@ namespace Dev2.Activities.Designers2.Core
     /// </summary>
     public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource,IDisposable,IUpdatesHelp
     {
-        static Action<Type> CreateShowExampleWorkflowAction()
-        {
-            return type => WorkflowDesignerUtils.ShowExampleWorkflow(type.Name, ServerUtil.GetLocalhostServer(), null);
-        }
-
         readonly ModelItem _modelItem;
         Action _setInitialFocus;
 
         readonly ObservableCollection<ActivityDesignerToggle> _titleBarToggles = new ObservableCollection<ActivityDesignerToggle>();
 
         protected ActivityDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, CreateShowExampleWorkflowAction())
-        {
-        }
-
-        protected ActivityDesignerViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             _modelItem = modelItem;
             _modelItem.PropertyChanged += OnModelItemPropertyChanged;
-            VerifyArgument.IsNotNull("showExampleWorkflow", showExampleWorkflow);
 
             ShowExampleWorkflowLink = Visibility.Visible;
             IsValid = true;
             IsClosed = true;
-            ShowItemHelpCommand = new DelegateCommand(o => showExampleWorkflow(modelItem.ItemType));
             ShowHelpToggleCommand = new DelegateCommand(o => ShowHelp = !ShowHelp);
             ShowErrorsToggleCommand = new DelegateCommand(o => ClearErrors());
             OpenErrorsLinkCommand = new DelegateCommand(o =>
@@ -90,8 +76,6 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public ModelItem ModelItem => _modelItem;
-
-        public ICommand ShowItemHelpCommand { get; private set; }
 
         public ICommand ShowHelpToggleCommand { get; private set; }
 

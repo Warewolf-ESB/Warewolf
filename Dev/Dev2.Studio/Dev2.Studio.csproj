@@ -405,7 +405,9 @@
     <Compile Include="Utils\ResourceChangeHandler.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="ViewModels\DeployWorksurfaceViewModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\DebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
+    <Compile Include="ViewModels\Diagnostics\IDebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />

@@ -16,7 +16,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 // ReSharper disable ConvertPropertyToExpressionBody
@@ -139,9 +138,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
         public void CreateOAuthSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
+            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
-            OnPropertyChanged("Sources");
+            OnPropertyChanged(@"Sources");
         }
 
 

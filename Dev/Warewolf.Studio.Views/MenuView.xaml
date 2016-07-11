@@ -102,8 +102,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding NewCommand}"
-                    CommandParameter="Workflow"
+                    Command="{Binding NewServiceCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Core.MenuNewServiceToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
@@ -202,8 +201,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding NewCommand}"
-                    CommandParameter="DbSource"
+                    Command="{Binding NewDatabaseSourceCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Core.MenuDatabaseToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
@@ -257,8 +255,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding NewCommand}"
-                    CommandParameter="PluginSource"
+                    Command="{Binding NewPluginSourceCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Core.MenuPluginToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
@@ -312,8 +309,7 @@
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
-                    Command="{Binding NewCommand}"
-                    CommandParameter="WebSource"
+                    Command="{Binding NewWebSourceCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{x:Static languages:Core.MenuWebServiceToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"

@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
         }
 
         public TestActivityDesignerViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow)
-            : base(modelItem, showExampleWorkflow)
+            : base(modelItem)
         {
         }
 

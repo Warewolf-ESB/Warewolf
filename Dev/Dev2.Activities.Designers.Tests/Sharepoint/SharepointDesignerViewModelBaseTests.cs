@@ -13,7 +13,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -255,13 +254,16 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);            
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ShowNewResourceWizard>())).Verifiable();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.NewSharepointSource(It.IsAny<string>()));
+            var shellViewModel = mockShellViewModel.Object;
+            CustomContainer.Register(shellViewModel);
             var sharepointListDesignerViewModelBase = CreateSharepointListDesignerViewModel(mockEnvironmentModel,mockEventAggregator);
             //------------Execute Test---------------------------
             sharepointListDesignerViewModelBase.SelectedSharepointServer = sharepointListDesignerViewModelBase.GetNewSharepointSource;
             //------------Assert Results-------------------------
             Assert.IsNotNull(sharepointListDesignerViewModelBase.SelectedSharepointServer);
-            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ShowNewResourceWizard>()));
+            mockShellViewModel.Verify(model => model.NewSharepointSource(It.IsAny<string>()));
         }
 
 
