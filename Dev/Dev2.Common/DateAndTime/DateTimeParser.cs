@@ -1522,211 +1522,84 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild seconds number
         /// </summary>
-        private static bool IsNumberSeconds(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 59;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberSeconds(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberSeconds(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild minute number
         /// </summary>
-        private static bool IsNumberMilliseconds(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 999;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberMilliseconds(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberMilliseconds(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild minute number
         /// </summary>
-        private static bool IsNumberMinutes(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 59;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberMinutes(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberMinutes(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild 24 hours number
         /// </summary>
-        private static bool IsNumber24H(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (data.Length == 2 && int.TryParse(data, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 24;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumber24H(string data, bool treatAsTime) => DatetimeParserHelper.IsNumber24H(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild 12 hours number
         /// </summary>
-        private static bool IsNumber12H(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 12;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumber12H(string data, bool treatAsTime) => DatetimeParserHelper.IsNumber12H(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild month
         /// </summary>
-        private static bool IsNumberMonth(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 12;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberMonth(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberMonth(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild month
         /// </summary>
-        private static bool IsNumberDay(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 31;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberDay(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberDay(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild day of the week
         /// </summary>
-        private static bool IsNumberDayOfWeek(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 7;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberDayOfWeek(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberDayOfWeek(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild day of the year
         /// </summary>
-        private static bool IsNumberDayOfYear(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData) && numericData >= 1 && numericData <= 365)
-            {
-                //nothing to do since nothignDied is already true
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
+        private static bool IsNumberDayOfYear(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberDayOfYear(data, treatAsTime);
 
         /// <summary>
         ///     Determines if a given string contains a number which is a vaild day of the year
         /// </summary>
-        private static bool IsNumberWeekOfYear(string data, bool treatAsTime)
+        private static bool IsNumberWeekOfYear(string data, bool treatAsTime) => DatetimeParserHelper.IsNumberWeekOfYear(data, treatAsTime);
+
+        public List<IDateTimeFormatPartTO> DateTimeFormatParts => DateTimeFormatsParts.Values.ToList();
+        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DatetimeParserHelper();
+    }
+
+   internal interface IDatetimeParserHelper
+   {
+       bool IsNumberWeekOfYear(string data, bool treatAsTime);
+
+       bool IsNumberDayOfYear(string data, bool treatAsTime);
+
+       bool IsNumberDayOfWeek(string data, bool treatAsTime);
+
+       bool IsNumberDay(string data, bool treatAsTime);
+
+       bool IsNumberMonth(string data, bool treatAsTime);
+
+       bool IsNumber12H(string data, bool treatAsTime);
+
+       bool IsNumber24H(string data, bool treatAsTime);
+
+       bool IsNumberMinutes(string data, bool treatAsTime);
+
+       bool IsNumberMilliseconds(string data, bool treatAsTime);
+
+       bool IsNumberSeconds(string data, bool treatAsTime);
+   }
+    public class DatetimeParserHelper: IDatetimeParserHelper
+    {
+        #region Implementation of IDatetimeParserHelper
+
+        public bool IsNumberWeekOfYear(string data, bool treatAsTime)
         {
             bool nothingDied = true;
 
@@ -1746,6 +1619,183 @@ namespace Dev2.Common.DateAndTime
             return nothingDied;
         }
 
-        public List<IDateTimeFormatPartTO> DateTimeFormatParts => DateTimeFormatsParts.Values.ToList();
+        public bool IsNumberDayOfYear(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData) && numericData >= 1 && numericData <= 365)
+            {
+                //nothing to do since nothignDied is already true
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumberDayOfWeek(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 1 && numericData <= 7;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumberDay(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 1 && numericData <= 31;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumberMonth(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 1 && numericData <= 12;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumber12H(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 1 && numericData <= 12;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumber24H(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (data.Length == 2 && int.TryParse(data, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 0 && numericData <= 24;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumberMinutes(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 0 && numericData <= 59;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumberMilliseconds(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 0 && numericData <= 999;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        public bool IsNumberSeconds(string data, bool treatAsTime)
+        {
+            bool nothingDied = true;
+
+            int numericData;
+            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            {
+                if (!treatAsTime)
+                {
+                    nothingDied = numericData >= 0 && numericData <= 59;
+                }
+            }
+            else
+            {
+                nothingDied = false;
+            }
+
+            return nothingDied;
+        }
+
+        #endregion
     }
 }
