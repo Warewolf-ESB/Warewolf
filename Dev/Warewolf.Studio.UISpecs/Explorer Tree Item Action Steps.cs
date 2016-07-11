@@ -141,23 +141,31 @@ namespace Warewolf.Studio.UISpecs
         private UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
-            UITestControl CurrentTreeItem = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree;
+            UITestControl FoundTreeItem = null;
             var endNode = pathAsArray[pathAsArray.Length - 1];
-            var getNextChildren = CurrentTreeItem.GetChildren();
-            getNextChildren.ToList().ForEach(getNextTreeItemChildren =>
+            var treeItemChildren = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.GetChildren().Where(item => { return item.ControlType == ControlType.TreeItem; });
+            var treeItem = treeItemChildren.GetEnumerator();
+            while (FoundTreeItem == null && treeItem.MoveNext())
             {
-                if  (getNextTreeItemChildren.ControlType == ControlType.TreeItem)
+                if(treeItem.Current != null)
                 {
-                    CurrentTreeItem = getNextTreeItemChildren.GetChildren().FirstOrDefault(treeitem =>
+                    FoundTreeItem = treeItem.Current.GetChildren().FirstOrDefault(treeitem =>
                     {
-                        var GetNameFromLabel = treeitem.GetChildren();
-                        var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
-                        var displayText = label != null ? label.DisplayText : string.Empty;
-                        return label != null && displayText == endNode;
+                        var ChildTextbox = treeitem.GetChildren().FirstOrDefault(control => control.ControlType == ControlType.Text);
+                        if(ChildTextbox != null)
+                        {
+                            var FirstChildTextbox = (ChildTextbox as WpfText);
+                            if (FirstChildTextbox != null)
+                            {
+                                var displayText = FirstChildTextbox != null ? FirstChildTextbox.DisplayText : string.Empty;
+                                return FirstChildTextbox != null && displayText == endNode;
+                            }
+                        }
+                        return false;
                     });
                 }
-            });
-            return CurrentTreeItem;
+            }
+            return FoundTreeItem;
         }
 
         private UITestControl GetExpansionIndicator(string treeItemPath)
@@ -197,19 +205,6 @@ namespace Warewolf.Studio.UISpecs
                 }
                 return false;
             });
-        }
-
-        public void AssertItemExistsAtBottomOfExplorer(string ItemPath)
-        {
-            Mouse.Click(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
-            UITestControl getFromTreeItem = null;
-            int countdown = 30;
-            while (getFromTreeItem == null || countdown <= 0)
-            {
-                WhenIScrollToTheBottomOfTheExplorerTree();
-                getFromTreeItem = GetTreeItemFromPath(ItemPath);
-                countdown--;
-            }
         }
 
         #region Properties and Fields
