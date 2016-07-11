@@ -1230,11 +1230,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE()
         {
             #region Variable Declarations
-            WpfCustom comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
+            WpfText comboboxListItemAsTSTCIREMOTE_2 = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE_2;
             #endregion
 
-            // Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
+            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues.ComboboxListItemAsTSTCIREMOTE_2Exists, comboboxListItemAsTSTCIREMOTE_2.Exists, "TSTCIREMOTE does not exist in explorer remote server drop down list");
         }
         
         /// <summary>
@@ -1243,11 +1243,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE()
         {
             #region Variable Declarations
-            WpfCustom comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
+            WpfText comboboxListItemAsTSTCIREMOTE_2 = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE_2;
             #endregion
 
-            // Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'False'
-            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues.ComboboxListItemAsTSTCIREMOTEExists, comboboxListItemAsTSTCIREMOTE.Exists, "TSTCIREMOTE does exist in explorer remote server drop down list");
+            // Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'False'
+            Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTEExpectedValues.ComboboxListItemAsTSTCIREMOTE_2Exists, comboboxListItemAsTSTCIREMOTE_2.Exists, "TSTCIREMOTE does exist in explorer remote server drop down list");
         }
         
         /// <summary>
@@ -2776,6 +2776,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Server_Source_Wizard_Test_Passed - Use 'Assert_Server_Source_Wizard_Test_PassedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Server_Source_Wizard_Test_Passed()
+        {
+            #region Variable Declarations
+            WpfText errorText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.WorkSurfaceContext.NewServerSourceWizard.ErrorText;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'TestErrorText' label equals 'Passed'
+            Assert.AreEqual(this.Assert_Server_Source_Wizard_Test_PassedExpectedValues.ErrorTextDisplayText, errorText.DisplayText, "Server source wizard test failed to connect to remote Warewolf server");
+        }
+        
+        /// <summary>
         /// Assert_Server_Version_Exists - Use 'Assert_Server_Version_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Server_Version_Exists()
@@ -3710,6 +3723,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Click 'closeBtn' custom control
             Mouse.Click(closeButton, new Point(5, 5));
+        }
+        
+        /// <summary>
+        /// Click_Close_Server_Source_Wizard_Tab_Button
+        /// </summary>
+        public void Click_Close_Server_Source_Wizard_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton tabCloseButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.ServerSourceWizardTab.TabCloseButton;
+            #endregion
+
+            // Click '' button
+            Mouse.Click(tabCloseButton, new Point(5, 5));
         }
         
         /// <summary>
@@ -6385,22 +6411,9 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// RightClick_MySqlConnector_OnDesignSurface
+        /// RightClick_MySQLConnector_OnDesignSurface
         /// </summary>
-        public void RightClick_MySqlConnector_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            #endregion
-
-            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
-            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
-        }
-        
-        /// <summary>
-        /// RightClick_MySQLConnector_OnDesignSurface1
-        /// </summary>
-        public void RightClick_MySQLConnector_OnDesignSurface1()
+        public void RightClick_MySQLConnector_OnDesignSurface()
         {
             #region Variable Declarations
             WpfCustom mySqlDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
@@ -6590,6 +6603,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Right-Click 'DsfSqlBulkInsertActivity' custom control
             Mouse.Click(sqlBulkInsert, MouseButtons.Right, ModifierKeys.None, new Point(143, 6));
+        }
+        
+        /// <summary>
+        /// RightClick_SqlServerConnector_OnDesignSurface
+        /// </summary>
+        public void RightClick_SqlServerConnector_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom sqlServerDatabase = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            #endregion
+
+            // Right-Click 'DsfSqlServerDatabaseActivity' custom control
+            Mouse.Click(sqlServerDatabase, MouseButtons.Right, ModifierKeys.None, new Point(198, 8));
         }
         
         /// <summary>
@@ -7061,16 +7087,16 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List
+        /// Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List_2
         /// </summary>
-        public void Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List()
+        public void Select_TSTCIREMOTE_From_Explorer_Remote_Server_Dropdown_List_2()
         {
             #region Variable Declarations
-            WpfCustom comboboxListItemAsTSTCIREMOTE = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE;
+            WpfText comboboxListItemAsTSTCIREMOTE_2 = this.MainStudioWindow.ComboboxListItemAsTSTCIREMOTE_2;
             #endregion
 
-            // Click 'TSTCIREMOTE' custom control
-            Mouse.Click(comboboxListItemAsTSTCIREMOTE, new Point(79, 8));
+            // Click 'TSTCIREMOTE' label
+            Mouse.Click(comboboxListItemAsTSTCIREMOTE_2, new Point(79, 8));
         }
         
         /// <summary>
@@ -9633,6 +9659,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Server_Source_Wizard_Test_PassedExpectedValues Assert_Server_Source_Wizard_Test_PassedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Server_Source_Wizard_Test_PassedExpectedValues == null))
+                {
+                    this.mAssert_Server_Source_Wizard_Test_PassedExpectedValues = new Assert_Server_Source_Wizard_Test_PassedExpectedValues();
+                }
+                return this.mAssert_Server_Source_Wizard_Test_PassedExpectedValues;
+            }
+        }
+        
         public virtual Assert_Server_Version_ExistsExpectedValues Assert_Server_Version_ExistsExpectedValues
         {
             get
@@ -11279,6 +11317,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Server_Source_Wizard_Test_Connection_Button_ExistsExpectedValues mAssert_Server_Source_Wizard_Test_Connection_Button_ExistsExpectedValues;
         
+        private Assert_Server_Source_Wizard_Test_PassedExpectedValues mAssert_Server_Source_Wizard_Test_PassedExpectedValues;
+        
         private Assert_Server_Version_ExistsExpectedValues mAssert_Server_Version_ExistsExpectedValues;
         
         private Assert_Service_Picker_Cancel_Button_ExistsExpectedValues mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
@@ -12864,9 +12904,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'True'
         /// </summary>
-        public bool ComboboxListItemAsTSTCIREMOTEExists = true;
+        public bool ComboboxListItemAsTSTCIREMOTE_2Exists = true;
         #endregion
     }
     
@@ -12879,9 +12919,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'TSTCIREMOTE' custom control equals 'False'
+        /// Verify that the 'Exists' property of 'TSTCIREMOTE' label equals 'False'
         /// </summary>
-        public bool ComboboxListItemAsTSTCIREMOTEExists = false;
+        public bool ComboboxListItemAsTSTCIREMOTE_2Exists = false;
         #endregion
     }
     
@@ -14646,6 +14686,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Server_Source_Wizard_Test_Passed'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Server_Source_Wizard_Test_PassedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'TestErrorText' label equals 'Passed'
+        /// </summary>
+        public string ErrorTextDisplayText = "Passed";
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Server_Version_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16302,15 +16357,19 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public ComboboxListItemAsTSTCIREMOTE ComboboxListItemAsTSTCIREMOTE
+        public WpfText ComboboxListItemAsTSTCIREMOTE_2
         {
             get
             {
-                if ((this.mComboboxListItemAsTSTCIREMOTE == null))
+                if ((this.mComboboxListItemAsTSTCIREMOTE_2 == null))
                 {
-                    this.mComboboxListItemAsTSTCIREMOTE = new ComboboxListItemAsTSTCIREMOTE(this);
+                    this.mComboboxListItemAsTSTCIREMOTE_2 = new WpfText(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsTSTCIREMOTE_2.SearchProperties[WpfText.PropertyNames.Name] = "TSTCIREMOTE";
+                    this.mComboboxListItemAsTSTCIREMOTE_2.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
                 }
-                return this.mComboboxListItemAsTSTCIREMOTE;
+                return this.mComboboxListItemAsTSTCIREMOTE_2;
             }
         }
         
@@ -16361,7 +16420,7 @@ namespace Warewolf.Studio.UISpecs
         
         private NewRemoteServerListItem mNewRemoteServerListItem;
         
-        private ComboboxListItemAsTSTCIREMOTE mComboboxListItemAsTSTCIREMOTE;
+        private WpfText mComboboxListItemAsTSTCIREMOTE_2;
         
         private WpfCustom mComboboxListItemAsHttp;
         #endregion
@@ -22631,6 +22690,22 @@ namespace Warewolf.Studio.UISpecs
                 return this.mTestConnectionButton;
             }
         }
+        
+        public WpfText ErrorText
+        {
+            get
+            {
+                if ((this.mErrorText == null))
+                {
+                    this.mErrorText = new WpfText(this);
+                    #region Search Criteria
+                    this.mErrorText.SearchProperties[WpfText.PropertyNames.AutomationId] = "ErrorTextBlock";
+                    this.mErrorText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mErrorText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -22641,6 +22716,8 @@ namespace Warewolf.Studio.UISpecs
         private AddressComboBox mAddressComboBox;
         
         private WpfButton mTestConnectionButton;
+        
+        private WpfText mErrorText;
         #endregion
     }
     
@@ -36567,43 +36644,6 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfText mNewRemoteServerItemText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ComboboxListItemAsTSTCIREMOTE : WpfCustom
-    {
-        
-        public ComboboxListItemAsTSTCIREMOTE(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "TSTCIREMOTE";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText TSTCIREMOTEItemText
-        {
-            get
-            {
-                if ((this.mTSTCIREMOTEItemText == null))
-                {
-                    this.mTSTCIREMOTEItemText = new WpfText(this);
-                    #region Search Criteria
-                    this.mTSTCIREMOTEItemText.SearchProperties[WpfText.PropertyNames.Name] = "TSTCIREMOTE";
-                    this.mTSTCIREMOTEItemText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTSTCIREMOTEItemText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mTSTCIREMOTEItemText;
         #endregion
     }
     

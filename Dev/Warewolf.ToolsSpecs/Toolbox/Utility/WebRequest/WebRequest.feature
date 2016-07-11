@@ -190,6 +190,5 @@ Scenario: Enter a recordset star input and output
 	| [[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx |        |
 	| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15  |        |
 	And the debug output as 
-	|                                                                            |
-	| [[results(1).res]] = <string>value1</string>                               |
-	| [[results(2).res]] = <DataList><Result>Wait Successful</Result></DataList> |
+	|                                                                                      |
+	| [[results(1).res]] = <string>value1</string>                                         |

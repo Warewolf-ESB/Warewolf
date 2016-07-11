@@ -284,9 +284,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
-    <Compile Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml.cs">
-      <DependentUpon>DsfScriptingJavaScriptDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
@@ -551,10 +548,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

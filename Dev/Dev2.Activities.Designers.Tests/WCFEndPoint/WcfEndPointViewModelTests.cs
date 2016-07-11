@@ -13,6 +13,8 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Testing;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 
 namespace Dev2.Activities.Designers.Tests.WCFEndPoint
 {
@@ -79,6 +81,24 @@ namespace Dev2.Activities.Designers.Tests.WCFEndPoint
             var model = GetViewModel();
 
             Assert.IsNotNull(model);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WcfEndPointViewModel_Handle")]
+        public void WcfEndPointViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = GetViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

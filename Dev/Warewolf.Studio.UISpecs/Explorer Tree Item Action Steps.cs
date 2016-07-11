@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
@@ -196,6 +197,19 @@ namespace Warewolf.Studio.UISpecs
                 }
                 return false;
             });
+        }
+
+        public void AssertItemExistsAtBottomOfExplorer(string ItemPath)
+        {
+            Mouse.Click(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton);
+            UITestControl getFromTreeItem = null;
+            int countdown = 30;
+            while (getFromTreeItem == null || countdown <= 0)
+            {
+                WhenIScrollToTheBottomOfTheExplorerTree();
+                getFromTreeItem = GetTreeItemFromPath(ItemPath);
+                countdown--;
+            }
         }
 
         #region Properties and Fields

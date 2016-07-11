@@ -19,6 +19,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Data.Util
 {
+    
     public class CommonDataUtils : ICommon
     {
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, Dev2CRUDOperationTO args)
@@ -40,7 +41,7 @@ namespace Dev2.Data.Util
             {
                 using (zip)
                 {
-                    if (!String.IsNullOrEmpty(args.ArchivePassword))
+                    if (!string.IsNullOrEmpty(args.ArchivePassword))
                     {
                         zip.Password = args.ArchivePassword;
                     }
@@ -236,7 +237,7 @@ namespace Dev2.Data.Util
         {
             foreach (var dev2Definition in inputObjectList)
             {
-                if (!String.IsNullOrEmpty(dev2Definition.RawValue))
+                if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                 {
                     if (DataListUtil.RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
                     {
@@ -272,13 +273,13 @@ namespace Dev2.Data.Util
         {
             foreach (var dev2Definition in inputScalarList)
             {
-                if (!String.IsNullOrEmpty(dev2Definition.Name))
+                if (!string.IsNullOrEmpty(dev2Definition.Name))
                 {
                     env.AssignDataShape("[[" + dev2Definition.Name + "]]");
                 }
                 if (!dev2Definition.IsRecordSet)
                 {
-                    if (!String.IsNullOrEmpty(dev2Definition.RawValue))
+                    if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                     {
                         var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
@@ -309,7 +310,7 @@ namespace Dev2.Data.Util
                             var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
 
 
-                            if (String.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
+                            if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
                             {
                                 if (!emptyList.Contains(defn))
                                 {
@@ -341,7 +342,7 @@ namespace Dev2.Data.Util
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            if (!String.IsNullOrEmpty(dataList))
+            if (!string.IsNullOrEmpty(dataList))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(dataList);
@@ -361,7 +362,7 @@ namespace Dev2.Data.Util
                         var xmlAttribute = tmpNode.Attributes?["IsJson"];
                         if (xmlAttribute != null)
                         {
-                            Boolean.TryParse(xmlAttribute.Value, out jsonAttribute);
+                            bool.TryParse(xmlAttribute.Value, out jsonAttribute);
                         }
                         if (tmpNode.HasChildNodes && !jsonAttribute)
                         {
@@ -403,7 +404,7 @@ namespace Dev2.Data.Util
             if (isObjectAttribute != null)
             {
                 bool isObject;
-                if (Boolean.TryParse(isObjectAttribute.Value, out isObject))
+                if (bool.TryParse(isObjectAttribute.Value, out isObject))
                 {
                     return isObject;
                 }
@@ -415,7 +416,7 @@ namespace Dev2.Data.Util
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            if (!String.IsNullOrEmpty(dataList))
+            if (!string.IsNullOrEmpty(dataList))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(dataList);
