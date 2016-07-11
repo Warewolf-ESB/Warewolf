@@ -3,7 +3,7 @@
     <ParameterName />
     <PropertyName>Exists</PropertyName>
     <ExpectedValue>True</ExpectedValue>
-    <MessageOnValidationFailure>[[UITestControlFriendlyName]] does not exist in [[Context]]</MessageOnValidationFailure>
+    <MessageOnValidationFailure>[[UITestControlFriendlyName]] does not exist in [[Context]].</MessageOnValidationFailure>
     <Type>String</Type>
     <PropertyCondition>AreEqual</PropertyCondition>
 </AssertAction>
