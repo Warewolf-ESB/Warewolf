@@ -267,7 +267,7 @@ namespace Warewolf.Storage
 
         public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            bool exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
+            var exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
             if (!exists)
                 exp = ToStar(exp);
             AssignWithFrameAndList(exp, recsetResult.Item, exists, update);

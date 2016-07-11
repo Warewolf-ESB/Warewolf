@@ -176,7 +176,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             throw  new Exception(ErrorResource.ConvertOptionDoesNotExist);
         }
-
         
 
         public override enFindMissingType GetFindMissingType()
