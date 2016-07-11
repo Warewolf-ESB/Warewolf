@@ -130,6 +130,7 @@
     <Compile Include="Interfaces\ICommonRecordSetUtil.cs" />
     <Compile Include="Interfaces\ICommonScalarUtil.cs" />
     <Compile Include="Interfaces\IDataListItem.cs" />
+    <Compile Include="Interfaces\IParserHelper.cs" />
     <Compile Include="ListIndexIterator.cs" />
     <Compile Include="ListOfIndex.cs" />
     <Compile Include="LoopedIndexIterator.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="Util\CommonScalarUtil.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />
     <Compile Include="Util\DataListUtil.cs" />
+    <Compile Include="Util\ParserHelperUtil.cs" />
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />
