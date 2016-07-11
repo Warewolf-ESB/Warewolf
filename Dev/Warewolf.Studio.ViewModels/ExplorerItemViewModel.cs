@@ -546,23 +546,25 @@ namespace Warewolf.Studio.ViewModels
 
         void SetPermission(IWindowsGroupPermission permission, bool isDeploy = false)
         {
-            switch (permission.ToString())
+            if (permission.Contribute)
             {
-                case "Contribute":
-                    SetContributePermissions(isDeploy);
-                    break;
-                case "Administrator":
-                    SetAdministratorPermissions();
-                    break;
-                case "DeployFrom":
-                    CanDeploy = true;
-                    break;
-                case "View":
-                    CanView = !isDeploy;
-                    break;
-                case "Execute":
-                    CanExecute = IsService && !isDeploy;
-                    break;
+                SetContributePermissions(isDeploy);
+            }
+            if (permission.Administrator)
+            {
+                SetAdministratorPermissions();
+            }
+            if (permission.DeployFrom)
+            {
+                CanDeploy = true;
+            }
+            if (permission.View)
+            {
+                CanView = !isDeploy;
+            }
+            if (permission.Execute)
+            {
+                CanExecute = IsService && !isDeploy;
             }
         }
 
