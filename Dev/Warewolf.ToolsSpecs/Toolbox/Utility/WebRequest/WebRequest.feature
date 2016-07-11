@@ -192,4 +192,3 @@ Scenario: Enter a recordset star input and output
 	And the debug output as 
 	|                                                                                      |
 	| [[results(1).res]] = <string>value1</string>                                         |
-	| [[results(2).res]] = <DataList>\r\n  <Result>Wait Successful</Result>\r\n</DataList> |

@@ -9,7 +9,9 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -43,10 +45,29 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         {
             //------------Setup for test--------------------------
             var dropBoxDownloadViewModel = CreateMockViewModel();
+            dropBoxDownloadViewModel.Validate();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxDownloadViewModel);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxDownloadViewModel, typeof(ActivityDesignerViewModel));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DropBoxDownloadViewModel_Handle")]
+        public void DropBoxDownloadViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateMockViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
 
