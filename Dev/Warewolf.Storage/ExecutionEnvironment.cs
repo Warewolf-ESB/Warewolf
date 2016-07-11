@@ -61,10 +61,6 @@ namespace Warewolf.Storage
             {
                 return PublicFunctions.EvalEnvExpression(exp, 0, _env);
             }
-            catch (IndexOutOfRangeException)
-            {
-                throw;
-            }
             catch (Exception e)
             {
                 if (e is IndexOutOfRangeException) throw;
@@ -189,9 +185,7 @@ namespace Warewolf.Storage
         public static string WarewolfAtomToStringErrorIfNull(DataStorage.WarewolfAtom a)
         {
             if (a == null)
-            {
                 return string.Empty;
-            }
             if (a.IsNothing)
             {
                 throw new NullValueInVariableException(ErrorResource.VariableIsNull, string.Empty);
@@ -218,10 +212,9 @@ namespace Warewolf.Storage
             try
             {
                 var x = EvaluationFunctions.parseLanguageExpression(expression, update);
-                if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression || x.IsRecordSetNameExpression)
-                {
+                if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression ||
+                    x.IsRecordSetNameExpression)
                     return true;
-                }
             }
             catch (Exception e)
             {
@@ -279,7 +272,7 @@ namespace Warewolf.Storage
             AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
         }
 
-        private void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
+        public void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
         {
             _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
         }
@@ -394,7 +387,7 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp, int update)
         {
-            return string.IsNullOrEmpty(exp) ? String.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
+            return string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
@@ -443,7 +436,7 @@ namespace Warewolf.Storage
         public static string GetPositionColumnExpression(string recordset)
         {
             var rec = EvaluationFunctions.parseLanguageExpression(recordset, 0);
-            if(!rec.IsRecordSetExpression && !rec.IsRecordSetNameExpression) return recordset;
+            if (!rec.IsRecordSetExpression && !rec.IsRecordSetNameExpression) return recordset;
             var recordSetExpression = rec as LanguageAST.LanguageExpression.RecordSetExpression;
             var recordSetNameExpression = rec as LanguageAST.LanguageExpression.RecordSetNameExpression;
             var index = recordSetExpression?.Item?.Name ?? recordSetNameExpression?.Item?.Name;
@@ -495,7 +488,7 @@ namespace Warewolf.Storage
 
         public List<string> GetIndexes(string exp)
         {
-            List<string> indexMap = new List<string>();
+            var indexMap = new List<string>();
             if (!string.IsNullOrEmpty(exp))
             {
                 var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);

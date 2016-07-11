@@ -63,6 +63,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly object _syncContext = new object();
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
 
+        private readonly IDebugOutputViewModelUtil _outputViewModelUtil;
+
         IDebugState _lastStep;
         DebugStatus _debugStatus;        
         ICommand _expandAllCommand;
@@ -113,12 +115,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
-        
+
         #endregion
 
         #region Properties
-        
+
         public int PendingItemCount => _pendingItems.Count;
         public int ContentItemCount => _contentItems.Count;
 
@@ -423,6 +426,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion
 
+       
+
         #region public methods
 
         /// <summary>
@@ -431,42 +436,28 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         public virtual void Append(IDebugState content)
         {
-            if(content == null || content.SessionID != SessionID)
-            {
-                return;
-            }
-            if (content.Name == "EsbServiceInvoker" && content.ExecutionOrigin == ExecutionOrigin.Unknown)
-            {
-                return;
-            }
-            
-            if(content.StateType == StateType.Start && !content.IsFirstStep())
-            {
-                return;
-            }
+            if (_outputViewModelUtil.ContenIsNotValid(content)) return;
 
-            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
-            {
-                if(content.StateType != StateType.End)
-                {
-                    _lastStep = content;
-                }
-            }
+            IsDebugStateLastStep(content);
 
             _continueDebugDispatch = false;
-
-            if(content.IsFinalStep())
+            if (content.IsFinalStep())
             {
                 _allDebugReceived = true;
                 _continueDebugDispatch = true;
             }
 
-            if(QueuePending(content))
-            {
+            if (_outputViewModelUtil.QueuePending(content, _pendingItems, IsProcessing))
                 return;
-            }
-
             AddItemToTree(content);
+        }
+
+        private void IsDebugStateLastStep(IDebugState content)
+        {
+            if ((DebugStatus != DebugStatus.Stopping && DebugStatus != DebugStatus.Finished) ||
+                content.StateType == StateType.Message) return;
+            if (content.StateType != StateType.End)
+                _lastStep = content;
         }
 
         public void AppendX(IDebugState content)
@@ -477,39 +468,40 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if (item == null)
-            {
-                Dev2Logger.Debug("Debug line item is null, did not proceed");
-                return;
-            }
+            if (_outputViewModelUtil.IsValidLineItem(item)) return;
 
-            if (string.IsNullOrEmpty(item.MoreLink))
+            if(_outputViewModelUtil.IsItemMoreLinkValid(item))
+                CreatProcessController(item);
+        }
+       
+        private void CreatProcessController(IDebugLineItem item)
+        {
+            try
             {
-                Dev2Logger.Debug("Link is empty");
+                var debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
+                Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
+                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                    Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
-                    ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex);
-                    if (ex.Message.Contains("The remote name could not be resolved"))
-                        _popup.Show(
-                            "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
-                            "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
-                            false,
-                            true, false, false);
-                    else
-                        throw;
-                }
+                Dev2Logger.Error(ex);
+                ProcessControllerHasError(ex);
             }
         }
 
+        private void ProcessControllerHasError(Exception ex)
+        {
+            if (ex.Message.Contains("The remote name could not be resolved"))
+                _popup.Show(
+                    "Warewolf was unable to download the debug output values from the remote server. Please ensure that the remote server is accessible.",
+                    "Failed to retrieve remote debug items", MessageBoxButton.OK, MessageBoxImage.Error, "",
+                    false,
+                    true, false, false);
+            else
+                throw ex;
+        }
+
+       
         public bool CanOpenMoreLink(IDebugLineItem item)
         {
             return !string.IsNullOrEmpty(item?.MoreLink);
@@ -760,61 +752,77 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            if(content.StateType == StateType.Message && content.ParentID == Guid.Empty)
+            if (AddTreeViewItemToRootItems(content)) return;
+
+            if(content.IsFinalStep())
             {
-                RootItems.Add(new DebugStringTreeViewItemViewModel { Content = content.Message });
+                DebugStatus = DebugStatus.Finished;
+            }
+        }
+        
+        private bool AddTreeViewItemToRootItems(IDebugState content)
+        {
+            if (content.StateType == StateType.Message && content.ParentID == Guid.Empty)
+            {
+                RootItems.Add(new DebugStringTreeViewItemViewModel {Content = content.Message});
             }
             else
             {
                 var isRootItem = content.ParentID == Guid.Empty || content.ID == content.ParentID;
 
-                IDebugTreeViewItemViewModel child;
+                var child = CreateChildTreeViewItem(content);
 
-                if(content.StateType == StateType.Message)
-                {
-                    child = new DebugStringTreeViewItemViewModel { Content = content.Message };
-                }
-                else
-                {
-                    child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { Content = content };
-                }
-
-                if(!_contentItemMap.ContainsKey(content.ID))
+                if (!_contentItemMap.ContainsKey(content.ID))
                 {
                     _contentItemMap.Add(content.ID, child);
                 }
-                if(isRootItem)
+                if (isRootItem)
                 {
                     RootItems.Add(child);
                 }
                 else
                 {
-                    IDebugTreeViewItemViewModel parent;
-                    if(!_contentItemMap.TryGetValue(content.ParentID, out parent))
-                    {
-                        parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository);
-                        _contentItemMap.Add(content.ParentID, parent);
-                    }
-                    child.Parent = parent;
-                    parent.Children.Add(child);
-                    if(child.HasError.GetValueOrDefault(false))
-                    {
-                        var theParent = parent as DebugStateTreeViewItemViewModel;
-                        if(theParent == null)
-                        {
-                            return;
-                        }
-                     
-                        theParent.AppendError(content.ErrorMessage);
-                        theParent.HasError = true;
-                    }
+                    var parent = CreateParentTreeViewItem(content, child);
+                    if (AddErrorToParent(content, child, parent)) return true;
                 }
             }
-            if(content.IsFinalStep())
-            {
-                DebugStatus = DebugStatus.Finished;
-            }
+            return false;
+        }
 
+        private static bool AddErrorToParent(IDebugState content, IDebugTreeViewItemViewModel child,
+            IDebugTreeViewItemViewModel parent)
+        {
+            if (!child.HasError.GetValueOrDefault(false)) return false;
+            var theParent = parent as DebugStateTreeViewItemViewModel;
+            if (theParent == null)
+                return true;
+
+            theParent.AppendError(content.ErrorMessage);
+            theParent.HasError = true;
+            return false;
+        }
+
+        private IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)
+        {
+            IDebugTreeViewItemViewModel parent;
+            if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
+            {
+                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository);
+                _contentItemMap.Add(content.ParentID, parent);
+            }
+            child.Parent = parent;
+            parent.Children.Add(child);
+            return parent;
+        }
+
+        private IDebugTreeViewItemViewModel CreateChildTreeViewItem(IDebugState content)
+        {
+            IDebugTreeViewItemViewModel child;
+            if (content.StateType == StateType.Message)
+                child = new DebugStringTreeViewItemViewModel {Content = content.Message};
+            else
+                child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) {Content = content};
+            return child;
         }
 
         #endregion
@@ -822,15 +830,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region QueuePending
 
         // BUG 9735 - 2013.06.22 - TWR : added
-        private bool QueuePending(IDebugState item)
-        {
-            if(item.StateType == StateType.Message && IsProcessing)
-            {
-                _pendingItems.Add(item);
-                return true;
-            }
-            return false;
-        }
+       
 
         #endregion
 

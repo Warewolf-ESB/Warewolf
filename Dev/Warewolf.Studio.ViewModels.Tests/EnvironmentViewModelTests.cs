@@ -43,24 +43,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod]
-        public void TestNewCommand()
-        {
-            //arrange
-            var environmentId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(environmentId);
-            const string ResourceType = "DbService";
-            _target.ResourcePath = "resPath";
-
-            //act
-            _target.NewCommand.Execute(ResourceType);
-            Assert.IsTrue(_target.NewCommand.CanExecute(ResourceType));
-
-            //assert
-            _shellViewModelMock.Verify(it=>it.SetActiveEnvironment(environmentId));
-            _shellViewModelMock.Verify(it=>it.SetActiveServer(_serverMock.Object));
-            _shellViewModelMock.Verify(it=>it.NewResource(ResourceType.ToString(), _target.ResourcePath));
-        }
         
         [TestMethod]
         public void TestRefreshCommandChildrenAllowResourceCheck()

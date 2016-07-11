@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource("DbSource", "");
+            _shell.NewDatabaseSource(string.Empty);
         }
 
         public void EditSource(IDbSource selectedSource)

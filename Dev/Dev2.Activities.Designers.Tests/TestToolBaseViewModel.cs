@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests
         }
 
         public ImplRegionBase(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions)
-            : base(modelItem, showExampleWorkflow, regions)
+            : base(modelItem, regions)
         {
         }
 

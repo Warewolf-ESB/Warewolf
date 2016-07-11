@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Warewolf.Studio.Core;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -51,12 +52,67 @@ namespace Warewolf.Studio.ViewModels
             _controller = CustomContainer.Get<IPopupController>();
             Server = server;
             _children = new ObservableCollection<IExplorerItemViewModel>();
-            NewCommand = new DelegateCommand<string>(type =>
+
+            NewServiceCommand = new DelegateCommand(() =>
             {
-                shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                shellViewModel.SetActiveServer(Server);
-                shellViewModel.NewResource(type.ToString(), ResourcePath);
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewService(ResourcePath);
             });
+
+            NewServerCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewServerSource(ResourcePath);
+            });
+
+            NewDatabaseSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewDatabaseSource(ResourcePath);
+            });
+
+            NewPluginSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewPluginSource(ResourcePath);
+            });
+
+            NewWebSourceSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewWebSource(ResourcePath);
+            });
+
+            NewEmailSourceSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewEmailSource(ResourcePath);
+            });
+
+            NewExchangeSourceSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewExchangeSource(ResourcePath);
+            });
+
+            NewRabbitMQSourceSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewRabbitMQSource(ResourcePath);
+            });
+
+            NewSharepointSourceSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewSharepointSource(ResourcePath);
+            });           
+
+            NewDropboxSourceSourceCommand = new DelegateCommand(() =>
+            {
+                UpdateActiveEnvironment(shellViewModel);
+                shellViewModel.NewDropboxSource(ResourcePath);
+            });
+           
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(async () =>
             {
@@ -86,8 +142,8 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
             CreateFolderCommand = new DelegateCommand(CreateFolder);
             Parent = null;
-            ResourceType = "ServerSource";
-            ResourcePath = "";
+            ResourceType = @"ServerSource";
+            ResourcePath = string.Empty;
             ResourceName = DisplayName;
             CanShowServerVersion = true;
             AreVersionsVisible = false;
@@ -96,6 +152,12 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
+        }
+
+        private void UpdateActiveEnvironment(IShellViewModel shellViewModel)
+        {
+            shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
+            shellViewModel.SetActiveServer(Server);
         }
 
         public IShellViewModel ShellViewModel => _shellViewModel;
@@ -502,7 +564,16 @@ namespace Warewolf.Studio.ViewModels
 
         #region COMMANDS
 
-        public ICommand NewCommand { get; set; }
+        public ICommand NewServiceCommand { get; set; }
+        public ICommand NewServerCommand { get; set; }
+        public ICommand NewDatabaseSourceCommand { get; set; }
+        public ICommand NewPluginSourceCommand { get; set; }
+        public ICommand NewWebSourceSourceCommand { get; set; }
+        public ICommand NewEmailSourceSourceCommand { get; set; }
+        public ICommand NewExchangeSourceSourceCommand { get; set; }
+        public ICommand NewRabbitMQSourceSourceCommand { get; set; }
+        public ICommand NewSharepointSourceSourceCommand { get; set; }
+        public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public ICommand RenameCommand { get; set; }
         public ICommand CreateFolderCommand { get; set; }

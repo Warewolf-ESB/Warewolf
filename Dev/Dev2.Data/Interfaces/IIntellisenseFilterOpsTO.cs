@@ -10,11 +10,11 @@
 
 using Dev2.Common.Interfaces;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Interfaces
 {
-    interface IIntellisenseFilterOpsTO
+    public interface IIntellisenseFilterOpsTO
     {
-        string FilterCondition { get; set; }
         enIntellisensePartType FilterType { get; set; }
+        string FilterCondition { get; set; }
     }
 }
