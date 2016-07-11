@@ -157,8 +157,8 @@ namespace Dev2.Settings.Logging
             //Implement if help is done for the log settings.
         }
 
-        public ICommand GetServerLogFileCommand { get; private set; }
-        public ICommand GetStudioLogFileCommand { get; private set; }
+        public ICommand GetServerLogFileCommand { get; }
+        public ICommand GetStudioLogFileCommand { get; }
         public LogLevel ServerEventLogLevel
         {
             get
