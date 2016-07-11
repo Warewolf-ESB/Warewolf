@@ -2003,12 +2003,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberWeekOfYear", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberWeekOfYear");
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { "A", true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(result.ToString()));
         }
@@ -2019,12 +2018,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberSeconds", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberSeconds");
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { "A", true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(result.ToString()));
         }
@@ -2035,12 +2033,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberMinutes", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberMinutes");
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { "A", true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(result.ToString()));
         }
@@ -2051,12 +2048,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberDayOfWeek", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberDayOfWeek");
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { "A", true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(result.ToString()));
         }
@@ -2066,12 +2062,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumber24H", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumber24H");
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { "A", true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(result.ToString()));
         }
@@ -2082,12 +2077,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberMilliseconds", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberMilliseconds");
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { "A", true });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(result.ToString()));
         }
@@ -2097,12 +2091,11 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void GetDayOfWeekInt_GivenSunday_ShouldReturn7()
         {
             //---------------Set up test pack-------------------
-            DateTimeParser dateTimeParser = new DateTimeParser();
+            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(DateTimeParser).GetMethod("GetDayOfWeekInt", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var result = methodInfo.Invoke(null, new object[] { DayOfWeek.Sunday });
+            var methodInfo = typeof(DateTimeParserHelper).GetMethod("GetDayOfWeekInt", BindingFlags.Static | BindingFlags.NonPublic);
+            var result = methodInfo.Invoke(dateTimeParser, new object[] { DayOfWeek.Sunday });
             //---------------Test Result -----------------------
             Assert.AreEqual(7 , int.Parse(result.ToString()));
         }
