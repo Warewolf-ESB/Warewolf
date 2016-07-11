@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DropBoxDownloadViewModel_Construct")]
-        public void DropBoxDownloadViewModel_Construct_GivenNewInstance_ShouldBeActivityViewModel()
+        public void DropboxDownload_DropBoxDownloadViewModel_Construct_GivenNewInstance_ShouldBeActivityViewModel()
         {
             //------------Setup for test--------------------------
             var dropBoxDownloadViewModel = CreateMockViewModel();
@@ -73,7 +73,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Sources_GivenANewDropBoxViewModel_ShouldHaveNotBeNull()
+        public void DropboxDownload_Sources_GivenANewDropBoxViewModel_ShouldHaveNotBeNull()
         {
             //---------------Set up test pack-------------------
             var downloadViewModel = CreateMockViewModel();
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        public void DropboxDownload_ToPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var downloadViewModel = CreateMockViewModel();
@@ -99,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FromPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        public void DropboxDownload_FromPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var downloadViewModel = CreateMockViewModel();
@@ -112,7 +112,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        public void DropboxDownload_Result_GivenActivityIsNew_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var downloadViewModel = CreateMockViewModel();
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SelectedSourceName_GivenActivityIsNewAndNoSourceSelected_ShouldBeNullOrEmpty()
+        public void DropboxDownload_SelectedSourceName_GivenActivityIsNewAndNoSourceSelected_ShouldBeNullOrEmpty()
         {
             //---------------Set up test pack-------------------
             var downloadViewModel = CreateMockViewModel();
@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void downloadViewModel_EditSourcePublishesMessage()
+        public void DropboxDownload_downloadViewModel_EditSourcePublishesMessage()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -161,7 +161,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void downloadViewModel_EditSourceOnlyAvailableIfSourceSelected()
+        public void DropboxDownload_downloadViewModel_EditSourceOnlyAvailableIfSourceSelected()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -177,7 +177,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectedOperation_EditSource")]
-        public void downloadViewModel_EditSourceAvailableIfSourceSelected()
+        public void DropboxDownload_downloadViewModel_EditSourceAvailableIfSourceSelected()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -191,7 +191,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxDownload_ToPath_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -213,7 +213,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Frompath_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxDownload_Frompath_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -235,7 +235,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxDownload_Result_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -257,7 +257,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OverwriteFile_GivenIsSet_ShouldSetModelItemProperty()
+        public void DropboxDownload_OverwriteFile_GivenIsSet_ShouldSetModelItemProperty()
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
@@ -280,7 +280,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateOAuthSource_GivenCanPublish_ShouldResfreshSources()
+        public void DropboxDownload_CreateOAuthSource_GivenCanPublish_ShouldResfreshSources()
         {
             var agg = new Mock<IEventAggregator>();
 
@@ -305,21 +305,25 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateOAuthSource_GivenCanPublish_ShouldPusbilsh()
+        public void DropboxDownload_CreateOAuthSource_GivenCanPublish_ShouldPublish()
         {
             var res = new Mock<IResourceRepository>();
             var agg = new Mock<IEventAggregator>();
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             agg.Setup(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
             var model = CreateModelItem();
-            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
+            //---------------Setup for test-----------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
             var mockVM = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
-            //---------------Assert Precondition----------------
+            //---------------Assert Precondition------------------
+
+            //---------------Execute Test ------------------------
             mockVM.CreateOAuthSource();
-            //---------------Execute Test ----------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
-            //---------------Test Result -----------------------
+            //---------------Test Result -------------------------
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()),Times.Once);
         }
     }
 }
