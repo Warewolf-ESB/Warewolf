@@ -8,9 +8,9 @@ using Dev2.Settings.Logging;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using log4net.Config;
-using Microsoft.AspNet.SignalR.Client.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Core.Tests.Settings
 {
