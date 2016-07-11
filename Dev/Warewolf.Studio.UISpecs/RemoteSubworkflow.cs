@@ -65,7 +65,7 @@ namespace Warewolf.Studio.UISpecs
             //Uimap.Assert_Server_Source_Wizard_Address_Textbox_Text_Equals_TSTCIREMOTE();
             //Uimap.Assert_Server_Source_Wizard_Test_Connection_Button_Exists();
             Uimap.Click_Server_Source_Wizard_Test_Connection_Button();
-            Playback.Wait(1500);
+            Playback.Wait(2000);
             Uimap.Assert_Server_Source_Wizard_Test_Passed();
             Uimap.Assert_Save_Ribbon_Button_Enabled();
 
@@ -110,12 +110,12 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: Clicking the explorer remote server connect button loads the workflow1 remote resource
             //Given: Uimap.Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_Selected();
             Uimap.Click_Explorer_RemoteServer_Connect_Button();
+            Playback.Wait(2000);
             explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE");
 
             //Action Unit: filtering and refreshing the explorer tree shows only workflow1 on remote server
             Uimap.Enter_workflow1_Into_Explorer_Filter();
             Uimap.Click_Explorer_Refresh_Button();
-            Playback.Wait(1500);
             explorerTreeItemActionSteps.AssertExistsInExplorerTree("TSTCIREMOTE\\workflow1");
 
             //Action Unit: Dragging on a remote workflow onto a local workflow design surface
@@ -138,7 +138,7 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: Clicking the save button in the save dialog dismisses save dialog
             //UIMap.Assert_SaveDialog_SaveButton_Enabled();
             Uimap.Click_SaveDialog_YesButton();
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             Uimap.Assert_MessageBox_Does_Not_Exist();
 
             //Action Unit: filtering and refreshing the explorer tree shows only RemoteServerUITestWorkflow on local server
@@ -159,6 +159,16 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_DebugInput_DebugButton();
             Uimap.Assert_DebugOutput_Contains_Workflow1();
             **/
+
+            //Action Unit: Right clicking an item in the explorer shows 'show dependency' option
+            //Given: explorerTreeItemActionSteps.AssertExistsInExplorerTree("localhost\\TSTCIREMOTE");
+            explorerTreeItemActionSteps.WhenIRightClickTheItemInTheExplorerTree("localhost\\TSTCIREMOTE");
+            Uimap.Assert_ShowDependencies_Exists_In_Explorer_Context_Menu();
+
+            //Action Unit: Clicking show dependencies explorer context menu button opens the dependencies tab for that workflow
+            //Given: Uimap.Assert_ExplorerContextMenu_ShowDependencies_Exists();
+            Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
+            Uimap.Assert_RemoteServerUITestWorkflow_Appears_In_Dependency_Diagram();
         }
 
         #region Additional test attributes
@@ -205,9 +215,9 @@ namespace Warewolf.Studio.UISpecs
                 Uimap.Click_Explorer_Refresh_Button();
                 explorerTreeItemActionSteps.AssertDoesNotExistInExplorerTree("localhost\\RemoteServerUITestWorkflow");
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Test crashed before RemoteServerUITestWorkflow was created.");
+                Console.WriteLine("Cleanup failed to remove RemoteServerUITestWorkflow. Test may have crashed before RemoteServerUITestWorkflow was created.\n" + e.Message);
             }
 
             try
@@ -225,6 +235,11 @@ namespace Warewolf.Studio.UISpecs
                         Uimap.Click_Explorer_RemoteServer_Connect_Button();
                     }
                 }
+
+                //Action Unit: Selecting localhost server in the explorer remote server dropdown list selects that server source in the connect control
+                Uimap.Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
+                Uimap.Assert_Explorer_Remote_Server_DropdownList_Has_localhost_Selected();
+
                 //Action Unit: filtering and refreshing the explorer tree shows only TSTCIREMOTE on local server
                 Uimap.Enter_TSTCIREMOTE_Into_Explorer_Filter();
                 Uimap.Click_Explorer_Refresh_Button();
@@ -254,16 +269,11 @@ namespace Warewolf.Studio.UISpecs
                 //Given "localhost\TSTCIREMOTE" does not exist in the explorer tree
                 Uimap.Click_Connect_Control_InExplorer();
                 Uimap.Assert_Explorer_Remote_Server_DropdownList_Does_Not_Contain_TSTCIREMOTE();
-
-                //Action Unit: Selecting localhost server in the explorer remote server dropdown list selects that server source in the connect control
-                //Given: Uimap.Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTE();
-                Uimap.Select_localhost_From_Explorer_Remote_Server_Dropdown_List();
-                Uimap.Assert_Explorer_Remote_Server_DropdownList_Has_localhost_Selected();
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine("Cleanup failed to remove remote server TST-CI-REMOTE. Test may have crashed before remote server TST-CI-REMOTE was connected.\n" + e.Message);
                 Uimap.Click_Explorer_Filter_Clear_Button();
-                Console.WriteLine("Test crashed before remote server TST-CI-REMOTE was connected.");
             }
         }
 
