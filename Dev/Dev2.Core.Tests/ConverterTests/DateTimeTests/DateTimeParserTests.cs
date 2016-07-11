@@ -10,6 +10,7 @@
 
 using System;
 using System.Globalization;
+using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
@@ -76,7 +77,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -100,7 +101,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -124,7 +125,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -148,7 +149,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -173,7 +174,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -198,7 +199,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -223,7 +224,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -247,7 +248,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -271,7 +272,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -295,7 +296,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -319,7 +320,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 27 && returnDate.Month == 02 && returnDate.Year == 2009 && returnDate.DayOfWeek == DayOfWeek.Friday)
+            if (returnDate.Day == 27 && returnDate.Month == 02 && returnDate.Year == 2009 && returnDate.DayOfWeek == DayOfWeek.Friday)
             {
                 Assert.IsTrue(true);
             }
@@ -343,7 +344,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -367,7 +368,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -391,7 +392,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -415,7 +416,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -439,7 +440,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -463,7 +464,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
+            if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -604,7 +605,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Year == 2012)
+            if (returnDate.Year == 2012)
             {
                 Assert.IsTrue(true);
             }
@@ -672,7 +673,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Year == 1988)
+            if (returnDate.Year == 1988)
             {
                 Assert.IsTrue(true);
             }
@@ -698,7 +699,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Month == 01)
+            if (returnDate.Month == 01)
             {
                 Assert.IsTrue(true);
             }
@@ -723,7 +724,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Month == 01)
+            if (returnDate.Month == 01)
             {
                 Assert.IsTrue(true);
             }
@@ -748,7 +749,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Month == 2)
+            if (returnDate.Month == 2)
             {
                 Assert.IsTrue(true);
             }
@@ -773,7 +774,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Month == 01)
+            if (returnDate.Month == 01)
             {
                 Assert.IsTrue(true);
             }
@@ -798,7 +799,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 01)
+            if (returnDate.Day == 01)
             {
                 Assert.IsTrue(true);
             }
@@ -823,7 +824,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.Day == 01)
+            if (returnDate.Day == 01)
             {
                 Assert.IsTrue(true);
             }
@@ -848,7 +849,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.DayOfWeek == DayOfWeek.Tuesday)
+            if (returnDate.DayOfWeek == DayOfWeek.Tuesday)
             {
                 Assert.IsTrue(true);
             }
@@ -873,7 +874,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.DayOfWeek == DayOfWeek.Tuesday)
+            if (returnDate.DayOfWeek == DayOfWeek.Tuesday)
             {
                 Assert.IsTrue(true);
             }
@@ -898,7 +899,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.DayOfWeek == DayOfWeek.Friday)
+            if (returnDate.DayOfWeek == DayOfWeek.Friday)
             {
                 Assert.IsTrue(true);
             }
@@ -923,7 +924,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.DayOfYear == 50)
+            if (returnDate.DayOfYear == 50)
             {
                 Assert.IsTrue(true);
             }
@@ -950,7 +951,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Calendar myCal = CultureInfo.InvariantCulture.Calendar;
             int weekOfYear = myCal.GetWeekOfYear(returnDate, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
-            if(weekOfYear == 20)
+            if (weekOfYear == 20)
             {
                 Assert.IsTrue(true);
             }
@@ -975,7 +976,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 15)
+            if (returnDate.TimeOfDay.Hours == 15)
             {
                 Assert.IsTrue(true);
             }
@@ -1000,7 +1001,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 3)
+            if (returnDate.TimeOfDay.Hours == 3)
             {
                 Assert.IsTrue(true);
             }
@@ -1025,7 +1026,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Minutes == 42)
+            if (returnDate.TimeOfDay.Minutes == 42)
             {
                 Assert.IsTrue(true);
             }
@@ -1051,7 +1052,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Seconds == 32)
+            if (returnDate.TimeOfDay.Seconds == 32)
             {
                 Assert.IsTrue(true);
             }
@@ -1076,7 +1077,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Milliseconds == 673)
+            if (returnDate.TimeOfDay.Milliseconds == 673)
             {
                 Assert.IsTrue(true);
             }
@@ -1101,7 +1102,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 0)
+            if (returnDate.TimeOfDay.Hours == 0)
             {
                 Assert.IsTrue(true);
             }
@@ -1122,7 +1123,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 12)
+            if (returnDate.TimeOfDay.Hours == 12)
             {
                 Assert.IsTrue(true);
             }
@@ -1143,7 +1144,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 12)
+            if (returnDate.TimeOfDay.Hours == 12)
             {
                 Assert.IsTrue(true);
             }
@@ -1164,7 +1165,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 0)
+            if (returnDate.TimeOfDay.Hours == 0)
             {
                 Assert.IsTrue(true);
             }
@@ -1186,7 +1187,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 13)
+            if (returnDate.TimeOfDay.Hours == 13)
             {
                 Assert.IsTrue(true);
             }
@@ -1207,7 +1208,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             _parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
             DateTime returnDate = dateTimeResult.ToDateTime();
 
-            if(returnDate.TimeOfDay.Hours == 1)
+            if (returnDate.TimeOfDay.Hours == 1)
             {
                 Assert.IsTrue(true);
             }
@@ -1234,7 +1235,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "yy':'mm':'dd";
             const string addTime = "01:02:03";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Years == 1 && returnTO.Months == 2 && returnTO.Days == 3)
+            if (returnTO.Years == 1 && returnTO.Months == 2 && returnTO.Days == 3)
             {
                 Assert.IsTrue(true);
             }
@@ -1310,7 +1311,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "yy";
             const string addTime = "01";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Years == 1)
+            if (returnTO.Years == 1)
             {
                 Assert.IsTrue(true);
             }
@@ -1331,7 +1332,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "yyyy";
             const string addTime = "1920";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Years == 1920)
+            if (returnTO.Years == 1920)
             {
                 Assert.IsTrue(true);
             }
@@ -1352,7 +1353,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "mm";
             const string addTime = "02";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Months == 2)
+            if (returnTO.Months == 2)
             {
                 Assert.IsTrue(true);
             }
@@ -1373,7 +1374,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "m";
             const string addTime = "02";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Months == 2)
+            if (returnTO.Months == 2)
             {
                 Assert.IsTrue(true);
             }
@@ -1394,7 +1395,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "M";
             const string addTime = "2";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Months == 2)
+            if (returnTO.Months == 2)
             {
                 Assert.IsTrue(true);
             }
@@ -1415,7 +1416,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "MM";
             const string addTime = "02";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Months == 2)
+            if (returnTO.Months == 2)
             {
                 Assert.IsTrue(true);
             }
@@ -1436,7 +1437,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "d";
             const string addTime = "1";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Days == 1)
+            if (returnTO.Days == 1)
             {
                 Assert.IsTrue(true);
             }
@@ -1457,7 +1458,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "dd";
             const string addTime = "01";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Days == 1)
+            if (returnTO.Days == 1)
             {
                 Assert.IsTrue(true);
             }
@@ -1475,7 +1476,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "DW";
             const string addTime = "4";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.DaysOfWeek == 4)
+            if (returnTO.DaysOfWeek == 4)
             {
                 Assert.IsTrue(true);
             }
@@ -1493,7 +1494,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "dW";
             const string addTime = "4";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.DaysOfWeek == 4)
+            if (returnTO.DaysOfWeek == 4)
             {
                 Assert.IsTrue(true);
             }
@@ -1511,7 +1512,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "dw";
             const string addTime = "4";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.DaysOfWeek == 4)
+            if (returnTO.DaysOfWeek == 4)
             {
                 Assert.IsTrue(true);
             }
@@ -1529,7 +1530,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "dy";
             const string addTime = "123";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.DaysOfYear == 123)
+            if (returnTO.DaysOfYear == 123)
             {
                 Assert.IsTrue(true);
             }
@@ -1550,7 +1551,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "w";
             const string addTime = "32";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Weeks == 32)
+            if (returnTO.Weeks == 32)
             {
                 Assert.IsTrue(true);
             }
@@ -1572,7 +1573,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "24h";
             const string addTime = "21";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Hours == 21)
+            if (returnTO.Hours == 21)
             {
                 Assert.IsTrue(true);
             }
@@ -1593,7 +1594,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputFormat = "12h";
             const string addTime = "3";
             _parser.TryParseTime(addTime, inputFormat, out returnTO, out result);
-            if(returnTO.Hours == 3)
+            if (returnTO.Hours == 3)
             {
                 Assert.IsTrue(true);
             }
@@ -1614,7 +1615,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string InputFormat = "min";
             const string AddTime = "34";
             _parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
-            if(returnTo.Minutes == 34)
+            if (returnTo.Minutes == 34)
             {
                 Assert.IsTrue(true);
             }
@@ -1635,7 +1636,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string InputFormat = "ss";
             const string AddTime = "3";
             _parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
-            if(returnTo.Seconds == 3)
+            if (returnTo.Seconds == 3)
             {
                 Assert.IsTrue(true);
             }
@@ -1656,7 +1657,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string InputFormat = "sp";
             const string AddTime = "3";
             _parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
-            if(returnTo.Milliseconds == 3)
+            if (returnTo.Milliseconds == 3)
             {
                 Assert.IsTrue(true);
             }
@@ -1677,7 +1678,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string InputFormat = "'The date is : 'ddmmyyyy";
             const string AddTime = "The date is : 02010021";
             _parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
-            if(returnTo.Days == 2 && returnTo.Months == 1 && returnTo.Years == 21)
+            if (returnTo.Days == 2 && returnTo.Months == 1 && returnTo.Years == 21)
             {
                 Assert.IsTrue(true);
             }
@@ -1698,7 +1699,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string InputFormat = "'I was born on the 'd'th of 'm' in the year 'yy";
             const string AddTime = "I was born on the 2th of 1 in the year 21";
             _parser.TryParseTime(AddTime, InputFormat, out returnTo, out result);
-            if(returnTo.Days == 2 && returnTo.Months == 1 && returnTo.Years == 21)
+            if (returnTo.Days == 2 && returnTo.Months == 1 && returnTo.Years == 21)
             {
                 Assert.IsTrue(true);
             }
@@ -1995,5 +1996,115 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         #endregion
 
         #endregion
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsNumberWeekOfYear_GivenA_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            //IsNumberWeekOfYear(string data, bool treatAsTime)
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberWeekOfYear", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(result.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsNumberSeconds_GivenA_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            //IsNumberWeekOfYear(string data, bool treatAsTime)
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberSeconds", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(result.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsNumberMinutes_GivenA_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            //IsNumberWeekOfYear(string data, bool treatAsTime)
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberMinutes", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(result.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsNumberDayOfWeek_GivenA_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            //IsNumberWeekOfYear(string data, bool treatAsTime)
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberDayOfWeek", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(result.ToString()));
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsNumber24H_GivenA_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            //IsNumberWeekOfYear(string data, bool treatAsTime)
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumber24H", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(result.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsNumberMilliseconds_GivenA_ShouldReturnFalse()
+        {
+            //---------------Set up test pack-------------------
+            //IsNumberWeekOfYear(string data, bool treatAsTime)
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("IsNumberMilliseconds", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { "A", true });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(bool.Parse(result.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDayOfWeekInt_GivenSunday_ShouldReturn7()
+        {
+            //---------------Set up test pack-------------------
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dateTimeParser.DateTimeFormatParts);
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DateTimeParser).GetMethod("GetDayOfWeekInt", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var result = methodInfo.Invoke(null, new object[] { DayOfWeek.Sunday });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(7 , int.Parse(result.ToString()));
+        }
     }
 }
