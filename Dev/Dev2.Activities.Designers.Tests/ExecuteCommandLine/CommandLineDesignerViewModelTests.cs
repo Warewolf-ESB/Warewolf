@@ -12,10 +12,13 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Activities.Designers2.CommandLine;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
 {
@@ -112,6 +115,26 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
             Assert.AreEqual(0, viewModel.Errors.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("CommandLineDesignerViewModel_Handle")]
+        public void CommandLineDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            const string CommandFileName = "[[h]]";
+            var viewModel = new CommandLineDesignerViewModel(CreateModelItem(CommandFileName));
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

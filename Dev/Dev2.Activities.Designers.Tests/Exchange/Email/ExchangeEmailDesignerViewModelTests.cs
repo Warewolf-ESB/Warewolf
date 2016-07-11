@@ -9,9 +9,11 @@ using Dev2.Activities.Designers2.ExchangeEmail;
 using Dev2.Activities.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -199,6 +201,28 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             Assert.AreEqual(emailSourceCount, viewModel.SourceRegion.Sources.Count);
             Assert.AreEqual("TestExchange", viewModel.SourceRegion.SelectedSource.Name);
             Assert.IsTrue(propertyChanged);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ExchangeEmailDesignerViewModel_Handle")]
+        public void ExchangeEmailDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var modelItem = CreateModelItem();
+            var eventPublisher = new Mock<IEventAggregator>();
+
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

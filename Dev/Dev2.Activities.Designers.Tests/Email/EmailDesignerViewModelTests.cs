@@ -19,8 +19,10 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -129,6 +131,32 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.IsNull(viewModel.SelectedEmailSourceModelItemValue);
 
             Assert.IsFalse(propertyChanged);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("EmailDesignerViewModel_Handle")]
+        public void EmailDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            const int EmailSourceCount = 2;
+            var sources = CreateEmailSources(EmailSourceCount);
+            var selectedEmailSource = sources.First();
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
+
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var viewModel = CreateViewModel(sources, modelItem);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
