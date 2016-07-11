@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common.Interfaces;
 using Warewolf.Resource.Errors;
 // ReSharper disable NonLocalizedString
 // ReSharper disable CollectionNeverQueried.Local
@@ -36,6 +37,8 @@ namespace Dev2.Common.DateAndTime
 
         public const char DateLiteralCharacter = '\'';
         private const char TimeLiteralCharacter = ':';
+        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
+        private static readonly IAssignManager AssignManager = new AssignManager();
 
         private static readonly Dictionary<char, List<int>> DateTimeFormatForwardLookups =
             new Dictionary<char, List<int>>();
@@ -148,10 +151,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Breaks a date time format up into parts
         /// </summary>
-        static bool TryGetDateTimeFormatParts(string format,
-            Dictionary<char, List<int>> dateTimeFormatForwardLookups,
-            Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions,
-            out List<IDateTimeFormatPartTO> formatParts, out string error)
+        static bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
             bool nothingDied = true;
 
@@ -209,22 +209,6 @@ namespace Dev2.Common.DateAndTime
 
             return nothingDied;
         }
-
-        internal static int GetDayOfWeekInt(DayOfWeek dayOfWeek)
-        {
-            int val;
-            if (dayOfWeek == DayOfWeek.Sunday)
-            {
-                val = 7;
-            }
-            else
-            {
-                val = (int)dayOfWeek;
-            }
-
-            return val;
-        }
-
         /// <summary>
         ///     Parses the given data using the specified format
         /// </summary>
@@ -259,16 +243,15 @@ namespace Dev2.Common.DateAndTime
                 List<IDateTimeFormatPartTO> formatParts;
                 int position = 0;
 
-                
-                nothingDied = TryGetDateTimeFormatParts(inputFormat, DateTimeFormatForwardLookups,
-                    DateTimeFormatPartOptions, out formatParts, out error);
+
+                nothingDied = TryGetDateTimeFormatParts(inputFormat, DateTimeFormatForwardLookups, DateTimeFormatPartOptions, out formatParts, out error);
                 if (!string.IsNullOrEmpty(error))
                 {
                     return false;
                 }
                 if (nothingDied)
                 {
-                    
+
                     int count = 0;
                     while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
@@ -331,7 +314,7 @@ namespace Dev2.Common.DateAndTime
         private string MatchInputFormatToCulture(ref string error, int culturesTried)
         {
             string inputFormat = "";
-            switch(culturesTried)
+            switch (culturesTried)
             {
                 case 0:
                     inputFormat =
@@ -382,7 +365,7 @@ namespace Dev2.Common.DateAndTime
                     string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
                     string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
                     string finalPattern = shortPattern + " " + longPattern;
-                    if(finalPattern.Contains("ss"))
+                    if (finalPattern.Contains("ss"))
                     {
                         finalPattern =
                             finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2,
@@ -415,8 +398,7 @@ namespace Dev2.Common.DateAndTime
         ///     Extracts data from a date time text given a potision and a date time format part. This data is then assigned to the
         ///     given result.
         /// </summary>
-        private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part,
-            IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
+        private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
             bool nothingDied = true;
 
@@ -729,33 +711,33 @@ namespace Dev2.Common.DateAndTime
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
-                        AssignEra),
+                        AssignManager.AssignEra),
                     new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
-                        AssignEra),
+                        AssignManager.AssignEra),
                     new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
-                        AssignEra)
+                        AssignManager.AssignEra)
                 });
 
             DateTimeFormatPartOptions.Add("Era",
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
-                        AssignEra),
+                        AssignManager.AssignEra),
                     new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
-                        AssignEra),
+                        AssignManager.AssignEra),
                     new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
-                        AssignEra)
+                        AssignManager.AssignEra)
                 });
 
             DateTimeFormatPartOptions.Add("ERA",
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
-                        AssignEra),
+                        AssignManager.AssignEra),
                     new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
-                        AssignEra),
+                        AssignManager.AssignEra),
                     new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
-                        AssignEra)
+                       AssignManager. AssignEra)
                 });
         }
 
@@ -765,9 +747,9 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("am/pm",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignAmPm),
-                    new DateTimeFormatPartOptionTO(3, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignAmPm),
-                    new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignAmPm),
+                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignManager.AssignAmPm),
+                    new DateTimeFormatPartOptionTO(3, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignManager.AssignAmPm),
+                    new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignManager.AssignAmPm),
                 });
 
             DateTimeFormatsParts.Add("Z",
@@ -799,17 +781,17 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("ss",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberSeconds, true, null, AssignSeconds),
-                    new DateTimeFormatPartOptionTO(1, IsNumberSeconds, true, null, AssignSeconds),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberSeconds, true, null, AssignManager.AssignSeconds),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberSeconds, true, null,  AssignManager.AssignSeconds),
                 });
 
             DateTimeFormatsParts.Add("sp", new DateTimeFormatPartTO("sp", false, "Split Seconds: 987"));
             DateTimeFormatPartOptions.Add("sp",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(3, IsNumberMilliseconds, true, null, AssignMilliseconds),
-                    new DateTimeFormatPartOptionTO(2, IsNumberMilliseconds, true, null, AssignMilliseconds),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMilliseconds, true, null, AssignMilliseconds),
+                    new DateTimeFormatPartOptionTO(3, DatetimeParserHelper.IsNumberMilliseconds, true, null, AssignManager. AssignMilliseconds),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMilliseconds, true, null, AssignManager. AssignMilliseconds),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMilliseconds, true, null, AssignManager. AssignMilliseconds),
                 });
         }
 
@@ -819,8 +801,8 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("min",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMinutes, true, null, AssignMinutes),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMinutes, true, null, AssignMinutes),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMinutes, true, null, AssignManager.AssignMinutes),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMinutes, true, null, AssignManager.AssignMinutes),
                 });
         }
 
@@ -830,15 +812,15 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("24h",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumber24H, true, null, Assign24Hours)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumber24H, true, null, AssignManager.Assign24Hours)
                 });
 
             DateTimeFormatsParts.Add("12h", new DateTimeFormatPartTO("12h", false, "Hours in 12 hour format: 3"));
             DateTimeFormatPartOptions.Add("12h",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumber12H, true, null, Assign12Hours),
-                    new DateTimeFormatPartOptionTO(1, IsNumber12H, true, null, Assign12Hours),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumber12H, true, null, AssignManager.Assign12Hours),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumber12H, true, null, AssignManager.Assign12Hours),
                 });
         }
 
@@ -848,15 +830,15 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("ww",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberWeekOfYear, true, null, AssignManager.AssignWeeks),
                 });
 
             DateTimeFormatsParts.Add("w", new DateTimeFormatPartTO("w", false, "Week of year: 9"));
             DateTimeFormatPartOptions.Add("w",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
-                    new DateTimeFormatPartOptionTO(1, IsNumberWeekOfYear, true, null, AssignWeeks),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberWeekOfYear, true, null, AssignManager.AssignWeeks),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberWeekOfYear, true, null, AssignManager.AssignWeeks),
                 });
         }
 
@@ -866,28 +848,28 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("d",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays),
-                    new DateTimeFormatPartOptionTO(1, IsNumberDay, true, null, AssignDays)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberDay, true, null, AssignManager.AssignDays),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDay, true, null, AssignManager.AssignDays)
                 });
 
             DateTimeFormatsParts.Add("dd", new DateTimeFormatPartTO("dd", false, "Day of month in 2 digits: 06"));
             DateTimeFormatPartOptions.Add("dd",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberDay, true, null, AssignManager.AssignDays)
                 });
 
             DateTimeFormatsParts.Add("DW", new DateTimeFormatPartTO("DW", false, "Day of Week in full: Thursday"));
             DateTimeFormatPartOptions.Add("DW",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7, AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1, AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2, AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false, 3, AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false, 4, AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5, AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false, 6, AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7, AssignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1, AssignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2, AssignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false, 3, AssignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false, 4, AssignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5, AssignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false, 6, AssignManager.AssignDaysOfWeek),
                 });
 
             DateTimeFormatsParts.Add("dW", new DateTimeFormatPartTO("dW", false, "Day of Week text abbreviated: Thu"));
@@ -896,41 +878,41 @@ namespace Dev2.Common.DateAndTime
                 {
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7,
-                        AssignDaysOfWeek, 6),
+                        AssignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1,
-                        AssignDaysOfWeek, 6),
+                        AssignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2,
-                        AssignDaysOfWeek, 7),
+                        AssignManager.AssignDaysOfWeek, 7),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false,
-                        3, AssignDaysOfWeek, 9),
+                        3, AssignManager.AssignDaysOfWeek, 9),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false,
-                        4, AssignDaysOfWeek, 8),
+                        4, AssignManager.AssignDaysOfWeek, 8),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5,
-                        AssignDaysOfWeek, 6),
+                        AssignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false,
-                        6, AssignDaysOfWeek, 7),
+                        6, AssignManager.AssignDaysOfWeek, 7),
                 });
 
             DateTimeFormatsParts.Add("dw", new DateTimeFormatPartTO("dw", false, "Day of Week number: 4"));
             DateTimeFormatPartOptions.Add("dw",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDayOfWeek, true, null, AssignManager.AssignDaysOfWeek),
                 });
 
             DateTimeFormatsParts.Add("dy", new DateTimeFormatPartTO("dy", false, "Day of year: 66"));
             DateTimeFormatPartOptions.Add("dy",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(3, IsNumberDayOfYear, true, null, AssignDaysOfYear),
-                    new DateTimeFormatPartOptionTO(2, IsNumberDayOfYear, true, null, AssignDaysOfYear),
-                    new DateTimeFormatPartOptionTO(1, IsNumberDayOfYear, true, null, AssignDaysOfYear)
+                    new DateTimeFormatPartOptionTO(3, DatetimeParserHelper.IsNumberDayOfYear, true, null, AssignManager.AssignDaysOfYear),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberDayOfYear, true, null, AssignManager.AssignDaysOfYear),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDayOfYear, true, null, AssignManager.AssignDaysOfYear)
                 });
         }
 
@@ -940,15 +922,15 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("mm",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths)
                 });
 
             DateTimeFormatsParts.Add("m", new DateTimeFormatPartTO("m", false, "Month in single digit: 3"));
             DateTimeFormatPartOptions.Add("m",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMonth, true, null, AssignMonths),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths),
                 });
 
             DateTimeFormatsParts.Add("M", new DateTimeFormatPartTO("M", false, "Month text abbreviated: Mar"));
@@ -957,58 +939,58 @@ namespace Dev2.Common.DateAndTime
                 {
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false,
-                        1, AssignMonths),
+                        1, AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false,
-                        2, AssignMonths),
+                        2, AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3,
-                        AssignMonths),
+                        AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4,
-                        AssignMonths),
+                        AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5,
-                        AssignMonths),
+                        AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6,
-                        AssignMonths),
+                        AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7,
-                        AssignMonths),
+                        AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false,
-                        8, AssignMonths),
+                        8, AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember,
-                        false, 9, AssignMonths),
+                        false, 9, AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false,
-                        10, AssignMonths),
+                        10, AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember,
-                        false, 11, AssignMonths),
+                        false, 11, AssignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
                         CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember,
-                        false, 12, AssignMonths),
+                        false, 12, AssignManager.AssignMonths),
                 });
 
             DateTimeFormatsParts.Add("MM", new DateTimeFormatPartTO("MM", false, "Month text in full: March"));
             DateTimeFormatPartOptions.Add("MM",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false, 1, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false, 2, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false, 8, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember, false, 9, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false, 10, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember, false, 11, AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember, false, 12, AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false, 1, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false, 2, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false, 8, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember, false, 9, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false, 10, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember, false, 11, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember, false, 12, AssignManager.AssignMonths),
                 });
         }
 
@@ -1017,14 +999,14 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatsParts.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in 2 digits: 08"));
             DateTimeFormatPartOptions.Add("yy", new List<IDateTimeFormatPartOptionTO>
             {
-                new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignYears)
+                new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignManager.AssignYears)
             });
 
             DateTimeFormatsParts.Add("yyyy", new DateTimeFormatPartTO("yyyy", false, "Year in 4 digits: 2008"));
             DateTimeFormatPartOptions.Add("yyyy",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignYears)
+                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignManager.AssignYears)
                 });
         }
 
@@ -1036,128 +1018,128 @@ namespace Dev2.Common.DateAndTime
             TimeFormatPartOptions.Add("yy",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignYears)
+                    new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignManager.AssignYears)
                 });
 
             TimeFormatPartOptions.Add("yyyy",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignYears)
+                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextNumeric, true, null, AssignManager.AssignYears)
                 });
 
             TimeFormatPartOptions.Add("mm",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths)
                 });
 
             TimeFormatPartOptions.Add("m",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMonth, true, null, AssignMonths),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMonth, true, null,AssignManager. AssignMonths),
                 });
 
             TimeFormatPartOptions.Add("MM",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths)
                 });
 
             TimeFormatPartOptions.Add("M",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMonth, true, null, AssignMonths),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMonth, true, null, AssignManager.AssignMonths),
                 });
 
             TimeFormatPartOptions.Add("d",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays),
-                    new DateTimeFormatPartOptionTO(1, IsNumberDay, true, null, AssignDays)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberDay, true, null, AssignManager.AssignDays),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDay, true, null, AssignManager.AssignDays)
                 });
 
             TimeFormatPartOptions.Add("dd",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberDay, true, null, AssignManager.AssignDays)
                 });
 
             TimeFormatPartOptions.Add("DW",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDayOfWeek, true, null, AssignManager.AssignDaysOfWeek),
                 });
 
             TimeFormatPartOptions.Add("dW",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDayOfWeek, true, null, AssignManager.AssignDaysOfWeek),
                 });
 
             TimeFormatPartOptions.Add("dw",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDayOfWeek, true, null, AssignManager.AssignDaysOfWeek),
                 });
 
             TimeFormatPartOptions.Add("dy",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(3, IsNumberDayOfYear, true, null, AssignDaysOfYear),
-                    new DateTimeFormatPartOptionTO(2, IsNumberDayOfYear, true, null, AssignDaysOfYear),
-                    new DateTimeFormatPartOptionTO(1, IsNumberDayOfYear, true, null, AssignDaysOfYear)
+                    new DateTimeFormatPartOptionTO(3, DatetimeParserHelper.IsNumberDayOfYear, true, null, AssignManager.AssignDaysOfYear),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberDayOfYear, true, null, AssignManager.AssignDaysOfYear),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberDayOfYear, true, null, AssignManager.AssignDaysOfYear)
                 });
 
             TimeFormatPartOptions.Add("w",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
-                    new DateTimeFormatPartOptionTO(1, IsNumberWeekOfYear, true, null, AssignWeeks),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberWeekOfYear, true, null, AssignManager.AssignWeeks),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberWeekOfYear, true, null, AssignManager.AssignWeeks),
                 });
 
             TimeFormatPartOptions.Add("24h",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumber24H, true, null, Assign24Hours)
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumber24H, true, null, AssignManager.Assign24Hours)
                 });
 
             TimeFormatPartOptions.Add("12h",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumber12H, true, null, Assign12Hours),
-                    new DateTimeFormatPartOptionTO(1, IsNumber12H, true, null, Assign12Hours),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumber12H, true, null, AssignManager.Assign12Hours),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumber12H, true, null, AssignManager.Assign12Hours),
                 });
 
             TimeFormatPartOptions.Add("min",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberMinutes, true, null, AssignMinutes),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMinutes, true, null, AssignMinutes),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMinutes, true, null, AssignManager. AssignMinutes),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMinutes, true, null, AssignManager. AssignMinutes),
                 });
 
             TimeFormatPartOptions.Add("ss",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(2, IsNumberSeconds, true, null, AssignSeconds),
-                    new DateTimeFormatPartOptionTO(1, IsNumberSeconds, true, null, AssignSeconds),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberSeconds, true, null,  AssignManager.AssignSeconds),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberSeconds, true, null,  AssignManager.AssignSeconds),
                 });
 
             TimeFormatPartOptions.Add("sp",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(3, IsNumberMilliseconds, true, null, AssignMilliseconds),
-                    new DateTimeFormatPartOptionTO(2, IsNumberMilliseconds, true, null, AssignMilliseconds),
-                    new DateTimeFormatPartOptionTO(1, IsNumberMilliseconds, true, null, AssignMilliseconds),
+                    new DateTimeFormatPartOptionTO(3, DatetimeParserHelper.IsNumberMilliseconds, true, null, AssignManager. AssignMilliseconds),
+                    new DateTimeFormatPartOptionTO(2, DatetimeParserHelper.IsNumberMilliseconds, true, null, AssignManager. AssignMilliseconds),
+                    new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMilliseconds, true, null, AssignManager. AssignMilliseconds),
                 });
 
             TimeFormatPartOptions.Add("am/pm",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignAmPm),
-                    new DateTimeFormatPartOptionTO(3, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignAmPm),
-                    new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignAmPm),
+                    new DateTimeFormatPartOptionTO(4, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignManager.AssignAmPm),
+                    new DateTimeFormatPartOptionTO(3, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignManager.AssignAmPm),
+                    new DateTimeFormatPartOptionTO(2, CompareTextValueToDateTimePart.IsTextAmPm, false, null, AssignManager.AssignAmPm),
                 });
 
             TimeFormatPartOptions.Add("Z", TimeZones.Select(k =>
@@ -1182,21 +1164,21 @@ namespace Dev2.Common.DateAndTime
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
-                        AssignEra)
+                        AssignManager.AssignEra)
                 });
 
             TimeFormatPartOptions.Add("Era",
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
-                        AssignEra)
+                        AssignManager.AssignEra)
                 });
 
             TimeFormatPartOptions.Add("ERA",
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
-                        AssignEra)
+                        AssignManager.AssignEra)
                 });
         }
 
@@ -1426,87 +1408,6 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatForwardLookups.Add('e', new List<int> { 3 });
         }
 
-        private static void AssignEra(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Era = value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        private static void AssignYears(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            int years = Convert.ToInt32(value);
-
-            if (!assignAsTime && years < 100)
-            {
-                years = CultureInfo.InvariantCulture.Calendar.ToFourDigitYear(years);
-            }
-
-            dateTimeResultTo.Years = Convert.ToInt32(years);
-        }
-
-        private static void AssignMonths(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Months = Convert.ToInt32(value);
-        }
-
-        private static void AssignDays(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Days = Convert.ToInt32(value);
-        }
-
-        private static void AssignDaysOfWeek(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.DaysOfWeek = Convert.ToInt32(value);
-        }
-
-        private static void AssignDaysOfYear(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.DaysOfYear = Convert.ToInt32(value);
-        }
-
-        private static void AssignWeeks(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Weeks = Convert.ToInt32(value);
-        }
-
-        private static void Assign12Hours(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Hours = Convert.ToInt32(value);
-        }
-
-        private static void Assign24Hours(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Hours = Convert.ToInt32(value);
-            dateTimeResultTo.Is24H = true;
-        }
-
-        private static void AssignMinutes(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Minutes = Convert.ToInt32(value);
-        }
-
-        private static void AssignSeconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Seconds = Convert.ToInt32(value);
-        }
-
-        private static void AssignMilliseconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            dateTimeResultTo.Milliseconds = Convert.ToInt32(value);
-        }
-
-        private static void AssignAmPm(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
-        {
-            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
-
-            if (lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
-            {
-                dateTimeResultTo.AmPm = DateTimeAmPm.pm;
-            }
-            else
-            {
-                dateTimeResultTo.AmPm = DateTimeAmPm.am;
-            }
-        }
 
         private static void AssignTimeZone(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
@@ -1518,235 +1419,8 @@ namespace Dev2.Common.DateAndTime
                 dateTimeResultTo.TimeZone = timeZoneTo;
             }
         }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild seconds number
-        /// </summary>
-        private static bool IsNumberSeconds(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 59;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild minute number
-        /// </summary>
-        private static bool IsNumberMilliseconds(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 999;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild minute number
-        /// </summary>
-        private static bool IsNumberMinutes(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 59;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild 24 hours number
-        /// </summary>
-        private static bool IsNumber24H(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (data.Length == 2 && int.TryParse(data, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 0 && numericData <= 24;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild 12 hours number
-        /// </summary>
-        private static bool IsNumber12H(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 12;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild month
-        /// </summary>
-        private static bool IsNumberMonth(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 12;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild month
-        /// </summary>
-        private static bool IsNumberDay(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 31;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild day of the week
-        /// </summary>
-        private static bool IsNumberDayOfWeek(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 7;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild day of the year
-        /// </summary>
-        private static bool IsNumberDayOfYear(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData) && numericData >= 1 && numericData <= 365)
-            {
-                //nothing to do since nothignDied is already true
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Determines if a given string contains a number which is a vaild day of the year
-        /// </summary>
-        private static bool IsNumberWeekOfYear(string data, bool treatAsTime)
-        {
-            bool nothingDied = true;
-
-            int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
-            {
-                if (!treatAsTime)
-                {
-                    nothingDied = numericData >= 1 && numericData <= 52;
-                }
-            }
-            else
-            {
-                nothingDied = false;
-            }
-
-            return nothingDied;
-        }
-
         public List<IDateTimeFormatPartTO> DateTimeFormatParts => DateTimeFormatsParts.Values.ToList();
+
     }
 }
 
