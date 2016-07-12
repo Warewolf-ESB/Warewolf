@@ -8,6 +8,7 @@ using Dropbox.Api;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;

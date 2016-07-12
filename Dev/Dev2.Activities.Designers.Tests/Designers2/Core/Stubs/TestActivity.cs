@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs

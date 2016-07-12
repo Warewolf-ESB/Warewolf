@@ -26,6 +26,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Interfaces;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;

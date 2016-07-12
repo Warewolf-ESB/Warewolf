@@ -11,6 +11,7 @@
 using System;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
@@ -50,9 +51,5 @@ namespace Dev2
         IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors);
 
         void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update);
-    }
-
-    public interface IEsbWorkspaceChannel : IEsbChannel
-    {
     }
 }

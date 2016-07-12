@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;

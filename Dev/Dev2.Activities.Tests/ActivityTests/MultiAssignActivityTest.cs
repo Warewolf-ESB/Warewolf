@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

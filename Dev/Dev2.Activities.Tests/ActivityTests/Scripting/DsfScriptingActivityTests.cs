@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using Dev2.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
