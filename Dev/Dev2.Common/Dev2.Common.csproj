@@ -163,7 +163,9 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
     <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookup.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookupsForDotNet.cs" />
     <Compile Include="TimeZoneBuilder\DateTimeFormatPart.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatPartsForDotNet.cs" />
     <Compile Include="TimeZoneBuilder\TimeFormatPartBuilder.cs" />
     <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
     <Compile Include="Utilities.cs" />
