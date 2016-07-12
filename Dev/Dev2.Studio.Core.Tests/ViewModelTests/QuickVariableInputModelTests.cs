@@ -146,5 +146,24 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.AreEqual("[[Test4]]", makeDataListReady[1]);
             Assert.AreEqual("[[Test]]", makeDataListReady[2]);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QuickVariableInputViewModel_Construct")]
+        public void QuickVariableInputViewModel_Construct_SetProperties_ShouldSetCorrectProperties()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
+            //------------Execute Test---------------------------
+            
+            var list = new List<string> { "Index", "Chars", "New Line", "Space", "Tab" };
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Chars", quickVariableInputViewModel.SplitType);
+            Assert.AreEqual("", quickVariableInputViewModel.SplitToken);
+            Assert.IsFalse(quickVariableInputViewModel.CanAdd);
+            Assert.AreEqual(list.Count, quickVariableInputViewModel.SplitTypeList.Count);
+        }
     }
 }
