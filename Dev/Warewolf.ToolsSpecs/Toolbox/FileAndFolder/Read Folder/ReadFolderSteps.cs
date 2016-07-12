@@ -12,6 +12,7 @@ using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
 using Dev2.Activities.Designers2.ReadFolder;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

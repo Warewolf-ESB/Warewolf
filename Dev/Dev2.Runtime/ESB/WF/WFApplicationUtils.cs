@@ -22,7 +22,10 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
+using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
+
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 
@@ -44,13 +47,13 @@ namespace Dev2.Runtime.ESB.WF
             {
                 Guid parentInstanceId;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
-                bool hasError = dataObject.Environment.HasErrors();
-                var errorMessage = String.Empty;
+                var hasError = dataObject.Environment.HasErrors();
+                var errorMessage = string.Empty;
                 if(hasError)
                 {
                     errorMessage = dataObject.Environment.FetchErrors();
                 }
-                if(String.IsNullOrEmpty(existingErrors))
+                if(string.IsNullOrEmpty(existingErrors))
                 {
                     existingErrors = errorMessage;
                 }
@@ -58,39 +61,16 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     existingErrors += Environment.NewLine + errorMessage;
                 }
-                string name = "localhost";
+                var name = "localhost";
                 Guid remoteID;
-                bool hasRemote = Guid.TryParse(dataObject.RemoteInvokerID,out remoteID) ;
+                var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID,out remoteID) ;
                 if (hasRemote)
                 {
-                    var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
+                    var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                     if(res!=null)
-                        name = remoteID != Guid.Empty ? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+                        name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
                 }
-                var debugState = new DebugState
-                {
-                    ID = dataObject.OriginalInstanceID,
-                    ParentID = parentInstanceId,
-                    WorkspaceID = dataObject.WorkspaceID,
-                    StateType = stateType,
-                    StartTime = workflowStartTime ?? DateTime.Now,
-                    EndTime = DateTime.Now,
-                    ActivityType = ActivityType.Workflow,
-                    DisplayName = dataObject.ServiceName,
-                    IsSimulation = dataObject.IsOnDemandSimulation,
-                    ServerID = dataObject.ServerID,
-                    OriginatingResourceID = dataObject.ResourceID,
-                    OriginalInstanceID = dataObject.OriginalInstanceID,
-                    Server = name,
-                    Version = string.Empty,
-                    SessionID = dataObject.DebugSessionID,
-                    EnvironmentID = dataObject.DebugEnvironmentId,
-                    ClientID = dataObject.ClientID,
-                    Name = stateType.ToString(),
-                    HasError = hasErrors || hasError,
-                    ErrorMessage = existingErrors,
-                    IsDurationVisible = durationVisible
-                };
+                var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
                 if(interrogateInputs)
                 {
@@ -120,42 +100,74 @@ namespace Dev2.Runtime.ESB.WF
                     debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
                 }
 
-                if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
+                WriteDebug(dataObject, debugState);
+            }
+        }
+
+        private void WriteDebug(IDSFDataObject dataObject, DebugState debugState)
+        {
+            if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
+            {
+                var debugDispatcher = _getDebugDispatcher();
+                if(debugState.StateType == StateType.End)
                 {
-                    var debugDispatcher = _getDebugDispatcher();
-                    if(debugState.StateType == StateType.End)
+                    while(!debugDispatcher.IsQueueEmpty)
                     {
-                        while(!debugDispatcher.IsQueueEmpty)
-                        {
-                            Thread.Sleep(100);
-                        }
-                        debugDispatcher.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                        Thread.Sleep(100);
                     }
-                    else
-                    {
-                        debugDispatcher.Write(debugState);
-                    }
+                    debugDispatcher.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                }
+                else
+                {
+                    debugDispatcher.Write(debugState);
                 }
             }
         }
 
-        readonly Func<IDebugDispatcher> _getDebugDispatcher = () => DebugDispatcher.Instance;
+        private static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
+        {
+            var debugState = new DebugState
+            {
+                ID = dataObject.OriginalInstanceID,
+                ParentID = parentInstanceId,
+                WorkspaceID = dataObject.WorkspaceID,
+                StateType = stateType,
+                StartTime = workflowStartTime ?? DateTime.Now,
+                EndTime = DateTime.Now,
+                ActivityType = ActivityType.Workflow,
+                DisplayName = dataObject.ServiceName,
+                IsSimulation = dataObject.IsOnDemandSimulation,
+                ServerID = dataObject.ServerID,
+                OriginatingResourceID = dataObject.ResourceID,
+                OriginalInstanceID = dataObject.OriginalInstanceID,
+                Server = name,
+                Version = string.Empty,
+                SessionID = dataObject.DebugSessionID,
+                EnvironmentID = dataObject.DebugEnvironmentId,
+                ClientID = dataObject.ClientID,
+                Name = stateType.ToString(),
+                HasError = hasErrors || hasError,
+                ErrorMessage = existingErrors,
+                IsDurationVisible = durationVisible
+            };
+            return debugState;
+        }
 
-        List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
+        private readonly Func<IDebugDispatcher> _getDebugDispatcher = () => DebugDispatcher.Instance;
+
+        private List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var results = new List<DebugItem>();
             var added = new List<string>();
-            foreach(IDev2Definition dev2Definition in values)
+            foreach(var dev2Definition in values)
             {
-
-
                 var defn = GetVariableName(dev2Definition);
                 if(added.Any(a => a == defn))
                     continue;
 
                 added.Add(defn);
-                DebugItem itemToAdd = new DebugItem();
+                var itemToAdd = new DebugItem();
                 _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0), itemToAdd); //todo:confirm 0
                 results.Add(itemToAdd);
             }
@@ -167,31 +179,31 @@ namespace Dev2.Runtime.ESB.WF
 
             return results;
         }
-   
 
-        string GetVariableName(IDev2Definition value)
+        private string GetVariableName(IDev2Definition value)
         {
-            return String.IsNullOrEmpty(value.RecordSetName)
-                  ? String.Format("[[{0}]]", value.Name)
-                  : String.Format("[[{0}(){1}]]", value.RecordSetName, String.IsNullOrEmpty(value.Name) ? String.Empty : "." + value.Name);
+            return string.IsNullOrEmpty(value.RecordSetName)
+                  ? $"[[{value.Name}]]"
+                : $"[[{value.RecordSetName}(){(string.IsNullOrEmpty(value.Name) ? string.Empty : "." + value.Name)}]]";
         }
 
-        void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
+        private void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
         {
             var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);
         }
 
+        private readonly IResourceCatalog  _lazyCat =  ResourceCatalog.Instance;
         /// <summary>
         /// Finds the service shape.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="resourceId">The ID of the resource</param>
         /// <returns></returns>
-        string FindServiceShape(Guid workspaceId, Guid resourceId)
+        private string FindServiceShape(Guid workspaceId, Guid resourceId)
         {
             const string EmptyDataList = "<DataList></DataList>";
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
+            var resource = _lazyCat.GetResource(workspaceId, resourceId);
 
             if(resource == null)
             {

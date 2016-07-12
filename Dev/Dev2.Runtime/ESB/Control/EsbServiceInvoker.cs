@@ -30,6 +30,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
@@ -59,17 +60,11 @@ namespace Dev2.Runtime.ESB
 
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
 
-        public bool IsLoggingEnabled => true;
-
         #region Constructors
-
-        public EsbServiceInvoker()
-        {
-        }
 
         public EsbServiceInvoker(IEsbChannel esbChannel,
                                       IFrameworkDuplexDataChannel managementChannel,
-                                      IWorkspace workspace, EsbExecuteRequest request)
+                                      IWorkspace workspace, EsbExecuteRequest request = null)
         {
             _esbChannel = esbChannel;
             if(managementChannel != null)
@@ -80,14 +75,6 @@ namespace Dev2.Runtime.ESB
             _workspace = workspace;
 
             _request = request;
-        }
-
-        public EsbServiceInvoker(IEsbChannel esbChannel,
-                                      IFrameworkDuplexDataChannel managementChannel,
-                                      IWorkspace workspace)
-            : this(esbChannel, managementChannel, workspace, null)
-        {
-
         }
 
         #endregion
@@ -107,7 +94,7 @@ namespace Dev2.Runtime.ESB
             var time = new Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
-            int update = 0;
+            const int Update = 0;
             // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
             if(dataObject.Environment.HasErrors())
             {
@@ -158,7 +145,7 @@ namespace Dev2.Runtime.ESB
                                 Dev2Logger.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
-                                result = container.Execute(out invokeErrors, update);
+                                result = container.Execute(out invokeErrors, Update);
                                 errors.MergeErrors(invokeErrors);
                             }
                             #endregion
@@ -291,7 +278,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
-                Dev2Logger.Debug(string.Format("Getting DynamicService: {0}", serviceName));
+                Dev2Logger.Debug($"Getting DynamicService: {serviceName}");
                 if(resourceId == Guid.Empty)
                 {
                     return sl.FindService(serviceName, _workspace.ID) ?? sl.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
@@ -355,7 +342,7 @@ namespace Dev2.Runtime.ESB
         #region DispatchDebugErrors
 
         // BUG 9706 - 2013.06.22 - TWR : refactored
-        void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
+        private void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
         {
             if(errors.HasErrors() && dataObject.IsDebugMode())
             {
