@@ -42,7 +42,6 @@ namespace Warewolf.Storage
                 return ExecutionEnvironment.WarewolfAtomToStringNullAsNothing(_currentResult);
             }
             return null;
-          
         }
 
         public bool HasMoreData()

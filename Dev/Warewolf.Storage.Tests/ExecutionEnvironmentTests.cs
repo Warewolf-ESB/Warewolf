@@ -36,7 +36,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void ExecutionEnvironmentEval_ShouldThrowIndexOutOfRangeException()
+        public void GivenInvalidIndex_ExecutionEnvironmentEval_ShouldThrowIndexOutOfRangeException()
         {            
             Assert.IsNotNull(_environment);
             _environment.Eval(OutOfBoundExpression, 0, true);
@@ -54,13 +54,13 @@ namespace Warewolf.Storage.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ExecutionEnvironmentEvalAssignFromNestedLast_Should()
+        public void GivenRecSet_ExecutionEnvironmentEvalAssignFromNestedLast_Should()
         {
             Assert.IsNotNull(_environment);
             var evalMultiAssign = EvalMultiAssign();
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            _environment.EvalAssignFromNestedLast("[[rec(1).a]]", warewolfAtomListresult, 0);
+            _environment.EvalAssignFromNestedLast("[[rec(*).a]]", warewolfAtomListresult, 0);
         }
 
         [TestMethod]
@@ -89,7 +89,7 @@ namespace Warewolf.Storage.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ExecutionEnvironmentSortRecordSet_Should()
+        public void ExecutionEnvironmentSortRecordSet_ShouldSortRecordSets()
         {
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "sanele", 0);
@@ -144,7 +144,7 @@ namespace Warewolf.Storage.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ExecutionEnvironmentHasRecordSet_ShouldReturnTrue()
+        public void GivenRecSet_ExecutionEnvironmentHasRecordSet_ShouldReturnTrue()
         {
             var executionEnv = new ExecutionEnvironment();
             executionEnv.Assign("[[rec().a]]","bob",0);
@@ -199,7 +199,6 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void ExecutionEnvironmentAssignFromNestedNumeric_Should()
         {
-
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "sanele", 0);
             var evalMultiAssign = EvalMultiAssign();
@@ -380,8 +379,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GivenJSonExpression_ExecutionEnvironmentGetIndexes_ShouldReturn1Index()
-        {
-            
+        {            
             Assert.IsNotNull(_environment);
             _environment.AssignJson(new AssignValue(PersonNameExpression, "Sanele"), 0);
             var indexes = _environment.GetIndexes(PersonNameExpression);
@@ -399,7 +397,6 @@ namespace Warewolf.Storage.Tests
             var indexes = _environment.GetIndexes(recA);
             Assert.AreEqual(1, indexes.Count);
         }
-
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -652,6 +649,9 @@ namespace Warewolf.Storage.Tests
         {
             Assert.IsNotNull(_environment);
             _environment.AddToJsonObjects(PersonNameExpression, null);
+            var privateObj = new PrivateObject(_environment);
+            var field = privateObj.GetFieldOrProperty("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(field != null && field.JsonObjects.Count > 0);
         }
 
         [ExpectedException(typeof(NullValueInVariableException))]

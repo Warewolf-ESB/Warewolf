@@ -67,7 +67,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
-            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
+            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, dropBoxSourceManager.Object);
             scenarioContext.Add("deleteViewModel", deleteViewModel);
             scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
             scenarioContext.Add("mockEventAggregator", mockEventAggregator.Object);
