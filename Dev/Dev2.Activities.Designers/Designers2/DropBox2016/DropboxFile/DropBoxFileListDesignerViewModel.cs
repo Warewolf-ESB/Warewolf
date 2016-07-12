@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
@@ -13,8 +12,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Messages;
+// ReSharper disable UnusedMember.Global
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -23,7 +22,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
     public class DropBoxFileListDesignerViewModel : ActivityDesignerViewModel,INotifyPropertyChanged
     {
         private ObservableCollection<DropBoxSource> _sources;
-        private readonly IEventAggregator _eventPublisher;
         private string _toPath;
         private string _result;
         private List<string> _files;
@@ -35,15 +33,14 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         private bool _isFilesAndFoldersSelected;
         private readonly IDropboxSourceManager _sourceManager;
         public DropBoxFileListDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
+            : this(modelItem, new DropboxSourceManager())
         {
             this.RunViewSetup();
         }
 
-        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
+        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IDropboxSourceManager sourceManager)
             : base(modelItem)
         {
-            _eventPublisher = eventPublisher;
             ThumbVisibility = Visibility.Visible;
             _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
@@ -232,9 +229,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 
         public void CreateOAuthSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
+            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
-            OnPropertyChanged("Sources");
+            OnPropertyChanged(@"Sources");
         }
 
         public ObservableCollection<DropBoxSource> LoadOAuthSources()

@@ -17,7 +17,7 @@ namespace Warewolf.Studio.UISpecs.Tools
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class FileAndFolder_DeleteFeature
     {
@@ -71,6 +71,24 @@ namespace Warewolf.Studio.UISpecs.Tools
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Delete_Path onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxDelete_PathOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Delete_Path onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
+ testRunner.When("I \"Drag_Toolbox_Delete_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then("I \"Assert_Delete_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete tool Small View")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FileAndFolder-Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
@@ -80,9 +98,9 @@ namespace Warewolf.Studio.UISpecs.Tools
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Small View", new string[] {
                         "ignore",
                         "Delete"});
-#line 10
+#line 15
 this.ScenarioSetup(scenarioInfo);
-#line 11
+#line 16
        testRunner.Given("I have Delete Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -91,7 +109,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "",
                         ""});
-#line 12
+#line 17
        testRunner.Then("Delete small view has", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -105,9 +123,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Large View", new string[] {
                         "ignore"});
-#line 16
+#line 21
 this.ScenarioSetup(scenarioInfo);
-#line 17
+#line 22
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -120,9 +138,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 18
+#line 23
        testRunner.Then("Delete Large View has", ((string)(null)), table2, "Then ");
-#line 21
+#line 26
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -131,9 +149,9 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         ""});
-#line 22
+#line 27
        testRunner.And("On Error box consists", ((string)(null)), table3, "And ");
-#line 25
+#line 30
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -147,9 +165,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Small View water marks", new string[] {
                         "ignore"});
-#line 27
+#line 32
 this.ScenarioSetup(scenarioInfo);
-#line 28
+#line 33
        testRunner.Given("I have Delete Small View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -158,7 +176,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "[[PathToDelete]]",
                         "[[Success]]"});
-#line 29
+#line 34
        testRunner.Then("Delete small view watermarks are", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -172,9 +190,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Large View Water marks", new string[] {
                         "ignore"});
-#line 33
+#line 38
 this.ScenarioSetup(scenarioInfo);
-#line 34
+#line 39
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -187,9 +205,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 35
+#line 40
        testRunner.Then("Delete Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 38
+#line 43
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -198,9 +216,9 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Error().Message]]",
                         "http://lcl:3142/services/err"});
-#line 39
+#line 44
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 42
+#line 47
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -214,9 +232,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Removing Data in the field brings back water marks", new string[] {
                         "ignore"});
-#line 44
+#line 49
 this.ScenarioSetup(scenarioInfo);
-#line 45
+#line 50
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -229,7 +247,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderDeleted]]"});
-#line 46
+#line 51
        testRunner.And("Delete Large View has", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -238,9 +256,9 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "[[a]]",
                         "dsf"});
-#line 49
+#line 54
     testRunner.And("On Error box consists", ((string)(null)), table8, "And ");
-#line 52
+#line 57
     testRunner.When("I remove data in fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -253,7 +271,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 53
+#line 58
     testRunner.Then("Delete Large View watermarks are", ((string)(null)), table9, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -262,9 +280,9 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "[[Error().Message]]",
                         "http://lcl:3142/services/err"});
-#line 56
+#line 61
        testRunner.And("On Error box consists", ((string)(null)), table10, "And ");
-#line 59
+#line 64
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -278,11 +296,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating when clicking on done with blank fields", new string[] {
                         "ignore"});
-#line 62
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 63
+#line 68
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 64
+#line 69
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -295,15 +313,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 65
-       testRunner.And("Delete Large View has", ((string)(null)), table11, "And ");
-#line 68
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 70
+       testRunner.And("Delete Large View has", ((string)(null)), table11, "And ");
+#line 73
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 75
        testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 71
+#line 76
        testRunner.And("Delete Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -317,9 +335,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 73
+#line 78
 this.ScenarioSetup(scenarioInfo);
-#line 74
+#line 79
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -332,7 +350,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderDeleted]]"});
-#line 75
+#line 80
        testRunner.And("Delete Large View has", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -341,15 +359,15 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "",
                         ""});
-#line 78
-       testRunner.And("On Error box consists", ((string)(null)), table13, "And ");
-#line 81
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 83
+       testRunner.And("On Error box consists", ((string)(null)), table13, "And ");
+#line 86
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 88
        testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 84
+#line 89
        testRunner.And("Delete Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -358,7 +376,7 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "C:\\Test",
                         "[[FolderDeleted]]"});
-#line 85
+#line 90
        testRunner.And("Delete small view has", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -372,9 +390,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 90
+#line 95
 this.ScenarioSetup(scenarioInfo);
-#line 91
+#line 96
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -387,9 +405,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderDeleted]]"});
-#line 92
+#line 97
        testRunner.When("Delete Large View has", ((string)(null)), table15, "When ");
-#line 95
+#line 100
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -398,13 +416,13 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 96
-       testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 99
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 101
+       testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
+#line 104
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
        testRunner.And("Delete Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -417,13 +435,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderDeleted]]"});
-#line 102
-       testRunner.When("I edit Delete Large View", ((string)(null)), table17, "When ");
-#line 105
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 107
+       testRunner.When("I edit Delete Large View", ((string)(null)), table17, "When ");
+#line 110
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 111
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 112
        testRunner.And("Delete Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -432,7 +450,7 @@ this.ScenarioSetup(scenarioInfo);
             table18.AddRow(new string[] {
                         "C:\\[[a]]",
                         "[[FolderDeleted]]"});
-#line 108
+#line 113
        testRunner.And("Delete small view as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -446,9 +464,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 113
+#line 118
 this.ScenarioSetup(scenarioInfo);
-#line 114
+#line 119
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -461,9 +479,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderDeleted]]"});
-#line 115
+#line 120
        testRunner.And("Delete Large View has", ((string)(null)), table19, "And ");
-#line 118
+#line 123
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -472,17 +490,17 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "",
                         ""});
-#line 119
-       testRunner.And("On Error box consists", ((string)(null)), table20, "And ");
-#line 122
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 124
+       testRunner.And("On Error box consists", ((string)(null)), table20, "And ");
+#line 127
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 129
        testRunner.And("Delete Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
+#line 130
        testRunner.When("collapse \"Delete\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 126
+#line 131
        testRunner.Then("Delete Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -491,7 +509,7 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "C:\\[[a2@]]",
                         "[[FolderDeleted]]"});
-#line 127
+#line 132
        testRunner.And("Delete small view as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -506,11 +524,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating incorrect path", @__tags);
-#line 132
+#line 137
 this.ScenarioSetup(scenarioInfo);
-#line 133
+#line 138
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
+#line 139
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -523,11 +541,11 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderDeleted]]"});
-#line 135
+#line 140
        testRunner.And("Delete Large View has", ((string)(null)), table22, "And ");
-#line 138
+#line 143
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 139
+#line 144
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -696,11 +714,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating incorrect variable in  username field", @__tags);
-#line 156
+#line 161
 this.ScenarioSetup(scenarioInfo);
-#line 157
+#line 162
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 158
+#line 163
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -713,11 +731,11 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", variable),
                         "",
                         "[[FolderDeleted]]"});
-#line 159
+#line 164
        testRunner.And("Delete Large View has", ((string)(null)), table23, "And ");
-#line 162
+#line 167
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 163
+#line 168
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -886,11 +904,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Large View is validating incorrect variable in Result field", @__tags);
-#line 180
+#line 185
 this.ScenarioSetup(scenarioInfo);
-#line 181
+#line 186
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 182
+#line 187
        testRunner.And("\"File or Folder\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -903,11 +921,11 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("{0}", result)});
-#line 183
+#line 188
        testRunner.And("Delete Large View has", ((string)(null)), table24, "And ");
-#line 186
+#line 191
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 187
+#line 192
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1020,11 +1038,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete On error fields incorrect variables are validating", @__tags);
-#line 199
+#line 204
 this.ScenarioSetup(scenarioInfo);
-#line 200
+#line 205
        testRunner.Given("I have Delete Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 201
+#line 206
        testRunner.And("Delete Large View with water marks has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1037,7 +1055,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Result]]"});
-#line 202
+#line 207
         testRunner.And("Delete Large View has", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1046,13 +1064,13 @@ this.ScenarioSetup(scenarioInfo);
             table26.AddRow(new string[] {
                         string.Format("\"{0}\"", variable),
                         string.Format("\"{0}\"", variable)});
-#line 205
-       testRunner.And("On Error box consists", ((string)(null)), table26, "And ");
-#line 209
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
+       testRunner.And("On Error box consists", ((string)(null)), table26, "And ");
+#line 214
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 215
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
+#line 216
        testRunner.Then(string.Format("Validation message is thrown \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

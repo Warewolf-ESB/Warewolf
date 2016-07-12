@@ -66,8 +66,6 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public bool IsVersionResource { get; set; }
 
-        public bool RequiresSignOff { get; set; }
-
         public string ResourceName { get; set; }
 
         public ResourceType ResourceType { get; set; }
@@ -107,10 +105,6 @@ namespace Dev2.Core.Tests.ProperMoqs
         #endregion Properties
 
         #region Methods
-
-        public void UpdateIconPath(string iconPath)
-        {
-        }
 
         public bool IsNewWorkflow { get; set; }
         public string ServerResourceType { get; set; }

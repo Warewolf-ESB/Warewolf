@@ -7,14 +7,17 @@ using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
@@ -83,6 +86,27 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             Assert.IsTrue(webget.ErrorRegion.IsEnabled);
 
             //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WebGetDesignerViewModel_Handle")]
+        public void WebGetDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var mod = new MyWebModel();
+            var act = new DsfWebGetActivity();
+            var viewModel = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

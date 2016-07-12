@@ -7,7 +7,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Dev2.Common;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -143,10 +145,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 {
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     // ReSharper disable PossibleNullReferenceException
-                    var outParams = server.GetProcedureOutParams(command.CommandText, (dbService.Source as DbSource).DatabaseName);
+                    var outParams = server.GetProcedureOutParams(command.CommandText,
+                        (dbService.Source as DbSource).DatabaseName);
                     // ReSharper restore PossibleNullReferenceException
                     foreach (var dbDataParameter in outParams)
                     {
+                        if (command.Parameters.Contains(dbDataParameter)) continue;
                         command.Parameters.Add(dbDataParameter);
                     }
                     var dataTable = server.FetchDataTable(command);
@@ -157,6 +161,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                     dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex.Message);
+                    return new OutputDescription();
                 }
                 finally
                 {

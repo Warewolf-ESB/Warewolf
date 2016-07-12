@@ -65,7 +65,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             }
         }
 
-        [When(@"creating the delete tool view model")]
+        [When(@"validating the delete tool")]
         public void WhenValidatingTheDeleteTool()
         {
             BuildDataList();

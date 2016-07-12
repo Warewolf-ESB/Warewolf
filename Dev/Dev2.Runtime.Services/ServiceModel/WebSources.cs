@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             if (resourceCatalog == null)
             {
-                throw new ArgumentNullException("resourceCatalog");
+                throw new ArgumentNullException(nameof(resourceCatalog));
             }
             _resourceCatalog = resourceCatalog;
         }
@@ -70,32 +71,6 @@ namespace Dev2.Runtime.ServiceModel
                 RaiseError(ex);
             }
             return result;
-        }
-
-        #endregion
-
-        #region Save
-
-        // POST: Service/WebSources/Save
-        public string Save(string args, Guid workspaceId, Guid dataListId)
-        {
-            try
-            {
-                var source = JsonConvert.DeserializeObject<WebSource>(args);
-
-                _resourceCatalog.SaveResource(workspaceId, source);
-                if (workspaceId != GlobalConstants.ServerWorkspaceID)
-                {
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
-                }
-
-                return source.ToString();
-            }
-            catch (Exception ex)
-            {
-                RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
-            }
         }
 
         #endregion
@@ -191,7 +166,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 return relativeUri;
             }
-            return string.Format("{0}{1}", source.Address, relativeUri);
+            return $"{source.Address}{relativeUri}";
         }
 
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)

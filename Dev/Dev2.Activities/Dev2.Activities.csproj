@@ -286,7 +286,6 @@
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\PathOperations\DsfAbstractMultipleFilesActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
-    <Compile Include="Activities\Scripting\DsfScriptingJavaScriptActivity.cs" />
     <Compile Include="Activities\DsfActivityAbstract.cs" />
     <Compile Include="Activities\PathOperations\DsfAbstractFileActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathCreate.cs" />
@@ -498,7 +497,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!--
   <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
     <PostBuildEvent>xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio\Dev2.Studio.Core\Shared Dependancies\"

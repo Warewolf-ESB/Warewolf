@@ -85,7 +85,7 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             Assert.IsNotNull(manageDatabaseSourceControl);
             Assert.IsNotNull(manageDatabaseSourceControl.DataContext); 
         }
-
+        
         [Given(@"I open ""(.*)""")]
         [When(@"I open ""(.*)""")]
         public void GivenIOpen(string name)
@@ -238,8 +238,9 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             var rows = table.Rows[0].Values;
-            
-            Assert.IsTrue( manageDatabaseSourceControl.GetServerOptions().All(a=>rows.Contains(a)));
+
+            var serverOptions = manageDatabaseSourceControl.GetServerOptions();
+            Assert.IsTrue( serverOptions.All(a=>rows.Contains(a)));
         }
 
         [Then(@"type options has ""(.*)"" as the default")]
@@ -248,13 +249,14 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             Assert.IsTrue(manageDatabaseSourceControl.GetSelectedDbOption() == defaultDbType);
-        }
+        }        
 
         [Given(@"I type Server as ""(.*)""")]
         public void GivenITypeServerAs(string serverName)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.EnterServerName(serverName);
+            manageDatabaseSourceControl.SelectServer(serverName);
+            //manageDatabaseSourceControl.EnterServerName(serverName);
             var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
             Assert.AreEqual(serverName, viewModel.ServerName.Name);
         }
@@ -472,6 +474,31 @@ namespace Warewolf.AcceptanceTesting.DatabaseSource
             var viewModel = (ManageDatabaseSourceViewModel)manageDatabaseSourceControl.DataContext;
             Assert.AreEqual(p1, manageDatabaseSourceControl.GetSelectedDbOption());
             Assert.AreEqual(string.Empty, viewModel.DatabaseName);
+        }
+
+        [Then(@"I select type ""(.*)""")]
+        public void ThenISelectType(string p0)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            manageDatabaseSourceControl.SelectType(p0);
+            var viewModel = (ManageDatabaseSourceViewModel)manageDatabaseSourceControl.DataContext;
+            Assert.AreEqual(p0, manageDatabaseSourceControl.GetSelectedDbOption());
+        }
+
+        [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
+        public void ThenAuthenticationTypeIs(string p0, string p1)
+        {
+            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+        }
+        
+
+        [Then(@"database dropdown is ""(.*)""")]
+        public void ThenDatabaseDropdownIs(string p0)
+        {
+            var expectedVisibility = String.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
+            Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Interfaces;
 using Warewolf.Storage;
 
 // ReSharper disable InconsistentNaming

@@ -37,11 +37,14 @@ namespace Warewolf.Studio.ViewModels
         {
             if (mainViewModel == null)
             {
-                throw new ArgumentNullException("mainViewModel");
+                throw new ArgumentNullException(nameof(mainViewModel));
             }
             _viewModel = mainViewModel;
             _isOverLock = false;
-            NewCommand = _viewModel.NewResourceCommand;
+            NewServiceCommand = _viewModel.NewServiceCommand;
+            NewDatabaseSourceCommand = _viewModel.NewDatabaseSourceCommand;
+            NewPluginSourceCommand = _viewModel.NewPluginSourceCommand;
+            NewWebSourceCommand = _viewModel.NewWebSourceCommand;
             DeployCommand = _viewModel.DeployCommand;
             SaveCommand = _viewModel.SaveCommand;
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
@@ -97,7 +100,10 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand SupportCommand { get; set; }
         public ICommand DeployCommand { get; set; }
-        public ICommand NewCommand { get; set; }
+        public ICommand NewServiceCommand { get; set; }
+        public ICommand NewDatabaseSourceCommand { get; set; }
+        public ICommand NewPluginSourceCommand { get; set; }
+        public ICommand NewWebSourceCommand { get; set; }
         public ICommand SaveCommand
         {
             get
@@ -134,8 +140,8 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (IsPanelLockedOpen)
-                    return "UnlockAlt";
-                return "Lock";
+                    return @"UnlockAlt";
+                return @"Lock";
             }
         }
 

@@ -21,13 +21,15 @@ using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.TO;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -69,6 +71,30 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Handle")]
+        public void SqlBulkInsertDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            AppSettings.LocalHost = "http://localhost:1245";
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var modelItem = CreateModelItem();
+            const int DatabaseCount = 2;
+            var databases = CreateDatabases(DatabaseCount);
+
+            var viewModel = CreateViewModel(modelItem, databases);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
 
@@ -580,9 +606,12 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("TableName", selectedTable.TableName);
             modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
 
-            ShowNewResourceWizard message = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.NewDatabaseSource(It.IsAny<string>()));
+            var shellViewModel = mockShellViewModel.Object;
+            CustomContainer.Register(shellViewModel);
 
             var resourceModel = new Mock<IResourceModel>();
 
@@ -596,8 +625,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowNewResourceWizard>()));
-            Assert.AreSame("DbSource", message.ResourceType);
+            mockShellViewModel.Verify(model => model.NewDatabaseSource(It.IsAny<string>()));
         }
 
         [TestMethod]

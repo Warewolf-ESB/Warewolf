@@ -8,23 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
-using Dev2.Core.Tests.Environments;
-using Dev2.Models;
-using Dev2.Studio.Core;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -65,10 +60,29 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
             //------------Execute Test---------------------------
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem);
+            sequenceDesignerViewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(sequenceDesignerViewModel);
             Assert.IsInstanceOfType(sequenceDesignerViewModel, typeof(ActivityDesignerViewModel));
             Assert.AreEqual("Created Sequence", sequenceDesignerViewModel.ModelItem.GetProperty("DisplayName"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SequenceDesignerViewModel_Handle")]
+        public void SequenceDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new SequenceDesignerViewModel(CreateModelItem());
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -453,47 +467,6 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             Assert.IsFalse(dataPresent);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_SetModelItemForServiceTypes")]
-        public void SequenceDesignerViewModel_SetModelItemForServiceTypes_DataHaveDataContextResourceModel_NothingAddedToDataObject()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            SetupEnvironmentRepo(Guid.Empty);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = "DbService", EnvironmentId = Guid.Empty });
-            //------------Execute Test---------------------------
-            bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(added);
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
-
-        }
-
-        static void SetupEnvironmentRepo(Guid environmentId)
-        {
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
-            Mock<IResourceRepository> mockResRepo = new Mock<IResourceRepository>();
-            mockResRepo.Setup(d => d.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new TestDataWithContexResourceModel().DataContext);
-            mockEnvironment.Setup(c => c.ResourceRepository).Returns(mockResRepo.Object);
-            GetEnvironmentRepository(mockEnvironment);
-        }
-
-        private static void GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
-        {
-
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
-            // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentRepository(repo);
-            // ReSharper restore ObjectCreationAsStatement
-            repo.ActiveEnvironment = mockEnvironment.Object;
-        }
-
         static ModelItem CreateModelItem()
         {
             var sequenceActivity = new DsfSequenceActivity { DisplayName = "Created Sequence" };
@@ -505,28 +478,6 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         {
             var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
             return modelItem;
-        }
-    }
-
-
-    public class TestDataWithContexResourceModel
-    {
-        public ResourceModel DataContext
-        {
-            get
-            {
-                var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-                mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.NewGuid());
-                mockEnvironmentModel.Setup(model => model.Name).Returns("testEnv");
-                var resourceModel = new ResourceModel(mockEnvironmentModel.Object)
-                    {
-                        ResourceType = Studio.Core.AppResources.Enums.ResourceType.Service,
-                        ServerResourceType = "DbService",
-                        ResourceName = "MyDBService",
-                        IconPath = "IconPath"
-                    };
-                return resourceModel;
-            }
         }
     }
 

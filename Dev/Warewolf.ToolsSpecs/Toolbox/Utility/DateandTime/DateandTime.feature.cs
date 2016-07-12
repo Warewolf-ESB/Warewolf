@@ -421,13 +421,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:" +
-            "24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time with output format - 12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:" +
+            "d:dw:DW:dy:m:M:w:ZZ:w:ZZZ:Era")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        public virtual void DateAndTimeWithOutputFormat_12HDdDWEraMmMMMinSsSpYyyyYyZAmPm24HDDwDWDyMMWZZWZZZ()
+        public virtual void DateAndTimeWithOutputFormat_12HDdDWMmMMMinSsSpYyyyYyZAmPm24HDDwDWDyMMWZZWZZZEra()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:" +
-                    "24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time with output format - 12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:" +
+                    "d:dw:DW:dy:m:M:w:ZZ:w:ZZZ:Era", ((string[])(null)));
 #line 112
 this.ScenarioSetup(scenarioInfo);
 #line 113
@@ -437,14 +437,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 115
  testRunner.And("I selected Add time as \"None\" with a value of 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
- testRunner.And("the output format as \"12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:d" +
-                    "y:m:M:w:ZZ:w:ZZZ\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the output format as \"12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:" +
+                    "M:w:ZZ:w:ZZZ:Era\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
  testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 118
- testRunner.Then("the datetime result should be \"04:05:Thursday:A.D.:12:December:18:51:0:2013:13:So" +
-                    "uth Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard " +
-                    "Time:49:(UTC+02:00) Harare, Pretoria\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the datetime result should be \"04:05:Thursday:12:December:18:51:0:2013:13:South A" +
+                    "frica Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:" +
+                    "49:(UTC+02:00) Harare, Pretoria:A.D.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 119
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -461,15 +461,15 @@ this.ScenarioSetup(scenarioInfo);
                         "yyyy/MM/dd hh:mm:ss tt",
                         "None",
                         "0",
-                        "12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"});
+                        "12h:dd:DW:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ:Era"});
 #line 120
   testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table16.AddRow(new string[] {
-                        "[[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standar" +
-                            "d Time:PM:16:5:4:Thursday:339:12:D"});
+                        "[[result]] = 04:05:Thursday:12:December:18:51:0:2013:13:South Africa Standard Tim" +
+                            "e:PM:16:5:4:Thursday:339:12:Dec:"});
 #line 123
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden

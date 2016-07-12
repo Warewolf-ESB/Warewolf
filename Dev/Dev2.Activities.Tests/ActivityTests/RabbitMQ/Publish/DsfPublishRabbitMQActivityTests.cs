@@ -1,12 +1,12 @@
 ﻿using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Runtime.Interfaces;
 
 // ReSharper disable InconsistentNaming
 

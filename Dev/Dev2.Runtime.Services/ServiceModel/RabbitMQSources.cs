@@ -14,6 +14,7 @@ using Dev2.Runtime.Hosting;
 using RabbitMQ.Client;
 using System;
 using System.Text;
+using Dev2.Runtime.Interfaces;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel

@@ -12,13 +12,11 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Network;
 using System.Threading.Tasks;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Workspaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
@@ -27,7 +25,6 @@ namespace Dev2.Studio.Core.Models
     public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
         IAuthorizationService _authorizationService;
-        IStudioResourceRepository _studioRepo;
         IEnvironmentConnection _connection;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
@@ -38,40 +35,27 @@ namespace Dev2.Studio.Core.Models
         protected virtual void OnAuthorizationServiceSet()
         {
             var handler = AuthorizationServiceSet;
-            if(handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
-        #region CTOR
-        //, IWizardEngine wizardEngine
+        #region CTOR        
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection)
-            : this(id, environmentConnection, StudioResourceRepository.Instance)
         {
-        }
-        //, IWizardEngine wizardEngine
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository)
-        {
-            Initialize(id, environmentConnection, null, studioResourceRepository);
+            Initialize(id, environmentConnection, null);
         }
 
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository)
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository)
         {
             VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
-            Initialize(id, environmentConnection, resourceRepository, studioResourceRepository);
+            Initialize(id, environmentConnection, resourceRepository);
         }
 
-        //, IWizardEngine wizardEngine
-        void Initialize(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository)
+        void Initialize(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository)
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
-            VerifyArgument.IsNotNull("studioResourceRepository", studioResourceRepository);
             CanStudioExecute = true;
-            _studioRepo = studioResourceRepository;
             ID = id; // The resource ID
             Connection = environmentConnection;
-            // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
             ResourceRepository = resourceRepository ?? new ResourceRepository(this);
         }
 
@@ -165,7 +149,7 @@ namespace Dev2.Studio.Core.Models
         {
             if(other == null)
             {
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
             }
 
             if(!other.IsConnected)
@@ -219,10 +203,7 @@ namespace Dev2.Studio.Core.Models
         public void FireWorkflowSaved()
         {
             var handler = WorkflowSaved;
-            if (handler != null)
-            {
-                handler(this,EventArgs.Empty);
-            }
+            handler?.Invoke(this,EventArgs.Empty);
         }
 
         #endregion
@@ -233,7 +214,7 @@ namespace Dev2.Studio.Core.Models
         {
             if(Connection.IsConnected && CanStudioExecute)
             {
-                ResourceRepository.UpdateWorkspace(WorkspaceItemRepository.Instance.WorkspaceItems);
+                ResourceRepository.UpdateWorkspace();
                 HasLoadedResources = true;
             }
         }
@@ -244,10 +225,7 @@ namespace Dev2.Studio.Core.Models
 
         void RaiseIsConnectedChanged(bool isOnline)
         {
-            if(IsConnectedChanged != null)
-            {
-                IsConnectedChanged(this, new ConnectedEventArgs { IsConnected = isOnline });
-            }
+            IsConnectedChanged?.Invoke(this, new ConnectedEventArgs { IsConnected = isOnline });
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsConnected");
             // ReSharper restore ExplicitCallerInfoArgument
@@ -256,10 +234,7 @@ namespace Dev2.Studio.Core.Models
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
         void RaiseLoadedResources()
         {
-            if(ResourcesLoaded != null)
-            {
-                ResourcesLoaded(this, new ResourcesLoadedEventArgs { Model = this });
-            }
+            ResourcesLoaded?.Invoke(this, new ResourcesLoadedEventArgs { Model = this });
         }
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
@@ -267,7 +242,6 @@ namespace Dev2.Studio.Core.Models
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
             if(e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline)
             {
-                _studioRepo.Disconnect(ID);
                 if(AuthorizationService != null)
                 {
                     AuthorizationService.PermissionsChanged -= OnAuthorizationServicePermissionsChanged;
@@ -324,7 +298,7 @@ namespace Dev2.Studio.Core.Models
 
         protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
-            var isLocalConnection = environmentConnection.WebServerUri != null && !string.IsNullOrEmpty(environmentConnection.WebServerUri.AbsoluteUri) && environmentConnection.WebServerUri.AbsoluteUri.ToLower().Contains(Environment.MachineName.ToLower());
+            var isLocalConnection = !string.IsNullOrEmpty(environmentConnection.WebServerUri?.AbsoluteUri) && environmentConnection.WebServerUri.AbsoluteUri.ToLower().Contains(Environment.MachineName.ToLower());
             return new ClientAuthorizationService(new ClientSecurityService(environmentConnection), isLocalConnection);
         }
 

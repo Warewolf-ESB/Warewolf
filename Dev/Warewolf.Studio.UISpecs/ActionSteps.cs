@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Warewolf.Studio.UISpecs
@@ -36,7 +37,11 @@ namespace Warewolf.Studio.UISpecs
         public static void WaitForStudioStart()
         {
             Playback.Initialize();
-            var sleepTimer = 5;
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
+            Playback.PlaybackSettings.ShouldSearchFailFast = false;
+            Playback.PlaybackSettings.SearchTimeout = 10000;
+
+            var sleepTimer = 10;
             while (true)
             {
                 try

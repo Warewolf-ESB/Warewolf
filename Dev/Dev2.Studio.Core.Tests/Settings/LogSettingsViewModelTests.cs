@@ -1,11 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
+using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Core.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -62,6 +67,25 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(LogLevel.FATAL,logSettingsViewModel.ServerEventLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_Handle")]
+        public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateLogSettingViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+            viewModel.CloseHelpCommand.Execute(null);
         }
 
         [TestMethod]
@@ -158,6 +182,197 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual("20", logSettingsViewModel.StudioLogMaxSize);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_StudioFileLogLevel")]
+        public void LogSettingsViewModel_StudioFileLogLevel_Construct_IsDebug()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            
+            //------------Assert Results-------------------------
+            Assert.AreEqual(LogLevel.DEBUG, logSettingsViewModel.StudioFileLogLevel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_StudioFileLogLevel")]
+        public void LogSettingsViewModel_StudioFileLogLevel_SetLevel_IsInfo()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            logSettingsViewModel.StudioFileLogLevel = LogLevel.INFO;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioFileLogLevel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_ServerFileLogLevel")]
+        public void LogSettingsViewModel_ServerFileLogLevel_Construct_IsTrace()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(LogLevel.TRACE, logSettingsViewModel.ServerFileLogLevel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_ServerFileLogLevel")]
+        public void LogSettingsViewModel_ServerFileLogLevel_SetLevel_IsInfo()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            logSettingsViewModel.ServerFileLogLevel = LogLevel.INFO;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.ServerFileLogLevel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_CanEdit")]
+        public void LogSettingsViewModel_CanEdit_Construct_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(logSettingsViewModel.CanEditLogSettings);
+            Assert.IsFalse(logSettingsViewModel.CanEditStudioLogSettings);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_CanEdit")]
+        public void LogSettingsViewModel_CanEdit_Construct_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsLocalHost).Returns(true);
+            env.Setup(a => a.IsConnected).Returns(true);
+            logSettingsViewModel.CurrentEnvironment = env.Object;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(logSettingsViewModel.CanEditLogSettings);
+            Assert.IsTrue(logSettingsViewModel.CanEditStudioLogSettings);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_GetServerLogFile")]
+        public void LogSettingsViewModel_GetServerLogFile_Handle_OpenServerLogFile()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsLocalHost).Returns(true);
+            env.Setup(a => a.IsConnected).Returns(true);
+
+            var mockHubConnection = new Mock<IHubConnectionWrapper>();
+            mockHubConnection.Setup(a => a.Credentials).Returns(It.IsAny<ICredentials>());
+
+            var mockEnvConnection = new Mock<IEnvironmentConnection>();
+            mockEnvConnection.Setup(connection => connection.ServerID).Returns(Guid.NewGuid());
+            mockEnvConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
+            mockEnvConnection.Setup(hubCon => hubCon.HubConnection).Returns(mockHubConnection.Object);
+            env.Setup(a => a.Connection).Returns(mockEnvConnection.Object);
+
+            logSettingsViewModel.CurrentEnvironment = env.Object;
+
+            logSettingsViewModel.GetServerLogFileCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(logSettingsViewModel.CanEditLogSettings);
+            Assert.IsTrue(logSettingsViewModel.CanEditStudioLogSettings);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_GetStudioLogFile")]
+        public void LogSettingsViewModel_GetStudioLogFile_Handle_OpenStudioLogFile()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsLocalHost).Returns(true);
+            env.Setup(a => a.IsConnected).Returns(true);
+
+            var mockHubConnection = new Mock<IHubConnectionWrapper>();
+            mockHubConnection.Setup(a => a.Credentials).Returns(It.IsAny<ICredentials>());
+
+            var mockEnvConnection = new Mock<IEnvironmentConnection>();
+            mockEnvConnection.Setup(connection => connection.ServerID).Returns(Guid.NewGuid());
+            mockEnvConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvConnection.Setup(connection => connection.WebServerUri).Returns(It.IsAny<Uri>());
+            mockEnvConnection.Setup(hubCon => hubCon.HubConnection).Returns(mockHubConnection.Object);
+            env.Setup(a => a.Connection).Returns(mockEnvConnection.Object);
+
+            logSettingsViewModel.CurrentEnvironment = env.Object;
+
+            logSettingsViewModel.GetStudioLogFileCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(logSettingsViewModel.CanEditLogSettings);
+            Assert.IsTrue(logSettingsViewModel.CanEditStudioLogSettings);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_Save")]
+        public void LogSettingsViewModel_Save_Handle_SaveSuccess()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+
+            //------------Execute Test---------------------------
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsLocalHost).Returns(true);
+            env.Setup(a => a.IsConnected).Returns(true);
+
+            var mockHubConnection = new Mock<IHubConnectionWrapper>();
+            mockHubConnection.Setup(a => a.Credentials).Returns(It.IsAny<ICredentials>());
+
+            var mockEnvConnection = new Mock<IEnvironmentConnection>();
+            mockEnvConnection.Setup(connection => connection.ServerID).Returns(Guid.NewGuid());
+            mockEnvConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockEnvConnection.Setup(connection => connection.WebServerUri).Returns(It.IsAny<Uri>());
+            mockEnvConnection.Setup(hubCon => hubCon.HubConnection).Returns(mockHubConnection.Object);
+            env.Setup(a => a.Connection).Returns(mockEnvConnection.Object);
+
+            logSettingsViewModel.CurrentEnvironment = env.Object;
+
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
+
+            logSettingsViewModel.Save(loggingSettingsTo);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(loggingSettingsTo.FileLoggerLogLevel, logSettingsViewModel.ServerFileLogLevel.ToString());
+            Assert.AreEqual(loggingSettingsTo.EventLogLoggerLogLevel, logSettingsViewModel.ServerEventLogLevel.ToString());
+            Assert.AreEqual(loggingSettingsTo.FileLoggerLogSize.ToString(), logSettingsViewModel.ServerLogMaxSize);
         }
 
         [TestMethod]

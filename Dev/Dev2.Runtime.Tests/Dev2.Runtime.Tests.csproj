@@ -115,7 +115,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.5.20.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskScheduler.2.5.20\lib\net40\Microsoft.Win32.TaskScheduler.dll</HintPath>
       <Private>True</Private>
@@ -228,7 +230,6 @@
     <Compile Include="MockNetworkHost.cs" />
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
-    <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\AbstractDataBaseBrokerTests.cs" />
     <Compile Include="ServiceModel\Data\ResultListTests.cs" />
@@ -268,7 +269,6 @@
     <Compile Include="Services\GetDatabaseTablesTests.cs" />
     <Compile Include="Services\GetVersionsTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
-    <Compile Include="ServiceModel\ResourcesTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <None Include="DynamicServicesHostTests.cs" />
@@ -290,6 +290,7 @@
     <Compile Include="Services\PingTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
+    <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
@@ -397,6 +398,10 @@
     <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
+      <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
+      <Name>Warewolf.ResourceManagement</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
@@ -587,10 +592,20 @@
     <EmbeddedResource Include="XML\mondayothersource3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Security\Data\" />
     <Folder Include="WF\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\DbSource.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\OauthSource.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="XML\GenDev.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>

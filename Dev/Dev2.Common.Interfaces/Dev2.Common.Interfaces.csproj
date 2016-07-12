@@ -223,7 +223,6 @@
     <Compile Include="IEmailAttachmentVm.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
-    <Compile Include="IExecutionEnvironment.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
     <Compile Include="IExecutionToken.cs" />
@@ -240,6 +239,7 @@
     <Compile Include="IHelpView.cs" />
     <Compile Include="IIntellisenseStringResult.cs" />
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
+    <Compile Include="IJsonObjectsView.cs" />
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
@@ -449,7 +449,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

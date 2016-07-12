@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -63,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
                         {
-                            perm.ResourceName = Catalog.GetResourcePath(perm.ResourceID);
+                            perm.ResourceName = Catalog.GetResourcePath(GlobalConstants.ServerWorkspaceID, perm.ResourceID);
                         }
                     }
                     decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);

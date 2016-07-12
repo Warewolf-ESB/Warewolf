@@ -20,7 +20,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Common
 {
     /// <summary>
-    /// Used to genreate dependency graphs.
+    /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
     /// </summary>
     public class DependencyGraphGenerator

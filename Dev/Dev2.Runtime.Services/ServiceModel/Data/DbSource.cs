@@ -32,10 +32,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         public DbSource(XElement xml)
             : base(xml)
         {
-            ResourceType = "DbSource";
+            
 
             // Setup type include default port
-            switch(xml.AttributeSafe("ServerType"))
+            var attributeSafe = xml.AttributeSafe("ServerType");
+            switch(attributeSafe)
             {
                 case "SqlDatabase":
                     ServerType = enSourceType.SqlDatabase;
@@ -62,6 +63,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ResourceType = ServerType.ToString();
+            ResourceType = "DbSource";
             ConnectionString = connectionString;
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities.SelectAndApply;
-using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.DataList.Contract;
@@ -297,33 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GlobalConstantsIsValidJson_GivenValidJson_ShouldReturnTru()
-        {
-            //---------------Set up test pack-------------------
-            var outJson = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]}";
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var isValidJson = GlobalConstants.IsValidJson(outJson);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(isValidJson);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GlobalConstantsIsValidJson_GivenInValidJson_ShouldReturnFalse()
-        {
-            //---------------Set up test pack-------------------
-            var outJson = "{\"var\": [{\"id\": \"10\"},{\"id\": \"20\"},{\"id\": \"30\"},{\"id\": \"40\"}]kfhdjkghdfjkhg''''}";
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var isValidJson = GlobalConstants.IsValidJson(outJson);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(isValidJson);
-        }
+     
 
         #region Private Test Methods
 

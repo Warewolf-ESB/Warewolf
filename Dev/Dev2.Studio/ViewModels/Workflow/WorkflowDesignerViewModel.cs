@@ -11,7 +11,6 @@
 using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
-using System.Activities.Debugger;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Model;
@@ -21,6 +20,7 @@ using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
@@ -32,14 +32,12 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
-using Dev2.AppResources.Converters;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -59,7 +57,6 @@ using Dev2.Factories;
 using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Messages;
-using Dev2.Models;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -100,15 +97,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<SaveUnsavedWorkflowMessage>,
-                                             IHandle<SelectModelItemMessage>,
-                                             IHandle<UpdateWorksurfaceFlowNodeDisplayName>,
                                              IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
 
         #region Overrides of Screen
-
-        public delegate void SourceLocationEventHandler(SourceLocation src);
 
         protected readonly IDesignerManagementService DesignerManagementService;
         readonly IWorkflowHelper _workflowHelper;
@@ -117,22 +110,19 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected dynamic DataObject { get; set; }
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
-        protected ModelService ModelService;
-        UserControl _popupContent;
+        // ReSharper disable once InconsistentNaming
+        private ModelService ModelService;
         IContextualResourceModel _resourceModel;
-        Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
+        // ReSharper disable once InconsistentNaming
+        protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
         // ReSharper disable InconsistentNaming
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
-        protected DsfActivityDropViewModel _vm;
-#pragma warning disable 414
-        ResourcePickerDialog _resourcePickerDialog;
-#pragma warning restore 414
 
         VirtualizedContainerService _virtualizedContainerService;
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
-        StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
+        readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
         #endregion
 
@@ -166,7 +156,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="workflowHelper">Serialization helper</param>
         /// <param name="createDesigner">create a new designer flag</param>
         // ReSharper disable TooManyDependencies
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+        private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             // ReSharper restore TooManyDependencies
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), new ExternalProcessExecutor(), createDesigner)
@@ -209,14 +199,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
-            OutlineViewTitle = "Navigation Pane";
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
 
             _firstWorkflowChange = true;
         }
 
-        void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
+        private void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
@@ -226,7 +215,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void UpdateOriginalDataList(IContextualResourceModel obj)
+        private void UpdateOriginalDataList(IContextualResourceModel obj)
         {
             if (obj.IsWorkflowSaved)
             {
@@ -242,12 +231,15 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual bool IsDesignerViewVisible => DesignerView != null && DesignerView.IsVisible;
 
+#pragma warning disable 108,114
         public string DisplayName
+#pragma warning restore 108,114
         {
             get
             {
                 var displayName = ResourceModel.UserPermissions == Permissions.View ?
-                    string.Format("{0} [READONLY]", ResourceHelper.GetDisplayName(ResourceModel)) : ResourceHelper.GetDisplayName(ResourceModel);
+                    $"{ResourceHelper.GetDisplayName(ResourceModel)} [READONLY]"
+                    : ResourceHelper.GetDisplayName(ResourceModel);
                 return displayName;
             }
         }
@@ -256,7 +248,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (_workflowInputDataViewModel != null)
             {
-                if (!String.IsNullOrEmpty(_resourceModel.DataList))
+                if (!string.IsNullOrEmpty(_resourceModel.DataList))
                 {
 
                     _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
@@ -280,7 +272,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get
             {
                 var workflowLink = _workflowLink;
-                if (!String.IsNullOrEmpty(workflowLink))
+                if (!string.IsNullOrEmpty(workflowLink))
                 {
                     var startIndex = workflowLink.IndexOf("&wid", StringComparison.InvariantCultureIgnoreCase);
                     if (startIndex != -1)
@@ -298,74 +290,28 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public Visibility WorkflowLinkVisible => _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
 
-        public override string IconPath => ResourceHelper.GetIconPath(ResourceModel);
-
-        //2012.10.01: massimo.guerrera - AddMode Remove buttons made into one:)
         public IPopupController PopUp { get; set; }
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
-
-        public UserControl PopupContent
-        {
-            get { return _popupContent; }
-            set
-            {
-                _popupContent = value;
-                NotifyOfPropertyChange(() => PopupContent);
-            }
-        }
-
-        public virtual object SelectedModelItem
-        {
-            get
-            {
-                if (_wd != null)
-                {
-                    if (_wd.Context != null)
-                    {
-                        return _wd.Context.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
-                    }
-                }
-                return null;
-            }
-        }
-
-        public bool HasErrors { get; set; }
+        [ExcludeFromCodeCoverage]
+        public virtual object SelectedModelItem => _wd?.Context?.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
 
         public IContextualResourceModel ResourceModel { get { return _resourceModel; } set { _resourceModel = value; } }
 
         public string WorkflowName => _resourceModel.ResourceName;
 
-        public bool RequiredSignOff => _resourceModel.RequiresSignOff;
-
         public WorkflowDesigner Designer => _wd;
 
-        public UIElement DesignerView
-        {
-            get
-            {
-                if (_wd != null)
-                {
-                    return _wd.View;
-                }
-                return null;
-            }
-        }
+        public UIElement DesignerView => _wd?.View;
 
         public void UpdateWorkflowLink(string newLink)
         {
             DisplayWorkflowLink = newLink;
-            NotifyOfPropertyChange("DisplayWorkflowLink");
+            NotifyOfPropertyChange(nameof(DisplayWorkflowLink));
         }
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        // BUG 9304 - 2013.05.08 - TWR - Refactored and removed setter
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
-
-        public string OutlineViewTitle { get; set; }
 
         #endregion
 
@@ -448,17 +394,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var mi = addedItems.ToList()[i];
 
-                if (mi.Content != null)
+                var computedValue = mi.Content?.ComputedValue;
+                if (computedValue is IDev2Activity)
                 {
-                    var computedValue = mi.Content.ComputedValue;
-                    if (computedValue is IDev2Activity)
-                    {
-                        //2013.08.19: Ashley Lewis for bug 10116 - New unique id on paste
-                        (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
-                    }
+                    (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
                 }
-
-                AddSwitch(mi);
 
                 if (mi.ItemType == typeof(FlowSwitch<string>))
                 {
@@ -476,145 +416,52 @@ namespace Dev2.Studio.ViewModels.Workflow
             return addedItems;
         }
 
-        // ReSharper disable ExcessiveIndentation
-        void AddSwitch(ModelItem mi)
-        // ReSharper restore ExcessiveIndentation
-        {
-            if (mi.Parent != null &&
-                   mi.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
-            {
-                ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
-                if (activityExpression != null)
-                {
-                    var switchExpressionValue = SwitchExpressionValue(activityExpression);
-                    ModelProperty modelProperty = mi.Properties["Key"];
-                    if (modelProperty != null && (modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case"))
-                    {
-                        Dev2Logger.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
-                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
-                    }
-                }
-            }
-        }
-
-        static string SwitchExpressionValue(ModelProperty activityExpression)
-        {
-            var tmpModelItem = activityExpression.Value;
-
-            var switchExpressionValue = string.Empty;
-
-            if (tmpModelItem != null)
-            {
-                var tmpProperty = tmpModelItem.Properties["ExpressionText"];
-
-                if (tmpProperty != null)
-                {
-                    if (tmpProperty.Value != null)
-                    {
-                        var tmp = tmpProperty.Value.ToString();
-
-                        if (!string.IsNullOrEmpty(tmp))
-                        {
-                            int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                            int end = tmp.IndexOf(",", StringComparison.Ordinal);
-
-                            if (start < end && start >= 0)
-                            {
-                                start += 2;
-                                end -= 1;
-                                switchExpressionValue = tmp.Substring(start, end - start);
-                            }
-                        }
-                    }
-                }
-            }
-            return switchExpressionValue;
-        }
-
-        protected void InitializeFlowStep(ModelItem mi)
+        private void InitializeFlowStep(ModelItem mi)
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
             InitialiseWithAction(modelProperty1);
         }
 
-        void InitialiseWithAction(ModelProperty modelProperty1)
+        private void InitialiseWithAction(ModelProperty modelProperty1)
         {
-            if (modelProperty1 != null)
+            var droppedActivity = modelProperty1?.ComputedValue as DsfActivity;
+            if (droppedActivity != null)
             {
-                var droppedActivity = modelProperty1.ComputedValue as DsfActivity;
-                if (droppedActivity != null)
+                if (!string.IsNullOrEmpty(droppedActivity.ServiceName))
                 {
-                    if (!string.IsNullOrEmpty(droppedActivity.ServiceName))
-                    {
-                        //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                        InitialiseWithoutServiceName(modelProperty1, droppedActivity);
-                    }
-                    else
-                    {
-                        InitialiseWithServiceName(modelProperty1, droppedActivity);
-                    }
+                    InitialiseWithoutServiceName(modelProperty1, droppedActivity);
+                }
+                else
+                {
+                    InitialiseWithDataObject(droppedActivity);
                 }
             }
         }
 
-        void InitialiseWithServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
+        private void InitialiseWithDataObject(DsfActivity droppedActivity)
         {
             if (DataObject != null)
             {
-                InitialiseWithDataObject(droppedActivity);
-            }
-            else
-            {
-                //Massimo.Guerrera:17-04-2012 - PBI 9000                               
-                if (_vm != null)
-                {
-                    IContextualResourceModel resource = _vm.SelectedResourceModel;
-                    if (resource != null)
-                    {
-                        droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
-                        droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
-                        modelProperty1.SetValue(droppedActivity);
-                    }
-                    _vm = null;
-                }
-            }
-        }
+                var viewModel = DataObject as ExplorerItemViewModel;
 
-        void InitialiseWithDataObject(DsfActivity droppedActivity)
-        {
-            var viewModel = DataObject as ExplorerItemViewModel;
-
-            if (viewModel != null)
-            {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == viewModel.Server.EnvironmentID);
-                if (environmentModel != null)
+                if (viewModel != null)
                 {
-                    var theResource = environmentModel.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
+                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == viewModel.Server.EnvironmentID);
+                    var theResource = environmentModel?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
 
                     if (theResource != null)
                     {
-                        //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true,EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
 
                         d.DisplayName = theResource.DisplayName;
                         d.ServiceName = theResource.Category;
 
-                        ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
-                        var bitmapImage = converter.Convert(new object[] { viewModel.ResourceType, false }, null, null, null) as BitmapImage;
-                        if (bitmapImage != null)
-                        {
-                            d.IconPath = bitmapImage.UriSource.ToString();
-                        }
                         UpdateForRemote(d, theResource);
-                        //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
-                        //Setting it twice causes double connection to startnode
                     }
                 }
-            }
-            DataObject = null;
+                DataObject = null;
+            }            
         }
 
         public ResourceType ResourceType
@@ -629,7 +476,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
+        private void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
         {
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
@@ -640,7 +487,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             modelProperty1.SetValue(droppedActivity);
         }
 
-        protected void InitializeFlowSwitch(ModelItem mi)
+        private void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
@@ -648,7 +495,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
-        protected void InitializeFlowDecision(ModelItem mi)
+        private void InitializeFlowDecision(ModelItem mi)
         {
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
             ModelProperty modelProperty = mi.Properties["Action"];
@@ -658,7 +505,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
-        public void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
+        private void EditActivity(ModelItem modelItem, Guid parentEnvironmentID)
         {
             if (Designer == null)
             {
@@ -668,63 +515,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
-                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
-
-                //var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
-                //Guid environmentID;
-
-                //if (envID != null)
-                //{
-                //    Guid.TryParse(envID.Expression.ToString(), out environmentID);
-                //}
-                //else
-                //{
-                //    environmentID = parentEnvironmentID;
-                //}
-
-                //if (environmentID == Guid.Empty)
-                //{
-                //    // this was created on a localhost ... BUT ... we may be running it remotely!
-                //    // so, ensure that we are running in the context of the parent's environment
-                //    environmentID = parentEnvironmentID;
-                //}
-
-                //var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
-
-                //if (environmentID == Guid.Empty && !catalog.ActiveEnvironment.IsLocalHostCheck())
-                //{
-                //    // we have an "localhost" environment id, yet it is not the active environment, must be remote execution 
-                //    // against a remote server, aka remote treated as local ;)
-                //    environmentModel = catalog.ActiveEnvironment;
-                //}
-
-                //if (environmentModel != null)
-                //{
-                //    // BUG 9634 - 2013.07.17 - TWR : added connect
-                //    if (!environmentModel.IsConnected)
-                //    {
-                //        environmentModel.Connect();
-                //        environmentModel.LoadResources();
-                //    }
-                //    IResourceModel resource;
-                //    if (resourceID != Guid.Empty)
-                //    {
-                //        resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID);
-                //    }
-                //    else
-                //    {
-                //        var resourceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
-                //        resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourceName);
-                //    }
-                //    if (resource != null && environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ID.ToString()))
-                //    {
-                //        WorkflowDesignerUtils.EditResource(resource, EventPublisher);
-                //    }
-                //}
+                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID,parentEnvironmentID);
             }
         }
 
-        ModelItem RecursiveForEachCheck(dynamic activity)
+        private static ModelItem RecursiveForEachCheck(dynamic activity)
         {
             var innerAct = activity.DataFunc.Handler as ModelItem;
             if (innerAct != null)
@@ -743,13 +538,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        [ExcludeFromCodeCoverage]
+        private void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
         {
-            if (Designer != null && Designer.Context != null)
+            if (Designer?.Context != null)
             {
                 var selection = Designer.Context.Items.GetValue<Selection>();
 
-                if (selection == null || selection.PrimarySelection == null)
+                if (selection?.PrimarySelection == null)
                     return;
 
                 if (selection.PrimarySelection.ItemType != typeof(Flowchart) &&
@@ -767,47 +563,48 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="DragEventArgs" /> instance containing the event data.
         /// </param>
-        void SetLastDroppedPoint(DragEventArgs e)
+        [ExcludeFromCodeCoverage]
+        private void SetLastDroppedPoint(DragEventArgs e)
         {
             var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
-            if (senderAsFrameworkElement != null)
+            UIElement freePormPanel = senderAsFrameworkElement?.FindNameAcrossNamescopes("flowchartPanel");
+            if (freePormPanel != null)
             {
-                UIElement freePormPanel = senderAsFrameworkElement.FindNameAcrossNamescopes("flowchartPanel");
-                if (freePormPanel != null)
-                {
-                    e.GetPosition(freePormPanel);
-                }
+                e.GetPosition(freePormPanel);
             }
         }
 
         #region DataList Workflow Specific Methods
-        IList<IDataListVerifyPart> BuildWorkflowFields()
+
+        private IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             var dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
             _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>(dataPartVerifyDuplicates);
-            if (Designer != null)
+            var modelService = Designer?.Context.Services.GetService<ModelService>();
+            if (modelService != null)
             {
-                var modelService = Designer.Context.Services.GetService<ModelService>();
-                if (modelService != null)
-                {
-                    var flowNodes = modelService.Find(modelService.Root, typeof(FlowNode));
+                var flowNodes = modelService.Find(modelService.Root, typeof (FlowNode));
 
-                    foreach (var flowNode in flowNodes)
-                    {
-                        var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
-                        foreach (var field in workflowFields)
-                        {
-                            var isJsonObjectSource = field.StartsWith("@");                            
-                            WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts,isJsonObjectSource);
-                        }
-                    }
-                }
+                GetWorkflowFieldsFromFlowNodes(flowNodes);
             }
             var flattenedList = _uniqueWorkflowParts.Keys.ToList();
             return flattenedList;
         }
 
-        IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
+        protected void GetWorkflowFieldsFromFlowNodes(IEnumerable<ModelItem> flowNodes)
+        {
+            foreach (var flowNode in flowNodes)
+            {
+                var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
+                foreach (var field in workflowFields)
+                {
+                    var isJsonObjectSource = field.StartsWith("@");
+                    WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts, isJsonObjectSource);
+                }
+            }
+        }
+
+        private IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
         {
             var workflowFields = new List<string>();
 
@@ -838,7 +635,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var activity = property.ComputedValue;
                         if (activity != null)
                         {
-                            workflowFields.AddRange(GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList));
+                            workflowFields.AddRange(GetDecisionElements(((dynamic) activity).ExpressionText, DataListSingleton.ActiveDataList));
                         }
                     }                                     
                 }
@@ -860,7 +657,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 int endindex = expression.IndexOf('"', startIndex);
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
-                //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
                 try
                 {
                     var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
@@ -871,7 +667,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             var getCol = getCols[i];
                             var parsed = GetParsedRegions(getCol, datalistModel);
-                            if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(a => DataListUtil.IsValueRecordset(a)))
+                            if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(DataListUtil.IsValueRecordset))
                             {
                                 IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
                                 decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
@@ -883,7 +679,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 catch (Exception)
                 {
-
                     if (!DataListUtil.IsValueRecordset(decisionValue))
                     {
                         IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
@@ -901,10 +696,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             return decisionFields;
         }
 
-        static IEnumerable<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
+        private static IEnumerable<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
         {
-            var result = new List<string>();
-
             // Travis.Frisinger - 25.01.2013 
             // We now need to parse this data for regions ;)
 
@@ -912,18 +705,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             // NEED - DataList for active workflow
             var parts = parser.ParseDataLanguageForIntellisense(getCol, datalistModel.WriteToResourceModel(), true);
 
-            foreach (var intellisenseResult in parts)
-            {
-                var varWithNoBrackets = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
-                if (!string.IsNullOrEmpty(getCol) && !varWithNoBrackets.Equals(getCol))
-                {
-                    result.Add(getCol);
-                }
-            }
-            return result;
+            return (from intellisenseResult in parts
+                    select DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue) 
+                    into varWithNoBrackets
+                    where !string.IsNullOrEmpty(getCol) && !varWithNoBrackets.Equals(getCol)
+                    select getCol
+                   ).ToList();
         }
 
-        List<String> GetActivityElements(object activity)
+        private static List<String> GetActivityElements(object activity)
         {
             var assign = activity as DsfActivityAbstract<string>;
             var other = activity as DsfActivityAbstract<bool>;
@@ -963,7 +753,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Internal Methods
 
-        internal void OnItemSelected(Selection item)
+        private void OnItemSelected(Selection item)
         {
             NotifyItemSelected(item.PrimarySelection);
             item.PrimarySelection.SetProperty("IsSelected", true);
@@ -1068,38 +858,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (!liteInit)
             {
-                var hashTable = new Hashtable
-                {
-                    {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
-                    //{WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
-                    {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
-                    {WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["ShellBarViewBackground"]},
-                    {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
-                    {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]},
-                };
+                SetHashTable();
+                SetDesignerConfigService();
 
-                _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
-                // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade            
-                var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
-                if (designerConfigService != null)
-                {
-                    // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
-                    designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
-                    designerConfigService.AutoConnectEnabled = true;
-                    designerConfigService.AutoSplitEnabled = true;
-                    designerConfigService.PanModeEnabled = true;
-                    designerConfigService.RubberBandSelectionEnabled = true;
-                    designerConfigService.BackgroundValidationEnabled = true; // prevent design-time background validation from blocking UI thread
-                    // Disabled for now
-                    designerConfigService.AnnotationEnabled = false;
-                    designerConfigService.AutoSurroundWithSequenceEnabled = false;
-                }
                 _wdMeta = new DesignerMetadata();
                 _wdMeta.Register();
                 var builder = new AttributeTableBuilder();
@@ -1110,29 +871,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 MetadataStore.AddAttributeTable(builder.CreateTable());
 
+                _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
                 _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
-            }
-
-            LoadDesignerXaml();
-
-            if (!liteInit)
-            {
-                _wdMeta.Register();
-
-                _wd.Context.Services.Subscribe<ViewStateService>(ViewStateServiceSubscribe);
-
-                _wd.View.PreviewDrop += ViewPreviewDrop;
-
-                _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-                _wd.View.PreviewKeyDown += ViewOnKeyDown;
+                _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
+                _wd.Context.Services.Publish(DesignerManagementService);
 
                 _wd.View.Measure(new Size(2000, 2000));
-
+                _wd.View.PreviewDrop += ViewPreviewDrop;
+                _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
+                _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
-                _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
-
-                _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
-                _wd.Context.Services.Publish(DesignerManagementService);
 
                 //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
                 CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
@@ -1140,34 +888,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Focus();
 
                 int indexOfOpenItem = -1;
-                if(_wd.ContextMenu != null)
+                if (_wd.ContextMenu?.Items != null)
                 {
-                    if(_wd.ContextMenu.Items != null)
+                    foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
                     {
-                        foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
-                        {
-                            indexOfOpenItem = _wd.ContextMenu.Items.IndexOf(menuItem);
-                            break;
-                        }
-                        if (indexOfOpenItem != -1)
-                        {
-                            _wd.ContextMenu.Items.RemoveAt(indexOfOpenItem);
-                        }
+                        indexOfOpenItem = _wd.ContextMenu.Items.IndexOf(menuItem);
+                        break;
+                    }
+                    if (indexOfOpenItem != -1)
+                    {
+                        _wd.ContextMenu.Items.RemoveAt(indexOfOpenItem);
                     }
                 }
 
-                //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
                 CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
-                //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
                 Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
-            }
-            // BUG 9304 - 2013.05.08 - TWR
-            _workflowHelper.EnsureImplementation(ModelService);
+                LoadDesignerXaml();
+                _workflowHelper.EnsureImplementation(ModelService);
 
-            if (!liteInit)
-            {
                 //For Changing the icon of the flowchart.
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
@@ -1175,7 +915,68 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void ViewOnKeyDown(object sender, KeyEventArgs e)
+        private void SetHashTable()
+        {
+            var hashTable = new Hashtable
+            {
+                {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
+                {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
+                {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
+                {
+                    WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey,
+                    Application.Current.Resources["WorkflowBackgroundBrush"]
+                },
+                {
+                    WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey,
+                    Application.Current.Resources["WorkflowBackgroundBrush"]
+                },
+                {
+                    WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey,
+                    Application.Current.Resources["WorkflowSelectedBorderBrush"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {
+                    WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey,
+                    Application.Current.Resources["ShellBarViewBackground"]
+                },
+                {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
+                {
+                    WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey,
+                    Application.Current.Resources["DesignerBackground"]
+                },
+            };
+
+            _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
+        }
+
+        private void SetDesignerConfigService()
+        {
+            var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
+            if (designerConfigService != null)
+            {
+                // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
+                designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
+                designerConfigService.AutoConnectEnabled = true;
+                designerConfigService.AutoSplitEnabled = true;
+                designerConfigService.PanModeEnabled = true;
+                designerConfigService.RubberBandSelectionEnabled = true;
+                designerConfigService.BackgroundValidationEnabled = true;
+                // prevent design-time background validation from blocking UI thread
+                // Disabled for now
+                designerConfigService.AnnotationEnabled = false;
+                designerConfigService.AutoSurroundWithSequenceEnabled = false;
+            }
+        }
+
+        [ExcludeFromCodeCoverage] //This method is used to prevent the drill down on the designer
+        private static void ViewOnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.OriginalSource != null)
             {
@@ -1190,14 +991,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             }            
         }
 
-        void DesigenrViewSubscribe(DesignerView instance)
+        static void DesigenrViewSubscribe(DesignerView instance)
         {
             // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
             instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }
 
-        void OnViewOnLostFocus(object sender, RoutedEventArgs args)
+        [ExcludeFromCodeCoverage]
+        private void OnViewOnLostFocus(object sender, RoutedEventArgs args)
         {
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
 
@@ -1213,17 +1015,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void ViewStateServiceSubscribe(ViewStateService instance)
-        {
-        }
-
-        void ModelServiceSubscribe(ModelService instance)
+        private void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
             ModelService.ModelChanged += ModelServiceModelChanged;
         }
 
-        void SubscribeToDebugSelectionChanged()
+        private void SubscribeToDebugSelectionChanged()
         {
             _virtualizedContainerService = _wd.Context.Services.GetService<VirtualizedContainerService>();
             if (_virtualizedContainerService != null)
@@ -1297,18 +1095,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             return selectedModelItem;
         }
 
-        protected virtual void SelectSingleModelItem(ModelItem selectedModelItem)
+        private void SelectSingleModelItem(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
                 return;
             }
-            //Selection.Subscribe(_wd.Context, SelectedItemChanged);
             Selection.SelectOnly(_wd.Context, selectedModelItem);
             SelectedDebugItems.Add(selectedModelItem);
         }
 
-        protected virtual void RemoveModelItemFromSelection(ModelItem selectedModelItem)
+        private void RemoveModelItemFromSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
@@ -1317,13 +1114,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
         }
 
-        protected virtual void AddModelItemToSelection(ModelItem selectedModelItem)
+        private void AddModelItemToSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
             {
                 return;
             }
-            //Selection.Subscribe(_wd.Context, SelectedItemChanged);
             Selection.Union(_wd.Context, selectedModelItem);
 
             ModelService modelService = _wd.Context.Services.GetService<ModelService>();
@@ -1351,7 +1147,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SelectedDebugItems.Add(selectedModelItem);
         }
 
-        protected virtual void ClearSelection()
+        private void ClearSelection()
         {
             _wd.Context.Items.SetValue(new Selection());
             _selectedDebugItems = new List<ModelItem>();
@@ -1367,18 +1163,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             var onAfterPopulateAll = new System.Action(() => BringIntoView(selectedModelItem.View as FrameworkElement));
-            if (_virtualizedContainerServicePopulateAllMethod != null)
-            {
-                _virtualizedContainerServicePopulateAllMethod.Invoke(_virtualizedContainerService, new object[] { onAfterPopulateAll });
-            }
+            _virtualizedContainerServicePopulateAllMethod?.Invoke(_virtualizedContainerService, new object[] { onAfterPopulateAll });
         }
 
-        void BringIntoView(FrameworkElement view)
+        private static void BringIntoView(FrameworkElement view)
         {
-            if (view != null)
-            {
-                view.BringIntoView();
-            }
+            view?.BringIntoView();
         }
 
         protected void LoadDesignerXaml()
@@ -1392,7 +1182,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var workspace = GlobalConstants.ServerWorkspaceID;
 
                 // log the trace for fetch ;)
-                Dev2Logger.Info(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
+                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
 
                 // In the case of null of empty try fetching again ;)
                 var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
@@ -1408,15 +1198,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
-                    Dev2Logger.Info(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
-                    // BUG 9304 - 2013.05.08 - TWR 
+                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
                     _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
                     BindToModel();
                 }
                 else
                 {
                     // we have big issues ;(
-                    throw new Exception(string.Format("Could not find resource definition for {0}", _resourceModel.ResourceName));
+                    throw new Exception($"Could not find resource definition for {_resourceModel.ResourceName}");
                 }
             }
             else
@@ -1426,41 +1215,35 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void SetDesignerText(StringBuilder xaml)
+        private void SetDesignerText(StringBuilder xaml)
         {
             var designerText = _workflowHelper.SanitizeXaml(xaml);
             _wd.Text = designerText.ToString();
         }
 
-        void SelectedItemChanged(Selection item)
+        private void SelectedItemChanged(Selection item)
         {
-            if (_wd != null)
+            if (_wd?.Context != null)
             {
-                if (_wd.Context != null)
+                ContextItemManager contextItemManager = _wd.Context.Items;
+                var selection = contextItemManager.GetValue<Selection>();
+                if (selection.SelectedObjects.Count() > 1)
                 {
-                    ContextItemManager contextItemManager = _wd.Context.Items;
-                    var selection = contextItemManager.GetValue<Selection>();
-                    if (selection.SelectedObjects.Count() > 1)
-                    {
-                        DeselectFlowchart();
-                    }
+                    DeselectFlowchart();
                 }
             }
         }
 
-        void DeselectFlowchart()
+        private void DeselectFlowchart()
         {
-            if (_wd != null)
+            if (_wd?.Context != null)
             {
-                if (_wd.Context != null)
+                EditingContext editingContext = _wd.Context;
+                var selection = editingContext.Items.GetValue<Selection>();
+                foreach (var item in selection.SelectedObjects.Where(item => item.ItemType == typeof(Flowchart)))
                 {
-                    EditingContext editingContext = _wd.Context;
-                    var selection = editingContext.Items.GetValue<Selection>();
-                    foreach (var item in selection.SelectedObjects.Where(item => item.ItemType == typeof(Flowchart)))
-                    {
-                        Selection.Toggle(editingContext, item);
-                        break;
-                    }
+                    Selection.Toggle(editingContext, item);
+                    break;
                 }
             }
         }
@@ -1502,7 +1285,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
-            _changeIsPossible = true;
             if (_firstWorkflowChange)
             {
                 AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
@@ -1510,7 +1292,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        bool CheckDataList()
+        private bool CheckDataList()
         {
             if (_originalDataList == null)
                 return true;
@@ -1522,7 +1304,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return true;
         }
 
-        bool CheckServiceDefinition()
+        private bool CheckServiceDefinition()
         {
             return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
@@ -1530,7 +1312,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Processes the data list configuration load.
         /// </summary>
-        public void ProcessDataListOnLoad()
+        private void ProcessDataListOnLoad()
         {
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
         }
@@ -1572,8 +1354,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Adds the missing with no pop up and find unused data list items.
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
-        {    
-               DoWorkspaceSave();
+        {
+            DoWorkspaceSave();
         }
 
         /// <summary>
@@ -1613,42 +1395,23 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
-        {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            foreach (var modelItem in ModelService.Find(ModelService.Root, typeof(DsfActivity)))
-            {
-                var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
-                if ((string)currentName == message.OldName)
-                {
-                    ModelItemUtils.SetProperty("ServiceName", message.NewName, modelItem);
-                }
-            }
-        }
-
         #endregion
 
         #region Event Handlers
-
-        void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        [ExcludeFromCodeCoverage]
+        private void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
             if (!(e.OriginalSource is Path) && !(e.OriginalSource is Rectangle))
             {
                 var item = sender as Grid;
-                if (item != null)
+                var context = item?.DataContext as WorkflowDesignerViewModel;
+                var selectedModelItem = context?.SelectedModelItem as ModelItem;
+                if (selectedModelItem != null)
                 {
-                    var context = item.DataContext as WorkflowDesignerViewModel;
-                    if (context != null)
-                    {
-                        var selectedModelItem = context.SelectedModelItem as ModelItem;
-                        if (selectedModelItem != null)
-                        {
-                            ClearSelection();
-                            Selection.Subscribe(_wd.Context, SelectedItemChanged);
-                            Selection.Union(_wd.Context, selectedModelItem);
-                        }
-                    }
+                    ClearSelection();
+                    Selection.Subscribe(_wd.Context, SelectedItemChanged);
+                    Selection.Union(_wd.Context, selectedModelItem);
                 }
             }
         }
@@ -1661,7 +1424,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="dp">Item Clicked</param>
         /// <param name="designerView">Designer view</param>
         /// <returns></returns>
-        protected bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
+        [ExcludeFromCodeCoverage]
+        private bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
                 return true;
@@ -1669,7 +1433,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
                 var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
-                if (mvm != null && mvm.ActiveItem != null)
+                if (mvm?.ActiveItem != null)
                 {
                     mvm.RefreshActiveEnvironment();
                 }
@@ -1678,7 +1442,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
+        [ExcludeFromCodeCoverage]
+        private bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (leftButtonState == MouseButtonState.Pressed && clickCount == 2)
             {
@@ -1694,54 +1459,67 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return true;
                 }
 
-                // Travis.Frisinger - 28.01.2013 : Case Amendments
-                if (item != null)
-                {
-                    string itemFn = item.ItemType.FullName;
-
-                    //2013.03.20: Ashley Lewis - Bug 9202 Don't open any wizards if the source is a 'Microsoft.Windows.Themes.ScrollChrome' object
-                    if (dp != null && string.Equals(dp.ToString(), "Microsoft.Windows.Themes.ScrollChrome", StringComparison.InvariantCulture))
-                    {
-                        WizardEngineAttachedProperties.SetDontOpenWizard(dp, true);
-                    }
-
-                    // Handle Case Edits
-                    if (itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal) && !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))
-                    {
-                        if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
-                        {
-                            FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
-                        }
-                    }
-
-                    // Handle Switch Edits
-                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
-                    {
-                        _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
-                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
-                    }
-
-                    //// Handle Decision Edits
-                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
-                    {
-                        _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
-                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
-                    }
-                }
-
+                HandleDependencyObject(dp, item);
             }
             return false;
         }
 
-        public IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
+        [ExcludeFromCodeCoverage]
+        private void HandleDependencyObject(DependencyObject dp, ModelItem item)
         {
-            var env = GetEnvironment();
-            var res = new ResourcePickerDialog(activityType, env);
-            ResourcePickerDialog.CreateAsync(activityType, env);
-            return res;
+            if (item != null)
+            {
+                string itemFn = item.ItemType.FullName;
+
+                if (dp != null && string.Equals(dp.ToString(), "Microsoft.Windows.Themes.ScrollChrome", StringComparison.InvariantCulture))
+                {
+                    WizardEngineAttachedProperties.SetDontOpenWizard(dp, true);
+                }
+
+                // Handle Case Edits
+                if (itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal) &&
+                    !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))
+                {
+                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
+                    {
+                        FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage
+                        {
+                            ModelItem = item,
+                            EnvironmentModel = _resourceModel.Environment
+                        });
+                    }
+                }
+
+                // Handle Switch Edits
+                if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                    item.ItemType == typeof(FlowSwitch<string>))
+                {
+                    _expressionString =
+                        FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage
+                        {
+                            ModelItem = item,
+                            EnvironmentModel = _resourceModel.Environment
+                        });
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                }
+
+                //// Handle Decision Edits
+                if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                    item.ItemType == typeof(FlowDecision))
+                {
+                    _expressionString =
+                        FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage
+                        {
+                            ModelItem = item,
+                            EnvironmentModel = _resourceModel.Environment
+                        });
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                }
+            }
         }
 
-        static IEnvironmentViewModel GetEnvironment()
+        [ExcludeFromCodeCoverage]
+        private IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
             var environment = EnvironmentRepository.Instance.ActiveEnvironment;
             IServer server = new Server(environment);
@@ -1752,7 +1530,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
             }
             var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
-            return env;
+            var res = new ResourcePickerDialog(activityType, env);
+            ResourcePickerDialog.CreateAsync(activityType, env);
+            return res;
         }
 
         /// <summary>
@@ -1760,71 +1540,78 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
-        void ViewPreviewDrop(object sender, DragEventArgs e)
+        [ExcludeFromCodeCoverage]
+        private void ViewPreviewDrop(object sender, DragEventArgs e)
         {
-            bool dropOccured = true;
             SetLastDroppedPoint(e);
-            DataObject = e.Data.GetData(typeof(ExplorerItemViewModel));
-            if (DataObject != null || e.Data != null)
-            {
-                IsItemDragged.Instance.IsDragged = true;
-            }
-            
-            var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
-            if (isWorkflow != null)
-            {
-                // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
-                var activityType = ResourcePickerDialog.DetermineDropActivityType(isWorkflow);
-
-                if (activityType != enDsfActivityType.All)
-                {
-                    var dialog = CreateResourcePickerDialog(activityType);
-                    if (dialog.ShowDialog())
-                    {
-                        var res = dialog.SelectedResource;
-                        if (res != null)
-                        {
-                            e.Data.SetData(res);
-                            DataObject = res;
-                        }
-                        if (res == null)
-                        {
-                            e.Handled = true;
-                            dropOccured = false;
-                        }
-                    }
-                    else
-                    {
-                        e.Handled = true;
-                        dropOccured = false;
-                    }
-                }
-                if (dropOccured)
-                {
-                    _workspaceSave = false;
-                    ResourceModel.IsWorkflowSaved = false;
-                    NotifyOfPropertyChange(() => DisplayName);
-                }
-            }
-            else
-            {
-                IsItemDragged.Instance.IsDragged = false;
-            }
-            _resourcePickerDialog = null;
-
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.ClearToolboxSelection();
-            }
+            var dataObject = e.Data;
+            e.Handled = ApplyForDrop(dataObject);
         }
 
-        // BUG 9143 - 2013.07.03 - TWR - added
-        //
+        protected bool ApplyForDrop(IDataObject dataObject)
+        {
+            var handled = false;
+            if (dataObject != null)
+            {
+                DataObject = dataObject.GetData(typeof(ExplorerItemViewModel));
+                if (DataObject != null)
+                {
+                    IsItemDragged.Instance.IsDragged = true;
+                }
+
+                var isWorkflow = dataObject.GetData("WorkflowItemTypeNameFormat") as string;
+                if (isWorkflow != null)
+                {
+                    handled = WorkflowDropFromResourceToolboxItem(dataObject, isWorkflow, true, false);
+                }
+                else
+                {
+                    IsItemDragged.Instance.IsDragged = false;
+                }
+            }
+            return handled;
+        }
+
+        [ExcludeFromCodeCoverage]
+        private bool WorkflowDropFromResourceToolboxItem(IDataObject dataObject, string isWorkflow, bool dropOccured, bool handled)
+        {
+            var activityType = ResourcePickerDialog.DetermineDropActivityType(isWorkflow);
+
+            if (activityType != enDsfActivityType.All)
+            {
+                var dialog = CreateResourcePickerDialog(activityType);
+                if (dialog.ShowDialog())
+                {
+                    var res = dialog.SelectedResource;
+                    if (res != null)
+                    {
+                        dataObject.SetData(res);
+                        DataObject = res;
+                    }
+                    if (res == null)
+                    {
+                        dropOccured = false;
+                        handled = true;
+                    }
+                }
+                else
+                {
+                    handled = true;
+                    dropOccured = false;
+                }
+            }
+            if (dropOccured)
+            {
+                _workspaceSave = false;
+                ResourceModel.IsWorkflowSaved = false;
+                NotifyOfPropertyChange(() => DisplayName);
+            }
+            return handled;
+        }
+
         // Activity : Next
         // Decision : True, False
         // Switch   : Default, Key
-        //
         public static readonly string[] SelfConnectProperties =
         {
             "Next", 
@@ -1834,20 +1621,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             "Key"
         };
 
-        string _originalDataList;
-        bool _workspaceSave;
-        WorkflowInputDataViewModel _workflowInputDataViewModel;
-        string _workflowLink;
-        ICommand _openWorkflowLinkCommand;
-        private bool _changeIsPossible;
-
-        public bool ChangeIsPossible
-        {
-            get { return _changeIsPossible; }
-            set { _changeIsPossible = value; }
-        }
-        bool _firstWorkflowChange;
-        IAsyncWorker _asyncWorker;
+        private string _originalDataList;
+        private bool _workspaceSave;
+        private WorkflowInputDataViewModel _workflowInputDataViewModel;
+        private string _workflowLink;
+        private ICommand _openWorkflowLinkCommand;
+        private bool _firstWorkflowChange;
+        private readonly IAsyncWorker _asyncWorker;
         private readonly IExternalProcessExecutor _executor;
         private string _expressionString;
 
@@ -1858,7 +1638,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
         {
-            // BUG 9143 - 2013.07.03 - TWR - added
             if (e.ModelChangeInfo != null &&
                 e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
@@ -1867,116 +1646,60 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (e.ModelChangeInfo.Subject == e.ModelChangeInfo.Value)
                     {
                         var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
-                        if (modelProperty != null)
-                        {
-                            modelProperty.ClearValue();
-                        }
+                        modelProperty?.ClearValue();
                     }
                     return;
                 }
-
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
                     return;
                 }
-            }
 
-            //ItemsAdded is obsolete - see e.ModelChangeInfo for correct usage
-            //Code below is obsolete
-#pragma warning disable 618
-            if (e.ItemsAdded != null)
-            {
-                PerformAddItems(e.ItemsAdded.ToList());
-            }
-            else if (e.PropertiesChanged != null)
-            {
-                if (e.PropertiesChanged.Any(mp => mp.Name == "Handler"))
+                if (e.ModelChangeInfo.PropertyName == "Handler")
                 {
                     if (DataObject != null)
                     {
                         ModelItemPropertyChanged(e);
-                    }
-                    else
-                    {
-                        ModelItemAdded(e);
-                    }
+                    }                   
                 }
             }
-            //DoWorkspaceSave();
-        }
 
-        void ModelItemAdded(ModelChangedEventArgs e)
-        {
-            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
-#pragma warning restore 618
-
-            if (modelProperty != null)
+            if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.CollectionItemAdded)
             {
-                if (_vm != null)
-                {
-                    var resource = _vm.SelectedResourceModel;
-                    if (resource != null)
-                    {
-                        DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
-
-                        droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
-                        droppedActivity.IconPath = resource.IconPath;
-
-                        modelProperty.SetValue(droppedActivity);
-                    }
-                    _vm.Dispose();
-                    _vm = null;
-                }
-            }
+                PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value});
+            }            
         }
 
-        void ModelItemPropertyChanged(ModelChangedEventArgs e)
+        private void ModelItemPropertyChanged(ModelChangedEventArgs e)
         {
-#pragma warning disable 618
-            var navigationItemViewModel = DataObject as ExplorerItemModel;
             Guid? envID = null;
             Guid? resourceID = null;
-            if (navigationItemViewModel != null)
+            var explorerItem = DataObject as IExplorerItemViewModel;
+            if (explorerItem != null)
             {
-                envID = navigationItemViewModel.EnvironmentId;
-                resourceID = navigationItemViewModel.ResourceId;
+                if (explorerItem.Server != null)
+                    envID = explorerItem.Server.EnvironmentID;
+                resourceID = explorerItem.ResourceId;
             }
-            if (navigationItemViewModel == null)
-            {
-                var explorerItem = DataObject as IExplorerItemViewModel;
-                if (explorerItem != null)
-                {
-                    if(explorerItem.Server != null)
-                        envID = explorerItem.Server.EnvironmentID;
-                    resourceID = explorerItem.ResourceId;
-                }
-            }
-            // ReSharper disable CSharpWarnings::CS0618
-            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
-            // ReSharper restore CSharpWarnings::CS0618
+
+            ModelProperty modelProperty = e.ModelChangeInfo.Subject.Content;
 
             if (envID!=null && modelProperty != null)
             {
                 IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envID);
-                if (environmentModel != null)
+                var resource = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
+                if (resource != null)
                 {
-                    var resource = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
-                    if (resource != null)
-                    {
-                        //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
-                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                        d.IconPath = resource.IconPath;
-                        UpdateForRemote(d, resource);
-                        modelProperty.SetValue(d);
-                    }
+                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                    UpdateForRemote(d, resource);
+                    modelProperty.SetValue(d);
                 }
             }
             DataObject = null;
-#pragma warning restore 618
         }
 
-        void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
+        private void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
         {
             if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
@@ -2004,7 +1727,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        protected void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
+        [ExcludeFromCodeCoverage]
+        private void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
                 e.Command == EditingCommands.Delete ||          //triggered from editing displayname, expressions, etc
@@ -2012,37 +1736,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
                 PreventCommandFromBeingExecuted(e);
-            }
-            if (e.Command == ApplicationCommands.Paste || e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
-            {
-                PreventPasteFromBeingExecuted(e);
-            }
-        }
-
-        void PreventPasteFromBeingExecuted(CanExecuteRoutedEventArgs e)
-        {
-
-            var second = Clipboard.GetText();
-            if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"") || second.Contains("Type=\"WebService\"")))
-            {
-                var id = second.IndexOf("ResourceID=\"", StringComparison.Ordinal);
-                if (id == -1)
-                {
-                    e.Handled = true;
-                    e.CanExecute = false;
-                    return;
-                }
-                var idEnd = second.Substring(id + 12, 36);
-                if(!(second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"") || second.Contains("Type=\"WebService\"")))
-                {
-                    IResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(a => a.ID == Guid.Parse(idEnd));
-                    if (resource == null)
-                    {
-                        e.Handled = true;
-                        e.CanExecute = false;
-                    }
-                }
-                
             }
         }
 
@@ -2053,18 +1746,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
+        [ExcludeFromCodeCoverage]
+        private void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete)
             {
-                //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
-                if (_wd != null)
-                {
-                    if (_wd.View != null)
-                    {
-                        _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
-                    }
-                }
+                _wd?.View?.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
@@ -2086,7 +1773,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wd.ModelChanged -= WdOnModelChanged;
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
-                _wd.Context.Services.Unsubscribe<ViewStateService>(ViewStateServiceSubscribe);
 
                 _wd.View.PreviewDrop -= ViewPreviewDrop;
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
@@ -2096,15 +1782,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _virtualizedContainerServicePopulateAllMethod = null;
             }
 
-            if (DesignerManagementService != null)
-            {
-                DesignerManagementService.Dispose();
-            }
-            if(_debugSelectionChangedService != null)
-            {
-                _debugSelectionChangedService.Unsubscribe();
-            }
-            
+            DesignerManagementService?.Dispose();
+            _debugSelectionChangedService?.Unsubscribe();
+
             if (_resourceModel != null)
             {
                 _resourceModel.OnDataListChanged -= FireWdChanged;
@@ -2140,7 +1820,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
             // ReSharper restore EmptyGeneralCatchClause
-            if (_debugSelectionChangedService != null) _debugSelectionChangedService.Unsubscribe();
+            _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }
 
@@ -2152,7 +1832,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <value>
         /// The work surface context.
         /// </value>
-        public override WorkSurfaceContext WorkSurfaceContext => ResourceModel == null ? WorkSurfaceContext.Unknown : ResourceModel.ResourceType.ToWorkSurfaceContext();
+        public override WorkSurfaceContext WorkSurfaceContext => ResourceModel?.ResourceType.ToWorkSurfaceContext() ?? WorkSurfaceContext.Unknown;
 
         #region Overrides of ViewAware
 
@@ -2174,12 +1854,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Handle(EditActivityMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
-            EditActivity(message.ModelItem, message.ParentEnvironmentID, message.EnvironmentRepository);
+            EditActivity(message.ModelItem, message.ParentEnvironmentID);
         }
 
         #endregion
 
-        public void FireWdChanged()
+        private void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());
             GetWorkflowLink();
@@ -2189,7 +1869,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(SaveUnsavedWorkflowMessage message)
         {
-            if (message == null || message.ResourceModel == null || String.IsNullOrEmpty(message.ResourceName) || message.ResourceModel.ID != ResourceModel.ID)
+            if (message?.ResourceModel == null || string.IsNullOrEmpty(message.ResourceName) || message.ResourceModel.ID != ResourceModel.ID)
             {
                 return;
             }
@@ -2210,13 +1890,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
 
-        void PublishMessages(IContextualResourceModel resourceModel)
+        private void PublishMessages(IContextualResourceModel resourceModel)
         {
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 
-        static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
+        private static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;
             resourceModel.DisplayName = message.ResourceName;
@@ -2226,20 +1906,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.IsWorkflowSaved = true;
-        }
-
-        #endregion
-
-        #region Implementation of IHandle<SelectModelItemMessage>
-
-        public void Handle(SelectModelItemMessage message)
-        {
-            if (message.ModelItem != null)
-            {
-                Selection.Subscribe(_wd.Context, SelectedItemChanged);
-                Selection.SelectOnly(_wd.Context, message.ModelItem);
-                BringIntoView(message.ModelItem);
-            }
         }
 
         #endregion

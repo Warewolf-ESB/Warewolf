@@ -15,7 +15,6 @@ using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using System.Xml;
 using Dev2.Data.Interfaces;
@@ -28,6 +27,7 @@ using ICSharpCode.AvalonEdit.Indentation;
 using Infragistics.Controls.Grids;
 using Infragistics.Controls.Grids.Primitives;
 using Newtonsoft.Json;
+using Warewolf.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             InitializeComponent();
             SetUpTextEditor();
-            AddBlackOutEffect();
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
             _currentTab = InputTab.Grid;
         }
 
@@ -50,7 +50,7 @@ namespace Dev2.Studio.Views.Workflow
         private AbstractFoldingStrategy _foldingStrategy;
         private FoldingManager _foldingManager;
         DispatcherTimer _foldingUpdateTimer;
-        Grid _blackoutGrid;
+        readonly Grid _blackoutGrid = new Grid();
         InputTab _currentTab;
 
         private void SetUpTextEditor()
@@ -94,10 +94,7 @@ namespace Dev2.Studio.Views.Workflow
             {
                 var dli = tb.DataContext as IDataListItem;
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null)
-                {
-                    vm.AddRow(dli);
-                }
+                vm?.AddRow(dli);
             }
         }
 
@@ -216,10 +213,7 @@ namespace Dev2.Studio.Views.Workflow
             catch (Exception)
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null)
-                {
-                    vm.ShowInvalidDataPopupMessage();
-                }
+                vm?.ShowInvalidDataPopupMessage();
             }
             return _editor.Text;
         }
@@ -244,10 +238,7 @@ namespace Dev2.Studio.Views.Workflow
                 if(row != null)
                 {
                     var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
-                    if(intelbox != null)
-                    {
-                        intelbox.Focus();
-                    }
+                    intelbox?.Focus();
                 }
             }
             catch(Exception)
@@ -294,27 +285,21 @@ namespace Dev2.Studio.Views.Workflow
 
         void MoveToNextRow(WorkflowInputDataViewModel vm)
         {
-            if(vm != null)
+            var itemToSelect = vm?.GetNextRow(DataListInputs.ActiveItem as IDataListItem);
+            if(itemToSelect != null)
             {
-                var itemToSelect = vm.GetNextRow(DataListInputs.ActiveItem as IDataListItem);
-                if(itemToSelect != null)
-                {
-                    DataListInputs.ActiveItem = itemToSelect;
-                    FocusOnAddition();
-                }
+                DataListInputs.ActiveItem = itemToSelect;
+                FocusOnAddition();
             }
         }
 
         void MoveToPreviousRow(WorkflowInputDataViewModel vm)
         {
-            if(vm != null)
+            var itemToSelect = vm?.GetPreviousRow(DataListInputs.ActiveItem as IDataListItem);
+            if(itemToSelect != null)
             {
-                var itemToSelect = vm.GetPreviousRow(DataListInputs.ActiveItem as IDataListItem);
-                if(itemToSelect != null)
-                {
-                    DataListInputs.ActiveItem = itemToSelect;
-                    FocusOnAddition();
-                }
+                DataListInputs.ActiveItem = itemToSelect;
+                FocusOnAddition();
             }
         }
 
@@ -323,22 +308,16 @@ namespace Dev2.Studio.Views.Workflow
             UIElement keyboardFocus = Keyboard.FocusedElement as TextBox;
             if (e.KeyboardDevice.IsKeyDown(Key.LeftShift) && e.KeyboardDevice.IsKeyDown(Key.Tab))
             {
-                if (keyboardFocus != null)
-                {
-                    keyboardFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));                    
-                }
+                keyboardFocus?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Previous));
             }
             if (e.KeyboardDevice.IsKeyDown(Key.Tab))
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null)
+                var itemToSelect = vm?.GetNextRow(DataListInputs.ActiveItem as IDataListItem);
+                if (itemToSelect != null)
                 {
-                    var itemToSelect = vm.GetNextRow(DataListInputs.ActiveItem as IDataListItem);
-                    if (itemToSelect != null)
-                    {
-                        DataListInputs.ActiveItem = itemToSelect;
-                        FocusOnAddition();
-                    }
+                    DataListInputs.ActiveItem = itemToSelect;
+                    FocusOnAddition();
                 }
             }
         }
@@ -370,12 +349,8 @@ namespace Dev2.Studio.Views.Workflow
 
         static CellsPanel GetSelectedRow(XamGrid grid)
         {
-            if(grid.ActiveCell == null)
-            {
-                return null;
-            }
-            var row = grid.ActiveCell.Row;
-            return row.Control;
+            var row = grid.ActiveCell?.Row;
+            return row?.Control;
         }
 
         private void ExecuteClicked(object sender, RoutedEventArgs e)
@@ -432,31 +407,7 @@ namespace Dev2.Studio.Views.Workflow
 
         void WorkflowInputDataView_OnClosed(object sender, EventArgs e)
         {
-            RemoveBlackOutEffect();
-        }
-        void RemoveBlackOutEffect()
-        {
-            Application.Current.MainWindow.Effect = null;
-            var content = Application.Current.MainWindow.Content as Grid;
-            if (content != null)
-            {
-                content.Children.Remove(_blackoutGrid);
-            }
-        }
-        void AddBlackOutEffect()
-        {
-            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
-            var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid
-            {
-                Background = new SolidColorBrush(Colors.DarkGray),
-                Opacity = 0.5
-            };
-            if (content != null)
-            {
-                content.Children.Add(_blackoutGrid);
-            }
-            Application.Current.MainWindow.Effect = effect;
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
         void WorkflowInputDataView_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -490,16 +441,13 @@ namespace Dev2.Studio.Views.Workflow
 
         void DataListInputs_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if(DataListInputs != null)
+            if(DataListInputs?.Rows != null && DataListInputs.Rows.Count > 0)
             {
-                if(DataListInputs.Rows != null && DataListInputs.Rows.Count > 0)
+                var cellBaseCollection = DataListInputs.Rows[0].Cells;
+                if(cellBaseCollection != null)
                 {
-                    var cellBaseCollection = DataListInputs.Rows[0].Cells;
-                    if(cellBaseCollection != null)
-                    {
-                        var selectedCell = (Cell)cellBaseCollection[1];
-                        DataListInputs.ActiveCell = selectedCell;
-                    }
+                    var selectedCell = (Cell)cellBaseCollection[1];
+                    DataListInputs.ActiveCell = selectedCell;
                 }
             }
             FocusOnAddition();

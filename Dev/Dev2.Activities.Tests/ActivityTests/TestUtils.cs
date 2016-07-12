@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -30,12 +28,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AuthenticationType = AuthenticationType.Anonymous,
                 Address = ExampleUri
             };
-        }
-
-        public static  string ToCleanString(this string value)
-        {
-            var cleanString = new StringBuilder(value).Replace(Environment.NewLine, "\n").Replace("\r", "\n");
-            return cleanString.ToString();
         }
     }
 }

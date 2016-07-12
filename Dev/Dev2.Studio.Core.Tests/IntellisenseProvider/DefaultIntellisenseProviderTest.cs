@@ -1137,9 +1137,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             dataListViewModel.WriteToResourceModel();
             DataListSingleton.SetDataList(dataListViewModel);
         }
-
-
-
+        
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -1154,7 +1152,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
 
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            var defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            var getResults = defaultIntellisenseProvider.GetIntellisenseResults(context);
 
             Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));

@@ -397,5 +397,6 @@ namespace Warewolf.Studio.ServerProxyLayer
 
             return serializer.Deserialize<IList<IWcfAction>>(payload.Message);
         }
+
     }
 }

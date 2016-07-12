@@ -2356,6 +2356,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature..
+        /// </summary>
+        public static string Error_Opening_Windows_Group_Picker {
+            get {
+                return ResourceManager.GetString("Error_Opening_Windows_Group_Picker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email to respond to.
         /// </summary>
         public static string ExceptionViewEmailAddressWatermark {
@@ -4750,6 +4759,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Folder.
+        /// </summary>
+        public static string NewFolderLabel {
+            get {
+                return ResourceManager.GetString("NewFolderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New RabbitMQ Source.
         /// </summary>
         public static string NewRabbitMQSourceHelp {
@@ -5830,11 +5848,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name can not be blank.
+        /// </summary>
+        public static string SchedulerBlankNameErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerBlankNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a workflow to schedule.
+        /// </summary>
+        public static string SchedulerBlankWorkflowNameErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerBlankWorkflowNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scheduler Task has changes.
         /// </summary>
         public static string SchedulerChangesHeader {
             get {
                 return ResourceManager.GetString("SchedulerChangesHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to schedule on this server. You need Administrator permission..
+        /// </summary>
+        public static string SchedulerConnectionError {
+            get {
+                return ResourceManager.GetString("SchedulerConnectionError", resourceCulture);
             }
         }
         
@@ -5857,11 +5902,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is already a task with the same name.
+        /// </summary>
+        public static string SchedulerDuplicateNameErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerDuplicateNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Logon failure: unknown user name or bad password.
+        /// </summary>
+        public static string SchedulerLoginErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerLoginErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new scheduled task.
         /// </summary>
         public static string SchedulerNewScheduleTooltipTrigger {
             get {
                 return ResourceManager.GetString("SchedulerNewScheduleTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Task.
+        /// </summary>
+        public static string SchedulerNewTaskName {
+            get {
+                return ResourceManager.GetString("SchedulerNewTaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Server unreachable..
+        /// </summary>
+        public static string SchedulerNotConnectedErrorMessage {
+            get {
+                return ResourceManager.GetString("SchedulerNotConnectedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving:.
+        /// </summary>
+        public static string SchedulerSaveErrorPrefix {
+            get {
+                return ResourceManager.GetString("SchedulerSaveErrorPrefix", resourceCulture);
             }
         }
         
@@ -6321,6 +6411,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerTestConnectionHelp {
             get {
                 return ResourceManager.GetString("ServerTestConnectionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source was not found. This service will not execute..
+        /// </summary>
+        public static string ServiceDesignerSourceNotFound {
+            get {
+                return ResourceManager.GetString("ServiceDesignerSourceNotFound", resourceCulture);
             }
         }
         

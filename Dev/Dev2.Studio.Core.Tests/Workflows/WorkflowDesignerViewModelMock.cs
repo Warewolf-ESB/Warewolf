@@ -14,6 +14,7 @@ using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -31,13 +32,13 @@ namespace Dev2.Core.Tests.Workflows
     {
         readonly Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
 
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper,IExternalProcessExecutor processExecutor, bool createDesigner = false)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IExternalProcessExecutor processExecutor, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
-                new SynchronousAsyncWorker(),processExecutor,
-                createDesigner,false)
+                new SynchronousAsyncWorker(), processExecutor,
+                createDesigner, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -47,17 +48,17 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(),new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
+                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
         }
 
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IExternalProcessExecutor processExecutor ,bool createDesigner = false)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IExternalProcessExecutor processExecutor, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, new SynchronousAsyncWorker(),processExecutor, createDesigner, false)
+                popupController, new SynchronousAsyncWorker(), processExecutor, createDesigner, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -70,6 +71,11 @@ namespace Dev2.Core.Tests.Workflows
         public void SetActiveEnvironment(IEnvironmentModel environmentModel)
         {
             ActiveEnvironment = environmentModel;
+        }
+
+        public IEnvironmentModel GetActiveEnvironment()
+        {
+            return ActiveEnvironment;
         }
 
         public void SetIsDesignerViewVisible(bool isVisible)
@@ -94,7 +100,6 @@ namespace Dev2.Core.Tests.Workflows
             WdOnModelChanged(new object(), new EventArgs());
         }
 
-
         public void TestWorkflowDesignerModelChangedWithNullSender()
         {
             WdOnModelChanged(null, new EventArgs());
@@ -109,6 +114,16 @@ namespace Dev2.Core.Tests.Workflows
         public void SetDataObject(dynamic dataobject)
         {
             DataObject = dataobject;
+        }
+
+        public bool SetApplyForDrop(IDataObject dataObject)
+        {
+            return ApplyForDrop(dataObject);
+        }
+
+        public void SetupGetWorkflowFieldsFromFlowNodes(IEnumerable<ModelItem> flowNodes)
+        {
+            GetWorkflowFieldsFromFlowNodes(flowNodes);
         }
 
         public void SetupRequestExapandAll()
@@ -149,9 +164,7 @@ namespace Dev2.Core.Tests.Workflows
             return base.GetSelectedModelItem(itemId, parentId);
         }
 
-
         public int BringIntoViewHitCount { get; private set; }
-
 
         protected override void BringIntoView(ModelItem selectedModelItem)
         {

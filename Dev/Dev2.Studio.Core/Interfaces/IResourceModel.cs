@@ -38,10 +38,8 @@ namespace Dev2.Studio.Core.Interfaces
         string Error { get; }
         bool HasErrors { get; }
         string HelpLink { get; set; }
-        string IconPath { get; set; }
         bool IsDebugMode { get; set; }
         bool IsVersionResource { get; set; }
-        bool RequiresSignOff { get; set; }
         string ResourceName { get; set; }
         ResourceType ResourceType { get; set; }
         StringBuilder WorkflowXaml { get; set; }

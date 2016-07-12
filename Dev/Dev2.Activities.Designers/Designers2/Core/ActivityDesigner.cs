@@ -129,7 +129,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     return;
                 }
-                if (ViewModel.IsSelected)
+                if (ViewModel!=null && ViewModel.IsSelected)
                 {
                     ShowCollapseLargeView();
                     eventArgs.Handled = true;

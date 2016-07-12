@@ -12,30 +12,23 @@ using System;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Exceptions
 {
     public class Dev2DataLanguageParseError : Exception, IDev2DataLangaugeParseError
     {
-
-        private readonly int _startIdx;
-        private readonly int _endIdx;
-        private readonly enIntellisenseErrorCode _errCode;
-
         public Dev2DataLanguageParseError(string msg, int startIdx, int endIdx, enIntellisenseErrorCode code)
             : base(msg)
         {
-            _startIdx = startIdx;
-            _endIdx = endIdx;
-            _errCode = code;
+            StartIndex = startIdx;
+            EndIndex = endIdx;
+            ErrorCode = code;
         }
 
-        public int StartIndex => _startIdx;
+        public int StartIndex { get; }
 
-        public int EndIndex => _endIdx;
+        public int EndIndex { get; }
 
-        public string Error => Message;
-
-        public enIntellisenseErrorCode ErrorCode => _errCode;
+        public enIntellisenseErrorCode ErrorCode { get; }
     }
 }
 

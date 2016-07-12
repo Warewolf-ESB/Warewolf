@@ -9,9 +9,10 @@ using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -25,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var agg = new Mock<IEventAggregator>();
-            var dropBoxUploadViewModel = new DropBoxUploadViewModel(CreateModelItem(), agg.Object, dropBoxSourceManager.Object);
+            var dropBoxUploadViewModel = new DropBoxUploadViewModel(CreateModelItem(), dropBoxSourceManager.Object);
             return dropBoxUploadViewModel;
         }
 
@@ -42,10 +43,29 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             //------------Setup for test--------------------------
             var dropBoxUploadViewModel = CreateMockViewModel();
+            dropBoxUploadViewModel.Validate();
             //------------Execute Test---------------------------
             Assert.IsNotNull(dropBoxUploadViewModel);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxUploadViewModel, typeof(ActivityDesignerViewModel));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DropBoxUploadViewModel_Handle")]
+        public void DropBoxUploadViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateMockViewModel();
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
 
@@ -149,7 +169,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
-            var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
+            var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             dropBoxUploadViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -164,13 +184,16 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
-          
+            CustomContainer.DeRegister<IShellViewModel>();
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()));
+            CustomContainer.Register(shellViewModelMock.Object);
             //------------Setup for test--------------------------
-            var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
-            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
+            var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             //------------Execute Test---------------------------
+            dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Assert Results-------------------------
-            agg.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
+            shellViewModelMock.Verify(viewModel => viewModel.NewDropboxSource(It.IsAny<string>()), Times.Once);
             CustomContainer.DeRegister<IShellViewModel>();
         }
 
@@ -183,7 +206,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var sources = GetSources();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var dropBoxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var dropBoxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
             Assert.IsFalse(dropBoxUploadViewModel.IsDropboxSourceSelected);
             dropBoxUploadViewModel.SelectedSource = sources[1] as DropBoxSource;
             Assert.IsTrue(dropBoxUploadViewModel.IsDropboxSourceSelected);
@@ -199,7 +222,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var boxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
             Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
             boxUploadViewModel.SelectedSource =new DropBoxSource();
             Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
@@ -213,7 +236,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.AddMode = true;
@@ -235,7 +258,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.OverWriteMode = true;
@@ -257,7 +280,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.FromPath = "A";
@@ -279,7 +302,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
@@ -301,7 +324,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel =new DropBoxUploadViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
+            var boxUploadViewModel =new DropBoxUploadViewModel(model, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
@@ -329,7 +352,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
                 new DropBoxSource(), new DropBoxSource()
             });
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxUploadViewModel(model, agg.Object, mock.Object);
+            var mockVM = new DropBoxUploadViewModel(model, mock.Object);
             //---------------Assert Precondition----------------
             mockVM.Sources.Clear();
             var count = mockVM.Sources.Count();

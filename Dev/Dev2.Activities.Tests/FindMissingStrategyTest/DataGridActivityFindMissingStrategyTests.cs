@@ -292,6 +292,32 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_PostgreSQL_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
+            IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new DsfPostgreSqlActivity();
+            activity.Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") };
+            activity.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") };
+            activity.OnErrorVariable = "[[err]]";
+            activity.OnErrorWorkflow = "[[errSvc]]";
+            //------------Execute Test---------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7, fields.Count);
+            Assert.IsTrue(fields.Contains("[[InputValue1]]"));
+            Assert.IsTrue(fields.Contains("[[InputValue2]]"));
+            Assert.IsTrue(fields.Contains("[[InputValue3]]"));
+            Assert.IsTrue(fields.Contains("[[rec().OutputValue1]]"));
+            Assert.IsTrue(fields.Contains("[[rec().OutputValue2]]"));
+            Assert.IsTrue(fields.Contains("[[err]]"));
+            Assert.IsTrue(fields.Contains("[[errSvc]]"));
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
         public void DataGridActivityFindMissingStrategy_GetActivityFields_ODBC_ShouldReturnResults()

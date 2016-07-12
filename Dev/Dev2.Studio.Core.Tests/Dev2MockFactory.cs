@@ -14,11 +14,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
-using Dev2.CustomControls.Connections;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
@@ -71,8 +68,7 @@ namespace Dev2.Core.Tests
                     var versionChecker = new Mock<IVersionChecker>();
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
                     _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
-                                                                 versionChecker.Object, false, null, null, null, null, new Mock<IStudioResourceRepository>().Object,
-                                                                 new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
+                                                                 versionChecker.Object, false, null, null, null, null);
                 }
                 return _mockMainViewModel;
             }
@@ -184,7 +180,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
-            mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
@@ -200,7 +195,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
-            mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
@@ -218,7 +212,6 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Category\\Testing");
-            mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
 

@@ -216,7 +216,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreNotSame(value, newSelectedConnection.Object);
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(_serverEnvironmentId));
-            mainViewModelMock.Verify(it => it.NewResource("ServerSource", ""));
+            mainViewModelMock.Verify(it => it.NewServerSource(It.IsAny<string>()));
             Assert.IsFalse(_target.IsConnected);
             Assert.IsFalse(_target.AllowConnection);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));

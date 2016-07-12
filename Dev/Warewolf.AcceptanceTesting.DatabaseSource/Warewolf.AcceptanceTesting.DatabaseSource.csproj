@@ -84,33 +84,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="New Database Source.feature.cs">
-      <DependentUpon>New Database Source.feature</DependentUpon>
+    <Compile Include="New Database Source1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="NewDatabaseSourceSteps.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <Compile Include="PostgresSqlSource\NewPostgresDatabaseSourceSteps.cs" />
-    <Compile Include="PostgresSqlSource\PostgresSqlSource1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PostgresSqlSource.feature</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="New Database Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
+      <LastGenOutput>New Database Source1.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="PostgresSqlSource\PostgresSqlSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostgresSqlSource1.feature.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -166,7 +156,7 @@
     </When>
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

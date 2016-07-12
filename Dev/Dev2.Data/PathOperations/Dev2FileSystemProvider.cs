@@ -250,9 +250,9 @@ namespace Dev2.PathOperations
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //File is not found problem during delete
+                Dev2Logger.Error("Error getting file: "+src.Path,ex);
                 result = false;
             }
             return result;

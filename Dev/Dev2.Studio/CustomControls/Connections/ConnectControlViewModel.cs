@@ -39,7 +39,6 @@ namespace Dev2.CustomControls.Connections
         string _labelText;
         readonly bool _bindToActiveEnvironment;
         int _selectedServerIndex;
-        readonly Dispatcher _dispatcher;
         IConnectControlEnvironment _selectedServer;
         readonly IMainViewModel _mainViewModel;
         readonly IEnvironmentRepository _environmentRepository;
@@ -89,7 +88,6 @@ namespace Dev2.CustomControls.Connections
             _activeAction = ActiveAction;
             if(Application.Current != null)
             {
-                _dispatcher = Application.Current.Dispatcher;
             }
 
             IsEnabled = true;
@@ -296,14 +294,12 @@ namespace Dev2.CustomControls.Connections
 
                 if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
                 {
-                    // ADD OPTION TO CREATE NEW SERVER
-                    _mainViewModel.NewResourceCommand.Execute("Server");
+                    _mainViewModel.NewServerSourceCommand.Execute(string.Empty);
                 }
                 else
                 {
                     SelectedServer = selectedServer;
                     var environmentModel = EnvironmentRepository.Instance.Get(selectedServer.EnvironmentModel.ID);
-                    //_callbackHandler(selectedServer.EnvironmentModel);
                     _callbackHandler(environmentModel);
                 }
                 OnPropertyChanged();
@@ -392,8 +388,8 @@ namespace Dev2.CustomControls.Connections
         void GetServerToEdit(object param)
         {
 
-            var path = SelectedServer.EnvironmentModel.Category??"";
-            _mainViewModel.EditServer(new ServerSource()
+            var path = SelectedServer.EnvironmentModel.Category??string.Empty;
+            _mainViewModel.EditServer(new ServerSource
             {
                 Address = SelectedServer.EnvironmentModel.Connection.AppServerUri.ToString(), 
                 ID = SelectedServer.EnvironmentModel.ID, 
@@ -415,10 +411,7 @@ namespace Dev2.CustomControls.Connections
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion INotifyPropertyChanged
