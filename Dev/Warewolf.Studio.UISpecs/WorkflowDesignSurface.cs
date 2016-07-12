@@ -134,8 +134,8 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Click_MessageBox_Yes();
             Uimap.Assert_MessageBox_Does_Not_Exist();
 
-            //Action Unit: Clearing and refreshing the explorer filter removes SomeWorkflow from the explorer tree
-            Uimap.Click_Explorer_Filter_Clear_Button();
+            //Action Unit: Entering 'SomeWorkflow' and refreshing the explorer filter removes SomeWorkflow from the explorer tree
+            Uimap.Enter_SomeWorkflow_Into_Explorer_Filter();
             Uimap.Click_Explorer_Refresh_Button();
             Uimap.Assert_Explorer_Localhost_First_Item_Does_Not_Exist();
         }
