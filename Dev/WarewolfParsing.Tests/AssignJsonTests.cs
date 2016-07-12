@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable UnusedVariable
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable PossibleNullReferenceException
@@ -428,9 +429,8 @@ namespace WarewolfParsingTest
         public void AssignEvaluation_IndexToInt_LastReturnsCountPlusOne()
         {
             //------------Setup for test--------------------------
-            var arr = new JArray();
-            arr.Add(new JValue("bob"));
-            
+            var arr = new JArray { new JValue("bob") };
+
             //------------Execute Test---------------------------
             var res = AssignEvaluation.indexToInt(LanguageAST.Index.Last, arr);
             //------------Assert Results-------------------------
@@ -444,8 +444,7 @@ namespace WarewolfParsingTest
         public void AssignEvaluation_IndexToInt_IntIndexReturnsInt()
         {
             //------------Setup for test--------------------------
-            var arr = new JArray();
-            arr.Add(new JValue("bob"));
+            var arr = new JArray { new JValue("bob") };
 
             //------------Execute Test---------------------------
             var res = AssignEvaluation.indexToInt(LanguageAST.Index.NewIntIndex(1), arr);
@@ -460,9 +459,7 @@ namespace WarewolfParsingTest
         public void AssignEvaluation_IndexToInt_StarIndexReturnsAllIndexes()
         {
             //------------Setup for test--------------------------
-            var arr = new JArray();
-            arr.Add(new JValue("bob"));
-            arr.Add(new JValue("bob"));
+            var arr = new JArray { new JValue("bob"), new JValue("bob") };
 
             //------------Execute Test---------------------------
             var res = AssignEvaluation.indexToInt(LanguageAST.Index.Star, arr);

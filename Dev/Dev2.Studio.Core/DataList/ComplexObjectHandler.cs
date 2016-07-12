@@ -125,11 +125,11 @@ namespace Dev2.Studio.Core.DataList
             foreach (var property in properties)
             {
                 var displayname = property.Name;
-                displayname = property.IsEnumerable() ? displayname + "()" : displayname;
+                displayname = JPropertyExtensionMethods.IsEnumerable(property) ? displayname + "()" : displayname;
                 var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
                 if (childObj == null)
                 {
-                    childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = property.IsEnumerable() };
+                    childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
                     parentObj.Children.Add(childObj);
                 }
                 if (property.Value.IsObject())
