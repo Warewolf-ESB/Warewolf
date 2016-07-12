@@ -205,8 +205,6 @@
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
     <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
-    <Compile Include="Interfaces\IFrameworkDuplexCallbackChannel.cs" />
-    <Compile Include="Interfaces\IFrameworkDuplexDataChannel.cs" />
     <Compile Include="Isolated.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackMessage.cs" />

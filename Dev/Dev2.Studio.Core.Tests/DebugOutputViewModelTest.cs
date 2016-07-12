@@ -57,16 +57,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DebugOutputViewModel_OpenNullLineItemDoesntStartProcess()
-        {
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
-                new Mock<IDebugOutputFilterStrategy>().Object);
-            vm.OpenMoreLink(null);
-            var privateObject = new PrivateObject(vm);
-            Assert.IsNull(privateObject.GetProperty("ProcessController"));
-        }
-
-        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void DebugOutputViewModel_DefaultPropertyStates()
         {
@@ -98,59 +88,6 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(default(int), vm.DepthMin);
             Assert.AreEqual(default(int), vm.DepthMax);
-        }
-
-        [TestMethod]
-        public void DebugOutputViewModel_OpenEmptyMoreLinkDoesntStartProcess()
-        {
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
-                new Mock<IDebugOutputFilterStrategy>().Object);
-
-            var lineItem = new Mock<IDebugLineItem>();
-            lineItem.SetupGet(l => l.MoreLink).Returns("");
-
-            vm.OpenMoreLink(lineItem.Object);
-            vm.ShowDebugStatus = false;
-            vm.ShowServer = false;
-            var privateObject = new PrivateObject(vm);
-            Assert.IsNull(privateObject.GetProperty("ProcessController"));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void DebugOutputViewModel_OpenMoreLinkStartsProcess()
-        {
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
-                new Mock<IDebugOutputFilterStrategy>().Object);
-            var lineItem = new Mock<IDebugLineItem>();
-            lineItem.SetupGet(l => l.MoreLink).Returns("Some string");
-
-            vm.OpenMoreLink(lineItem.Object);
-            vm.ShowDebugStatus = true;
-            vm.ShowTime = false;
-            var privateObject = new PrivateObject(vm);            
-            Assert.IsNotNull(privateObject.GetProperty("ProcessController"));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void DebugOutputViewModel_UpdateHelpDescriptor()
-        {
-            var someTestingString = "Some testing string";
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
-                new Mock<IDebugOutputFilterStrategy>().Object);
-            var lineItem = new Mock<IDebugLineItem>();
-            lineItem.SetupGet(l => l.MoreLink).Returns("Something");
-
-            var mainViewModel = new Mock<IMainViewModel>();
-            var mockHelpWindowViewModel = new Mock<IHelpWindowViewModel>();
-            mockHelpWindowViewModel.Setup(model => model.UpdateHelpText(someTestingString));
-            mainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpWindowViewModel.Object);
-            vm.ShowOutputs = false;
-            vm.ShowOptions = true;
-            CustomContainer.Register(mainViewModel.Object);
-            vm.UpdateHelpDescriptor(someTestingString);
-            mockHelpWindowViewModel.Verify(model => model.UpdateHelpText(someTestingString));
         }
         
 
