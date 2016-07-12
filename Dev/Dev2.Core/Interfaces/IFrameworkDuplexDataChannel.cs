@@ -10,7 +10,7 @@
 
 using System.ServiceModel;
 
-namespace Dev2
+namespace Dev2.Interfaces
 {
     [ServiceContract(CallbackContract = typeof (IFrameworkDuplexCallbackChannel))]
     public interface IFrameworkDuplexDataChannel

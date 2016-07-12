@@ -17,6 +17,7 @@ using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
+using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;

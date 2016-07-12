@@ -12,6 +12,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Data.Util;
+using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

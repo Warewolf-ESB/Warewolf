@@ -16,6 +16,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
