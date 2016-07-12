@@ -9,7 +9,6 @@
 */
 
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -22,14 +21,12 @@ namespace Dev2.Core.Tests
     public sealed class MainViewModelPersistenceMock : MainViewModel
     {
         public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository, bool createDesigners = true)
-            : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, environmentRepository, new VersionChecker(), createDesigners,
-            studioResourceRepository: new Mock<IStudioResourceRepository>().Object)
+            : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, environmentRepository, new VersionChecker(), createDesigners)
         {
         }  
         
         public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
-            : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners,
-            studioResourceRepository: new Mock<IStudioResourceRepository>().Object)
+            : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners)
         {
           
         }

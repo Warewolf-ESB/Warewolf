@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Studio.Core.AppResources.Attributes;
 using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
@@ -21,21 +20,14 @@ namespace Dev2.Studio.Core.AppResources.Enums
         Service,
         SourceManager,
 
-        [IconLocation("pack://application:,,,/images/TaskScheduler-32.png")]
         [Description("Scheduler")]
         Scheduler,
 
-        [IconLocation("pack://application:,,,/images/Settings-32.png")]
         [Description("Settings")]
         Settings,
 
-        [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Dependency Visualiser")]
         DependencyVisualiser,
-
-        [IconLocation("pack://application:,,,/images/HelpLanguage-32.png")]
-        [Description("Language Help")]
-        LanguageHelp,
 
         [Description("Deploy")]
         DeployViewer,
@@ -43,20 +35,14 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Start Page")]
         StartPage,
 
-        [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
-        [Description("Reverse Dependency Visualiser")]
-        ReverseDependencyVisualiser,
-
         Help,
 
         EmailSource,
         ServerSource,
         DbSource,
-        DbService,
+        OAuthSource,
         WebSource,
-        WebService,
         PluginSource,
-        PluginService,
         SharepointServerSource,
         Exchange,
         // ReSharper disable once InconsistentNaming

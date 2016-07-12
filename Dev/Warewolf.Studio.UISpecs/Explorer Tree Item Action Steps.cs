@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
@@ -32,11 +33,35 @@ namespace Warewolf.Studio.UISpecs
             Mouse.DoubleClick(getTreeItem, new Point(40, 12));
         }
 
+        [When(@"I scroll down in the explorer tree")]
+        public void WhenIScrollDownInTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -2);
+        }
+
+        [When(@"I scroll to the bottom of the explorer tree")]
+        public void WhenIScrollToTheBottomOfTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, -999);
+        }
+
+        [When(@"I scroll up in the explorer tree")]
+        public void WhenIScrollUpInTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 2);
+        }
+
+        [When(@"I scroll to the top of the explorer tree")]
+        public void WhenIScrollToTheTopOfTheExplorerTree()
+        {
+            Mouse.MoveScrollWheel(Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree, 999);
+        }
+
         [When(@"I right click ""(.*)"" in the explorer tree")]
         public void WhenIRightClickTheItemInTheExplorerTree(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
-            Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(40, 12));
+            Mouse.Click(getTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(80, 12));
         }
 
         [When(@"I expand ""(.*)"" in the explorer tree")]
@@ -50,7 +75,7 @@ namespace Warewolf.Studio.UISpecs
         public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string path)
         {
             UITestControl getTreeItem = GetTreeItemFromPath(path);
-            UITestControl getWorkflowdesigner = Uimap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            UITestControl getWorkflowdesigner = Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             Mouse.StartDragging(getTreeItem);
             Mouse.StopDragging(getWorkflowdesigner, new Point(305, 137));
         }
@@ -64,13 +89,21 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(getToTreeItem, new Point(140, 3));
         }
 
-        //[Given("""(.*)"" exists in the explorer tree")]
-        //[Then("""(.*)"" exists in the explorer tree")]
-        //public void AssertExistsInTheDropdownList(string ListItem)
-        //{
-        //    UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
-        //    Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
-        //}
+        [Given(@"""(.*)"" exists in the explorer tree")]
+        [Then(@"""(.*)"" exists in the explorer tree")]
+        public void AssertExistsInExplorerTree(string ListItem)
+        {
+            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree. The explorer tree has virtualized children so it must be scolled into view.");
+        }
+
+        [Given(@"""(.*)"" does not exist in the explorer tree")]
+        [Then(@"""(.*)"" does not exist in the explorer tree")]
+        public void AssertDoesNotExistInExplorerTree(string ListItem)
+        {
+            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+            Assert.IsNull(getFromTreeItem, ListItem + " does exist in the explorer tree. The explorer tree has virtualized children so it must be scolled into view.");
+        }
 
         [Given(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
         [Then(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
@@ -86,22 +119,53 @@ namespace Warewolf.Studio.UISpecs
             Assert.IsTrue(GetExecuteButton(path).Exists, "Execute button does not exist for " + path);
         }
 
+//      private UITestControl GetTreeItemFromPath(string path)
+//      {
+//          var pathAsArray = path.Split('\\');
+//          UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
+//          foreach (var folder in pathAsArray)
+//          {
+//              var getNextChildren = CurrentTreeItem.GetChildren();
+//              var getNextTreeItemChildren = getNextChildren.Where(control => control.ControlType == ControlType.TreeItem);
+//              CurrentTreeItem = getNextTreeItemChildren.FirstOrDefault(treeitem =>
+//              {
+//                  var GetNameFromLabel = treeitem.GetChildren();
+//                  var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
+//                  return label.DisplayText == folder;
+//              });
+//          }
+//          return CurrentTreeItem;
+//      }
+
+//      Workaround for virtualized treeitems being indistinguishable from each other (because they lose their textbox children)
         private UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
-            UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
-            foreach (var folder in pathAsArray)
+            UITestControl FoundTreeItem = null;
+            var endNode = pathAsArray[pathAsArray.Length - 1];
+            var treeItemChildren = Uimap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.GetChildren().Where(item => { return item.ControlType == ControlType.TreeItem; });
+            var treeItem = treeItemChildren.GetEnumerator();
+            while (FoundTreeItem == null && treeItem.MoveNext())
             {
-                var getNextChildren = CurrentTreeItem.GetChildren();
-                var getNextTreeItemChildren = getNextChildren.Where(control => control.ControlType == ControlType.TreeItem);
-                CurrentTreeItem = getNextTreeItemChildren.FirstOrDefault(treeitem =>
+                if(treeItem.Current != null)
                 {
-                    var GetNameFromLabel = treeitem.GetChildren();
-                    var label = (GetNameFromLabel.FirstOrDefault(control => control.ControlType == ControlType.Text) as WpfText);
-                    return label.DisplayText == folder;
-                });
+                    FoundTreeItem = treeItem.Current.GetChildren().FirstOrDefault(treeitem =>
+                    {
+                        var ChildTextbox = treeitem.GetChildren().FirstOrDefault(control => control.ControlType == ControlType.Text);
+                        if(ChildTextbox != null)
+                        {
+                            var FirstChildTextbox = (ChildTextbox as WpfText);
+                            if (FirstChildTextbox != null)
+                            {
+                                var displayText = FirstChildTextbox != null ? FirstChildTextbox.DisplayText : string.Empty;
+                                return FirstChildTextbox != null && displayText == endNode;
+                            }
+                        }
+                        return false;
+                    });
+                }
             }
-            return CurrentTreeItem;
+            return FoundTreeItem;
         }
 
         private UITestControl GetExpansionIndicator(string treeItemPath)

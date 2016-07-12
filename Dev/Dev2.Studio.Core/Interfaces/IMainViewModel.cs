@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Security;
 using Dev2.Studio.Core.Interfaces;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Interfaces
 {
@@ -22,14 +23,11 @@ namespace Dev2.Interfaces
     {
         ICommand DeployCommand { get; }
         ICommand ExitCommand { get; }
-        AuthorizeCommand<string> NewResourceCommand { get; }
         IEnvironmentModel ActiveEnvironment { get; set; }
         IContextualResourceModel DeployResource { get; set; }
         void SetActiveEnvironment(IEnvironmentModel activeEnvironment);
         bool IsWorkFlowOpened(IContextualResourceModel resource);
         void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath);
-        void ClearToolboxSelection();
-        void UpdatePane(IContextualResourceModel model);
 
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
 
@@ -42,6 +40,17 @@ namespace Dev2.Interfaces
         IToolboxViewModel ToolboxViewModel { get; }
         IHelpWindowViewModel HelpViewModel { get; }
         ICommand ShowStartPageCommand { get; }
+        AuthorizeCommand<string> NewServiceCommand { get; }
+        AuthorizeCommand<string> NewPluginSourceCommand { get; }
+        AuthorizeCommand<string> NewDatabaseSourceCommand { get; }
+        AuthorizeCommand<string> NewWebSourceCommand { get; }
+        AuthorizeCommand<string> NewServerSourceCommand { get; }
+        AuthorizeCommand<string> NewEmailSourceCommand { get; }
+        AuthorizeCommand<string> NewExchangeSourceCommand { get; }
+        AuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
+        AuthorizeCommand<string> NewSharepointSourceCommand { get; }
+        AuthorizeCommand<string> NewDropboxSourceCommand { get; }
+        AuthorizeCommand<string> NewWcfSourceCommand { get; }
 
         void EditServer(IServerSource serverSource);
         void ShowAboutBox();

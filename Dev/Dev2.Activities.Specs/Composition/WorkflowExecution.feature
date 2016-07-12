@@ -34,65 +34,6 @@ Scenario: Workflow with multiple tools executing against the server
 	  |               |
 	  | [[count]] = 2 |
 
-Scenario: Simple workflow executing against the server with a database service
-	 Given I have a workflow "TestWorkflowWithDBService"
-	 And "TestWorkflowWithDBService" contains a "sqlserver database" service "Fetch" with mappings
-	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  |                  |               | dbo_proc_SmallFetch(*).Value | [[dbo_proc_SmallFetch().Value]] |
-	 And "TestWorkflowWithDBService" contains Count Record "Count" on "[[dbo_proc_SmallFetch()]]" into "[[count]]"
-	  When "TestWorkflowWithDBService" is executed
-	  Then the workflow execution has "NO" error
-	  And the "Fetch" in WorkFlow "TestWorkflowWithDBService" debug inputs as
-	  |  |
-	  |  |
-	  And the "Fetch" in Workflow "TestWorkflowWithDBService" debug outputs as
-	  |                      |
-	  | [[dbo_proc_SmallFetch(9).Value]] = 5 |
-	  And the "Count" in WorkFlow "TestWorkflowWithDBService" debug inputs as
-	  | Recordset                            |
-	  | [[dbo_proc_SmallFetch(1).Value]] = 1 |
-	  | [[dbo_proc_SmallFetch(2).Value]] = 2 |
-	  | [[dbo_proc_SmallFetch(3).Value]] = 1 |
-	  | [[dbo_proc_SmallFetch(4).Value]] = 2 |
-	  | [[dbo_proc_SmallFetch(5).Value]] = 1 |
-	  | [[dbo_proc_SmallFetch(6).Value]] = 2 |
-	  | [[dbo_proc_SmallFetch(7).Value]] = 1 |
-	  | [[dbo_proc_SmallFetch(8).Value]] = 2 |
-	  | [[dbo_proc_SmallFetch(9).Value]] = 5 |
-	 And the "Count" in Workflow "TestWorkflowWithDBService" debug outputs as    
-	 |               |
-	 | [[count]] = 9 |
-
-Scenario: Workflow with an assign and webservice
-	 Given I have a workflow "WorkflowWithWebService"
-	 And "WorkflowWithWebService" contains an Assign "Inputs" as
-	  | variable      | value |
-	  | [[extension]] | json  |
-	  | [[prefix]]    | a     |
-	 And "WorkflowWithWebService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
-	  | Input to Service | From Variable | Output from Service      | To Variable                 |
-	  | extension        | [[extension]] | Countries(*).CountryID   | [[Countries().CountryID]]   |
-	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
-	  When "WorkflowWithWebService" is executed
-	  Then the workflow execution has "NO" error
-	   And the "Inputs" in WorkFlow "WorkflowWithWebService" debug inputs as
-	  | # | Variable        | New Value |
-	  | 1 | [[extension]] = | json      |
-	  | 2 | [[prefix]] =    | a         |
-	  And the "Inputs" in Workflow "WorkflowWithWebService" debug outputs as    
-	  | # |                      |
-	  | 1 | [[extension]] = json |
-	  | 2 | [[prefix]] = a       |
-	   And the "InternalCountriesServiceTest" in WorkFlow "WorkflowWithWebService" debug inputs as
-	  | #            |                                                  |
-	  | URL          | "" = http://rsaklfsvrtfsbld/IntegrationTestSite/ |
-	  | Query String | "" = GetCountries.ashx?extension=json&prefix=a   |
-	  | Headers      |                                                  |
-	  And the "InternalCountriesServiceTest" in Workflow "WorkflowWithWebService" debug outputs as
-	  |                                            |
-	  | [[Countries(10).CountryID]] = 10           |
-	  | [[Countries(10).Description]] = Azerbaijan |
-
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteWF"
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
@@ -2450,6 +2391,7 @@ Scenario: Workflow Saving with Different Versions
 	  | v.3 DateTime Save   |
 	  | v.2 DateTime Save   |
 	  | v.1 DateTime Save   |
+	  And workflow "WorkflowWithVersionAssignTest" is deleted as cleanup
 
 Scenario: Executing workflow of different versions
 	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
@@ -2498,13 +2440,14 @@ Scenario: Executing workflow of different versions
 	  | v.3 DateTime        |
 	  | v.2 DateTime        |
 	  | v.1 DateTime        |	
-	  When I rollback "WorkflowWithVersionAssignExecuted" to version "1"
+	  When I rollback "WorkflowWithVersionAssignExecuted2" to version "1"
 	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
 	  Then the workflow execution has "NO" error
 	  And the "VarsAssign" in Workflow "WorkflowWithVersionAssignExecuted2" debug outputs as    
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = New  |
 	  | 2 | [[rec(2).a]] = Test |
+	  And workflow "WorkflowWithVersionAssignExecuted2" is deleted as cleanup
 
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn"t been assigned
 	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
@@ -2714,12 +2657,16 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the "Create12" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug inputs as
 	  | File or Folder | Overwrite | Username | Password |
+	  | [[NoValue]] =  | True      |   ""       |    ""      |
 	   And the "Create12" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug outputs as    
 	   |                    |
+	   | [[res1]] = Failure |
 	  And the "DeleteFolder1" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug inputs as
-	  | Input Path    | Username | Password |
+	  | Input Path  | Username | Password |
+	  | [[NoValue]] = |   ""       |   ""       |
 	  And the "DeleteFolder1" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues" debug outputs as    
 	  |                    |
+	  | [[res2]] = Failure |
 
 Scenario: Workflow with Assign Create Delete folder and testing variable values that hasn"t been assigned2
 	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2"
@@ -2741,13 +2688,17 @@ Scenario: Workflow with Assign Create Delete folder and testing variable values 
 	  | # |                              |
 	  | 1 | [[rec(1).a]] = C:\copied00.txt |
 	 And the "Create12" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug inputs as
-	  | File or Folder                           | Overwrite | Username | Password |
+	  | File or Folder           | Overwrite | Username | Password |
+	  | [[NoValue]]\copied00.txt =  | True      |    ""      |   ""       |
 	   And the "Create12" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug outputs as    
 	   |                    |
+	   | [[res1]] = Failure |
 	  And the "DeleteFolder1" in WorkFlow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug inputs as
-	  | Input Path                               | Username | Password |
+	  | Input Path               | Username | Password |
+	  | [[NoValue]]\copied00.txt =  |    ""      |   ""       |
 	  And the "DeleteFolder1" in Workflow "WorkflowWithAssignCreateandDeleteRecordTestingUnassignedvariablevalues2" debug outputs as    
 	  |                    |
+	  | [[res2]] = Failure |
 
 
 Scenario: Calculate testing variable values that hasn"t been assigned
@@ -3015,7 +2966,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | mm/dd/yy 12h:min am/pm |
 	  And the "Date and Time(2)" in Workflow "Utility - Date and Time" debug outputs as    
 	  |                       |
-	  | [[nowish]] = DateTime |  
+	  | [[nowishNewFormat]] = DateTime |  
 	  And the "Date and Time(3)" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input              | Input Format | Add Time |       | Output Format            |
 	  | Sunday, 23 July 78 | DW, dd MM yy | Minutes  | 46664 | mm/dd/yyyy 12h:min am/pm |	
@@ -3044,7 +2995,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	 | 2  | [[OpSystem]]  =     | Operating System    |
 	 | 3  | [[SP]] =            | Service Pack        |
 	 | 4  | [[Bit]] =           | 32/64 Bit           |
-	 | 5  | [[DatTimeFormat]] = | Date & Time Format  |
+	 | 5  | [[DateTimeFormat]] = | Date & Time Format  |
 	 | 6  | [[DiskAvailable]] = | Disk Available (GB) |
 	 | 7  | [[DiskTotal]]  =    | Disk Total (GB)     |
 	 | 8  | [[RAMAvailable]] =  | RAM Available (MB)  |
@@ -3063,7 +3014,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	   | 2  | [[OpSystem]]      =    String |
 	   | 3  | [[SP]]            =    String |
 	   | 4  | [[Bit]]           =    String |
-	   | 5  | [[DatTimeFormat]] =    String |
+	   | 5  | [[DateTimeFormat]] =    String |
 	   | 6  | [[DiskAvailable]] =    String |
 	   | 7  | [[DiskTotal]]     =    String |
 	   | 8  | [[RAMAvailable]]  =    String |
@@ -3264,22 +3215,6 @@ Scenario:Example Excuting File and Folder - Read File
 	  |                                         |
 	  | [[Logs]] = the contents of the log file |
 
-Scenario: Example Excuting File and Folder - Read Folder
-	  Given I have a workflow "File and Folder - Read Folder Test"
-	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Read Folder Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the "Read Folder1" in Workflow "File and Folder - Read Folder" debug outputs as 
-	  |                                                     |
-	  | [[users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
-	  And the "Read Folder 2" in Workflow "File and Folder - Read Folder" debug outputs as 
-	  |                                                               |
-	  | [[server(1).users]] = c:\temp\WarewolfExamples\ReadFolder\sub |
-	  And the "Read Folder 3" in Workflow "File and Folder - Read Folder" debug outputs as 
-	  |                                                                           |
-	  | [[server(1).userfolders]] = c:\temp\WarewolfExamples\ReadFolder\sub\inner |
-
 Scenario: Example Excuting File and Folder - Rename
 	  Given I have a workflow "File and Folder - Rename Test"
 	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
@@ -3423,43 +3358,43 @@ Scenario:Example Executing Recordset - Sort Records example workflow
 	  | [[rec(7).set]] = a |            |
 	  | [[rec(8).set]] = b |            |
 	  | [[rec(9).set]] = 1 |            |
-	  | [[rec(10).set]] =z | Backwards  |
+	  | [[rec(10).set]] =z | Forward  |
 	  And the "Sort Records1" in Workflow "Recordset - Sort Records" debug outputs as  
-	  |                    |
-	  | [[rec(1).set]] = z |
-	  | [[rec(2).set]] = y |
-	  | [[rec(3).set]] = x |
-	  | [[rec(4).set]] = c |
-	  | [[rec(5).set]] = b |
-	  | [[rec(6).set]] = a |
-	  | [[rec(7).set]] = 3 |
-	  | [[rec(8).set]] = 2 |
-	  | [[rec(9).set]] = 1 |
-	  | [[rec(10).set]] =0 |
+	   |                    |
+	   | [[rec(1).set]] = 0 |
+	   | [[rec(2).set]] = 1 |
+	   | [[rec(3).set]] = 2 |
+	   | [[rec(4).set]] = 3 |
+	   | [[rec(5).set]] = a |
+	   | [[rec(6).set]] = b |
+	   | [[rec(7).set]] = c |
+	   | [[rec(8).set]] = x |
+	   | [[rec(9).set]] = y |
+	   | [[rec(10).set]] =z |	  
 	  And the "Sort Records2" in WorkFlow "Recordset - Sort Records" debug inputs as
 	   | Sort Field         | Sort Order |
-	   | [[rec(1).set]] = z |            |
-	   | [[rec(2).set]] = y |            |
-	   | [[rec(3).set]] = x |            |
-	   | [[rec(4).set]] = c |            |
-	   | [[rec(5).set]] = b |            |
-	   | [[rec(6).set]] = a |            |
-	   | [[rec(7).set]] = 3 |            |
-	   | [[rec(8).set]] = 2 |            |
-	   | [[rec(9).set]] = 1 |            |
-	   | [[rec(10).set]] =0 | Forward    |
+	   | [[rec(1).set]] = 0 |            |
+	   | [[rec(2).set]] = 1 |            |
+	   | [[rec(3).set]] = 2 |            |
+	   | [[rec(4).set]] = 3 |            |
+	   | [[rec(5).set]] = a |            |
+	   | [[rec(6).set]] = b |            |
+	   | [[rec(7).set]] = c |            |
+	   | [[rec(8).set]] = x |            |
+	   | [[rec(9).set]] = y |            |
+	   | [[rec(10).set]] =z | Backwards    |
 	  And the "Sort Records2" in Workflow "Recordset - Sort Records" debug outputs as  
-	  |                    |
-	  | [[rec(1).set]] = 0 |
-	  | [[rec(2).set]] = 1 |
-	  | [[rec(3).set]] = 2 |
-	  | [[rec(4).set]] = 3 |
-	  | [[rec(5).set]] = a |
-	  | [[rec(6).set]] = b |
-	  | [[rec(7).set]] = c |
-	  | [[rec(8).set]] = x |
-	  | [[rec(9).set]] = y |
-	  | [[rec(10).set]] =z |
+	 |                    |
+	 | [[rec(1).set]] = z |
+	 | [[rec(2).set]] = y |
+	 | [[rec(3).set]] = x |
+	 | [[rec(4).set]] = c |
+	 | [[rec(5).set]] = b |
+	 | [[rec(6).set]] = a |
+	 | [[rec(7).set]] = 3 |
+	 | [[rec(8).set]] = 2 |
+	 | [[rec(9).set]] = 1 |
+	 | [[rec(10).set]] = 0 |
 
 Scenario: Example Executing Recordset - Unique Records example workflow
 	  Given I have a workflow "Recordset - Unique Records Test"
@@ -3483,47 +3418,6 @@ Scenario: Example Executing Recordset - Unique Records example workflow
 	   | 1 | [[Result(1).example2]] = 1 |
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
-     
-Scenario: Example Executing Loop Constructs - For Each example workflow
-	  Given I have a workflow "Loop Constructs - For Each Test"
-	  And "Loop Constructs - For Each Test" contains "Loop Constructs - For Each" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Loop Constructs - For Each Test" is executed
-	  Then the workflow execution has "NO" error	  
-      And the "For Each1" in WorkFlow "Loop Constructs - For Each" debug inputs as 
-	    |                 | Number |
-	    | No. of Executes | 6      |
-	   And the "For Each1" in WorkFlow "Loop Constructs - For Each" has  "6" nested children 
-	   And the "Random1" in step 1 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 1 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(1).set]] = String |
-		And the "Random1" in step 2 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 2 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(2).set]] = String |
-		And the "Random1" in step 3 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 3 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(3).set]] = String |
-		And the "Random1" in step 4 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 4 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(4).set]] = String |
-		And the "Random1" in step 5 for "For Each1" debug inputs as
-	     | Random | Length |
-	     | GUID   |        |
-	   And the "Random1" in step 5 for "For Each1" debug outputs as
-        |                         |
-        | [[rec(5).set]] = String |
 
 Scenario: Example Executing Control Flow - Sequence example workflow
 	  Given I have a workflow "Control Flow - Sequence Test"
@@ -3596,13 +3490,13 @@ Scenario: Example Executing Scripting - Script example workflow
   | JavaScript | String = String |
   And the "Script2" in Workflow "Scripting - Script" debug outputs as    
   |                |
-  | [[Result]] = 1 | 
+  | [[Result]] = 7 | 
   And the "Script3" in WorkFlow "Scripting - Script" debug inputs as	
   | Language | Script          |
   | Python   | String = String |
   And the "Script3" in Workflow "Scripting - Script" debug outputs as    
   |                  |
-  | [[Result]] = one | 
+  | [[Result]] = not one or two | 
 
 
 Scenario: Gather System tool throws error when debug with 2 variables in one row 
@@ -3889,17 +3783,6 @@ Scenario: Workflow with Performance counters
 	| Request Per Second                                | x     |
 	| Count of requests for workflows which don’t exist | 9     |
 
-Scenario: Time Zone Changes
-	  Given I have a workflow "TimeZoneChangeTest"
-	  And "TimeZoneChangeTest" contains "TimeZoneChange" from server "localhost" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable |
-	  |                  |               | Result              | [[Result]]  |
-	  When "TimeZoneChangeTest" is executed
-	Then the workflow execution has "NO" error
-	And the "TimeZoneChange" in Workflow "TimeZoneChangeTest" debug outputs as
-	  |                      |
-	  | [[Result]] = Pass |
-
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
@@ -3942,7 +3825,7 @@ Scenario: ForEach using * in CSV executed as a sub execution passes out an order
 
 Scenario: Workflow with AsyncLogging and ForEach
      Given I have a workflow "WFWithAsyncLoggingForEach"
-     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3000"
+     And "WFWithAsyncLoggingForEach" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2000"
 	 And "ForEachTest" contains an Assign "Rec To Convert" as
 	  | variable    | value |
 	  | [[Warewolf]] | bob   |
@@ -3954,7 +3837,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And I set logging to "OFF"
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
-	 And the delta between "first time" and "second time" is less than "1200" milliseconds
+	 And the delta between "first time" and "second time" is less than "2500" milliseconds
 
 
 Scenario: Ensure that End this Workflow is working 
@@ -4019,14 +3902,33 @@ Scenario: Error not bubbling up error message
 	  | [[Result]] = Pass |
 
 	  
-#Database Executions
-#MySqlDB
+
+
+#PostgreSQL
+Scenario Outline: Database PostgreSql Database service inputs and outputs
+     Given I have a workflow "<WorkflowName>"
+	 And "<WorkflowName>" contains a postgre tool using "<ServiceName>" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  | Prefix           | s             | Id                  | <nameVariable>  |
+	  |                  |               | Name                | <emailVariable> |
+      When "<WorkflowName>" is executed
+     Then the workflow execution has "<errorOccured>" error
+	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
+	  |                                       |
+	  | [[countries(1).Id]] = 1               |
+	  | [[countries(2).Id]] = 3               |
+	  | [[countries(1).Name]] = United States |
+	  | [[countries(2).Name]] = South Africa  |
+Examples: 
+    | WorkflowName           | ServiceName   | nameVariable        | emailVariable         | errorOccured |
+    | PostgreSqlGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
+
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name                | <nameVariable>  |
+	  |                  |               | email               | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4034,16 +3936,15 @@ Scenario Outline: Database MySqlDB Database service using * indexes
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                           | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestMySqlWFWithDBServiceMailsStarIndex | MySQLEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
-
+    | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
 Scenario Outline: Database MySqlDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name                | <nameVariable>  |
+	  |                  |               | email               | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs is
@@ -4051,16 +3952,15 @@ Scenario Outline: Database MySqlDB Database service using int indexes
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                          | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestMySqlWFWithDBServiceMailsIntIndex | MySQLEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
-
+    | WorkflowName                 | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestMySqlWFWithMySqlIntIndex | MySqlEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 Scenario Outline: Database MySqlDB Database service last  indexes
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name                | <nameVariable>  |
+	  |                  |               | email               | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs is
@@ -4068,16 +3968,15 @@ Scenario Outline: Database MySqlDB Database service last  indexes
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                   | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestMySqlWFWithDBServiceLastIndex | MySQLEmail  | [[rec().name]] | [[rec().email]] | NO           |
- 
+    | WorkflowName                  | ServiceName | nameVariable   | emailVariable   | errorOccured |
+    | TestMySqlWFWithMySqlLastIndex | MySqlEmail  | [[rec().name]] | [[rec().email]] | NO           |
 
 Scenario Outline: Database MySqlDB Database service scalar outputs 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name     | <nameVariable>  |
+	  |                  |               | email    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4085,29 +3984,29 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
 	  | [[name]] = Monk |
 	  | [[email]] = dora@explorers.com |
 Examples: 
-    | WorkflowName                    | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestMySqlWFWithDBServiceMailsScalar | MySQLEmail  | [[name]]     | [[email]]     | NO           |
- 
+    | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
+    | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
+
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name                | <nameVariable>  |
+	  |                  |               | email               | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 Examples: 
-    | WorkflowName                                     | ServiceName | nameVariable         | emailVariable | errorOccured |
-    | TestMySqlWFWithDBServiceMailsInvalidIndex        | MySQLEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
-    | TestMySqlWFWithDBServiceMailsInvalidVar          | MySQLEmail  | [[123]]              | [[email]]     | YES          |
-    | TestMySqlWFWithDBServiceMailsInvalidVarWithIndex | MySQLEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
+    | WorkflowName                                 | ServiceName | nameVariable         | emailVariable | errorOccured |
+    | TestMySqlWFWithMySqlMailsInvalidIndex        | MySqlEmail  | [[rec(-1).name]]     | [[email]]     | YES          |
+    | TestMySqlWFWithMySqlMailsInvalidVar          | MySqlEmail  | [[123]]              | [[email]]     | YES          |
+    | TestMySqlWFWithMySqlMailsInvalidVarWithIndex | MySqlEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
 
 Scenario Outline: Database MySqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "mysql database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | name             | afg%          | [[countries(*).countryid]]   | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
+	  | name             | afg%          | countryid   | <nameVariable>  |
+	  |                  |               | description | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4117,18 +4016,15 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 	  | [[countries(1).description]] = Afghanistan |
 	  | [[countries(2).description]] = Afghanistan |
 Examples: 
-    | WorkflowName                      | ServiceName       | nameVariable        | emailVariable                | errorOccured |
-    | TestMySqlWFWithDBServiceCountriesMySql | MySqlGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
+    | WorkflowName                  | ServiceName       | nameVariable        | emailVariable                | errorOccured |
+    | TestMySqlWFWithMySqlCountries | Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
-
-
-#SqlDB
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
-	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  | Prefix           | afg           | [[countries(*).countryid]]   | <nameVariable>  |
-	  |                  |               | [[countries(*).description]] | <emailVariable> |
+	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  | Prefix           | afg           | countryid           | <nameVariable>  |
+	  |                  |               | description         | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4136,27 +4032,25 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
 	  | [[countries(1).id]] = 1                    |
 	  | [[countries(1).description]] = Afghanistan |
 Examples: 
-    | WorkflowName                         | ServiceName           | nameVariable        | emailVariable                | errorOccured |
-    | TestSqlWFWithSqlDBServiceMailsCountries | GetCountriesSqlServer | [[countries(*).id]] | [[countries(*).description]] | NO           |
+    | WorkflowName                    | ServiceName           | nameVariable        | emailVariable                | errorOccured |
+    | TestSqlWFWithSqlServerCountries | dbo.Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
- Scenario Outline: Database SqlDB  service DBErrors
+Scenario Outline: Database SqlDB  service DBErrors
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 Examples: 
-     | WorkflowName                  | ServiceName          | nameVariable | emailVariable | errorOccured |
-     | TestWFWithDBServiceMailsErrorProcSql | willalwayserror      | [[name]]     | [[email]]     | YES          |
-     | TestWFWithDBServiceMailsErrorProcMySql | willalwaysErrorMySql | [[name]]     | [[email]]     | YES          |
+     | WorkflowName                      | ServiceName     | nameVariable | emailVariable | errorOccured |
+     | TestWFWithDBSqlServerErrorProcSql | dbo.willalwayserror | [[name]]     | [[email]]     | YES          |
 
-	 
 Scenario Outline: Database SqlDB  service using int indexes 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name     | <nameVariable>  |
+	  |                  |               | email    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4164,16 +4058,15 @@ Scenario Outline: Database SqlDB  service using int indexes
 	  | [[rec(1).name]] = dora                  |
 	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
-    | WorkflowName              | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestWFWithDBServiceMailsSqlIntIndex | SqlEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
-
+    | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
+    | TestWFWithDBSqlServerIntIndex | dbo.SQLEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 Scenario Outline: Database SqlDB  service using last indexes 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name     | <nameVariable>  |
+	  |                  |               | email    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4182,15 +4075,14 @@ Scenario Outline: Database SqlDB  service using last indexes
 	  | [[rec(1).email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable   | emailVariable   | errorOccured |
-    | TestWFWithDBServiceMailsSqlLastIndex | SqlEmail    | [[rec().name]] | [[rec().email]] | NO           |
-
+    | TestWFWithDBSqlServerLastIndex | dbo.SQLEmail    | [[rec().name]] | [[rec().email]] | NO           |
 
 Scenario Outline: Database SqlDB  service using scalar outputs 
      Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a "sqlserver database" service "<ServiceName>" with mappings
+	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | [[rec(*).name]]     | <nameVariable>  |
-	  |                  |               | [[rec(*).email]]    | <emailVariable> |
+	  |                  |               | name     | <nameVariable>  |
+	  |                  |               | email    | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
@@ -4199,4 +4091,4 @@ Scenario Outline: Database SqlDB  service using scalar outputs
 	  | [[email]] = dora@explorers.co.za |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable | emailVariable | errorOccured |
-    | TestWFWithDBServiceMailsSqlScalar | SqlEmail    | [[name]]     | [[email]]     | NO           |
+    | TestWFWithDBSqlServerScalar | dbo.SQLEmail    | [[name]]     | [[email]]     | NO           |

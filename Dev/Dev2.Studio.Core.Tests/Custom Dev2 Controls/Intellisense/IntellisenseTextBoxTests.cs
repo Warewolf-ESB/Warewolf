@@ -398,40 +398,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Thread.Sleep(250);
 
             //------------Assert Results-------------------------
-            Thread.Sleep(100);
+            Thread.Sleep(150);
             Assert.AreEqual(1, mockIntellisenseTextBox.TextChangedCounter);
         }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("IntellisenseTextBox_TextChanged")]
-        public void IntellisenseTextBox_TextChanged_GreaterThen200msBetweenTextChanged_TextChangedFiredFourTimes()
-        {
-            int counter = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                //------------Setup for test--------------------------            
-                var mockIntellisenseTextBox = new MockIntellisenseTextbox();
-
-                var chars = new[] { 'a', 'b', 'c', 'd' };
-                mockIntellisenseTextBox.InitTestClass();
-
-                //------------Execute Test---------------------------
-
-                foreach (var c in chars)
-                {
-                    mockIntellisenseTextBox.Text = c.ToString(CultureInfo.InvariantCulture);
-                    Thread.Sleep(450);
-                }
-
-                //------------Assert Results-------------------------
-                Thread.Sleep(100);
-                counter += mockIntellisenseTextBox.TextChangedCounter;
-
-            }
-            Assert.IsTrue(counter > 38);
-        }
-
+        
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]

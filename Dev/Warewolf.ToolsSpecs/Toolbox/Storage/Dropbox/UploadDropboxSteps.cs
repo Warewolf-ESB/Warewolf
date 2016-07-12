@@ -14,9 +14,9 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core.Messages;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
-            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
+            var uploadViewModel = new DropBoxUploadViewModel(modelItem, dropBoxSourceManager.Object);
             scenarioContext.Add("uploadViewModel", uploadViewModel);
             scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
             scenarioContext.Add("mockEventAggregator", mockEventAggregator);

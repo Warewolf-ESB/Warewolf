@@ -12,6 +12,8 @@
         /// <returns>The version of the Server. Default version text of "less than 0.4.19.1" is returned
         /// if the server is older than that version.</returns>
         string GetServerVersion();
+
+        string GetMinSupportedServerVersion();
     }
 
 

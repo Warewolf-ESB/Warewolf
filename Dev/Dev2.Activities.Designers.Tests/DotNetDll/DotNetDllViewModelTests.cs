@@ -8,8 +8,10 @@ using Dev2.Activities.Designers2.Net_DLL;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -185,6 +187,26 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             vm.SetDisplayName("dsfbob_builer");
             PrivateObject p = new PrivateObject(vm);
             Assert.AreEqual(p.GetProperty("DisplayName"), "DotNet DLLdsfbob_builer");
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DotNetDllViewModel_Handle")]
+        public void DotNetDllViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var ps = SetupEmptyMockSource();
+            var viewModel = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
 

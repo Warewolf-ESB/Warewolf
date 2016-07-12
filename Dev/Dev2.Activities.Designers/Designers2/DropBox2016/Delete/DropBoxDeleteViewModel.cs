@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
@@ -14,8 +13,8 @@ using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Hosting;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Messages;
+using Dev2.Runtime.Interfaces;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 // ReSharper disable ConvertPropertyToExpressionBody
@@ -27,21 +26,19 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
     public class DropBoxDeleteViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
         private ObservableCollection<DropBoxSource> _sources;
-        private readonly IEventAggregator _eventPublisher;
         private readonly IDropboxSourceManager _sourceManager;
         private string _deletePath;
         private string _result;
 
         // ReSharper disable once UnusedMember.Global
         public DropBoxDeleteViewModel(ModelItem modelItem)
-           : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
+           : this(modelItem, new DropboxSourceManager())
         {
             this.RunViewSetup();
         }
-        public DropBoxDeleteViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
+        public DropBoxDeleteViewModel(ModelItem modelItem, IDropboxSourceManager sourceManager)
             : base(modelItem, "File Or Folder", String.Empty)
         {
-            _eventPublisher = eventPublisher;
             _sourceManager = sourceManager;
             ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
@@ -138,9 +135,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
         public void CreateOAuthSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
+            CustomContainer.Get<IShellViewModel>().NewDropboxSource(string.Empty);
             Sources = LoadOAuthSources();
-            OnPropertyChanged("Sources");
+            OnPropertyChanged(@"Sources");
         }
 
 

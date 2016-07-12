@@ -12,9 +12,12 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Foreach;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Data.Enums;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -30,6 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestForeachDesignerViewModel(modelItem);
+            viewModel.Validate();
             Assert.AreEqual(enForEachType.InRange, viewModel.ForEachType);
             Assert.AreEqual("* in Range", viewModel.SelectedForeachType);
             Assert.AreEqual(viewModel.FromVisibility, Visibility.Visible);
@@ -38,6 +42,24 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             Assert.AreEqual(viewModel.NumberVisibility, Visibility.Hidden);
             Assert.AreEqual(viewModel.RecordsetVisibility, Visibility.Hidden);
             Assert.IsTrue(viewModel.HasLargeView);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ForeachDesignerViewModel_Handle")]
+        public void ForeachDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new TestForeachDesignerViewModel(CreateModelItem());
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

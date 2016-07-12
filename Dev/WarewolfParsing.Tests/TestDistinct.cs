@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -28,7 +29,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Distinct_EvalDistinct")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(NullValueInVariableException))]
         public void Distinct_EvalDistinct_MultipleRecsetsExpectSomethingBad()
         {
             //------------Setup for test--------------------------

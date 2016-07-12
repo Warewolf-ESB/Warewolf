@@ -20,7 +20,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
-using Dev2.Models;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
@@ -42,7 +41,7 @@ namespace Dev2.Activities.Designers2.Sequence
             AddTitleBarLargeToggle();
             dynamic mi = ModelItem;
             ModelItemCollection activities = mi.Activities;
-            activities.CollectionChanged+=ActivitiesOnCollectionChanged;            
+            activities.CollectionChanged += ActivitiesOnCollectionChanged;
         }
 
         void ActivitiesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
@@ -51,8 +50,7 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 dynamic mi = ModelItem;
                 ModelItemCollection activities = mi.Activities;
-                ModelItem.SetProperty("Activities",activities);
-                
+                ModelItem.SetProperty("Activities", activities);
             }
         }
 
@@ -68,16 +66,16 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 var test = value as ModelItem;
 
-                if(test != null && !_addedFromDesignSurface)
+                if (test != null && !_addedFromDesignSurface)
                 {
-                    if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
+                    if (test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
                     {
                         dynamic mi = ModelItem;
                         ModelItemCollection activitiesCollection = mi.Activities;
                         activitiesCollection.Insert(activitiesCollection.Count, test);
                     }
                 }
-                if(test != null)
+                if (test != null)
                 {
                     _addedFromDesignSurface = false;
                 }
@@ -91,10 +89,10 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 var property = ModelItem.GetProperty("Activities");
                 var activityNames = property as Collection<Activity>;
-                if(activityNames != null)
+                if (activityNames != null)
                 {
                     var fullListOfNames = activityNames.Select(item => item.DisplayName).ToList();
-                    if(fullListOfNames.Count() <= 4)
+                    if (fullListOfNames.Count <= 4)
                     {
                         return fullListOfNames.ToList();
                     }
@@ -110,67 +108,51 @@ namespace Dev2.Activities.Designers2.Sequence
         {
             if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
             {
-                var explorerItemModel = dataObject.GetData(GlobalConstants.ExplorerItemModelFormat);
-                Guid envID = new Guid();
-                Guid resourceID = new Guid();
-                if (explorerItemModel != null)
-                {
+                var explorerItemModel = dataObject.GetData(GlobalConstants.UpgradedExplorerItemModelFormat);
+                Guid envId = new Guid();
+                Guid resourceId = new Guid();
 
-                    ExplorerItemModel itemModel = explorerItemModel as ExplorerItemModel;
-                    if (itemModel != null)
-                    {
-                        envID = itemModel.EnvironmentId;
-                        resourceID = itemModel.ResourceId;
-                    }
-                }
                 if (explorerItemModel == null)
                 {
-                    explorerItemModel = dataObject.GetData(GlobalConstants.UpgradedExplorerItemModelFormat);
-                    if (explorerItemModel == null)
-                    {
-                        return false;
-                    }
-                    IExplorerItemViewModel itemModel = explorerItemModel as IExplorerItemViewModel;
-                    if (itemModel != null)
-                    {
-                        if (itemModel.Server != null)
-                            envID = itemModel.Server.EnvironmentID;
-                        resourceID = itemModel.ResourceId;
-                    }
+                    return false;
                 }
+                IExplorerItemViewModel itemModel = explorerItemModel as IExplorerItemViewModel;
+                if (itemModel != null)
+                {
+                    if (itemModel.Server != null)
+                        envId = itemModel.Server.EnvironmentID;
+                    resourceId = itemModel.ResourceId;
+                }
+
                 try
                 {
-                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envID);
-                    if(environmentModel != null)
+                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envId);
+                    var resource = environmentModel?.ResourceRepository.FindSingle(c => c.ID == resourceId) as IContextualResourceModel;
+
+                    if (resource != null)
                     {
-                        var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
-
-                        if(resource != null)
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
+                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                        if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                         {
-                            DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
-                            d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                            d.IconPath = resource.IconPath;
-                            if(Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                            dynamic mvm = Application.Current.MainWindow.DataContext;
+                            if (mvm != null && mvm.ActiveItem != null)
                             {
-                                dynamic mvm = Application.Current.MainWindow.DataContext;
-                                if(mvm != null && mvm.ActiveItem != null)
-                                {
-                                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
-                                }
+                                WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
                             }
+                        }
 
-                            ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
-                            if(modelItem != null)
-                            {
-                                dynamic mi = ModelItem;
-                                ModelItemCollection activitiesCollection = mi.Activities;
-                                activitiesCollection.Insert(activitiesCollection.Count, d);
-                                return true;
-                            }
+                        ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
+                        if (modelItem != null)
+                        {
+                            dynamic mi = ModelItem;
+                            ModelItemCollection activitiesCollection = mi.Activities;
+                            activitiesCollection.Insert(activitiesCollection.Count, d);
+                            return true;
                         }
                     }
                 }
-                catch(RuntimeBinderException e)
+                catch (RuntimeBinderException e)
                 {
                     Dev2Logger.Error(e);
                 }
@@ -181,20 +163,20 @@ namespace Dev2.Activities.Designers2.Sequence
         public bool DoDrop(IDataObject dataObject)
         {
             var formats = dataObject.GetFormats();
-            if(!formats.Any())
+            if (!formats.Any())
             {
                 return false;
             }
             dynamic mi = ModelItem;
             ModelItemCollection activitiesCollection = mi.Activities;
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
-            if(!String.IsNullOrEmpty(modelItemString))
+            if (!string.IsNullOrEmpty(modelItemString))
             {
                 var objectData = dataObject.GetData(modelItemString);
                 var data = objectData as List<ModelItem>;
-                if(data != null && data.Count >= 1)
+                if (data != null && data.Count >= 1)
                 {
-                    foreach(var item in data)
+                    foreach (var item in data)
                     {
                         activitiesCollection.Insert(activitiesCollection.Count, item);
                     }
@@ -212,10 +194,7 @@ namespace Dev2.Activities.Designers2.Sequence
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

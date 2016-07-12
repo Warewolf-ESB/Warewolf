@@ -4,13 +4,13 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Runtime.Interfaces;
 using TechTalk.SpecFlow;
 
 namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum

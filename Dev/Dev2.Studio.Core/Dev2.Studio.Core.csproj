@@ -190,14 +190,12 @@
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
     <Compile Include="AppResources\Converters\AllBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
-    <Compile Include="AppResources\Attributes\IconLocation.cs" />
     <Compile Include="AppResources\Attributes\TreeCategory.cs" />
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
     <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
     <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
-    <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
@@ -245,20 +243,13 @@
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
-    <Compile Include="AppResources\Expression\ExpressionEvaluator.cs" />
-    <Compile Include="AppResources\Expression\ExpressionVisitor.cs" />
-    <Compile Include="AppResources\Expression\ExpressionVisitorDSFImpl.cs" />
-    <Compile Include="AppResources\Expression\ExpressionVisitorSQLImpl.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\EnumerableExtensionMethods.cs" />
-    <Compile Include="AppResources\ExtensionMethods\EnumExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\ModelPropertyCollection.cs" />
     <Compile Include="AppResources\ExtensionMethods\PaneLocationExtensions.cs" />
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
-    <Compile Include="AppResources\Repositories\IStudioResourceRepository.cs" />
-    <Compile Include="AppResources\Repositories\StudioResourceRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -274,14 +265,25 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="DataList\ComplexObjectHandler.cs" />
+    <Compile Include="DataList\MissingDataList.cs" />
     <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
+    <Compile Include="DataList\PartIsUsed.cs" />
+    <Compile Include="DataList\RecordsetHandler.cs" />
+    <Compile Include="DataList\ScalarHandler.cs" />
     <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
+    <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
     <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
     <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />
     <Compile Include="Interfaces\DataList\IRecordSetItemModel.cs" />
     <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
+    <Compile Include="Interfaces\IComplexObjectHandler.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
+    <Compile Include="Interfaces\IPartIsUsed.cs" />
+    <Compile Include="Interfaces\IRecordsetHandler.cs" />
+    <Compile Include="Interfaces\IScalarHandler.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
@@ -289,7 +291,6 @@
     <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetItemModel.cs" />
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
-    <Compile Include="Models\ServerExplorerVersionProxy.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
@@ -370,7 +371,6 @@
     <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
-    <Compile Include="Messages\DeployResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />
     <Compile Include="Messages\EnvironmentDeletedMessage.cs" />
@@ -386,22 +386,16 @@
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
     <Compile Include="Messages\SelectItemInDeployMessage.cs" />
-    <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
-    <Compile Include="Messages\ShowEditResourceWizardMessage.cs" />
-    <Compile Include="Messages\ShowHelpTabMessage.cs" />
-    <Compile Include="Messages\ShowNewResourceWizard.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\UpdateExplorerMessage.cs" />
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
-    <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
-    <Compile Include="Models\IExplorerItemModel.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
       <SubType>Code</SubType>
@@ -410,7 +404,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\EnvironmentModel.cs" />
-    <Compile Include="Models\ExplorerItemModel.cs" />
     <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
@@ -431,7 +424,6 @@
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
-    <Compile Include="SelectModelItemMessage.cs" />
     <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
     <Compile Include="Services\Communication\MapiEmailCommService.cs" />
@@ -463,7 +455,6 @@
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
-    <Compile Include="TreeEx.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\ServerUtil.cs" />
@@ -592,7 +583,6 @@
   <ItemGroup>
     <Folder Include="AppResources\Exceptions\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

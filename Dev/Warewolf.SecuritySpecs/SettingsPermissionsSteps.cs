@@ -14,7 +14,6 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
 using Dev2.Services.Security;
@@ -168,9 +167,9 @@ namespace Dev2.Activities.Specs.Permissions
         }
 
         [Then(@"resources should have ""(.*)""")]
-        public async void ThenResourcesShouldHave(string resourcePerms)
+        public void ThenResourcesShouldHave(string resourcePerms)
         {
-            var environmentModel = await LoadResources();
+            var environmentModel = LoadResources();
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
@@ -187,7 +186,7 @@ namespace Dev2.Activities.Specs.Permissions
             Assert.IsTrue(totalNumberOfResources - allMatch <= 1); //This is to cater for the scenerios where we specify a resource permission
         }
 
-        async Task<IEnvironmentModel> LoadResources()
+        IEnvironmentModel LoadResources()
         {
             var environmentModel = scenarioContext.Get<IEnvironmentModel>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
@@ -195,21 +194,21 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 if (!environmentModel.HasLoadedResources)
                 {
-                    await environmentModel.ForceLoadResourcesAsync();
+                    environmentModel.ForceLoadResources();
                 }
             }
-            var resourceModels = environmentModel.ResourceRepository.All();
-            foreach (var resourceModel in resourceModels)
-            {
-                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
-            }
+//            var resourceModels = environmentModel.ResourceRepository.All();
+//            foreach (var resourceModel in resourceModels)
+//            {
+//                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
+//            }
             return environmentModel;
         }
 
         [Then(@"resources should not have ""(.*)""")]
-        public async void ThenResourcesShouldNotHave(string resourcePerms)
+        public void ThenResourcesShouldNotHave(string resourcePerms)
         {
-            var environmentModel = await LoadResources();
+            var environmentModel = LoadResources();
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)

@@ -131,6 +131,7 @@
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionActiveAwareBehavior.cs" />
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionAdapter.cs" />
     <Compile Include="IWebBrowser.cs" />
+    <Compile Include="PopupViewManageEffects.cs" />
     <Compile Include="Popup\PopupController.cs" />
     <Compile Include="Popup\PopupMessage.cs" />
     <Compile Include="Popup\PopupMessageBoxFactory.cs" />
@@ -185,7 +186,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

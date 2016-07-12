@@ -1,8 +1,17 @@
-﻿@Ignore
-Feature: FileAndFolder-Create
+﻿Feature: FileAndFolder-Create
 	In order to be able to create files
 	as a Warewolf user
 	I want a tool that creates a file at a given location
+	
+@NeedsBlankWorkflow
+Scenario: Drag toolbox Create_Path onto a new workflow
+	When I "Drag_Toolbox_Create_Onto_DesignSurface"
+	Then I "Assert_Create_Exists_OnDesignSurface"
+
+#@NeedsCreate_PathToolSmallViewOnTheDesignSurface
+#Scenario: Double Clicking Create_Path Tool Small View on the Design Surface Opens Large View
+	When I "Open_Create_Tool_Large_View"
+	Then I "Assert_Create_Path_Large_View_Exists_OnDesignSurface"
 
 @ignore
 @Create

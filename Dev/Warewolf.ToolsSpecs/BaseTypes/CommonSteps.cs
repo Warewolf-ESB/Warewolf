@@ -468,11 +468,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     if (string.IsNullOrEmpty(type))
                     {
-                        if (error == string.Empty)
-                        {
-                            error = "No error was returned from the environment when resolving the value of " + variable;
-                        }
-                        Assert.AreEqual(expectedValue, actualValue, error);
+                        Assert.AreEqual(expectedValue, actualValue, error + result.Environment.AllErrors.FirstOrDefault());
                     }
                     else
                     {

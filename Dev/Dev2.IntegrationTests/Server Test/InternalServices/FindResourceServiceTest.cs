@@ -12,6 +12,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 {
@@ -21,12 +22,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     [TestClass]
     public class FindResourceServiceTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:

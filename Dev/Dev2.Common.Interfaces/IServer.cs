@@ -40,6 +40,7 @@ namespace Dev2.Common.Interfaces
         bool HasLoaded { get;  }
         bool CanDeployTo { get; }
         bool CanDeployFrom { get; }
+        IExplorerRepository ProxyLayer { get; }
 
         string GetMinSupportedVersion();
     }

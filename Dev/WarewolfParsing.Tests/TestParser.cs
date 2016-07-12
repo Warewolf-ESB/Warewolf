@@ -252,7 +252,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(NullValueInVariableException))]
         public void WarewolfParse_Eval_Scalar_NonExistent_ExpectException()
         {
 

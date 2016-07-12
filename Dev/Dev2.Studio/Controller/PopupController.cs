@@ -31,10 +31,10 @@ namespace Dev2.Studio.Controller
 
         public string DontShowAgainKey { get; set; }
 
-        public bool IsError { get; set; }
-        public bool IsInfo { get; set; }
-        public bool IsQuestion { get; set; }
-        public bool IsDependenciesButtonVisible { get; set; }
+        public bool IsError { get; private set; }
+        public bool IsInfo { get; private set; }
+        public bool IsQuestion { get; private set; }
+        public bool IsDependenciesButtonVisible { get; private set; }
 
         public MessageBoxResult Show(IPopupMessage popupMessage)
         {
@@ -359,7 +359,7 @@ namespace Dev2.Studio.Controller
 
         public void ShowInvalidCharacterMessage(string invalidText)
         {
-            Description = string.Format("{0} is invalid. Warewolf only supports latin characters", invalidText);
+            Description = $"{invalidText} is invalid. Warewolf only supports latin characters";
             Header = "Invalid text";
             Buttons = MessageBoxButton.OK;
             ImageType = MessageBoxImage.Error;
@@ -373,7 +373,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
             Header = "Delete version";
-            var description = string.Format("Are you sure you want to delete {0}?", displayName);
+            var description = $"Are you sure you want to delete {displayName}?";
             Description = description;
             Buttons = MessageBoxButton.YesNo;
             ImageType = MessageBoxImage.Warning;
@@ -387,7 +387,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowRollbackVersionMessage(string displayName)
         {
             Header = "Make current version";
-            var description = string.Format("{0} will become the current version.{1}Do you want to proceed ?", displayName, Environment.NewLine);
+            var description = $"{displayName} will become the current version.{Environment.NewLine}Do you want to proceed ?";
             Description = description;
             Buttons = MessageBoxButton.YesNo;
             ImageType = MessageBoxImage.Warning;

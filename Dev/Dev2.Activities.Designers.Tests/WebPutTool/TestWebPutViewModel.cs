@@ -7,10 +7,13 @@ using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable All
@@ -98,6 +101,27 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Test Result -----------------------
             Assert.AreEqual(postViewModel.Errors.Count, 1);
             Assert.AreEqual(postViewModel.DesignValidationErrors.Count, 2);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WebPutDesignerViewModel_Handle")]
+        public void WebPutDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var mod = GetMockModel();
+            var act = GetEmptyPostActivity();
+            var viewModel = CreateViewModel(act, mod);
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]

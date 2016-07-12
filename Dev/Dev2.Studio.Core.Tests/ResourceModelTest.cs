@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -34,11 +33,8 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class ResourceModelTest
     {
-        private IResourceModel _resourceModel;
-
         #region Test Initialization
 
         [TestInitialize]
@@ -52,7 +48,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
 
 
-            _resourceModel = new ResourceModel(environmentModel.Object)
+            new ResourceModel(environmentModel.Object)
             {
                 ResourceName = "test",
                 ResourceType = ResourceType.Service,
@@ -796,26 +792,6 @@ namespace Dev2.Core.Tests
             //-------------Assert Results------------------------
             Assert.IsNotNull(errMessage);
             Assert.AreEqual("Please enter a name for this resource", errMessage);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ResourceModel_IDataErrorInfo")]
-        public void ResourceModel_IDataErrorInfo_ThisAccessor_IconPath()
-        {
-            //------------Setup for test--------------------------
-            var instanceID = Guid.NewGuid();
-
-            var err1 = new Mock<IErrorInfo>();
-            err1.Setup(e => e.InstanceID).Returns(instanceID);
-            var err2 = new Mock<IErrorInfo>();
-            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
-            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object) { IconPath = "somePath" };
-            //------------Execute Test---------------------------
-            var errMsg = model["IconPath"];
-            //-------------Assert Results------------------------
-            Assert.IsNotNull(errMsg);
-            Assert.AreEqual("Icon Path Does Not Exist or is not valid", errMsg);
         }
 
         [TestMethod]

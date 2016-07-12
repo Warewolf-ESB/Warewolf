@@ -1,0 +1,27 @@
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+
+namespace Warewolf.Studio.Core
+{
+    public static class PopupViewManageEffects
+    {
+        public static void AddBlackOutEffect(Grid blackoutGrid)
+        {
+            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
+            blackoutGrid.Background = new SolidColorBrush(Colors.DarkGray);
+            blackoutGrid.Opacity = 0.5;
+            var content = Application.Current.MainWindow.Content as Grid;
+            content?.Children.Add(blackoutGrid);
+            Application.Current.MainWindow.Effect = effect;
+        }
+
+        public static void RemoveBlackOutEffect(Grid blackoutGrid)
+        {
+            Application.Current.MainWindow.Effect = null;
+            var content = Application.Current.MainWindow.Content as Grid;
+            content?.Children.Remove(blackoutGrid);
+        }
+    }
+}

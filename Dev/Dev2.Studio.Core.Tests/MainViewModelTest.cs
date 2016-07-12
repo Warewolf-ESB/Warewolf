@@ -18,17 +18,15 @@ using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Common.Interfaces.Studio;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.Factory;
 using Dev2.Services.Events;
@@ -45,7 +43,6 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Workspaces;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
@@ -89,6 +86,30 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(MainViewModel.DeployCommand.CanExecute(null));
         }
 
+        [TestMethod]
+        public void MainViewModel_ShowPopupMessage_CallsPopupController()
+        {
+            CreateFullExportsAndVm();
+            MainViewModel.ShowPopup(new Mock<IPopupMessage>().Object);
+            PopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, @"", false, true, false, false),Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_ToolboxViewModel")]
+        public void MainViewModel_ToolboxViewModel_WhenInContainer_ShouldReturnContainerValue()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            //------------Execute Test---------------------------
+            var mainViewModelToolboxViewModel = MainViewModel.ToolboxViewModel;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(toolboxViewModel,mainViewModelToolboxViewModel);
+        } 
+           
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("MainViewModel_SettingsCommand")]
@@ -297,22 +318,6 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region Show Help Tab
-
-        [TestMethod]
-        public void ShowHelpTabMessageExpectHelpTabWithUriActive()
-        {
-            CreateFullExportsAndVm();
-            var msg = new ShowHelpTabMessage("testuri");
-            MainViewModel.Handle(msg);
-            var helpctx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpctx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(helpctx.Uri == "testuri");
-            // ReSharper restore PossibleNullReferenceException
-        }
-
-        #endregion
 
         #region AddMode Work Surface
 
@@ -599,8 +604,6 @@ namespace Dev2.Core.Tests
             PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var mckEnv = new Mock<IEnvironmentRepository>();
             var mockEnv = new Mock<IEnvironmentModel>();
-            PrivateObject p = new PrivateObject(MainViewModel);
-            p.SetProperty("EnvironmentRepository",mckEnv.Object);
             mckEnv.Setup(a => a.Get(It.IsAny<Guid>()))
                 .Returns(mockEnv.Object);
             var res = new Mock<IResourceRepository>();
@@ -612,11 +615,7 @@ namespace Dev2.Core.Tests
                     s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(),
                         It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(),
                         It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
-
-
         }
-
-
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -685,35 +684,6 @@ namespace Dev2.Core.Tests
         #region Commands
 
         [TestMethod]
-        public void DisplayAboutDialogueCommandExpectsWindowManagerShowingIDialogueViewModel()
-        {
-            CreateFullExportsAndVm();
-            WindowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
-            CustomContainer.Register(new DialogViewModelFactory() as IDialogViewModelFactory);
-            MainViewModel.DisplayAboutDialogueCommand.Execute(null);
-            WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
-        }
-
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("MainViewModel_AddLanguageHelpPageCommand")]
-        public void MainViewModel_AddLanguageHelpPageCommand_LanguageHelpActive()
-        {
-            CreateFullExportsAndVm();
-            //------------Execute Test---------------------------
-            MainViewModel.AddLanguageHelpPageCommand.Execute(null);
-
-            // Assert LanguageHelp is active
-            var languageHelpUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
-            var langHelpCtx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(langHelpCtx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
-            // ReSharper restore PossibleNullReferenceException
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_ShowStartPageCommand")]
         public void MainViewModel_ShowStartPageCommand_ShowStartPageActive()
@@ -775,30 +745,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(AuthorizationContext.None, authorizeCommand.AuthorizationContext);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_EditCommand")]
-        public void MainViewModel_EditCommand_NotNull()
-        {
-            CreateFullExportsAndVm();
-            //------------Execute Test---------------------------
-            var authorizeCommand = MainViewModel.EditCommand;
-            Assert.IsNotNull(authorizeCommand);
-            Assert.AreEqual(MainViewModel.ActiveItem.EditCommand, authorizeCommand);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_EditCommand")]
-        public void MainViewModel_EditCommandNoActiveItem_NotNull()
-        {
-            CreateFullExportsAndVmWithEmptyRepo();
-            MainViewModel.DeactivateItem(MainViewModel.ActiveItem, true);
-            //------------Execute Test---------------------------
-            var authorizeCommand = MainViewModel.EditCommand;
-            Assert.IsNotNull(authorizeCommand);
-            Assert.AreEqual(AuthorizationContext.None, authorizeCommand.AuthorizationContext);
-        }
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -893,9 +840,8 @@ namespace Dev2.Core.Tests
         public void MainViewModel_Regression_NewWorkFlowCommand_DoesNotSaveRepository()
         {
             //Setup
-            CustomContainer.Register(new Mock<IPopupController>().Object);
+            CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
             CreateFullExportsAndVmWithEmptyRepo();
-            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
             // ReSharper disable once SuggestVarOrType_Elsewhere
             Mock<IEnvironmentModel> environmentRepo = CreateMockEnvironment();
             // ReSharper disable once SuggestVarOrType_Elsewhere
@@ -914,7 +860,7 @@ namespace Dev2.Core.Tests
             EmptyEnvRepo.Setup(p => p.Get(It.IsAny<Guid>())).Returns(environmentRepo.Object);
 
             MainViewModel.ActiveEnvironment = environmentRepo.Object;
-            MainViewModel.NewResourceCommand.Execute("Workflow");
+            MainViewModel.NewServiceCommand.Execute("");
             //Assert
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
         }
@@ -1137,7 +1083,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
@@ -1197,7 +1143,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 3");
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
@@ -1269,7 +1215,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1331,7 +1277,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1392,7 +1338,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1453,7 +1399,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1531,7 +1477,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
             #endregion
 
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
             var contextViewModel = new WorkSurfaceContextViewModel(
@@ -1579,7 +1525,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 5");
             #endregion
 
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
             var contextViewModel = new WorkSurfaceContextViewModel(
@@ -1606,7 +1552,7 @@ namespace Dev2.Core.Tests
         {
             var workspaceItemRepository = new WorkspaceItemRepository(wsiRepo.Object);
             CustomContainer.Register<IWorkspaceItemRepository>(workspaceItemRepository);
-            CustomContainer.Register(new Mock<IPopupController>().Object);
+            CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
         }
 
         #endregion
@@ -1656,20 +1602,7 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region ActiveEnvironment
-
-        [TestMethod]
-        [TestCategory("MainViewModel_SetActiveEnvironmentMessage")]
-        [Owner("Trevor Williams-Ros")]
-        public void MainViewModel_SetActiveEnvironmentMessage_SetsActiveEnvironmentOnEnvironmentRepository()
-        {
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel();
-            CreateFullExportsAndVmWithEmptyRepo();
-            EmptyEnvRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(mockEnv.Object);
-            MainViewModel.Handle(new SetActiveEnvironmentMessage(mockEnv.Object));
-            
-            Assert.AreSame(mockEnv.Object, MainViewModel.EnvironmentRepository.ActiveEnvironment);
-        }
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("MainViewModel_AuthorizeCommands")]
@@ -1681,7 +1614,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVmWithEmptyRepo();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(AuthorizationContext.Contribute, MainViewModel.NewResourceCommand.AuthorizationContext);
+            Assert.AreEqual(AuthorizationContext.Contribute, MainViewModel.NewServiceCommand.AuthorizationContext);
             Assert.AreEqual(AuthorizationContext.Administrator, MainViewModel.SettingsCommand.AuthorizationContext);
         }
 
@@ -1693,7 +1626,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------            
             CreateFullExportsAndVmWithEmptyRepo();
 
-            Assert.IsNull(MainViewModel.NewResourceCommand.AuthorizationService);
+            Assert.IsNull(MainViewModel.NewServiceCommand.AuthorizationService);
             Assert.IsNull(MainViewModel.SettingsCommand.AuthorizationService);
 
             var authService = new Mock<IAuthorizationService>();
@@ -1705,7 +1638,7 @@ namespace Dev2.Core.Tests
             MainViewModel.ActiveEnvironment = env.Object;
 
             //------------Assert Results-------------------------
-            Assert.AreSame(authService.Object, MainViewModel.NewResourceCommand.AuthorizationService);
+            Assert.AreSame(authService.Object, MainViewModel.NewServiceCommand.AuthorizationService);
             Assert.AreSame(authService.Object, MainViewModel.SettingsCommand.AuthorizationService);
         }
 
@@ -1756,13 +1689,13 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
               environmentRepository.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(connected1.Object);
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            var popup = new Mock<IPopupController>();
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
             var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
-            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<IPopupController>().Object, (a, b,c) => { });
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b,c) => { });
 
             mvm.Items.Add(vm);
             Assert.IsFalse(mvm.OnStudioClosing());
@@ -1801,13 +1734,13 @@ namespace Dev2.Core.Tests
             var asyncWorker = new Mock<IAsyncWorker>();
             asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            var popup = new Mock<IPopupController>();
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
             var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(false);
             scheduler.SelectedTask = task.Object;
-            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<IPopupController>().Object, (a, b,c) => { });
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b,c) => { });
 
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());   // assert that the studio closes
@@ -1864,7 +1797,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
                 
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            var popup = new Mock<IPopupController>();
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
 
             EnvironmentRepository.Instance.ActiveEnvironment = environmentModel.Object;
@@ -1873,7 +1806,7 @@ namespace Dev2.Core.Tests
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
-            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<IPopupController>().Object, (a, b,c) => { });
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b,c) => { });
 
             mvm.Items.Add(vm);
             Assert.IsFalse(mvm.OnStudioClosing());
@@ -1909,13 +1842,13 @@ namespace Dev2.Core.Tests
             IList<IEnvironmentModel> lst = new List<IEnvironmentModel> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            var popup = new Mock<IPopupController>();
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
 
             var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new SynchronousAsyncWorker(), new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
-            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<IPopupController>().Object, (a, b,c) => { });
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b,c) => { });
             environmentRepository.Setup(repo => repo.All()).Returns(new List<IEnvironmentModel>());
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());
@@ -1952,13 +1885,13 @@ namespace Dev2.Core.Tests
             IList<IEnvironmentModel> lst = new List<IEnvironmentModel> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            var popup = new Mock<IPopupController>();
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes).Verifiable();
             var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
-            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<IPopupController>().Object, (a, b,c) => { });
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b,c) => { });
             environmentRepository.Setup(repo => repo.All()).Returns(new List<IEnvironmentModel>());
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());
@@ -2008,7 +1941,7 @@ namespace Dev2.Core.Tests
 
             var vm = new MainViewModel(eventAggregator.Object, new SynchronousAsyncWorker(), envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
 
-            var workSurfaceContextViewModel = new Mock<WorkSurfaceContextViewModel>(eventAggregator.Object, new WorkSurfaceKey(), new Mock<IWorkSurfaceViewModel>().Object, new Mock<IPopupController>().Object, new Action<IContextualResourceModel, bool, System.Action>(
+            var workSurfaceContextViewModel = new Mock<WorkSurfaceContextViewModel>(eventAggregator.Object, new WorkSurfaceKey(), new Mock<IWorkSurfaceViewModel>().Object, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, new Action<IContextualResourceModel, bool, System.Action>(
                 (a, b,c) => { }));
             workSurfaceContextViewModel.Setup(v => v.Debug()).Verifiable();
 
@@ -2147,7 +2080,7 @@ namespace Dev2.Core.Tests
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
 
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
 
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
@@ -2171,8 +2104,8 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
-            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             mockPopupController.Setup(controller => controller.Show("Some message", "Some heading", MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false)).Verifiable();
             viewModel.PopupProvider = mockPopupController.Object;
             //------------Execute Test---------------------------
@@ -2197,7 +2130,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
@@ -2212,7 +2145,7 @@ namespace Dev2.Core.Tests
 
         }
         // ReSharper disable TooManyDependencies
-        public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
+        public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, Common.Interfaces.Studio.Controller.IPopupController popupController, IAsyncWorker asyncWorker)
             // ReSharper restore TooManyDependencies
             : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object)
         {
@@ -2236,7 +2169,7 @@ namespace Dev2.Core.Tests
         }
 
         // ReSharper disable TooManyDependencies
-        public SettingsViewModelForTest(IEventAggregator eventPublisher, IPopupController popupController,
+        public SettingsViewModelForTest(IEventAggregator eventPublisher, Common.Interfaces.Studio.Controller.IPopupController popupController,
             // ReSharper restore TooManyDependencies
                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object)

@@ -104,10 +104,14 @@
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
     <Compile Include="Common\NullValueInVariableException.cs" />
+    <Compile Include="DateAndTime\AssignManager.cs" />
+    <Compile Include="DateAndTime\CompareTextValueToDateTimePart.cs" />
     <Compile Include="DateAndTime\DateTimeComparer.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactory.cs" />
     <Compile Include="DateAndTime\DateTimeFormatter.cs" />
+    <Compile Include="DateAndTime\DateTimeLiteralProcessor.cs" />
     <Compile Include="DateAndTime\DateTimeParser.cs" />
+    <Compile Include="DateAndTime\DatetimeParserHelper.cs" />
     <Compile Include="DateAndTime\TO\DateTimeDiffTO.cs" />
     <Compile Include="DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
     <Compile Include="DateAndTime\TO\DateTimeFormatPartTO.cs" />
@@ -136,6 +140,15 @@
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="IDev2IJsonListEvaluator.cs" />
     <Compile Include="IncludeApi.cs" />
+    <Compile Include="Interfaces\IAssignManager.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatForwardLookup.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatForwardLookupsForDotNet.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatPart.cs" />
+    <Compile Include="Interfaces\IDateTimeFormatPartsForDotNet.cs" />
+    <Compile Include="Interfaces\IDateTimeParserBuilder.cs" />
+    <Compile Include="Interfaces\IDatetimeParserHelper.cs" />
+    <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
+    <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="MaintainerApi.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
@@ -149,6 +162,12 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookup.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookupsForDotNet.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatPart.cs" />
+    <Compile Include="TimeZoneBuilder\DateTimeFormatPartsForDotNet.cs" />
+    <Compile Include="TimeZoneBuilder\TimeFormatPartBuilder.cs" />
+    <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="Utils\StringTransform.cs" />
@@ -177,7 +196,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

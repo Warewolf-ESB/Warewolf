@@ -42,25 +42,25 @@ namespace Dev2.Runtime.ESB.Control
         #region IFrameworkDuplexDataChannel Members
 
         readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
-
+        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager = new EnvironmentOutputMappingManager();
         public void Register(string userName)
         {
-            if(_users.ContainsKey(userName))
+            if (_users.ContainsKey(userName))
             {
                 _users.Remove(userName);
             }
 
             _users.Add(userName, OperationContext.Current.GetCallbackChannel<IFrameworkDuplexCallbackChannel>());
-            NotifyAllClients(string.Format("User '{0}' logged in", userName));
+            NotifyAllClients($"User '{userName}' logged in");
 
         }
 
         public void Unregister(string userName)
         {
-            if(UserExists(userName))
+            if (UserExists(userName))
             {
                 _users.Remove(userName);
-                NotifyAllClients(string.Format("User '{0}' logged out", userName));
+                NotifyAllClients($"User '{userName}' logged out");
             }
         }
 
@@ -77,29 +77,29 @@ namespace Dev2.Runtime.ESB.Control
         public void SendMessage(string userName, string message)
         {
             string suffix = " Said:";
-            if(userName == "System")
+            if (userName == "System")
             {
                 suffix = string.Empty;
             }
-            NotifyAllClients(string.Format("{0} {1} {2}", userName, suffix, message));
+            NotifyAllClients($"{userName} {suffix} {message}");
         }
 
         public void SendPrivateMessage(string userName, string targetUserName, string message)
         {
             string suffix = " Said:";
-            if(userName == "System")
+            if (userName == "System")
             {
                 suffix = string.Empty;
             }
-            if(UserExists(userName))
+            if (UserExists(userName))
             {
-                if(!UserExists(targetUserName))
+                if (!UserExists(targetUserName))
                 {
-                    NotifyClient(userName, string.Format("System: Message failed - User '{0}' has logged out ", targetUserName));
+                    NotifyClient(userName, $"System: Message failed - User '{targetUserName}' has logged out ");
                 }
                 else
                 {
-                    NotifyClient(targetUserName, string.Format("{0} {1} {2}", userName, suffix, message));
+                    NotifyClient(targetUserName, $"{userName} {suffix} {message}");
                 }
             }
         }
@@ -146,12 +146,12 @@ namespace Dev2.Runtime.ESB.Control
 
             try
             {
-                if(UserExists(userName))
+                if (UserExists(userName))
                 {
                     _users[userName].CallbackNotification(message);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error(ex);
                 _users.Remove(userName);
@@ -172,7 +172,7 @@ namespace Dev2.Runtime.ESB.Control
             {
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error(ex);
                 throw;
@@ -199,14 +199,14 @@ namespace Dev2.Runtime.ESB.Control
                 theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             });
             // If no DLID, we need to make it based upon the request ;)
-            if(dataObject.DataListID == GlobalConstants.NullDataListID)
+            if (dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 IResource resource;
                 try
                 {
                     resource = dataObject.ResourceID == Guid.Empty ? GetResource(workspaceId, dataObject.ServiceName) : GetResource(workspaceId, dataObject.ResourceID);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Error(ex);
                     errors.AddError(string.Format(ErrorResource.ServiceNotFound, dataObject.ServiceName));
@@ -214,13 +214,10 @@ namespace Dev2.Runtime.ESB.Control
                 }
 
                 // TODO : Amend here to respect Inputs only when creating shape ;)
-                if(resource != null)
+                if (resource?.DataList != null)
                 {
-                    if(resource.DataList != null)
-                    {
-                        Dev2Logger.Debug("Mapping Inputs from Environment");
-                        ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
-                    }
+                    Dev2Logger.Debug("Mapping Inputs from Environment");
+                    ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
                 }
                 dataObject.RawPayload = new StringBuilder();
 
@@ -233,7 +230,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 // Setup the invoker endpoint ;)
                 Dev2Logger.Debug("Creating Invoker");
-                using(var invoker = new EsbServiceInvoker(this, this, theWorkspace, request))
+                using (var invoker = new EsbServiceInvoker(this, this, theWorkspace, request))
                 {
                     // Should return the top level DLID
                     ErrorResultTO invokeErrors;
@@ -241,7 +238,7 @@ namespace Dev2.Runtime.ESB.Control
                     errors.MergeErrors(invokeErrors);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(ex.Message);
             }
@@ -255,7 +252,7 @@ namespace Dev2.Runtime.ESB.Control
         static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            
+
             return resource;
         }
 
@@ -265,7 +262,7 @@ namespace Dev2.Runtime.ESB.Control
             return resource;
         }
 
-       
+
 
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
@@ -295,16 +292,16 @@ namespace Dev2.Runtime.ESB.Control
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
             errors = new ErrorResultTO();
-            
+
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow();
 
             var principle = Thread.CurrentPrincipal;
             Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
-            if(dataObject.RunWorkflowAsync)
+            if (dataObject.RunWorkflowAsync)
             {
-        
+
                 ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
                 errors.MergeErrors(invokeErrors);
             }
@@ -315,7 +312,7 @@ namespace Dev2.Runtime.ESB.Control
                     if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
                         errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
-                
+
                         return null;
                     }
                 }
@@ -323,7 +320,7 @@ namespace Dev2.Runtime.ESB.Control
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (executionContainer != null)
                 {
-                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs,update);
+                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
                     if (!isLocal)
                     {
                         SetRemoteExecutionDataList(dataObject, executionContainer, errors);
@@ -334,11 +331,11 @@ namespace Dev2.Runtime.ESB.Control
                         executionContainer.InstanceOutputDefinition = outputDefs;
                         executionContainer.Execute(out invokeErrors, update);
                         var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
-                        
+
                         errors.MergeErrors(invokeErrors);
                         string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                        errors.MergeErrors(invokeErrors);                        
+                        errors.MergeErrors(invokeErrors);
                         return env;
                     }
                     errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
@@ -349,63 +346,23 @@ namespace Dev2.Runtime.ESB.Control
 
         public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {
-            var innerEnvironment = dataObject.Environment;
-            dataObject.PopEnvironment();
-            DataListUtil.OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs, update);
-            if (innerEnvironment.HasErrors() && !handleErrors)
-            {
-                foreach (var error in innerEnvironment.AllErrors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-                        dataObject.Environment.AllErrors.Add(error);
-                        errors.AddError(error);
-                    }
-                }
-                foreach (var error in innerEnvironment.Errors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-                        dataObject.Environment.AllErrors.Add(error);
-                        errors.AddError(error);
-                    }
-                }
-            }
-            if (innerEnvironment.HasErrors() && handleErrors)
-            {
-                foreach (var error in innerEnvironment.AllErrors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-               
-                        errors.AddError(error);
-                    }
-                }
-                foreach (var error in innerEnvironment.Errors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-          
-                        errors.AddError(error);
-                    }
-                }
-            }
-            return innerEnvironment;
+            var executionEnvironment = _environmentOutputMappingManager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+            return executionEnvironment;
         }
 
         public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
         {
-            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs,update);
+            var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
         static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
             var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
-            if(remoteContainer != null)
+            if (remoteContainer != null)
             {
-                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID,dataObject.ServiceName,dataObject.IsDebugMode());
-                if(fetchRemoteResource != null)
+                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID, dataObject.ServiceName, dataObject.IsDebugMode());
+                if (fetchRemoteResource != null)
                 {
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
                     var remoteDataList = fetchRemoteResource.DataList;
@@ -425,21 +382,21 @@ namespace Dev2.Runtime.ESB.Control
             var clonedDataObject = dataObject.Clone();
             invokeErrors = new ErrorResultTO();
             var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
-            if(executionContainer != null)
+            if (executionContainer != null)
             {
-                if(!isLocal)
+                if (!isLocal)
                 {
                     var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
-                    if(remoteContainer != null)
+                    if (remoteContainer != null)
                     {
-                        if(!remoteContainer.ServerIsUp())
+                        if (!remoteContainer.ServerIsUp())
                         {
                             invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
                         }
                         SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
                     }
                 }
-                if(!invokeErrors.HasErrors())
+                if (!invokeErrors.HasErrors())
                 {
                     var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
                     Task.Factory.StartNew(() =>
@@ -456,7 +413,7 @@ namespace Dev2.Runtime.ESB.Control
                             task.Result.Environment = null;
                         }
                     });
-                   
+
                 }
             }
             else
@@ -472,16 +429,12 @@ namespace Dev2.Runtime.ESB.Control
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
-            generateInvokeContainer.Execute(out errors,update);
+            generateInvokeContainer.Execute(out errors, update);
             var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, "", 0);
             var jsonSerializerSettings = new JsonSerializerSettings();
             var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
             return deserializeObject;
         }
-
-
-        static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
-
 
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {

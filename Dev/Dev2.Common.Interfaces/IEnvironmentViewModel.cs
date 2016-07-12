@@ -8,33 +8,30 @@ namespace Dev2.Common.Interfaces
 {
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {
-      
         string DisplayName { get; set; }
         bool IsConnected { get; }
         bool IsLoaded { get; }
         bool Connect();
         bool IsConnecting { get; set; }
-        void SetItemCheckedState(Guid id, bool state);
-        void RemoveItem(IExplorerItemViewModel vm);
-        Task<bool> Load(bool b=false);
-        Task<bool> LoadDialog(string selectedId,bool b=false);
-        void Filter(string filter);
-        void Filter(Func<IExplorerItemViewModel, bool> filter);
-        ICollection<IExplorerItemViewModel> AsList();
-        ICommand RefreshCommand { get; set; }
         bool IsServerIconVisible { get; set; }
         bool IsServerUnavailableIconVisible { get; set; }
-        ICommand ShowServerVersionCommand { get; set; }
-
         bool IsVisible { get; set; }
-        Action SelectAll { get; set; }
 
-        void SetPropertiesForDialog();
+        ICommand RefreshCommand { get; set; }
+        ICommand ShowServerVersionCommand { get; set; }
+        ICollection<IExplorerItemViewModel> AsList();
 
+        void SetItemCheckedState(Guid id, bool state);
         void SelectItem(string selectedPath, Action<IExplorerItemViewModel> foundAction);
-
-        Task<bool> LoadDialog(Guid selectedPath);
-
+        void RemoveItem(IExplorerItemViewModel vm);
+        void Filter(string filter);
+        void Filter(Func<IExplorerItemViewModel, bool> filter);
+        void SetPropertiesForDialog();
         void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions);
+
+        Action SelectAll { get; set; }
+        Task<bool> Load(bool b = false);
+        Task<bool> LoadDialog(string selectedId, bool b = false);
+        Task<bool> LoadDialog(Guid selectedPath);
     }
 }

@@ -12,7 +12,9 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
 
@@ -139,7 +141,7 @@ namespace Dev2.DataList.Contract
             return b.Generate();
         }
 
-        public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IntellisenseFilterOpsTO fiterTo)
+        public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IIntellisenseFilterOpsTO fiterTo)
         {
             DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTo, DataList = dataList };
 

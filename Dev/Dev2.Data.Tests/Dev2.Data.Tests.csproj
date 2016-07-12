@@ -48,6 +48,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
@@ -110,11 +114,13 @@
     <Compile Include="DecisionsTests\NotEndsWithTests.cs" />
     <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="Operations\Dev2ActivityIOBrokerTests.cs" />
     <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
     <Compile Include="Operations\Dev2IndexFinderTests.cs" />
     <Compile Include="Operations\Dev2IOBrokerTests.cs" />
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
     <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
+    <Compile Include="Parsers\Dev2DataLanguageParserTests.cs" />
     <Compile Include="PathOperations\Dev2FileSystemProviderTests.cs" />
     <Compile Include="PathOperations\Dev2PutRawOperationTOTests.cs" />
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
@@ -148,6 +154,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
+      <Name>Warewolf.Resource</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
@@ -188,7 +198,7 @@
     </When>
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

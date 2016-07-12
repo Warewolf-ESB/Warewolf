@@ -270,7 +270,7 @@ namespace Dev2.Common.DateAndTime
 
         private static string Format_dw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
-            return DateTimeParser.GetDayOfWeekInt(dateTime.DayOfWeek).ToString(CultureInfo.InvariantCulture);
+            return DateTimeParserHelper.GetDayOfWeekInt(dateTime.DayOfWeek).ToString(CultureInfo.InvariantCulture);
         }
 
         private static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)

@@ -11,8 +11,11 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.CaseConvert;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.CaseConvert
@@ -65,10 +68,37 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
                 new CaseConvertTO("", "None", "", 0)
             };
             var viewModel = new CaseConvertDesignerViewModel(CreateModelItem(items));
+            viewModel.Validate();
             dynamic mi = viewModel.ModelItem;
             Assert.AreEqual(4, mi.ConvertCollection.Count);
         }
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("CaseConvertDesignerViewModel_Handle")]
+        public void CaseConvertDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var items = new List<CaseConvertTO>
+            {
+                new CaseConvertTO("", "None", "", 0),
+                new CaseConvertTO("", "None", "", 0),
+                new CaseConvertTO("", "None", "", 0),
+                new CaseConvertTO("", "None", "", 0)
+            };
+            var viewModel = new CaseConvertDesignerViewModel(CreateModelItem(items));
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+        }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("CaseConvertDesignerViewModel_Constructor")]

@@ -116,7 +116,9 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ESB\Control\EnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
+    <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
@@ -131,11 +133,6 @@
     <Compile Include="ESB\WF\FileSystemInstanceStore.cs" />
     <Compile Include="ESB\WF\FileSystemInstanceStoreIO.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
-    <Compile Include="ESB\WF\WorkflowApplicationFactory.cs" />
-    <Compile Include="Network\Auxiliary\StudioAuxiliaryAccount.cs" />
-    <Compile Include="Network\Auxiliary\StudioAuxiliarySession.cs" />
-    <Compile Include="Network\StudioTemplates.cs" />
-    <Compile Include="Network\StudioFileSystem.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="TO\ServiceHydrationTO.cs" />
   </ItemGroup>
@@ -233,7 +230,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
