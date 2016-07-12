@@ -58,7 +58,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
-            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
+            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, dropBoxSourceManager.Object);
             scenarioContext.Add("downloadViewModel", downloadViewModel);
             scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
             scenarioContext.Add("eventAggrMock", mockEventAggregator);

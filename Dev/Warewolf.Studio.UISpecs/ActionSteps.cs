@@ -41,7 +41,7 @@ namespace Warewolf.Studio.UISpecs
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.SearchTimeout = 10000;
 
-            var sleepTimer = 5;
+            var sleepTimer = 10;
             while (true)
             {
                 try
