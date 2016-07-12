@@ -152,25 +152,7 @@ namespace Dev2.Core.Tests
             vm.UpdateHelpDescriptor(someTestingString);
             mockHelpWindowViewModel.Verify(model => model.UpdateHelpText(someTestingString));
         }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void Given_AppendXShould_AppentTheContent()
-        {
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
-                new Mock<IDebugOutputFilterStrategy>().Object);
-            var lineItem = new Mock<IDebugLineItem>();
-            lineItem.SetupGet(l => l.MoreLink).Returns("Something");
-
-            var mainViewModel = new Mock<IMainViewModel>();
-            var mockHelpWindowViewModel = new Mock<IHelpWindowViewModel>();
-            mainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpWindowViewModel.Object);
-            vm.ShowInputs = false;
-            vm.ShowDuration = false;
-            var dbgS = new Mock<IDebugState>();
-            dbgS.SetupProperty(state => state.SessionID, Guid.NewGuid());
-            vm.AppendX(dbgS.Object);
-        }
+        
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
