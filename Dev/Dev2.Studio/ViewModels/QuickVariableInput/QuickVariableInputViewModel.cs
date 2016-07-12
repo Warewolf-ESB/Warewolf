@@ -240,10 +240,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         protected void OnClose()
         {
-            if (CloseAdornersRequested != null)
-            {
-                CloseAdornersRequested(this, new EventArgs());
-            }
+            CloseAdornersRequested?.Invoke(this, new EventArgs());
         }
 
         #endregion
@@ -538,10 +535,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
