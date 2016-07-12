@@ -50,18 +50,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
         readonly object _updatingPermissions = new object();
-        bool _isDisposed;
 
         public bool IsLoaded
         {
             get { return _isLoaded; }
             set
-            {
-                if (_isLoaded == value)
-                {
-                    return;
-                }
-
+            {               
                 if (!value)
                 {
                     _cachedServices.Clear();
@@ -250,7 +244,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var result = ResourceModels.Find(func.Invoke);
 
-                // force a payload fetch ;)
                 if (result != null && ((result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
                 {
                     var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
@@ -362,11 +355,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 HandleDeleteResourceError(result, resource);
                 return null;
-            }
-
-            if (!resource.ResourceName.Contains("Unsaved"))
-            {
-            }
+            }            
             return result;
         }
 
@@ -555,7 +544,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.HelpLink = string.Empty;
                 resource.IsNewWorkflow = isNewWorkflow;
 
-                if (data.Errors != null && data.Errors.Count > 0)
+                if (data.Errors != null)
                 {
                     foreach (var error in data.Errors)
                     {
@@ -585,8 +574,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
         {
-
-
             var comsController = GetCommunicationController("SaveResourceService");
             CompressedExecuteMessage message = new CompressedExecuteMessage();
             message.SetMessage(resourceDefinition.ToString());
@@ -615,9 +602,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             var con = resourceModel.Environment.Connection;
-
             Guid workspaceId = con.WorkspaceID;
-
             var comsController = new CommunicationController { ServiceName = "TerminateExecutionService" };
             comsController.AddPayloadArgument("Roles", "*");
             comsController.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
@@ -787,7 +772,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return false;
         }
 
-        public List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, Enums.ResourceType resourceType)
+        public List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType)
         {
             if (targetEnvironment == null || guids == null)
             {
@@ -797,7 +782,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var comController = new CommunicationController { ServiceName = "FindResourcesByID" };
 
             comController.AddPayloadArgument("GuidCsv", string.Join(",", guids));
-            comController.AddPayloadArgument("Type", Enum.GetName(typeof(Enums.ResourceType), resourceType));
+            comController.AddPayloadArgument("Type", Enum.GetName(typeof(ResourceType), resourceType));
 
             var models = comController.ExecuteCompressedCommand<List<SerializableResource>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             var serverId = targetEnvironment.Connection.ServerID;
@@ -852,15 +837,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-
-        #region Implementation of IDisposable
-
+        
         // Do not make this method virtual.
         // A derived class should not be able to override this method.
         public void Dispose()
         {
-            Dispose(true);
-
             // This object will be cleaned up by the Dispose method.
             // Therefore, you should call GC.SupressFinalize to
             // take this object off the finalization queue
@@ -874,31 +855,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
             // readability and maintainability.
-            Dispose(false);
+            Dispose();
         }
-
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if (!_isDisposed)
-            {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if (disposing)
-                {
-                }
-                // Call the appropriate methods to clean up
-                // unmanaged resources here.
-                _isDisposed = true;
-            }
-        }
+       
 
 
 
@@ -960,7 +919,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
             }
         }
-
-        #endregion Constructor
+        
     }
 }
