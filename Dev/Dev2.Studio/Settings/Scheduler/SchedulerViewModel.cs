@@ -15,8 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,13 +52,12 @@ using Microsoft.Win32.TaskScheduler;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Settings.Scheduler
 {
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
-        #region Fields
-
         IResourcePickerDialog _currentResourcePicker;
         private int _newTaskCounter = 1;
         private ICommand _saveCommand;
@@ -91,10 +88,6 @@ namespace Dev2.Settings.Scheduler
         private bool _errorShown;
         private EnvironmentViewModel _source;
         private readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
-
-        #endregion
-
-        #region Ctor
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SchedulerViewModel()
@@ -137,8 +130,6 @@ namespace Dev2.Settings.Scheduler
             SetupServer(server);
         }
 
-        #region Overrides of Screen
-
         public override string DisplayName
         {
             get
@@ -155,7 +146,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        #endregion
         public Func<IServer, IEnvironmentModel> ToEnvironmentModel
         {
             private get
@@ -167,10 +157,6 @@ namespace Dev2.Settings.Scheduler
                 _toEnvironmentModel = value;
             }
         }
-
-        #endregion
-
-        #region Properties
 
         public bool HasConnectionError
         {
@@ -400,8 +386,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if (ScheduledResourceModel != null && SelectedTask != null && _history == null && !SelectedTask.IsNewItem)
                 {
-                    _asyncWorker.Start(
-                   () =>
+                    _asyncWorker.Start(() =>
                    {
                        IsHistoryTabVisible = false;
                        IsProgressBarVisible = true;
@@ -431,10 +416,6 @@ namespace Dev2.Settings.Scheduler
                 if (null == value)
                 {
                     EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
-                    return;
-                }
-                if (Equals(value, _selectedHistory))
-                {
                     return;
                 }
                 _selectedHistory = value;
@@ -518,10 +499,6 @@ namespace Dev2.Settings.Scheduler
             }
             private set
             {
-                if (Equals(_triggerEditDialog, value))
-                {
-                    return;
-                }
                 _triggerEditDialog = value;
                 NotifyOfPropertyChange(() => TriggerEditDialog);
             }
@@ -619,10 +596,6 @@ namespace Dev2.Settings.Scheduler
             }
             private set
             {
-                if (value.Equals(_isHistoryTabVisible))
-                {
-                    return;
-                }
                 _isHistoryTabVisible = value;
                 NotifyOfPropertyChange(() => IsHistoryTabVisible);
             }
@@ -636,10 +609,6 @@ namespace Dev2.Settings.Scheduler
             }
             set
             {
-                if (value.Equals(_isProgressBarVisible))
-                {
-                    return;
-                }
                 _isProgressBarVisible = value;
                 NotifyOfPropertyChange(() => IsProgressBarVisible);
             }
@@ -688,10 +657,6 @@ namespace Dev2.Settings.Scheduler
                 return false;
             }
         }
-
-        #endregion
-
-        #region Commands
 
         public ICommand SaveCommand
         {
@@ -744,10 +709,6 @@ namespace Dev2.Settings.Scheduler
         {
             return CurrentResourcePickerDialog != null;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void InitializeHelp()
         {
@@ -814,18 +775,19 @@ namespace Dev2.Settings.Scheduler
                     return false;
                 }
 
-                if (SelectedTask?.OldName != null)
+                var oldName = SelectedTask?.OldName;
+                if (oldName != null)
                 {
-                    if (SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(Core.SchedulerNewTaskName) && !SelectedTask.IsNew)
+                    if (oldName != SelectedTask.Name && !oldName.Contains(Core.SchedulerNewTaskName) && !SelectedTask.IsNew)
                     {
-                        var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName, SelectedTask.Name);
+                        var showNameChangedConflict = _popupController.ShowNameChangedConflict(oldName, SelectedTask.Name);
                         if (showNameChangedConflict == MessageBoxResult.Cancel || showNameChangedConflict == MessageBoxResult.None)
                         {
                             return false;
                         }
                         if (showNameChangedConflict == MessageBoxResult.No)
                         {
-                            SelectedTask.Name = SelectedTask.OldName;
+                            SelectedTask.Name = oldName;
                             NotifyOfPropertyChange(() => Name);
                         }
                     }
@@ -926,7 +888,7 @@ namespace Dev2.Settings.Scheduler
         {
             if (SelectedTask != null && CurrentEnvironment != null)
             {
-                if (_task != null && _task.Status == TaskStatus.Running)
+                if (_task?.Status == TaskStatus.Running)
                 {
                     _task.Wait();
                     if (!_task.IsFaulted)
@@ -1070,7 +1032,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        #endregion
         public bool IsDirty
         {
             get
@@ -1097,7 +1058,6 @@ namespace Dev2.Settings.Scheduler
                 return false;
             }
         }
-        #region Public Methods
 
         public virtual bool DoDeactivate(bool showMessage)
         {
@@ -1153,7 +1113,7 @@ namespace Dev2.Settings.Scheduler
             while ((String.IsNullOrEmpty(AccountName) || String.IsNullOrEmpty(Password)) && !cancelled)
             {
                 NetworkCredential cred;
-                GetCredentialsVistaAndUp(scheduledResource.Name, out cred);
+                CredentialUI.GetCredentialsVistaAndUp(scheduledResource.Name, out cred);
                 if (cred == null)
                 {
                     cancelled = true;
@@ -1165,10 +1125,6 @@ namespace Dev2.Settings.Scheduler
                 }
             }
         }
-
-        #endregion
-
-        #region Implementation of IHelpSource
 
         public string HelpText
         {
@@ -1185,97 +1141,9 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        #endregion
-
         public IServer Server { private get; set; }
 
         public string ResourceType => "Scheduler";
-
-        [DllImport("ole32.dll")]
-        private static extern void CoTaskMemFree(IntPtr ptr);
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        // ReSharper disable once InconsistentNaming
-        private struct CREDUI_INFO
-        {
-            public int cbSize;
-            private readonly IntPtr hwndParent;
-            public string pszMessageText;
-            public string pszCaptionText;
-            private readonly IntPtr hbmBanner;
-        }
-
-        [DllImport("credui.dll", CharSet = CharSet.Auto)]
-        private static extern bool CredUnPackAuthenticationBuffer(int dwFlags,
-                                                                   IntPtr pAuthBuffer,
-                                                                   uint cbAuthBuffer,
-                                                                   StringBuilder pszUserName,
-                                                                   ref int pcchMaxUserName,
-                                                                   StringBuilder pszDomainName,
-                                                                   ref int pcchMaxDomainame,
-                                                                   StringBuilder pszPassword,
-                                                                   ref int pcchMaxPassword);
-
-        [DllImport("credui.dll", CharSet = CharSet.Auto)]
-        private static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO notUsedHere,
-                                                                     int authError,
-                                                                     ref uint authPackage,
-                                                                     IntPtr inAuthBuffer,
-                                                                     uint inAuthBufferSize,
-                                                                     out IntPtr refOutAuthBuffer,
-                                                                     out uint refOutAuthBufferSize,
-                                                                     ref bool fSave,
-                                                                     int flags);
-
-
-        [ExcludeFromCodeCoverage]
-        private static void GetCredentialsVistaAndUp(string taskName, out NetworkCredential networkCredential)
-        {
-            CREDUI_INFO credui = new CREDUI_INFO
-            {
-                pszCaptionText = "Please enter the credentials to use to schedule",
-                pszMessageText = taskName
-            };
-            credui.cbSize = Marshal.SizeOf(credui);
-            uint authPackage = 0;
-            IntPtr outCredBuffer;
-            uint outCredSize;
-            bool save = false;
-            int result = CredUIPromptForWindowsCredentials(ref credui,
-                                                           0,
-                                                           ref authPackage,
-                                                           IntPtr.Zero,
-                                                           0,
-                                                           out outCredBuffer,
-                                                           out outCredSize,
-                                                           ref save,
-                                                           1 /* Generic */);
-
-            var usernameBuf = new StringBuilder(100);
-            var passwordBuf = new StringBuilder(100);
-            var domainBuf = new StringBuilder(100);
-
-            int maxUserName = 100;
-            int maxDomain = 100;
-            int maxPassword = 100;
-            if (result == 0)
-            {
-                if (CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,
-                                                   domainBuf, ref maxDomain, passwordBuf, ref maxPassword))
-                {
-                    CoTaskMemFree(outCredBuffer);
-                    networkCredential = new NetworkCredential
-                    {
-                        UserName = usernameBuf.ToString(),
-                        Password = passwordBuf.ToString(),
-                        Domain = domainBuf.ToString()
-                    };
-                    return;
-                }
-            }
-
-            networkCredential = null;
-        }
     }
 
     public static class SchedulerServerExtensions
