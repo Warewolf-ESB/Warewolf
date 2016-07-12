@@ -24,8 +24,10 @@ using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.Factory;
@@ -1649,7 +1651,528 @@ namespace Dev2.Core.Tests
             MainViewModel.ActiveItem = MainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             var actual = MainViewModel.IsActiveEnvironmentConnected();
             Assert.IsFalse(actual);
-            Assert.IsFalse(MainViewModel.HasActiveConnection);
+        }
+
+        [TestMethod]
+        public void GetMenuPanelWidth()
+        {
+            CreateFullExportsAndVm();
+            Assert.IsFalse(MainViewModel.MenuExpanded);
+            Assert.AreEqual(60, MainViewModel.MenuPanelWidth);
+
+            MainViewModel.MenuExpanded = true;
+            Assert.IsTrue(MainViewModel.MenuExpanded);
+            Assert.AreEqual(60, MainViewModel.MenuPanelWidth);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_SetActiveServer")]
+        public void MainViewModel_SetActiveServer_Scenerio_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var newSelectedConnection = new Mock<IServer>();
+            var newSelectedConnectionEnvironmentId = Guid.NewGuid();
+            newSelectedConnection.SetupGet(it => it.ResourceName).Returns("Nonlocalhost");
+            newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
+            newSelectedConnection.SetupGet(it => it.HasLoaded).Returns(true);
+            newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
+
+            //------------Execute Test---------------------------
+            MainViewModel.SetActiveServer(newSelectedConnection.Object);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(MainViewModel.ActiveServer, newSelectedConnection.Object);
+        }
+
+        #endregion
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditDatabaseSource")]
+        public void MainViewModel_EditDatabaseSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IDbSource>();
+            source.Setup(a => a.Name).Returns("TestDatabase");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditDropboxSource")]
+        public void MainViewModel_EditDropboxSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IOAuthSource>();
+            source.Setup(a => a.ResourceName).Returns("TestDropbox");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditEmailSource")]
+        public void MainViewModel_EditEmailSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IEmailServiceSource>();
+            source.Setup(a => a.ResourceName).Returns("TestEmail");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditExchangeSource")]
+        public void MainViewModel_EditExchangeSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IExchangeSource>();
+            source.Setup(a => a.Name).Returns("TestExchange");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditPluginSource")]
+        public void MainViewModel_EditPluginSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var file = new Mock<IFileListing>();
+            file.Setup(a => a.FullName).Returns("File");
+
+            var source = new Mock<IPluginSource>();
+            source.Setup(a => a.Name).Returns("TestPlugin");
+            source.Setup(a => a.SelectedDll).Returns(file.Object);
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditRabbitMQSource")]
+        public void MainViewModel_EditRabbitMQSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IRabbitMQServiceSourceDefinition>();
+            source.Setup(a => a.ResourceName).Returns("TestRabbitMQ");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditServerSource")]
+        public void MainViewModel_EditServerSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IServerSource>();
+            source.Setup(a => a.Name).Returns("TestServer");
+            source.Setup(a => a.Address).Returns("https://someServerName:3143");
+
+            MainViewModel.EditServer(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditSharepointSource")]
+        public void MainViewModel_EditSharepointSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<ISharepointServerSource>();
+            source.Setup(a => a.Name).Returns("TestSharepoint");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditWcfSource")]
+        public void MainViewModel_EditWcfSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IWcfServerSource>();
+            source.Setup(a => a.Name).Returns("TestWcf");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_EditWebSource")]
+        public void MainViewModel_EditWebSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var source = new Mock<IWebServiceSource>();
+            source.Setup(a => a.Name).Returns("TestWeb");
+
+            MainViewModel.EditResource(source.Object);
+        }
+
+        #region CommandTests
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewDatabaseSource")]
+        public void MainViewModel_NewDatabaseSource_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewDatabaseSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewDatabaseSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewDropboxSourceCommand")]
+        public void MainViewModel_NewDropboxSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewDropboxSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewDropboxSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewEmailSourceCommand")]
+        public void MainViewModel_NewEmailSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewEmailSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewEmailSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewExchangeSourceCommand")]
+        public void MainViewModel_NewExchangeSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewExchangeSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewExchangeSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewPluginSourceCommand")]
+        public void MainViewModel_NewPluginSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewPluginSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewPluginSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewRabbitMQSourceCommand")]
+        public void MainViewModel_NewRabbitMQSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewRabbitMQSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewRabbitMQSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewServerSourceCommand")]
+        public void MainViewModel_NewServerSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewServerSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewServerSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewSharepointSourceCommand")]
+        public void MainViewModel_NewSharepointSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewSharepointSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewSharepointSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewWcfSourceCommand")]
+        public void MainViewModel_NewWcfSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewWcfSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewWcfSourceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_NewWebSourceCommand")]
+        public void MainViewModel_NewWebSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            MainViewModel.ActiveEnvironment = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(MainViewModel.ActiveEnvironment);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.IsConnected);
+            Assert.IsTrue(MainViewModel.ActiveEnvironment.CanStudioExecute);
+
+            var canExecute = MainViewModel.NewWebSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            MainViewModel.NewWebSourceCommand.Execute(null);
+        }
+
+        private static Mock<IEnvironmentModel> SetupEnvironment()
+        {
+            var newSelectedConnection = new Mock<IServer>();
+            var newSelectedConnectionEnvironmentId = Guid.NewGuid();
+            newSelectedConnection.SetupGet(it => it.ResourceName).Returns("Nonlocalhost");
+            newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
+            newSelectedConnection.SetupGet(it => it.HasLoaded).Returns(true);
+            newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
+            newSelectedConnection.SetupGet(it => it.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
+            newSelectedConnection.SetupGet(it => it.QueryProxy).Returns(new Mock<IQueryManager>().Object);
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.IsLocalHost).Returns(true);
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.CanStudioExecute).Returns(true);
+            env.Setup(a => a.Name).Returns("TestEnvironment");
+            return env;
         }
 
         #endregion

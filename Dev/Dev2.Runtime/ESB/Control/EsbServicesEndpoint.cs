@@ -24,7 +24,6 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
@@ -131,17 +130,17 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        bool UserExists(string userName)
+        private bool UserExists(string userName)
         {
             return _users.ContainsKey(userName) || userName.Equals("System", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        void NotifyAllClients(string message)
+        private void NotifyAllClients(string message)
         {
             _users.ToList().ForEach(c => NotifyClient(c.Key, message));
         }
 
-        void NotifyClient(string userName, string message)
+        private void NotifyClient(string userName, string message)
         {
 
             try
@@ -249,14 +248,14 @@ namespace Dev2.Runtime.ESB.Control
         }
 
 
-        static IResource GetResource(Guid workspaceId, Guid resourceId)
+        private static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             return resource;
         }
 
-        static IResource GetResource(Guid workspaceId, string resourceName)
+        private static IResource GetResource(Guid workspaceId, string resourceName)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
             return resource;
@@ -356,7 +355,7 @@ namespace Dev2.Runtime.ESB.Control
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
-        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
+        private static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
             var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
             if (remoteContainer != null)
@@ -377,7 +376,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
+        private void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
         {
             var clonedDataObject = dataObject.Clone();
             invokeErrors = new ErrorResultTO();
@@ -421,19 +420,6 @@ namespace Dev2.Runtime.ESB.Control
                 invokeErrors.AddError(ErrorResource.ResourceNotFound);
             }
 
-        }
-
-        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, int update)
-        {
-            var serviceID = dataObject.ResourceID;
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
-            var invoker = new EsbServiceInvoker(this, this, theWorkspace);
-            var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
-            generateInvokeContainer.Execute(out errors, update);
-            var convertFrom = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, "", 0);
-            var jsonSerializerSettings = new JsonSerializerSettings();
-            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
-            return deserializeObject;
         }
 
         protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
