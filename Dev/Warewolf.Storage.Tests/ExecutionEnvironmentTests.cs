@@ -37,7 +37,7 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(IndexOutOfRangeException))]
         public void GivenInvalidIndex_ExecutionEnvironmentEval_ShouldThrowIndexOutOfRangeException()
-        {            
+        {
             Assert.IsNotNull(_environment);
             _environment.Eval(OutOfBoundExpression, 0, true);
         }
