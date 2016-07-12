@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Simulation;
 using Dev2.Tests.Activities.XML;

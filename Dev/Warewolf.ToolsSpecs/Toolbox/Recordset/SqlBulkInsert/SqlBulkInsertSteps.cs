@@ -17,6 +17,7 @@ using System.Linq;
 using ActivityUnitTests;
 using Dev2.Data.Util;
 using Dev2.Integration.Tests.Services.Sql;
+using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;

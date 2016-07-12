@@ -37,11 +37,11 @@ namespace Warewolf.Studio.UISpecs
         public void AAA()
         {
             #region Variable Declarations
-            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            WpfTabPage startPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.StartPage;
             #endregion
 
-            // Verify that the 'Exists' property of 'Warewolf' window equals 'True'
-            Assert.AreEqual(this.AAAExpectedValues.MainStudioWindowExists, mainStudioWindow.Exists, "Main Studio Window Does not Exist");
+            // Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
+            Assert.AreEqual(this.AAAExpectedValues.StartPageExists, startPage.Exists, "Main Studio Window Does not Exist");
         }
         
         /// <summary>
@@ -1016,16 +1016,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Dependency_Graph_Refresh_Button_Exists - Use 'Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Dependency_Graph_Refresh_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Refresh' button equals 'True'
+            Assert.AreEqual(this.Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues.RefreshButtonExists, refreshButton.Exists, "Refresh button does not exist on dependency graph");
+        }
+        
+        /// <summary>
         /// Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected - Use 'Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected()
         {
             #region Variable Declarations
-            WpfRadioButton showwhatasdfdependsoRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsoRadioButton;
+            WpfRadioButton showwhatasdfdependsonRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsonRadioButton;
             #endregion
 
-            // Verify that the 'Selected' property of 'Show what asdf depends on' radio button equals 'True'
-            Assert.AreEqual(this.Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues.ShowwhatasdfdependsoRadioButtonSelected, showwhatasdfdependsoRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+            // Verify that the 'Selected' property of 'Show what this depends on' radio button equals 'True'
+            Assert.AreEqual(this.Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues.ShowwhatasdfdependsonRadioButtonSelected, showwhatasdfdependsonRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
         }
         
         /// <summary>
@@ -1034,11 +1047,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_Selected()
         {
             #region Variable Declarations
-            WpfRadioButton showwhatdependsonasdRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonasdRadioButton;
+            WpfRadioButton showwhatdependsonthisRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton;
             #endregion
 
-            // Verify that the 'Selected' property of 'Show what depends on asdf' radio button equals 'True'
-            Assert.AreEqual(this.Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues.ShowwhatdependsonasdRadioButtonSelected, showwhatdependsonasdRadioButton.Selected, "Show dependants radio button is not selected");
+            // Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
+            Assert.AreEqual(this.Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues.ShowwhatdependsonthisRadioButtonSelected, showwhatdependsonthisRadioButton.Selected, "Show dependants radio button is not selected");
         }
         
         /// <summary>
@@ -1277,6 +1290,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Explorer_Localhost_First_Item_Exists - Use 'Assert_Explorer_Localhost_First_Item_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Localhost_First_Item_Exists()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Server Name does not exist in the Explorer");
+        }
+        
+        /// <summary>
         /// Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer - Use 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer()
@@ -1339,19 +1365,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
             Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues.SelectedItemAsTSTCIREMOTEDisplayText, selectedItemAsTSTCIREMOTE.DisplayText, "Selected remote server is not TSTCIREMOTE");
-        }
-        
-        /// <summary>
-        /// Assert_Explorer_ServerName_Exists - Use 'Assert_Explorer_ServerName_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Explorer_ServerName_Exists()
-        {
-            #region Variable Declarations
-            WpfTreeItem explorerTreeItemChild = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.ExplorerTreeItem.ExplorerTreeItemChild;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_ServerName_ExistsExpectedValues.ExplorerTreeItemChildExists, explorerTreeItemChild.Exists, "Server Name does not exist in the Explorer");
         }
         
         /// <summary>
@@ -1950,19 +1963,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
             Assert.AreEqual(this.Assert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues.FolderReadExists, folderRead.Exists, "Read Folder large view does not exist on the design surface");
-        }
-        
-        /// <summary>
-        /// Assert_Refresh_Button_Exists_In_Dependency_Graph - Use 'Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Refresh_Button_Exists_In_Dependency_Graph()
-        {
-            #region Variable Declarations
-            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Refresh' button equals 'True'
-            Assert.AreEqual(this.Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues.RefreshButtonExists, refreshButton.Exists, "Refresh button does not exist on dependency graph");
         }
         
         /// <summary>
@@ -2907,6 +2907,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Service_Picker_Dialog_Does_Not_Exist - Use 'Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Dialog_Does_Not_Exist()
+        {
+            #region Variable Declarations
+            WpfWindow servicePickerDialog = this.MainStudioWindow.ServicePickerDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'False'
+            Assert.AreEqual(this.Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
+        }
+        
+        /// <summary>
         /// Assert_Service_Picker_Dialog_Exists - Use 'Assert_Service_Picker_Dialog_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Service_Picker_Dialog_Exists()
@@ -2917,6 +2930,58 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'Wpf' window equals 'True'
             Assert.AreEqual(this.Assert_Service_Picker_Dialog_ExistsExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Filter_Textbox_Exists - Use 'Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Filter_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues.FilterTextboxExists, filterTextbox.Exists, "Service picker filter testbox does not exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_OK_Button_Enabled - Use 'Assert_Service_Picker_OK_Button_EnabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_OK_Button_Enabled()
+        {
+            #region Variable Declarations
+            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'OK' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_OK_Button_EnabledExpectedValues.OKEnabled, ok.Enabled, "Service picker dialog OK button is not enabled.");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_OK_Button_Exists - Use 'Assert_Service_Picker_OK_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_OK_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            #endregion
+
+            // Verify that the 'Exists' property of 'OK' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_OK_Button_ExistsExpectedValues.OKExists, ok.Exists, "Service picker dialog OK button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Refresh_Button_Exists - Use 'Assert_Service_Picker_Refresh_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Refresh_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton refresh = this.MainStudioWindow.ServicePickerDialog.Explorer.Refresh;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Refresh_Button_ExistsExpectedValues.RefreshExists, refresh.Exists, "Service pick dialog refresh button does not exist.");
         }
         
         /// <summary>
@@ -2946,51 +3011,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Settings_ConnectButton_Exists - Use 'Assert_Settings_ConnectButton_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Settings_ConnectButton_Exists()
-        {
-            #region Variable Declarations
-            WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.ConnectServerButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_SettingsServerConnectButton_AutoID' button equals 'True'
-            Assert.AreEqual(this.Assert_Settings_ConnectButton_ExistsExpectedValues.ConnectServerButtonExists, connectServerButton.Exists, "Connect button in the settings window does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_Settings_ConnectControl_Edit_Button_Exists - Use 'Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Settings_ConnectControl_Edit_Button_Exists()
-        {
-            #region Variable Declarations
-            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.EditServerButton;
-            #endregion
-
-            // Verify that the 'Exists' property of '...' button equals 'True'
-            Assert.AreEqual(this.Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues.EditServerButtonExists, editServerButton.Exists, "Edit Server button does not exist in the Settings window");
-        }
-        
-        /// <summary>
-        /// Assert_Settings_ConnectControl_Exists - Use 'Assert_Settings_ConnectControl_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Settings_ConnectControl_Exists()
-        {
-            #region Variable Declarations
-            WpfComboBox settingsServerComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.SettingsServerComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'UI_SettingsServerComboBox_AutoID' combo box equals 'True'
-            Assert.AreEqual(this.Assert_Settings_ConnectControl_ExistsExpectedValues.SettingsServerComboBoxExists, settingsServerComboBox.Exists, "Connect Control in the Settings window does not exist");
-        }
-        
-        /// <summary>
         /// Assert_Settings_LoggingTab_Exists - Use 'Assert_Settings_LoggingTab_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Settings_LoggingTab_Exists()
         {
             #region Variable Declarations
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.LoggingTab;
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab;
             #endregion
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
@@ -3003,11 +3029,24 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Settings_ResourcePermissions_Exists()
         {
             #region Variable Declarations
-            WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions;
+            WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions;
             #endregion
 
             // Verify that the 'Exists' property of 'ResourcePermissionsDataGrid' table equals 'True'
             Assert.AreEqual(this.Assert_Settings_ResourcePermissions_ExistsExpectedValues.ResourcePermissionsExists, resourcePermissions.Exists, "Resource Permissions does not exist in the settings window");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_Ribbon_Button_Exists - Use 'Assert_Settings_Ribbon_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_Ribbon_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfText settingsIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.SettingsIcon;
+            #endregion
+
+            // Verify that the 'Exists' property of '' label equals 'True'
+            Assert.AreEqual(this.Assert_Settings_Ribbon_Button_ExistsExpectedValues.SettingsIconExists, settingsIcon.Exists, "Settings ribbon does not exist.");
         }
         
         /// <summary>
@@ -3016,11 +3055,119 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Settings_SecurityTab_Exists()
         {
             #region Variable Declarations
-            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab;
+            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab;
             #endregion
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
             Assert.AreEqual(this.Assert_Settings_SecurityTab_ExistsExpectedValues.SecurityTabExists, securityTab.Exists, "Security tab does not exist in the settings window");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton addResourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues.AddResourceButtonExists, addResourceButton.Exists, "Settings security tab resource permissions row1 add resource button does not exis" +
+                    "t");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfText addResourceText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__AddResourceTextBox_AutoID' label equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues.AddResourceTextExists, addResourceText.Exists, "Settings security tab resource permissions add resource textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton addWindowsGroupsButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddWindowsGroupsButton;
+            #endregion
+
+            // Verify that the 'Exists' property of '...' button equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues.AddWindowsGroupsButtonExists, addWindowsGroupsButton.Exists, "Settings security tab resource permissions row1 add windows group button does not" +
+                    " exist");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit addWindowsGroupsEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddWindowsGroupsEdit;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__AddWindowsGroupsTextBox_AutoID' text box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues.AddWindowsGroupsEditExists, addWindowsGroupsEdit.Exists, "Settings security tab resource permissions row1 add windows group testbox does no" +
+                    "t exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ContributeCheckBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__ContributePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues.ContributeCheckBoxExists, contributeCheckBox.Exists, "Settings security tab resource permissions row1 contribute checkbox does not exis" +
+                    "t");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues.ExecuteCheckBoxExists, executeCheckBox.Exists, "Settings security tab resource permissions row1 execute checkbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists()
+        {
+            #region Variable Declarations
+            WpfPane row1 = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Row1' pane equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues.Row1Exists, row1.Exists, "Settings security tab resource permissions row1 does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Exists()
+        {
+            #region Variable Declarations
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues.ViewCheckBoxExists, viewCheckBox.Exists, "Settings security tab resource permissions row1 view checkbox does not exist.");
         }
         
         /// <summary>
@@ -3029,7 +3176,7 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Settings_ServerPermissions_Exists()
         {
             #region Variable Declarations
-            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions;
+            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions;
             #endregion
 
             // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
@@ -4161,11 +4308,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_NewDatabaseSource_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton uICreateanewdatabasesoButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.UICreateanewdatabasesoButton;
+            WpfButton createanewdatabasesoButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewdatabasesoButton;
             #endregion
 
             // Click 'Create a new database source' button
-            Mouse.Click(uICreateanewdatabasesoButton, new Point(16, 15));
+            Mouse.Click(createanewdatabasesoButton, new Point(16, 15));
         }
         
         /// <summary>
@@ -4174,11 +4321,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_NewPluginSource_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton uICreateanewpluginsourButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.UICreateanewpluginsourButton;
+            WpfButton createanewpluginsourButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewpluginsourButton;
             #endregion
 
             // Click 'Create a new plugin source' button
-            Mouse.Click(uICreateanewpluginsourButton, new Point(22, 13));
+            Mouse.Click(createanewpluginsourButton, new Point(22, 13));
         }
         
         /// <summary>
@@ -4187,11 +4334,11 @@ namespace Warewolf.Studio.UISpecs
         public void Click_NewWebSource_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton uICreateanewwebsourceButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.UICreateanewwebsourceButton;
+            WpfButton createanewwebsourceButton = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewwebsourceButton;
             #endregion
 
             // Click 'Create a new web source' button
-            Mouse.Click(uICreateanewwebsourceButton, new Point(13, 18));
+            Mouse.Click(createanewwebsourceButton, new Point(13, 18));
         }
         
         /// <summary>
@@ -4494,68 +4641,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_Settings_Admin_ServerPermissions - Use 'Click_Settings_Admin_ServerPermissionsParams' to pass parameters into this method.
+        /// Click_Service_Picker_Dialog_First_Service_In_Explorer
         /// </summary>
-        public void Click_Settings_Admin_ServerPermissions()
+        public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell;
+            WpfTreeItem subTreeItem1 = this.MainStudioWindow.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
             #endregion
 
-            // Select 'False' cell
-            uIFalseCell.Checked = this.Click_Settings_Admin_ServerPermissionsParams.UIFalseCellChecked;
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(subTreeItem1, new Point(91, 9));
         }
         
         /// <summary>
-        /// Click_Settings_Contribute_ResourcePermissions - Use 'Click_Settings_Contribute_ResourcePermissionsParams' to pass parameters into this method.
+        /// Click_Service_Picker_Dialog_OK
         /// </summary>
-        public void Click_Settings_Contribute_ResourcePermissions()
+        public void Click_Service_Picker_Dialog_OK()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
+            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
             #endregion
 
-            // Select 'False' cell
-            uIFalseCell.Checked = this.Click_Settings_Contribute_ResourcePermissionsParams.UIFalseCellChecked;
-        }
-        
-        /// <summary>
-        /// Click_Settings_Contribute_ServerPermissions - Use 'Click_Settings_Contribute_ServerPermissionsParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Contribute_ServerPermissions()
-        {
-            #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell;
-            #endregion
-
-            // Select 'False' cell
-            uIFalseCell.Checked = this.Click_Settings_Contribute_ServerPermissionsParams.UIFalseCellChecked;
-        }
-        
-        /// <summary>
-        /// Click_Settings_Execute_ResourcePermissions - Use 'Click_Settings_Execute_ResourcePermissionsParams' to pass parameters into this method.
-        /// </summary>
-        public void Click_Settings_Execute_ResourcePermissions()
-        {
-            #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
-            #endregion
-
-            // Select 'False' cell
-            uIFalseCell.Checked = this.Click_Settings_Execute_ResourcePermissionsParams.UIFalseCellChecked;
-        }
-        
-        /// <summary>
-        /// Click_Settings_ResourcePermissions_ResourcePicker
-        /// </summary>
-        public void Click_Settings_ResourcePermissions_ResourcePicker()
-        {
-            #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.ResourceCell.ResourcePickerButton;
-            #endregion
-
-            // Click '...' button
-            Mouse.Click(resourcePickerButton, new Point(6, 15));
+            // Click 'OK' button
+            Mouse.Click(ok, new Point(52, 10));
         }
         
         /// <summary>
@@ -4572,16 +4680,55 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_Settings_View_ResourcePermissions - Use 'Click_Settings_View_ResourcePermissionsParams' to pass parameters into this method.
+        /// Click_Settings_Security_Resource_Permissions_Add_Resource_Button
         /// </summary>
-        public void Click_Settings_View_ResourcePermissions()
+        public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
+            WpfButton addResourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceButton;
             #endregion
 
-            // Select 'False' cell
-            uIFalseCell.Checked = this.Click_Settings_View_ResourcePermissionsParams.UIFalseCellChecked;
+            // Click '...' button
+            Mouse.Click(addResourceButton, new Point(6, 15));
+        }
+        
+        /// <summary>
+        /// Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox contributeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ContributeCheckBox;
+            #endregion
+
+            // Select 'UI__ContributePermissionCheckBox_AutoID' check box
+            contributeCheckBox.Checked = this.Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams.ContributeCheckBoxChecked;
+        }
+        
+        /// <summary>
+        /// Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox - Use 'Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox;
+            #endregion
+
+            // Select 'UI__ViewPermissionCheckBox_AutoID' check box
+            viewCheckBox.Checked = this.Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams.ViewCheckBoxChecked;
+        }
+        
+        /// <summary>
+        /// Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox - Use 'Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams' to pass parameters into this method.
+        /// </summary>
+        public void Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox()
+        {
+            #region Variable Declarations
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox;
+            #endregion
+
+            // Select 'UI__ExecutePermissionCheckBox_AutoID' check box
+            executeCheckBox.Checked = this.Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams.ExecuteCheckBoxChecked;
         }
         
         /// <summary>
@@ -5580,6 +5727,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog - Use 'Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog()
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox;
+            #endregion
+
+            // Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
+            filterTextbox.Text = this.Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams.FilterTextboxText;
+        }
+        
+        /// <summary>
         /// Enter_Servicename_As_RemoteServerUITestWorkflow - Use 'Enter_Servicename_As_RemoteServerUITestWorkflowParams' to pass parameters into this method.
         /// </summary>
         public void Enter_Servicename_As_RemoteServerUITestWorkflow()
@@ -6269,19 +6429,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Right_Click_Context_Menu_InExplorer
-        /// </summary>
-        public void Right_Click_Context_Menu_InExplorer()
-        {
-            #region Variable Declarations
-            WpfTreeItem explorerTreeItemChild = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.ExplorerTreeItem.ExplorerTreeItemChild;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(explorerTreeItemChild, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-        }
-        
-        /// <summary>
         /// Right_Click_Help_Tab
         /// </summary>
         public void Right_Click_Help_Tab()
@@ -6552,6 +6699,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Right-Click 'DsfExecuteCommandLineActivity' custom control
             Mouse.Click(executeCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_Explorer_localhost_First_Item
+        /// </summary>
+        public void RightClick_Explorer_localhost_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
         
         /// <summary>
@@ -8300,6 +8460,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Dependency_Graph_Refresh_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Dependency_Graph_Refresh_Button_ExistsExpectedValues = new Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Dependency_Graph_Refresh_Button_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues
         {
             get
@@ -8540,6 +8712,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Explorer_Localhost_First_Item_ExistsExpectedValues Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues = new Assert_Explorer_Localhost_First_Item_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues
         {
             get
@@ -8597,18 +8781,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues = new Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues();
                 }
                 return this.mAssert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Explorer_ServerName_ExistsExpectedValues Assert_Explorer_ServerName_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Explorer_ServerName_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Explorer_ServerName_ExistsExpectedValues = new Assert_Explorer_ServerName_ExistsExpectedValues();
-                }
-                return this.mAssert_Explorer_ServerName_ExistsExpectedValues;
             }
         }
         
@@ -9161,18 +9333,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues == null))
-                {
-                    this.mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues = new Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues();
-                }
-                return this.mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues;
             }
         }
         
@@ -10040,6 +10200,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues = new Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues;
+            }
+        }
+        
         public virtual Assert_Service_Picker_Dialog_ExistsExpectedValues Assert_Service_Picker_Dialog_ExistsExpectedValues
         {
             get
@@ -10049,6 +10221,54 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Service_Picker_Dialog_ExistsExpectedValues = new Assert_Service_Picker_Dialog_ExistsExpectedValues();
                 }
                 return this.mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues = new Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_OK_Button_EnabledExpectedValues Assert_Service_Picker_OK_Button_EnabledExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_OK_Button_EnabledExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_OK_Button_EnabledExpectedValues = new Assert_Service_Picker_OK_Button_EnabledExpectedValues();
+                }
+                return this.mAssert_Service_Picker_OK_Button_EnabledExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_OK_Button_ExistsExpectedValues Assert_Service_Picker_OK_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_OK_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_OK_Button_ExistsExpectedValues = new Assert_Service_Picker_OK_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_OK_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Refresh_Button_ExistsExpectedValues Assert_Service_Picker_Refresh_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues = new Assert_Service_Picker_Refresh_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues;
             }
         }
         
@@ -10076,42 +10296,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Settings_ConnectButton_ExistsExpectedValues Assert_Settings_ConnectButton_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Settings_ConnectButton_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Settings_ConnectButton_ExistsExpectedValues = new Assert_Settings_ConnectButton_ExistsExpectedValues();
-                }
-                return this.mAssert_Settings_ConnectButton_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues = new Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues();
-                }
-                return this.mAssert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Settings_ConnectControl_ExistsExpectedValues Assert_Settings_ConnectControl_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Settings_ConnectControl_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Settings_ConnectControl_ExistsExpectedValues = new Assert_Settings_ConnectControl_ExistsExpectedValues();
-                }
-                return this.mAssert_Settings_ConnectControl_ExistsExpectedValues;
-            }
-        }
-        
         public virtual Assert_Settings_LoggingTab_ExistsExpectedValues Assert_Settings_LoggingTab_ExistsExpectedValues
         {
             get
@@ -10136,6 +10320,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Settings_Ribbon_Button_ExistsExpectedValues Assert_Settings_Ribbon_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_Ribbon_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_Ribbon_Button_ExistsExpectedValues = new Assert_Settings_Ribbon_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_Ribbon_Button_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_Settings_SecurityTab_ExistsExpectedValues Assert_Settings_SecurityTab_ExistsExpectedValues
         {
             get
@@ -10145,6 +10341,102 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Settings_SecurityTab_ExistsExpectedValues = new Assert_Settings_SecurityTab_ExistsExpectedValues();
                 }
                 return this.mAssert_Settings_SecurityTab_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues;
             }
         }
         
@@ -10916,63 +11208,39 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Click_Settings_Admin_ServerPermissionsParams Click_Settings_Admin_ServerPermissionsParams
+        public virtual Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams
         {
             get
             {
-                if ((this.mClick_Settings_Admin_ServerPermissionsParams == null))
+                if ((this.mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams == null))
                 {
-                    this.mClick_Settings_Admin_ServerPermissionsParams = new Click_Settings_Admin_ServerPermissionsParams();
+                    this.mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams = new Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams();
                 }
-                return this.mClick_Settings_Admin_ServerPermissionsParams;
+                return this.mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams;
             }
         }
         
-        public virtual Click_Settings_Contribute_ResourcePermissionsParams Click_Settings_Contribute_ResourcePermissionsParams
+        public virtual Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams
         {
             get
             {
-                if ((this.mClick_Settings_Contribute_ResourcePermissionsParams == null))
+                if ((this.mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams == null))
                 {
-                    this.mClick_Settings_Contribute_ResourcePermissionsParams = new Click_Settings_Contribute_ResourcePermissionsParams();
+                    this.mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams = new Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams();
                 }
-                return this.mClick_Settings_Contribute_ResourcePermissionsParams;
+                return this.mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams;
             }
         }
         
-        public virtual Click_Settings_Contribute_ServerPermissionsParams Click_Settings_Contribute_ServerPermissionsParams
+        public virtual Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams
         {
             get
             {
-                if ((this.mClick_Settings_Contribute_ServerPermissionsParams == null))
+                if ((this.mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams == null))
                 {
-                    this.mClick_Settings_Contribute_ServerPermissionsParams = new Click_Settings_Contribute_ServerPermissionsParams();
+                    this.mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams = new Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams();
                 }
-                return this.mClick_Settings_Contribute_ServerPermissionsParams;
-            }
-        }
-        
-        public virtual Click_Settings_Execute_ResourcePermissionsParams Click_Settings_Execute_ResourcePermissionsParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_Execute_ResourcePermissionsParams == null))
-                {
-                    this.mClick_Settings_Execute_ResourcePermissionsParams = new Click_Settings_Execute_ResourcePermissionsParams();
-                }
-                return this.mClick_Settings_Execute_ResourcePermissionsParams;
-            }
-        }
-        
-        public virtual Click_Settings_View_ResourcePermissionsParams Click_Settings_View_ResourcePermissionsParams
-        {
-            get
-            {
-                if ((this.mClick_Settings_View_ResourcePermissionsParams == null))
-                {
-                    this.mClick_Settings_View_ResourcePermissionsParams = new Click_Settings_View_ResourcePermissionsParams();
-                }
-                return this.mClick_Settings_View_ResourcePermissionsParams;
+                return this.mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams;
             }
         }
         
@@ -11021,6 +11289,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mEnter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams = new Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams();
                 }
                 return this.mEnter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams;
+            }
+        }
+        
+        public virtual Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams
+        {
+            get
+            {
+                if ((this.mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams == null))
+                {
+                    this.mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams = new Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams();
+                }
+                return this.mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams;
             }
         }
         
@@ -11464,6 +11744,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues mAssert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues;
         
+        private Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues mAssert_Dependency_Graph_Refresh_Button_ExistsExpectedValues;
+        
         private Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues mAssert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues;
         
         private Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues mAssert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues;
@@ -11504,6 +11786,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Explorer_Filter_Textbox_ExistsExpectedValues mAssert_Explorer_Filter_Textbox_ExistsExpectedValues;
         
+        private Assert_Explorer_Localhost_First_Item_ExistsExpectedValues mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+        
         private Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues;
@@ -11513,8 +11797,6 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Explorer_Remote_Server_DropdownList_Has_localhost_SelectedExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Has_localhost_SelectedExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues;
-        
-        private Assert_Explorer_ServerName_ExistsExpectedValues mAssert_Explorer_ServerName_ExistsExpectedValues;
         
         private Assert_ExplorerContextMenu_Delete_ExistsExpectedValues mAssert_ExplorerContextMenu_Delete_ExistsExpectedValues;
         
@@ -11607,8 +11889,6 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Read_Folder_Exists_OnDesignSurfaceExpectedValues mAssert_Read_Folder_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues;
-        
-        private Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues;
         
         private Assert_Refresh_Button_Exists_InExplorerExpectedValues mAssert_Refresh_Button_Exists_InExplorerExpectedValues;
         
@@ -11754,23 +12034,45 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Service_Picker_Cancel_Button_ExistsExpectedValues mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
         
+        private Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues;
+        
         private Assert_Service_Picker_Dialog_ExistsExpectedValues mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_OK_Button_EnabledExpectedValues mAssert_Service_Picker_OK_Button_EnabledExpectedValues;
+        
+        private Assert_Service_Picker_OK_Button_ExistsExpectedValues mAssert_Service_Picker_OK_Button_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Refresh_Button_ExistsExpectedValues mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues;
         
         private Assert_ServiceLabel_DestinationServer_ExistsExpectedValues mAssert_ServiceLabel_DestinationServer_ExistsExpectedValues;
         
         private Assert_ServicesCount_Label_ExistsExpectedValues mAssert_ServicesCount_Label_ExistsExpectedValues;
         
-        private Assert_Settings_ConnectButton_ExistsExpectedValues mAssert_Settings_ConnectButton_ExistsExpectedValues;
-        
-        private Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues mAssert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues;
-        
-        private Assert_Settings_ConnectControl_ExistsExpectedValues mAssert_Settings_ConnectControl_ExistsExpectedValues;
-        
         private Assert_Settings_LoggingTab_ExistsExpectedValues mAssert_Settings_LoggingTab_ExistsExpectedValues;
         
         private Assert_Settings_ResourcePermissions_ExistsExpectedValues mAssert_Settings_ResourcePermissions_ExistsExpectedValues;
         
+        private Assert_Settings_Ribbon_Button_ExistsExpectedValues mAssert_Settings_Ribbon_Button_ExistsExpectedValues;
+        
         private Assert_Settings_SecurityTab_ExistsExpectedValues mAssert_Settings_SecurityTab_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues;
         
         private Assert_Settings_ServerPermissions_ExistsExpectedValues mAssert_Settings_ServerPermissions_ExistsExpectedValues;
         
@@ -11900,15 +12202,11 @@ namespace Warewolf.Studio.UISpecs
         
         private Click_Scheduler_RunTaskParams mClick_Scheduler_RunTaskParams;
         
-        private Click_Settings_Admin_ServerPermissionsParams mClick_Settings_Admin_ServerPermissionsParams;
+        private Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams mClick_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams;
         
-        private Click_Settings_Contribute_ResourcePermissionsParams mClick_Settings_Contribute_ResourcePermissionsParams;
+        private Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams mClick_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams;
         
-        private Click_Settings_Contribute_ServerPermissionsParams mClick_Settings_Contribute_ServerPermissionsParams;
-        
-        private Click_Settings_Execute_ResourcePermissionsParams mClick_Settings_Execute_ResourcePermissionsParams;
-        
-        private Click_Settings_View_ResourcePermissionsParams mClick_Settings_View_ResourcePermissionsParams;
+        private Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams mClick_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams;
         
         private Click_Test_Connector_Calculate_OutputsParams mClick_Test_Connector_Calculate_OutputsParams;
         
@@ -11917,6 +12215,8 @@ namespace Warewolf.Studio.UISpecs
         private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
         
         private Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams mEnter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams;
+        
+        private Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams;
         
         private Enter_Servicename_As_RemoteServerUITestWorkflowParams mEnter_Servicename_As_RemoteServerUITestWorkflowParams;
         
@@ -11977,9 +12277,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf' window equals 'True'
+        /// Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
         /// </summary>
-        public bool MainStudioWindowExists = true;
+        public bool StartPageExists = true;
         #endregion
     }
     
@@ -13099,6 +13399,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Dependency_Graph_Refresh_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Dependency_Graph_Refresh_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Refresh' button equals 'True'
+        /// </summary>
+        public bool RefreshButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13107,9 +13422,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Selected' property of 'Show what asdf depends on' radio button equals 'True'
+        /// Verify that the 'Selected' property of 'Show what this depends on' radio button equals 'True'
         /// </summary>
-        public bool ShowwhatasdfdependsoRadioButtonSelected = true;
+        public bool ShowwhatasdfdependsonRadioButtonSelected = true;
         #endregion
     }
     
@@ -13122,9 +13437,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Selected' property of 'Show what depends on asdf' radio button equals 'True'
+        /// Verify that the 'Selected' property of 'Show what depends on this' radio button equals 'True'
         /// </summary>
-        public bool ShowwhatdependsonasdRadioButtonSelected = true;
+        public bool ShowwhatdependsonthisRadioButtonSelected = true;
         #endregion
     }
     
@@ -13399,6 +13714,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Localhost_First_Item_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13470,21 +13800,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
         /// </summary>
         public string SelectedItemAsTSTCIREMOTEDisplayText = "TSTCIREMOTE";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Explorer_ServerName_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Explorer_ServerName_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool ExplorerTreeItemChildExists = true;
         #endregion
     }
     
@@ -14175,21 +14490,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfFolderRead' custom control equals 'True'
         /// </summary>
         public bool FolderReadExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Refresh_Button_Exists_In_Dependency_Graph'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Refresh' button equals 'True'
-        /// </summary>
-        public bool RefreshButtonExists = true;
         #endregion
     }
     
@@ -15279,6 +15579,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Does_Not_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'False'
+        /// </summary>
+        public bool ServicePickerDialogExists = false;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15290,6 +15605,66 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
         /// </summary>
         public bool ServicePickerDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Filter_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+        /// </summary>
+        public bool FilterTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_OK_Button_Enabled'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_OK_Button_EnabledExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'OK' button equals 'True'
+        /// </summary>
+        public bool OKEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_OK_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_OK_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'OK' button equals 'True'
+        /// </summary>
+        public bool OKExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Refresh_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_Refresh_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool RefreshExists = true;
         #endregion
     }
     
@@ -15324,51 +15699,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Settings_ConnectButton_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Settings_ConnectButton_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_SettingsServerConnectButton_AutoID' button equals 'True'
-        /// </summary>
-        public bool ConnectServerButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Settings_ConnectControl_Edit_Button_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Settings_ConnectControl_Edit_Button_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of '...' button equals 'True'
-        /// </summary>
-        public bool EditServerButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Settings_ConnectControl_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Settings_ConnectControl_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'UI_SettingsServerComboBox_AutoID' combo box equals 'True'
-        /// </summary>
-        public bool SettingsServerComboBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Assert_Settings_LoggingTab_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15399,6 +15729,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_Ribbon_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_Ribbon_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' label equals 'True'
+        /// </summary>
+        public bool SettingsIconExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Settings_SecurityTab_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15410,6 +15755,126 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
         /// </summary>
         public bool SecurityTabExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool AddResourceButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__AddResourceTextBox_AutoID' label equals 'True'
+        /// </summary>
+        public bool AddResourceTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '...' button equals 'True'
+        /// </summary>
+        public bool AddWindowsGroupsButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__AddWindowsGroupsTextBox_AutoID' text box equals 'True'
+        /// </summary>
+        public bool AddWindowsGroupsEditExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__ContributePermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ContributeCheckBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ExecuteCheckBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Row1' pane equals 'True'
+        /// </summary>
+        public bool Row1Exists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ViewCheckBoxExists = true;
         #endregion
     }
     
@@ -16374,77 +16839,47 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Admin_ServerPermissions'
+    /// Parameters to be passed into 'Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Admin_ServerPermissionsParams
+    public class Click_Settings_Security_Tab_Resource_Permissions_Contribute_CheckboxParams
     {
         
         #region Fields
         /// <summary>
-        /// Select 'False' cell
+        /// Select 'UI__ContributePermissionCheckBox_AutoID' check box
         /// </summary>
-        public bool UIFalseCellChecked = true;
+        public bool ContributeCheckBoxChecked = true;
         #endregion
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Contribute_ResourcePermissions'
+    /// Parameters to be passed into 'Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Contribute_ResourcePermissionsParams
+    public class Click_Settings_Security_Tab_Resource_Permissions_View_CheckboxParams
     {
         
         #region Fields
         /// <summary>
-        /// Select 'False' cell
+        /// Select 'UI__ViewPermissionCheckBox_AutoID' check box
         /// </summary>
-        public bool UIFalseCellChecked = true;
+        public bool ViewCheckBoxChecked = true;
         #endregion
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Contribute_ServerPermissions'
+    /// Parameters to be passed into 'Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Contribute_ServerPermissionsParams
+    public class Click_Settings_Security_Tab_ResourcePermissions_Execute_CheckboxParams
     {
         
         #region Fields
         /// <summary>
-        /// Select 'False' cell
+        /// Select 'UI__ExecutePermissionCheckBox_AutoID' check box
         /// </summary>
-        public bool UIFalseCellChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_Execute_ResourcePermissions'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_Execute_ResourcePermissionsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'False' cell
-        /// </summary>
-        public bool UIFalseCellChecked = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Click_Settings_View_ResourcePermissions'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Click_Settings_View_ResourcePermissionsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Select 'False' cell
-        /// </summary>
-        public bool UIFalseCellChecked = true;
+        public bool ExecuteCheckBoxChecked = true;
         #endregion
     }
     
@@ -16505,6 +16940,21 @@ namespace Warewolf.Studio.UISpecs
         /// Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "RemoteServerUITestWorkflow";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
+        /// </summary>
+        public string FilterTextboxText = "RemoteServerUITestWorkflow";
         #endregion
     }
     
@@ -17976,51 +18426,51 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfButton UICreateanewdatabasesoButton
+        public WpfButton CreateanewdatabasesoButton
         {
             get
             {
-                if ((this.mUICreateanewdatabasesoButton == null))
+                if ((this.mCreateanewdatabasesoButton == null))
                 {
-                    this.mUICreateanewdatabasesoButton = new WpfButton(this);
+                    this.mCreateanewdatabasesoButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUICreateanewdatabasesoButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database source";
-                    this.mUICreateanewdatabasesoButton.WindowTitles.Add("Warewolf");
+                    this.mCreateanewdatabasesoButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database source";
+                    this.mCreateanewdatabasesoButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUICreateanewdatabasesoButton;
+                return this.mCreateanewdatabasesoButton;
             }
         }
         
-        public WpfButton UICreateanewpluginsourButton
+        public WpfButton CreateanewpluginsourButton
         {
             get
             {
-                if ((this.mUICreateanewpluginsourButton == null))
+                if ((this.mCreateanewpluginsourButton == null))
                 {
-                    this.mUICreateanewpluginsourButton = new WpfButton(this);
+                    this.mCreateanewpluginsourButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUICreateanewpluginsourButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin source";
-                    this.mUICreateanewpluginsourButton.WindowTitles.Add("Warewolf");
+                    this.mCreateanewpluginsourButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin source";
+                    this.mCreateanewpluginsourButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUICreateanewpluginsourButton;
+                return this.mCreateanewpluginsourButton;
             }
         }
         
-        public WpfButton UICreateanewwebsourceButton
+        public WpfButton CreateanewwebsourceButton
         {
             get
             {
-                if ((this.mUICreateanewwebsourceButton == null))
+                if ((this.mCreateanewwebsourceButton == null))
                 {
-                    this.mUICreateanewwebsourceButton = new WpfButton(this);
+                    this.mCreateanewwebsourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUICreateanewwebsourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new web source";
-                    this.mUICreateanewwebsourceButton.WindowTitles.Add("Warewolf");
+                    this.mCreateanewwebsourceButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new web source";
+                    this.mCreateanewwebsourceButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mUICreateanewwebsourceButton;
+                return this.mCreateanewwebsourceButton;
             }
         }
         
@@ -18154,11 +18604,11 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WpfButton mUICreateanewdatabasesoButton;
+        private WpfButton mCreateanewdatabasesoButton;
         
-        private WpfButton mUICreateanewpluginsourButton;
+        private WpfButton mCreateanewpluginsourButton;
         
-        private WpfButton mUICreateanewwebsourceButton;
+        private WpfButton mCreateanewwebsourceButton;
         
         private WpfText mNewWorkflowIcon;
         
@@ -18754,79 +19204,115 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public ExplorerTreeItem ExplorerTreeItem
+        public localhost localhost
         {
             get
             {
-                if ((this.mExplorerTreeItem == null))
+                if ((this.mlocalhost == null))
                 {
-                    this.mExplorerTreeItem = new ExplorerTreeItem(this);
+                    this.mlocalhost = new localhost(this);
                 }
-                return this.mExplorerTreeItem;
+                return this.mlocalhost;
+            }
+        }
+        
+        public FirstRemoteServer FirstRemoteServer
+        {
+            get
+            {
+                if ((this.mFirstRemoteServer == null))
+                {
+                    this.mFirstRemoteServer = new FirstRemoteServer(this);
+                }
+                return this.mFirstRemoteServer;
             }
         }
         #endregion
         
         #region Fields
-        private ExplorerTreeItem mExplorerTreeItem;
+        private localhost mlocalhost;
+        
+        private FirstRemoteServer mFirstRemoteServer;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTreeItem : WpfTreeItem
+    public class localhost : WpfTreeItem
     {
         
-        public ExplorerTreeItem(UITestControl searchLimitContainer) : 
+        public localhost(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfTreeItem ExplorerTreeItemChild
+        public WpfTreeItem FirstItem
         {
             get
             {
-                if ((this.mExplorerTreeItemChild == null))
+                if ((this.mFirstItem == null))
                 {
-                    this.mExplorerTreeItemChild = new WpfTreeItem(this);
+                    this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mExplorerTreeItemChild.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mExplorerTreeItemChild.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExplorerTreeItemChild.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mExplorerTreeItemChild.WindowTitles.Add("Warewolf");
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mExplorerTreeItemChild;
-            }
-        }
-        
-        public WpfTreeItem SomeWorkflow
-        {
-            get
-            {
-                if ((this.mSomeWorkflow == null))
-                {
-                    this.mSomeWorkflow = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mSomeWorkflow.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mSomeWorkflow.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSomeWorkflow.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mSomeWorkflow.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSomeWorkflow;
+                return this.mFirstItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTreeItem mExplorerTreeItemChild;
+        private WpfTreeItem mFirstItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstRemoteServer : WpfTreeItem
+    {
         
-        private WpfTreeItem mSomeWorkflow;
+        public FirstRemoteServer(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mFirstItem;
         #endregion
     }
     
@@ -24378,10 +24864,75 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SettingsTab : WpfCustom
+    public class SettingsTab : WpfTabPage
     {
         
         public SettingsTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Settings.SettingsViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WorksurfaceContext3 WorksurfaceContext
+        {
+            get
+            {
+                if ((this.mWorksurfaceContext == null))
+                {
+                    this.mWorksurfaceContext = new WorksurfaceContext3(this);
+                }
+                return this.mWorksurfaceContext;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WorksurfaceContext3 mWorksurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WorksurfaceContext3 : WpfCustom
+    {
+        
+        public WorksurfaceContext3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public SettingsView SettingsView
+        {
+            get
+            {
+                if ((this.mSettingsView == null))
+                {
+                    this.mSettingsView = new SettingsView(this);
+                }
+                return this.mSettingsView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SettingsView mSettingsView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SettingsView : WpfCustom
+    {
+        
+        public SettingsView(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -24392,116 +24943,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public ConnectControl2 ConnectControl
+        public TabList TabList
         {
             get
             {
-                if ((this.mConnectControl == null))
+                if ((this.mTabList == null))
                 {
-                    this.mConnectControl = new ConnectControl2(this);
+                    this.mTabList = new TabList(this);
                 }
-                return this.mConnectControl;
-            }
-        }
-        
-        public UIItemTabList UIItemTabList
-        {
-            get
-            {
-                if ((this.mUIItemTabList == null))
-                {
-                    this.mUIItemTabList = new UIItemTabList(this);
-                }
-                return this.mUIItemTabList;
+                return this.mTabList;
             }
         }
         #endregion
         
         #region Fields
-        private ConnectControl2 mConnectControl;
-        
-        private UIItemTabList mUIItemTabList;
+        private TabList mTabList;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ConnectControl2 : WpfCustom
+    public class TabList : WpfTabList
     {
         
-        public ConnectControl2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ConnectUserControl";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfComboBox SettingsServerComboBox
-        {
-            get
-            {
-                if ((this.mSettingsServerComboBox == null))
-                {
-                    this.mSettingsServerComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSettingsServerComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_SettingsServerComboBox_AutoID";
-                    this.mSettingsServerComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSettingsServerComboBox;
-            }
-        }
-        
-        public WpfButton EditServerButton
-        {
-            get
-            {
-                if ((this.mEditServerButton == null))
-                {
-                    this.mEditServerButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mEditServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SettingsServerEditButton_AutoID";
-                    this.mEditServerButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mEditServerButton;
-            }
-        }
-        
-        public WpfButton ConnectServerButton
-        {
-            get
-            {
-                if ((this.mConnectServerButton == null))
-                {
-                    this.mConnectServerButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mConnectServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SettingsServerConnectButton_AutoID";
-                    this.mConnectServerButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mConnectServerButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfComboBox mSettingsServerComboBox;
-        
-        private WpfButton mEditServerButton;
-        
-        private WpfButton mConnectServerButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIItemTabList : WpfTabList
-    {
-        
-        public UIItemTabList(UITestControl searchLimitContainer) : 
+        public TabList(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -24594,13 +25058,17 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public ServerPermissions ServerPermissions
+        public WpfTable ServerPermissions
         {
             get
             {
                 if ((this.mServerPermissions == null))
                 {
-                    this.mServerPermissions = new ServerPermissions(this);
+                    this.mServerPermissions = new WpfTable(this);
+                    #region Search Criteria
+                    this.mServerPermissions.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ServerPermissionsDataGrid";
+                    this.mServerPermissions.WindowTitles.Add("Warewolf");
+                    #endregion
                 }
                 return this.mServerPermissions;
             }
@@ -24620,46 +25088,9 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private ServerPermissions mServerPermissions;
+        private WpfTable mServerPermissions;
         
         private ResourcePermissions mResourcePermissions;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ServerPermissions : WpfTable
-    {
-        
-        public ServerPermissions(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "ServerPermissionsDataGrid";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIFalseCell
-        {
-            get
-            {
-                if ((this.mUIFalseCell == null))
-                {
-                    this.mUIFalseCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIFalseCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIFalseCell.SearchProperties[WpfCell.PropertyNames.Value] = "False";
-                    this.mUIFalseCell.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIFalseCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCell mUIFalseCell;
         #endregion
     }
     
@@ -24677,6 +25108,39 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public Row1 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row1(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row1 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Row1 : WpfPane
+    {
+        
+        public Row1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
+            this.SearchProperties[WpfPane.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
         public ResourceCell ResourceCell
         {
             get
@@ -24689,20 +25153,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCell UIFalseCell
+        public PermissionsCell PermissionsCell
         {
             get
             {
-                if ((this.mUIFalseCell == null))
+                if ((this.mPermissionsCell == null))
                 {
-                    this.mUIFalseCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIFalseCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIFalseCell.SearchProperties[WpfCell.PropertyNames.Value] = "False";
-                    this.mUIFalseCell.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mPermissionsCell = new PermissionsCell(this);
                 }
-                return this.mUIFalseCell;
+                return this.mPermissionsCell;
             }
         }
         #endregion
@@ -24710,7 +25169,7 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private ResourceCell mResourceCell;
         
-        private WpfCell mUIFalseCell;
+        private PermissionsCell mPermissionsCell;
         #endregion
     }
     
@@ -24722,31 +25181,155 @@ namespace Warewolf.Studio.UISpecs
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfButton ResourcePickerButton
+        public WpfButton AddResourceButton
         {
             get
             {
-                if ((this.mResourcePickerButton == null))
+                if ((this.mAddResourceButton == null))
                 {
-                    this.mResourcePickerButton = new WpfButton(this);
+                    this.mAddResourceButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mResourcePickerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
-                    this.mResourcePickerButton.WindowTitles.Add("Warewolf");
+                    this.mAddResourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddResourceButton_AutoID";
+                    this.mAddResourceButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mResourcePickerButton;
+                return this.mAddResourceButton;
+            }
+        }
+        
+        public WpfText AddResourceText
+        {
+            get
+            {
+                if ((this.mAddResourceText == null))
+                {
+                    this.mAddResourceText = new WpfText(this);
+                    #region Search Criteria
+                    this.mAddResourceText.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI__AddResourceTextBox_AutoID";
+                    this.mAddResourceText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mAddResourceText;
+            }
+        }
+        
+        public WpfButton AddWindowsGroupsButton
+        {
+            get
+            {
+                if ((this.mAddWindowsGroupsButton == null))
+                {
+                    this.mAddWindowsGroupsButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mAddWindowsGroupsButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__AddWindowsGroupsButton_AutoID";
+                    this.mAddWindowsGroupsButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mAddWindowsGroupsButton;
+            }
+        }
+        
+        public WpfEdit AddWindowsGroupsEdit
+        {
+            get
+            {
+                if ((this.mAddWindowsGroupsEdit == null))
+                {
+                    this.mAddWindowsGroupsEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAddWindowsGroupsEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__AddWindowsGroupsTextBox_AutoID";
+                    this.mAddWindowsGroupsEdit.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mAddWindowsGroupsEdit;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mResourcePickerButton;
+        private WpfButton mAddResourceButton;
+        
+        private WpfText mAddResourceText;
+        
+        private WpfButton mAddWindowsGroupsButton;
+        
+        private WpfEdit mAddWindowsGroupsEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class PermissionsCell : WpfCell
+    {
+        
+        public PermissionsCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox ViewCheckBox
+        {
+            get
+            {
+                if ((this.mViewCheckBox == null))
+                {
+                    this.mViewCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mViewCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ViewPermissionCheckBox_AutoID";
+                    this.mViewCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mViewCheckBox;
+            }
+        }
+        
+        public WpfCheckBox ExecuteCheckBox
+        {
+            get
+            {
+                if ((this.mExecuteCheckBox == null))
+                {
+                    this.mExecuteCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mExecuteCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ExecutePermissionCheckBox_AutoID";
+                    this.mExecuteCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mExecuteCheckBox;
+            }
+        }
+        
+        public WpfCheckBox ContributeCheckBox
+        {
+            get
+            {
+                if ((this.mContributeCheckBox == null))
+                {
+                    this.mContributeCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mContributeCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI__ContributePermissionCheckBox_AutoID";
+                    this.mContributeCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mContributeCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mViewCheckBox;
+        
+        private WpfCheckBox mExecuteCheckBox;
+        
+        private WpfCheckBox mContributeCheckBox;
         #endregion
     }
     
@@ -24780,13 +25363,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WorkSurfaceContext3 WorkSurfaceContext
+        public WorkSurfaceContext4 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -24796,15 +25379,15 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfButton mCloseButton;
         
-        private WorkSurfaceContext3 mWorkSurfaceContext;
+        private WorkSurfaceContext4 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext3 : WpfCustom
+    public class WorkSurfaceContext4 : WpfCustom
     {
         
-        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -26164,13 +26747,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public Row1 Row1
+        public Row11 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row1(this);
+                    this.mRow1 = new Row11(this);
                 }
                 return this.mRow1;
             }
@@ -26190,17 +26773,17 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private Row1 mRow1;
+        private Row11 mRow1;
         
         private Row2 mRow2;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row1 : WpfRow
+    public class Row11 : WpfRow
     {
         
-        public Row1(UITestControl searchLimitContainer) : 
+        public Row11(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -26571,13 +27154,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public Row11 Row1
+        public Row12 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row11(this);
+                    this.mRow1 = new Row12(this);
                 }
                 return this.mRow1;
             }
@@ -26597,17 +27180,17 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private Row11 mRow1;
+        private Row12 mRow1;
         
         private Row21 mRow2;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row11 : WpfRow
+    public class Row12 : WpfRow
     {
         
-        public Row11(UITestControl searchLimitContainer) : 
+        public Row12(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -28258,13 +28841,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public Row12 Row1
+        public Row13 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row12(this);
+                    this.mRow1 = new Row13(this);
                 }
                 return this.mRow1;
             }
@@ -28272,15 +28855,15 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private Row12 mRow1;
+        private Row13 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row12 : WpfRow
+    public class Row13 : WpfRow
     {
         
-        public Row12(UITestControl searchLimitContainer) : 
+        public Row13(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -28426,13 +29009,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public Row13 Row1
+        public Row14 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row13(this);
+                    this.mRow1 = new Row14(this);
                 }
                 return this.mRow1;
             }
@@ -28440,15 +29023,15 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private Row13 mRow1;
+        private Row14 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Row13 : WpfRow
+    public class Row14 : WpfRow
     {
         
-        public Row13(UITestControl searchLimitContainer) : 
+        public Row14(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -28529,13 +29112,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorkSurfaceContext4 WorkSurfaceContext
+        public WorkSurfaceContext5 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext5(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -28575,7 +29158,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorkSurfaceContext4 mWorkSurfaceContext;
+        private WorkSurfaceContext5 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -28584,10 +29167,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext4 : WpfCustom
+    public class WorkSurfaceContext5 : WpfCustom
     {
         
-        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -29802,13 +30385,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WorkSurfaceContext5 WorkSurfaceContext
+        public WorkSurfaceContext6 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext5(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext6(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -29864,7 +30447,7 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfButton mNewPluginConnectorTabCloseButton;
         
-        private WorkSurfaceContext5 mWorkSurfaceContext;
+        private WorkSurfaceContext6 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -29873,10 +30456,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorkSurfaceContext5 : WpfCustom
+    public class WorkSurfaceContext6 : WpfCustom
     {
         
-        public WorkSurfaceContext5(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -31657,13 +32240,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorksurfaceContext6 WorksurfaceContext
+        public WorksurfaceContext7 WorksurfaceContext
         {
             get
             {
                 if ((this.mWorksurfaceContext == null))
                 {
-                    this.mWorksurfaceContext = new WorksurfaceContext6(this);
+                    this.mWorksurfaceContext = new WorksurfaceContext7(this);
                 }
                 return this.mWorksurfaceContext;
             }
@@ -31671,15 +32254,15 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorksurfaceContext6 mWorksurfaceContext;
+        private WorksurfaceContext7 mWorksurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class WorksurfaceContext6 : WpfCustom
+    public class WorksurfaceContext7 : WpfCustom
     {
         
-        public WorksurfaceContext6(UITestControl searchLimitContainer) : 
+        public WorksurfaceContext7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -31772,35 +32355,35 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfRadioButton ShowwhatdependsonasdRadioButton
+        public WpfRadioButton ShowwhatdependsonthisRadioButton
         {
             get
             {
-                if ((this.mShowwhatdependsonasdRadioButton == null))
+                if ((this.mShowwhatdependsonthisRadioButton == null))
                 {
-                    this.mShowwhatdependsonasdRadioButton = new WpfRadioButton(this);
+                    this.mShowwhatdependsonthisRadioButton = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mShowwhatdependsonasdRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "WfDependsOn";
-                    this.mShowwhatdependsonasdRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mShowwhatdependsonthisRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "WfDependsOn";
+                    this.mShowwhatdependsonthisRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mShowwhatdependsonasdRadioButton;
+                return this.mShowwhatdependsonthisRadioButton;
             }
         }
         
-        public WpfRadioButton ShowwhatasdfdependsoRadioButton
+        public WpfRadioButton ShowwhatasdfdependsonRadioButton
         {
             get
             {
-                if ((this.mShowwhatasdfdependsoRadioButton == null))
+                if ((this.mShowwhatasdfdependsonRadioButton == null))
                 {
-                    this.mShowwhatasdfdependsoRadioButton = new WpfRadioButton(this);
+                    this.mShowwhatasdfdependsonRadioButton = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mShowwhatasdfdependsoRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
-                    this.mShowwhatasdfdependsoRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mShowwhatasdfdependsonRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
+                    this.mShowwhatasdfdependsonRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mShowwhatasdfdependsoRadioButton;
+                return this.mShowwhatasdfdependsonRadioButton;
             }
         }
         
@@ -31880,9 +32463,9 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfButton mRefreshButton;
         
-        private WpfRadioButton mShowwhatdependsonasdRadioButton;
+        private WpfRadioButton mShowwhatdependsonthisRadioButton;
         
-        private WpfRadioButton mShowwhatasdfdependsoRadioButton;
+        private WpfRadioButton mShowwhatasdfdependsonRadioButton;
         
         private NestingLevelsText mNestingLevelsText;
         
@@ -37519,6 +38102,34 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public Explorer1 Explorer
+        {
+            get
+            {
+                if ((this.mExplorer == null))
+                {
+                    this.mExplorer = new Explorer1(this);
+                }
+                return this.mExplorer;
+            }
+        }
+        
+        public WpfButton OK
+        {
+            get
+            {
+                if ((this.mOK == null))
+                {
+                    this.mOK = new WpfButton(this);
+                    #region Search Criteria
+                    this.mOK.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceOKButton_AutoID";
+                    this.mOK.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mOK;
+            }
+        }
+        
         public WpfButton Cancel
         {
             get
@@ -37537,7 +38148,150 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private Explorer1 mExplorer;
+        
+        private WpfButton mOK;
+        
         private WpfButton mCancel;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Explorer1 : WpfCustom
+    {
+        
+        public Explorer1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FilterTextbox
+        {
+            get
+            {
+                if ((this.mFilterTextbox == null))
+                {
+                    this.mFilterTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFilterTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+                    this.mFilterTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFilterTextbox;
+            }
+        }
+        
+        public WpfButton Refresh
+        {
+            get
+            {
+                if ((this.mRefresh == null))
+                {
+                    this.mRefresh = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRefresh.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRefresh.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRefresh;
+            }
+        }
+        
+        public ExplorerTree1 ExplorerTree
+        {
+            get
+            {
+                if ((this.mExplorerTree == null))
+                {
+                    this.mExplorerTree = new ExplorerTree1(this);
+                }
+                return this.mExplorerTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFilterTextbox;
+        
+        private WpfButton mRefresh;
+        
+        private ExplorerTree1 mExplorerTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerTree1 : WpfTree
+    {
+        
+        public ExplorerTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public TreeItem1 TreeItem1
+        {
+            get
+            {
+                if ((this.mTreeItem1 == null))
+                {
+                    this.mTreeItem1 = new TreeItem1(this);
+                }
+                return this.mTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TreeItem1 mTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem1 : WpfTreeItem
+    {
+        
+        public TreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem SubTreeItem1
+        {
+            get
+            {
+                if ((this.mSubTreeItem1 == null))
+                {
+                    this.mSubTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSubTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSubTreeItem1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSubTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mSubTreeItem1;
         #endregion
     }
     
@@ -38274,13 +39028,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public ExplorerTree1 ExplorerTree
+        public ExplorerTree2 ExplorerTree
         {
             get
             {
                 if ((this.mExplorerTree == null))
                 {
-                    this.mExplorerTree = new ExplorerTree1(this);
+                    this.mExplorerTree = new ExplorerTree2(this);
                 }
                 return this.mExplorerTree;
             }
@@ -38292,15 +39046,15 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfButton mRefreshButton;
         
-        private ExplorerTree1 mExplorerTree;
+        private ExplorerTree2 mExplorerTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTree1 : WpfTree
+    public class ExplorerTree2 : WpfTree
     {
         
-        public ExplorerTree1(UITestControl searchLimitContainer) : 
+        public ExplorerTree2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

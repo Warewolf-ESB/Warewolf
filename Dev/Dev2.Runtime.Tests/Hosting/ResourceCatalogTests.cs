@@ -70,28 +70,22 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             _testDir = context.DeploymentDirectory;
         }
+
         [TestInitialize]
         public void Initialise()
         {
             var workspacePath = EnvironmentVariables.ResourcePath;
             if (Directory.Exists(workspacePath))
             {
-                try
-                {
-                    Directory.Delete(workspacePath, true);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    //Ashley: Bad unit isolation.
-                }
+                Directory.Delete(workspacePath, true);
             }
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
             }
             CustomContainer.Register<IActivityParser>(new ActivityParser());
-            LoadActivitiesPresentationDll();
         }
+
         #region Instance
 
         [TestMethod]
@@ -2613,7 +2607,6 @@ namespace Dev2.Tests.Runtime.Hosting
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
-            LoadActivitiesPresentationDll();
             var workspaceID = Guid.NewGuid();
             var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
             Directory.CreateDirectory(path);
@@ -2668,24 +2661,10 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
 
-        static void LoadActivitiesPresentationDll()
-        {
-            try
-            {
-                Assembly.Load("System.Activities.Presentation");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                //This is for when it is run on the server. Because the server has some other way of getting DLL's
-            }
-        }
-
         [TestMethod]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyListForResource()
         {
             //------------Setup for test--------------------------
-            LoadActivitiesPresentationDll();
             var workspaceID = Guid.NewGuid();
 
             var path = EnvironmentVariables.GetWorkspacePath(workspaceID);

@@ -19,7 +19,7 @@ using Dev2.DataList.Contract;
 using Dev2.Web;
 using Warewolf.Storage;
 
-namespace Dev2
+namespace Dev2.Interfaces
 {
     public interface IDSFDataObject
     {
