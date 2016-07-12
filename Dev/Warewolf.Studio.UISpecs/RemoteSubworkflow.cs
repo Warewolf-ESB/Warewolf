@@ -169,6 +169,8 @@ namespace Warewolf.Studio.UISpecs
             //Given: Uimap.Assert_ExplorerContextMenu_ShowDependencies_Exists();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
             Uimap.Assert_RemoteServerUITestWorkflow_Appears_In_Dependency_Diagram();
+
+            //Action Unit: Clicking settings ribbon button
         }
 
         #region Additional test attributes
@@ -185,7 +187,7 @@ namespace Warewolf.Studio.UISpecs
         }
 
         //Use TestCleanup to run code after each test has run
-        [TestCleanup()]
+        //[TestCleanup()]
         public void MyTestCleanup()
         {
             try
