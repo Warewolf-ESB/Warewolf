@@ -9,6 +9,8 @@ using WarewolfParserInterop;
 using Newtonsoft.Json.Linq;
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable InconsistentNaming
+// ReSharper disable UnusedVariable
+// ReSharper disable UnusedVariable
 
 namespace WarewolfParsingTest
 {
@@ -366,11 +368,12 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_where_recset()
         {
 
-            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+            WarewolfTestData.CreateTestEnvEmpty("");
 
 
             // ReSharper restore UnusedVariable
             ExecutionEnvironment env = new ExecutionEnvironment();
+            // ReSharper disable once UnusedVariable
             var items = env.EvalWhere("x", a => PublicFunctions.AtomtoString(a) == "25", 0);
 
         }
@@ -382,9 +385,11 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Eval_where_WithNoIndexAndMultipleColumns_MultipleEvalsErrorsOnComplex()
         {
 
+            // ReSharper disable once UnusedVariable
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
             ExecutionEnvironment env = new ExecutionEnvironment();
+            // ReSharper disable once UnusedVariable
             var items = env.EvalWhere("[[rec()]] b", a => PublicFunctions.AtomtoString(a) == "25", 0);
 
         }
@@ -835,8 +840,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(CommonFunctions.evalResultToString(res.Last()), "3,c");
         }
 
-
-        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
+        private static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
             
             ExecutionEnvironment env = new ExecutionEnvironment();

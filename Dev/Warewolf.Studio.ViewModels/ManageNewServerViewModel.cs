@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             Protocol = source.Address.Contains("https") ? Protocols[0] : Protocols[1];
-            int portIndex = GETSpecifiedIndexOf(source.Address, ':', 2);
+            int portIndex = GetSpecifiedIndexOf(source.Address, ':', 2);
             var ports = source.Address.Substring(portIndex + 1).Split('/');
             if (ports.Any())
                 SelectedPort = ports[0];
@@ -152,7 +152,7 @@ namespace Warewolf.Studio.ViewModels
             Header = ResourceName;
         }
 
-        public static int GETSpecifiedIndexOf(string str, char ch, int index)
+        private static int GetSpecifiedIndexOf(string str, char ch, int index)
         {
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
@@ -239,10 +239,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => _updateManager.GetComputerNames().Select(name => new ComputerName { Name = name }).ToList(), names =>
             {
                 ComputerNames = names;
-                if (additionalUiAction != null)
-                {
-                    additionalUiAction();
-                }
+                additionalUiAction?.Invoke();
             }, exception =>
             {
                 FailedTesting();
@@ -328,7 +325,7 @@ namespace Warewolf.Studio.ViewModels
                 Password = Password,
                 UserName = UserName,
                 Name = ResourceName,
-                ID = _serverSource == null ? Guid.NewGuid() : _serverSource.ID
+                ID = _serverSource?.ID ?? Guid.NewGuid()
             };
         }
 
@@ -341,7 +338,7 @@ namespace Warewolf.Studio.ViewModels
                     AuthenticationType = AuthenticationType,
                     Name = ResourceName,
                     Password = Password,
-                    ID = _serverSource == null ? SelectedGuid : _serverSource.ID
+                    ID = _serverSource?.ID ?? SelectedGuid
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock
@@ -408,7 +405,7 @@ namespace Warewolf.Studio.ViewModels
             _token, exception =>
             {
                 FailedTesting();
-                TestMessage = exception != null ? exception.Message : "Failed";
+                TestMessage = exception?.Message ?? "Failed";
             });
         }
 
@@ -552,7 +549,7 @@ namespace Warewolf.Studio.ViewModels
         private string GetAddressName()
         {
             string addressName = null;
-            if (ServerName != null && !String.IsNullOrEmpty(ServerName.Name))
+            if (!string.IsNullOrEmpty(ServerName?.Name))
             {
                 addressName = GetAddressName(Protocol, ServerName.Name, SelectedPort);
             }
@@ -620,7 +617,7 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public ICommand TestCommand { get; set; }
 
-        Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
+        Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; }
         public string Protocol
         {
             get
@@ -646,8 +643,9 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        public string[] Protocols { get; set; }
-        public ObservableCollection<string> Ports { get; set; }
+
+        private string[] Protocols { get; }
+        private ObservableCollection<string> Ports { get; }
         public string SelectedPort
         {
             get
@@ -668,10 +666,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            if (mainViewModel != null)
-            {
-                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
         /// <summary>

@@ -44,6 +44,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <value>
         /// The case value.
         /// </value>
+        // ReSharper disable once MemberCanBePrivate.Global
         public string CaseValue { get; set; }
 
         public string ToWebModel()
