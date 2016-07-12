@@ -15,6 +15,7 @@ using ActivityUnitTests;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

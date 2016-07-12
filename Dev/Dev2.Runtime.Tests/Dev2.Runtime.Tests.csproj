@@ -155,6 +155,7 @@
     </Reference>
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
@@ -188,6 +189,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
+    <Compile Include="ESB\Control\ServiceLocatorTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
@@ -402,6 +405,10 @@
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
       <Name>Warewolf.ResourceManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
+      <Name>Warewolf.Resource</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>

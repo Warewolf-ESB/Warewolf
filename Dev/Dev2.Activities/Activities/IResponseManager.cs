@@ -3,6 +3,7 @@ using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Interfaces;
 
 namespace Dev2.Activities
 {

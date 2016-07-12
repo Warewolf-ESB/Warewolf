@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;

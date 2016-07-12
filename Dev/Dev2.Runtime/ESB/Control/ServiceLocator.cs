@@ -14,6 +14,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Control
@@ -24,7 +25,7 @@ namespace Dev2.Runtime.ESB.Control
     public class ServiceLocator
     {
         readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
-
+        private readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
         #region New Mgt Methods
 
         /// <summary>
@@ -36,15 +37,10 @@ namespace Dev2.Runtime.ESB.Control
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
         public DynamicService FindService(string serviceName, Guid workspaceID)
         {
-
             if(string.IsNullOrEmpty(serviceName))
-            {
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
-            }
-
-            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
-            var ret = services.FirstOrDefault();
-            if(ret==null)
+            var ret = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();
+            if (ret == null)
                 _perfCounter.Increment();
             return ret;
         }
@@ -58,15 +54,10 @@ namespace Dev2.Runtime.ESB.Control
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
         public DynamicService FindService(Guid serviceID, Guid workspaceID)
         {
-
             if(serviceID == Guid.Empty)
-            {
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
-            }
-
-            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceID);
-            var firstOrDefault = services.FirstOrDefault();
-            if(firstOrDefault != null)
+            var firstOrDefault = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceID).FirstOrDefault();
+            if (firstOrDefault != null)
             {
                 firstOrDefault.ServiceId = serviceID;
                 firstOrDefault.Actions.ForEach(action =>
@@ -76,7 +67,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             if (firstOrDefault == null)
                 _perfCounter.Increment();
-    
+
             return firstOrDefault;
         }
 
@@ -89,14 +80,9 @@ namespace Dev2.Runtime.ESB.Control
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">Null workspace</exception>
         public Source FindSourceByName(string sourceName, Guid workspaceID)
         {
-
-            if(string.IsNullOrEmpty(sourceName))
-            {
+            if (string.IsNullOrEmpty(sourceName))
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
-            }
-
-            var sources = ResourceCatalog.Instance.GetDynamicObjects<Source>(workspaceID, sourceName);
-            return sources.FirstOrDefault();
+            return _resourceCatalog.GetDynamicObjects<Source>(workspaceID, sourceName).FirstOrDefault();
         }
 
         #endregion

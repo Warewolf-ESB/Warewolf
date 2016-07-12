@@ -9,6 +9,7 @@
 */
 
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities

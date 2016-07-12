@@ -15,6 +15,7 @@ using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

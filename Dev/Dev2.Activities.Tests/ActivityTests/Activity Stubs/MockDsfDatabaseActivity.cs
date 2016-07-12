@@ -9,6 +9,7 @@
 */
 
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Services.Execution;
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities

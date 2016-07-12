@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
