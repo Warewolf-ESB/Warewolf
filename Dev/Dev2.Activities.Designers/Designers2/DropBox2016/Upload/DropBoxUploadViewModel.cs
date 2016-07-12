@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
@@ -12,7 +11,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Events;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ConvertPropertyToExpressionBody
@@ -23,7 +22,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
     public class DropBoxUploadViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
         private ObservableCollection<DropBoxSource> _sources;
-        private readonly IEventAggregator _eventPublisher;
         private string _fromPath;
         private string _toPath;
         private string _result;
@@ -31,15 +29,14 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private bool _addMode;
         private readonly IDropboxSourceManager _sourceManager;
         public DropBoxUploadViewModel(ModelItem modelItem)
-            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
+            : this(modelItem, new DropboxSourceManager())
         {
             this.RunViewSetup();
         }
 
-        public DropBoxUploadViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
+        public DropBoxUploadViewModel(ModelItem modelItem, IDropboxSourceManager sourceManager)
             : base(modelItem,"File Or Folder", String.Empty)
         {
-            _eventPublisher = eventPublisher;
             ThumbVisibility = Visibility.Visible;
             _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
