@@ -11,11 +11,7 @@
 
 
 using System;
-using System.Activities;
-using System.Activities.Statements;
-using System.Activities.XamlIntegration;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
@@ -28,19 +24,13 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xaml;
 using System.Xml;
-using System.Xml.Linq;
 using CommandLine;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Common.Reflection;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
@@ -49,14 +39,10 @@ using Dev2.Instrumentation;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
-using Dev2.Utilities;
 using Dev2.Workspaces;
 using log4net.Config;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Core;
 // ReSharper disable AssignNullToNotNullAttribute
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -364,8 +350,6 @@ namespace Dev2
                 result = 95;
                 didBreak = true;
             }
-
-            // PBI 5389 - Resources Assigned and Allocated to Server
             if(!didBreak && !LoadHostSecurityProvider())
             {
                 result = 1;
@@ -389,10 +373,7 @@ namespace Dev2
                 result = 94;
                 didBreak = true;
             }
-
-       
-
-            // PBI 5389 - Resources Assigned and Allocated to Server
+            
             if(!didBreak && !LoadServerWorkspace())
             {
                 result = 98; // ????
@@ -404,8 +385,6 @@ namespace Dev2
                 result = 4;
                 didBreak = true;
             }
-
-            // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             if(!didBreak && !LoadSettingsProvider())
             {
                 result = 93;
@@ -421,7 +400,6 @@ namespace Dev2
 
             if(!didBreak)
             {
-                // set background timer to query network computer name list every 15 minutes ;)
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 result = ServerLoop(interactiveMode);
                 StartPulseLogger();
