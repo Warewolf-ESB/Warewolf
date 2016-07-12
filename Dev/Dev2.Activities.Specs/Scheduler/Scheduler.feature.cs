@@ -86,8 +86,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
    testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-   testRunner.And("\"ScheduleWithHistory\" has a username of \"dev2\\IntegrationTester\" and a Password o" +
-                    "f \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"ScheduleWithHistory\" has a username of \"LocalSchedulerAdmin\" and a Password of \"" +
+                    "987Sched#@!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
@@ -214,7 +214,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
    testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
-   testRunner.And("\"Diceroll1\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll1\" has a username of \"LocalSchedulerAdmin\" and a Password of \"987Sched#@" +
+                    "!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
