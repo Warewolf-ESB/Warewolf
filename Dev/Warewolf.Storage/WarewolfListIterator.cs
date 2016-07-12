@@ -20,21 +20,13 @@ namespace Warewolf.Storage
         public string FetchNextValue(IWarewolfIterator expression)
         {
             var warewolfEvalResult = _variablesToIterateOn[_variablesToIterateOn.IndexOf(expression)];
-            if (warewolfEvalResult!=null)
-            {
-                return warewolfEvalResult.GetNextValue();
-            }            
-            return null;
+            return warewolfEvalResult?.GetNextValue();
         }
 
         public string FetchNextValue(int position)
         {
             var warewolfEvalResult = _variablesToIterateOn[position];
-            if (warewolfEvalResult != null)
-            {
-                return warewolfEvalResult.GetNextValue();
-            }
-            return null;
+            return warewolfEvalResult?.GetNextValue();
         }
 
 
