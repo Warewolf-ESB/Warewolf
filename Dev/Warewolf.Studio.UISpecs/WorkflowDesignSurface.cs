@@ -95,6 +95,8 @@ namespace Warewolf.Studio.UISpecs
             //UIMap.Assert_Debug_Input_Dialog_Exists();
             //Uimap.Assert_DebugInput_DebugButton_Exists();
             Uimap.Click_DebugInput_DebugButton();
+            Uimap.Assert_DebugOutput_Exists();
+            Uimap.Assert_DebugOutput_SettingsButton_Exists();
             Uimap.Assert_DebugOutput_Contains_SomeVariable();
             **/
         }
