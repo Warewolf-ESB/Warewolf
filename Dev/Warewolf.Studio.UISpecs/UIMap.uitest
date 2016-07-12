@@ -41,7 +41,7 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.StartPage">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1324,7 +1324,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsoRadioButton">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Refresh button does not exist on dependency graph</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dependency_Graph_Refresh_Button_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsonRadioButton">
       <ParameterName />
       <PropertyName>Selected</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1341,7 +1358,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonasdRadioButton">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton">
       <ParameterName />
       <PropertyName>Selected</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -2540,23 +2557,6 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Read_Folder_Large_View_Exists_OnDesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Refresh button does not exist on dependency graph</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Refresh_Button_Exists_In_Dependency_Graph">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -3848,58 +3848,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.ConnectServerButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Connect button in the settings window does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_ConnectButton_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.EditServerButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Edit Server button does not exist in the Settings window</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_ConnectControl_Edit_Button_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.SettingsServerComboBox">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Connect Control in the Settings window does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_ConnectControl_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.LoggingTab">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3916,7 +3865,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3933,7 +3882,24 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.SettingsIcon">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings ribbon does not exist.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_Ribbon_Button_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3950,7 +3916,143 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 add resource button does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Button_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceText">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions add resource textbox does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Resource_Textbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddWindowsGroupsButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 add windows group button does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Button_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddWindowsGroupsEdit">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 add windows group testbox does not exist.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Add_Windows_Group_Textbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ContributeCheckBox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 contribute checkbox does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Contribute_Checkbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 execute checkbox does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Settings security tab resource permissions row1 view checkbox does not exist.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -5453,7 +5555,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.UICreateanewdatabasesoButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewdatabasesoButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -5471,7 +5573,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.UICreateanewpluginsourButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewpluginsourButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -5489,7 +5591,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.UICreateanewwebsourceButton">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.CreateanewwebsourceButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -5896,76 +5998,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell">
-      <ParameterName />
-      <State>Checked</State>
-    </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Admin_ServerPermissions">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
-      <ParameterName />
-      <State>Checked</State>
-    </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Contribute_ResourcePermissions">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell">
-      <ParameterName />
-      <State>Checked</State>
-    </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Contribute_ServerPermissions">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
-      <ParameterName />
-      <State>Checked</State>
-    </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Execute_ResourcePermissions">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.ResourceCell.ResourcePickerButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="6" Y="15" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_ResourcePermissions_ResourcePicker">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
     <MouseAction UIObjectName="UIMap.MainStudioWindow.SideMenuBar.CollapsedSideMenu.SettingsIcon">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
@@ -5984,11 +6016,55 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.ResourceCell.AddResourceButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="6" Y="15" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Security_Resource_Permissions_Add_Resource_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ContributeCheckBox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_View_ResourcePermissions">
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Security_Tab_Resource_Permissions_Contribute_Checkbox">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox">
+      <ParameterName />
+      <State>Checked</State>
+    </SetStateAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Security_Tab_Resource_Permissions_View_Checkbox">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <SetStateAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox">
+      <ParameterName />
+      <State>Checked</State>
+    </SetStateAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Settings_Security_Tab_ResourcePermissions_Execute_Checkbox">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -10308,7 +10384,7 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="Button" Id="UICreateanewdatabasesoButton" FriendlyName="Create a new database source" SpecialControlType="None">
+                    <UIObject ControlType="Button" Id="CreateanewdatabasesoButton" FriendlyName="Create a new database source" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf</WindowTitle>
@@ -10321,7 +10397,7 @@
                       <SupportLevel>0</SupportLevel>
                       <Descendants />
                     </UIObject>
-                    <UIObject ControlType="Button" Id="UICreateanewpluginsourButton" FriendlyName="Create a new plugin source" SpecialControlType="None">
+                    <UIObject ControlType="Button" Id="CreateanewpluginsourButton" FriendlyName="Create a new plugin source" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf</WindowTitle>
@@ -10334,7 +10410,7 @@
                       <SupportLevel>0</SupportLevel>
                       <Descendants />
                     </UIObject>
-                    <UIObject ControlType="Button" Id="UICreateanewwebsourceButton" FriendlyName="Create a new web source" SpecialControlType="None">
+                    <UIObject ControlType="Button" Id="CreateanewwebsourceButton" FriendlyName="Create a new web source" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf</WindowTitle>
@@ -13950,209 +14026,260 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
-                            <UIObject ControlType="Custom" Id="SettingsTab" FriendlyName="UI_SettingsView_AutoID" SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="SettingsTab" FriendlyName="Dev2.Settings.SettingsViewModel" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf</WindowTitle>
+                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                <PropertyCondition Name="ClassName">Uia.SettingsView</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">UI_SettingsView_AutoID</PropertyCondition>
+                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.Settings.SettingsViewModel</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="Custom" Id="ConnectControl" FriendlyName="ConnectUserControl" SpecialControlType="None">
+                                <UIObject ControlType="Custom" Id="WorksurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                    <PropertyCondition Name="ClassName">Uia.ConnectControl</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">ConnectUserControl</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="ComboBox" Id="SettingsServerComboBox" FriendlyName="UI_SettingsServerComboBox_AutoID" SpecialControlType="None">
+                                    <UIObject ControlType="Custom" Id="SettingsView" FriendlyName="UI_SettingsView_AutoID" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf</WindowTitle>
                                       </WindowTitles>
                                       <AndCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_SettingsServerComboBox_AutoID</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Button" Id="EditServerButton" FriendlyName="..." SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_SettingsServerEditButton_AutoID</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Button" Id="ConnectServerButton" FriendlyName="UI_SettingsServerConnectButton_AutoID" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_SettingsServerConnectButton_AutoID</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="TabList" Id="UIItemTabList" FriendlyName="" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="TabPage" Id="SecurityTab" FriendlyName="System.Windows.Controls.TabItem Header: Content:" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                                        <PropertyCondition Name="Name">System.Windows.Controls.TabItem Header: Content:</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.SettingsView</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UI_SettingsView_AutoID</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Custom" Id="SecurityWindow" FriendlyName="SecurityViewContent" SpecialControlType="None">
+                                        <UIObject ControlType="TabList" Id="TabList" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                            <PropertyCondition Name="ClassName">Uia.SecurityView</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">SecurityViewContent</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TabList</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="Table" Id="ServerPermissions" FriendlyName="ServerPermissionsDataGrid" SpecialControlType="None">
+                                            <UIObject ControlType="TabPage" Id="SecurityTab" FriendlyName="System.Windows.Controls.TabItem Header: Content:" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">ServerPermissionsDataGrid</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                                <PropertyCondition Name="Name">System.Windows.Controls.TabItem Header: Content:</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>
-                                                <UIObject ControlType="Cell" Id="UIFalseCell" FriendlyName="False" SpecialControlType="None">
+                                                <UIObject ControlType="Custom" Id="SecurityWindow" FriendlyName="SecurityViewContent" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
                                                     <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
-                                                    <PropertyCondition Name="ColumnHeader" />
-                                                    <PropertyCondition Name="Value">False</PropertyCondition>
-                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
-                                              </Descendants>
-                                            </UIObject>
-                                            <UIObject ControlType="Table" Id="ResourcePermissions" FriendlyName="ResourcePermissionsDataGrid" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">ResourcePermissionsDataGrid</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants>
-                                                <UIObject ControlType="Cell" Id="ResourceCell" FriendlyName="Resources" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="ColumnHeader" />
-                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.SecurityView</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">SecurityViewContent</PropertyCondition>
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
-                                                    <UIObject ControlType="Button" Id="ResourcePickerButton" FriendlyName="..." SpecialControlType="None">
+                                                    <UIObject ControlType="Table" Id="ServerPermissions" FriendlyName="ServerPermissionsDataGrid" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                        <PropertyCondition Name="AutomationId">UI__AddResourceButton_AutoID</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">ServerPermissionsDataGrid</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
+                                                    <UIObject ControlType="Table" Id="ResourcePermissions" FriendlyName="ResourcePermissionsDataGrid" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">ResourcePermissionsDataGrid</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Pane" Id="Row1" FriendlyName="Row1" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.CellsPanel</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Cell" Id="ResourceCell" FriendlyName="Resources" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Button" Id="AddResourceButton" FriendlyName="..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__AddResourceButton_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="Text" Id="AddResourceText" FriendlyName="UI__AddResourceTextBox_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__AddResourceTextBox_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="Button" Id="AddWindowsGroupsButton" FriendlyName="..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__AddWindowsGroupsButton_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="Edit" Id="AddWindowsGroupsEdit" FriendlyName="UI__AddWindowsGroupsTextBox_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__AddWindowsGroupsTextBox_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                            <UIObject ControlType="Cell" Id="PermissionsCell" FriendlyName="False" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="CheckBox" Id="ViewCheckBox" FriendlyName="UI__ViewPermissionCheckBox_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__ViewPermissionCheckBox_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="CheckBox" Id="ExecuteCheckBox" FriendlyName="UI__ExecutePermissionCheckBox_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__ExecutePermissionCheckBox_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="CheckBox" Id="ContributeCheckBox" FriendlyName="UI__ContributePermissionCheckBox_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI__ContributePermissionCheckBox_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
                                                   </Descendants>
                                                 </UIObject>
-                                                <UIObject ControlType="Cell" Id="UIFalseCell" FriendlyName="False" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="ColumnHeader" />
-                                                    <PropertyCondition Name="Value">False</PropertyCondition>
-                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
                                               </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="TabPage" Id="LoggingTab" FriendlyName="System.Windows.Controls.TabItem Header: Content:" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                                <PropertyCondition Name="Name">System.Windows.Controls.TabItem Header: Content:</PropertyCondition>
+                                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
                                       </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="TabPage" Id="LoggingTab" FriendlyName="System.Windows.Controls.TabItem Header: Content:" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                                        <PropertyCondition Name="Name">System.Windows.Controls.TabItem Header: Content:</PropertyCondition>
-                                        <PropertyCondition Name="Instance">2</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
                                     </UIObject>
                                   </Descendants>
                                 </UIObject>
@@ -18413,7 +18540,7 @@
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
                                             </UIObject>
-                                            <UIObject ControlType="RadioButton" Id="ShowwhatdependsonasdRadioButton" FriendlyName="Show what depends on asdf" SpecialControlType="None">
+                                            <UIObject ControlType="RadioButton" Id="ShowwhatdependsonthisRadioButton" FriendlyName="Show what depends on this" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -18426,7 +18553,7 @@
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
                                             </UIObject>
-                                            <UIObject ControlType="RadioButton" Id="ShowwhatasdfdependsoRadioButton" FriendlyName="Show what asdf depends on" SpecialControlType="None">
+                                            <UIObject ControlType="RadioButton" Id="ShowwhatasdfdependsonRadioButton" FriendlyName="Show what this depends on" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>

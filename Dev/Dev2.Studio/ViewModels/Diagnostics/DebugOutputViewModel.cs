@@ -29,7 +29,6 @@ using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Services;
 using Dev2.Services.Events;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -38,6 +37,7 @@ using Dev2.ViewModels.Diagnostics;
 using Dev2.Studio.Core;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
 // ReSharper disable InconsistentNaming
+// ReSharper disable NonLocalizedString
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -50,9 +50,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// </summary>
     public class DebugOutputViewModel : SimpleBaseViewModel, IUpdatesHelp
     {
-        #region Fields
-
-        // BUG 9735 - 2013.06.22 - TWR : added pending items
         readonly List<IDebugState> _pendingItems = new List<IDebugState>();
         readonly List<IDebugState> _contentItems;
         readonly Dictionary<Guid, IDebugTreeViewItemViewModel> _contentItemMap;
@@ -92,10 +89,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _continueDebugDispatch;
         bool _dispatchLastDebugState;
 
-        #endregion
-
-        #region Ctor
-
         public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy)
         {
             VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
@@ -118,15 +111,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
 
-        #endregion
-
-        #region Properties
-
         public int PendingItemCount => _pendingItems.Count;
         public int ContentItemCount => _contentItems.Count;
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private ProcessController ProcessController { get; set; }
 
         public DebugStatus DebugStatus
         {
@@ -364,8 +350,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-
-
+        
         /// <summary>
         ///     Gets a value indicating whether [highligh error].
         /// </summary>
@@ -424,12 +409,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        #endregion
-
-       
-
-        #region public methods
-
         /// <summary>
         ///     Appends the specified content.
         /// </summary>
@@ -460,12 +439,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 _lastStep = content;
         }
 
-        public void AppendX(IDebugState content)
-        {
-            content.SessionID = SessionID;
-            Append(content);
-        }
-
         public void OpenMoreLink(IDebugLineItem item)
         {
             if (_outputViewModelUtil.IsValidLineItem(item)) return;
@@ -480,7 +453,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 var debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
                 Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
-                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
+                Process.Start(new ProcessStartInfo(debugItemTempFilePath));
             }
             catch (Exception ex)
             {
@@ -506,11 +479,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             return !string.IsNullOrEmpty(item?.MoreLink);
         }
-
-        #endregion public methods
         
-        #region Commands
-
         public ICommand OpenItemCommand => _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem));
 
         public ICommand ExpandAllCommand => _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(ExpandAll));
@@ -548,11 +517,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 item.IsSelected = true;
             });
         }
-
-        #endregion
-
-        #region Private Methods
-
+        
         /// <summary>
         ///     Clears all content and the tree.
         /// </summary>
@@ -563,9 +528,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _contentItemMap.Clear();
             _pendingItems.Clear();
         }
-
-        #region OnDispose
-
+        
         protected override void OnDispose()
         {
             Clear();
@@ -573,8 +536,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             _debugWriterSubscriptionService.Dispose();
             base.OnDispose();
         }
-
-        #endregion
+        
 
         /// <summary>
         ///     Expands all nodes.
@@ -584,27 +546,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var node = payload as IDebugTreeViewItemViewModel;
 
-            //
-            // If no node is passed in then call for all root nodes
-            //
             if(node == null)
             {
                 foreach(var rootNode in RootItems)
                 {
                     ExpandAll(rootNode);
                 }
-
-                //
-                // Switch Expand modes
-                //
                 ExpandAllMode = !ExpandAllMode;
-
                 return;
             }
-
-            //
-            // Expand node and call for all children
-            //
+            
             node.IsExpanded = ExpandAllMode;
             foreach(var childNode in node.Children)
             {
@@ -620,7 +571,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var debugState = payload as IDebugState;
 
-            if(debugState?.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
+            if(debugState?.ActivityType == ActivityType.Workflow)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
                 shellViewModel?.OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID);
@@ -650,12 +601,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 _isRebuildingTree = false;
             }
         }
-
-        #endregion Private Methods
-
-        #region AddItemToTree
-
-        // BUG 9735 - 2013.06.22 - TWR : refactored
+        
+        
         public void AddItemToTree(IDebugState content)
         {
             if (_contentItems.Any(a => a.DisconnectedID == content.DisconnectedID))
@@ -671,9 +618,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var environmentId = content.EnvironmentID;
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
-                    Thread.Sleep(500);
-                if (isRemote)
                 {
+                    Thread.Sleep(500);
                     var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
@@ -789,8 +735,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             return false;
         }
 
-        private static bool AddErrorToParent(IDebugState content, IDebugTreeViewItemViewModel child,
-            IDebugTreeViewItemViewModel parent)
+        private static bool AddErrorToParent(IDebugState content, IDebugTreeViewItemViewModel child, IDebugTreeViewItemViewModel parent)
         {
             if (!child.HasError.GetValueOrDefault(false)) return false;
             var theParent = parent as DebugStateTreeViewItemViewModel;
@@ -824,19 +769,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) {Content = content};
             return child;
         }
-
-        #endregion
-
-        #region QueuePending
-
-        // BUG 9735 - 2013.06.22 - TWR : added
        
-
-        #endregion
-
-        #region FlushPending
-
-        // BUG 9735 - 2013.06.22 - TWR : added
         void FlushPending()
         {
             while(_pendingItems.Count > 0)
@@ -845,23 +778,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 _pendingItems.RemoveAt(0);
             }
         }
-
-        #endregion
-
-        #region NotifyOfPropertyChange
-
+        
         public override void NotifyOfPropertyChange(string propertyName)
         {
             base.NotifyOfPropertyChange(propertyName);
 
-            // BUG 9735 - 2013.06.22 - TWR : added
             if(propertyName == "IsProcessing")
             {
                 FlushPending();
             }
         }
-
-        #endregion
 
         public void UpdateHelpDescriptor(string helpText)
         {
