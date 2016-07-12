@@ -426,19 +426,6 @@ namespace Dev2.Studio.ViewModels
 
         public IVersionChecker Version { get; }
 
-        public bool HasActiveConnection
-        {
-            get
-            {
-                return _hasActiveConnection;
-            }
-            private set
-            {
-                _hasActiveConnection = value;
-                NotifyOfPropertyChange(() => HasActiveConnection);
-            }
-        }
-
         [ExcludeFromCodeCoverage]
         public MainViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), Core.EnvironmentRepository.Instance, new VersionChecker())
@@ -1141,7 +1128,7 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        private void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var oauthSourceViewModel = new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), selectedSource);
             var vm = new SourceViewModel<IOAuthSource>(EventPublisher, oauthSourceViewModel, PopupProvider, new ManageOAuthSourceControl());
@@ -1376,8 +1363,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return false;
             }
-
-            HasActiveConnection = ActiveItem != null && ActiveItem.IsEnvironmentConnected();
+            
             return ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
         }
 

@@ -105,9 +105,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_emailServiceSource != null)
             {
-                var source = (ExchangeSourceDefinition) _emailServiceSource;
-                HeaderText = !string.IsNullOrEmpty(source.ResourceName) ? source.ResourceName : source.Name;
-                Header = !string.IsNullOrEmpty(source.ResourceName) ? source.ResourceName : source.Name;
+                HeaderText = (_emailServiceSource.Name ?? ResourceName).Trim();
+                Header = (_emailServiceSource.Name ?? ResourceName).Trim();
             }
         }
 
