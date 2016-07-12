@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Interfaces;
 
 namespace Dev2.Core.Tests.Workflows
 {

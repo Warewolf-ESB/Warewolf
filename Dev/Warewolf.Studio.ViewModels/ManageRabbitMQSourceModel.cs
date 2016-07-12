@@ -1,5 +1,4 @@
-﻿using Dev2;
-using Dev2.Common.Interfaces;
+﻿using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.RabbitMQ;
 using System.Collections.Generic;
 
@@ -14,8 +13,6 @@ namespace Warewolf.Studio.ViewModels
 
         public ManageRabbitMQSourceModel(IStudioUpdateManager updateManager, IQueryManager queryManager, IShellViewModel shellViewModel)
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "updateManager", updateManager }, { "queryManager", queryManager }, { "shellViewModel", shellViewModel } });
-
             _updateManager = updateManager;
             _queryManager = queryManager;
             _shellViewModel = shellViewModel;

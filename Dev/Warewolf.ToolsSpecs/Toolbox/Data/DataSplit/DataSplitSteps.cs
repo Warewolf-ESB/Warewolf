@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dev2.Data.Util;
+using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;

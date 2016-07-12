@@ -29,6 +29,7 @@ using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Dev2.PathOperations;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 {

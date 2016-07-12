@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
+using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

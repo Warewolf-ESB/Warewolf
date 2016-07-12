@@ -12,6 +12,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
