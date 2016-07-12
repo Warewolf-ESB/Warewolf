@@ -109,6 +109,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             SetIsNew(xml);
         }
 
+        // ReSharper disable once UnusedMember.Global
         public Version Version { get; set; }
         [JsonIgnore]
         public bool IsUpgraded { get; set; }
@@ -239,7 +240,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        public string GetResourceTypeFromString(string actionTypeStr)
+        private string GetResourceTypeFromString(string actionTypeStr)
         {
             enActionType actionType;
             if(Enum.TryParse(actionTypeStr, out actionType))
@@ -495,7 +496,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         });
                     }
                     AddEmailSources(elementToUse);
-                    AddRabbitMQSources(elementToUse);
+                    AddRabbitMqSources(elementToUse);
                     AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
                 }
                 catch(Exception e)
@@ -577,7 +578,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddRabbitMQSources(XElement elementToUse)
+        private void AddRabbitMqSources(XElement elementToUse)
         {
             if(elementToUse == null)
             {

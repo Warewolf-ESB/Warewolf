@@ -62,14 +62,10 @@ namespace Dev2.Runtime.ESB
 
         #region Constructors
 
-        public EsbServiceInvoker(IEsbChannel esbChannel,
-                                      IFrameworkDuplexDataChannel managementChannel,
-                                      IWorkspace workspace, EsbExecuteRequest request = null)
+        public EsbServiceInvoker(IEsbChannel esbChannel,IWorkspace workspace, EsbExecuteRequest request = null)
         {
             _esbChannel = esbChannel;
-            if(managementChannel != null)
-            {
-            }
+          
 
             // 2012.10.17 - 5782: TWR - Added workspace parameter
             _workspace = workspace;

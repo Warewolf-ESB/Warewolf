@@ -10,12 +10,13 @@
 
 using System;
 using System.IO;
+using Dev2.Services.Configuration;
 
-namespace Dev2.Services.Configuration
+namespace Dev2.Studio.Core.Services.Configuration
 {
     public class UserConfigurationService : ConfigurationService
     {
-        public static readonly string ConfigPath = Path.Combine(DefaultPath, "User.Config");
+        private static readonly string ConfigPath = Path.Combine(DefaultPath, "User.Config");
 
         #region Singleton Instance
 
