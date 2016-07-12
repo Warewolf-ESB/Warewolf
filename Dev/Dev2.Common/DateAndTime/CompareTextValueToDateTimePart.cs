@@ -1,9 +1,10 @@
 using System.Globalization;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
+// ReSharper disable NonLocalizedString
 
 namespace Dev2.Common.DateAndTime
 {
-    public class CompareTextValueToDateTimePart
+    public static class CompareTextValueToDateTimePart
     {
         /// <summary>
         ///     Determines if a given string is a number

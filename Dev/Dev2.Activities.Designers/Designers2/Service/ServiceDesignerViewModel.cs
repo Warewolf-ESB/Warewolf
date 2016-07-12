@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,6 +52,8 @@ using Dev2.Threading;
 using Warewolf.Resource.Errors;
 // ReSharper disable NonLocalizedString
 // ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -71,6 +74,7 @@ namespace Dev2.Activities.Designers2.Service
         private const string DoneText = "Done";
         private const string FixText = "Fix";
 
+        [ExcludeFromCodeCoverage]
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
         {
@@ -119,10 +123,6 @@ namespace Dev2.Activities.Designers2.Service
             IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == Common.Interfaces.Core.DynamicServices.enActionType.Workflow;
             OutputMappingEnabled = !RunWorkflowAsync;
 
-            // When the active environment is not local, we need to get smart around this piece of logic.
-            // It is very possible we are treating a remote active as local since we cannot logically assign 
-            // an environment id when this is the case as it will fail with source not found since the remote 
-            // does not contain localhost's connections ;)
             var activeEnvironment = environmentRepository.ActiveEnvironment;
             if (EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
             {
@@ -146,7 +146,6 @@ namespace Dev2.Activities.Designers2.Service
             }
             if (!IsDeleted)
             {
-                // MUST InitializeMappings() first!
                 InitializeMappings();
                 InitializeLastValidationMemo(_environment);
                 if (IsItemDragged.Instance.IsDragged)
@@ -278,7 +277,6 @@ namespace Dev2.Activities.Designers2.Service
 
         public IContextualResourceModel RootModel { get; private set; }
 
-        // PBI 6690 - 2013.07.04 - TWR : added
         public DesignValidationMemo LastValidationMemo { get; private set; }
 
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; private set; }
@@ -418,7 +416,6 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        // ModelItem properties
         string ServiceUri => GetProperty<string>();
         string ServiceName => GetProperty<string>();
         string ActionName => GetProperty<string>();
@@ -442,7 +439,6 @@ namespace Dev2.Activities.Designers2.Service
 
         Guid ResourceID => GetProperty<Guid>();
         Guid UniqueID => GetProperty<Guid>();
-        // ReSharper restore InconsistentNaming
         public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
 
@@ -452,16 +448,13 @@ namespace Dev2.Activities.Designers2.Service
             set { SetValue(ButtonDisplayValueProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonDisplayValue.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
-        IEnvironmentModel _environment;
+        readonly IEnvironmentModel _environment;
         bool _runWorkflowAsync;
-        private IAsyncWorker _worker;
+        private readonly IAsyncWorker _worker;
         private bool _versionsDifferent;
         private IWebActivityFactory _activityFactory;
         private IDataMappingViewModelFactory _mappingFactory;
-        // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
         {
@@ -486,25 +479,20 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        #region Overrides of ActivityDesignerViewModel
 
         protected override void OnToggleCheckedChanged(string propertyName, bool isChecked)
         {
             base.OnToggleCheckedChanged(propertyName, isChecked);
 
-            // AddTitleBarMappingToggle() binds Mapping button to ShowLarge property
             if (propertyName == ShowLargeProperty.Name)
             {
                 if (!isChecked)
                 {
-                    // Collapsing
                     UpdateMappings();
                     CheckForRequiredMapping();
                 }
             }
         }
-
-        #endregion
 
         void SetInputs()
         {
@@ -566,7 +554,7 @@ namespace Dev2.Activities.Designers2.Service
             if (!string.IsNullOrEmpty(serviceName))
             {
                 var displayName = DisplayName;
-                if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+                if (!string.IsNullOrEmpty(displayName))
                 {
                     DisplayName = serviceName;
                 }
@@ -640,19 +628,11 @@ namespace Dev2.Activities.Designers2.Service
         {
             var resourceId = ResourceID;
 
-            if (resourceId != Guid.Empty) // if we have a GUID then get the model
+            if (resourceId != Guid.Empty)
             {
                 NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
 
-            }
-            else
-            {
-                if (!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
-                {
-                    NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName) as IContextualResourceModel;
-
-                }
-            }
+            }            
         }
 
         private void CheckVersions()
@@ -680,12 +660,12 @@ namespace Dev2.Activities.Designers2.Service
         private bool InitializeResourceModelSync(IEnvironmentModel environmentModel)
         {
             var resourceId = ResourceID;
-            if (!environmentModel.IsConnected) // if we are not connected then just verify connection and return
+            if (!environmentModel.IsConnected)
             {
                 environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
                 return true;
             }
-            if (resourceId != Guid.Empty) // if we have a GUID then get the model
+            if (resourceId != Guid.Empty)
             {
                 ResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
 
@@ -731,7 +711,6 @@ namespace Dev2.Activities.Designers2.Service
                     catch (XmlException xe)
                     {
                         Dev2Logger.Error(xe);
-                        // invalid xml, we need to extract the sourceID another way ;)
                         srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                     }
 
@@ -1066,8 +1045,6 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        #region GetMapping
-
         XElement FetchXElementFromFixData()
         {
             if (!string.IsNullOrEmpty(WorstDesignError?.FixData))
@@ -1133,9 +1110,6 @@ namespace Dev2.Activities.Designers2.Service
             return new List<IInputOutputViewModel>();
         }
 
-        #endregion
-
-        #region RemoveWorstError
 
         void RemoveError(IErrorInfo worstError)
         {
@@ -1150,9 +1124,6 @@ namespace Dev2.Activities.Designers2.Service
             worstErrors.ToList().ForEach(RemoveError);
         }
 
-        #endregion
-
-        #region UpdateWorstError
 
         void UpdateWorstError()
         {
@@ -1178,10 +1149,6 @@ namespace Dev2.Activities.Designers2.Service
             WorstDesignError = worstError[0];
         }
 
-        #endregion
-
-        #region UpdateDesignValidationErrors
-
         void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
@@ -1193,10 +1160,6 @@ namespace Dev2.Activities.Designers2.Service
             }
             UpdateWorstError();
         }
-
-        #endregion
-
-        #region Implementation of IDisposable
 
         public void Handle(UpdateResourceMessage message)
         {
@@ -1218,9 +1181,6 @@ namespace Dev2.Activities.Designers2.Service
 
         ~ServiceDesignerViewModel()
         {
-            // Do not re-create Dispose clean-up code here.
-            // Calling Dispose(false) is optimal in terms of
-            // readability and maintainability.
             Dispose(false);
         }
 
@@ -1230,39 +1190,22 @@ namespace Dev2.Activities.Designers2.Service
             GC.SuppressFinalize(this);
             base.OnDispose();
         }
-
-
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
+        
         void Dispose(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
                 if (disposing)
                 {
-                    // Dispose managed resources.
                     _validationService?.Dispose();
                     if (_environment != null)
                     {
                         _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
                     }
                 }
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }
-
-        #endregion
-
-        #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName = null)
@@ -1270,8 +1213,6 @@ namespace Dev2.Activities.Designers2.Service
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
-
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

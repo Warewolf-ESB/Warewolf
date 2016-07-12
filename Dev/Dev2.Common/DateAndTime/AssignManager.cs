@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
@@ -7,8 +8,30 @@ namespace Dev2.Common.DateAndTime
 {
     internal class AssignManager : IAssignManager
     {
+        private readonly Dictionary<string, ITimeZoneTO> _timeZoneTos;
+
+        public AssignManager(Dictionary<string, ITimeZoneTO> timeZoneTos)
+        {
+            _timeZoneTos = timeZoneTos;
+        }
+
+        public AssignManager()
+        {
+            
+        }
+
         #region Implementation of IAssignManager
 
+        public void AssignTimeZone(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
+        {
+            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
+
+            ITimeZoneTO timeZoneTo;
+            if (_timeZoneTos.TryGetValue(lowerValue, out timeZoneTo))
+            {
+                dateTimeResultTo.TimeZone = timeZoneTo;
+            }
+        }
         public void AssignAmPm(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
