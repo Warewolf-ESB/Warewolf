@@ -41,6 +41,23 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Main Studio Window Does not Exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AAA">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -1290,6 +1307,57 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Dependency graph nesting levels textbox does not exist.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dependency_Graph_Nesting_Levels_Textbox_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsoRadioButton">
+      <ParameterName />
+      <PropertyName>Selected</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Dependency graph show dependencies radio button is not selected.</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonasdRadioButton">
+      <ParameterName />
+      <PropertyName>Selected</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Show dependants radio button is not selected</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_Selected">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -1970,23 +2038,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Main Studio Window Does not Exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_MainStudioWindow_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.MaximizeStudioButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -2497,6 +2548,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Refresh button does not exist on dependency graph</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Refresh_Button_Exists_In_Dependency_Graph">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -2531,7 +2599,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.RemoteServerUITestWorkflowText">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text">
       <ParameterName />
       <PropertyName>DisplayText</PropertyName>
       <ExpectedValue>RemoteServerUITestWorkflow</ExpectedValue>
@@ -18332,6 +18400,74 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
+                                            <UIObject ControlType="Button" Id="RefreshButton" FriendlyName="Refresh" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                <PropertyCondition Name="Name">Refresh</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="RadioButton" Id="ShowwhatdependsonasdRadioButton" FriendlyName="Show what depends on asdf" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">WfDependsOn</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="RadioButton" Id="ShowwhatasdfdependsoRadioButton" FriendlyName="Show what asdf depends on" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">DependsOnWf</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="Text" Id="NestingLevelsText" FriendlyName="Nesting Levels" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="Name">Nesting Levels</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Edit" Id="Textbox" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>NextTo</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
                                             <UIObject ControlType="Custom" Id="Node1" FriendlyName="Nodes" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
@@ -18346,15 +18482,126 @@
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>
-                                                <UIObject ControlType="Text" Id="RemoteServerUITestWorkflowText" FriendlyName="RemoteServerUITestWorkflow" SpecialControlType="None">
+                                                <UIObject ControlType="Text" Id="Text" FriendlyName="RemoteServerUITestWorkflow" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                    <PropertyCondition Name="Name">RemoteServerUITestWorkflow</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="Custom" Id="Node2" FriendlyName="Nodes" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.XamNetworkNode</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Nodes</PropertyCondition>
+                                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Text" Id="Text" FriendlyName="RemoteServerUITestWorkflow" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="Custom" Id="Node3" FriendlyName="Nodes" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.XamNetworkNode</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Nodes</PropertyCondition>
+                                                <PropertyCondition Name="Instance">3</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Text" Id="Text" FriendlyName="RemoteServerUITestWorkflow" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="Custom" Id="Node4" FriendlyName="Nodes" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.XamNetworkNode</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Nodes</PropertyCondition>
+                                                <PropertyCondition Name="Instance">4</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Text" Id="Text" FriendlyName="RemoteServerUITestWorkflow" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="Custom" Id="Node5" FriendlyName="Nodes" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.XamNetworkNode</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Nodes</PropertyCondition>
+                                                <PropertyCondition Name="Instance">5</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Text" Id="Text" FriendlyName="RemoteServerUITestWorkflow" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants />

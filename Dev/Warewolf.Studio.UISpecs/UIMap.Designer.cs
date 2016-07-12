@@ -32,6 +32,19 @@ namespace Warewolf.Studio.UISpecs
     {
         
         /// <summary>
+        /// AAA - Use 'AAAExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AAA()
+        {
+            #region Variable Declarations
+            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Warewolf' window equals 'True'
+            Assert.AreEqual(this.AAAExpectedValues.MainStudioWindowExists, mainStudioWindow.Exists, "Main Studio Window Does not Exist");
+        }
+        
+        /// <summary>
         /// Assert_Assign_Large_View_Exists_OnDesignSurface - Use 'Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Assign_Large_View_Exists_OnDesignSurface()
@@ -990,6 +1003,45 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Dependency_Graph_Nesting_Levels_Textbox_Exists - Use 'Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Dependency_Graph_Nesting_Levels_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit textbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox;
+            #endregion
+
+            // Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
+            Assert.AreEqual(this.Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues.TextboxExists, textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected - Use 'Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected()
+        {
+            #region Variable Declarations
+            WpfRadioButton showwhatasdfdependsoRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatasdfdependsoRadioButton;
+            #endregion
+
+            // Verify that the 'Selected' property of 'Show what asdf depends on' radio button equals 'True'
+            Assert.AreEqual(this.Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues.ShowwhatasdfdependsoRadioButtonSelected, showwhatasdfdependsoRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
+        }
+        
+        /// <summary>
+        /// Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_Selected - Use 'Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_Selected()
+        {
+            #region Variable Declarations
+            WpfRadioButton showwhatdependsonasdRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonasdRadioButton;
+            #endregion
+
+            // Verify that the 'Selected' property of 'Show what depends on asdf' radio button equals 'True'
+            Assert.AreEqual(this.Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues.ShowwhatdependsonasdRadioButtonSelected, showwhatdependsonasdRadioButton.Selected, "Show dependants radio button is not selected");
+        }
+        
+        /// <summary>
         /// Assert_Deploy_Destination_Server_Edit_Exists - Use 'Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Deploy_Destination_Server_Edit_Exists()
@@ -1511,19 +1563,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_MainStudioWindow_Exists - Use 'Assert_MainStudioWindow_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_MainStudioWindow_Exists()
-        {
-            #region Variable Declarations
-            WpfWindow mainStudioWindow = this.MainStudioWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Warewolf' window equals 'True'
-            Assert.AreEqual(this.Assert_MainStudioWindow_ExistsExpectedValues.MainStudioWindowExists, mainStudioWindow.Exists, "Main Studio Window Does not Exist");
-        }
-        
-        /// <summary>
         /// Assert_Maximize_Button_Exists_TopRibbon - Use 'Assert_Maximize_Button_Exists_TopRibbonExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Maximize_Button_Exists_TopRibbon()
@@ -1914,6 +1953,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Refresh_Button_Exists_In_Dependency_Graph - Use 'Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Refresh_Button_Exists_In_Dependency_Graph()
+        {
+            #region Variable Declarations
+            WpfButton refreshButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Refresh' button equals 'True'
+            Assert.AreEqual(this.Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues.RefreshButtonExists, refreshButton.Exists, "Refresh button does not exist on dependency graph");
+        }
+        
+        /// <summary>
         /// Assert_Refresh_Button_Exists_InExplorer - Use 'Assert_Refresh_Button_Exists_InExplorerExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Refresh_Button_Exists_InExplorer()
@@ -1945,11 +1997,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_RemoteServerUITestWorkflow_Appears_In_Dependency_Diagram()
         {
             #region Variable Declarations
-            WpfText remoteServerUITestWorkflowText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.RemoteServerUITestWorkflowText;
+            WpfText text = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text;
             #endregion
 
             // Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
-            Assert.AreEqual(this.Assert_RemoteServerUITestWorkflow_Appears_In_Dependency_DiagramExpectedValues.RemoteServerUITestWorkflowTextDisplayText, remoteServerUITestWorkflowText.DisplayText, "Dependant workflow not shown in dependency diagram");
+            Assert.AreEqual(this.Assert_RemoteServerUITestWorkflow_Appears_In_Dependency_DiagramExpectedValues.TextDisplayText, text.DisplayText, "Dependant workflow not shown in dependency diagram");
         }
         
         /// <summary>
@@ -7348,6 +7400,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public virtual AAAExpectedValues AAAExpectedValues
+        {
+            get
+            {
+                if ((this.mAAAExpectedValues == null))
+                {
+                    this.mAAAExpectedValues = new AAAExpectedValues();
+                }
+                return this.mAAAExpectedValues;
+            }
+        }
+        
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -8224,6 +8288,42 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues = new Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues == null))
+                {
+                    this.mAssert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues = new Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues();
+                }
+                return this.mAssert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues == null))
+                {
+                    this.mAssert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues = new Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues();
+                }
+                return this.mAssert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues;
+            }
+        }
+        
         public virtual Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues
         {
             get
@@ -8704,18 +8804,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_MainStudioWindow_ExistsExpectedValues Assert_MainStudioWindow_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_MainStudioWindow_ExistsExpectedValues == null))
-                {
-                    this.mAssert_MainStudioWindow_ExistsExpectedValues = new Assert_MainStudioWindow_ExistsExpectedValues();
-                }
-                return this.mAssert_MainStudioWindow_ExistsExpectedValues;
-            }
-        }
-        
         public virtual Assert_Maximize_Button_Exists_TopRibbonExpectedValues Assert_Maximize_Button_Exists_TopRibbonExpectedValues
         {
             get
@@ -9073,6 +9161,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues == null))
+                {
+                    this.mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues = new Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues();
+                }
+                return this.mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues;
             }
         }
         
@@ -11214,6 +11314,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private AAAExpectedValues mAAAExpectedValues;
+        
         private Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues mAssert_Assign_Large_View_Row1_Variable_Textbox_ExistsExpectedValues;
@@ -11360,6 +11462,12 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Delete_Record_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Record_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues mAssert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues;
+        
+        private Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues mAssert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues;
+        
+        private Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues mAssert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues;
+        
         private Assert_Deploy_Destination_Server_Edit_ExistsExpectedValues mAssert_Deploy_Destination_Server_Edit_ExistsExpectedValues;
         
         private Assert_Deploy_Ribbon_Button_ExistsExpectedValues mAssert_Deploy_Ribbon_Button_ExistsExpectedValues;
@@ -11440,8 +11548,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_LockAndUnlock_Button_Exists_TopRibbonExpectedValues mAssert_LockAndUnlock_Button_Exists_TopRibbonExpectedValues;
         
-        private Assert_MainStudioWindow_ExistsExpectedValues mAssert_MainStudioWindow_ExistsExpectedValues;
-        
         private Assert_Maximize_Button_Exists_TopRibbonExpectedValues mAssert_Maximize_Button_Exists_TopRibbonExpectedValues;
         
         private Assert_MessageBox_Does_Not_ExistExpectedValues mAssert_MessageBox_Does_Not_ExistExpectedValues;
@@ -11501,6 +11607,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Read_Folder_Exists_OnDesignSurfaceExpectedValues mAssert_Read_Folder_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Read_Folder_Large_View_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues mAssert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues;
         
         private Assert_Refresh_Button_Exists_InExplorerExpectedValues mAssert_Refresh_Button_Exists_InExplorerExpectedValues;
         
@@ -11857,6 +11965,21 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private DecisionDialog mDecisionDialog;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AAA'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AAAExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Warewolf' window equals 'True'
+        /// </summary>
+        public bool MainStudioWindowExists = true;
         #endregion
     }
     
@@ -12961,6 +13084,51 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Dependency_Graph_Nesting_Levels_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Dependency_Graph_Nesting_Levels_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of first text box next to 'Nesting Levels' label equals 'True'
+        /// </summary>
+        public bool TextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_SelectedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Selected' property of 'Show what asdf depends on' radio button equals 'True'
+        /// </summary>
+        public bool ShowwhatasdfdependsoRadioButtonSelected = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_Selected'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Dependency_Graph_Show_Dependants_Radio_Button_Is_SelectedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Selected' property of 'Show what depends on asdf' radio button equals 'True'
+        /// </summary>
+        public bool ShowwhatdependsonasdRadioButtonSelected = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Deploy_Destination_Server_Edit_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13561,21 +13729,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_MainStudioWindow_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_MainStudioWindow_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf' window equals 'True'
-        /// </summary>
-        public bool MainStudioWindowExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Assert_Maximize_Button_Exists_TopRibbon'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14026,6 +14179,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Refresh_Button_Exists_In_Dependency_Graph'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Refresh_Button_Exists_In_Dependency_GraphExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Refresh' button equals 'True'
+        /// </summary>
+        public bool RefreshButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Refresh_Button_Exists_InExplorer'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -14066,7 +14234,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'DisplayText' property of 'RemoteServerUITestWorkflow' label equals 'RemoteServerUITestWorkflow'
         /// </summary>
-        public string RemoteServerUITestWorkflowTextDisplayText = "RemoteServerUITestWorkflow";
+        public string TextDisplayText = "RemoteServerUITestWorkflow";
         #endregion
     }
     
@@ -31588,6 +31756,66 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public WpfButton RefreshButton
+        {
+            get
+            {
+                if ((this.mRefreshButton == null))
+                {
+                    this.mRefreshButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRefreshButton.SearchProperties[WpfButton.PropertyNames.Name] = "Refresh";
+                    this.mRefreshButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRefreshButton;
+            }
+        }
+        
+        public WpfRadioButton ShowwhatdependsonasdRadioButton
+        {
+            get
+            {
+                if ((this.mShowwhatdependsonasdRadioButton == null))
+                {
+                    this.mShowwhatdependsonasdRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mShowwhatdependsonasdRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "WfDependsOn";
+                    this.mShowwhatdependsonasdRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mShowwhatdependsonasdRadioButton;
+            }
+        }
+        
+        public WpfRadioButton ShowwhatasdfdependsoRadioButton
+        {
+            get
+            {
+                if ((this.mShowwhatasdfdependsoRadioButton == null))
+                {
+                    this.mShowwhatasdfdependsoRadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mShowwhatasdfdependsoRadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "DependsOnWf";
+                    this.mShowwhatasdfdependsoRadioButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mShowwhatasdfdependsoRadioButton;
+            }
+        }
+        
+        public NestingLevelsText NestingLevelsText
+        {
+            get
+            {
+                if ((this.mNestingLevelsText == null))
+                {
+                    this.mNestingLevelsText = new NestingLevelsText(this);
+                }
+                return this.mNestingLevelsText;
+            }
+        }
+        
         public Node1 Node1
         {
             get
@@ -31599,10 +31827,110 @@ namespace Warewolf.Studio.UISpecs
                 return this.mNode1;
             }
         }
+        
+        public Node2 Node2
+        {
+            get
+            {
+                if ((this.mNode2 == null))
+                {
+                    this.mNode2 = new Node2(this);
+                }
+                return this.mNode2;
+            }
+        }
+        
+        public Node3 Node3
+        {
+            get
+            {
+                if ((this.mNode3 == null))
+                {
+                    this.mNode3 = new Node3(this);
+                }
+                return this.mNode3;
+            }
+        }
+        
+        public Node4 Node4
+        {
+            get
+            {
+                if ((this.mNode4 == null))
+                {
+                    this.mNode4 = new Node4(this);
+                }
+                return this.mNode4;
+            }
+        }
+        
+        public Node5 Node5
+        {
+            get
+            {
+                if ((this.mNode5 == null))
+                {
+                    this.mNode5 = new Node5(this);
+                }
+                return this.mNode5;
+            }
+        }
         #endregion
         
         #region Fields
+        private WpfButton mRefreshButton;
+        
+        private WpfRadioButton mShowwhatdependsonasdRadioButton;
+        
+        private WpfRadioButton mShowwhatasdfdependsoRadioButton;
+        
+        private NestingLevelsText mNestingLevelsText;
+        
         private Node1 mNode1;
+        
+        private Node2 mNode2;
+        
+        private Node3 mNode3;
+        
+        private Node4 mNode4;
+        
+        private Node5 mNode5;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NestingLevelsText : WpfText
+    {
+        
+        public NestingLevelsText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "Nesting Levels";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
         #endregion
     }
     
@@ -31622,25 +31950,172 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfText RemoteServerUITestWorkflowText
+        public WpfText Text
         {
             get
             {
-                if ((this.mRemoteServerUITestWorkflowText == null))
+                if ((this.mText == null))
                 {
-                    this.mRemoteServerUITestWorkflowText = new WpfText(this);
+                    this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mRemoteServerUITestWorkflowText.SearchProperties[WpfText.PropertyNames.Name] = "RemoteServerUITestWorkflow";
-                    this.mRemoteServerUITestWorkflowText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mRemoteServerUITestWorkflowText;
+                return this.mText;
             }
         }
         #endregion
         
         #region Fields
-        private WpfText mRemoteServerUITestWorkflowText;
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Node2 : WpfCustom
+    {
+        
+        public Node2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamNetworkNode";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Nodes";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Node3 : WpfCustom
+    {
+        
+        public Node3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamNetworkNode";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Nodes";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Node4 : WpfCustom
+    {
+        
+        public Node4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamNetworkNode";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Nodes";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Node5 : WpfCustom
+    {
+        
+        public Node5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamNetworkNode";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Nodes";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
         #endregion
     }
     
