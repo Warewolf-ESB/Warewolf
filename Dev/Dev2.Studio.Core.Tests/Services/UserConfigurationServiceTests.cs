@@ -10,7 +10,7 @@
 
 using System;
 using System.IO;
-using Dev2.Services.Configuration;
+using Dev2.Studio.Core.Services.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

@@ -10,7 +10,7 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace Dev2
+namespace Dev2.Common
 {
     public static class JPropertyExtensionMethods
     {
