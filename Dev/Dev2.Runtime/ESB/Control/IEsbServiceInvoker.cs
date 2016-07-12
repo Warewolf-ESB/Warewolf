@@ -10,6 +10,7 @@
 
 using System;
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 
 // ReSharper disable CheckNamespace

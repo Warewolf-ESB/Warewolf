@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Dev2.Interfaces;
 using Warewolf.Storage;
 // ReSharper disable UseObjectOrCollectionInitializer
 
