@@ -17,8 +17,7 @@ namespace Dev2.Common.DateAndTime.TO
     {
         #region Constructor
 
-        public DateTimeFormatPartOptionTO(int length, Func<string, bool, bool> predicate, bool isNumeric,
-            IConvertible actualValue, Action<IDateTimeResultTO, bool, IConvertible> assignAction, int resultLength = -1)
+        public DateTimeFormatPartOptionTO(int length, Func<string, bool, bool> predicate, bool isNumeric, IConvertible actualValue, Action<IDateTimeResultTO, bool, IConvertible> assignAction, int resultLength = -1)
         {
             Length = length;
             Predicate = predicate;
