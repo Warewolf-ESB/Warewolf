@@ -157,6 +157,8 @@ namespace Warewolf.Studio.UISpecs
             //UIMap.Assert_Debug_Input_Dialog_Exists();
             //Uimap.Assert_DebugInput_DebugButton_Exists();
             Uimap.Click_DebugInput_DebugButton();
+            Uimap.Assert_DebugOutput_Exists();
+            Uimap.Assert_DebugOutput_SettingsButton_Exists();
             Uimap.Assert_DebugOutput_Contains_Workflow1();
             **/
 
@@ -168,9 +170,19 @@ namespace Warewolf.Studio.UISpecs
             //Action Unit: Clicking show dependencies explorer context menu button opens the dependencies tab for that workflow
             //Given: Uimap.Assert_ExplorerContextMenu_ShowDependencies_Exists();
             Uimap.Click_Show_Dependencies_In_Explorer_Context_Menu();
+            Uimap.Assert_Dependency_Graph_Show_Dependancies_Radio_Button_Is_Selected();
+            Uimap.Assert_Dependency_Graph_Nesting_Levels_Textbox_Exists();
+            Uimap.Assert_Dependency_Graph_Refresh_Button_Exists();
             Uimap.Assert_RemoteServerUITestWorkflow_Appears_In_Dependency_Diagram();
 
-            //Action Unit: Clicking settings ribbon button
+            //Action Unit: Clicking settings ribbon button shows settings tab
+            Uimap.Assert_Settings_Ribbon_Button_Exists();
+            Uimap.Click_Settings_Ribbon_Button();
+            Uimap.Assert_Settings_SecurityTab_Exists();
+            Uimap.Assert_Settings_LoggingTab_Exists();
+            Uimap.Assert_Settings_ResourcePermissions_Exists();
+            Uimap.Assert_Settings_ServerPermissions_Exists();
+            Uimap.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists();
         }
 
         #region Additional test attributes
