@@ -239,7 +239,6 @@
     <Compile Include="Services\FetchCurrentServerLogTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
     <Compile Include="ESB\WebServiceContainerTests.cs" />
-    <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="ServiceModel\DummyClassForPluginTest.cs" />
     <Compile Include="ServiceModel\PluginServicesMock.cs" />
     <Compile Include="ServiceModel\PluginServicesTest.cs" />
@@ -322,6 +321,7 @@
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />
     <Compile Include="WebServer\WebsiteResourceHandlerTest.cs" />
+    <Compile Include="WF\WfApplicationUtilsTests.cs" />
     <Compile Include="WorkspaceItemTests.cs" />
     <Compile Include="WorkspaceTest.cs" />
     <Compile Include="XML\XmlResource.cs" />
@@ -591,9 +591,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\mondayothersource3.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WF\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="XML\DbSource.xml" />
   </ItemGroup>

@@ -130,8 +130,6 @@
     <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
-    <Compile Include="ESB\WF\FileSystemInstanceStore.cs" />
-    <Compile Include="ESB\WF\FileSystemInstanceStoreIO.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="TO\ServiceHydrationTO.cs" />
