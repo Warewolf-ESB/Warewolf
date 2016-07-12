@@ -261,7 +261,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if (debugState != null)
                 {
                     debugState.StateType = StateType.Clear;
-                    DebugOutputViewModel.AppendX(debugState);
+                    debugState.SessionID = DebugOutputViewModel.SessionID;
+                    DebugOutputViewModel.Append(debugState);
                 }
             }
         }

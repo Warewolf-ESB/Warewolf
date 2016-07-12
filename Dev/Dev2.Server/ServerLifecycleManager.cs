@@ -11,11 +11,7 @@
 
 
 using System;
-using System.Activities;
-using System.Activities.Statements;
-using System.Activities.XamlIntegration;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
@@ -28,19 +24,13 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xaml;
 using System.Xml;
-using System.Xml.Linq;
 using CommandLine;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Common.Reflection;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
@@ -49,14 +39,10 @@ using Dev2.Instrumentation;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
-using Dev2.Utilities;
 using Dev2.Workspaces;
 using log4net.Config;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Core;
 // ReSharper disable AssignNullToNotNullAttribute
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -197,7 +183,7 @@ namespace Dev2
                     Dev2Logger.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
                     using(_singleton = new ServerLifecycleManager(arguments))
                     {
-                        result = _singleton.Run(true);
+                        _singleton.Run(true);
                     }
 
                     _singleton = null;
@@ -205,7 +191,6 @@ namespace Dev2
                 else
                 {
                     Dev2Logger.Info("** Starting In Service Mode **");
-                    // running as service
                     using(var service = new ServerLifecycleManagerService())
                     {
                         ServiceBase.Run(service);
@@ -338,11 +323,8 @@ namespace Dev2
         /// </summary>
         /// <exception cref="Exception"></exception>
         /// <returns></returns>
-        int Run(bool interactiveMode)
+        void Run(bool interactiveMode)
         {
-            int result = 0;
-            bool didBreak = false;
-
             Tracker.StartServer();
 
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
@@ -358,80 +340,29 @@ namespace Dev2
             }
 #endif
 
-
-            if(!SetWorkingDirectory())
+            try
             {
-                result = 95;
-                didBreak = true;
-            }
-
-            // PBI 5389 - Resources Assigned and Allocated to Server
-            if(!didBreak && !LoadHostSecurityProvider())
-            {
-                result = 1;
-                didBreak = true;
-            }            
-
-            if(!didBreak && !PreloadReferences())
-            {
-                result = 2;
-                didBreak = true;
-            }
-           
-            if(!didBreak && !InitializeServer())
-            {
-                result = 3;
-                didBreak = true;
-            }
-            LoadPerformanceCounters();
-            if(!didBreak && !LoadResourceCatalog())
-            {
-                result = 94;
-                didBreak = true;
-            }
-
-       
-
-            // PBI 5389 - Resources Assigned and Allocated to Server
-            if(!didBreak && !LoadServerWorkspace())
-            {
-                result = 98; // ????
-                didBreak = true;
-            }
-
-            if(!didBreak && !StartWebServer())
-            {
-                result = 4;
-                didBreak = true;
-            }
-
-            // PBI 1018 - Settings Framework (TWR: 2013.03.07)
-            if(!didBreak && !LoadSettingsProvider())
-            {
-                result = 93;
-                didBreak = true;
-            }
-
-            if(!didBreak && !ConfigureLoggging())
-            {
-                result = 92;
-                didBreak = true;
-            }
-
-
-            if(!didBreak)
-            {
-                // set background timer to query network computer name list every 15 minutes ;)
+                SetWorkingDirectory();
+                LoadHostSecurityProvider();
+                PreloadReferences();
+                InitializeServer();
+                LoadPerformanceCounters();
+                LoadResourceCatalog();
+                LoadServerWorkspace();
+                StartWebServer();
+                LoadSettingsProvider();
+                ConfigureLoggging();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                result = ServerLoop(interactiveMode);
+                ServerLoop(interactiveMode);
                 StartPulseLogger();
             }
-            else
+            catch(Exception e)
             {
-                result = Stop(true, result);
+                Console.WriteLine(e);
+                Dev2Logger.Error("Error Starting Server",e);
+                Stop(true, 0);
             }
-
-            return result;
+           
         }
 
         void StartPulseLogger()
@@ -477,7 +408,7 @@ namespace Dev2
             }
         }
 
-        int Stop(bool didBreak, int result)
+        void Stop(bool didBreak, int result)
         {
 
             Tracker.Stop();
@@ -488,11 +419,9 @@ namespace Dev2
             }
            
             Write($"Exiting with exitcode {result}");
-
-            return result;
         }
 
-        int ServerLoop(bool interactiveMode)
+        void ServerLoop(bool interactiveMode)
         {
             if(interactiveMode)
             {
@@ -505,17 +434,12 @@ namespace Dev2
                 {
                     Write("Failed to start Server");
                 }
-
-                return Stop(false, 0);
+                Stop(false, 0);
             }
-
-            return 0;
         }
 
-        bool SetWorkingDirectory()
+        void SetWorkingDirectory()
         {
-            bool result = true;
-
             try
             {
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
@@ -523,10 +447,7 @@ namespace Dev2
             catch(Exception e)
             {
                 Fail("Unable to set working directory.", e);
-                result = false;
             }
-
-            return result;
         }
 
         static bool EnsureRunningAsAdministrator(string[] arguments)
@@ -596,21 +517,19 @@ namespace Dev2
                 }
             }
         }
-        
+
         /// <summary>
         /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
         /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
         /// initial dependency set until all dependencies have been loaded.
         /// </summary>
-        bool PreloadReferences()
+        void PreloadReferences()
         {
-            const bool Result = true;
             Write("Preloading assemblies...  ");
             Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
             HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
             LoadReferences(currentAsm, inspected);
             WriteLine("done.");
-            return Result;
         }
 
         /// <summary>
@@ -632,16 +551,13 @@ namespace Dev2
             }
         }
 
-   
         /// <summary>
         /// Performs all necessary initialization such that the server is in a state that allows
         /// workflow execution.
         /// </summary>
         /// <returns>false if the initialization failed, otherwise true</returns>
-        bool InitializeServer()
+        void InitializeServer()
         {
-            bool result = true;
-
             try
             {
                 string webServerSslPort = null;
@@ -684,11 +600,8 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                result = false;
                 Fail("Server initialization failed", ex);
             }
-
-            return result;
         }
 
         private string ParseArguments(ref string webServerSslPort)
@@ -874,7 +787,7 @@ namespace Dev2
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
-        bool LoadResourceCatalog()
+        void LoadResourceCatalog()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
@@ -885,7 +798,6 @@ namespace Dev2
             Write("Loading resource activity cache...  ");
             catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
-            return true;
         }       
 
         static void MigrateOldResources()
@@ -912,15 +824,14 @@ namespace Dev2
         /// </summary>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/07</date>
-        bool LoadSettingsProvider()
+        void LoadSettingsProvider()
         {
             Write("Loading settings provider...  ");
             Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             WriteLine("done.");
-            return true;
         }
 
-        bool ConfigureLoggging()
+        void ConfigureLoggging()
         {
             try
             {
@@ -931,17 +842,15 @@ namespace Dev2
                 WorkflowLoggger.LoggingSettings = settings.Logging;
                
                 WriteLine("done.");
-                return true;
             }
             catch(Exception e)
             {
                 Write("fail.");
                 WriteLine(e.Message);
-                return false;
             }
         }
 
-        bool LoadServerWorkspace()
+        void LoadServerWorkspace()
         {
 
             Write("Loading server workspace...  ");
@@ -949,21 +858,17 @@ namespace Dev2
             var instance = WorkspaceRepository.Instance;
             // ReSharper restore UnusedVariable
             WriteLine("done.");
-            return true;
         }
 
-        bool LoadHostSecurityProvider()
+        void LoadHostSecurityProvider()
         {
             // ReSharper disable UnusedVariable
             var instance = HostSecurityProvider.Instance;
             // ReSharper restore UnusedVariable
-            return true;
         }
 
-        bool StartWebServer()
+        void StartWebServer()
         {
-            bool result = true;
-
             if(_isWebServerEnabled || _isWebServerSslEnabled)
             {
                 try
@@ -988,14 +893,11 @@ namespace Dev2
                 }
                 catch(Exception e)
                 {
-                    result = false;
                     EnvironmentVariables.IsServerOnline = false;
                     Fail("Webserver failed to start", e);
                     Console.ReadLine();
                 }
             }
-
-            return result;
         }
 
         internal static void WriteLine(string message)
