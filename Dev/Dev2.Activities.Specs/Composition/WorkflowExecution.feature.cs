@@ -14532,13 +14532,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlStarIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlStarIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(*).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceUsingIndexes_TestMySqlWFWithMySqlStarIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceUsingIndexes("TestMySqlWFWithMySqlStarIndex", "MySQLEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceUsingIndexes("TestMySqlWFWithMySqlStarIndex", "MySqlEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14593,13 +14593,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlIntIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceUsingIntIndexes_TestMySqlWFWithMySqlIntIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithMySqlIntIndex", "MySQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithMySqlIntIndex", "MySqlEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14653,13 +14653,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlLastIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec().email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceLastIndexes_TestMySqlWFWithMySqlLastIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithMySqlLastIndex", "MySQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithMySqlLastIndex", "MySqlEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14713,13 +14713,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlScalar")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceScalarOutputs_TestMySqlWFWithMySqlScalar()
         {
-            this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "MySQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "MySqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14765,13 +14765,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlMailsInvalidIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlMailsInvalidIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidIndex", "MySQLEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidIndex", "MySqlEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
@@ -14782,13 +14782,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlMailsInvalidVar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlMailsInvalidVar")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[123]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidVar()
         {
-            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVar", "MySQLEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVar", "MySqlEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
@@ -14799,13 +14799,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlMailsInvalidVarWithIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlMailsInvalidVarWithIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySQLEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(-1).name.bob]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidVarWithIndex()
         {
-            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVarWithIndex", "MySQLEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVarWithIndex", "MySqlEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
@@ -14864,13 +14864,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "MySqlGetCountries")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "Pr_CitiesGetCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceInputsAndOutputs_TestMySqlWFWithMySqlCountries()
         {
-            this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithMySqlCountries", "MySqlGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
+            this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithMySqlCountries", "Pr_CitiesGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14925,13 +14925,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestSqlWFWithSqlServerCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestSqlWFWithSqlServerCountries")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "GetCountriesSqlServer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "dbo.Pr_CitiesGetCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[countries(*).id]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[countries(*).description]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithSqlServerCountries()
         {
-            this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlServerCountries", "GetCountriesSqlServer", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlServerCountries", "dbo.Pr_CitiesGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -14966,13 +14966,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBSqlServerErrorProcSql")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBSqlServerErrorProcSql")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "willalwayserror")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "dbo.willalwayserror")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseSqlDBServiceDBErrors_TestWFWithDBSqlServerErrorProcSql()
         {
-            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBSqlServerErrorProcSql", "willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
+            this.DatabaseSqlDBServiceDBErrors("TestWFWithDBSqlServerErrorProcSql", "dbo.willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
         
@@ -15026,13 +15026,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBSqlServerIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBSqlServerIntIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "SqlEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "dbo.SQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBServiceUsingIntIndexes_TestWFWithDBSqlServerIntIndex()
         {
-            this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBSqlServerIntIndex", "SqlEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBSqlServerIntIndex", "dbo.SQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -15086,13 +15086,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBSqlServerLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBSqlServerLastIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "SqlEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "dbo.SQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec().email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBServiceUsingLastIndexes_TestWFWithDBSqlServerLastIndex()
         {
-            this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBSqlServerLastIndex", "SqlEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBSqlServerLastIndex", "dbo.SQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -15146,13 +15146,13 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestWFWithDBSqlServerScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestWFWithDBSqlServerScalar")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "SqlEmail")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "dbo.SQLEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBServiceUsingScalarOutputs_TestWFWithDBSqlServerScalar()
         {
-            this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "SqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
+            this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "dbo.SQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
     }

@@ -133,11 +133,6 @@
     <Compile Include="ESB\WF\FileSystemInstanceStore.cs" />
     <Compile Include="ESB\WF\FileSystemInstanceStoreIO.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
-    <Compile Include="ESB\WF\WorkflowApplicationFactory.cs" />
-    <Compile Include="Network\Auxiliary\StudioAuxiliaryAccount.cs" />
-    <Compile Include="Network\Auxiliary\StudioAuxiliarySession.cs" />
-    <Compile Include="Network\StudioTemplates.cs" />
-    <Compile Include="Network\StudioFileSystem.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="TO\ServiceHydrationTO.cs" />
   </ItemGroup>
@@ -235,7 +230,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
