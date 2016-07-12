@@ -174,15 +174,12 @@ namespace Dev2.Studio.ViewModels.DataList
                         if (DataListSingleton.ActiveDataList != null)
                         {
                             var objToProcess = JsonConvert.DeserializeObject(JsonString) as JObject;
-                            if (objToProcess != null)
+                            var firstOrDefault = objToProcess?.Properties().FirstOrDefault();
+                            if (firstOrDefault != null)
                             {
-                                var firstOrDefault = objToProcess.Properties().FirstOrDefault();
-                                if (firstOrDefault != null)
-                                {
-                                    var processString = firstOrDefault.Value.ToString();
-                                    DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
-                                        DataListUtil.RemoveLanguageBrackets(expression), processString);
-                                }
+                                var processString = firstOrDefault.Value.ToString();
+                                DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
+                                    DataListUtil.RemoveLanguageBrackets(expression), processString);
                             }
                         }
                     }
@@ -223,7 +220,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public string RecordSetName { get; set; }
-        public bool EmptyToNull { get; private set; }
+        private bool EmptyToNull { get; set; }
 
         public bool IsMapsToFocused
         {
@@ -286,8 +283,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             if (!string.IsNullOrEmpty(JsonString))
             {
-                var window = new JsonObjectsView();
-                window.Height = 280;
+                var window = new JsonObjectsView { Height = 280 };
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
@@ -301,12 +297,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion
 
-        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
-            : this(name, value, mapsTo, defaultValue, required, recordSetName, false)
-        {
-        }
-
-        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName, bool emptyToNull)
+        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName, bool emptyToNull = false)
         {
             Name = name;
             RecordSetName = recordSetName;

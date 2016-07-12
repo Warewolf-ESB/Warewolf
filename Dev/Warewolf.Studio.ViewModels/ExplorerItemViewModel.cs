@@ -31,13 +31,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 // ReSharper disable NonReadonlyMemberInGetHashCode
+// ReSharper disable NonLocalizedString
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
     {
-        #region Equality members
-
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -102,8 +102,6 @@ namespace Warewolf.Studio.ViewModels
         {
             return !Equals(left, right);
         }
-
-        #endregion
 
         private IDeletedFileMetadata _fileMetadata;
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
@@ -183,25 +181,13 @@ namespace Warewolf.Studio.ViewModels
         {
             RollbackCommand = new DelegateCommand(() =>
                     {
-                        _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId,
-                            VersionNumber);
+                        _explorerItemViewModelCommandController.RollbackCommand(_explorerRepository, Parent, ResourceId,VersionNumber);
                     });
             DeployCommand = new DelegateCommand<IExplorerItemViewModel>(a => ShellViewModel.AddDeploySurface(AsList().Union(new[] {this})));
             LostFocus = new DelegateCommand(LostFocusCommand);
             OpenCommand = new DelegateCommand(() =>
             {
-                if (IsFolder)
-                {
-                    IsExpanded = !IsExpanded;
-                }
-                else if (IsResourceVersion)
-                {
-                    OpenVersion();
-                }
-                else
-                {
-                    _explorerItemViewModelCommandController.OpenCommand(ResourceId, Server);
-                }
+                _explorerItemViewModelCommandController.OpenCommand(this, Server);
             });
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
            
@@ -255,21 +241,8 @@ namespace Warewolf.Studio.ViewModels
             });
             ShowDependenciesCommand = new DelegateCommand(ShowDependencies);
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
-            DeleteCommand = new DelegateCommand(() =>
-            {
-                if (IsResourceVersion)
-                {
-                    DeleteVersion();
-                }
-                else Delete();
-            });
-            OpenVersionCommand = new DelegateCommand(() =>
-            {
-                if (IsResourceVersion)
-                {
-                    OpenVersion();
-                }
-            });
+            DeleteCommand = new DelegateCommand(Delete);
+            OpenVersionCommand = new DelegateCommand(OpenVersion);
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand<int?>(clickCount =>
             {
@@ -286,14 +259,14 @@ namespace Warewolf.Studio.ViewModels
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
         }
 
-        private void ShowDependencies()
+        internal void ShowDependencies()
         {
             _explorerItemViewModelCommandController.ShowDependenciesCommand(ResourceId, Server);
         }
 
         private void OpenVersion()
         {
-            _explorerItemViewModelCommandController.OpenVersionCommand(Parent.ResourceId, VersionInfo);
+            _explorerItemViewModelCommandController.OpenCommand(this, Server);
         }
         void DeleteVersion()
         {
@@ -476,31 +449,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Delete()
         {
-            try
-            {
-                if (EnvironmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
-                {
-                    _fileMetadata = _explorerItemViewModelCommandController.DeleteCommand(ResourceId, EnvironmentModel.ID, Parent, _explorerRepository, this);
-                    if (_fileMetadata.IsDeleted)
-                    {
-                        if (ResourceType == "ServerSource" || IsServer)
-                        {
-                            Server.UpdateRepository.FireServerSaved();
-                        }
-                    }
-                    else
-                    {
-                        ResourceId = _fileMetadata.ResourceId;
-                        ShowDependencies();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // If the delete did not happen, we need to add the item back to the original state for studio changes to re-occur
-                Parent?.AddChild(this);
-                ShowErrorMessage(ex.Message, "Delete not allowed");
-            }
+            _explorerItemViewModelCommandController.DeleteCommand(EnvironmentModel, Parent, _explorerRepository, this,_popupController,Server);            
         }
 
         public void UpdatePermissions(PermissionsChangedArgs args)
@@ -726,7 +675,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand DebugCommand => new DelegateCommand(() =>
         {
-            _explorerItemViewModelCommandController.OpenCommand(ResourceId, Server);
+            _explorerItemViewModelCommandController.OpenCommand(this, Server);
             ShellViewModel.Debug();
         });
 

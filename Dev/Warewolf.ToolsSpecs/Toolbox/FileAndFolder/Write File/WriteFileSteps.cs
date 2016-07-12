@@ -15,7 +15,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Interfaces;
@@ -28,25 +27,25 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
     [Binding]
     public class WriteFileSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        private readonly ScenarioContext _scenarioContext;
 
         public WriteFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
-            this.scenarioContext = scenarioContext;
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            this._scenarioContext = scenarioContext;
         }
 
         [Given(@"Method is ""(.*)""")]
         public void GivenMethodIs(string method)
         {
-            scenarioContext.Add("method", method);
+            _scenarioContext.Add("method", method);
         }
 
         [Given(@"input contents as ""(.*)""")]
         public void GivenInputContentsAs(string content)
         {
-            scenarioContext.Add("content", content);
+            _scenarioContext.Add("content", content);
         }
 
         [When(@"the write file tool is executed")]
@@ -54,7 +53,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
+            _scenarioContext.Add("result", result);
         }
 
         [Given(@"the input contents from a file ""(.*)""")]
@@ -63,7 +62,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
                                                 fileName);
             var content = ReadFile(resourceName);
-            scenarioContext.Add("content", content);
+            _scenarioContext.Add("content", content);
         }
 
         [Then(@"the output contents from a file ""(.*)""")]
@@ -74,9 +73,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             var expectedContents = ReadFile(resourceName);
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
-                            scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
-                            scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
+                            _scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                            _scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                             true);
 
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
@@ -91,7 +90,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
-            var readtype = scenarioContext.Get<string>("method");
+            var readtype = _scenarioContext.Get<string>("method");
             var overwrite = false;
             var appendTop = false;
             var appendBottom = false;
@@ -111,15 +110,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             var fileWrite = new DsfFileWrite
             {                                
-                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
-                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
-                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
-                OutputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                Username = _scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = _scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                Result = _scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                OutputPath = _scenarioContext.Get<string>(CommonSteps.SourceHolder),
                 Overwrite = overwrite,
                 AppendTop = appendTop,
                 AppendBottom = appendBottom,
-                FileContents = scenarioContext.Get<string>("content"),
-                PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
+                FileContents = _scenarioContext.Get<string>("content"),
+                PrivateKeyFile = _scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
             };
 
             TestStartNode = new FlowStep
@@ -127,11 +126,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
                 Action = fileWrite
             };
 
-            scenarioContext.Add("activity", fileWrite);
+            _scenarioContext.Add("activity", fileWrite);
 
             var viewModel = new WriteFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
-            if (!scenarioContext.ContainsKey("viewModel"))
-                scenarioContext.Add("viewModel", viewModel);
+            if (!_scenarioContext.ContainsKey("viewModel"))
+                _scenarioContext.Add("viewModel", viewModel);
         }
     }
 }

@@ -47,8 +47,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             InitializeCertPinning();
         }
 
-        public bool IsValid { get; set; }
-
         #region Implementation of IDropboxSingleExecutor
 
         public IDropboxResult ExecuteTask(DropboxClient client)
