@@ -21,6 +21,7 @@ using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
@@ -40,8 +41,8 @@ namespace Dev2.Runtime.ESB.Control
 
         #region IFrameworkDuplexDataChannel Members
 
-        readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
-        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager = new EnvironmentOutputMappingManager();
+        private readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
+        private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager = new EnvironmentOutputMappingManager();
         public void Register(string userName)
         {
             if (_users.ContainsKey(userName))
@@ -49,9 +50,15 @@ namespace Dev2.Runtime.ESB.Control
                 _users.Remove(userName);
             }
 
-            _users.Add(userName, OperationContext.Current.GetCallbackChannel<IFrameworkDuplexCallbackChannel>());
+            var channel = ((OperationContext)GetCurrentOperationContext()).GetCallbackChannel<IFrameworkDuplexCallbackChannel>();
+            _users.Add(userName, channel);
             NotifyAllClients($"User '{userName}' logged in");
 
+        }
+
+        public IExtensibleObject<OperationContext> GetCurrentOperationContext()
+        {
+            return OperationContext.Current;
         }
 
         public void Unregister(string userName)

@@ -37,11 +37,11 @@ namespace Warewolf.Studio.UISpecs
         public void AAA()
         {
             #region Variable Declarations
-            WpfWindow mainStudioWindow = this.MainStudioWindow;
+            WpfTabPage startPage = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.StartPage;
             #endregion
 
-            // Verify that the 'Exists' property of 'Warewolf' window equals 'True'
-            Assert.AreEqual(this.AAAExpectedValues.MainStudioWindowExists, mainStudioWindow.Exists, "Main Studio Window Does not Exist");
+            // Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
+            Assert.AreEqual(this.AAAExpectedValues.StartPageExists, startPage.Exists, "Main Studio Window Does not Exist");
         }
         
         /// <summary>
@@ -1290,6 +1290,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Explorer_Localhost_First_Item_Exists - Use 'Assert_Explorer_Localhost_First_Item_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Localhost_First_Item_Exists()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Server Name does not exist in the Explorer");
+        }
+        
+        /// <summary>
         /// Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer - Use 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer()
@@ -1352,19 +1365,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
             Assert.AreEqual(this.Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues.SelectedItemAsTSTCIREMOTEDisplayText, selectedItemAsTSTCIREMOTE.DisplayText, "Selected remote server is not TSTCIREMOTE");
-        }
-        
-        /// <summary>
-        /// Assert_Explorer_ServerName_Exists - Use 'Assert_Explorer_ServerName_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Explorer_ServerName_Exists()
-        {
-            #region Variable Declarations
-            WpfTreeItem explorerTreeItemChild = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.ExplorerTreeItem.ExplorerTreeItemChild;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_ServerName_ExistsExpectedValues.ExplorerTreeItemChildExists, explorerTreeItemChild.Exists, "Server Name does not exist in the Explorer");
         }
         
         /// <summary>
@@ -2907,6 +2907,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Service_Picker_Dialog_Does_Not_Exist - Use 'Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Dialog_Does_Not_Exist()
+        {
+            #region Variable Declarations
+            WpfWindow servicePickerDialog = this.MainStudioWindow.ServicePickerDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'False'
+            Assert.AreEqual(this.Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does exist");
+        }
+        
+        /// <summary>
         /// Assert_Service_Picker_Dialog_Exists - Use 'Assert_Service_Picker_Dialog_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Service_Picker_Dialog_Exists()
@@ -2917,6 +2930,58 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'Wpf' window equals 'True'
             Assert.AreEqual(this.Assert_Service_Picker_Dialog_ExistsExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Filter_Textbox_Exists - Use 'Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Filter_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues.FilterTextboxExists, filterTextbox.Exists, "Service picker filter testbox does not exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_OK_Button_Enabled - Use 'Assert_Service_Picker_OK_Button_EnabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_OK_Button_Enabled()
+        {
+            #region Variable Declarations
+            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'OK' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_OK_Button_EnabledExpectedValues.OKEnabled, ok.Enabled, "Service picker dialog OK button is not enabled.");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_OK_Button_Exists - Use 'Assert_Service_Picker_OK_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_OK_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            #endregion
+
+            // Verify that the 'Exists' property of 'OK' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_OK_Button_ExistsExpectedValues.OKExists, ok.Exists, "Service picker dialog OK button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Refresh_Button_Exists - Use 'Assert_Service_Picker_Refresh_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Refresh_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton refresh = this.MainStudioWindow.ServicePickerDialog.Explorer.Refresh;
+            #endregion
+
+            // Verify that the 'Exists' property of '' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Refresh_Button_ExistsExpectedValues.RefreshExists, refresh.Exists, "Service pick dialog refresh button does not exist.");
         }
         
         /// <summary>
@@ -4576,6 +4641,32 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Service_Picker_Dialog_First_Service_In_Explorer
+        /// </summary>
+        public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
+        {
+            #region Variable Declarations
+            WpfTreeItem subTreeItem1 = this.MainStudioWindow.ServicePickerDialog.Explorer.ExplorerTree.TreeItem1.SubTreeItem1;
+            #endregion
+
+            // Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(subTreeItem1, new Point(91, 9));
+        }
+        
+        /// <summary>
+        /// Click_Service_Picker_Dialog_OK
+        /// </summary>
+        public void Click_Service_Picker_Dialog_OK()
+        {
+            #region Variable Declarations
+            WpfButton ok = this.MainStudioWindow.ServicePickerDialog.OK;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(ok, new Point(52, 10));
+        }
+        
+        /// <summary>
         /// Click_Settings_Ribbon_Button
         /// </summary>
         public void Click_Settings_Ribbon_Button()
@@ -5636,6 +5727,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog - Use 'Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog()
+        {
+            #region Variable Declarations
+            WpfEdit filterTextbox = this.MainStudioWindow.ServicePickerDialog.Explorer.FilterTextbox;
+            #endregion
+
+            // Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
+            filterTextbox.Text = this.Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams.FilterTextboxText;
+        }
+        
+        /// <summary>
         /// Enter_Servicename_As_RemoteServerUITestWorkflow - Use 'Enter_Servicename_As_RemoteServerUITestWorkflowParams' to pass parameters into this method.
         /// </summary>
         public void Enter_Servicename_As_RemoteServerUITestWorkflow()
@@ -6325,19 +6429,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Right_Click_Context_Menu_InExplorer
-        /// </summary>
-        public void Right_Click_Context_Menu_InExplorer()
-        {
-            #region Variable Declarations
-            WpfTreeItem explorerTreeItemChild = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.ExplorerTreeItem.ExplorerTreeItemChild;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(explorerTreeItemChild, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-        }
-        
-        /// <summary>
         /// Right_Click_Help_Tab
         /// </summary>
         public void Right_Click_Help_Tab()
@@ -6608,6 +6699,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Right-Click 'DsfExecuteCommandLineActivity' custom control
             Mouse.Click(executeCommandLine, MouseButtons.Right, ModifierKeys.None, new Point(165, 13));
+        }
+        
+        /// <summary>
+        /// RightClick_Explorer_localhost_First_Item
+        /// </summary>
+        public void RightClick_Explorer_localhost_First_Item()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
+            Mouse.Click(firstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
         
         /// <summary>
@@ -8608,6 +8712,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Explorer_Localhost_First_Item_ExistsExpectedValues Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues = new Assert_Explorer_Localhost_First_Item_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues
         {
             get
@@ -8665,18 +8781,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues = new Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues();
                 }
                 return this.mAssert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Explorer_ServerName_ExistsExpectedValues Assert_Explorer_ServerName_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Explorer_ServerName_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Explorer_ServerName_ExistsExpectedValues = new Assert_Explorer_ServerName_ExistsExpectedValues();
-                }
-                return this.mAssert_Explorer_ServerName_ExistsExpectedValues;
             }
         }
         
@@ -10096,6 +10200,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues = new Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues;
+            }
+        }
+        
         public virtual Assert_Service_Picker_Dialog_ExistsExpectedValues Assert_Service_Picker_Dialog_ExistsExpectedValues
         {
             get
@@ -10105,6 +10221,54 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Service_Picker_Dialog_ExistsExpectedValues = new Assert_Service_Picker_Dialog_ExistsExpectedValues();
                 }
                 return this.mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues = new Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_OK_Button_EnabledExpectedValues Assert_Service_Picker_OK_Button_EnabledExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_OK_Button_EnabledExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_OK_Button_EnabledExpectedValues = new Assert_Service_Picker_OK_Button_EnabledExpectedValues();
+                }
+                return this.mAssert_Service_Picker_OK_Button_EnabledExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_OK_Button_ExistsExpectedValues Assert_Service_Picker_OK_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_OK_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_OK_Button_ExistsExpectedValues = new Assert_Service_Picker_OK_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_OK_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Refresh_Button_ExistsExpectedValues Assert_Service_Picker_Refresh_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues = new Assert_Service_Picker_Refresh_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues;
             }
         }
         
@@ -11128,6 +11292,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams
+        {
+            get
+            {
+                if ((this.mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams == null))
+                {
+                    this.mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams = new Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams();
+                }
+                return this.mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams;
+            }
+        }
+        
         public virtual Enter_Servicename_As_RemoteServerUITestWorkflowParams Enter_Servicename_As_RemoteServerUITestWorkflowParams
         {
             get
@@ -11610,6 +11786,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Explorer_Filter_Textbox_ExistsExpectedValues mAssert_Explorer_Filter_Textbox_ExistsExpectedValues;
         
+        private Assert_Explorer_Localhost_First_Item_ExistsExpectedValues mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+        
         private Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_TSTCIREMOTEExpectedValues;
@@ -11619,8 +11797,6 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Explorer_Remote_Server_DropdownList_Has_localhost_SelectedExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Has_localhost_SelectedExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Has_TSTCIREMOTE_SelectedExpectedValues;
-        
-        private Assert_Explorer_ServerName_ExistsExpectedValues mAssert_Explorer_ServerName_ExistsExpectedValues;
         
         private Assert_ExplorerContextMenu_Delete_ExistsExpectedValues mAssert_ExplorerContextMenu_Delete_ExistsExpectedValues;
         
@@ -11858,7 +12034,17 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Service_Picker_Cancel_Button_ExistsExpectedValues mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
         
+        private Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues mAssert_Service_Picker_Dialog_Does_Not_ExistExpectedValues;
+        
         private Assert_Service_Picker_Dialog_ExistsExpectedValues mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues mAssert_Service_Picker_Filter_Textbox_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_OK_Button_EnabledExpectedValues mAssert_Service_Picker_OK_Button_EnabledExpectedValues;
+        
+        private Assert_Service_Picker_OK_Button_ExistsExpectedValues mAssert_Service_Picker_OK_Button_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Refresh_Button_ExistsExpectedValues mAssert_Service_Picker_Refresh_Button_ExistsExpectedValues;
         
         private Assert_ServiceLabel_DestinationServer_ExistsExpectedValues mAssert_ServiceLabel_DestinationServer_ExistsExpectedValues;
         
@@ -12030,6 +12216,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams mEnter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams;
         
+        private Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams;
+        
         private Enter_Servicename_As_RemoteServerUITestWorkflowParams mEnter_Servicename_As_RemoteServerUITestWorkflowParams;
         
         private Enter_Servicename_As_SomeWorkflowParams mEnter_Servicename_As_SomeWorkflowParams;
@@ -12089,9 +12277,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'Warewolf' window equals 'True'
+        /// Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
         /// </summary>
-        public bool MainStudioWindowExists = true;
+        public bool StartPageExists = true;
         #endregion
     }
     
@@ -13526,6 +13714,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Localhost_First_Item_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -13597,21 +13800,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'DisplayText' property of 'TSTCIREMOTE' label equals 'TSTCIREMOTE'
         /// </summary>
         public string SelectedItemAsTSTCIREMOTEDisplayText = "TSTCIREMOTE";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Explorer_ServerName_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Explorer_ServerName_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool ExplorerTreeItemChildExists = true;
         #endregion
     }
     
@@ -15391,6 +15579,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Does_Not_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_Dialog_Does_Not_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'False'
+        /// </summary>
+        public bool ServicePickerDialogExists = false;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -15402,6 +15605,66 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
         /// </summary>
         public bool ServicePickerDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Filter_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_Filter_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SearchTextBox' text box equals 'True'
+        /// </summary>
+        public bool FilterTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_OK_Button_Enabled'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_OK_Button_EnabledExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'OK' button equals 'True'
+        /// </summary>
+        public bool OKEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_OK_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_OK_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'OK' button equals 'True'
+        /// </summary>
+        public bool OKExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Refresh_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Service_Picker_Refresh_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of '' button equals 'True'
+        /// </summary>
+        public bool RefreshExists = true;
         #endregion
     }
     
@@ -16677,6 +16940,21 @@ namespace Warewolf.Studio.UISpecs
         /// Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
         /// </summary>
         public string SearchTextBoxText = "RemoteServerUITestWorkflow";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'RemoteServerUITestWorkflow' in 'SearchTextBox' text box
+        /// </summary>
+        public string FilterTextboxText = "RemoteServerUITestWorkflow";
         #endregion
     }
     
@@ -18926,79 +19204,115 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public ExplorerTreeItem ExplorerTreeItem
+        public localhost localhost
         {
             get
             {
-                if ((this.mExplorerTreeItem == null))
+                if ((this.mlocalhost == null))
                 {
-                    this.mExplorerTreeItem = new ExplorerTreeItem(this);
+                    this.mlocalhost = new localhost(this);
                 }
-                return this.mExplorerTreeItem;
+                return this.mlocalhost;
+            }
+        }
+        
+        public FirstRemoteServer FirstRemoteServer
+        {
+            get
+            {
+                if ((this.mFirstRemoteServer == null))
+                {
+                    this.mFirstRemoteServer = new FirstRemoteServer(this);
+                }
+                return this.mFirstRemoteServer;
             }
         }
         #endregion
         
         #region Fields
-        private ExplorerTreeItem mExplorerTreeItem;
+        private localhost mlocalhost;
+        
+        private FirstRemoteServer mFirstRemoteServer;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTreeItem : WpfTreeItem
+    public class localhost : WpfTreeItem
     {
         
-        public ExplorerTreeItem(UITestControl searchLimitContainer) : 
+        public localhost(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfTreeItem ExplorerTreeItemChild
+        public WpfTreeItem FirstItem
         {
             get
             {
-                if ((this.mExplorerTreeItemChild == null))
+                if ((this.mFirstItem == null))
                 {
-                    this.mExplorerTreeItemChild = new WpfTreeItem(this);
+                    this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
-                    this.mExplorerTreeItemChild.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mExplorerTreeItemChild.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExplorerTreeItemChild.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mExplorerTreeItemChild.WindowTitles.Add("Warewolf");
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mExplorerTreeItemChild;
-            }
-        }
-        
-        public WpfTreeItem SomeWorkflow
-        {
-            get
-            {
-                if ((this.mSomeWorkflow == null))
-                {
-                    this.mSomeWorkflow = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mSomeWorkflow.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mSomeWorkflow.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSomeWorkflow.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mSomeWorkflow.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSomeWorkflow;
+                return this.mFirstItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTreeItem mExplorerTreeItemChild;
+        private WpfTreeItem mFirstItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FirstRemoteServer : WpfTreeItem
+    {
         
-        private WpfTreeItem mSomeWorkflow;
+        public FirstRemoteServer(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mFirstItem;
         #endregion
     }
     
@@ -37788,6 +38102,34 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public Explorer1 Explorer
+        {
+            get
+            {
+                if ((this.mExplorer == null))
+                {
+                    this.mExplorer = new Explorer1(this);
+                }
+                return this.mExplorer;
+            }
+        }
+        
+        public WpfButton OK
+        {
+            get
+            {
+                if ((this.mOK == null))
+                {
+                    this.mOK = new WpfButton(this);
+                    #region Search Criteria
+                    this.mOK.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceOKButton_AutoID";
+                    this.mOK.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mOK;
+            }
+        }
+        
         public WpfButton Cancel
         {
             get
@@ -37806,7 +38148,150 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private Explorer1 mExplorer;
+        
+        private WpfButton mOK;
+        
         private WpfButton mCancel;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Explorer1 : WpfCustom
+    {
+        
+        public Explorer1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit FilterTextbox
+        {
+            get
+            {
+                if ((this.mFilterTextbox == null))
+                {
+                    this.mFilterTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mFilterTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+                    this.mFilterTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFilterTextbox;
+            }
+        }
+        
+        public WpfButton Refresh
+        {
+            get
+            {
+                if ((this.mRefresh == null))
+                {
+                    this.mRefresh = new WpfButton(this);
+                    #region Search Criteria
+                    this.mRefresh.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mRefresh.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mRefresh;
+            }
+        }
+        
+        public ExplorerTree1 ExplorerTree
+        {
+            get
+            {
+                if ((this.mExplorerTree == null))
+                {
+                    this.mExplorerTree = new ExplorerTree1(this);
+                }
+                return this.mExplorerTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mFilterTextbox;
+        
+        private WpfButton mRefresh;
+        
+        private ExplorerTree1 mExplorerTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExplorerTree1 : WpfTree
+    {
+        
+        public ExplorerTree1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public TreeItem1 TreeItem1
+        {
+            get
+            {
+                if ((this.mTreeItem1 == null))
+                {
+                    this.mTreeItem1 = new TreeItem1(this);
+                }
+                return this.mTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TreeItem1 mTreeItem1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class TreeItem1 : WpfTreeItem
+    {
+        
+        public TreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem SubTreeItem1
+        {
+            get
+            {
+                if ((this.mSubTreeItem1 == null))
+                {
+                    this.mSubTreeItem1 = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSubTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSubTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mSubTreeItem1.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSubTreeItem1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mSubTreeItem1;
         #endregion
     }
     
@@ -38543,13 +39028,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public ExplorerTree1 ExplorerTree
+        public ExplorerTree2 ExplorerTree
         {
             get
             {
                 if ((this.mExplorerTree == null))
                 {
-                    this.mExplorerTree = new ExplorerTree1(this);
+                    this.mExplorerTree = new ExplorerTree2(this);
                 }
                 return this.mExplorerTree;
             }
@@ -38561,15 +39046,15 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfButton mRefreshButton;
         
-        private ExplorerTree1 mExplorerTree;
+        private ExplorerTree2 mExplorerTree;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ExplorerTree1 : WpfTree
+    public class ExplorerTree2 : WpfTree
     {
         
-        public ExplorerTree1(UITestControl searchLimitContainer) : 
+        public ExplorerTree2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria

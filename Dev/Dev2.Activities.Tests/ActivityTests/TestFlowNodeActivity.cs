@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Interfaces;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

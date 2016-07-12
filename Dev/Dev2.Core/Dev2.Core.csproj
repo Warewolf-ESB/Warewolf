@@ -204,6 +204,7 @@
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />
+    <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexCallbackChannel.cs" />
     <Compile Include="Interfaces\IFrameworkDuplexDataChannel.cs" />
     <Compile Include="Isolated.cs" />
