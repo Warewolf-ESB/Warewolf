@@ -166,8 +166,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\FileSystemTests.cs" />
-    <Compile Include="Activities\FtpTests.cs" />
     <Compile Include="Activities\PathIOTestingUtils.cs">
       <SubType>
       </SubType>
@@ -360,7 +358,6 @@
     </When>
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

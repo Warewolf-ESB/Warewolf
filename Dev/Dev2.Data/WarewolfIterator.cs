@@ -23,7 +23,7 @@ namespace Dev2.Data
             SetupListResult(warewolfEvalResult);
             SetupScalarResult(warewolfEvalResult);
             SetupForWarewolfRecordSetResult(warewolfEvalResult);
-            _maxValue = _listResult != null ? _listResult.Item.Count(atom => atom != null) : 1;
+            _maxValue = _listResult?.Item.Count(atom => atom != null) ?? 1;
             _currentValue = 0;
         }
 
