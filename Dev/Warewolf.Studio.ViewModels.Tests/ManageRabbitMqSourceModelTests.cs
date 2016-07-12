@@ -33,60 +33,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ManageRabbitMQSourceModel_Ctor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ManageRabbitMQSourceModel_Ctor_InvalidQueryManger_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var updateManager = new Mock<IStudioUpdateManager>();
-  
-            var shellViewModel = new Mock<IShellViewModel>();
-
-
-
-            //------------Execute Test---------------------------
-            new ManageRabbitMQSourceModel(updateManager.Object,null, shellViewModel.Object);
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ManageRabbitMQSourceModel_Ctor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ManageRabbitMQSourceModel_Ctor_InvalidShell_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var updateManager = new Mock<IStudioUpdateManager>();
-            var queryManager = new Mock<IQueryManager>();
-
-
-
-
-            //------------Execute Test---------------------------
-            new ManageRabbitMQSourceModel(updateManager.Object, queryManager.Object, null);
-            //------------Assert Results-------------------------
-        }
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ManageRabbitMQSourceModel_Ctor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ManageRabbitMQSourceModel_Ctor_InvalidUpdateManger_ExpectException()
-        {
-            //------------Setup for test--------------------------
-
-            var queryManager = new Mock<IQueryManager>();
-            var shellViewModel = new Mock<IShellViewModel>();
-
-
-
-            //------------Execute Test---------------------------
-            new ManageRabbitMQSourceModel(null, queryManager.Object, shellViewModel.Object);
-            //------------Assert Results-------------------------
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_Retrieve")]
         public void ManageRabbitMQSourceModel_Retrieve_ExpectPassThrough()
         {
