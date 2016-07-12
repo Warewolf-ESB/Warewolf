@@ -183,6 +183,19 @@ namespace Warewolf.Studio.UISpecs
             Uimap.Assert_Settings_ResourcePermissions_Exists();
             Uimap.Assert_Settings_ServerPermissions_Exists();
             Uimap.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists();
+
+            //Action Unit: Clicking the add resource button shows resource picker
+            Mouse.Click(SettingsResourcePermissionsPerRowCellActions.FindAddResourceButton(Uimap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Uimap.Assert_Service_Picker_Dialog_Exists();
+
+            //Action Unit: Selecting RemoteServerUITestWorkflow enabled the OK button
+            Uimap.Enter_RemoteServerUITestWorkflow_Into_Service_Picker_Dialog();
+            Uimap.Click_Service_Picker_Dialog_First_Service_In_Explorer();
+            Uimap.Assert_Service_Picker_OK_Button_Enabled();
+
+            //Action Unit: Clicking the service picker OK button dismissed the dialog
+            Uimap.Click_Service_Picker_Dialog_OK();
+            Uimap.Assert_Service_Picker_Dialog_Does_Not_Exist();
         }
 
         #region Additional test attributes
