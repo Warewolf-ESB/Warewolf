@@ -56,5 +56,18 @@ namespace Dev2.Data.Tests.DecisionsTests
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        [TestCategory("NotEndsWith_HandlesType")]
+        public void NotEndsWith_HandlesType_ReturnsNotEndsWithType()
+        {
+            var expected = enDecisionType.NotEndsWith;
+            //------------Setup for test--------------------------
+            var notEndsWith = new NotEndsWith();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, notEndsWith.HandlesType());
+        }
     }
 }
