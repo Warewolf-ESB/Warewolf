@@ -1290,29 +1290,16 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Explorer_Localhost_First_Item_Exists - Use 'Assert_Explorer_Localhost_First_Item_ExistsExpectedValues' to pass parameters into this method.
+        /// Assert_Explorer_First_Remote_Server_Exists - Use 'Assert_Explorer_First_Remote_Server_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_Explorer_Localhost_First_Item_Exists()
+        public void Assert_Explorer_First_Remote_Server_Exists()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfTreeItem firstRemoteServer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer;
             #endregion
 
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
-        }
-        
-        /// <summary>
-        /// Assert_Explorer_Localhost_First_Item_Does_Not_Exist - Use 'Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Explorer_Localhost_First_Item_Does_Not_Exist()
-        {
-            #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'False'
-            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues.FirstItemExists, firstItem.Exists, "Service does exist in explorer.");
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_First_Remote_Server_ExistsExpectedValues.FirstRemoteServerExists, firstRemoteServer.Exists, "No remote servers in explorer.");
         }
         
         /// <summary>
@@ -1329,16 +1316,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Explorer_First_Remote_Server_Exists - Use 'Assert_Explorer_First_Remote_Server_ExistsExpectedValues' to pass parameters into this method.
+        /// Assert_Explorer_Localhost_First_Item_Does_Not_Exist - Use 'Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_Explorer_First_Remote_Server_Exists()
+        public void Assert_Explorer_Localhost_First_Item_Does_Not_Exist()
         {
             #region Variable Declarations
-            WpfTreeItem firstRemoteServer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
 
-            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_First_Remote_Server_ExistsExpectedValues.FirstRemoteServerExists, firstRemoteServer.Exists, "No remote servers in explorer.");
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'False'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues.FirstItemExists, firstItem.Exists, "Service does exist in explorer.");
+        }
+        
+        /// <summary>
+        /// Assert_Explorer_Localhost_First_Item_Exists - Use 'Assert_Explorer_Localhost_First_Item_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Localhost_First_Item_Exists()
+        {
+            #region Variable Declarations
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_First_Item_ExistsExpectedValues.FirstItemExists, firstItem.Exists, "Explorer localhost does not contain any items.");
         }
         
         /// <summary>
@@ -2803,6 +2803,58 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Select_Windows_Group_Dialog_Does_Not_Exist - Use 'Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Select_Windows_Group_Dialog_Does_Not_Exist()
+        {
+            #region Variable Declarations
+            WinWindow selectWindowsGroupDialog = this.SelectWindowsGroupDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Select Group' window equals 'False'
+            Assert.AreEqual(this.Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues.SelectWindowsGroupDialogExists, selectWindowsGroupDialog.Exists, "Select windows group dialog is still open.");
+        }
+        
+        /// <summary>
+        /// Assert_Select_Windows_Group_Dialog_Exists - Use 'Assert_Select_Windows_Group_Dialog_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Select_Windows_Group_Dialog_Exists()
+        {
+            #region Variable Declarations
+            WinWindow selectWindowsGroupDialog = this.SelectWindowsGroupDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Select Group' window equals 'True'
+            Assert.AreEqual(this.Assert_Select_Windows_Group_Dialog_ExistsExpectedValues.SelectWindowsGroupDialogExists, selectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_Exists - Use 'Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_Exists()
+        {
+            #region Variable Declarations
+            WinEdit objectNameTextbox = this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Enter the object name to select (<A>examples</A>):' text box equals 'True'
+            Assert.AreEqual(this.Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues.ObjectNameTextboxExists, objectNameTextbox.Exists, "Select windows group object name textbox does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Select_Windows_Group_Dialog_OK_Button_Enabled - Use 'Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Select_Windows_Group_Dialog_OK_Button_Enabled()
+        {
+            #region Variable Declarations
+            WinButton ok = this.SelectWindowsGroupDialog.OKPanel.OK;
+            #endregion
+
+            // Verify that the 'Enabled' property of 'OK' button equals 'True'
+            Assert.AreEqual(this.Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues.OKEnabled, ok.Enabled, "Windows group dialog OK button is not enabled.");
+        }
+        
+        /// <summary>
         /// Assert_Sequence_Exists_OnDesignSurface - Use 'Assert_Sequence_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Sequence_Exists_OnDesignSurface()
@@ -3184,6 +3236,20 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked()
+        {
+            #region Variable Declarations
+            WpfCheckBox executeCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ExecuteCheckBox;
+            #endregion
+
+            // Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues.ExecuteCheckBoxChecked, executeCheckBox.Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked." +
+                    "");
+        }
+        
+        /// <summary>
         /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists()
@@ -3207,6 +3273,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
             Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues.ViewCheckBoxExists, viewCheckBox.Exists, "Settings security tab resource permissions row1 view checkbox does not exist.");
+        }
+        
+        /// <summary>
+        /// Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked - Use 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked()
+        {
+            #region Variable Declarations
+            WpfCheckBox viewCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.PermissionsCell.ViewCheckBox;
+            #endregion
+
+            // Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+            Assert.AreEqual(this.Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues.ViewCheckBoxChecked, viewCheckBox.Checked, "Settings resource permissions row1 view checkbox is not checked.");
         }
         
         /// <summary>
@@ -4641,6 +4720,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Select_Windows_Group_OK_Button
+        /// </summary>
+        public void Click_Select_Windows_Group_OK_Button()
+        {
+            #region Variable Declarations
+            WinButton ok = this.SelectWindowsGroupDialog.OKPanel.OK;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(ok, new Point(37, 9));
+        }
+        
+        /// <summary>
         /// Click_Server_Source_Wizard_Address_Protocol_Dropdown
         /// </summary>
         public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
@@ -4905,12 +4997,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// DoubleClick_Explorer_Localhost_First_Item
+        /// DoubleClick_Explorer_First_Remote_Server_First_Item
         /// </summary>
-        public void DoubleClick_Explorer_Localhost_First_Item()
+        public void DoubleClick_Explorer_First_Remote_Server_First_Item()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
             #endregion
 
             // Double-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -4918,12 +5010,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// DoubleClick_Explorer_First_Remote_Server_First_Item
+        /// DoubleClick_Explorer_Localhost_First_Item
         /// </summary>
-        public void DoubleClick_Explorer_First_Remote_Server_First_Item()
+        public void DoubleClick_Explorer_Localhost_First_Item()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
 
             // Double-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -4947,12 +5039,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface
+        /// Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface
         /// </summary>
-        public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
+        public void Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -4963,12 +5055,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface
+        /// Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface
         /// </summary>
-        public void Drag_Explorer_First_Remote_Server_First_Item_Onto_Workflow_Design_Surface()
+        public void Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -5808,6 +5900,19 @@ namespace Warewolf.Studio.UISpecs
             flowchart.EnsureClickable(new Point(306, 131));
             Mouse.StartDragging(zipImage, new Point(16, 4));
             Mouse.StopDragging(flowchart, new Point(306, 131));
+        }
+        
+        /// <summary>
+        /// Enter_DomainUsers_Into_Windows_Group_Dialog - Use 'Enter_DomainUsers_Into_Windows_Group_DialogParams' to pass parameters into this method.
+        /// </summary>
+        public void Enter_DomainUsers_Into_Windows_Group_Dialog()
+        {
+            #region Variable Declarations
+            WinEdit objectNameTextbox = this.SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox;
+            #endregion
+
+            // Type 'domain users' in 'Enter the object name to select (<A>examples</A>):' text box
+            objectNameTextbox.Text = this.Enter_DomainUsers_Into_Windows_Group_DialogParams.ObjectNameTextboxText;
         }
         
         /// <summary>
@@ -6799,12 +6904,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// RightClick_Explorer_Localhost_First_Item
+        /// RightClick_Explorer_First_Remote_Server_First_Item
         /// </summary>
-        public void RightClick_Explorer_Localhost_First_Item()
+        public void RightClick_Explorer_First_Remote_Server_First_Item()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -6812,12 +6917,12 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// RightClick_Explorer_First_Remote_Server_First_Item
+        /// RightClick_Explorer_Localhost_First_Item
         /// </summary>
-        public void RightClick_Explorer_First_Remote_Server_First_Item()
+        public void RightClick_Explorer_Localhost_First_Item()
         {
             #region Variable Declarations
-            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            WpfTreeItem firstItem = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
             #endregion
 
             // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
@@ -8822,27 +8927,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Explorer_Localhost_First_Item_ExistsExpectedValues Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+        public virtual Assert_Explorer_First_Remote_Server_ExistsExpectedValues Assert_Explorer_First_Remote_Server_ExistsExpectedValues
         {
             get
             {
-                if ((this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues == null))
+                if ((this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues == null))
                 {
-                    this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues = new Assert_Explorer_Localhost_First_Item_ExistsExpectedValues();
+                    this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues = new Assert_Explorer_First_Remote_Server_ExistsExpectedValues();
                 }
-                return this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues == null))
-                {
-                    this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues = new Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues();
-                }
-                return this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
+                return this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues;
             }
         }
         
@@ -8858,15 +8951,27 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Explorer_First_Remote_Server_ExistsExpectedValues Assert_Explorer_First_Remote_Server_ExistsExpectedValues
+        public virtual Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues
         {
             get
             {
-                if ((this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues == null))
+                if ((this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues == null))
                 {
-                    this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues = new Assert_Explorer_First_Remote_Server_ExistsExpectedValues();
+                    this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues = new Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues();
                 }
-                return this.mAssert_Explorer_First_Remote_Server_ExistsExpectedValues;
+                return this.mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Explorer_Localhost_First_Item_ExistsExpectedValues Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues = new Assert_Explorer_Localhost_First_Item_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
             }
         }
         
@@ -10214,6 +10319,54 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues == null))
+                {
+                    this.mAssert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues = new Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues();
+                }
+                return this.mAssert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Select_Windows_Group_Dialog_ExistsExpectedValues Assert_Select_Windows_Group_Dialog_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Select_Windows_Group_Dialog_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Select_Windows_Group_Dialog_ExistsExpectedValues = new Assert_Select_Windows_Group_Dialog_ExistsExpectedValues();
+                }
+                return this.mAssert_Select_Windows_Group_Dialog_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues = new Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues();
+                }
+                return this.mAssert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues == null))
+                {
+                    this.mAssert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues = new Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues();
+                }
+                return this.mAssert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues;
+            }
+        }
+        
         public virtual Assert_Sequence_Exists_OnDesignSurfaceExpectedValues Assert_Sequence_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -10562,6 +10715,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues;
+            }
+        }
+        
         public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues
         {
             get
@@ -10583,6 +10748,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues();
                 }
                 return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues == null))
+                {
+                    this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues = new Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues();
+                }
+                return this.mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues;
             }
         }
         
@@ -11426,6 +11603,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Enter_DomainUsers_Into_Windows_Group_DialogParams Enter_DomainUsers_Into_Windows_Group_DialogParams
+        {
+            get
+            {
+                if ((this.mEnter_DomainUsers_Into_Windows_Group_DialogParams == null))
+                {
+                    this.mEnter_DomainUsers_Into_Windows_Group_DialogParams = new Enter_DomainUsers_Into_Windows_Group_DialogParams();
+                }
+                return this.mEnter_DomainUsers_Into_Windows_Group_DialogParams;
+            }
+        }
+        
         public virtual Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams
         {
             get
@@ -11737,6 +11926,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mDecisionDialog;
             }
         }
+        
+        public SelectWindowsGroupDialog SelectWindowsGroupDialog
+        {
+            get
+            {
+                if ((this.mSelectWindowsGroupDialog == null))
+                {
+                    this.mSelectWindowsGroupDialog = new SelectWindowsGroupDialog();
+                }
+                return this.mSelectWindowsGroupDialog;
+            }
+        }
         #endregion
         
         #region Fields
@@ -11932,13 +12133,13 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Explorer_Filter_Textbox_ExistsExpectedValues mAssert_Explorer_Filter_Textbox_ExistsExpectedValues;
         
-        private Assert_Explorer_Localhost_First_Item_ExistsExpectedValues mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
-        
-        private Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
+        private Assert_Explorer_First_Remote_Server_ExistsExpectedValues mAssert_Explorer_First_Remote_Server_ExistsExpectedValues;
         
         private Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues mAssert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues;
         
-        private Assert_Explorer_First_Remote_Server_ExistsExpectedValues mAssert_Explorer_First_Remote_Server_ExistsExpectedValues;
+        private Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
+        
+        private Assert_Explorer_Localhost_First_Item_ExistsExpectedValues mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
         
@@ -12164,6 +12365,14 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Script_Exists_OnDesignSurfaceExpectedValues mAssert_Script_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues mAssert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues;
+        
+        private Assert_Select_Windows_Group_Dialog_ExistsExpectedValues mAssert_Select_Windows_Group_Dialog_ExistsExpectedValues;
+        
+        private Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues mAssert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues;
+        
+        private Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues mAssert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues;
+        
         private Assert_Sequence_Exists_OnDesignSurfaceExpectedValues mAssert_Sequence_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Server_Source_Wizard_Address_Protocol_Dropdown_Contains_HttpExpectedValues mAssert_Server_Source_Wizard_Address_Protocol_Dropdown_Contains_HttpExpectedValues;
@@ -12222,9 +12431,13 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_ExistsExpectedValues;
         
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues;
+        
         private Assert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_ExistsExpectedValues;
         
         private Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_ExistsExpectedValues;
+        
+        private Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues mAssert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues;
         
         private Assert_Settings_ServerPermissions_ExistsExpectedValues mAssert_Settings_ServerPermissions_ExistsExpectedValues;
         
@@ -12366,6 +12579,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Click_VariableList_Scalar_Row1_IsInputCheckboxParams mClick_VariableList_Scalar_Row1_IsInputCheckboxParams;
         
+        private Enter_DomainUsers_Into_Windows_Group_DialogParams mEnter_DomainUsers_Into_Windows_Group_DialogParams;
+        
         private Enter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams mEnter_RemoteServerUITestWorkflow_Into_Explorer_FilterParams;
         
         private Enter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams mEnter_RemoteServerUITestWorkflow_Into_Service_Picker_DialogParams;
@@ -12417,6 +12632,8 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private DecisionDialog mDecisionDialog;
+        
+        private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
         #endregion
     }
     
@@ -13866,10 +14083,25 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Explorer_Localhost_First_Item_Exists'
+    /// Parameters to be passed into 'Assert_Explorer_First_Remote_Server_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
+    public class Assert_Explorer_First_Remote_Server_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
+        /// </summary>
+        public bool FirstRemoteServerExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_First_Remote_Server_First_Item_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues
     {
         
         #region Fields
@@ -13896,10 +14128,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Explorer_First_Remote_Server_First_Item_Exists'
+    /// Parameters to be passed into 'Assert_Explorer_Localhost_First_Item_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Explorer_First_Remote_Server_First_Item_ExistsExpectedValues
+    public class Assert_Explorer_Localhost_First_Item_ExistsExpectedValues
     {
         
         #region Fields
@@ -13907,21 +14139,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Explorer_First_Remote_Server_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Explorer_First_Remote_Server_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
-        /// </summary>
-        public bool FirstRemoteServerExists = true;
         #endregion
     }
     
@@ -15611,6 +15828,66 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Select_Windows_Group_Dialog_Does_Not_Exist'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Select_Windows_Group_Dialog_Does_Not_ExistExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Select Group' window equals 'False'
+        /// </summary>
+        public bool SelectWindowsGroupDialogExists = false;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Select_Windows_Group_Dialog_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Select_Windows_Group_Dialog_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Select Group' window equals 'True'
+        /// </summary>
+        public bool SelectWindowsGroupDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Select_Windows_Group_Dialog_Object_Name_Textbox_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Enter the object name to select (<A>examples</A>):' text box equals 'True'
+        /// </summary>
+        public bool ObjectNameTextboxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Select_Windows_Group_Dialog_OK_Button_Enabled'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Select_Windows_Group_Dialog_OK_Button_EnabledExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Enabled' property of 'OK' button equals 'True'
+        /// </summary>
+        public bool OKEnabled = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Sequence_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16046,6 +16323,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_Checked'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_Execute_Checkbox_Is_CheckedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI__ExecutePermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ExecuteCheckBoxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
@@ -16072,6 +16364,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
         /// </summary>
         public bool ViewCheckBoxExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_Checked'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Settings_SecurityTab_Resource_Permissions_Row1_View_Checkbox_Is_CheckedExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Checked' property of 'UI__ViewPermissionCheckBox_AutoID' check box equals 'True'
+        /// </summary>
+        public bool ViewCheckBoxChecked = true;
         #endregion
     }
     
@@ -17122,6 +17429,21 @@ namespace Warewolf.Studio.UISpecs
         /// Select 'UI_IsInputCheckbox_AutoID' check box
         /// </summary>
         public bool IsInputCheckboxChecked = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Enter_DomainUsers_Into_Windows_Group_Dialog'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Enter_DomainUsers_Into_Windows_Group_DialogParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Type 'domain users' in 'Enter the object name to select (<A>examples</A>):' text box
+        /// </summary>
+        public string ObjectNameTextboxText = "domain users";
         #endregion
     }
     
@@ -19457,9 +19779,10 @@ namespace Warewolf.Studio.UISpecs
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
                     this.mFirstItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -19497,7 +19820,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mFirstItem = new WpfTreeItem(this);
                     #region Search Criteria
                     this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mFirstItem.WindowTitles.Add("Warewolf");
@@ -39327,6 +39650,123 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfButton mDoneButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SelectWindowsGroupDialog : WinWindow
+    {
+        
+        public SelectWindowsGroupDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.Name] = "Select Group";
+            this.WindowTitles.Add("Select Group");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemPanel ItemPanel
+        {
+            get
+            {
+                if ((this.mItemPanel == null))
+                {
+                    this.mItemPanel = new ItemPanel(this);
+                }
+                return this.mItemPanel;
+            }
+        }
+        
+        public OKPanel OKPanel
+        {
+            get
+            {
+                if ((this.mOKPanel == null))
+                {
+                    this.mOKPanel = new OKPanel(this);
+                }
+                return this.mOKPanel;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemPanel mItemPanel;
+        
+        private OKPanel mOKPanel;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ItemPanel : WinWindow
+    {
+        
+        public ItemPanel(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "214";
+            this.WindowTitles.Add("Select Group");
+            #endregion
+        }
+        
+        #region Properties
+        public WinEdit ObjectNameTextbox
+        {
+            get
+            {
+                if ((this.mObjectNameTextbox == null))
+                {
+                    this.mObjectNameTextbox = new WinEdit(this);
+                    #region Search Criteria
+                    this.mObjectNameTextbox.SearchProperties.Add(new PropertyExpression(WinEdit.PropertyNames.Name, "Enter the object name to select", PropertyExpressionOperator.Contains));
+                    this.mObjectNameTextbox.WindowTitles.Add("Select Group");
+                    #endregion
+                }
+                return this.mObjectNameTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinEdit mObjectNameTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OKPanel : WinWindow
+    {
+        
+        public OKPanel(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinWindow.PropertyNames.ControlId] = "1";
+            this.WindowTitles.Add("Select Group");
+            #endregion
+        }
+        
+        #region Properties
+        public WinButton OK
+        {
+            get
+            {
+                if ((this.mOK == null))
+                {
+                    this.mOK = new WinButton(this);
+                    #region Search Criteria
+                    this.mOK.SearchProperties[WinButton.PropertyNames.Name] = "OK";
+                    this.mOK.WindowTitles.Add("Select Group");
+                    #endregion
+                }
+                return this.mOK;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WinButton mOK;
         #endregion
     }
 }

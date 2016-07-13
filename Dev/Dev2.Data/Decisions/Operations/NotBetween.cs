@@ -28,7 +28,6 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-
             double[] dVal = new double[3];
             DateTime[] dtVal = new DateTime[3];
 
@@ -62,17 +61,13 @@ namespace Dev2.Data.Decisions.Operations
 
             if(dVal.Length == 3)
             {
-
                 left = dVal[0] - dVal[1];
                 right = dVal[0] - dVal[2];
-
-
             }
             else if(dtVal.Length == 3)
             {
                 left = dtVal[0].Ticks - dtVal[1].Ticks;
                 right = dtVal[0].Ticks - dtVal[2].Ticks;
-
             }
             else
             {
