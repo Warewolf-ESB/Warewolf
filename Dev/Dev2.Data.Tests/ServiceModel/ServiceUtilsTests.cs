@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.DataList.Contract;
@@ -51,6 +52,19 @@ namespace Dev2.Data.Tests.ServiceModel
 
             //------------Assert Results-------------------------
             Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceUtils_MappingNamesChanged")]
+        public void ServiceUtils_ExtractDataListShouldReturn()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Dev2 Team");            
+            var actual = ServiceUtils.ExtractDataList(stringBuilder);
+            //------------Assert Results-------------------------
         }
 
         [TestMethod]
