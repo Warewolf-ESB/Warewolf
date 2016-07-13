@@ -141,30 +141,35 @@ Scenario: Scheduler Ribbon Button
 	Then I "Assert_Scheduler_WorkflowInput_Exists"
 	Then I "Assert_Scheduler_WorkflowLabel_Exists"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Dragging Database Connector Onto Design Surface Should not be droppable
 	#Given "Some database connector" exists in the explorer tree
 	When I "Drag_Database_Connector_Onto_DesignSurface"
 	#Then I "Assert_Database_Connector_On_The_Design_Surface_Does_Not_Exist"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Dragging Plugin Connector Onto Design Surface Should not be droppable
 	#Given "Some plugin connector" exists in the explorer tree
 	When I "Drag_Plugin_Connector_Onto_DesignSurface"
 	#Then I "Assert_Database_Connector_On_The_Design_Surface_Does_Not_Exist"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Dragging Web Connector Onto Design Surface Should not be droppable
 	#Given "Some web connector" exists in the explorer tree
 	When I "Drag_Web_Connector_Onto_DesignSurface"
 	#Then I "Assert_Database_Connector_On_The_Design_Surface_Does_Not_Exist"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Dragging Sharepoint Connector Onto Design Surface Should not be droppable
 	#Given "Some Sharepoint Source" exists in the explorer tree
 	When I "Drag_Sharepoint_Source_Onto_DesignSurface"
 	#Then I "Assert_Database_Connector_On_The_Design_Surface_Does_Not_Exist"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Dragging Server Source Onto Design Surface Should not be droppable
 	#Given "Some Server Source" exists in the explorer tree
@@ -213,32 +218,39 @@ Scenario: Dragging Server Source Onto Design Surface Should not be droppable
 	When I "Click_Settings_View_ResourcePermissions"
 	#Then I "Assert_Settings_View_ResourcePermissions_Checkbox_Is_Checked"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Right Click On Design Surface
 	When I "Open_Context_Menu_OnDesignSurface"
 	Then I "Assert_Generic_Context_Menu_Exists"
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Context Menu on New Workflow Tab
 	When I "RightClick_New_Workflow_Tab"
 	Then I "Assert_New_Workflow_Context_Menu_Exists"
 	
+@ignore
 Scenario: Pin and unpin Explorer
 	Given I "Click_Toggle_Unpin_Explorer"
 	Then I "Click_Toggle_Pin_Explorer"
 	
+@ignore
 Scenario: Pin and unpin Help
 	Given I "Click_Toggle_Unpin_Documentor"
 	Then I "Click_Toggle_Pin_Documentor"
 	
+@ignore
 Scenario: Pin and unpin Toolbox
 	Given I "Click_Toggle_Unpiin_Toolbox"
 	Then I "Click_Toggle_Pin_Toolbox"
 	
+@ignore
 Scenario: Pin and unpin Debug Output
 	Given I "Click_Toggle_Unpin_DebugOutput"
 	Then I "Click_Toggle_Pin_DebugOutput"
 	
+@ignore
 Scenario: Pin and unpin variable list
 	Given I "Click_Toggle_Unpin_VariableList"
 	Then I "Click_Toggle_Pin_VariableList"

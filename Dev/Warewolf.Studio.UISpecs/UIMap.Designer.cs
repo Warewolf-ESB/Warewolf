@@ -1342,6 +1342,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Explorer_Localhost_Icon_Exists - Use 'Assert_Explorer_Localhost_Icon_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Explorer_Localhost_Icon_Exists()
+        {
+            #region Variable Declarations
+            WpfButton iconButton = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.IconButton;
+            #endregion
+
+            // Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
+            Assert.AreEqual(this.Assert_Explorer_Localhost_Icon_ExistsExpectedValues.IconButtonExists, iconButton.Exists, "Explorer localhost icon does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer - Use 'Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServer()
@@ -5348,13 +5361,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dropboxDownloadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.DropboxDownload.DropboxDownloadImage;
+            WpfImage downloadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.Download.DownloadImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DropboxDownload' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
-            Mouse.StartDragging(dropboxDownloadImage, new Point(30, 8));
+            Mouse.StartDragging(downloadImage, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
         }
         
@@ -5364,29 +5377,29 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage dropboxUploadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.DropboxUpload.DropboxUploadImage;
+            WpfImage uploadImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.StorageTools.Upload.UploadImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DropboxUpload' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
-            Mouse.StartDragging(dropboxUploadImage, new Point(30, 8));
+            Mouse.StartDragging(uploadImage, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
         }
         
         /// <summary>
-        /// Drag_Toolbox_Email_Onto_DesignSurface
+        /// Drag_Toolbox_Exchange_Email_Onto_DesignSurface
         /// </summary>
-        public void Drag_Toolbox_Email_Onto_DesignSurface()
+        public void Drag_Toolbox_Exchange_Email_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage emailImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Email.EmailImage;
+            WpfImage exchangeSendImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.ExchangeSend.ExchangeSendImage;
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'Email' image to 'Flowchart' custom control
+            // Move 'SQLBulkInsert' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 129));
-            Mouse.StartDragging(emailImage, new Point(16, -39));
+            Mouse.StartDragging(exchangeSendImage, new Point(16, -39));
             Mouse.StopDragging(flowchart, new Point(308, 129));
         }
         
@@ -5724,6 +5737,22 @@ namespace Warewolf.Studio.UISpecs
             flowchart.EnsureClickable(new Point(300, 127));
             Mouse.StartDragging(updateListItemsImage, new Point(17, 9));
             Mouse.StopDragging(flowchart, new Point(300, 127));
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_SMTP_Email_Onto_DesignSurface
+        /// </summary>
+        public void Drag_Toolbox_SMTP_Email_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfImage sMTPSendImage = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.Email.SMTPSend.SMTPSendImage;
+            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Move 'MySQL' image to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(308, 129));
+            Mouse.StartDragging(sMTPSendImage, new Point(16, -39));
+            Mouse.StopDragging(flowchart, new Point(308, 129));
         }
         
         /// <summary>
@@ -7774,19 +7803,6 @@ namespace Warewolf.Studio.UISpecs
             addressEditBox.Text = this.Type_tstci_into_Server_Source_Wizard_Address_TextboxParams.AddressEditBoxText;
         }
         
-        /// <summary>
-        /// Assert_Explorer_Localhost_Icon_Exists - Use 'Assert_Explorer_Localhost_Icon_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Explorer_Localhost_Icon_Exists()
-        {
-            #region Variable Declarations
-            WpfButton uIItemButton = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem.UICheckboxCheckBox.UIItemButton;
-            #endregion
-
-            // Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
-            Assert.AreEqual(this.Assert_Explorer_Localhost_Icon_ExistsExpectedValues.UIItemButtonExists, uIItemButton.Exists, "Explorer localhost icon does not exist");
-        }
-        
         #region Properties
         public virtual AAAExpectedValues AAAExpectedValues
         {
@@ -8985,6 +9001,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues = new Assert_Explorer_Localhost_First_Item_ExistsExpectedValues();
                 }
                 return this.mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Explorer_Localhost_Icon_ExistsExpectedValues Assert_Explorer_Localhost_Icon_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues = new Assert_Explorer_Localhost_Icon_ExistsExpectedValues();
+                }
+                return this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues;
             }
         }
         
@@ -11880,18 +11908,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Explorer_Localhost_Icon_ExistsExpectedValues Assert_Explorer_Localhost_Icon_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues = new Assert_Explorer_Localhost_Icon_ExistsExpectedValues();
-                }
-                return this.mAssert_Explorer_Localhost_Icon_ExistsExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -11961,18 +11977,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mSelectWindowsGroupDialog = new SelectWindowsGroupDialog();
                 }
                 return this.mSelectWindowsGroupDialog;
-            }
-        }
-        
-        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
-                {
-                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
-                }
-                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -12177,6 +12181,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues mAssert_Explorer_Localhost_First_Item_Does_Not_ExistExpectedValues;
         
         private Assert_Explorer_Localhost_First_Item_ExistsExpectedValues mAssert_Explorer_Localhost_First_Item_ExistsExpectedValues;
+        
+        private Assert_Explorer_Localhost_Icon_ExistsExpectedValues mAssert_Explorer_Localhost_Icon_ExistsExpectedValues;
         
         private Assert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues mAssert_Explorer_Remote_Server_DropdownList_Contains_NewRemoteServerExpectedValues;
         
@@ -12660,8 +12666,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Type_tstci_into_Server_Source_Wizard_Address_TextboxParams mType_tstci_into_Server_Source_Wizard_Address_TextboxParams;
         
-        private Assert_Explorer_Localhost_Icon_ExistsExpectedValues mAssert_Explorer_Localhost_Icon_ExistsExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -12673,8 +12677,6 @@ namespace Warewolf.Studio.UISpecs
         private DecisionDialog mDecisionDialog;
         
         private SelectWindowsGroupDialog mSelectWindowsGroupDialog;
-        
-        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -14180,6 +14182,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' -> 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
         /// </summary>
         public bool FirstItemExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Explorer_Localhost_Icon_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Assert_Explorer_Localhost_Icon_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
+        /// </summary>
+        public bool IconButtonExists = true;
         #endregion
     }
     
@@ -17803,21 +17820,6 @@ namespace Warewolf.Studio.UISpecs
         #endregion
     }
     
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Explorer_Localhost_Icon_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Assert_Explorer_Localhost_Icon_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of first button next to 'Checkbox' check box equals 'True'
-        /// </summary>
-        public bool UIItemButtonExists = true;
-        #endregion
-    }
-    
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class MainStudioWindow : WpfWindow
     {
@@ -19826,6 +19828,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public Checkbox Checkbox
+        {
+            get
+            {
+                if ((this.mCheckbox == null))
+                {
+                    this.mCheckbox = new Checkbox(this);
+                }
+                return this.mCheckbox;
+            }
+        }
+        
         public WpfTreeItem FirstItem
         {
             get
@@ -19848,7 +19862,47 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private Checkbox mCheckbox;
+        
         private WpfTreeItem mFirstItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Checkbox : WpfCheckBox
+    {
+        
+        public Checkbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "Checkbox";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton IconButton
+        {
+            get
+            {
+                if ((this.mIconButton == null))
+                {
+                    this.mIconButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mIconButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mIconButton.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mIconButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mIconButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mIconButton;
         #endregion
     }
     
@@ -20029,6 +20083,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public Email Email
+        {
+            get
+            {
+                if ((this.mEmail == null))
+                {
+                    this.mEmail = new Email(this);
+                }
+                return this.mEmail;
+            }
+        }
+        
         public FileAndFTP FileAndFTP
         {
             get
@@ -20144,6 +20210,8 @@ namespace Warewolf.Studio.UISpecs
         private DataTools mDataTools;
         
         private Database mDatabase;
+        
+        private Email mEmail;
         
         private FileAndFTP mFileAndFTP;
         
@@ -20879,6 +20947,126 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfImage mSQLServerImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Email : WpfGroup
+    {
+        
+        public Email(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Email";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public SMTPSend SMTPSend
+        {
+            get
+            {
+                if ((this.mSMTPSend == null))
+                {
+                    this.mSMTPSend = new SMTPSend(this);
+                }
+                return this.mSMTPSend;
+            }
+        }
+        
+        public ExchangeSend ExchangeSend
+        {
+            get
+            {
+                if ((this.mExchangeSend == null))
+                {
+                    this.mExchangeSend = new ExchangeSend(this);
+                }
+                return this.mExchangeSend;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SMTPSend mSMTPSend;
+        
+        private ExchangeSend mExchangeSend;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SMTPSend : WpfListItem
+    {
+        
+        public SMTPSend(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "SMTP Send";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage SMTPSendImage
+        {
+            get
+            {
+                if ((this.mSMTPSendImage == null))
+                {
+                    this.mSMTPSendImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mSMTPSendImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "SMTP Send";
+                    this.mSMTPSendImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSMTPSendImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mSMTPSendImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ExchangeSend : WpfListItem
+    {
+        
+        public ExchangeSend(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Exchange Send";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage ExchangeSendImage
+        {
+            get
+            {
+                if ((this.mExchangeSendImage == null))
+                {
+                    this.mExchangeSendImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mExchangeSendImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Exchange Send";
+                    this.mExchangeSendImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mExchangeSendImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mExchangeSendImage;
         #endregion
     }
     
@@ -22495,166 +22683,217 @@ namespace Warewolf.Studio.UISpecs
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Storage";
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Storage: Dropbox";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public DropboxDownload DropboxDownload
+        public Download Download
         {
             get
             {
-                if ((this.mDropboxDownload == null))
+                if ((this.mDownload == null))
                 {
-                    this.mDropboxDownload = new DropboxDownload(this);
+                    this.mDownload = new Download(this);
                 }
-                return this.mDropboxDownload;
+                return this.mDownload;
             }
         }
         
-        public DropboxUpload DropboxUpload
+        public Upload Upload
         {
             get
             {
-                if ((this.mDropboxUpload == null))
+                if ((this.mUpload == null))
                 {
-                    this.mDropboxUpload = new DropboxUpload(this);
+                    this.mUpload = new Upload(this);
                 }
-                return this.mDropboxUpload;
+                return this.mUpload;
             }
         }
         
-        public SelectandApply SelectandApply
+        public ListContents ListContents
         {
             get
             {
-                if ((this.mSelectandApply == null))
+                if ((this.mListContents == null))
                 {
-                    this.mSelectandApply = new SelectandApply(this);
+                    this.mListContents = new ListContents(this);
                 }
-                return this.mSelectandApply;
+                return this.mListContents;
+            }
+        }
+        
+        public Delete3 Delete
+        {
+            get
+            {
+                if ((this.mDelete == null))
+                {
+                    this.mDelete = new Delete3(this);
+                }
+                return this.mDelete;
             }
         }
         #endregion
         
         #region Fields
-        private DropboxDownload mDropboxDownload;
+        private Download mDownload;
         
-        private DropboxUpload mDropboxUpload;
+        private Upload mUpload;
         
-        private SelectandApply mSelectandApply;
+        private ListContents mListContents;
+        
+        private Delete3 mDelete;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DropboxDownload : WpfListItem
+    public class Download : WpfListItem
     {
         
-        public DropboxDownload(UITestControl searchLimitContainer) : 
+        public Download(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Dropbox Download";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Download";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfImage DropboxDownloadImage
+        public WpfImage DownloadImage
         {
             get
             {
-                if ((this.mDropboxDownloadImage == null))
+                if ((this.mDownloadImage == null))
                 {
-                    this.mDropboxDownloadImage = new WpfImage(this);
+                    this.mDownloadImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mDropboxDownloadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Dropbox Download";
-                    this.mDropboxDownloadImage.WindowTitles.Add("Warewolf");
+                    this.mDownloadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Dropbox Download";
+                    this.mDownloadImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mDropboxDownloadImage;
+                return this.mDownloadImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfImage mDropboxDownloadImage;
+        private WpfImage mDownloadImage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DropboxUpload : WpfListItem
+    public class Upload : WpfListItem
     {
         
-        public DropboxUpload(UITestControl searchLimitContainer) : 
+        public Upload(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Dropbox Upload";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Upload";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfImage DropboxUploadImage
+        public WpfImage UploadImage
         {
             get
             {
-                if ((this.mDropboxUploadImage == null))
+                if ((this.mUploadImage == null))
                 {
-                    this.mDropboxUploadImage = new WpfImage(this);
+                    this.mUploadImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mDropboxUploadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Dropbox Upload";
-                    this.mDropboxUploadImage.WindowTitles.Add("Warewolf");
+                    this.mUploadImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Dropbox Upload";
+                    this.mUploadImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mDropboxUploadImage;
+                return this.mUploadImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfImage mDropboxUploadImage;
+        private WpfImage mUploadImage;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SelectandApply : WpfListItem
+    public class ListContents : WpfListItem
     {
         
-        public SelectandApply(UITestControl searchLimitContainer) : 
+        public ListContents(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Select and apply";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "List Contents";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
         #region Properties
-        public WpfImage SelectandApplyImage
+        public WpfImage ListContentsImage
         {
             get
             {
-                if ((this.mSelectandApplyImage == null))
+                if ((this.mListContentsImage == null))
                 {
-                    this.mSelectandApplyImage = new WpfImage(this);
+                    this.mListContentsImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mSelectandApplyImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Select and apply";
-                    this.mSelectandApplyImage.WindowTitles.Add("Warewolf");
+                    this.mListContentsImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "List Contents";
+                    this.mListContentsImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mSelectandApplyImage;
+                return this.mListContentsImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfImage mSelectandApplyImage;
+        private WpfImage mListContentsImage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Delete3 : WpfListItem
+    {
+        
+        public Delete3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Delete";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage DeleteImage
+        {
+            get
+            {
+                if ((this.mDeleteImage == null))
+                {
+                    this.mDeleteImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mDeleteImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Delete";
+                    this.mDeleteImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDeleteImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mDeleteImage;
         #endregion
     }
     
@@ -22756,13 +22995,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public Email Email
+        public Email1 Email
         {
             get
             {
                 if ((this.mEmail == null))
                 {
-                    this.mEmail = new Email(this);
+                    this.mEmail = new Email1(this);
                 }
                 return this.mEmail;
             }
@@ -22820,7 +23059,7 @@ namespace Warewolf.Studio.UISpecs
         
         private Random mRandom;
         
-        private Email mEmail;
+        private Email1 mEmail;
         
         private WebRequest mWebRequest;
         
@@ -23090,10 +23329,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class Email : WpfListItem
+    public class Email1 : WpfListItem
     {
         
-        public Email(UITestControl searchLimitContainer) : 
+        public Email1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -39823,173 +40062,6 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WinButton mOK;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2ASHLEYLEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
-        {
-            get
-            {
-                if ((this.mUIUI_ExplorerControl_ACustom == null))
-                {
-                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
-                }
-                return this.mUIUI_ExplorerControl_ACustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIUI_ExplorerControl_ACustom : WpfCustom
-    {
-        
-        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIExplorerTreeTree UIExplorerTreeTree
-        {
-            get
-            {
-                if ((this.mUIExplorerTreeTree == null))
-                {
-                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
-                }
-                return this.mUIExplorerTreeTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIExplorerTreeTree mUIExplorerTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIExplorerTreeTree : WpfTree
-    {
-        
-        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
-                }
-                return this.mUIInfragisticsControlsTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIInfragisticsControlsTreeItem : WpfTreeItem
-    {
-        
-        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UICheckboxCheckBox UICheckboxCheckBox
-        {
-            get
-            {
-                if ((this.mUICheckboxCheckBox == null))
-                {
-                    this.mUICheckboxCheckBox = new UICheckboxCheckBox(this);
-                }
-                return this.mUICheckboxCheckBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UICheckboxCheckBox mUICheckboxCheckBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UICheckboxCheckBox : WpfCheckBox
-    {
-        
-        public UICheckboxCheckBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "Checkbox";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIItemButton
-        {
-            get
-            {
-                if ((this.mUIItemButton == null))
-                {
-                    this.mUIItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIItemButton.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIItemButton;
         #endregion
     }
 }
