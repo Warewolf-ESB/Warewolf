@@ -117,15 +117,8 @@ namespace Dev2.Studio.Controller
             }
             var expressionText = expression.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
             var modelProperty = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
-            if(modelProperty != null)
-            {
-                // ReSharper disable once PossibleNullReferenceException
+            if (modelProperty?.Value != null)
                 _callBackHandler = StartSwitchDropWizard(expression, modelProperty.Value.ToString());
-            }
-            else
-            {
-                _callBackHandler = StartSwitchDropWizard(expression, "");
-            }
             if (_callBackHandler != null)
             {
                 try
@@ -146,13 +139,12 @@ namespace Dev2.Studio.Controller
             return null;
         }
 
-        protected static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
+        private static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
         {
             var large = new ConfigureSwitch();
             var dataContext = new SwitchDesignerViewModel(modelItem,display);
             large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow();
-            window.Height = 280;
+            var window = new ActivityDefaultWindow {Height = 280};
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -168,7 +160,7 @@ namespace Dev2.Studio.Controller
             return null;
         }
 
-        public static void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
+        private static void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
         {
             _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
             if (_callBackHandler != null)
@@ -223,10 +215,7 @@ namespace Dev2.Studio.Controller
 
                     if (ds != null)
                     {
-                        if (switchCaseValue != null)
-                        {
-                            switchCaseValue.SetValue(ds.SwitchExpression);
-                        }
+                        switchCaseValue?.SetValue(ds.SwitchExpression);
                     }
                 }
                 catch
@@ -244,31 +233,22 @@ namespace Dev2.Studio.Controller
 
             var switchExpressionValue = string.Empty;
 
-            if (tmpModelItem != null)
+            var tmpProperty = tmpModelItem?.Properties["Expression"];
+
+            if (tmpProperty?.Value != null)
             {
-                var tmpProperty = tmpModelItem.Properties["Expression"];
-
-                if (tmpProperty != null)
+                var value = tmpProperty.ComputedValue as DsfFlowSwitchActivity;
+                var tmp = value?.ExpressionText;
+                if (!string.IsNullOrEmpty(tmp))
                 {
-                    if (tmpProperty.Value != null)
-                    {
-                        var value = tmpProperty.ComputedValue as DsfFlowSwitchActivity;
-                        if (value != null)
-                        {
-                            var tmp = value.ExpressionText;
-                            if (!string.IsNullOrEmpty(tmp))
-                            {
-                                int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                                int end = tmp.IndexOf(",", StringComparison.Ordinal);
+                    int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                    int end = tmp.IndexOf(",", StringComparison.Ordinal);
 
-                                if (start < end && start >= 0)
-                                {
-                                    start += 2;
-                                    end -= 1;
-                                    switchExpressionValue = tmp.Substring(start, end - start);
-                                }
-                            }
-                        }
+                    if (start < end && start >= 0)
+                    {
+                        start += 2;
+                        end -= 1;
+                        switchExpressionValue = tmp.Substring(start, end - start);
                     }
                 }
             }
@@ -278,14 +258,12 @@ namespace Dev2.Studio.Controller
 
         #region Protected Methods
 
-
-        protected static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
+        private static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
         {
             var large = new Large();
             var dataContext = new DecisionDesignerViewModel(mi);
             large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow();
-            window.Height = 350;
+            var window = new ActivityDefaultWindow {Height = 350};
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -332,7 +310,7 @@ namespace Dev2.Studio.Controller
 
         #region ConfigureActivity
 
-        public static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew) where T : class, IFlowNodeActivity, new()
+        private static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew) where T : class, IFlowNodeActivity, new()
         {
             var property = modelItem.Properties[propertyName];
             if (property == null)
