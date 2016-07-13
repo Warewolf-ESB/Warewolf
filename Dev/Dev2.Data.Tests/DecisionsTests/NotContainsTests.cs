@@ -53,5 +53,19 @@ namespace Dev2.Data.Tests.DecisionsTests
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthmembu")]
+        [TestCategory("NotContains_HandlesType")]
+        public void NotContains_HandlesType_ReturnsNotContainsType()
+        {
+            var decisionType = enDecisionType.NotContain;
+            //------------Setup for test--------------------------
+            var notContains = new NotContains();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(decisionType, notContains.HandlesType());
+        }
     }
 }
